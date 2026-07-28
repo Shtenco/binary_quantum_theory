@@ -1,0 +1,8 @@
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+
+# Optional verification sections and the standalone critical scan:
+numba>=0.58
+# torch is intentionally not pinned here because its installation depends on
+# the target CPU/GPU platform. Use --skip-hda when it is unavailable.
