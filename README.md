@@ -46,6 +46,28 @@ python scripts\make_master_verification_report.py
 python scripts/validate_github_latex.py
 ```
 
+### Новая вычислимая ветвь CIMFIG / BCQG
+
+Файл [`CIMFIG_V18_CANDIDATE_THEORY.md`](CIMFIG_V18_CANDIDATE_THEORY.md)
+формализует новую ветвь как систему независимых causal-, frame-, quantum-,
+continuum-, gravity- и matter-gates. В расширенной редакции введены операторный
+канал наблюдения, diamond-норма дефекта причинной инвариантности, строгая
+граница применимости двухполяризационной критической модели и количественный
+протокол следующего фальсифицируемого расчёта.
+
+Воспроизводимый набор конечномерных, алгебраических и стохастических проверок:
+
+```bash
+python -m pip install -r requirements.txt
+python bcqg_unified_verification.py --profile quick --skip-hda
+```
+
+Полный профиль запускается заменой `quick` на `full`. Секция нелинейной HDA
+требует отдельно установленный `torch`; без него используется `--skip-hda`.
+Результаты по умолчанию записываются в `verification_results/`. Успех этих
+проверок означает воспроизведение конечных toy-моделей и regression targets, а
+не доказательство того, что микроскопическая сумма CIMFIG течёт к ОТО.
+
 Главные отчеты:
 
 | Отчет | Смысл |
