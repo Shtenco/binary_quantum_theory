@@ -1110,7 +1110,11 @@ def write_outputs(outdir: Path, profile: str):
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("--profile",choices=["quick","full"],default="full")
-    parser.add_argument("--output",default="/mnt/data/BCQG_UNIFIED_VERIFICATION")
+    parser.add_argument(
+        "--output",
+        default="verification_results",
+        help="Output directory (default: ./verification_results)",
+    )
     parser.add_argument("--skip-flat-regge",action="store_true")
     parser.add_argument("--skip-hda",action="store_true")
     parser.add_argument("--skip-critical",action="store_true")
