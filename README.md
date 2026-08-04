@@ -23,44 +23,35 @@ any claim that the code already proves continuum Einstein gravity.
 | Flat Regge: 8 gauge nulls, Bianchi \(\sim10^{-8}\) | pass |
 | Spurious nulls lifted by \(R^2\) term | pass |
 | Spectral dimension on 4D torus graph | \(d_s(\infty)\approx 4\) |
+| Kinetic sign \(H_{\mathrm{kin}}=-H_{\mathrm{Regge}}\): TT>0 | pass (tested k) |
+| TT dispersion proxy TT/k² ~ O(1) > 0 | pass (see `DISPERSION_Hkin.md`) |
 
 ## What is **not** claimed
 
 - continuum limit = 4D Einstein–Hilbert;
 - quantum measure uniqueness;
-- TT kinetic positivity for the *default* sign of \(\sum A\delta\) without convention fix;
 - any fit of Standard Model constants from graph parameters.
 
-## Kinetic sign convention (important)
-
-The classical Regge sum \(S=\sum_h A_h\,\delta_h\) as implemented in
-`FlatRegge4D.action` yields a Fourier-mode Hessian whose Rayleigh quotient on
-continuum-positive TT polarizations is **negative**.
-
-For Euclidean continuum matching (TT kinetic \(\propto +k^2\), conformal
-trace \(\propto -k^2\)) use the **kinetic Hessian**
+## Kinetic sign convention
 
 \[
-H_{\mathrm{kin}} = -\,H_{\mathrm{Regge}}
+H_{\mathrm{kin}} = -\,H[S_{\mathrm{Regge}}]
 \]
 
-in linearised spectrum tests. With this convention:
-
-- TT Rayleigh quotients are positive;
-- pure-trace Rayleigh quotients are negative;
-- gauge null space and Bianchi identities are unchanged.
-
-See `KINETIC_SIGN.md` and `scripts/test_kinetic_sign.py`.
+With this convention, linearised TT Rayleigh quotients are positive and the
+gauge null structure is unchanged. See `KINETIC_SIGN.md`,
+`DISPERSION_Hkin.md`, `scripts/test_kinetic_sign.py`.
 
 ## Layout
 
 ```
-CIMFIG_V18_CANDIDATE_THEORY.md   honest candidate text (gates, open problems)
+CIMFIG_V18_CANDIDATE_THEORY.md   honest candidate text
 bcqg_unified_verification.py    finite verification suite
 bcqg_critical_phase_demo.py     reduced critical-phase demo
-scripts/verify_sine_bridge.py   lattice identities
-scripts/test_kinetic_sign.py    TT / trace sign after H → −H
-KINETIC_SIGN.md                 convention note
+scripts/verify_sine_bridge.py
+scripts/test_kinetic_sign.py
+KINETIC_SIGN.md
+DISPERSION_Hkin.md
 ```
 
 ## Run
@@ -74,6 +65,6 @@ python scripts/test_kinetic_sign.py
 
 ## Scientific scope (one line)
 
-Finite discrete geometry + gauge + rewrite kinematics, with an explicit
-kinetic-sign convention for linearised tests. **Not** a completed quantum
+Finite discrete geometry + gauge + rewrite kinematics, with a fixed kinetic-sign
+convention giving linearised Euclidean TT pattern. **Not** a completed quantum
 gravity theory and **not** a derivation of continuum Einstein gravity.
