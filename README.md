@@ -4,7 +4,7 @@
 **Объединяет:** исходную информационно-графовую модель и CIMFIG/BCQG V18<br>
 **Статус:** математически определённая кандидатная модель; не подтверждённая теория природы
 
----
+This repository keeps only the parts that survived independent numerical audit:
 
 ## 0. Паспорт результата
 
