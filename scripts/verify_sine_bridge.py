@@ -8,6 +8,7 @@ claim empirical validation of CIMFIG or of quantum gravity.
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import math
 from pathlib import Path
@@ -32,7 +33,14 @@ def determinant(matrix: tuple[tuple[float, float], tuple[float, float]]) -> floa
     return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
 
 
-def run_checks() -> dict[str, object]:
+def torus_spectrum(size: int, dimension: int) -> list[float]:
+    """Return the exact Fourier spectrum of the periodic cubic graph."""
+    momenta = (2.0 * math.pi * n / size for n in range(size))
+    axis = tuple(momenta)
+    return sorted(laplacian_symbol(k) for k in itertools.product(axis, repeat=dimension))
+
+
+def run_checks(size: int = 7, dimension: int = 3) -> dict[str, object]:
     samples = ((0.13,), (0.31, -0.22, 0.17),
                (math.pi / 7.0, math.pi / 9.0, -math.pi / 11.0))
     identity_errors = [abs(incidence_norm(k) - laplacian_symbol(k)) for k in samples]
@@ -58,6 +66,19 @@ def run_checks() -> dict[str, object]:
             "lambda_over_k2": laplacian_symbol(momentum) / (scale * scale * norm2),
         })
 
+    fourth_order_limit = sum(x ** 4 for x in direction) / (12.0 * norm2)
+    fourth_order_sequence = [
+        (1.0 - row["lambda_over_k2"]) / row["scale"] ** 2
+        for row in continuum
+    ]
+
+    spectrum = torus_spectrum(size, dimension)
+    expected_gap = 4.0 * math.sin(math.pi / size) ** 2
+    nonzero = [value for value in spectrum if value > TOL]
+    heat_times = (0.1, 0.3, 1.0, 3.0)
+    heat_trace = [sum(math.exp(-time * value) for value in spectrum)
+                  for time in heat_times]
+
     checks = {
         "incidence_laplacian_identity": max(identity_errors) < TOL,
         "exact_sine_dispersion": max(dispersion_errors) < TOL,
@@ -67,6 +88,13 @@ def run_checks() -> dict[str, object]:
             < abs(1.0 - continuum[i]["lambda_over_k2"])
             for i in range(len(continuum) - 1)
         ),
+        "fourth_order_coefficient": abs(fourth_order_sequence[-1] - fourth_order_limit) < 2e-5,
+        "torus_mode_count": len(spectrum) == size ** dimension,
+        "unique_zero_mode": sum(value < TOL for value in spectrum) == 1,
+        "torus_spectral_gap": abs(nonzero[0] - expected_gap) < TOL,
+        "spectral_upper_bound": spectrum[-1] <= 4.0 * dimension + TOL,
+        "heat_trace_monotone": all(heat_trace[i + 1] < heat_trace[i]
+                                   for i in range(len(heat_trace) - 1)),
     }
     return {
         "scope": "exact finite periodic-lattice identities",
@@ -77,6 +105,19 @@ def run_checks() -> dict[str, object]:
         "max_transfer_determinant_error": max(determinant_errors),
         "stable_phases": phases,
         "continuum_sequence": continuum,
+        "fourth_order_target": fourth_order_limit,
+        "fourth_order_sequence": fourth_order_sequence,
+        "torus": {
+            "size": size,
+            "dimension": dimension,
+            "mode_count": len(spectrum),
+            "zero_mode_multiplicity": sum(value < TOL for value in spectrum),
+            "spectral_gap": nonzero[0],
+            "expected_gap": expected_gap,
+            "spectral_maximum": spectrum[-1],
+            "heat_times": heat_times,
+            "heat_trace": heat_trace,
+        },
         "physical_validation": False,
     }
 
@@ -84,8 +125,12 @@ def run_checks() -> dict[str, object]:
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path, help="Optional JSON output path")
+    parser.add_argument("--size", type=int, default=7, help="Periodic side length")
+    parser.add_argument("--dimension", type=int, default=3, help="Torus dimension")
     args = parser.parse_args()
-    result = run_checks()
+    if args.size < 3 or args.dimension < 1:
+        parser.error("--size must be >= 3 and --dimension must be >= 1")
+    result = run_checks(args.size, args.dimension)
     payload = json.dumps(result, ensure_ascii=False, indent=2)
     print(payload)
     if args.output:
