@@ -12,9 +12,15 @@
 7. Кинематический bit-to-smooth crossover и слабополевой предел
    $\ddot x\to-\nabla\Phi$.
 8. Условная абсолютная сходимость регуляризованных спектральных сумм.
+9. Новый тест без TT-проекции: полный 10-компонентный metric Hessian плоской
+   4D Regge-решётки на $L=3,4,5$ приближается к квадратичной структуре
+   Fierz--Pauli; full-matrix residual, ошибка отношений коэффициентов и
+   generic gauge-to-metric leakage убывают приблизительно как $O(L^{-2})$.
+   Подробности и ограничения: `GRAVITY_BRIDGE_SCALING.md`.
 
 Это доказанное или конечномерно проверенное **кинематическое ядро**, а не полная
-квантовая гравитация.
+квантовая гравитация. Пункт 9 относится к 4D Regge scaffold и сам по себе не
+доказывает ни возникновение четырёхмерности, ни нелинейный Einstein IR.
 
 ## Какие инварианты ещё нужны
 
@@ -25,15 +31,29 @@
 | Лоренц-инвариантность | $z(\ell)\to1$, угловая анизотропия $\to0$ |
 | Spin-2 | ровно две gapless TT-моды без ручной проекции |
 | Ghost gap | $m_{\rm unwanted}/m_{\rm TT}\to\infty$ |
-| Нелинейная ОТО | замыкание hypersurface-deformation algebra |
+| Нелинейная ОТО | замыкание hypersurface-deformation algebra и cubic Ward identity |
 | Универсальность | коэффициенты не зависят от blocking/regulator |
 | Материя | ненулевой chiral index и сокращение gauge/gravity anomalies |
 | Эксперимент | одно preregistered blind prediction и независимая репликация |
 
 ## Один следующий расчёт
 
-Зафиксировать один малый EML rule set; без TT-проекции выполнить blocking на
-последовательности размеров и на каждом масштабе совместно измерить
+Для gravity gate следующий минимальный удар — не ещё один TT-fit, а
+**cubic gauge-closure test** на независимых connection/frame variables. На той
+же последовательности масштабов вычислить
+
+$$
+W_3(\ell)=
+\frac{\|\delta_0S_3+\delta_1S_2\|}
+{\|S_3\|+\|S_2\|}
+$$
+
+и потребовать $W_3(\ell)\to0$ одновременно с уже измеряемым quadratic
+Fierz--Pauli residual и angular anisotropy.
+
+Для полного microscopic gate по-прежнему нужно зафиксировать один малый EML
+rule set; без TT-проекции выполнить blocking на последовательности размеров и
+на каждом масштабе совместно измерить
 
 $$
 (\delta_D,d_s,z,\operatorname{spec}H,
