@@ -5,8 +5,9 @@
 **Статус:** математически определённая кандидатная модель; не подтверждённая теория природы
 
 Краткий текущий итог и список оставшихся инвариантов: [`THEORY_STATUS.md`](THEORY_STATUS.md).
+Очередь из 20 коротких falsification-тестов: [`TOP20_THOUGHT_EXPERIMENTS.md`](TOP20_THOUGHT_EXPERIMENTS.md).
 
-This repository keeps only the parts that survived independent numerical audit:
+Краткий текущий итог и список оставшихся инвариантов: [`THEORY_STATUS.md`](THEORY_STATUS.md).
 
 ## 0. Паспорт результата
 
