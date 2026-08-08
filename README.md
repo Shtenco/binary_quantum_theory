@@ -779,7 +779,121 @@ BIP39 может быть сериализацией EML-данных, но не
 разделения train/test и сравнения с равномощным случайным словарём. Пока такой
 blind-тест не пройден, BIP39 исключается из динамического ядра теории.
 
-## 19. Файлы проекта
+## 19. Что нужно для конечной доказанной теории
+
+Слово «конечная» разделяется на три независимых требования: математическая
+замкнутость модели, существование универсального континуального предела и
+эмпирическая подтверждённость. Первое можно доказать внутри аксиом; второе
+требует RG-теоремы; третье невозможно получить одной математикой.
+
+### 19.1 Цепочка обязательств
+
+| Gate | Что должно быть получено | Критерий закрытия | Сейчас |
+|:--|:--|:--|:--|
+| M0 | один конечный EML rule set и мера историй | опубликованы все rules, веса и hash | open |
+| C1 | causal/frame invariance | все critical pairs сходятся, $\delta_D\to0$ | open |
+| Q1 | квантовая согласованность | isometry, composition и positivity | conditional |
+| S1 | синусовый спектральный мост | точные конечные identities | proved |
+| RG1 | 4D interacting fixed point | $\xi/a\to\infty$, $d_s\to4$, universal exponents | open |
+| G1 | две spin-2 моды | возникают до ручной TT-проекции | finite test only |
+| G2 | нелинейная ОТО | полный constraint algebra и Ward identities | open |
+| M1 | материя | chiral spectrum, gauge group, anomaly cancellation | open |
+| P1 | физическая шкала | одна calibration и blind predictions | open |
+| X1 | подтверждение | независимая репликация и эксперимент | open |
+
+Статусы хранятся отдельно от текста в `theory_gates.json` и проверяются
+командой:
+
+```bash
+python scripts/verify_theory_gates.py
+```
+
+Gate переводится в `proved` только с указанием воспроизводимого evidence-файла.
+Даже после закрытия математических gates X1 остаётся экспериментальным.
+
+### 19.2 Почему синусы являются настоящим мостом
+
+Для compact link $U_e=e^{i\theta_e}$ ковариантная разность имеет ядро
+
+$$
+\boxed{
+(U_e-I)^\dagger(U_e-I)
+=2-U_e-U_e^\dagger
+=4\sin^2\frac{\theta_e}{2}
+}.
+$$
+
+Одна формула имеет три предела:
+
+1. для translation link $\theta=k_\mu a$ она даёт решёточный импульс и
+   квантовую дисперсию;
+2. для gauge holonomy $\theta=qaA_\mu/\hbar$ она даёт compact gauge kinetic
+   kernel;
+3. для frame holonomy вокруг малой петли
+   $U_\square=\exp(ia^2R+O(a^3))$ она даёт curvature kernel.
+
+Кроме того, Wilson-плотность
+
+$$
+1-\cos\theta=2\sin^2\frac{\theta}{2}
+$$
+
+имеет малоугловой предел $\theta^2/2+O(\theta^4)$. Поэтому синус не является
+произвольной аппроксимацией: он точно следует из compact parallel transport, а
+квадратичные действия КМ, gauge theory и линейной кривизны возникают как разные
+малые углы одного link-закона.
+
+### 19.3 Единая целевая система уравнений
+
+Кандидатный дискретный оператор должен одновременно удовлетворять
+
+$$
+\sin^2\frac{\omega a_t}{2}
+=\sum_i\sin^2\frac{k_i a}{2}+\mathcal M^2[U,e,\phi],
+$$
+
+$$
+\frac{\delta S_{\rm EML}}{\delta U_e}=0,
+\qquad
+\frac{\delta S_{\rm EML}}{\delta e_e}=0,
+\qquad
+\frac{\delta S_{\rm EML}}{\delta\bar\psi}=0.
+$$
+
+Первая строка фиксирует quantum propagation; остальные должны в одном ИК-пределе
+дать Yang--Mills, Einstein и Dirac equations. Коэффициенты нельзя вставлять
+после coarse graining: они должны следовать из rules и единственной calibration.
+
+### 19.4 Главные препятствия синусового подхода
+
+- фиксированная решётка выделяет систему отсчёта; нужна динамическая causal
+  структура и восстановление Lorentz symmetry;
+- линейные TT-моды ещё не гарантируют nonlinear diffeomorphism invariance;
+- наивный оператор Дирака с $\sin k_\mu$ имеет дополнительные нули
+  (fermion doubling); нужен chiral механизм без gauge anomaly;
+- compact curvature action может иметь нежелательные lattice phases;
+- continuum coefficients должны быть universal, а не зависеть от blocking;
+- синусовые identities являются кинематикой и не выбирают vacuum или matter
+  content.
+
+### 19.5 Следующий конкретный расчёт
+
+Следующая версия должна не добавлять ещё одну формулу масс, а выполнить один
+замкнутый цикл:
+
+1. зафиксировать малый EML-алфавит и не более чем несколько локальных Law;
+2. перечислить critical pairs до заявленного радиуса;
+3. построить transfer channel и измерить $\delta_D$;
+4. выполнить blocking на нескольких размерах без предварительной TT-проекции;
+5. измерить $d_s$, gap scaling и полный Hessian;
+6. проверить, что остаются ровно две gapless tensor modes;
+7. проверить nonlinear bracket residual и fermion zeros;
+8. заморозить одну безразмерную prediction до следующего размера графа.
+
+Это кратчайший путь от уже доказанного синусового ядра к результату, который
+может либо продвинуть, либо честно опровергнуть текущую версию теории.
+
+## 20. Файлы проекта
 
 | Файл | Назначение |
 |:--|:--|
@@ -789,5 +903,7 @@ blind-тест не пройден, BIP39 исключается из динам
 | `scripts/verify_sine_bridge.py` | автономный пересчёт синусового ядра |
 | `scripts/eml_blitz.py` | битовая оценка минимального EML-представления |
 | `scripts/action_tunneling_blitz.py` | размерностная и WKB-проверка действия |
+| `scripts/verify_theory_gates.py` | аудит machine-readable proof obligations |
+| `theory_gates.json` | текущий ledger доказанных и открытых gates |
 | `scripts/validate_github_latex.py` | проверка GitHub-совместимости формул |
 | `requirements.txt` | зависимости расширенного verifier |
