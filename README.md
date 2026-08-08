@@ -8,6 +8,7 @@
 Очередь из 20 коротких falsification-тестов: [`TOP20_THOUGHT_EXPERIMENTS.md`](TOP20_THOUGHT_EXPERIMENTS.md).
 
 Краткий текущий итог и список оставшихся инвариантов: [`THEORY_STATUS.md`](THEORY_STATUS.md).
+Очередь из 20 коротких falsification-тестов: [`TOP20_THOUGHT_EXPERIMENTS.md`](TOP20_THOUGHT_EXPERIMENTS.md).
 
 ## 0. Паспорт результата
 
@@ -1134,7 +1135,43 @@ $\Phi$, а затем $g_{\mu\nu}$, удовлетворяет нелинейн�
 python scripts/equivalence_sine_blitz.py --ka 0.1 --gradient 9.81
 ```
 
-## 23. Файлы проекта
+## 23. Блиц №17: нули фермионного синусового оператора
+
+Для наивного massless lattice Dirac operator
+
+$$
+D_{\rm naive}(k)=\frac{i}{a}\sum_{\mu=1}^{d}\gamma^\mu\sin(k_\mu a)
+$$
+
+нуль возникает, когда каждый $k_\mu a$ равен $0$ или $\pi$. Поэтому точное
+число нулей в $d$ измерениях равно
+
+$$
+\boxed{N_{\rm zero}^{\rm naive}=2^d}.
+$$
+
+В четырёх измерениях получаем 16 нулей: одну желаемую моду и 15 doublers.
+Следовательно, чистый синусовый оператор **не закрывает matter gate**.
+
+Wilson term
+
+$$
+W(k)=\frac{r}{a}\sum_\mu[1-\cos(k_\mu a)]
+$$
+
+оставляет на углах зоны Бриллюэна только $k=0$, но ценой явного нарушения
+наивной chiral symmetry при конечном $a$. Значит, нам нужен не ещё один
+коэффициент, а механизм Ginsparg--Wilson/overlap, domain-wall либо иная
+конструкция, одновременно контролирующая locality, chirality и anomalies.
+
+```bash
+python scripts/fermion_zero_blitz.py --dimension 4
+```
+
+Это отрицательный, но усиливающий результат: он отсекает простейшую
+фермионную реализацию до дорогих RG-расчётов и уточняет M1.
+
+## 24. Файлы проекта
 
 | Файл | Назначение |
 |:--|:--|
@@ -1148,6 +1185,7 @@ python scripts/equivalence_sine_blitz.py --ka 0.1 --gradient 9.81
 | `scripts/verify_bhe_bridge.py` | конечные проверки Bell--Heisenberg--equivalence bridge |
 | `scripts/continuum_crossover_blitz.py` | оценка bit-to-smooth crossover |
 | `scripts/equivalence_sine_blitz.py` | слабополевой синусовый тест эквивалентности |
+| `scripts/fermion_zero_blitz.py` | точный подсчёт naive/Wilson fermion zeros |
 | `theory_gates.json` | текущий ledger доказанных и открытых gates |
 | `scripts/validate_github_latex.py` | проверка GitHub-совместимости формул |
 | `requirements.txt` | зависимости расширенного verifier |
