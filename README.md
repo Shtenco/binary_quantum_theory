@@ -7,7 +7,7 @@
 Краткий текущий итог и список оставшихся инвариантов: [`THEORY_STATUS.md`](THEORY_STATUS.md).
 Очередь из 20 коротких falsification-тестов: [`TOP20_THOUGHT_EXPERIMENTS.md`](TOP20_THOUGHT_EXPERIMENTS.md).
 
----
+Краткий текущий итог и список оставшихся инвариантов: [`THEORY_STATUS.md`](THEORY_STATUS.md).
 
 ## 0. Паспорт результата
 
