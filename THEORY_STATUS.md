@@ -40,37 +40,85 @@
     без embedding coordinates корректно восстанавливаются 2D, 3D и 4D
     контрольные periodic complexes; это готовый falsifier для frozen hypergraph.
     Подробности: `MANIFOLD_DIMENSION_GATE.md`.
-14. Сформулирован новый условный dimension-selector: если microscopic
-    connection/holonomy algebra **сама** генерирует локальную Hodge duality,
-    то closure curvature 2-forms внутри того же 2-form sector требует полного
-    spacetime dimension $d=4$; в canonical split edge/face duality требует
-    spatial $D=3$. Это гипотеза, пока duality map не выведена из frozen rules.
-    Подробности: `HODGE_DIMENSION_SELECTOR.md`.
+14. Сформулирован условный dimension-selector: если microscopic
+    connection/holonomy algebra сама генерирует локальную 2-form duality, либо
+    metric-free coarse action строится только из $B\in\Omega^2$ и
+    $F(A)\in\Omega^2$ без дополнительного degree-completing field, то
+    form-degree closure выделяет $d=4$. Это гипотеза, пока соответствующий
+    сектор не возник из frozen rules. Подробности:
+    `HODGE_DIMENSION_SELECTOR.md`, `TWO_FORM_DIMENSION_PRINCIPLE.md`.
+15. Найден более естественный microscopic carrier: **один qubit на oriented
+    2-cell** даёт три Pauli/Bloch компоненты
+    $b_f^i={\rm Tr}(\rho_f\sigma^i)$, которые под $SU(2)$ frame rotation
+    преобразуются как adjoint $SO(3)$ triplet. С edge $SU(2)$ parallel
+    transport такой face-qubit ensemble допускает gauge-covariant blocking в
+    adjoint-valued discrete 2-form $B^i$. Random finite test даёт covariance
+    errors $\lesssim3\times10^{-15}$. Подробности: `FACE_QUBIT_BFIELD.md`.
+16. Plebański/Urbantke gate: для 8 случайных невырожденных tetrad простые
+    self-dual 2-forms дают $\Delta_{simp}<4.3\times10^{-16}$ и восстанавливают
+    metric через cubic Urbantke tensor с error $<1.8\times10^{-15}$;
+    непосредственно проверено $U_{\mu\nu}=12\det(e)g_{\mu\nu}$.
+    Важный negative control: volume-preserving $GL(3)$ internal distortion
+    оставляет conformal Urbantke metric неизменной до $10^{-15}$, но увеличивает
+    simplicity defect до $0.06..0.59$. Поэтому `metric exists` не означает
+    `GR metricity`. Подробности: `PLEBANSKI_URBANTKE_BRIDGE.md`.
+17. Connection-first Einstein gate: из $B^i$ численно решается
+    $D_AB^i=0$ без подачи Levi-Civita connection. Для stereographic $S^4$
+    reconstructed curvature имеет anti-self-dual defect $<8.3\times10^{-9}$
+    и self-dual matrix $F^{ij}\simeq-\delta^{ij}$. Специальный non-Einstein
+    conformally-flat negative control при идеальной metricity даёт
+    $\Delta_{ASD}\simeq0.737$, то есть уверенно отвергается.
+    Подробности: `PLEBANSKI_CONNECTION_EINSTEIN_GATE.md`.
+18. Internal-isotropy null model показывает возможный, но пока только
+    условный механизм emergence simplicity без явного penalty:
+    для независимых isotropic Bloch vectors traceless covariance defect
+    масштабируется как $N^{-0.49914}$; при anisotropic distribution остаётся
+    конечным. Это **не** заменяет настоящий $B^i\wedge B^j$ gate.
+    Подробности: `scripts/internal_isotropy_proxy.py`.
 
 Это доказанное, условно выведенное или конечномерно проверенное
 **кинематическое/геометрическое ядро**, а не полная квантовая гравитация.
-Пункты 9--11 существенно усиливают подмост
+Пункты 9--11 усиливают подмост
 
 $$
 \text{smooth 4D Regge}\longrightarrow\text{Fierz--Pauli / Einstein--Hilbert},
 $$
 
-но стартуют с заранее заданного 4D Regge scaffold. Пункты 12--14 теперь
-отдельно атакуют более ранний и главный разрыв — возникновение самой геометрии.
+а пункты 12--18 заменяют прежний расплывчатый `binary -> metric` на более
+конкретную connection-first программу
+
+$$
+\boxed{
+\text{face qubits + edge transport}
+\to B^i
+\to \text{4D/manifold gates}
+\to \Delta_{simp}
+\to g_U
+\to A_B
+\to \Delta_{ASD}
+\to \text{Regge/FP/EH/Ward cross-check}.
+}
+$$
+
+Критически важно: пока эта цепочка проверена по частям на контрольных данных,
+но **не получена из одного frozen microscopic dynamics**.
 
 ## Какие инварианты ещё нужны
 
 | Инвариант | Требуемый предел |
 |:--|:--|
-| Frozen microscopic dynamics | один опубликованный rule/measure hash, не меняемый после held-out run |
+| Frozen microscopic dynamics | один опубликованный local rule/measure hash для $(K_2,\rho_f,U_e)$, не меняемый после held-out run |
 | Causal/channel | $\delta_D(\ell)\to0$ |
-| Local manifold topology | на spatial slices $D_{\rm link}\to3$ или на full history complex $D_{\rm link}\to4$; defect fraction $\to0$ |
-| Diffusion dimension | соответственно $d_s^{\rm slice}\to3$ или $d_s^{\rm history}\to4$ |
+| Local manifold topology | на spatial slices $D_{link}\to3$ или на full history complex $D_{link}\to4$; defect fraction $\to0$ |
+| Diffusion dimension | соответственно $d_s^{slice}\to3$ или $d_s^{history}\to4$ |
 | Space-time consistency | $z\to1$ и, для slice interpretation, $\Delta_{3+1}=|d_s^{history}-(1+d_s^{slice}/z)|\to0$ |
-| Hodge/connection duality | если dimension-selector используется: локальные edge/face или 2-form duality defects $\to0$ без post-hoc fit |
+| Two-form / Hodge structure | local $B,F$ 2-form sector и duality/top-form defects $\to0$ без dimensional scaffold |
+| Plebański metricity | $\Delta_{simp}(b)\to0$ и wedge matrix остаётся невырожденной без whitening/projection |
+| Compatible connection | $\Delta_{D_AB}(b)\to0$ с локальным scale-stable $A_B$ |
+| Einstein curvature | $\Delta_{ASD}(b)\to0$ (с appropriate matter source после включения материи) |
 | Lorentz invariance | угловая анизотропия $\to0$ и единый light cone |
-| Spin-2 | ровно две gapless TT-моды без ручной проекции в microscopic ensemble |
-| Ghost gap | $m_{\rm unwanted}/m_{\rm TT}\to\infty$ |
+| Spin-2 | ровно две gapless физические моды без ручной TT-проекции в microscopic ensemble |
+| Ghost gap | $m_{unwanted}/m_{TT}\to\infty$ |
 | Нелинейная ОТО | Ward/HDA closure должна возникнуть после microscopic blocking, а не только на Regge scaffold |
 | Универсальность | коэффициенты не зависят от blocking/regulator |
 | Материя | ненулевой chiral index и сокращение gauge/gravity anomalies |
@@ -78,50 +126,37 @@ $$
 
 ## Главный незакрытый переход
 
-После Regge quadratic/cubic/Ward tests ещё один тест чистого Regge уже не является
-главным бутылочным горлышком. Главная стрелка:
+Теперь bottleneck можно записать гораздо точнее:
 
 $$
 \boxed{
-\text{frozen binary causal/frame + loop rule}
-\dashrightarrow
-\text{3+1 / 4D manifold-like metric phase}
+(K_2,\rho_f,U_e)_{micro}
+\xrightarrow{\text{ONE FROZEN LOCAL RULE}}
+B^i_b
+\text{ with }
+D_{link}\to4,
+\ d_s\to4,
+\ \Delta_{simp}\to0,
+\ \Delta_{ASD}\to0.
 }
 $$
 
-Причём теперь запрещено засчитывать одно число $d_s\approx4$ как доказательство.
-Размерность должна одновременно появиться в **независимых** структурах:
+Для canonical slice interpretation вместо full-history `$4$` используются
+`$3$` на slice плюс `$z\to1$` и consistency defect `$\Delta_{3+1}\to0$`.
 
-1. local topology через vertex links;
-2. diffusion / heat kernel;
-3. dynamical scaling $z$;
-4. при использовании нового selector — Hodge edge/loop duality.
-
-Для canonical slice interpretation требуется одно scaling window
+После этого на **том же ensemble и том же scaling window** без ручной
+TT-проекции должны пройти
 
 $$
-D_{\rm link}\to3,
+N_{gapless}=2,
 \qquad
-d_s^{\rm slice}\to3,
-\qquad
-z\to1,
-\qquad
-\Delta_{3+1}\to0.
-$$
-
-После этого на том же coarse ensemble без ручной TT-проекции должны пройти
-
-$$
-\operatorname{spec}H:\;N_{\rm gapless}=2,
-\qquad
-m_{\rm unwanted}/m_{\rm TT}\to\infty,
+m_{unwanted}/m_{TT}\to\infty,
 \qquad
 W_3\to0.
 $$
 
-Если frozen microscopic rule не даёт **одно общее scaling window** для этих
-условий, конкретная версия CIMFIG отвергается независимо от того, насколько
-хорошо отдельно заданный Regge scaffold воспроизводит Einstein--Hilbert.
+Если один frozen rule не даёт эту совместную сходимость, конкретная версия
+CIMFIG отвергается независимо от качества отдельно заданного Regge scaffold.
 
 Физически подтверждённой теорией кандидат станет только после blind prediction
 и независимой экспериментальной репликации.
