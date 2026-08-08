@@ -30,24 +30,45 @@
     $0.1552\to0.05955\to0.03444\to0.02267\to0.01614\to0.01210$
     на $L=3..8$; на $L=5..8$ $W_3\sim L^{-2.23}$.
     Подробности: `CUBIC_WARD_SCALING.md`.
+12. Dimension-blind falsifier: минимальный coordinate-free binary diamond
+    `edge -> two alternative two-step paths -> reconvergence` **не** рождает
+    4D. Его effective volume dimension идёт
+    $1.874\to1.967\to1.992$, а полный heat-kernel test на поколении 5 даёт
+    $d_s=2.0698\pm0.0181$. Контрольный estimator независимо различает
+    1D/2D/3D/4D тори. Подробности: `BINARY_TO_GEOMETRY_GATE.md`.
+13. Добавлен coordinate-free local topology gate: по homology vertex links
+    без embedding coordinates корректно восстанавливаются 2D, 3D и 4D
+    контрольные periodic complexes; это готовый falsifier для frozen hypergraph.
+    Подробности: `MANIFOLD_DIMENSION_GATE.md`.
+14. Сформулирован новый условный dimension-selector: если microscopic
+    connection/holonomy algebra **сама** генерирует локальную Hodge duality,
+    то closure curvature 2-forms внутри того же 2-form sector требует полного
+    spacetime dimension $d=4$; в canonical split edge/face duality требует
+    spatial $D=3$. Это гипотеза, пока duality map не выведена из frozen rules.
+    Подробности: `HODGE_DIMENSION_SELECTOR.md`.
 
-Это доказанное или конечномерно проверенное **кинематическое/геометрическое ядро**, а не полная
-квантовая гравитация. Пункты 9--11 существенно усиливают именно подмост
+Это доказанное, условно выведенное или конечномерно проверенное
+**кинематическое/геометрическое ядро**, а не полная квантовая гравитация.
+Пункты 9--11 существенно усиливают подмост
 
 $$
 \text{smooth 4D Regge}\longrightarrow\text{Fierz--Pauli / Einstein--Hilbert},
 $$
 
-но все они стартуют с заранее заданного 4D Regge scaffold. Они не доказывают
-возникновение Regge/metric phase из binary edge-bit/frame rewrite ensemble.
+но стартуют с заранее заданного 4D Regge scaffold. Пункты 12--14 теперь
+отдельно атакуют более ранний и главный разрыв — возникновение самой геометрии.
 
 ## Какие инварианты ещё нужны
 
 | Инвариант | Требуемый предел |
 |:--|:--|
+| Frozen microscopic dynamics | один опубликованный rule/measure hash, не меняемый после held-out run |
 | Causal/channel | $\delta_D(\ell)\to0$ |
-| Размерность | $d_s(\ell)\to4$ без заранее заданного 4D scaffold |
-| Лоренц-инвариантность | $z(\ell)\to1$, угловая анизотропия $\to0$ |
+| Local manifold topology | на spatial slices $D_{\rm link}\to3$ или на full history complex $D_{\rm link}\to4$; defect fraction $\to0$ |
+| Diffusion dimension | соответственно $d_s^{\rm slice}\to3$ или $d_s^{\rm history}\to4$ |
+| Space-time consistency | $z\to1$ и, для slice interpretation, $\Delta_{3+1}=|d_s^{history}-(1+d_s^{slice}/z)|\to0$ |
+| Hodge/connection duality | если dimension-selector используется: локальные edge/face или 2-form duality defects $\to0$ без post-hoc fit |
+| Lorentz invariance | угловая анизотропия $\to0$ и единый light cone |
 | Spin-2 | ровно две gapless TT-моды без ручной проекции в microscopic ensemble |
 | Ghost gap | $m_{\rm unwanted}/m_{\rm TT}\to\infty$ |
 | Нелинейная ОТО | Ward/HDA closure должна возникнуть после microscopic blocking, а не только на Regge scaffold |
@@ -55,35 +76,52 @@ $$
 | Материя | ненулевой chiral index и сокращение gauge/gravity anomalies |
 | Эксперимент | одно preregistered blind prediction и независимая репликация |
 
-## Один следующий расчёт
+## Главный незакрытый переход
 
-После пунктов 9--11 **ещё один тест чистого Regge уже не является главным
-бутылочным горлышком**. Главный незакрытый переход теперь:
+После Regge quadratic/cubic/Ward tests ещё один тест чистого Regge уже не является
+главным бутылочным горлышком. Главная стрелка:
 
 $$
 \boxed{
-\text{binary causal/frame rules}
+\text{frozen binary causal/frame + loop rule}
 \dashrightarrow
-\text{4D Regge/metric critical phase}
+\text{3+1 / 4D manifold-like metric phase}
 }
 $$
 
-Нужно зафиксировать **один** малый EML/rewrite rule set и не менять его после
-просмотра результатов. Затем без TT-проекции выполнить blocking на
-последовательности размеров и на каждом масштабе совместно измерить
+Причём теперь запрещено засчитывать одно число $d_s\approx4$ как доказательство.
+Размерность должна одновременно появиться в **независимых** структурах:
+
+1. local topology через vertex links;
+2. diffusion / heat kernel;
+3. dynamical scaling $z$;
+4. при использовании нового selector — Hodge edge/loop duality.
+
+Для canonical slice interpretation требуется одно scaling window
 
 $$
-(\delta_D,d_s,z,\operatorname{spec}H,
-W_3,\operatorname{index}D_{\rm chiral}).
+D_{\rm link}\to3,
+\qquad
+d_s^{\rm slice}\to3,
+\qquad
+z\to1,
+\qquad
+\Delta_{3+1}\to0.
 $$
 
-Ключевой falsifier: первые пять gravity-инвариантов должны входить в одно и то
-же scaling window, причём 4D и spin-2 не должны быть встроены в coarse basis.
-Если для frozen microscopic rule этого не происходит, конкретная версия
-CIMFIG отвергается, независимо от того, насколько хорошо отдельный Regge
-scaffold воспроизводит Einstein--Hilbert.
+После этого на том же coarse ensemble без ручной TT-проекции должны пройти
 
-Если все первые восемь инвариантов стремятся к требуемым пределам в одном
-масштабном окне, математический кандидат на континуальную квантовую гравитацию
-получен. Физически подтверждённой теорией он станет только после последнего,
-экспериментального инварианта.
+$$
+\operatorname{spec}H:\;N_{\rm gapless}=2,
+\qquad
+m_{\rm unwanted}/m_{\rm TT}\to\infty,
+\qquad
+W_3\to0.
+$$
+
+Если frozen microscopic rule не даёт **одно общее scaling window** для этих
+условий, конкретная версия CIMFIG отвергается независимо от того, насколько
+хорошо отдельно заданный Regge scaffold воспроизводит Einstein--Hilbert.
+
+Физически подтверждённой теорией кандидат станет только после blind prediction
+и независимой экспериментальной репликации.
