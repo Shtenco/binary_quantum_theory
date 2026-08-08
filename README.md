@@ -6,7 +6,7 @@
 
 Краткий текущий итог и список оставшихся инвариантов: [`THEORY_STATUS.md`](THEORY_STATUS.md).
 
----
+This repository keeps only the parts that survived independent numerical audit:
 
 ## 0. Паспорт результата
 
