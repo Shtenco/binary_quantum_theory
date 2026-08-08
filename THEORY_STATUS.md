@@ -12,15 +12,23 @@
 7. Кинематический bit-to-smooth crossover и слабополевой предел
    $\ddot x\to-\nabla\Phi$.
 8. Условная абсолютная сходимость регуляризованных спектральных сумм.
-9. Новый тест без TT-проекции: полный 10-компонентный metric Hessian плоской
+9. Тест без TT-проекции: полный 10-компонентный metric Hessian плоской
    4D Regge-решётки на $L=3,4,5$ приближается к квадратичной структуре
    Fierz--Pauli; full-matrix residual, ошибка отношений коэффициентов и
    generic gauge-to-metric leakage убывают приблизительно как $O(L^{-2})$.
-   Подробности и ограничения: `GRAVITY_BRIDGE_SCALING.md`.
+   Подробности: `GRAVITY_BRIDGE_SCALING.md`.
+10. Нелинейный тест на generic three-wave metric field: отдельно quadratic и
+    cubic коэффициенты конечного Regge action сходятся к прямому численному
+    $\int\sqrt g R$ с ожидаемой нормировкой
+    $S_{Regge}/S_{EH}\to1/2$. На $L=5..8$ ошибки $c_2$, $c_3$ и $c_3/c_2$
+    убывают примерно как $L^{-1.87}$, $L^{-1.82}$ и $L^{-1.91}$;
+    экстраполяции дают $0.497924$ и $0.491859$ для $c_2$ и $c_3$.
+    Подробности: `REGGE_EH_CUBIC_BRIDGE.md`.
 
-Это доказанное или конечномерно проверенное **кинематическое ядро**, а не полная
-квантовая гравитация. Пункт 9 относится к 4D Regge scaffold и сам по себе не
-доказывает ни возникновение четырёхмерности, ни нелинейный Einstein IR.
+Это доказанное или конечномерно проверенное **кинематическое/геометрическое ядро**, а не полная
+квантовая гравитация. Пункты 9--10 относятся к 4D Regge scaffold и сами по себе не
+доказывают ни возникновение четырёхмерности, ни RG-переход из binary edge-bit
+ensemble, ни нелинейную gauge closure.
 
 ## Какие инварианты ещё нужны
 
@@ -38,9 +46,10 @@
 
 ## Один следующий расчёт
 
-Для gravity gate следующий минимальный удар — не ещё один TT-fit, а
-**cubic gauge-closure test** на независимых connection/frame variables. На той
-же последовательности масштабов вычислить
+Для gravity gate следующий минимальный удар — не ещё один TT-fit и не ещё один
+scalar action coefficient, а **cubic gauge-closure test**. На independent
+connection/frame variables либо на явно выведенном nonlinear gauge map нужно
+вычислить на momentum-conserving triads
 
 $$
 W_3(\ell)=
@@ -48,8 +57,8 @@ W_3(\ell)=
 {\|S_3\|+\|S_2\|}
 $$
 
-и потребовать $W_3(\ell)\to0$ одновременно с уже измеряемым quadratic
-Fierz--Pauli residual и angular anisotropy.
+и потребовать $W_3(\ell)\to0$ одновременно с уже измеряемыми quadratic
+Fierz--Pauli residual, cubic Regge/EH residual и angular anisotropy.
 
 Для полного microscopic gate по-прежнему нужно зафиксировать один малый EML
 rule set; без TT-проекции выполнить blocking на последовательности размеров и
