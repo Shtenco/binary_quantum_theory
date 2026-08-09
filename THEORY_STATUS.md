@@ -1,162 +1,396 @@
-# Статус теории — кратко
+# Статус теории — текущий frontier
 
-## Что уже получено
+## 1. Что теперь можно считать устойчивым ядром
 
-1. Дискретная производная $B$ и лапласиан $L=B^\dagger B\geq0$.
-2. Точный синусовый символ
-   $\widehat L(k)=4\sum_i\sin^2(k_i/2)$.
-3. Симплектическая свободная динамика и две TT-компоненты линейного сектора.
-4. Квантовый язык boundary density operators и channels, совместимый с Bell/CHSH.
-5. Уравнение Гейзенберга для динамики наблюдаемых.
-6. Локальное удаление чистой connection и сохранение loop holonomy.
-7. Кинематический bit-to-smooth crossover и слабополевой предел
-   $\ddot x\to-\nabla\Phi$.
-8. Условная абсолютная сходимость регуляризованных спектральных сумм.
-9. Тест без TT-проекции: полный 10-компонентный metric Hessian плоской
-   4D Regge-решётки на $L=3,4,5$ приближается к квадратичной структуре
-   Fierz--Pauli; full-matrix residual, ошибка отношений коэффициентов и
-   generic gauge-to-metric leakage убывают приблизительно как $O(L^{-2})$.
-   Подробности: `GRAVITY_BRIDGE_SCALING.md`.
-10. Нелинейный generic three-wave test: отдельно quadratic и cubic
-    коэффициенты конечного Regge action сходятся к прямому численному
-    $\int\sqrt g R$ с ожидаемой нормировкой $S_{Regge}/S_{EH}\to1/2$.
-    На $L=5..8$ ошибки $c_2$, $c_3$ и $c_3/c_2$ убывают примерно как
-    $L^{-1.87}$, $L^{-1.82}$ и $L^{-1.91}$; экстраполяции дают $0.497924$
-    и $0.491859$ для $c_2$ и $c_3$. Подробности: `REGGE_EH_CUBIC_BRIDGE.md`.
-11. Прямой cubic Ward test без TT-проекции: для
-    $g=\eta+\lambda h$ отдельно извлечены $\delta_0S_3$ и $\delta_1S_2$.
-    Continuum EH control даёт $W_3\sim10^{-9}$, а finite Regge defect
-    монотонно падает
-    $0.1552\to0.05955\to0.03444\to0.02267\to0.01614\to0.01210$
-    на $L=3..8$; на $L=5..8$ $W_3\sim L^{-2.23}$.
-    Подробности: `CUBIC_WARD_SCALING.md`.
-12. Dimension-blind falsifier: минимальный coordinate-free binary diamond
-    `edge -> two alternative two-step paths -> reconvergence` **не** рождает
-    4D. Его effective volume dimension идёт
-    $1.874\to1.967\to1.992$, а полный heat-kernel test на поколении 5 даёт
-    $d_s=2.0698\pm0.0181$. Контрольный estimator независимо различает
-    1D/2D/3D/4D тори. Подробности: `BINARY_TO_GEOMETRY_GATE.md`.
-13. Добавлен coordinate-free local topology gate: по homology vertex links
-    без embedding coordinates корректно восстанавливаются 2D, 3D и 4D
-    контрольные periodic complexes; это готовый falsifier для frozen hypergraph.
-    Подробности: `MANIFOLD_DIMENSION_GATE.md`.
-14. Сформулирован условный dimension-selector: если microscopic
-    connection/holonomy algebra сама генерирует локальную 2-form duality, либо
-    metric-free coarse action строится только из $B\in\Omega^2$ и
-    $F(A)\in\Omega^2$ без дополнительного degree-completing field, то
-    form-degree closure выделяет $d=4$. Это гипотеза, пока соответствующий
-    сектор не возник из frozen rules. Подробности:
-    `HODGE_DIMENSION_SELECTOR.md`, `TWO_FORM_DIMENSION_PRINCIPLE.md`.
-15. Найден более естественный microscopic carrier: **один qubit на oriented
-    2-cell** даёт три Pauli/Bloch компоненты
-    $b_f^i={\rm Tr}(\rho_f\sigma^i)$, которые под $SU(2)$ frame rotation
-    преобразуются как adjoint $SO(3)$ triplet. С edge $SU(2)$ parallel
-    transport такой face-qubit ensemble допускает gauge-covariant blocking в
-    adjoint-valued discrete 2-form $B^i$. Random finite test даёт covariance
-    errors $\lesssim3\times10^{-15}$. Подробности: `FACE_QUBIT_BFIELD.md`.
-16. Plebański/Urbantke gate: для 8 случайных невырожденных tetrad простые
-    self-dual 2-forms дают $\Delta_{simp}<4.3\times10^{-16}$ и восстанавливают
-    metric через cubic Urbantke tensor с error $<1.8\times10^{-15}$;
-    непосредственно проверено $U_{\mu\nu}=12\det(e)g_{\mu\nu}$.
-    Важный negative control: volume-preserving $GL(3)$ internal distortion
-    оставляет conformal Urbantke metric неизменной до $10^{-15}$, но увеличивает
-    simplicity defect до $0.06..0.59$. Поэтому `metric exists` не означает
-    `GR metricity`. Подробности: `PLEBANSKI_URBANTKE_BRIDGE.md`.
-17. Connection-first Einstein gate: из $B^i$ численно решается
-    $D_AB^i=0$ без подачи Levi-Civita connection. Для stereographic $S^4$
-    reconstructed curvature имеет anti-self-dual defect $<8.3\times10^{-9}$
-    и self-dual matrix $F^{ij}\simeq-\delta^{ij}$. Специальный non-Einstein
-    conformally-flat negative control при идеальной metricity даёт
-    $\Delta_{ASD}\simeq0.737$, то есть уверенно отвергается.
-    Подробности: `PLEBANSKI_CONNECTION_EINSTEIN_GATE.md`.
-18. Internal-isotropy null model показывает возможный, но пока только
-    условный механизм emergence simplicity без явного penalty:
-    для независимых isotropic Bloch vectors traceless covariance defect
-    масштабируется как $N^{-0.49914}$; при anisotropic distribution остаётся
-    конечным. Это **не** заменяет настоящий $B^i\wedge B^j$ gate.
-    Подробности: `scripts/internal_isotropy_proxy.py`.
+### Дискретная/спектральная кинематика
 
-Это доказанное, условно выведенное или конечномерно проверенное
-**кинематическое/геометрическое ядро**, а не полная квантовая гравитация.
-Пункты 9--11 усиливают подмост
+- $L=B^\dagger B\ge0$;
+- точный решёточный символ
+  \[
+  \widehat L(k)=4\sum_i\sin^2(k_i/2);
+  \]
+- симплектическая свободная динамика;
+- условная абсолютная сходимость регуляризованных спектральных сумм.
 
-$$
-\text{smooth 4D Regge}\longrightarrow\text{Fierz--Pauli / Einstein--Hilbert},
-$$
+### Fixed-Regge -> continuum GR cross-check
 
-а пункты 12--18 заменяют прежний расплывчатый `binary -> metric` на более
-конкретную connection-first программу
+Без ручной TT-проекции полный metric Hessian приближается к Fierz--Pauli, generic quadratic/cubic Regge action приближается к прямому Einstein--Hilbert functional, а cubic Ward defect стремится к нулю.  На разных observables ведущие finite-size corrections согласуются с примерно quadratic law
 
-$$
+\[
+\epsilon\sim O(L^{-2}).
+\]
+
+Это перестало быть только post-hoc observation.  Закон
+
+\[
+e(L)=C/L^2+D/L^4
+\]
+
+был заморожен по `L=5..8` **до** вычисления `L=9,10`.  Четыре разных defect-а на обоих held-out размерах дали `8/8` PASS; все относительные ошибки preregistered prediction оказались меньше `0.5%`.
+
+Подробности:
+
+- `GRAVITY_BRIDGE_SCALING.md`;
+- `REGGE_EH_CUBIC_BRIDGE.md`;
+- `CUBIC_WARD_SCALING.md`;
+- `HELDOUT_L9_L10_PREREGISTRATION.md`;
+- `HELDOUT_L9_L10_RESULTS.md`.
+
+Это сильный downstream universality cross-check, но он всё ещё стартует с заданного 4D Regge scaffold.
+
+## 2. Старый microscopic carrier пересмотрен
+
+### Euclidean face-qubit route
+
+`face qubit -> B^i -> simplicity -> Urbantke metric -> compatible connection -> Einstein curvature` остаётся полезным **Euclidean reconstruction/control route**.  Он показал, что metric reconstruction, Plebanski simplicity и Einstein curvature являются независимыми falsification gates.
+
+Но один unitary `SU(2)` qubit нельзя считать точным finite carrier полной Lorentzian self-dual `SL(2,C)` connection.  Поэтому основная microscopic линия теперь canonical.
+
+### Canonical Lorentzian-safe line
+
+Текущая структура:
+
+\[
 \boxed{
-\text{face qubits + edge transport}
-\to B^i
-\to \text{4D/manifold gates}
-\to \Delta_{simp}
-\to g_U
-\to A_B
-\to \Delta_{ASD}
-\to \text{Regge/FP/EH/Ward cross-check}.
+\text{finite }SU(2)\text{ quantum links}
++\text{Gauss intertwiners}
++\text{causal/Fock dynamics}.
 }
-$$
+\]
 
-Критически важно: пока эта цепочка проверена по частям на контрольных данных,
-но **не получена из одного frozen microscopic dynamics**.
+Lorentzian physics должна возникнуть через real Ashtekar--Barbero constraints, extrinsic curvature, DeWitt signature и $z\to1$, а не объявляться из самого внутреннего `SU(2)` label.
 
-## Какие инварианты ещё нужны
+## 3. Binary -> three spatial dimensions: structural theorem candidate
 
-| Инвариант | Требуемый предел |
-|:--|:--|
-| Frozen microscopic dynamics | один опубликованный local rule/measure hash для $(K_2,\rho_f,U_e)$, не меняемый после held-out run |
-| Causal/channel | $\delta_D(\ell)\to0$ |
-| Local manifold topology | на spatial slices $D_{link}\to3$ или на full history complex $D_{link}\to4$; defect fraction $\to0$ |
-| Diffusion dimension | соответственно $d_s^{slice}\to3$ или $d_s^{history}\to4$ |
-| Space-time consistency | $z\to1$ и, для slice interpretation, $\Delta_{3+1}=|d_s^{history}-(1+d_s^{slice}/z)|\to0$ |
-| Two-form / Hodge structure | local $B,F$ 2-form sector и duality/top-form defects $\to0$ без dimensional scaffold |
-| Plebański metricity | $\Delta_{simp}(b)\to0$ и wedge matrix остаётся невырожденной без whitening/projection |
-| Compatible connection | $\Delta_{D_AB}(b)\to0$ с локальным scale-stable $A_B$ |
-| Einstein curvature | $\Delta_{ASD}(b)\to0$ (с appropriate matter source после включения материи) |
-| Lorentz invariance | угловая анизотропия $\to0$ и единый light cone |
-| Spin-2 | ровно две gapless физические моды без ручной TT-проекции в microscopic ensemble |
-| Ghost gap | $m_{unwanted}/m_{TT}\to\infty$ |
-| Нелинейная ОТО | Ward/HDA closure должна возникнуть после microscopic blocking, а не только на Regge scaffold |
-| Универсальность | коэффициенты не зависят от blocking/regulator |
-| Материя | ненулевой chiral index и сокращение gauge/gravity anomalies |
-| Эксперимент | одно preregistered blind prediction и независимая репликация |
+Если local carrier имеет Hilbert dimension `q`, geometric local observables образуют полный traceless Hermitian adjoint algebra, coarse observables аддитивны как fluxes и Gauss closure интерпретирует их как area normals, то
 
-## Главный незакрытый переход
+\[
+D_{spatial}=q^2-1.
+\]
 
-Теперь bottleneck можно записать гораздо точнее:
+Для binary carrier
 
-$$
+\[
+q=2\quad\Rightarrow\quad D_{spatial}=3.
+\]
+
+При одной независимой causal direction и $z\to1$:
+
+\[
+d_{spacetime}=1+D_{spatial}=4.
+\]
+
+Это conditional theorem внутри заявленных аксиом, а не замена dynamical tests.  Frozen ensemble всё равно обязан независимо дать
+
+\[
+d_s^{slice}\to3,
+\qquad
+D_{link}\to3,
+\qquad
+z\to1.
+\]
+
+Подробности: `BINARY_ADJOINT_DIMENSION_THEOREM.md`.
+
+## 4. Exact quantum tetrahedron
+
+Четыре spin-$1/2$ face carriers имеют
+
+\[
+(1/2)^{\otimes4}=2(0)\oplus3(1)\oplus1(2),
+\]
+
+поэтому Gauss-singlet sector двумерен.  Его logical Pauli operators являются настоящими tetrahedral geometry observables:
+
+\[
+J_1\cdot J_2=-\frac14I-\frac12Z_L,
+\]
+
+\[
+J_1\cdot J_3=-\frac14I+\frac14Z_L-\frac{\sqrt3}{4}X_L,
+\]
+
+\[
+J_1\cdot(J_2\times J_3)=\frac{\sqrt3}{4}Y_L.
+\]
+
+Flux closure reconstructs tetrahedron to machine precision.  Equal-area shared faces can nevertheless have different intrinsic shape, поэтому требуется отдельный
+
+\[
+\Delta_{shape}\to0.
+\]
+
+Подробности: `SPATIAL_QUBIT_GEOMETRY_BRIDGE.md`.
+
+## 5. Collective continuum mechanism
+
+Microscopic geometry-qubit **не должен** оставаться qubit на больших масштабах.
+
+Для `N` aligned spin-$1/2$ carriers на coarse face:
+
+\[
+j=N/2,
+\qquad
+\frac{\Delta J_\perp}{|\langle J\rangle|}=N^{-1/2}.
+\]
+
+Если $N_{face}\sim b^2$:
+
+\[
+\boxed{\Delta n\sim b^{-1}}.
+\]
+
+Для четырёх equal coarse spins
+
+\[
+\dim\operatorname{Inv}(V_j^{\otimes4})=2j+1=N+1,
+\]
+
+поэтому shape space становится semiclassical.  Exact flux scaling даёт
+
+\[
+\boxed{A\sim b^2,\qquad V\sim b^3}.
+\]
+
+Spin-coherent second moments одновременно дают systematic operator corrections
+
+\[
+\boxed{\delta S/S\sim1/j\sim b^{-2}}.
+\]
+
+Это связывает microscopic collective mechanism с independently observed `O(a^2)` Regge/EH/Ward corrections.  Large-$j$ spin-foam calculations также имеют next-to-leading `O(1/j)` quantum corrections, что делает этот exponent отдельной universality hypothesis для проверки, а не только численным совпадением.
+
+## 6. SO(5) quantum links: один carrier отвергнут, другой выжил
+
+### Spinor $\mathbf4$ — volumetric no-go
+
+Четырёхstate spinor link реализует exact `SU(2)_L x SU(2)_R` на двух qubits, но имеет one-rishon counting.  На любом closed 4-valent graph `E=2V`, поэтому средняя endpoint occupancy равна 2, тогда как nondegenerate tetrahedral volume требует `k=4` на каждом node.
+
+Следовательно
+
+\[
+\boxed{\mathbf4\text{ не может быть everywhere-volumetric closed carrier}.}
+\]
+
+### Vector $\mathbf5$ — текущий минимальный candidate
+
+Под `SU(2)_L\times SU(2)_R`
+
+\[
+\boxed{\mathbf5=(\mathbf2,\mathbf2)\oplus(\mathbf1,\mathbf1)}.
+\]
+
+Четыре states являются active geometric link с spin-$1/2$ на обоих концах; пятое — gauge singlet `off` state.  Quantum transporter переключает эти sectors точно.
+
+На минимальном four-link plaquette после Gauss reduction:
+
+\[
+\dim\mathcal H_{phys}=2,
+\qquad
+W_p=16X,
+\]
+
+то есть Wilson loop literally creates/annihilates a closed active geometric loop.
+
+Подробности:
+
+- `scripts/su2_quantum_link_vector5_gate.py`;
+- `scripts/vector5_geometrogenesis_gate.py`.
+
+## 7. Exact closed K5 geometry laboratory
+
+`K5` — dual graph границы одного 4-simplex: 5 tetrahedral nodes, 10 shared faces/links.
+
+Для vector-$\mathbf5$ links:
+
+\[
+5^{10}=9\,765\,625
+\]
+
+raw states сжимаются exact Gauss law до
+
+\[
+\boxed{\dim\mathcal H_G=140}.
+\]
+
+Полностью active five-tetrahedron sector:
+
+\[
+\boxed{\dim=2^5=32}.
+\]
+
+Четыре triangle-loop flips — минимальная graph distance от empty geometry до fully active `K5`.
+
+## 8. No-space -> 4-simplex state
+
+Пусть
+
+\[
+W=\sum_{10\ triangles}W_\triangle.
+\]
+
+Из vacuum:
+
+\[
+|\Psi_4\rangle=P_{full}W^4|0\rangle.
+\]
+
+Независимо contracted five-intertwiner 4-simplex/15j boundary state обозначим $|V_5\rangle$.  Получено
+
+\[
 \boxed{
-(K_2,\rho_f,U_e)_{micro}
-\xrightarrow{\text{ONE FROZEN LOCAL RULE}}
-B^i_b
-\text{ with }
-D_{link}\to4,
-\ d_s\to4,
-\ \Delta_{simp}\to0,
-\ \Delta_{ASD}\to0.
+|\langle\widehat V_5|\widehat\Psi_4\rangle|^2
+=\frac{90}{91}
+=98.9011\%.
 }
-$$
+\]
 
-Для canonical slice interpretation вместо full-history `$4$` используются
-`$3$` на slice плюс `$z\to1$` и consistency defect `$\Delta_{3+1}\to0$`.
+Оставшийся `1/91` нельзя удалить:
 
-После этого на **том же ensemble и том же scaling window** без ручной
-TT-проекции должны пройти
+- reweighting 10 minimal loop sets;
+- all 240 ordered four-loop histories;
+- longer pure-Wilson Krylov histories до `W^30`;
+- добавлением scalar volume.
 
-$$
-N_{gapless}=2,
+Но один exact tensorial shape observable удаляет obstruction полностью:
+
+\[
+\|V_5-P_{\mathcal K(W,Z_{shape})}V_5\|^2<5\times10^{-29}.
+\]
+
+Shortest exact projected word depth равна 7; в этой глубине требуется как минимум **две** shape insertions.  Это сильный finite discriminator
+
+\[
+\text{pure curvature / loop gas}
+\neq
+\text{tensorial gravity geometry}.
+\]
+
+Подробности: `K5_QUANTUM_GEOMETRY_BRIDGE.md`.
+
+## 9. SU(2) constraint kernel: сильный результат, но BF, не ещё GR
+
+Построено семейство local graph-changing kernels
+
+\[
+T(v;a,b|c)
+=\operatorname{Tr}\left[
+(U_{vabv}-U_{vbav})
+U_{vc}[U_{cv},P_{k_v=4}]
+\right].
+\]
+
+На 32D fully active sector:
+
+- 12 constraints одного node: rank 21, kernel 11;
+- constraints двух nodes: rank 29, kernel 3;
+- constraints трёх nodes: rank 31, kernel 1.
+
+Единственный common-null state совпадает с independently constructed $V_5$ с unit fidelity.  Все remaining local constraints также annihilate $V_5$ до примерно `1e-13`.
+
+Однако на fixed $j=1/2$ fully-active sector volume projector не различает intertwiner shape; соответствующий kernel survives even if the explicit volume commutator is simplified.  Кроме того, 15j recurrence/Hamiltonian constraints известны для topological BF theory.
+
+Поэтому правильная классификация:
+
+\[
+\boxed{
+\text{finite QLM} \to \text{exact SU(2)/BF-like physical constraint sector}
+}
+\]
+
+— **не** ещё доказательство Lorentzian quantum GR.
+
+Подробности: `scripts/k5_thiemann_constraint_gate.py`.
+
+## 10. Первый explicit BF -> simplicity control
+
+Чтобы отделить BF от gravity, добавлен малый Euclidean EPRL-type test при
+
+\[
+\gamma=1/3,
 \qquad
-m_{unwanted}/m_{TT}\to\infty,
+j=3/2,
 \qquad
-W_3\to0.
-$$
+j^+=1,
+\qquad
+j^-=1/2.
+\]
 
-Если один frozen rule не даёт эту совместную сходимость, конкретная версия
-CIMFIG отвергается независимо от качества отдельно заданного Regge scaffold.
+Bare SU(2) `j=3/2` 15j и raw simplicity-projected vertex имеют
 
-Физически подтверждённой теорией кандидат станет только после blind prediction
-и независимой экспериментальной репликации.
+\[
+\boxed{\mathcal F\simeq0.944224},
+\]
+
+то есть simplicity существенно меняет state уже на small spin.
+
+Нормализация локального fusion map также существенно влияет на small-spin vertex: raw и locally isometrized variants имеют fidelity около `0.9624`.  Следовательно нельзя выбирать normalization post-hoc; gravity claim должен опираться на large-spin/regulator universality.
+
+Подробности: `scripts/eprl_simplicity_vertex_gate.py`.
+
+## 11. Главный незакрытый переход теперь
+
+Downstream Regge -> GR больше не главный bottleneck.  Pure SU(2)/BF finite geometry тоже уже вычисляется exact.
+
+Главный frontier:
+
+\[
+\boxed{
+\text{vector-QLM / collective spin / Fock dynamics}
+\dashrightarrow
+\text{Lorentzian simplicity + first-class GR constraint phase}.
+}
+\]
+
+Один frozen microscopic model обязан без retuning дать **одно общее scaling window**:
+
+\[
+A\sim b^2,
+\qquad
+V\sim b^3,
+\qquad
+\Delta n\sim b^{-1},
+\qquad
+\Delta_{shape}\to0,
+\]
+
+\[
+d_s^{slice}\to3,
+\qquad
+z\to1,
+\qquad
+d_s^{history}\to4,
+\]
+
+\[
+\frac{b_{DW}}{a_{DW}}\to-1,
+\qquad
+\operatorname{spec}G_{kin}\to c(-2,1,1,1,1,1),
+\]
+
+и восстановить rank-seven first-class canonical constraint structure
+
+\[
+3G+3D+1H.
+\]
+
+Тогда Dirac counting автоматически оставляет
+
+\[
+18-2\times7=4
+\]
+
+physical phase-space dimensions, то есть **две** configuration degrees of freedom.  TT/massless spectrum становится независимым подтверждением spin-2, а не местом, где число 2 вставляется руками.
+
+## 12. Что остаётся OPEN
+
+1. frozen Lorentzian operator ordering / measure;
+2. dynamical simplicity on collective large-spin states;
+3. HDA / first-class constraint closure;
+4. DeWitt Lorentzian kinetic signature;
+5. common 3+1 critical continuum window and regulator/Immirzi universality;
+6. chiral anomaly-free matter;
+7. scale-setting physical observable;
+8. preregistered prediction against external data and independent replication.
+
+Пока эти gates не закрыты, проект является **вычислимой candidate architecture with strong finite bridges**, а не доказанной теорией природы.
