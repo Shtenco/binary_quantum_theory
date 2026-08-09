@@ -4,7 +4,7 @@ Status: **classical spectral benchmark PASS; microscopic quantum HDA still OPEN*
 
 The future Lorentzian quantum-link theory must be judged against the hypersurface-deformation algebra only in a regulator-safe sector. There are two independent regulator walls.
 
-## 1. Spin wall
+## 1. Spin wall — count hits per link, not total word length
 
 For a Peter--Weyl cutoff
 
@@ -12,11 +12,28 @@ For a Peter--Weyl cutoff
 \mathcal H_{link}^{J_{max}}=\bigoplus_{j\le J_{max}}V_j^L\otimes V_j^R,
 \]
 
-a word of `r` fundamental holonomies cannot feel the cutoff when
+one fundamental holonomy can change the spin on **its own link** by at most `1/2`.  Therefore a multi-link operator is cutoff-exact on an input spin sector whenever, for every link `e`,
 
 \[
-\boxed{j_{phys}+r/2<J_{max}.}
+\boxed{j_e+r_e/2\le J_{max},}
 \]
+
+where `r_e` is the maximum number of fundamental-holonomy hits on that same link along the operator history.  Hits on different links must **not** be added into one global `r`.
+
+For the current K5 local Hamiltonian word:
+
+- each of the three plaquette links is hit once;
+- the radial link in `U_c[U_c^dag,V]` is hit twice;
+- hence one `H` has `max_e r_e=2`;
+- an `HH` product can hit their shared link at most four times, so `max_e r_e=4`.
+
+Starting from the all-`j=1/2` K5 boundary, the physical HH safe wall is therefore
+
+\[
+\boxed{J_{max}\ge\frac12+\frac42=\frac52.}
+\]
+
+`scripts/k5_hda_reachable_basis_gate.py` shows that this bound is saturated: allowed HH histories actually reach `j=5/2`.
 
 ## 2. Momentum wall
 
@@ -115,6 +132,7 @@ This prevents a false finite-graph failure from terms that are constraint/bounda
 The project now has a clean hierarchy:
 
 1. **classical HDA implementation:** independently verified in a momentum-safe spectral window;
-2. **finite gauge kinematics:** Peter--Weyl spin wall is analytically controlled;
-3. **Lorentzian quantum dynamics:** still open and must pass both walls simultaneously;
-4. only after that may the two physical graviton modes be inferred from the first-class constraint count and independently checked spectrally.
+2. **finite gauge kinematics:** the Peter--Weyl spin wall is analytically controlled link by link;
+3. **finite simplex benchmark:** `SIMPLEX_HDA_GATE.md` verifies the geometric 4-simplex algebra independently;
+4. **Lorentzian quantum dynamics:** still open and must pass both regulator walls simultaneously;
+5. only after that may the two physical graviton modes be inferred from the first-class constraint count and independently checked spectrally.
