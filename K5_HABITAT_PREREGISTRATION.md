@@ -1,6 +1,6 @@
 # K5 / tetrahedral off-shell habitat preregistration
 
-Status: **targets frozen before the quantum dual-habitat calculation**.
+Status: **targets frozen before the quantum dual-habitat calculation; symmetric/reference-simplex benchmark, not yet the generic dual-K5 algebra.**
 
 The purpose of this file is to prevent post-hoc selection of a vertex-smooth
 functional after seeing the quantum HH output.
@@ -103,7 +103,7 @@ $$
 }
 $$
 
-`F5` is a null-control.  A quantum prescription that returns zero on every
+`F5` is a null-control. A quantum prescription that returns zero on every
 functional cannot pass simply because `F5` vanishes: it must reproduce the four
 nonzero channels too.
 
@@ -111,7 +111,7 @@ nonzero channels too.
 
 For each functional `F_a`, compute the declared dual/habitat action of the
 quantum graph-changing commutator and a common normalization `C_Q` fixed by one
-physical convention, not separately per channel.  The shape test is then
+physical convention, not separately per channel. The shape test is
 
 $$
 \Delta_a
@@ -120,7 +120,7 @@ $$
 
 A single freely fitted `C_Q` may be allowed only if it represents the overall
 Newton/time normalization and is fitted **jointly** across the four nonzero
-channels.  Independent per-functional rescalings are forbidden.
+channels. Independent per-functional rescalings are forbidden.
 
 The first structural gate is more stringent than a fit: the vector
 
@@ -136,12 +136,35 @@ $$
 }
 $$
 
-within the preregistered tolerance, while the `F5` response remains compatible
-with zero.
+while the `F5` response remains compatible with zero.
+
+## Critical scope note: primal simplex versus dual K5
+
+The Bonzom--Dittrich boundary formula used here fixes one reference spatial
+simplex `sigma(0)` and its `H(k)` translate the four **primal vertices** of that
+simplex.  Our canonical K5 implementation labels Hamiltonians by **dual
+four-valent tetrahedral nodes** and uses a local node volume.
+
+The boundary of a regular 4-simplex is self-dual at the combinatorial level, so
+the distinction is hidden in the maximally symmetric benchmark.  It is not
+legitimate to assume that the same `1/(3V)` formula with one common reference
+volume is automatically the generic algebra of the node-local K5
+regularization.
+
+Therefore the frozen targets in this file are deliberately classified as a
+
+$$
+\boxed{\text{symmetric/reference-simplex benchmark}}
+$$
+
+and **not** yet as the universal generic-geometry target of all five node-local
+Hamiltonians.  Before a generic off-shell claim is made, the dual-cell
+classical algebra matching the actual node-local volume/normalization must be
+derived separately.
 
 ## Interpretation boundary
 
-These are **classical off-shell targets**, not predictions of the microscopic
-theory.  Their role is to test whether the graph-changing quantum HH operator
-has the correct nontrivial diffeomorphism structure function on a relational /
-vertex-smooth habitat rather than merely vanishing after group averaging.
+These are classical off-shell targets, not predictions of the microscopic
+theory. Their role is to test a declared symmetric/reference-simplex channel
+and to detect the trivial zero-commutator pathology. A generic dual-K5 HDA claim
+requires the additional primal-to-dual derivation stated above.
