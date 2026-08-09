@@ -3,7 +3,7 @@
 
 The positive control is deliberately edge-generated, so its simplicity
 relations are reconstruction identities rather than evidence that a microscopic
-dynamics has generated simplicity.  Two adversarial controls separate closure,
+dynamics has generated simplicity. Two adversarial controls separate closure,
 diagonal simplicity and cross-simplicity logically:
 
 * four individually simple bivectors with exact closure but violated
@@ -45,7 +45,8 @@ def scale(matrix: Matrix, factor: float) -> Matrix:
 def epsilon(indices: tuple[int, int, int, int]) -> int:
     if len(set(indices)) < 4:
         return 0
-    inversions = sum(indices[i] > indices[j] for j in range(i + 1, 4))
+    inversions = sum(indices[i] > indices[j]
+                     for i in range(4) for j in range(i + 1, 4))
     return -1 if inversions % 2 else 1
 
 
@@ -94,7 +95,7 @@ def simplicity_diagnostics(faces: tuple[Matrix, ...]) -> tuple[float, float, flo
 
 def main() -> int:
     # Positive reconstruction control: one nondegenerate tetrahedron embedded in
-    # R^4.  Since every face is explicitly a wedge of edge vectors, simplicity
+    # R^4. Since every face is explicitly a wedge of edge vectors, simplicity
     # here is an exact geometric reconstruction identity, not an emergence test.
     vertices: tuple[Vector, ...] = (
         (0.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0),
@@ -132,7 +133,7 @@ def main() -> int:
     cb_closure, cb_diagonal, cb_cross = simplicity_diagnostics(cross_bad)
 
     # Adversarial control B: closure is exact but B=a+b is nonsimple because
-    # B wedge B != 0.  This separates diagonal simplicity from closure.
+    # B wedge B != 0. This separates diagonal simplicity from closure.
     nonsimple = add((a, b))
     diagonal_bad = (nonsimple, scale(nonsimple, -1.0), a, scale(a, -1.0))
     db_closure, db_diagonal, db_cross = simplicity_diagnostics(diagonal_bad)
