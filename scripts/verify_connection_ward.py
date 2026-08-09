@@ -43,7 +43,12 @@ def action(loop: Matrix) -> float:
 def bivector(axis: tuple[float, float, float]) -> Matrix:
     """Anti-Hermitian su(2) bivector i*n.sigma."""
     norm = math.sqrt(sum(x * x for x in axis))
-    x, y, z = (value / norm for value in axis)
+    return bivector_raw(tuple(value / norm for value in axis))
+
+
+def bivector_raw(vector: tuple[float, float, float]) -> Matrix:
+    """Anti-Hermitian bivector with magnitude retained."""
+    x, y, z = vector
     return ((1j * z, y + 1j * x), (-y + 1j * x, -1j * z))
 
 
@@ -56,6 +61,11 @@ def mixed_action(area_bivector: Matrix, loop: Matrix) -> float:
 
 def max_error(a: Matrix, b: Matrix) -> float:
     return max(abs(a[i][j] - b[i][j]) for i in range(2) for j in range(2))
+
+
+def matrix_sum(values: tuple[Matrix, ...]) -> Matrix:
+    return tuple(tuple(sum(value[i][j] for value in values) for j in range(2))
+                 for i in range(2))  # type: ignore[return-value]
 
 
 def transform(links: tuple[Matrix, Matrix, Matrix, Matrix],
@@ -87,6 +97,37 @@ def main() -> int:
     frozen_frame_error = abs(mixed_action(area, transformed_loop)
                              - mixed_action(area, loop))
 
+    # A second loop shares U_12 and the frames at vertices 1 and 2.  This is
+    # the smallest check that local cancellations survive gluing plaquettes.
+    extra_frames = (su2((1.0, 0.4, -0.2), 0.36),
+                    su2((-0.1, 0.7, 1.0), -0.41))
+    second_links = (
+        links[1], su2((0.6, 0.1, 1.0), -0.22),
+        su2((1.0, -0.5, 0.3), 0.48), su2((0.2, 1.0, -0.4), 0.33),
+    )
+    second_frames = (frames[1], frames[2], extra_frames[0], extra_frames[1])
+    second_loop = plaquette(second_links)
+    transformed_second = plaquette(transform(second_links, second_frames))
+    second_area = bivector((-0.3, 0.8, 0.5))
+    transformed_second_area = mul(mul(frames[1], second_area), dagger(frames[1]))
+    original_complex_action = mixed_action(area, loop) + mixed_action(second_area, second_loop)
+    transformed_complex_action = (
+        mixed_action(transformed_area, transformed_loop)
+        + mixed_action(transformed_second_area, transformed_second)
+    )
+    complex_action_error = abs(transformed_complex_action - original_complex_action)
+
+    # Minimal tetrahedral closure: four oriented face bivectors sum to zero.
+    face_vectors = ((1.0, 0.0, 0.0), (0.0, 1.0, 0.0),
+                    (0.0, 0.0, 1.0), (-1.0, -1.0, -1.0))
+    face_bivectors = tuple(bivector_raw(vector) for vector in face_vectors)
+    closure_error = max_error(matrix_sum(face_bivectors), ((0j, 0j), (0j, 0j)))
+    closure_frame = frames[0]
+    rotated_faces = tuple(mul(mul(closure_frame, face), dagger(closure_frame))
+                          for face in face_bivectors)
+    rotated_closure_error = max_error(matrix_sum(rotated_faces), ((0j, 0j), (0j, 0j)))
+    open_boundary_error = max_error(matrix_sum(face_bivectors[:-1]), ((0j, 0j), (0j, 0j)))
+
     eps = 1e-4
     plus = list(frames)
     minus = list(frames)
@@ -102,6 +143,10 @@ def main() -> int:
         "infinitesimal_ward_residual": ward_residual < 1e-10,
         "mixed_frame_connection_invariance": mixed_error < 1e-12,
         "frozen_frame_breaks_mixed_invariance": frozen_frame_error > 1e-4,
+        "shared_multiloop_invariance": complex_action_error < 1e-12,
+        "bivector_closure": closure_error < 1e-12,
+        "closure_is_frame_covariant": rotated_closure_error < 1e-12,
+        "missing_face_breaks_closure": open_boundary_error > 1e-3,
     }
     result = {
         "checks": checks,
@@ -112,7 +157,11 @@ def main() -> int:
         "ward_residual": ward_residual,
         "mixed_action_invariance_error": mixed_error,
         "frozen_frame_action_change": frozen_frame_error,
-        "scope": "one finite SU(2) plaquette and bivector; not the full gravitational cubic Ward identity",
+        "shared_multiloop_action_error": complex_action_error,
+        "closure_error": closure_error,
+        "rotated_closure_error": rotated_closure_error,
+        "missing_face_closure_error": open_boundary_error,
+        "scope": "two glued SU(2) plaquettes and bivectors; not the full gravitational cubic Ward identity",
     }
     print(json.dumps(result, indent=2))
     return 0 if result["passed"] else 1

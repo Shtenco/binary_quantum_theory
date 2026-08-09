@@ -1216,7 +1216,56 @@ connection, искусственно заморозив frame bivector, инва
 Это конечная модель механизма взаимной компенсации frame- и connection-вариаций,
 который потребуется в $\delta_0S_3+\delta_1S_2=0$.
 
-## 25. Файлы проекта
+Проверка расширена до двух plaquettes с общей connection и общими frames.
+Суммарное $S_{BF}$ сохраняется при независимых локальных вращениях всех шести
+вершин. Это показывает, что компенсация совместима со склейкой ячеек, а не
+является особенностью изолированной петли. Следующая граница — динамические
+simplicity/closure constraints и разложение склеенного действия до кубического
+порядка.
+
+Первое ограничение геометрии также проверено без новой сущности: четыре
+ориентированных face bivectors замкнутой ячейки удовлетворяют
+
+$$
+\boxed{\sum_{f\subset c}B_f=0}.
+$$
+
+Closure сохраняется при общем локальном frame-вращении; удаление одной грани
+даёт ненулевой residual. Теперь конечный precursor содержит connection
+covariance, совместную frame variation, склейку петель и closure. Из
+геометрических условий ещё не проверена simplicity, связывающая bivectors с
+единым tetrad.
+
+## 25. Tier-1: четыре связанных инварианта геометрической ячейки
+
+Без добавления поля проверена одна невырожденная tetrahedral cell, вложенная в
+четырёхмерное frame-space. Face bivectors построены непосредственно как
+
+$$
+B_f=\frac12(e_i-e_0)\wedge(e_j-e_0).
+$$
+
+Одним расчётом закрыты четыре конечных инварианта:
+
+1. **closure:** $\sum_fB_f=0$;
+2. **diagonal simplicity:** $\epsilon_{IJKL}B_f^{IJ}B_f^{KL}=0$;
+3. **cross-simplicity:** $\epsilon_{IJKL}B_f^{IJ}B_g^{KL}=0$;
+4. **nondegeneracy:** $\det(e_i\cdot e_j)>0$.
+
+Все условия сохраняются при общем $SO(4)$ frame-вращении. Контрольный
+несимплициальный bivector $e_0\wedge e_1+e_2\wedge e_3$ правильно отвергается
+ненулевым Pluecker residual.
+
+```bash
+python scripts/verify_geometric_cell.py
+```
+
+Это закрывает четыре **tier-1 finite precursors**, но не уменьшает автоматически
+восемь continuum/physical инвариантов: теперь доказано, что локальные
+frame-данные действительно могут описывать геометрию, а не только произвольную
+$SU(2)$ connection.
+
+## 26. Файлы проекта
 
 | Файл | Назначение |
 |:--|:--|
@@ -1232,6 +1281,7 @@ connection, искусственно заморозив frame bivector, инва
 | `scripts/equivalence_sine_blitz.py` | слабополевой синусовый тест эквивалентности |
 | `scripts/fermion_zero_blitz.py` | точный подсчёт naive/Wilson fermion zeros |
 | `scripts/verify_connection_ward.py` | off-shell SU(2) plaquette Ward precursor |
+| `scripts/verify_geometric_cell.py` | closure/simplicity/nondegeneracy cell test |
 | `theory_gates.json` | текущий ledger доказанных и открытых gates |
 | `scripts/validate_github_latex.py` | проверка GitHub-совместимости формул |
 | `requirements.txt` | зависимости расширенного verifier |
