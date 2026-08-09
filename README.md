@@ -1171,7 +1171,52 @@ python scripts/fermion_zero_blitz.py --dimension 4
 Это отрицательный, но усиливающий результат: он отсекает простейшую
 фермионную реализацию до дорогих RG-расчётов и уточняет M1.
 
-## 24. Файлы проекта
+## 24. Connection-first: первый off-shell Ward precursor
+
+На независимых $SU(2)$ link variables локальное frame-вращение действует как
+
+$$
+U_{ij}\mapsto g_iU_{ij}g_j^\dagger.
+$$
+
+Для plaquette $P=U_{01}U_{12}U_{23}U_{30}$ внутренние frames сокращаются:
+
+$$
+\boxed{P\mapsto g_0Pg_0^\dagger}.
+$$
+
+Поэтому Wilson action
+
+$$
+S_P=1-\frac12\operatorname{ReTr}P
+$$
+
+инвариантен **off shell**, без условия нулевого deficit. Автономный тест
+проверяет конечное преобразование, covariance loop и численную производную
+Ward variation:
+
+```bash
+python scripts/verify_connection_ward.py
+```
+
+Это закрывает только конечный precursor W1. Требуемое гравитационное равенство
+$\delta_0S_3+\delta_1S_2=0$ для frame-curvature action и динамической геометрии
+остаётся открытым: trace-инвариантность plaquette необходима, но недостаточна
+для нелинейной ОТО.
+
+Добавлен также минимальный frame--connection член
+
+$$
+S_{BF}=\frac12\operatorname{ReTr}[B_0(I-P)],
+\qquad B_0\mapsto g_0B_0g_0^\dagger.
+$$
+
+При совместном вращении $B_0$ и $P$ действие инвариантно; если вращать
+connection, искусственно заморозив frame bivector, инвариантность нарушается.
+Это конечная модель механизма взаимной компенсации frame- и connection-вариаций,
+который потребуется в $\delta_0S_3+\delta_1S_2=0$.
+
+## 25. Файлы проекта
 
 | Файл | Назначение |
 |:--|:--|
@@ -1186,6 +1231,7 @@ python scripts/fermion_zero_blitz.py --dimension 4
 | `scripts/continuum_crossover_blitz.py` | оценка bit-to-smooth crossover |
 | `scripts/equivalence_sine_blitz.py` | слабополевой синусовый тест эквивалентности |
 | `scripts/fermion_zero_blitz.py` | точный подсчёт naive/Wilson fermion zeros |
+| `scripts/verify_connection_ward.py` | off-shell SU(2) plaquette Ward precursor |
 | `theory_gates.json` | текущий ledger доказанных и открытых gates |
 | `scripts/validate_github_latex.py` | проверка GitHub-совместимости формул |
 | `requirements.txt` | зависимости расширенного verifier |

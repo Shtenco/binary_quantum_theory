@@ -2,47 +2,16 @@
   "schema_version": 1,
   "allowed_statuses": ["proved", "conditional", "tested_finite", "open"],
   "gates": [
-    {"id":"M0","status":"open","claim":"One frozen Lorentzian-safe microscopic rule/measure with no post-hoc coefficient changes generates the required continuum gravity phase","evidence":["CANONICAL_MICRO_ARCHITECTURE_V1.md"]},
-    {"id":"C1K","status":"conditional","claim":"Pure SU(2) recoupling/retriangulation coherence follows when topology basis changes are fixed by 6j/F moves satisfying the pentagon identity","evidence":["SPATIAL_QUBIT_GEOMETRY_BRIDGE.md"]},
-    {"id":"C1D","status":"open","claim":"Physical overlapping causal/Hamiltonian updates close consistently rather than merely recoupling kinematical bases","evidence":[]},
-    {"id":"Q1","status":"conditional","claim":"History/Fock evolution is unitary when rectangular simplicial amplitudes are used as off-diagonal kernels of a Hermitian number-changing Hamiltonian rather than treated as unitary maps themselves","evidence":["scripts/five_tetrahedron_vertex_gate.py"]},
-    {"id":"Q2F","status":"tested_finite","claim":"One Euclidean face qubit supplies an SU(2)-covariant adjoint Bloch triplet and gauge-covariant B blocking; retained as a reconstruction control, not the final Lorentzian carrier","evidence":["FACE_QUBIT_BFIELD.md","scripts/face_qubit_bfield_gate.py"]},
-
-    {"id":"QL0","status":"tested_finite","claim":"The four-state SO(5) spinor quantum link realizes exact two-qubit SU(2)_L x SU(2)_R link covariance but is ruled out as an everywhere-volumetric carrier on closed four-valent graphs by one-rishon counting","evidence":["scripts/su2_quantum_link_two_qubit_gate.py","scripts/vector5_geometrogenesis_gate.py"]},
-    {"id":"QL1","status":"tested_finite","claim":"The five-state SO(5) vector quantum link decomposes as (2,2)+(1,1): four active geometric states carry spin-1/2 at both endpoints and one state is a gauge singlet; the transporter toggles the two sectors exactly","evidence":["scripts/su2_quantum_link_vector5_gate.py"]},
-    {"id":"QL2","status":"tested_finite","claim":"Exact Gauss-projected vector-link plaquettes create/annihilate closed geometric loops; the four-link physical plaquette is two-dimensional with W=16 X between all-off and all-active sectors","evidence":["scripts/vector5_geometrogenesis_gate.py"]},
-
-    {"id":"S1","status":"proved","claim":"Finite periodic sine spectral identities","evidence":["README.md","scripts/verify_sine_bridge.py"]},
-    {"id":"D0","status":"tested_finite","claim":"Dimension-blind estimators are calibrated and minimal binary reconvergence tends to approximately 2D rather than 4D","evidence":["BINARY_TO_GEOMETRY_GATE.md","scripts/dimension_emergence_gate.py"]},
-    {"id":"D1","status":"conditional","claim":"A metric-free B/F two-form sector can structurally select four total dimensions by form-degree closure","evidence":["HODGE_DIMENSION_SELECTOR.md","TWO_FORM_DIMENSION_PRINCIPLE.md"]},
-    {"id":"D2","status":"tested_finite","claim":"Coordinate-free vertex-link homology gate distinguishes 2D, 3D and 4D manifold controls","evidence":["MANIFOLD_DIMENSION_GATE.md","scripts/manifold_dimension_gate.py"]},
-    {"id":"D3","status":"conditional","claim":"Binary adjoint theorem: with q-level traceless adjoint flux geometry, D_spatial=q^2-1; q=2 selects three spatial dimensions, while 3+1 still requires an independent z->1 causal limit","evidence":["BINARY_ADJOINT_DIMENSION_THEOREM.md"]},
-
-    {"id":"SG1","status":"tested_finite","claim":"Four spin-1/2 face carriers have a two-dimensional SU(2) singlet geometry sector; logical Pauli operators are tetrahedral shape/oriented-volume observables and flux reconstruction is exact","evidence":["SPATIAL_QUBIT_GEOMETRY_BRIDGE.md","scripts/spatial_qubit_geometry_gate.py"]},
-    {"id":"SG2","status":"tested_finite","claim":"j=1/2 absolute volume is scalar on the four-valent intertwiner qubit; j=1 is the first equal-spin collective sector with nontrivial absolute-volume spectrum","evidence":["scripts/collective_volume_rg_gate.py"]},
-    {"id":"SG3","status":"conditional","claim":"Collective blocking predicts A~b^2, V~b^3, coherent face-normal fluctuations ~b^-1 and intertwiner dimension N+1; these remain held-out targets for the frozen ensemble","evidence":["BINARY_ADJOINT_DIMENSION_THEOREM.md","CANONICAL_MICRO_ARCHITECTURE_V1.md"]},
-
-    {"id":"GEO1","status":"tested_finite","claim":"On K5, the vector-link raw Hilbert 5^10 reduces to 140 exact Gauss states and contains a 32-dimensional fully active five-tetrahedron sector; four triangle-loop flips are the minimum graph distance from empty to fully active geometry","evidence":["K5_QUANTUM_GEOMETRY_BRIDGE.md","scripts/k5_quantum_geometry_bridge.py"]},
-    {"id":"VERT1","status":"tested_finite","claim":"The exact j=1/2 five-tetrahedron K5 vertex tensor has 12/32 nonzero components; each 1|4 cut is maximally mixed so the normalized 1->4 map is an exact isometry, while raw 2->3 cuts are not isometries","evidence":["scripts/five_tetrahedron_vertex_gate.py"]},
-    {"id":"VERT2","status":"tested_finite","claim":"P_full W^4|vac> from exact vector quantum links has fidelity^2=90/91 with the independently contracted five-tetrahedron vertex. Pure-Wilson histories and scalar volume retain the missing 1/91, while one tensorial shape generator removes it exactly; shortest exact projected word depth is 7 and needs at least two shape insertions there","evidence":["K5_QUANTUM_GEOMETRY_BRIDGE.md","scripts/k5_quantum_geometry_bridge.py"]},
-    {"id":"CON1","status":"tested_finite","claim":"A finite antisymmetric-loop/segment-volume local constraint family annihilates the five-tetrahedron vertex. On the 32D fully active sector, constraints from three nodes already have rank31 and a unique common null vector equal to that vertex; this is currently classified as an SU(2)/BF-like finite parent-constraint result, not yet Lorentzian GR","evidence":["scripts/k5_thiemann_constraint_gate.py"]},
-
-    {"id":"RG1","status":"open","claim":"The vector-link/Fock microscopic system generates one common continuum window with 3D spatial manifold topology, shape matching, collective large spin, z->1 and interacting gravity without a metric scaffold","evidence":[]},
-
-    {"id":"B1","status":"tested_finite","claim":"A simple nondegenerate self-dual two-form triplet reconstructs the Urbantke metric; GL(3) controls prove metric reconstruction alone does not imply simplicity","evidence":["PLEBANSKI_URBANTKE_BRIDGE.md","scripts/plebanski_urbantke_gate.py"]},
-    {"id":"B2","status":"tested_finite","claim":"From B alone, a compatible connection can be reconstructed and its curvature separates an Einstein S4 control from a non-Einstein metric through the anti-self-dual block","evidence":["PLEBANSKI_CONNECTION_EINSTEIN_GATE.md","scripts/plebanski_connection_einstein_gate.py"]},
-    {"id":"B2E","status":"tested_finite","claim":"One Euclidean oracle-encoded face-qubit dataset composes B -> simplicity -> Urbantke metric -> compatible connection -> Einstein curvature test","evidence":["QUBIT_TO_EINSTEIN_END_TO_END.md","scripts/qubit_to_einstein_end_to_end.py"]},
-    {"id":"B3","status":"conditional","claim":"Internal SU(2) isotropy plus self-averaging can suppress a traceless internal metric as N^-1/2; actual wedge simplicity still must emerge dynamically","evidence":["scripts/internal_isotropy_proxy.py"]},
-
-    {"id":"G1","status":"tested_finite","claim":"Two linear TT modes and stable transfer in reduced/Regge sectors","evidence":["bcqg_unified_verification.py"]},
-    {"id":"G1B","status":"tested_finite","claim":"Full unprojected finite-Regge metric Hessian approaches Fierz-Pauli with approximately quadratic lattice corrections","evidence":["GRAVITY_BRIDGE_SCALING.md","scripts/gravity_bridge_scaling.py"]},
-    {"id":"G2R","status":"tested_finite","claim":"Fixed-4D Regge quadratic/cubic action coefficients approach Einstein-Hilbert and the cubic Ward defect tends to zero","evidence":["REGGE_EH_CUBIC_BRIDGE.md","CUBIC_WARD_SCALING.md","scripts/regge_eh_cubic_bridge.py","scripts/cubic_ward_scaling.py"]},
-    {"id":"RGPRED","status":"tested_finite","claim":"An O(L^-2)+O(L^-4) law frozen on L=5..8 predicted four independent Regge/EH/Ward defects at held-out L=9,10; all 8/8 predictions passed the preregistered 5% band and every relative defect error was below 0.5%","evidence":["HELDOUT_L9_L10_PREREGISTRATION.md","HELDOUT_L9_L10_RESULTS.md"]},
-
-    {"id":"G2","status":"open","claim":"The frozen microscopic ensemble restores a rank-seven first-class Gauss+diffeomorphism+Hamiltonian system/HDA on untruncated states","evidence":[]},
-    {"id":"L1","status":"open","claim":"Collective vector-link dynamics reproduces the Lorentzian DeWitt kinetic fingerprint b/a->-1, z->1 and a regulator/Immirzi-independent real Ashtekar-Barbero universality class","evidence":[]},
-    {"id":"M1","status":"open","claim":"Chiral anomaly-free matter and gauge sectors","evidence":[]},
-    {"id":"P1","status":"open","claim":"Scale setting and preregistered blind physical predictions beyond internal finite-size continuation","evidence":[]},
-    {"id":"X1","status":"open","claim":"Independent empirical replication","evidence":[]}
+    {"id": "M0", "status": "open", "claim": "A frozen microscopic EML rule set and measure", "evidence": []},
+    {"id": "C1", "status": "open", "claim": "Causal and frame confluence for the frozen rules", "evidence": []},
+    {"id": "Q1", "status": "conditional", "claim": "History-space isometry and channel composition", "evidence": ["CIMFIG_V18_CANDIDATE_THEORY.md"]},
+    {"id": "S1", "status": "proved", "claim": "Finite periodic sine spectral identities", "evidence": ["README.md", "scripts/verify_sine_bridge.py"]},
+    {"id": "RG1", "status": "open", "claim": "Interacting four-dimensional continuum fixed point", "evidence": []},
+    {"id": "G1", "status": "tested_finite", "claim": "Two linear TT modes and stable transfer", "evidence": ["bcqg_unified_verification.py"]},
+    {"id": "W1", "status": "tested_finite", "claim": "Off-shell local-frame invariance of a finite SU(2) plaquette and frame bivector", "evidence": ["scripts/verify_connection_ward.py"]},
+    {"id": "G2", "status": "open", "claim": "Nonlinear gravitational constraint algebra on untruncated states", "evidence": []},
+    {"id": "M1", "status": "open", "claim": "Chiral anomaly-free matter and gauge sectors", "evidence": []},
+    {"id": "P1", "status": "open", "claim": "Scale setting and preregistered blind predictions", "evidence": []},
+    {"id": "X1", "status": "open", "claim": "Independent empirical replication", "evidence": []}
   ]
 }

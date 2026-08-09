@@ -34,6 +34,8 @@
 11. **Connection-first Ward test.** Независимо вращать локальную рамку.
     **Pass:** $\delta_0S_3+\delta_1S_2=0$ off shell.
     **Усиление:** прямой кандидат на нелинейную калибровочную симметрию.
+    Конечный $SU(2)$ plaquette precursor уже проходит; gravitational cubic
+    identity остаётся открытой.
 12. **Гравитон без ручного фильтра.** Диагонализовать полный Hessian.
     **Pass:** ровно две gapless tensor modes. **Усиление:** закрывает G1.
 13. **Охота на ghost.** Следить за остальными eigenvalues при blocking.
