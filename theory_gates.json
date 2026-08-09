@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "allowed_statuses": ["proved", "conditional", "tested_finite", "open"],
+  "gates": [
+    {"id": "M0", "status": "open", "requires": [], "claim": "A frozen microscopic EML rule set and measure", "evidence": []},
+    {"id": "C1", "status": "open", "requires": ["M0"], "claim": "Causal and frame confluence for the frozen rules", "evidence": []},
+    {"id": "Q1", "status": "conditional", "requires": ["M0"], "claim": "History-space isometry and channel composition", "evidence": ["CIMFIG_V18_CANDIDATE_THEORY.md"]},
+    {"id": "S1", "status": "proved", "requires": [], "claim": "Finite periodic sine spectral identities", "evidence": ["README.md", "scripts/verify_sine_bridge.py"]},
+    {"id": "RG1", "status": "open", "requires": ["M0", "C1", "Q1"], "claim": "Interacting four-dimensional continuum fixed point", "evidence": []},
+    {"id": "G1", "status": "tested_finite", "requires": [], "claim": "Two linear TT modes and stable transfer", "evidence": ["bcqg_unified_verification.py"]},
+    {"id": "W1", "status": "tested_finite", "requires": [], "claim": "Off-shell local-frame invariance and bivector closure on a finite SU(2) complex", "evidence": ["scripts/verify_connection_ward.py"]},
+    {"id": "SIMP1", "status": "tested_finite", "requires": [], "claim": "Closure, diagonal/cross simplicity and nondegeneracy of a finite geometric cell", "evidence": ["scripts/verify_geometric_cell.py"]},
+    {"id": "G2", "status": "open", "requires": ["RG1", "G1", "W1", "SIMP1"], "claim": "Nonlinear gravitational constraint algebra on untruncated states", "evidence": []},
+    {"id": "M1", "status": "open", "requires": ["RG1", "Q1"], "claim": "Chiral anomaly-free matter and gauge sectors", "evidence": []},
+    {"id": "P1", "status": "open", "requires": ["RG1", "G2", "M1"], "claim": "Scale setting and preregistered blind predictions", "evidence": []},
+    {"id": "X1", "status": "open", "requires": ["P1"], "claim": "Independent empirical replication", "evidence": []}
+  ]
+}
