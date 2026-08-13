@@ -110,6 +110,38 @@ jobs:
               raise SystemExit('covariant-K invariant audit FAILED')
           PY
 
+      - name: Lorentzian exact scalar-channel gate
+        run: python scripts/peter_weyl_lorentzian_scalar_channel_gate.py
+
+      - name: Covariant C(V) state-to-state composition gate
+        run: |
+          python scripts/peter_weyl_covariant_composition_gate.py \
+            --output verification_results/PETER_WEYL_CV_COMPOSITION.json
+
+      - name: Covariant C(K) state-to-state composition gate
+        run: |
+          python scripts/peter_weyl_covariant_K_composition_gate.py \
+            --output verification_results/PETER_WEYL_CK_COMPOSITION.json
+
+      - name: Lorentzian operator-order algebra gate
+        run: python scripts/peter_weyl_lorentzian_triple_algebra_gate.py
+
+      - name: First real Peter-Weyl ordered K-K-V triple
+        run: |
+          python scripts/peter_weyl_lorentzian_ordered_triple_gate.py \
+            --output verification_results/PETER_WEYL_LORENTZIAN_ORDERED_TRIPLE.json
+
+      - name: Upload Lorentzian frontier diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-frontier-diagnostics
+          path: |
+            verification_results/PETER_WEYL_CV_COMPOSITION.json
+            verification_results/PETER_WEYL_CK_COMPOSITION.json
+            verification_results/PETER_WEYL_LORENTZIAN_ORDERED_TRIPLE.json
+          if-no-files-found: warn
+
       - name: Frozen bit-to-spacetime gate
         run: |
           python bcqg_observer_smoothing_unified.py \
