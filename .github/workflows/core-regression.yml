@@ -1,0 +1,63 @@
+name: core-regression
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: core-regression-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Syntax check
+        run: |
+          python -m compileall -q scripts
+          python -m py_compile bcqg_unified_verification.py bcqg_critical_phase_demo.py
+
+      - name: Validate proof ledger
+        run: python scripts/verify_theory_gates.py
+
+      - name: Validate Markdown and LaTeX
+        run: python scripts/validate_github_latex.py
+
+      - name: Core finite gates
+        run: |
+          python scripts/verify_sine_bridge.py
+          python scripts/verify_connection_ward.py
+          python scripts/verify_geometric_cell.py
+
+      - name: HDA kinematics gates
+        run: |
+          python scripts/dual_k5_lapse_cochain_gate.py
+          python scripts/dual_cell_sharp_rt0_gate.py
+          python scripts/path_rerouting_diffeo_gate.py
+          python scripts/path_diffeo_lie_gate.py
+          python scripts/path_vector_diffeo_gate.py
+          python scripts/lorentzian_hit_depth_bound.py
+
+      - name: Quick integrated verifier
+        run: python bcqg_unified_verification.py --profile quick --skip-hda --skip-critical --skip-flat-regge
