@@ -36,7 +36,7 @@ jobs:
       - name: Syntax check
         run: |
           python -m compileall -q scripts
-          python -m py_compile bcqg_unified_verification.py bcqg_critical_phase_demo.py
+          python -m py_compile bcqg_unified_verification.py bcqg_critical_phase_demo.py bcqg_observer_smoothing_unified.py
 
       - name: Validate proof ledger
         run: python scripts/verify_theory_gates.py
@@ -48,7 +48,14 @@ jobs:
             THEORY_STATUS.md \
             CONTRIBUTING.md \
             CIMFIG_V18_CANDIDATE_THEORY.md \
-            LORENTZIAN_BETA_CANCELLATION.md
+            LORENTZIAN_BETA_CANCELLATION.md \
+            OBSERVER_SCALE_SMOOTHING.md
+
+      - name: Observer-scale binary smoothing master gate
+        run: |
+          python bcqg_observer_smoothing_unified.py \
+            --output verification_results/OBSERVER_SMOOTHING_RESULTS.json \
+            --report verification_results/OBSERVER_SCALE_SMOOTHING.generated.md
 
       - name: Core finite gates
         run: |
