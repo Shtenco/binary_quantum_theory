@@ -84,6 +84,11 @@ jobs:
           python scripts/peter_weyl_route_dressed_local_gate.py \
             --output verification_results/PETER_WEYL_ROUTE_DRESSED_LOCAL.json
 
+      - name: Charged-intertwiner Lorentzian recoupling gate
+        run: |
+          python scripts/charged_intertwiner_recoupling_gate.py \
+            --output verification_results/CHARGED_INTERTWINER_RECOUPLING.json
+
       - name: Lorentzian K equals volume-HE commutator amplitude gate
         run: |
           python scripts/peter_weyl_lorentzian_K_block_gate.py \
