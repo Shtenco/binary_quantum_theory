@@ -36,7 +36,13 @@ jobs:
       - name: Syntax check
         run: |
           python -m compileall -q scripts
-          python -m py_compile bcqg_unified_verification.py bcqg_critical_phase_demo.py bcqg_observer_smoothing_unified.py
+          python -m py_compile \
+            bcqg_unified_verification.py \
+            bcqg_critical_phase_demo.py \
+            bcqg_observer_smoothing_unified.py \
+            bcqg_global_manifold_gate.py \
+            bcqg_quantum_hda_killer.py \
+            bcqg_bit_to_gravity_final.py
 
       - name: Validate proof ledger
         run: python scripts/verify_theory_gates.py
@@ -49,13 +55,26 @@ jobs:
             CONTRIBUTING.md \
             CIMFIG_V18_CANDIDATE_THEORY.md \
             LORENTZIAN_BETA_CANCELLATION.md \
-            OBSERVER_SCALE_SMOOTHING.md
+            OBSERVER_SCALE_SMOOTHING.md \
+            BIT_TO_SPACETIME_CENTRAL_EQUATION.md \
+            GLOBAL_MANIFOLD_Q2_COMPLETION.md \
+            QUANTUM_HDA_KILLER_RESULT.md
 
-      - name: Observer-scale binary smoothing master gate
+      - name: Frozen bit-to-spacetime gate
         run: |
           python bcqg_observer_smoothing_unified.py \
             --output verification_results/OBSERVER_SMOOTHING_RESULTS.json \
             --report verification_results/OBSERVER_SCALE_SMOOTHING.generated.md
+
+      - name: Global q=2 PL-manifold gate
+        run: |
+          python bcqg_global_manifold_gate.py \
+            --output verification_results/GLOBAL_MANIFOLD_RESULTS.json
+
+      - name: Off-shell HDA structural killer
+        run: |
+          python bcqg_quantum_hda_killer.py \
+            --output verification_results/QUANTUM_HDA_KILLER_RESULTS.json
 
       - name: Core finite gates
         run: |
@@ -72,6 +91,11 @@ jobs:
           python scripts/path_vector_diffeo_gate.py
           python scripts/lorentzian_hit_depth_bound.py
           python scripts/lorentzian_beta_cancellation_gate.py
+
+      - name: Final bit-to-gravity aggregator
+        run: |
+          python bcqg_bit_to_gravity_final.py \
+            --output verification_results/BIT_TO_GRAVITY_FINAL.json
 
       - name: Quick integrated verifier
         run: python bcqg_unified_verification.py --profile quick --skip-hda --skip-critical --skip-flat-regge
