@@ -1,45 +1,185 @@
-# Observer-scale smoothing of binary Planck spacetime
+# Binary route geometrogenesis v2: bit -> smooth spacetime candidate
 
-Checks: **16/16**
+Candidate checks: **13/13**
 
-$$\ell_{obs}=\sqrt{\ell_P^2+(\theta r)^2},\qquad b=2^{\lfloor\log_2(\ell_{obs}/\ell_P)\rfloor}.$$
+## Frozen local rule
 
-This is an observer-resolution map, not a claim that distance itself dynamically changes spacetime.
+Each causal link carries `q` binary route bits. One rewrite exposes all `2^q`
+two-step routes between the same endpoints. Route states receive an intra-cell
+frame link iff their bit labels have Hamming distance one. Only causal child
+links are recursively rewritten.
 
-## Measured finite scaling
+The rule contains no coordinate dimension. Observer distance enters only after
+the rule is frozen, through
 
-- metric noise exponent: **1.995138**
-- gradient roughness exponent: **2.992908**
-- linear curvature-noise exponent: **3.957407**
-- simplicity exponent: **1.973708**
-- Urbantke metric-error exponent: **2.052015**
-- visible dispersion-error exponent: **1.920692**
-- far conditional 4D spectral dimension: **4.00187656**
-- dimension-blind binary diamond spectral dimension: **2.06975151**
+$$
+\ell_{obs}(r)=\sqrt{\ell_P^2+(\theta r)^2},\qquad
+b(r)=2^{\lfloor\log_2(\ell_{obs}/\ell_P)\rfloor}.
+$$
 
-## Interpretation
+Train generations `g=2,3,4` select among `q=1,2,3` using only the declared
+$D_{slice}\approx3$ and $z\approx1$ score. The winner is frozen before the
+held-out generation is evaluated:
 
-In a 4D block, $N=b^4$ independent zero-mean bits give RMS fluctuations $N^{-1/2}=b^{-2}$. Physical derivatives add inverse block lengths, giving the observed $b^{-3}$ gradient and $b^{-4}$ linear-curvature laws. The separate dimension-blind null remains near 2D, so this is a continuumisation mechanism, not a derivation of 3+1 dimensions.
+$$
+\boxed{q_*=2}.
+$$
 
-| check | value | target | status |
-|---|---:|---|---|
-| metric noise exponent | `1.995137671661402` | 2 +/- .15 | PASS |
-| gradient roughness exponent | `2.992907594471482` | 3 +/- .20 | PASS |
-| curvature noise exponent | `3.957407067304873` | 4 +/- .35 | PASS |
-| far/near SNR gain | `49.66873860754732` | >20 | PASS |
-| dispersion error exponent | `1.920692422271939` | ~2 | PASS |
-| far dispersion mean error | `0.0003199521303427612` | <5e-4 | PASS |
-| far z | `0.9998470951176417` | 1 +/- .01 | PASS |
-| far conditional spectral dimension | `4.001876560449994` | 4 +/- .02 | PASS |
-| spectral UV correction decreases | `0.0018765604499941801` | < block1 error | PASS |
-| binary diamond fails 4D | `2.0084122398161997` | null fail | PASS |
-| binary diamond near 2D | `2.0697515090185665` | 1.8..2.3 | PASS |
-| simplicity smoothing exponent | `1.9737078127751904` | ~2 | PASS |
-| Urbantke smoothing exponent | `2.0520148892745613` | ~2 | PASS |
-| far simplicity | `0.009397290792127939` | <.02 | PASS |
-| far Urbantke error | `0.011154524246036123` | <.02 | PASS |
-| Lorentzian beta cancellation | `1.9012454751867332e-12` | <2e-11 | PASS |
+The local topology result below is **not** used in that selection score.
 
-## Scope
+## Train rule search
 
-The positive result is conditional: on a 4D effective scaffold, unresolved binary Planck-scale fluctuations self-average into a smooth observer-accessible IR sector. It does **not** derive four dimensions from the microscopic rule and it does **not** close the full graph-changing quantum HDA gate. The dimension-blind binary reconvergence control remains approximately two-dimensional and is preserved as a negative control.
+The three binary-route candidates give approximately
+
+$$
+q=1:\quad d_H=1.92065,\ z=1.00153,
+$$
+
+$$
+\boxed{q=2:\quad d_H=2.97280,\ z=0.99134},
+$$
+
+$$
+q=3:\quad d_H=3.99232,\ z=0.98028.
+$$
+
+The rule itself contains no spatial coordinate dimension. For `q` route bits,
+there are $2^q$ binary-labelled routes and the asymptotic causal-edge volume
+scaling gives $d_H\to q+1$; the finite spectral-gap scaling supplies the
+independent dynamical exponent.
+
+## Held-out generation 5
+
+After freezing `q=2`, the transition `g=4 -> 5` gives
+
+$$
+\boxed{d_H=2.999229782},\qquad
+\boxed{z=0.998281156}.
+$$
+
+Hence
+
+$$
+\boxed{d_s^{slice}=3.004393867},\qquad
+\boxed{d_s^{history}\approx1+d_s^{slice}=4.004393867}.
+$$
+
+No 3D or 4D lattice is inserted into this held-out calculation.
+
+## Independent local topology check
+
+For a route cell, binary labels form the Hamming graph $Q_q$. Adding the two
+causal endpoints gives its suspension as the local route shell. Over
+$\mathbb F_2$:
+
+- `q=1`: $\beta=(1,0,0)$;
+- `q=2`: $\boxed{\beta=(1,0,1)}$;
+- `q=3`: $\beta=(1,0,5)$.
+
+Thus the frozen `q=2` shell is a single homology $S^2$ and admits a natural
+local 3-cell completion. This is a strong local manifold precursor, but it is
+**not yet** a theorem that all recursively glued global vertex links are $S^2$.
+
+## Observer smoothing on the discovered rule
+
+Using the discovered spatial volume together with one causal-time scaling
+direction, the same frozen rule gives
+
+$$
+\boxed{\delta g\sim b^{-2.001707}},
+$$
+
+$$
+\boxed{\nabla\delta g\sim b^{-3.001458}},
+$$
+
+$$
+\boxed{\delta R\sim b^{-4.000524}}.
+$$
+
+The two-form sector built from the same observer-cell multiplicities gives
+
+$$
+\boxed{\Delta_{simp}\sim b^{-1.994838}},\qquad
+\boxed{\Delta_{g_U}\sim b^{-2.019746}}.
+$$
+
+Thus the earlier $b^{-2/-3/-4}$ smoothing law survives after removing the
+positive-branch 4D torus.
+
+## Diffeomorphism kinematics
+
+The frozen rule has exactly two route bits. In the refined path description
+these supply two transverse rerouting coordinates. The independent vector-field
+path test gives
+
+$$
+\boxed{\Delta_{Lie}\sim L^{-1.981810}},
+$$
+
+so the local non-Abelian diffeomorphism kinematics approaches its continuum Lie
+bracket with approximately quadratic defect.
+
+## Conditional graviton count
+
+The held-out slice dimension is within $0.005$ of three. Therefore, **if** the
+full Hamiltonian and diffeomorphism constraints become first class, the local
+two-derivative HDA selects
+
+$$
+c_{DW}=\frac{1}{D-1}=\frac12,
+$$
+
+and Dirac counting gives
+
+$$
+\boxed{N_{grav}=2}
+$$
+
+local metric configuration modes. This is a conditional consequence of HDA
+closure, not an independent proof that the microscopic Hamiltonian has already
+closed.
+
+The classical real-Ashtekar--Barbero kinetic cancellation also remains at
+machine precision in the same master program:
+
+$$
+H_E^{kin}+H_L^{corr}=H_{DW},
+$$
+
+with maximum relative regression error about $1.9\times10^{-12}$.
+
+## Scientific status
+
+The strongest current chain is therefore
+
+$$
+\boxed{
+\text{binary route bits}
+\to q_*=2
+\to S^2\ \text{cell shell}
+\to d_s^{slice}\approx3
+\to z\approx1
+\to \text{observer smoothing}
+\to \text{smooth IR candidate}
+}.
+$$
+
+The **13/13** result is a finite candidate-geometrogenesis PASS. It does not yet
+close two decisive gates:
+
+1. **Global manifold emergence:** one local homology-$S^2$ shell does not prove
+   the recursively glued global complex is a 3-manifold.
+2. **Full quantum HDA:** the path-diffeomorphism RHS is known, but the same
+   graph-changing Hilbert space must still satisfy
+
+$$
+\boxed{
+[\hat H[N],\hat H[M]]
+\to
+i\hbar\hat D[\sharp(NdM-MdN)]
+}.
+$$
+
+Until both are passed, this is a direct `bit -> spacetime candidate` rather than
+a proof of quantum general relativity.
