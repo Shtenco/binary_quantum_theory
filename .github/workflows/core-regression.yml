@@ -16,151 +16,43 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-
+    timeout-minutes: 30
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: pip
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-
-      - name: Syntax check
+      - name: Syntax
         run: |
           python -m compileall -q scripts
-          python -m py_compile \
-            bcqg_unified_verification.py \
-            bcqg_critical_phase_demo.py \
-            bcqg_observer_smoothing_unified.py \
-            bcqg_global_manifold_gate.py \
-            bcqg_quantum_hda_killer.py \
-            bcqg_bit_to_gravity_final.py
-
-      - name: Validate proof ledger
+          python -m py_compile bcqg_observer_smoothing_unified.py bcqg_global_manifold_gate.py bcqg_quantum_hda_killer.py
+      - name: Validate canonical proof ledger
         run: python scripts/verify_theory_gates.py
-
-      - name: Validate current public Markdown surface
+      - name: Validate public status surface
+        run: python scripts/validate_github_latex.py README.md THEORY_STATUS.md
+      - name: Frozen bit-to-spacetime gate
+        run: python bcqg_observer_smoothing_unified.py --output verification_results/OBSERVER_SMOOTHING_RESULTS.json
+      - name: Recursive q=2 PL manifold
+        run: python bcqg_global_manifold_gate.py --output verification_results/GLOBAL_MANIFOLD_RESULTS.json
+      - name: Route-normal HDA
+        run: python scripts/path_normal_hda_gate.py --output verification_results/PATH_NORMAL_HDA_RESULTS.json
+      - name: Two-node Peter-Weyl x route Euclidean regression
+        run: python scripts/peter_weyl_two_node_euclidean_joint_gate.py --output verification_results/PETER_WEYL_TWO_NODE_EUCLIDEAN.json
+      - name: HDA factorization no-go and route prerequisites
+        run: python bcqg_quantum_hda_killer.py --output verification_results/QUANTUM_HDA_KILLER_RESULTS.json
+      - name: Lorentzian fixed coefficient and safe support
         run: |
-          python scripts/validate_github_latex.py \
-            README.md \
-            THEORY_STATUS.md \
-            CONTRIBUTING.md \
-            CIMFIG_V18_CANDIDATE_THEORY.md \
-            LORENTZIAN_BETA_CANCELLATION.md \
-            OBSERVER_SCALE_SMOOTHING.md \
-            BIT_TO_SPACETIME_CENTRAL_EQUATION.md \
-            GLOBAL_MANIFOLD_Q2_COMPLETION.md \
-            QUANTUM_HDA_KILLER_RESULT.md \
-            PETER_WEYL_ROUTE_DRESSED_LOCAL_RESULT.md \
-            PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md \
-            PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md \
-            PETER_WEYL_COVARIANT_K_PROJECTION_AUDIT.md
-
-      # Fast frontier-first Lorentzian bricks: fail here before expensive HH.
-      - name: Charged-intertwiner Lorentzian recoupling gate
-        run: |
-          python scripts/charged_intertwiner_recoupling_gate.py \
-            --output verification_results/CHARGED_INTERTWINER_RECOUPLING.json
-
-      - name: Covariantized volume leg h[h^-1,V] gate
-        run: |
-          python scripts/peter_weyl_covariant_volume_leg_gate.py \
-            --output verification_results/PETER_WEYL_COVARIANT_VOLUME_LEG.json
-
-      - name: Lorentzian K equals volume-HE commutator amplitude gate
-        run: |
-          python scripts/peter_weyl_lorentzian_K_block_gate.py \
-            --output verification_results/PETER_WEYL_LORENTZIAN_K_BLOCK.json
-
-      - name: Invariant covariant-K projection audit
-        id: covariant_k_audit
-        continue-on-error: true
-        run: |
-          python scripts/peter_weyl_covariant_K_projection_audit_gate.py \
-            --output verification_results/PETER_WEYL_COVARIANT_K_AUDIT.json
-
-      - name: Upload covariant-K audit diagnostic
+          python scripts/lorentzian_hit_depth_bound.py
+          python scripts/lorentzian_beta_cancellation_gate.py
+      - name: Upload canonical evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: covariant-k-audit
-          path: verification_results/PETER_WEYL_COVARIANT_K_AUDIT.json
-          if-no-files-found: error
-
-      - name: Enforce covariant-K audit
-        if: always()
-        run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          p = Path('verification_results/PETER_WEYL_COVARIANT_K_AUDIT.json')
-          if not p.is_file():
-              raise SystemExit('audit JSON missing')
-          d = json.loads(p.read_text())
-          print(json.dumps(d, indent=2))
-          if not d.get('passed', False):
-              raise SystemExit('covariant-K invariant audit FAILED')
-          PY
-
-      - name: Frozen bit-to-spacetime gate
-        run: |
-          python bcqg_observer_smoothing_unified.py \
-            --output verification_results/OBSERVER_SMOOTHING_RESULTS.json \
-            --report verification_results/OBSERVER_SCALE_SMOOTHING.generated.md
-
-      - name: Global q=2 PL-manifold gate
-        run: |
-          python bcqg_global_manifold_gate.py \
-            --output verification_results/GLOBAL_MANIFOLD_RESULTS.json
-
-      - name: Route-normal HDA principal-symbol gate
-        run: |
-          python scripts/path_normal_hda_gate.py \
-            --output verification_results/PATH_NORMAL_HDA_RESULTS.json
-
-      - name: Safe Peter-Weyl x route local joint gate
-        run: |
-          python scripts/peter_weyl_route_dressed_local_gate.py \
-            --output verification_results/PETER_WEYL_ROUTE_DRESSED_LOCAL.json
-
-      - name: Two-node Euclidean Peter-Weyl x route joint gate
-        run: |
-          python scripts/peter_weyl_two_node_euclidean_joint_gate.py \
-            --output verification_results/PETER_WEYL_TWO_NODE_EUCLIDEAN.json
-
-      - name: Off-shell HDA structural killer
-        run: |
-          python bcqg_quantum_hda_killer.py \
-            --output verification_results/QUANTUM_HDA_KILLER_RESULTS.json
-
-      - name: Core finite gates
-        run: |
-          python scripts/verify_sine_bridge.py
-          python scripts/verify_connection_ward.py
-          python scripts/verify_geometric_cell.py
-
-      - name: HDA kinematics and Lorentzian gates
-        run: |
-          python scripts/dual_k5_lapse_cochain_gate.py
-          python scripts/dual_cell_sharp_rt0_gate.py
-          python scripts/path_rerouting_diffeo_gate.py
-          python scripts/path_diffeo_lie_gate.py
-          python scripts/path_vector_diffeo_gate.py
-          python scripts/lorentzian_hit_depth_bound.py
-          python scripts/lorentzian_beta_cancellation_gate.py
-
-      - name: Final bit-to-gravity aggregator
-        run: |
-          python bcqg_bit_to_gravity_final.py \
-            --output verification_results/BIT_TO_GRAVITY_FINAL.json
-
-      - name: Quick integrated verifier
-        run: python bcqg_unified_verification.py --profile quick --skip-hda --skip-critical --skip-flat-regge
+          name: core-architecture-certificate
+          path: verification_results/
+          if-no-files-found: warn

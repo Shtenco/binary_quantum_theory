@@ -6,6 +6,12 @@ volume and Q-block gauge audits are evaluated first. If H_E equivalence is
 already false, the gate returns immediately with those diagnostics instead of
 recomputing the expensive C(K) column; this changes runtime only, not physics or
 acceptance criteria.
+
+Research addition: after the historical zero-aware invariant audit passes, run
+the independent sine-Hermitian Euclidean ordering audit.  The historical result
+is retained verbatim in the JSON; the combined research gate is green only if
+both representations of H_sine=(T-T^dagger)/(2i) also agree under the frozen
+1e-9 criterion.  Production PW.apply_H is not modified here.
 """
 from __future__ import annotations
 import argparse,itertools,json,math,sys
@@ -61,6 +67,8 @@ def relerr(a,b):
     keys=set(a)|set(b); num=math.sqrt(sum(abs(a.get(k,0j)-b.get(k,0j))**2 for k in keys)); den=math.sqrt(norm2(b)); return num/max(den,1e-30)
 
 def run():
+    import peter_weyl_zeroaware_volume_migration_experiment as ZVM
+    ZVM.patch_and_clear()
     q_block_gauge_audit=QGA.run()
     volume_audit=VA.run()
     initial=PW.basis_full_jhalf()[0]
@@ -83,6 +91,7 @@ def run():
     base={
         'status':'invariant projection audit for matrix-covariant C_e(K)',
         'passed':False,
+        'zeroaware_volume_migration_experiment':True,
         'q_block_gauge_audit':q_block_gauge_audit,
         'q_block_gauge_audit_changes_acceptance_rule':False,
         'volume_cross_representation_audit':volume_audit,
@@ -94,21 +103,32 @@ def run():
         'production_relative_error':prod_error,'max_excluded_tail_amplitude':max_tail,'production_HE_equivalent':bool(he_equiv),
         'allJ_internal_volume_sector_leakage':vleak,
         'top_coefficient_differences':[{'abs_diff':d,'abs_allJ':aa,'abs_safe':bb,'key':k,'allJ':[a.real,a.imag],'safe':[b.real,b.imag]} for d,aa,bb,k,a,b in diffs[:20]],
-        'decision_rule':'Existing H_E production equivalence is unchanged: identical 1e-9 support, relative error <1e-9, excluded tails <1e-9. Q/volume audits are diagnostic only.',
-        'scope_note':'Finite single-edge/single-input amplitude audit; full Lorentzian triple and HDA remain open.'
+        'decision_rule':'Historical H_E(+) production equivalence is unchanged: identical 1e-9 support, relative error <1e-9, excluded tails <1e-9. Q/volume audits are diagnostic only.',
+        'scope_note':'Historical finite H_E(+) / C(K) audit plus a separate physical-ordering audit in main().'
     }
     if not he_equiv:
         base['expensive_CK_recomputed']=False
-        base['next_use']='Use Q-block gauge diagnosis to repair only the recoupling representation if identified, then rerun volume and H_E equivalence. Do not build H_L triple yet.'
+        base['next_use']='Historical zero-aware H_E(+) equivalence failed; retain the red baseline before comparing orderings.'
         return base
     raw=CK.run(0,1)
     physical_pass=(raw['outer_complete_basis_leakage']<1e-10 and raw['outer_wrong_charge_fraction']<1e-18 and raw['internal_volume_sector_leakage']<1e-10 and raw['HE_wrong_charge_fraction']<1e-18 and raw['K_wrong_charge_fraction']<1e-18 and raw['C_matrix_Frobenius_covariant_state_norm']>1e-10 and raw['C_J1_weight']>1e-14 and raw['C_J_greater_than_1_weight_fraction']<1e-18 and raw['max_spin_reached']<=2.5+1e-12)
     history_preserved=(not raw['passed'] and raw['complete_charge_basis_leakage']>0.5)
-    base.update({'passed':bool(physical_pass and history_preserved),'expensive_CK_recomputed':True,'historical_raw_CK_passed':bool(raw['passed']),'historical_primitive_branch_projection_diagnostic':raw['complete_charge_basis_leakage'],'historical_fail_preserved':bool(history_preserved),'full_charged_HE_wrong_charge_fraction':raw['HE_wrong_charge_fraction'],'full_charged_K_wrong_charge_fraction':raw['K_wrong_charge_fraction'],'outer_wrong_charge_fraction':raw['outer_wrong_charge_fraction'],'C_matrix_Frobenius_covariant_state_norm':raw['C_matrix_Frobenius_covariant_state_norm'],'C_weight_by_source_J':raw['C_weight_by_source_J'],'C_J_greater_than_1_weight_fraction':raw['C_J_greater_than_1_weight_fraction'],'max_spin_reached':raw['max_spin_reached'],'next_use':'If green, build the traced two-K one-V scalar Lorentzian triple.'})
+    base.update({'passed':bool(physical_pass and history_preserved),'historical_baseline_passed':bool(physical_pass and history_preserved),'expensive_CK_recomputed':True,'historical_raw_CK_passed':bool(raw['passed']),'historical_primitive_branch_projection_diagnostic':raw['complete_charge_basis_leakage'],'historical_fail_preserved':bool(history_preserved),'full_charged_HE_wrong_charge_fraction':raw['HE_wrong_charge_fraction'],'full_charged_K_wrong_charge_fraction':raw['K_wrong_charge_fraction'],'outer_wrong_charge_fraction':raw['outer_wrong_charge_fraction'],'C_matrix_Frobenius_covariant_state_norm':raw['C_matrix_Frobenius_covariant_state_norm'],'C_weight_by_source_J':raw['C_weight_by_source_J'],'C_J_greater_than_1_weight_fraction':raw['C_J_greater_than_1_weight_fraction'],'max_spin_reached':raw['max_spin_reached'],'next_use':'Run the independent sine-Hermitian H_E ordering audit before rebuilding K.'})
     return base
 
 def main():
-    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--output',type=Path); a=ap.parse_args(); out=run(); text=json.dumps(out,indent=2); print(text)
+    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--output',type=Path); a=ap.parse_args()
+    out=run()
+    historical_pass=bool(out.get('passed',False))
+    if historical_pass:
+        import peter_weyl_euclidean_sine_ordering_gate as SINE
+        sine=SINE.run()
+        out['euclidean_sine_ordering_audit']=sine
+        out['historical_baseline_passed']=True
+        out['passed']=bool(sine.get('passed',False))
+        out['combined_research_decision']='Historical H_E(+) baseline retained; research gate now requires independent H_sine=(T-T^dagger)/(2i) safe/all-J equivalence under the same 1e-9 threshold.'
+        out['next_use']='If sine ordering PASSes, rebuild K=[V,H_sine] and only then resume C(K) composition / K-K-V.'
+    text=json.dumps(out,indent=2); print(text)
     if a.output: a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(text+'\n',encoding='utf-8')
     return 0 if out['passed'] else 1
 if __name__=='__main__': raise SystemExit(main())
