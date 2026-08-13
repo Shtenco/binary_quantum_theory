@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Validate the GitHub Markdown/LaTeX boundary in every repository Markdown file.
+"""Validate GitHub Markdown/LaTeX boundaries.
 
-The check intentionally has no third-party dependencies.  It catches the source
-errors that most often prevent GitHub MathJax rendering: unclosed delimiters,
-unbalanced groups, TeX commands outside math, and unescaped table separators in
-inline formulae.
+By default every repository Markdown file is scanned. Optional positional paths
+allow CI to enforce a strict public-surface gate while historical research notes
+are cleaned separately.
 """
 
 from __future__ import annotations
 
+import argparse
 import re
 import sys
 from dataclasses import dataclass
@@ -31,7 +31,11 @@ class Problem:
     message: str
 
     def __str__(self) -> str:
-        return f"{self.path.relative_to(ROOT)}:{self.line}: {self.message}"
+        try:
+            display = self.path.relative_to(ROOT)
+        except ValueError:
+            display = self.path
+        return f"{display}:{self.line}: {self.message}"
 
 
 def validate_expression(source: str, path: Path, line: int) -> list[Problem]:
@@ -122,9 +126,7 @@ def validate_markdown(path: Path) -> tuple[int, list[Problem]]:
                     source = line[opening + 1 : closing]
                     problems.extend(validate_expression(source, path, number))
                     if line.startswith("|") and "|" in source:
-                        problems.append(
-                            Problem(path, number, "unescaped '|' inside table math")
-                        )
+                        problems.append(Problem(path, number, "unescaped '|' inside table math"))
                     expressions += 1
                     position = closing + 1
                     break
@@ -141,19 +143,62 @@ def validate_markdown(path: Path) -> tuple[int, list[Problem]]:
     return expressions, problems
 
 
+def resolve_paths(values: list[str]) -> tuple[list[Path], list[str]]:
+    errors: list[str] = []
+    if not values:
+        return (
+            sorted(path for path in ROOT.rglob("*.md") if ".git" not in path.parts),
+            errors,
+        )
+
+    paths: list[Path] = []
+    for value in values:
+        candidate = (ROOT / value).resolve()
+        try:
+            candidate.relative_to(ROOT)
+        except ValueError:
+            errors.append(f"unsafe path outside repository: {value}")
+            continue
+        if not candidate.is_file():
+            errors.append(f"Markdown file not found: {value}")
+            continue
+        if candidate.suffix.lower() != ".md":
+            errors.append(f"not a Markdown file: {value}")
+            continue
+        paths.append(candidate)
+    return sorted(set(paths)), errors
+
+
 def main() -> int:
-    paths = sorted(path for path in ROOT.rglob("*.md") if ".git" not in path.parts)
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "paths",
+        nargs="*",
+        help="optional repository-relative Markdown files; default scans all .md files",
+    )
+    args = parser.parse_args()
+
+    paths, path_errors = resolve_paths(args.paths)
     total = 0
     problems: list[Problem] = []
     for path in paths:
         count, found = validate_markdown(path)
         total += count
         problems.extend(found)
+
+    for message in path_errors:
+        print(message, file=sys.stderr)
     for problem in problems:
         print(problem, file=sys.stderr)
-    if problems:
-        print(f"FAIL: {len(problems)} problem(s) in {total} math expression(s)", file=sys.stderr)
+
+    if path_errors or problems:
+        print(
+            f"FAIL: {len(path_errors) + len(problems)} problem(s) in "
+            f"{total} math expression(s)",
+            file=sys.stderr,
+        )
         return 1
+
     print(f"PASS: {total} GitHub LaTeX expression(s) in {len(paths)} Markdown file(s)")
     return 0
 
