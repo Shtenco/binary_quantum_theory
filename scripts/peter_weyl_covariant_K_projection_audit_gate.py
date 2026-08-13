@@ -62,7 +62,7 @@ def relerr(a,b):
 
 def run():
     # Research-branch migration experiment only: use one zero-eigenspace
-    # convention on both independently existing volume realizations.  Frozen
+    # convention on both independently existing volume realizations. Frozen
     # H_E/C(K) thresholds below are unchanged.
     import peter_weyl_zeroaware_volume_migration_experiment as ZVM
     ZVM.patch_and_clear()
@@ -110,11 +110,30 @@ def run():
     raw=CK.run(0,1)
     physical_pass=(raw['outer_complete_basis_leakage']<1e-10 and raw['outer_wrong_charge_fraction']<1e-18 and raw['internal_volume_sector_leakage']<1e-10 and raw['HE_wrong_charge_fraction']<1e-18 and raw['K_wrong_charge_fraction']<1e-18 and raw['C_matrix_Frobenius_covariant_state_norm']>1e-10 and raw['C_J1_weight']>1e-14 and raw['C_J_greater_than_1_weight_fraction']<1e-18 and raw['max_spin_reached']<=2.5+1e-12)
     history_preserved=(not raw['passed'] and raw['complete_charge_basis_leakage']>0.5)
-    base.update({'passed':bool(physical_pass and history_preserved),'expensive_CK_recomputed':True,'historical_raw_CK_passed':bool(raw['passed']),'historical_primitive_branch_projection_diagnostic':raw['complete_charge_basis_leakage'],'historical_fail_preserved':bool(history_preserved),'full_charged_HE_wrong_charge_fraction':raw['HE_wrong_charge_fraction'],'full_charged_K_wrong_charge_fraction':raw['K_wrong_charge_fraction'],'outer_wrong_charge_fraction':raw['outer_wrong_charge_fraction'],'C_matrix_Frobenius_covariant_state_norm':raw['C_matrix_Frobenius_covariant_state_norm'],'C_weight_by_source_J':raw['C_weight_by_source_J'],'C_J_greater_than_1_weight_fraction':raw['C_J_greater_than_1_weight_fraction'],'max_spin_reached':raw['max_spin_reached'],'next_use':'If green, migrate the zero-aware convention into production volume functions, rerun full CI, then build the traced two-K one-V scalar Lorentzian triple.'})
+    base.update({'passed':bool(physical_pass and history_preserved),'expensive_CK_recomputed':True,'historical_raw_CK_passed':bool(raw['passed']),'historical_primitive_branch_projection_diagnostic':raw['complete_charge_basis_leakage'],'historical_fail_preserved':bool(history_preserved),'full_charged_HE_wrong_charge_fraction':raw['HE_wrong_charge_fraction'],'full_charged_K_wrong_charge_fraction':raw['K_wrong_charge_fraction'],'outer_wrong_charge_fraction':raw['outer_wrong_charge_fraction'],'C_matrix_Frobenius_covariant_state_norm':raw['C_matrix_Frobenius_covariant_state_norm'],'C_weight_by_source_J':raw['C_weight_by_source_J'],'C_J_greater_than_1_weight_fraction':raw['C_J_greater_than_1_weight_fraction'],'max_spin_reached':raw['max_spin_reached'],'next_use':'If green, execute generalized state-to-state C(V)/C(K) composition before building the traced two-K one-V scalar Lorentzian triple.'})
     return base
 
+def run_composition_prerequisites():
+    """Fail-fast research-only composition checks, with no threshold changes."""
+    import peter_weyl_covariant_composition_gate as CVCOMP
+    import peter_weyl_covariant_K_composition_gate as CKCOMP
+    cv=CVCOMP.run(0,1)
+    ck=CKCOMP.run(0,1)
+    return {
+        'C_V_state_to_state':cv,
+        'C_K_state_to_state':ck,
+        'passed':bool(cv.get('passed',False) and ck.get('passed',False)),
+    }
+
 def main():
-    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--output',type=Path); a=ap.parse_args(); out=run(); text=json.dumps(out,indent=2); print(text)
+    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--output',type=Path); a=ap.parse_args(); out=run()
+    if out.get('passed',False):
+        comp=run_composition_prerequisites()
+        out['composition_prerequisites']=comp
+        out['passed']=bool(out['passed'] and comp['passed'])
+        out['scope_note']='Finite H_E/C(K) invariant audit plus executed C(V)/C(K) state-to-state composition prerequisites; traced H_L and HDA remain open.'
+        out['next_use']='If this combined gate is green, assemble the real traced two-K one-V H_L column at Jmax=7/2 with the preregistered operator ordering.'
+    text=json.dumps(out,indent=2); print(text)
     if a.output: a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(text+'\n',encoding='utf-8')
     return 0 if out['passed'] else 1
 if __name__=='__main__': raise SystemExit(main())
