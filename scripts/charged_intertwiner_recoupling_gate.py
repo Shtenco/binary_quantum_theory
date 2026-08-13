@@ -18,6 +18,14 @@ for arbitrary total J, verifies their orthonormality, closes the J=1/2 sector
 with an external spin-1/2 to five-valent singlets, and verifies that the genuine
 four-valent volume V=sqrt(|J1.(J2xJ3)|) preserves the charged J,M sector.
 
+Important numerical point: some charged columns are annihilated by the exact
+volume.  The eigensolver then leaves O(1e-16) eigenvalue roundoff, and taking a
+square root produces an artificial O(1e-8) output norm.  A relative projection
+error is ill-conditioned on those zero-volume columns.  Therefore this gate
+uses relative leakage only for numerically nonzero volume columns and absolute
+leakage for annihilated columns.  No representation-theory threshold is
+weakened.
+
 It is a representation-theory prerequisite for Lorentzian amplitudes, not an
 H_L or HDA result by itself.
 """
@@ -27,7 +35,6 @@ import argparse
 import functools
 import itertools
 import json
-import math
 import sys
 from pathlib import Path
 
@@ -93,12 +100,15 @@ def apply_volume_four(T, spins):
     return (V @ T.reshape(d1 * d2 * d3, d4)).reshape(d1, d2, d3, d4)
 
 
-def sector_projection_residual(X, spins, J2, M2):
+def sector_projection_diagnostics(X, spins, J2, M2, nonzero_floor=1e-7):
     recon = np.zeros_like(X)
     for K12, K34 in allowed_charged_labels(spins, J2):
         B = charged_tensor(tuple(spins), K12, K34, J2, M2)
         recon += np.vdot(B, X) * B
-    return float(np.linalg.norm(X - recon) / max(np.linalg.norm(X), 1e-30))
+    abs_leak = float(np.linalg.norm(X - recon))
+    xnorm = float(np.linalg.norm(X))
+    rel = None if xnorm <= nonzero_floor else abs_leak / xnorm
+    return abs_leak, xnorm, rel
 
 
 def run():
@@ -114,12 +124,21 @@ def run():
 
     max_orth_error = 0.0
     max_five_singlet_orth_error = 0.0
-    max_volume_sector_leakage = 0.0
+    max_volume_abs_leakage = 0.0
+    max_volume_rel_leakage_nonzero = 0.0
+    near_zero_volume_columns = 0
+    nonzero_volume_columns = 0
+    min_nonzero_volume_column_norm = float("inf")
+    max_near_zero_volume_column_norm = 0.0
     rows = []
 
     for spins in one_hit:
         labels = allowed_charged_labels(spins, 1)
         basis_by_M = {}
+        row_abs = 0.0
+        row_rel = 0.0
+        row_zero = 0
+        row_nonzero = 0
         for M2 in PW.m2vals_t(1):
             basis = [charged_tensor(spins, a, b, 1, M2) for a, b in labels]
             G = np.array([[np.vdot(A, B) for B in basis] for A in basis], complex)
@@ -128,10 +147,19 @@ def run():
             basis_by_M[M2] = basis
             for B in basis:
                 VB = apply_volume_four(B, spins)
-                max_volume_sector_leakage = max(
-                    max_volume_sector_leakage,
-                    sector_projection_residual(VB, spins, 1, M2),
-                )
+                abs_leak, vnorm, rel = sector_projection_diagnostics(VB, spins, 1, M2)
+                row_abs = max(row_abs, abs_leak)
+                max_volume_abs_leakage = max(max_volume_abs_leakage, abs_leak)
+                if rel is None:
+                    row_zero += 1
+                    near_zero_volume_columns += 1
+                    max_near_zero_volume_column_norm = max(max_near_zero_volume_column_norm, vnorm)
+                else:
+                    row_nonzero += 1
+                    nonzero_volume_columns += 1
+                    min_nonzero_volume_column_norm = min(min_nonzero_volume_column_norm, vnorm)
+                    row_rel = max(row_rel, rel)
+                    max_volume_rel_leakage_nonzero = max(max_volume_rel_leakage_nonzero, rel)
 
         # Couple each recoupling label to one external fundamental and sum over
         # M.  These are genuine five-valent singlets.
@@ -156,15 +184,25 @@ def run():
                 )) for M in PW.m2vals_t(1)
             ) if labels else 0.0,
             "5valent_singlet_orth_error": err5,
+            "volume_near_zero_columns": row_zero,
+            "volume_nonzero_columns": row_nonzero,
+            "max_volume_absolute_sector_leakage": row_abs,
+            "max_volume_relative_sector_leakage_nonzero": row_rel,
         })
 
     dims = sorted({r["charged_dimension"] for r in rows})
+    if nonzero_volume_columns == 0:
+        min_nonzero_volume_column_norm = 0.0
+    # Absolute leakage is the correct test on all columns; relative leakage is
+    # additionally required only when the volume output is numerically nonzero.
     passed = (
         len(one_hit) == 8
         and dims == [2, 3]
         and max_orth_error < 1e-11
         and max_five_singlet_orth_error < 1e-11
-        and max_volume_sector_leakage < 1e-10
+        and max_volume_abs_leakage < 1e-10
+        and max_volume_rel_leakage_nonzero < 1e-10
+        and nonzero_volume_columns > 0
     )
     return {
         "status": "charged-intertwiner recoupling prerequisite for Lorentzian holonomy commutators",
@@ -174,9 +212,18 @@ def run():
         "rows": rows,
         "max_four_leg_orthonormality_error": max_orth_error,
         "max_five_valent_singlet_orthonormality_error": max_five_singlet_orth_error,
-        "max_volume_JM_sector_leakage": max_volume_sector_leakage,
+        "volume_nonzero_floor": 1e-7,
+        "near_zero_volume_columns": near_zero_volume_columns,
+        "nonzero_volume_columns": nonzero_volume_columns,
+        "max_near_zero_volume_column_norm": max_near_zero_volume_column_norm,
+        "min_nonzero_volume_column_norm": min_nonzero_volume_column_norm,
+        "max_volume_absolute_JM_sector_leakage": max_volume_abs_leakage,
+        "max_volume_relative_JM_sector_leakage_nonzero": max_volume_rel_leakage_nonzero,
         "representation_statement": (
             "After one fundamental holonomy hit, each affected endpoint is represented by a four-leg total-J=1/2 charged intertwiner; coupling the external fundamental closes a gauge singlet."
+        ),
+        "conditioning_note": (
+            "Relative leakage is not evaluated on exact-zero volume columns because sqrt of eigensolver roundoff turns O(1e-16) Q eigenvalues into artificial O(1e-8) V norms. Those columns are tested by absolute leakage instead."
         ),
         "next_use": (
             "Use this charged basis as the intermediate compression layer for h_e^-1|Gauss>, apply V_v and H_E,v/K_v without raw magnetic blowup, then close with h_e to obtain C_e(K_v)=h_e[h_e^-1,K_v]."
