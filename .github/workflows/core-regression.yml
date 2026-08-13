@@ -63,6 +63,27 @@ jobs:
             PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md \
             PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md
 
+      # Fast frontier-first Lorentzian bricks: fail here before expensive HH.
+      - name: Charged-intertwiner Lorentzian recoupling gate
+        run: |
+          python scripts/charged_intertwiner_recoupling_gate.py \
+            --output verification_results/CHARGED_INTERTWINER_RECOUPLING.json
+
+      - name: Covariantized volume leg h[h^-1,V] gate
+        run: |
+          python scripts/peter_weyl_covariant_volume_leg_gate.py \
+            --output verification_results/PETER_WEYL_COVARIANT_VOLUME_LEG.json
+
+      - name: Lorentzian K equals volume-HE commutator amplitude gate
+        run: |
+          python scripts/peter_weyl_lorentzian_K_block_gate.py \
+            --output verification_results/PETER_WEYL_LORENTZIAN_K_BLOCK.json
+
+      - name: Covariantized K leg h[h^-1,K] gate
+        run: |
+          python scripts/peter_weyl_covariant_K_leg_gate.py \
+            --output verification_results/PETER_WEYL_COVARIANT_K_LEG.json
+
       - name: Frozen bit-to-spacetime gate
         run: |
           python bcqg_observer_smoothing_unified.py \
@@ -83,26 +104,6 @@ jobs:
         run: |
           python scripts/peter_weyl_route_dressed_local_gate.py \
             --output verification_results/PETER_WEYL_ROUTE_DRESSED_LOCAL.json
-
-      - name: Charged-intertwiner Lorentzian recoupling gate
-        run: |
-          python scripts/charged_intertwiner_recoupling_gate.py \
-            --output verification_results/CHARGED_INTERTWINER_RECOUPLING.json
-
-      - name: Covariantized volume leg h[h^-1,V] gate
-        run: |
-          python scripts/peter_weyl_covariant_volume_leg_gate.py \
-            --output verification_results/PETER_WEYL_COVARIANT_VOLUME_LEG.json
-
-      - name: Lorentzian K equals volume-HE commutator amplitude gate
-        run: |
-          python scripts/peter_weyl_lorentzian_K_block_gate.py \
-            --output verification_results/PETER_WEYL_LORENTZIAN_K_BLOCK.json
-
-      - name: Covariantized K leg h[h^-1,K] gate
-        run: |
-          python scripts/peter_weyl_covariant_K_leg_gate.py \
-            --output verification_results/PETER_WEYL_COVARIANT_K_LEG.json
 
       - name: Two-node Euclidean Peter-Weyl x route joint gate
         run: |
