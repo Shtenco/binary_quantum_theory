@@ -81,9 +81,34 @@ jobs:
             --output verification_results/PETER_WEYL_LORENTZIAN_K_BLOCK.json
 
       - name: Invariant covariant-K projection audit
+        id: covariant_k_audit
+        continue-on-error: true
         run: |
           python scripts/peter_weyl_covariant_K_projection_audit_gate.py \
             --output verification_results/PETER_WEYL_COVARIANT_K_AUDIT.json
+
+      - name: Upload covariant-K audit diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: covariant-k-audit
+          path: verification_results/PETER_WEYL_COVARIANT_K_AUDIT.json
+          if-no-files-found: error
+
+      - name: Enforce covariant-K audit
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('verification_results/PETER_WEYL_COVARIANT_K_AUDIT.json')
+          if not p.is_file():
+              raise SystemExit('audit JSON missing')
+          d = json.loads(p.read_text())
+          print(json.dumps(d, indent=2))
+          if not d.get('passed', False):
+              raise SystemExit('covariant-K invariant audit FAILED')
+          PY
 
       - name: Frozen bit-to-spacetime gate
         run: |
