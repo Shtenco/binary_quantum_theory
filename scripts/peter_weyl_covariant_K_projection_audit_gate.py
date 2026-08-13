@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Invariant projection audit for matrix-covariant C_e(K).
 
-The frozen H_E production-equivalence rule is unchanged. A preregistered local
-volume cross-representation audit is evaluated first. If H_E equivalence is
+The frozen H_E production-equivalence rule is unchanged. Preregistered local
+volume and Q-block gauge audits are evaluated first. If H_E equivalence is
 already false, the gate returns immediately with those diagnostics instead of
 recomputing the expensive C(K) column; this changes runtime only, not physics or
 acceptance criteria.
@@ -16,6 +16,7 @@ if str(HERE) not in sys.path: sys.path.insert(0,str(HERE))
 import k5_peter_weyl_safe_hda_column as PW
 import peter_weyl_covariant_K_leg_gate as CK
 import peter_weyl_volume_cross_rep_audit as VA
+import peter_weyl_q_block_gauge_audit as QGA
 RAW_FLOOR=1e-10; PROD=1e-9; LADDER=(1e-12,1e-11,1e-10,1e-9,1e-8)
 
 def add(dst,src,scale=1.0,tol=1e-11):
@@ -60,6 +61,7 @@ def relerr(a,b):
     keys=set(a)|set(b); num=math.sqrt(sum(abs(a.get(k,0j)-b.get(k,0j))**2 for k in keys)); den=math.sqrt(norm2(b)); return num/max(den,1e-30)
 
 def run():
+    q_block_gauge_audit=QGA.run()
     volume_audit=VA.run()
     initial=PW.basis_full_jhalf()[0]
     allj,vleak=apply_HE_allJ_then_Gauss(initial,0,5)
@@ -81,6 +83,8 @@ def run():
     base={
         'status':'invariant projection audit for matrix-covariant C_e(K)',
         'passed':False,
+        'q_block_gauge_audit':q_block_gauge_audit,
+        'q_block_gauge_audit_changes_acceptance_rule':False,
         'volume_cross_representation_audit':volume_audit,
         'volume_audit_changes_acceptance_rule':False,
         'raw_floor':RAW_FLOOR,'production_threshold_predating_audit':PROD,
@@ -90,24 +94,17 @@ def run():
         'production_relative_error':prod_error,'max_excluded_tail_amplitude':max_tail,'production_HE_equivalent':bool(he_equiv),
         'allJ_internal_volume_sector_leakage':vleak,
         'top_coefficient_differences':[{'abs_diff':d,'abs_allJ':aa,'abs_safe':bb,'key':k,'allJ':[a.real,a.imag],'safe':[b.real,b.imag]} for d,aa,bb,k,a,b in diffs[:20]],
-        'decision_rule':'Existing H_E production equivalence is unchanged: identical 1e-9 support, relative error <1e-9, excluded tails <1e-9. Volume audit is diagnostic only.',
+        'decision_rule':'Existing H_E production equivalence is unchanged: identical 1e-9 support, relative error <1e-9, excluded tails <1e-9. Q/volume audits are diagnostic only.',
         'scope_note':'Finite single-edge/single-input amplitude audit; full Lorentzian triple and HDA remain open.'
     }
     if not he_equiv:
         base['expensive_CK_recomputed']=False
-        base['next_use']='Resolve the volume/projection mismatch first. Do not build H_L triple yet.'
+        base['next_use']='Use Q-block gauge diagnosis to repair only the recoupling representation if identified, then rerun volume and H_E equivalence. Do not build H_L triple yet.'
         return base
-
     raw=CK.run(0,1)
     physical_pass=(raw['outer_complete_basis_leakage']<1e-10 and raw['outer_wrong_charge_fraction']<1e-18 and raw['internal_volume_sector_leakage']<1e-10 and raw['HE_wrong_charge_fraction']<1e-18 and raw['K_wrong_charge_fraction']<1e-18 and raw['C_matrix_Frobenius_covariant_state_norm']>1e-10 and raw['C_J1_weight']>1e-14 and raw['C_J_greater_than_1_weight_fraction']<1e-18 and raw['max_spin_reached']<=2.5+1e-12)
     history_preserved=(not raw['passed'] and raw['complete_charge_basis_leakage']>0.5)
-    base.update({
-        'passed':bool(physical_pass and history_preserved),'expensive_CK_recomputed':True,
-        'historical_raw_CK_passed':bool(raw['passed']),'historical_primitive_branch_projection_diagnostic':raw['complete_charge_basis_leakage'],'historical_fail_preserved':bool(history_preserved),
-        'full_charged_HE_wrong_charge_fraction':raw['HE_wrong_charge_fraction'],'full_charged_K_wrong_charge_fraction':raw['K_wrong_charge_fraction'],'outer_wrong_charge_fraction':raw['outer_wrong_charge_fraction'],
-        'C_matrix_Frobenius_covariant_state_norm':raw['C_matrix_Frobenius_covariant_state_norm'],'C_weight_by_source_J':raw['C_weight_by_source_J'],'C_J_greater_than_1_weight_fraction':raw['C_J_greater_than_1_weight_fraction'],'max_spin_reached':raw['max_spin_reached'],
-        'next_use':'If green, build the traced two-K one-V scalar Lorentzian triple.'
-    })
+    base.update({'passed':bool(physical_pass and history_preserved),'expensive_CK_recomputed':True,'historical_raw_CK_passed':bool(raw['passed']),'historical_primitive_branch_projection_diagnostic':raw['complete_charge_basis_leakage'],'historical_fail_preserved':bool(history_preserved),'full_charged_HE_wrong_charge_fraction':raw['HE_wrong_charge_fraction'],'full_charged_K_wrong_charge_fraction':raw['K_wrong_charge_fraction'],'outer_wrong_charge_fraction':raw['outer_wrong_charge_fraction'],'C_matrix_Frobenius_covariant_state_norm':raw['C_matrix_Frobenius_covariant_state_norm'],'C_weight_by_source_J':raw['C_weight_by_source_J'],'C_J_greater_than_1_weight_fraction':raw['C_J_greater_than_1_weight_fraction'],'max_spin_reached':raw['max_spin_reached'],'next_use':'If green, build the traced two-K one-V scalar Lorentzian triple.'})
     return base
 
 def main():
