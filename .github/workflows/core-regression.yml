@@ -76,6 +76,11 @@ jobs:
           python scripts/path_normal_hda_gate.py \
             --output verification_results/PATH_NORMAL_HDA_RESULTS.json
 
+      - name: Safe Peter-Weyl x route local joint gate
+        run: |
+          python scripts/peter_weyl_route_dressed_local_gate.py \
+            --output verification_results/PETER_WEYL_ROUTE_DRESSED_LOCAL.json
+
       - name: Off-shell HDA structural killer
         run: |
           python bcqg_quantum_hda_killer.py \
