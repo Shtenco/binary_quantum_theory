@@ -1,33 +1,32 @@
 #!/usr/bin/env python3
-"""Open-charge SU(2) intertwiner basis needed by h[h^-1,K] Lorentzian legs.
+"""Open-charge SU(2) intertwiner blocks needed by h[h^-1,K] Lorentzian legs.
 
-The existing Peter-Weyl engine projects every completed primitive back to a
-four-valent Gauss singlet.  A Lorentzian factor
+After one fundamental holonomy hit, each affected four-valent geometric node
+carries total J=1/2; an external fundamental closes it to a five-valent singlet.
+This gate constructs the exact recoupling basis
 
-    C_e(K)=h_e [h_e^-1,K]
+    ((j1 j2)->K12, (j3 j4)->K34) -> J,M,
 
-cannot be evaluated that way because after the first h_e^-1 the two endpoints
-carry an open fundamental charge.  At such a node the four geometric legs must
-couple to total J=1/2; the external fundamental then closes it to a singlet.
+verifies its orthonormality, and constructs the volume in the symmetry-adapted
+block rather than taking a global magnetic-space square root.
 
-This gate constructs the exact recoupling tensors
+The oriented seed
 
-    ((j1 j2)->K12, (j3 j4)->K34) -> J,M
+    Q = J1 . (J2 x J3)
 
-for arbitrary total J, verifies their orthonormality, closes the J=1/2 sector
-with an external spin-1/2 to five-valent singlets, and verifies that the genuine
-four-valent volume V=sqrt(|J1.(J2xJ3)|) preserves the charged J,M sector.
+is an SU(2) scalar and must preserve every fixed-(J,M) sector.  We first verify
+that statement directly to machine precision.  Then, inside the exact small
+2x2/3x3 charged block, define
 
-Important numerical point: some charged columns are annihilated by the exact
-volume.  The eigensolver then leaves O(1e-16) eigenvalue roundoff, and taking a
-square root produces an artificial O(1e-8) output norm.  A relative projection
-error is ill-conditioned on those zero-volume columns.  Therefore this gate
-uses relative leakage only for numerically nonzero volume columns and absolute
-leakage for annihilated columns.  No representation-theory threshold is
-weakened.
+    V_J = sqrt(|Q_J|).
 
-It is a representation-theory prerequisite for Lorentzian amplitudes, not an
-H_L or HDA result by itself.
+This ordering is essential numerically: diagonalising Q in the full magnetic
+space leaves arbitrary rotations inside degenerate SU(2) multiplets, and a
+subsequent spectral sqrt can create spurious 1e-9--1e-8 apparent inter-sector
+leakage.  The block construction preserves the representation exactly by
+construction and is the compressed primitive needed by C_e(K)=h_e[h_e^-1,K].
+
+This is a representation-theory prerequisite, not H_L or HDA closure.
 """
 from __future__ import annotations
 
@@ -85,35 +84,62 @@ def charged_tensor(spins, K12, K34, J2, M2):
 def close_with_external_half(TJM, J2, M2):
     if J2 != 1:
         raise ValueError("a single external fundamental closes only J=1/2")
-    ext_ms = PW.m2vals_t(1)
     out = np.zeros(TJM.shape + (2,), complex)
-    for ie, me in enumerate(ext_ms):
+    for ie, me in enumerate(PW.m2vals_t(1)):
         c = PW.cg2(J2, 1, 0, M2, me, 0)
         if c:
             out[..., ie] += c * TJM
     return out
 
 
-def apply_volume_four(T, spins):
+@functools.lru_cache(None)
+def q123_matrix(spins3):
+    """Hermitian magnetic-space Q=J1.(J2 x J3) on the first three legs."""
+    spins3 = tuple(spins3)
+    mats = [PW.spin_mats_cached(s) for s in spins3]
+    d = np.prod([s + 1 for s in spins3], dtype=int)
+    Q = np.zeros((int(d), int(d)), complex)
+    for a, b, c in itertools.product(range(3), repeat=3):
+        e = PW.EPS3[a, b, c]
+        if e:
+            Q += e * np.kron(np.kron(mats[0][a], mats[1][b]), mats[2][c])
+    return 0.5 * (Q + Q.conj().T)
+
+
+def apply_q_four(T, spins):
     d1, d2, d3, d4 = [s + 1 for s in spins]
-    V = PW.volume123_matrix(spins[0], spins[1], spins[2])
-    return (V @ T.reshape(d1 * d2 * d3, d4)).reshape(d1, d2, d3, d4)
+    Q = q123_matrix(tuple(spins[:3]))
+    return (Q @ T.reshape(d1 * d2 * d3, d4)).reshape(d1, d2, d3, d4)
 
 
-def sector_projection_diagnostics(X, spins, J2, M2, nonzero_floor=1e-7):
-    recon = np.zeros_like(X)
-    for K12, K34 in allowed_charged_labels(spins, J2):
-        B = charged_tensor(tuple(spins), K12, K34, J2, M2)
-        recon += np.vdot(B, X) * B
-    abs_leak = float(np.linalg.norm(X - recon))
-    xnorm = float(np.linalg.norm(X))
-    rel = None if xnorm <= nonzero_floor else abs_leak / xnorm
-    return abs_leak, xnorm, rel
+def project_to_basis(X, basis):
+    coeff = np.asarray([np.vdot(B, X) for B in basis], complex)
+    recon = sum((c * B for c, B in zip(coeff, basis)), np.zeros_like(X))
+    return coeff, recon
+
+
+def block_q_and_v(spins, J2, M2):
+    labels = allowed_charged_labels(spins, J2)
+    basis = [charged_tensor(tuple(spins), a, b, J2, M2) for a, b in labels]
+    n = len(basis)
+    Qb = np.zeros((n, n), complex)
+    max_abs_leak = 0.0
+    max_rel_leak = 0.0
+    for j, B in enumerate(basis):
+        QB = apply_q_four(B, spins)
+        coeff, recon = project_to_basis(QB, basis)
+        Qb[:, j] = coeff
+        abs_leak = float(np.linalg.norm(QB - recon))
+        rel_leak = abs_leak / max(float(np.linalg.norm(QB)), 1e-30)
+        max_abs_leak = max(max_abs_leak, abs_leak)
+        max_rel_leak = max(max_rel_leak, rel_leak)
+    Qb = 0.5 * (Qb + Qb.conj().T)
+    ev, U = np.linalg.eigh(Qb)
+    Vb = (U * np.sqrt(np.abs(ev))) @ U.conj().T
+    return basis, Qb, Vb, max_abs_leak, max_rel_leak
 
 
 def run():
-    # One fundamental hit from an all-j=1/2 four-valent node changes exactly one
-    # doubled spin 1 -> 0 or 2.  Test all 8 resulting quartets.
     one_hit = []
     base = [1, 1, 1, 1]
     for leg in range(4):
@@ -122,47 +148,43 @@ def run():
             one_hit.append(tuple(q))
     one_hit = tuple(dict.fromkeys(one_hit))
 
-    max_orth_error = 0.0
-    max_five_singlet_orth_error = 0.0
-    max_volume_abs_leakage = 0.0
-    max_volume_rel_leakage_nonzero = 0.0
-    near_zero_volume_columns = 0
-    nonzero_volume_columns = 0
-    min_nonzero_volume_column_norm = float("inf")
-    max_near_zero_volume_column_norm = 0.0
+    max_orth = 0.0
+    max_closed_orth = 0.0
+    max_q_abs_leak = 0.0
+    max_q_rel_leak = 0.0
+    max_q_herm = 0.0
+    max_v_herm = 0.0
+    max_m_block_difference = 0.0
+    min_v_eig = float("inf")
     rows = []
 
     for spins in one_hit:
         labels = allowed_charged_labels(spins, 1)
+        blocks = {}
         basis_by_M = {}
-        row_abs = 0.0
-        row_rel = 0.0
-        row_zero = 0
-        row_nonzero = 0
+        row_q_abs = row_q_rel = row_q_herm = row_v_herm = 0.0
         for M2 in PW.m2vals_t(1):
-            basis = [charged_tensor(spins, a, b, 1, M2) for a, b in labels]
-            G = np.array([[np.vdot(A, B) for B in basis] for A in basis], complex)
-            err = float(np.linalg.norm(G - np.eye(len(basis)))) if basis else 0.0
-            max_orth_error = max(max_orth_error, err)
+            basis, Qb, Vb, q_abs, q_rel = block_q_and_v(spins, 1, M2)
             basis_by_M[M2] = basis
-            for B in basis:
-                VB = apply_volume_four(B, spins)
-                abs_leak, vnorm, rel = sector_projection_diagnostics(VB, spins, 1, M2)
-                row_abs = max(row_abs, abs_leak)
-                max_volume_abs_leakage = max(max_volume_abs_leakage, abs_leak)
-                if rel is None:
-                    row_zero += 1
-                    near_zero_volume_columns += 1
-                    max_near_zero_volume_column_norm = max(max_near_zero_volume_column_norm, vnorm)
-                else:
-                    row_nonzero += 1
-                    nonzero_volume_columns += 1
-                    min_nonzero_volume_column_norm = min(min_nonzero_volume_column_norm, vnorm)
-                    row_rel = max(row_rel, rel)
-                    max_volume_rel_leakage_nonzero = max(max_volume_rel_leakage_nonzero, rel)
+            blocks[M2] = (Qb, Vb)
+            G = np.array([[np.vdot(A, B) for B in basis] for A in basis], complex)
+            max_orth = max(max_orth, float(np.linalg.norm(G - np.eye(len(basis)))))
+            qh = float(np.linalg.norm(Qb - Qb.conj().T))
+            vh = float(np.linalg.norm(Vb - Vb.conj().T))
+            row_q_abs = max(row_q_abs, q_abs); row_q_rel = max(row_q_rel, q_rel)
+            row_q_herm = max(row_q_herm, qh); row_v_herm = max(row_v_herm, vh)
+            max_q_abs_leak = max(max_q_abs_leak, q_abs)
+            max_q_rel_leak = max(max_q_rel_leak, q_rel)
+            max_q_herm = max(max_q_herm, qh); max_v_herm = max(max_v_herm, vh)
+            if len(Vb):
+                min_v_eig = min(min_v_eig, float(np.linalg.eigvalsh(Vb).min()))
 
-        # Couple each recoupling label to one external fundamental and sum over
-        # M.  These are genuine five-valent singlets.
+        # Scalar Q/V must be identical for M=+/-1/2 in the same recoupling basis.
+        Mp, Mm = PW.m2vals_t(1)
+        qdiff = float(np.linalg.norm(blocks[Mp][0] - blocks[Mm][0]))
+        vdiff = float(np.linalg.norm(blocks[Mp][1] - blocks[Mm][1]))
+        max_m_block_difference = max(max_m_block_difference, qdiff, vdiff)
+
         closed = []
         for ilabel, _ in enumerate(labels):
             S = np.zeros(tuple(s + 1 for s in spins) + (2,), complex)
@@ -171,64 +193,65 @@ def run():
             closed.append(S)
         G5 = np.array([[np.vdot(A, B) for B in closed] for A in closed], complex)
         err5 = float(np.linalg.norm(G5 - np.eye(len(closed)))) if closed else 0.0
-        max_five_singlet_orth_error = max(max_five_singlet_orth_error, err5)
+        max_closed_orth = max(max_closed_orth, err5)
+
         rows.append({
             "spins": [s / 2 for s in spins],
             "charged_J": 0.5,
             "charged_dimension": len(labels),
             "labels_doubled": [list(x) for x in labels],
-            "max_4leg_orth_error": max(
-                float(np.linalg.norm(
-                    np.array([[np.vdot(A, B) for B in basis_by_M[M]] for A in basis_by_M[M]])
-                    - np.eye(len(labels))
-                )) for M in PW.m2vals_t(1)
-            ) if labels else 0.0,
-            "5valent_singlet_orth_error": err5,
-            "volume_near_zero_columns": row_zero,
-            "volume_nonzero_columns": row_nonzero,
-            "max_volume_absolute_sector_leakage": row_abs,
-            "max_volume_relative_sector_leakage_nonzero": row_rel,
+            "five_valent_singlet_orth_error": err5,
+            "max_Q_absolute_sector_leakage": row_q_abs,
+            "max_Q_relative_sector_leakage": row_q_rel,
+            "max_Q_block_hermiticity_error": row_q_herm,
+            "max_V_block_hermiticity_error": row_v_herm,
+            "Q_block_M_difference": qdiff,
+            "V_block_M_difference": vdiff,
+            "Q_block_real": blocks[Mp][0].real.tolist(),
+            "Q_block_imag": blocks[Mp][0].imag.tolist(),
+            "V_block_real": blocks[Mp][1].real.tolist(),
+            "V_block_imag": blocks[Mp][1].imag.tolist(),
         })
 
     dims = sorted({r["charged_dimension"] for r in rows})
-    if nonzero_volume_columns == 0:
-        min_nonzero_volume_column_norm = 0.0
-    # Absolute leakage is the correct test on all columns; relative leakage is
-    # additionally required only when the volume output is numerically nonzero.
+    if min_v_eig == float("inf"):
+        min_v_eig = 0.0
     passed = (
         len(one_hit) == 8
         and dims == [2, 3]
-        and max_orth_error < 1e-11
-        and max_five_singlet_orth_error < 1e-11
-        and max_volume_abs_leakage < 1e-10
-        and max_volume_rel_leakage_nonzero < 1e-10
-        and nonzero_volume_columns > 0
+        and max_orth < 1e-11
+        and max_closed_orth < 1e-11
+        and max_q_abs_leak < 1e-12
+        and max_q_rel_leak < 1e-12
+        and max_q_herm < 1e-12
+        and max_v_herm < 1e-12
+        and max_m_block_difference < 1e-12
+        and min_v_eig > -1e-12
     )
     return {
-        "status": "charged-intertwiner recoupling prerequisite for Lorentzian holonomy commutators",
+        "status": "symmetry-adapted charged-intertwiner Q/V blocks for Lorentzian holonomy commutators",
         "passed": bool(passed),
         "one_fundamental_hit_quartets": len(one_hit),
         "charged_dimensions_observed": dims,
         "rows": rows,
-        "max_four_leg_orthonormality_error": max_orth_error,
-        "max_five_valent_singlet_orthonormality_error": max_five_singlet_orth_error,
-        "volume_nonzero_floor": 1e-7,
-        "near_zero_volume_columns": near_zero_volume_columns,
-        "nonzero_volume_columns": nonzero_volume_columns,
-        "max_near_zero_volume_column_norm": max_near_zero_volume_column_norm,
-        "min_nonzero_volume_column_norm": min_nonzero_volume_column_norm,
-        "max_volume_absolute_JM_sector_leakage": max_volume_abs_leakage,
-        "max_volume_relative_JM_sector_leakage_nonzero": max_volume_rel_leakage_nonzero,
+        "max_four_leg_orthonormality_error": max_orth,
+        "max_five_valent_singlet_orthonormality_error": max_closed_orth,
+        "max_Q_absolute_JM_sector_leakage": max_q_abs_leak,
+        "max_Q_relative_JM_sector_leakage": max_q_rel_leak,
+        "max_Q_block_hermiticity_error": max_q_herm,
+        "max_V_block_hermiticity_error": max_v_herm,
+        "max_M_block_difference": max_m_block_difference,
+        "minimum_V_block_eigenvalue": min_v_eig,
         "representation_statement": (
-            "After one fundamental holonomy hit, each affected endpoint is represented by a four-leg total-J=1/2 charged intertwiner; coupling the external fundamental closes a gauge singlet."
+            "A one-hit endpoint is exactly compressed into a total-J=1/2 four-leg charged block of dimension 2 or 3; the external fundamental closes it to a five-valent singlet."
         ),
-        "conditioning_note": (
-            "Relative leakage is not evaluated on exact-zero volume columns because sqrt of eigensolver roundoff turns O(1e-16) Q eigenvalues into artificial O(1e-8) V norms. Those columns are tested by absolute leakage instead."
+        "volume_statement": (
+            "The SU(2)-scalar seed Q preserves fixed (J,M) to machine precision. The physical absolute-volume block is then V_J=sqrt(|Q_J|), taken after symmetry reduction, preventing spurious degenerate-multiplet mixing from a global magnetic eigensolver."
         ),
         "next_use": (
-            "Use this charged basis as the intermediate compression layer for h_e^-1|Gauss>, apply V_v and H_E,v/K_v without raw magnetic blowup, then close with h_e to obtain C_e(K_v)=h_e[h_e^-1,K_v]."
+            "Use these exact Q_J/V_J blocks as the intermediate charged-state volume primitive inside h_e^-1, K_v and h_e closure to compute C_e(K_v)=h_e[h_e^-1,K_v]."
         ),
-        "scope_note": "Exact SU(2) representation/volume gate only; it does not yet evaluate C_e(K), the Lorentzian kinetic triple, or HDA closure.",
+        "scope_note": "Exact representation/volume prerequisite only; C_e(K), the Lorentzian triple and HDA remain open.",
     }
 
 
