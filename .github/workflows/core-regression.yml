@@ -89,6 +89,11 @@ jobs:
           python scripts/charged_intertwiner_recoupling_gate.py \
             --output verification_results/CHARGED_INTERTWINER_RECOUPLING.json
 
+      - name: Covariantized volume leg h[h^-1,V] gate
+        run: |
+          python scripts/peter_weyl_covariant_volume_leg_gate.py \
+            --output verification_results/PETER_WEYL_COVARIANT_VOLUME_LEG.json
+
       - name: Lorentzian K equals volume-HE commutator amplitude gate
         run: |
           python scripts/peter_weyl_lorentzian_K_block_gate.py \
