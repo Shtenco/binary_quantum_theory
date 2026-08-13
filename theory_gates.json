@@ -10,6 +10,8 @@
     {"id":"LORENTZ","status":"tested_finite","claim":"Fixed beta control and full Lorentzian support wall through Jmax=13/2.","evidence":["LORENTZIAN_BETA_CANCELLATION.md","scripts/lorentzian_hit_depth_bound.py"]},
     {"id":"LHDA_COMP","status":"proved","claim":"Fixed-cutoff Lorentzian-route composition scaling theorem documented in the final certificate.","evidence":["FINAL_CORE_ARCHITECTURE_CERTIFICATE.md"]},
     {"id":"DEWITT","status":"proved","claim":"Declared ADM/HDA uniqueness and degree-counting results.","evidence":["DEWITT_HDA_UNIQUENESS.md","BF_GR_DIRAC_COUNT_DISCRIMINATOR.md"]},
+    {"id":"GQBIT","status":"tested_finite","claim":"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.","evidence":["GRAVITON_INFOTON_FOAM_BRIDGE.md","scripts/graviton_infoton_foam_gate.py"]},
+    {"id":"FOAMGW","status":"conditional","claim":"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resonance near Omega_GW=2 omega_I with mu~|xi h| omega_I/4.","evidence":["GRAVITON_INFOTON_FOAM_BRIDGE.md","scripts/graviton_infoton_foam_gate.py"]},
     {"id":"CORECERT","status":"conditional","claim":"The fixed-cutoff core candidate architecture closes when the final composition theorem is combined with the independently tested route-normal limit.","evidence":["FINAL_CORE_ARCHITECTURE_CERTIFICATE.md","THEORY_STATUS.md"]}
   ]
 }
