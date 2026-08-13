@@ -64,7 +64,6 @@ jobs:
             PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md \
             PETER_WEYL_COVARIANT_K_PROJECTION_AUDIT.md
 
-      # Fast frontier-first Lorentzian bricks: fail here before expensive HH.
       - name: Charged-intertwiner Lorentzian recoupling gate
         run: |
           python scripts/charged_intertwiner_recoupling_gate.py \
@@ -109,38 +108,6 @@ jobs:
           if not d.get('passed', False):
               raise SystemExit('covariant-K invariant audit FAILED')
           PY
-
-      - name: Lorentzian exact scalar-channel gate
-        run: python scripts/peter_weyl_lorentzian_scalar_channel_gate.py
-
-      - name: Covariant C(V) state-to-state composition gate
-        run: |
-          python scripts/peter_weyl_covariant_composition_gate.py \
-            --output verification_results/PETER_WEYL_CV_COMPOSITION.json
-
-      - name: Covariant C(K) state-to-state composition gate
-        run: |
-          python scripts/peter_weyl_covariant_K_composition_cached_gate.py \
-            --output verification_results/PETER_WEYL_CK_COMPOSITION.json
-
-      - name: Lorentzian operator-order algebra gate
-        run: python scripts/peter_weyl_lorentzian_triple_algebra_gate.py
-
-      - name: First real Peter-Weyl ordered K-K-V triple
-        run: |
-          python scripts/peter_weyl_lorentzian_ordered_triple_gate.py \
-            --output verification_results/PETER_WEYL_LORENTZIAN_ORDERED_TRIPLE.json
-
-      - name: Upload Lorentzian frontier diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lorentzian-frontier-diagnostics
-          path: |
-            verification_results/PETER_WEYL_CV_COMPOSITION.json
-            verification_results/PETER_WEYL_CK_COMPOSITION.json
-            verification_results/PETER_WEYL_LORENTZIAN_ORDERED_TRIPLE.json
-          if-no-files-found: warn
 
       - name: Frozen bit-to-spacetime gate
         run: |
@@ -196,3 +163,105 @@ jobs:
 
       - name: Quick integrated verifier
         run: python bcqg_unified_verification.py --profile quick --skip-hda --skip-critical --skip-flat-regge
+
+  lorentzian-frontier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Syntax check frontier
+        run: |
+          python -m py_compile \
+            scripts/peter_weyl_covariant_composition_gate.py \
+            scripts/peter_weyl_covariant_K_composition_gate.py \
+            scripts/peter_weyl_covariant_K_composition_cached_gate.py \
+            scripts/peter_weyl_lorentzian_scalar_channel_gate.py \
+            scripts/peter_weyl_lorentzian_triple_algebra_gate.py \
+            scripts/peter_weyl_lorentzian_ordered_triple_gate.py
+
+      - name: Lorentzian exact scalar-channel gate
+        run: python scripts/peter_weyl_lorentzian_scalar_channel_gate.py
+
+      - name: Covariant C(V) state-to-state composition gate
+        run: |
+          python scripts/peter_weyl_covariant_composition_gate.py \
+            --output verification_results/PETER_WEYL_CV_COMPOSITION.json
+
+      - name: Covariant C(K) state-to-state composition gate
+        id: ck_comp
+        continue-on-error: true
+        run: |
+          python scripts/peter_weyl_covariant_K_composition_cached_gate.py \
+            --output verification_results/PETER_WEYL_CK_COMPOSITION.json
+
+      - name: Upload composition diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-composition-diagnostics
+          path: |
+            verification_results/PETER_WEYL_CV_COMPOSITION.json
+            verification_results/PETER_WEYL_CK_COMPOSITION.json
+          if-no-files-found: warn
+
+      - name: Enforce C(K) composition
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('verification_results/PETER_WEYL_CK_COMPOSITION.json')
+          if not p.is_file():
+              raise SystemExit('C(K) composition JSON missing')
+          d=json.loads(p.read_text())
+          print(json.dumps(d,indent=2))
+          if not d.get('passed',False):
+              raise SystemExit('C(K) state-to-state composition FAILED')
+          PY
+
+      - name: Lorentzian operator-order algebra gate
+        run: python scripts/peter_weyl_lorentzian_triple_algebra_gate.py
+
+      - name: First real Peter-Weyl ordered K-K-V triple
+        id: ordered_triple
+        continue-on-error: true
+        run: |
+          python scripts/peter_weyl_lorentzian_ordered_triple_gate.py \
+            --output verification_results/PETER_WEYL_LORENTZIAN_ORDERED_TRIPLE.json
+
+      - name: Upload ordered-triple diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-ordered-triple
+          path: verification_results/PETER_WEYL_LORENTZIAN_ORDERED_TRIPLE.json
+          if-no-files-found: warn
+
+      - name: Enforce ordered triple
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('verification_results/PETER_WEYL_LORENTZIAN_ORDERED_TRIPLE.json')
+          if not p.is_file():
+              raise SystemExit('ordered-triple JSON missing')
+          d=json.loads(p.read_text())
+          print(json.dumps(d,indent=2))
+          if not d.get('passed',False):
+              raise SystemExit('real ordered K-K-V triple FAILED')
+          PY
