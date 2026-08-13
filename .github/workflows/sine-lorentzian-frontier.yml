@@ -1,0 +1,71 @@
+name: sine-lorentzian-frontier
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sine-lorentzian-frontier-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sine-k:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Syntax
+        run: |
+          python -m py_compile \
+            scripts/peter_weyl_euclidean_sine_ordering_gate.py \
+            scripts/peter_weyl_covariant_composition_gate.py \
+            scripts/peter_weyl_covariant_K_composition_cached_gate.py \
+            scripts/peter_weyl_covariant_K_sine_composition_gate.py
+      - name: Physical Euclidean sine ordering
+        run: |
+          python scripts/peter_weyl_euclidean_sine_ordering_gate.py \
+            --output verification_results/PETER_WEYL_EUCLIDEAN_SINE_ORDERING.json
+      - name: C(V) state-to-state
+        run: |
+          python scripts/peter_weyl_covariant_composition_gate.py \
+            --output verification_results/PETER_WEYL_CV_COMPOSITION.json
+      - name: C(K_sine) state-to-state
+        id: sine_ck
+        continue-on-error: true
+        run: |
+          python scripts/peter_weyl_covariant_K_sine_composition_gate.py \
+            --output verification_results/PETER_WEYL_CK_SINE_COMPOSITION.json
+      - name: Upload sine frontier
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sine-lorentzian-k-frontier
+          path: |
+            verification_results/PETER_WEYL_EUCLIDEAN_SINE_ORDERING.json
+            verification_results/PETER_WEYL_CV_COMPOSITION.json
+            verification_results/PETER_WEYL_CK_SINE_COMPOSITION.json
+          if-no-files-found: error
+      - name: Enforce C(K_sine)
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('verification_results/PETER_WEYL_CK_SINE_COMPOSITION.json')
+          if not p.is_file():
+              raise SystemExit('C(K_sine) JSON missing')
+          d=json.loads(p.read_text())
+          print(json.dumps(d,indent=2))
+          if not d.get('passed',False):
+              raise SystemExit('physical sine-ordered C(K) composition FAILED')
+          PY
