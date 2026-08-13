@@ -50,7 +50,7 @@ jobs:
           python scripts/verify_connection_ward.py
           python scripts/verify_geometric_cell.py
 
-      - name: HDA kinematics gates
+      - name: HDA kinematics and Lorentzian gates
         run: |
           python scripts/dual_k5_lapse_cochain_gate.py
           python scripts/dual_cell_sharp_rt0_gate.py
@@ -58,6 +58,7 @@ jobs:
           python scripts/path_diffeo_lie_gate.py
           python scripts/path_vector_diffeo_gate.py
           python scripts/lorentzian_hit_depth_bound.py
+          python scripts/lorentzian_beta_cancellation_gate.py
 
       - name: Quick integrated verifier
         run: python bcqg_unified_verification.py --profile quick --skip-hda --skip-critical --skip-flat-regge
