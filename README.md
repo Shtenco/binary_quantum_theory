@@ -3,58 +3,41 @@
 **Актуальный статус:** 2026-08-13  
 **Класс результата:** вычислимая кандидатная архитектура; фундаментальная физическая теория **не заявлена**.
 
-> Главный принцип репозитория: конечное тождество, regression test и continuum/physics claim — разные уровни доказательности. Ни один численный PASS внутри выбранной модели не считается экспериментальным подтверждением природы.
+> Finite identity, regression test, conditional continuum statement and proof are different evidence classes. Green CI is not experimental confirmation of nature.
 
-## Новый центральный результат: `bit -> spacetime candidate`
+## Central result: `bit -> spacetime candidate`
 
-Positive branch больше **не начинается с заранее заданного 4D torus**.
-
-Введено coordinate-free frozen rule family $R_q$:
-
-- causal link раскрывается в $2^q$ двухшаговых маршрутов;
-- маршруты имеют только `q` binary labels;
-- intra-cell frame links задаются Hamming-distance-one между binary labels;
-- рекурсивно переписываются только causal child links.
-
-Train generations `g=2,3,4` выбирают `q` только по $D_{slice}\approx3$ и $z\approx1$. До просмотра generation 5 правило замораживается:
+The positive branch no longer starts from a preset 4D torus. A coordinate-free
+binary-route family $R_q$ is frozen on train generations and tested held-out.
+For the selected rule
 
 $$
-\boxed{q_*=2}.
+\boxed{q_*=2},
 $$
 
-Held-out transition `g=4 -> 5` даёт
+held-out generation 5 gives
 
 $$
 \boxed{d_H=2.999229782},\qquad
 \boxed{z=0.998281156},
 $$
 
-и scaling-derived
-
 $$
-\boxed{d_s^{slice}\approx3.004393867},\qquad
+\boxed{d_s^{slice}=3.004393867},\qquad
 \boxed{d_s^{history}\approx4.004393867}.
 $$
 
-Независимый topology check, который **не использовался при выборе `q`**, даёт для local route shell
-
-$$
-\boxed{\beta=(1,0,1)},
-$$
-
-то есть single homology-$S^2$ boundary и natural local 3-cell completion.
-
-На том же frozen rule observer coarse graining даёт
+On the same frozen rule
 
 $$
 \boxed{
-\delta g\sim b^{-2.001707},\qquad
-\nabla\delta g\sim b^{-3.001458},\qquad
+\delta g\sim b^{-2.001707},\quad
+\nabla\delta g\sim b^{-3.001458},\quad
 \delta R\sim b^{-4.000524}
 }
 $$
 
-и
+and
 
 $$
 \boxed{
@@ -63,58 +46,122 @@ $$
 }
 $$
 
-Две binary route coordinates в refined limit поддерживают transverse path-diffeomorphism Lie algebra с
+The independent local topology selector gives
 
 $$
-\boxed{\Delta_{Lie}\sim L^{-1.981810}}.
+Q_2=C_4,\qquad \Sigma C_4\cong S^2.
 $$
 
-Подробный вывод: **[`BIT_TO_SPACETIME_CENTRAL_EQUATION.md`](BIT_TO_SPACETIME_CENTRAL_EQUATION.md)**  
-Unified executable gate: **[`bcqg_observer_smoothing_unified.py`](bcqg_observer_smoothing_unified.py)**  
-Finite report: **[`OBSERVER_SCALE_SMOOTHING.md`](OBSERVER_SCALE_SMOOTHING.md)**
+Details: [`BIT_TO_SPACETIME_CENTRAL_EQUATION.md`](BIT_TO_SPACETIME_CENTRAL_EQUATION.md), [`OBSERVER_SCALE_SMOOTHING.md`](OBSERVER_SCALE_SMOOTHING.md), [`bcqg_observer_smoothing_unified.py`](bcqg_observer_smoothing_unified.py).
 
-Это **finite candidate-geometrogenesis PASS**, а не доказательство quantum GR. Два главных блокера остаются открыты:
+## Global 3-manifold: canonical PL completion
 
-1. local homology-$S^2$ shell ещё не доказывает global recursively glued 3-manifold;
-2. microscopic graph-changing Hamiltonian ещё должен воспроизвести полный off-shell HDA.
+The frozen q=2 shell is the octahedral $S^2$. A natural minimal closed simplicial globalization is the boundary of the four-dimensional cross-polytope (16-cell):
 
-## Текущий canonical frontier
+$$
+(V,E,F,T)=(8,24,32,16),\qquad
+\boxed{\beta_{\mathbb F_2}=(1,0,0,1)}.
+$$
 
-Наиболее сильная canonical ветвь формулируется как
+It has
+
+$$
+\operatorname{Lk}(v)=S^2,\qquad
+\operatorname{Lk}(e)=S^1,\qquad
+\operatorname{Lk}(f)=S^0.
+$$
+
+Two full barycentric refinements were checked simplex-by-simplex:
+
+| g | V | E | F | tetrahedra | bad v-links | bad e-links | bad f-links |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 8 | 24 | 32 | 16 | 0 | 0 | 0 |
+| 1 | 80 | 464 | 768 | 384 | 0 | 0 | 0 |
+| 2 | 1696 | 10912 | 18432 | 9216 | 0 | 0 | 0 |
+
+All levels are orientable, every triangle is two-sided and $\partial^2=0$.
+
+**Status:** canonical PL globalization PASS. This proves existence/stability of a natural global $S^3$ completion compatible with the q=2 shell. It does **not** prove that the bare causal rewrite uniquely selects this gluing unless the completion rule is frozen as part of the microscopic model.
+
+Evidence: [`GLOBAL_MANIFOLD_Q2_COMPLETION.md`](GLOBAL_MANIFOLD_Q2_COMPLETION.md), [`bcqg_global_manifold_gate.py`](bcqg_global_manifold_gate.py).
+
+## HDA: old factorization ruled out, route-normal sector constructed
+
+The RHS is fixed independently:
+
+$$
+N,M\to\omega=N\,dM-M\,dN\to\beta=\sharp_{E,q}\omega\to D_{path}[\beta].
+$$
+
+If
+
+$$
+H[N]=H_{geom}[N]\otimes I_{path},
+$$
+
+then its commutator has zero path-derivative component while generic off-shell
+$D_{path}[\beta]\ne0$. The normalized witness is exactly
+
+$$
+\boxed{\Delta_{factor}=1}.
+$$
+
+So increasing $J_{max}$ cannot fix HDA while the Hamiltonian is trivial on path
+space.
+
+The missing route action has a parameter-free candidate:
+
+$$
+\boxed{
+H_{path}[N]=\frac12\{N,\sqrt{-\Delta_{path,q}}\}.
+}
+$$
+
+Its principal symbol obeys, up to one global vector-constraint orientation convention,
+
+$$
+\boxed{
+\{N|p|_q,M|p|_q\}
+=q^{ab}(M\partial_bN-N\partial_bM)p_a.
+}
+$$
+
+Thus the HDA metric structure function appears without fitting its magnitude.
+The finite spectral WKB test gives approximately
+
+$$
+\boxed{\Delta_{HDA}^{path}\sim k^{-2.14}}
+$$
+
+and reaches a few $10^{-6}$ at the largest tested carrier.
+
+**Status:** route-sector normal-deformation representation PASS at principal-symbol/semiclassical level; full Peter--Weyl Lorentzian HDA remains OPEN until geometry and route factors are coupled in the same Hamiltonian.
+
+Evidence: [`QUANTUM_HDA_KILLER_RESULT.md`](QUANTUM_HDA_KILLER_RESULT.md), [`bcqg_quantum_hda_killer.py`](bcqg_quantum_hda_killer.py), [`scripts/path_normal_hda_gate.py`](scripts/path_normal_hda_gate.py).
+
+## Current canonical frontier
 
 $$
 \boxed{
 \text{Peter--Weyl }SU(2)
-\longrightarrow H_E+H_L^{(\beta)}
-\longrightarrow \text{graph-changing off-shell domain}
-\longrightarrow \text{HDA/DeWitt continuum}
+\to H_E+H_L^{(\beta)}
+\to H_{geom+route}
+\to \text{nontrivial off-shell HDA}
+\to \text{DeWitt/GR continuum}
 }
 $$
 
-Правый член hypersurface-deformation algebra больше не подбирается после расчёта. Он собирается независимо:
-
-$$
-N,M
-\xrightarrow{\ d\ }
-\omega=N\,dM-M\,dN
-\xrightarrow{\ \sharp_{E,q}\ }
-\beta
-\xrightarrow{\ \text{path rerouting}\ }
-D_{\rm path}[\beta].
-$$
-
-Центральный открытый тест:
+The final finite target is preferably densitized:
 
 $$
 \boxed{
-[\hat H[N],\hat H[M]]
-\stackrel{?}{\longrightarrow}
-i\hbar\,\hat D_{\rm path}
-\!\left[\sharp_{E,q}(N\,dM-M\,dN)\right]
+\frac32\{V,-i[H[N],H[M]]\}
+\longrightarrow
+\hbar D_{path}[\sharp_{E,q}(N\,dM-M\,dN)].
 }
 $$
 
-на **nontrivial off-shell domain**, одновременно с
+It must converge simultaneously with
 
 $$
 \Delta_\beta\to0,
@@ -124,119 +171,63 @@ $$
 z\to1,
 $$
 
-и first-class rank должен идти к $3G+3D+1H$, а не к топологическому BF-flatness rank.
+and the independent first-class rank must approach $3G+3D+1H$, not BF flatness rank.
 
-Полный подробный ledger: **[`THEORY_STATUS.md`](THEORY_STATUS.md)**  
-Machine-readable gates: **[`theory_gates.json`](theory_gates.json)**
+Full status: [`THEORY_STATUS.md`](THEORY_STATUS.md)  
+Machine ledger: [`theory_gates.json`](theory_gates.json)
 
-## Что уже воспроизводимо
+## Important negative controls retained
 
-- frozen binary-route search без coordinate dimension и held-out generation-5 scaling;
-- local homology-$S^2$ route shell для frozen `q=2`;
-- observer smoothing $b^{-2/-3/-4}$ без заранее заданного 4D torus;
-- exact periodic sine/Laplacian identities для $L=B^\dagger B$;
-- finite SU(2) frame/connection Ward checks и algebraic geometric-cell controls;
-- finite Peter--Weyl links с exact left/right gauge covariance и cutoff-wall theorem;
-- $K_5$ five-tetrahedron/Gauss laboratories и отдельный BF/15j negative control;
-- regulator-safe $J_{\max}=5/2$ genuine-volume HH support diagnostic;
-- generic dual-cell Hodge/RT0 `sharp` reconstruction from flux geometry;
-- refined path-register Lie algebra с quadratic continuum convergence;
-- DeWitt flux pullback inertia $(5+,1-,3\,0)$;
-- independent classical ADM/simplex HDA controls;
-- fixed-4D Regge $\to$ Fierz--Pauli / Einstein--Hilbert / cubic Ward scaling;
-- preregistered Regge continuation $L=9,10$: **8/8 held-out checks PASS**, все relative defect errors < 0.5%;
-- отдельная covariant EPRL/simplicity ветвь с честно сохранённым blind extrapolation FAIL.
+The repository explicitly keeps results that prevent circular claims:
 
-Эти результаты имеют разный статус: exact, finite, conditional или open. Они не заменяют вывод одной Lorentzian microscopic theory и экспериментальную проверку.
+1. minimal dimension-blind binary reconvergence tends to about two dimensions, not four;
+2. `EEF`-looking operators and 15j kernels can be pure BF;
+3. group-averaged zero commutator is too weak for off-shell HDA;
+4. old $V_5$ BF-like kernel is not preserved by the regulator-safe genuine-volume Hamiltonian;
+5. local $S^2$ shell alone was insufficient until a global PL completion was declared and tested;
+6. full geometry x route HDA is still open.
 
-## Что принципиально не считается доказательством GR
+## Independent IR cross-checks
 
-1. Две TT-моды после ручной TT-проекции.
-2. `EEF`-подобный оператор сам по себе.
-3. 15j/BF kernel или flatness constraints.
-4. Нулевой commutator только после group averaging.
-5. Выход Hamiltonian из fixed $K_5$ sector: graph/spin change разрешён canonical LQG dynamics.
-6. Local $S^2$ cell shell без global manifold test.
-7. Central-limit smoothing без frozen microscopic measure/correlation proof.
-8. Совпадение заранее известных констант или post-hoc fitting.
+The repository also retains:
 
-BF/GR discriminator зафиксирован отдельно в [`BF_GR_DIRAC_COUNT_DISCRIMINATOR.md`](BF_GR_DIRAC_COUNT_DISCRIMINATOR.md).
+- exact Peter--Weyl left/right gauge covariance and cutoff-wall theorem;
+- DeWitt flux inertia $(5+,1-,3\,0)$;
+- classical real-Barbero $\beta$ cancellation;
+- independent spectral ADM and finite-simplex HDA controls;
+- Regge $\to$ Fierz--Pauli / Einstein--Hilbert / cubic Ward scaling;
+- preregistered Regge continuation at $L=9,10$: **8/8 PASS**, all relative defect errors below 0.5%;
+- separate covariant EPRL/simplicity branch with its blind extrapolation FAIL preserved.
 
-## Две gravity-ветви не смешиваются
-
-### Canonical real-$SU(2)$
-
-Peter--Weyl holonomy/flux variables, Euclidean + Lorentzian Hamiltonian, graph-changing/off-shell HDA, Immirzi cancellation, DeWitt signature.
-
-Ключевые файлы:
-
-- [`CANONICAL_MICRO_ARCHITECTURE_V1.md`](CANONICAL_MICRO_ARCHITECTURE_V1.md)
-- [`FLUX_DRIVEN_PATH_HDA_TARGET.md`](FLUX_DRIVEN_PATH_HDA_TARGET.md)
-- [`OFF_SHELL_HDA_HABITAT_TARGET.md`](OFF_SHELL_HDA_HABITAT_TARGET.md)
-- [`DENSITIZED_QUANTUM_HDA_TARGET.md`](DENSITIZED_QUANTUM_HDA_TARGET.md)
-- [`LORENTZIAN_BETA_CANCELLATION.md`](LORENTZIAN_BETA_CANCELLATION.md)
-- [`LORENTZIAN_HH_REACHABLE_SPACE.md`](LORENTZIAN_HH_REACHABLE_SPACE.md)
-
-### Covariant BF / spin foam
-
-Simplicity constraints select a gravity sector from BF/Spin(4) data. Эта ветвь служит independent semiclassical cross-check и **не вставляется механически** как preprocessing в real-$SU(2)$ canonical Hamiltonian.
-
-Ключевые файлы:
-
-- [`SIMPLICITY_PROJECTOR_THEOREM.md`](SIMPLICITY_PROJECTOR_THEOREM.md)
-- [`EPRL_COHERENT_FUSION_SCALING.md`](EPRL_COHERENT_FUSION_SCALING.md)
-- [`K5_DUAL_BF_CONTROL.md`](K5_DUAL_BF_CONTROL.md)
-
-## Быстрый regression run
+## Fast regression
 
 ```bash
 python -m pip install -r requirements.txt
-python bcqg_observer_smoothing_unified.py
 python scripts/verify_theory_gates.py
-python scripts/verify_sine_bridge.py
-python scripts/verify_connection_ward.py
-python scripts/verify_geometric_cell.py
-python scripts/dual_k5_lapse_cochain_gate.py
-python scripts/dual_cell_sharp_rt0_gate.py
-python scripts/path_rerouting_diffeo_gate.py
-python scripts/path_diffeo_lie_gate.py
-python scripts/path_vector_diffeo_gate.py
-python scripts/lorentzian_hit_depth_bound.py
+python bcqg_observer_smoothing_unified.py
+python bcqg_global_manifold_gate.py
+python bcqg_quantum_hda_killer.py
+python scripts/path_normal_hda_gate.py
+python bcqg_bit_to_gravity_final.py
 ```
 
-GitHub Actions запускает core regression автоматически на `push` в `main` и на pull request.
-
-## Правило изменения теории
-
-Любой change, который повышает физический claim, должен одновременно обновлять status/ledger, добавлять воспроизводимый evidence и сохранять negative/blind FAIL controls. `tested_finite` и `conditional` не повышаются до `proved` без отдельного доказательства.
-
-См. [`CONTRIBUTING.md`](CONTRIBUTING.md).
-
-## Навигация
-
-- **Новый bit -> spacetime вывод:** [`BIT_TO_SPACETIME_CENTRAL_EQUATION.md`](BIT_TO_SPACETIME_CENTRAL_EQUATION.md)
-- **Текущий статус:** [`THEORY_STATUS.md`](THEORY_STATUS.md)
-- **Machine ledger:** [`theory_gates.json`](theory_gates.json)
-- **Кандидатная теория:** [`CIMFIG_V18_CANDIDATE_THEORY.md`](CIMFIG_V18_CANDIDATE_THEORY.md)
-- **Canonical architecture:** [`CANONICAL_MICRO_ARCHITECTURE_V1.md`](CANONICAL_MICRO_ARCHITECTURE_V1.md)
-- **Regge bridge:** [`GRAVITY_BRIDGE_SCALING.md`](GRAVITY_BRIDGE_SCALING.md), [`REGGE_EH_CUBIC_BRIDGE.md`](REGGE_EH_CUBIC_BRIDGE.md), [`CUBIC_WARD_SCALING.md`](CUBIC_WARD_SCALING.md)
-- **Held-out predictions:** [`HELDOUT_L9_L10_PREREGISTRATION.md`](HELDOUT_L9_L10_PREREGISTRATION.md), [`HELDOUT_L9_L10_RESULTS.md`](HELDOUT_L9_L10_RESULTS.md)
-- **Old long-form README snapshot:** [`docs/LEGACY_README_2026-07-28.md`](docs/LEGACY_README_2026-07-28.md)
+GitHub Actions runs the full core regression automatically on pushes and pull requests.
 
 ## Remaining scientific gates
 
-Главные незакрытые задачи:
-
-- global 3-manifold emergence from the frozen binary-route rule;
-- frozen microscopic measure/correlation law beyond independent-bit smoothing control;
-- full off-shell quantum HDA на общем graph-changing domain;
-- simultaneous RG window: dimension/topology, large spin, Lorentzian DeWitt, $z=1$, GR constraint rank;
-- matter/chirality/anomaly cancellation;
-- physical scale setting;
-- новые preregistered predictions и независимая экспериментальная replication.
-
-До закрытия этих gates правильная формулировка результата остаётся:
+The main unresolved task is now narrow:
 
 $$
-\boxed{\text{сильная вычислимая программа квантовой геометрии, а не подтверждённая теория природы}.}
+\boxed{
+H_{geom+route}[N]
+\text{ must couple the full Lorentzian Peter--Weyl geometry operator to the already fixed route-normal sector.}
+}
+$$
+
+Then the preregistered joint HH-D residual, Immirzi cancellation, DeWitt signature and GR constraint rank must converge in one common window without coefficient tuning.
+
+Beyond that remain: uniqueness/dynamical selection of the global q=2 gluing, matter/chirality/anomalies, physical scale setting and independent empirical replication.
+
+$$
+\boxed{\text{Strong computational quantum-geometry programme; not a confirmed theory of nature.}}
 $$
