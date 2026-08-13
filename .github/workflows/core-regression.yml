@@ -58,7 +58,9 @@ jobs:
             OBSERVER_SCALE_SMOOTHING.md \
             BIT_TO_SPACETIME_CENTRAL_EQUATION.md \
             GLOBAL_MANIFOLD_Q2_COMPLETION.md \
-            QUANTUM_HDA_KILLER_RESULT.md
+            QUANTUM_HDA_KILLER_RESULT.md \
+            PETER_WEYL_ROUTE_DRESSED_LOCAL_RESULT.md \
+            PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md
 
       - name: Frozen bit-to-spacetime gate
         run: |
@@ -80,6 +82,11 @@ jobs:
         run: |
           python scripts/peter_weyl_route_dressed_local_gate.py \
             --output verification_results/PETER_WEYL_ROUTE_DRESSED_LOCAL.json
+
+      - name: Two-node Euclidean Peter-Weyl x route joint gate
+        run: |
+          python scripts/peter_weyl_two_node_euclidean_joint_gate.py \
+            --output verification_results/PETER_WEYL_TWO_NODE_EUCLIDEAN.json
 
       - name: Off-shell HDA structural killer
         run: |
