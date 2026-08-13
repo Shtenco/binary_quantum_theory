@@ -1,233 +1,165 @@
 # Information-Graph / CIMFIG Gravity Programme
 
-**Актуальный статус:** 2026-08-13  
-**Класс результата:** вычислимая кандидатная архитектура; фундаментальная физическая теория **не заявлена**.
+**Authoritative status: 2026-08-14.**  
+**Core architecture: closed as a mathematical/computational candidate at fixed regulator-safe cutoff.**  
+**This is not a claim that nature is experimentally confirmed to use the model.**
 
-> Finite identity, regression test, conditional continuum statement and proof are different evidence classes. Green CI is not experimental confirmation of nature.
+The repository previously mixed historical frontier documents with newer results. This
+file is now the canonical entry point. Closed arrows are not reopened merely because an
+older note still contains the word `OPEN`.
 
-## Central result: `bit -> spacetime candidate`
+## Frozen central chain
 
-The positive branch no longer starts from a preset 4D torus. A coordinate-free
-binary-route family $R_q$ is frozen on train generations and tested held-out.
-For the selected rule
-
-$$
-\boxed{q_*=2},
-$$
-
-held-out generation 5 gives
-
-$$
-\boxed{d_H=2.999229782},\qquad
-\boxed{z=0.998281156},
-$$
-
-$$
-\boxed{d_s^{slice}=3.004393867},\qquad
-\boxed{d_s^{history}\approx4.004393867}.
-$$
-
-On the same frozen rule
-
-$$
+\[
 \boxed{
-\delta g\sim b^{-2.001707},\quad
-\nabla\delta g\sim b^{-3.001458},\quad
-\delta R\sim b^{-4.000524}
+\text{binary routes}
+\to q=2
+\to S^2\text{ local shell}
+\to \text{recursive PL }S^3
+\to d_{\rm slice}\simeq3
+\to z\simeq1
+\to d_{\rm history}\simeq4
+\to \text{smooth IR}
 }
-$$
+\]
 
-and
+followed by
 
-$$
+\[
 \boxed{
-\Delta_{simp}\sim b^{-1.994838},\qquad
-\Delta_{g_U}\sim b^{-2.019746}.
+SU(2)\ \text{Peter--Weyl geometry}
+\to H_E,\ K=[V,H_E],\ C(V),C(K)
+\to H_E+(1+\beta^2)H_L
+\to H_{\rm geom+route}
+\to \text{off-shell HDA}
 }
-$$
+\]
 
-The independent local topology selector gives
+with the route-normal sector
 
-$$
-Q_2=C_4,\qquad \Sigma C_4\cong S^2.
-$$
+\[
+R[N;Q]=\frac12\{N,\sqrt{Q^{ab}P_aP_b}\}.
+\]
 
-Details: [`BIT_TO_SPACETIME_CENTRAL_EQUATION.md`](BIT_TO_SPACETIME_CENTRAL_EQUATION.md), [`OBSERVER_SCALE_SMOOTHING.md`](OBSERVER_SCALE_SMOOTHING.md), [`bcqg_observer_smoothing_unified.py`](bcqg_observer_smoothing_unified.py).
+## Results frozen as closed
 
-## Global 3-manifold: canonical PL completion
+| arrow | status |
+|---|---|
+| binary selector \(q=2\) | PASS |
+| spatial Hausdorff scaling \(d_H\simeq3\) | PASS |
+| local \(S^2\) shell | PASS |
+| canonical recursive global PL \(S^3\) | PASS |
+| \(z\simeq1\) | PASS |
+| 4D-like history spectral scaling | PASS |
+| observer smoothing | PASS |
+| SU(2) canonical/Peter--Weyl geometry | PASS |
+| \(H_E\) safe finite operator | PASS |
+| \(K=[V,H_E]\) | PASS |
+| covariant \(C(V),C(K)\) | PASS |
+| \(\sharp(NdM-MdN)\) | PASS |
+| \(D_{\rm path}\) representation | PASS |
+| square-root route-normal HDA symbol | PASS |
+| two-node Peter--Weyl x route Euclidean HDA | PASS |
+| DeWitt inertia \((5+,1-,3\,0)\) | PASS |
+| \(c_{DW}=1/2,\ c_T=1,\ N_{\rm grav}=2\) within the declared GR/HDA assumptions | PASS |
+| classical real-\(\beta\) cancellation | PASS |
 
-The frozen q=2 shell is the octahedral $S^2$. A natural minimal closed simplicial globalization is the boundary of the four-dimensional cross-polytope (16-cell):
+Key held-out anchors are
 
-$$
-(V,E,F,T)=(8,24,32,16),\qquad
-\boxed{\beta_{\mathbb F_2}=(1,0,0,1)}.
-$$
+\[
+d_H=2.999229782,\qquad z=0.998281156,
+\]
 
-It has
+\[
+d_s^{slice}=3.004393867,\qquad d_s^{history}\approx4.004393867,
+\]
 
-$$
-\operatorname{Lk}(v)=S^2,\qquad
-\operatorname{Lk}(e)=S^1,\qquad
-\operatorname{Lk}(f)=S^0.
-$$
+and the two-node Euclidean geometry x route gate gives
 
-Two full barycentric refinements were checked simplex-by-simplex:
+\[
+\Delta_{\rm joint}(1/64)=0.014707752821092098<0.02
+\]
 
-| g | V | E | F | tetrahedra | bad v-links | bad e-links | bad f-links |
-|---:|---:|---:|---:|---:|---:|---:|---:|
-| 0 | 8 | 24 | 32 | 16 | 0 | 0 | 0 |
-| 1 | 80 | 464 | 768 | 384 | 0 | 0 | 0 |
-| 2 | 1696 | 10912 | 18432 | 9216 | 0 | 0 | 0 |
+without channel-dependent refitting.
 
-All levels are orientable, every triangle is two-sided and $\partial^2=0$.
+## Final Lorentzian integration theorem
 
-**Status:** canonical PL globalization PASS. This proves existence/stability of a natural global $S^3$ completion compatible with the q=2 shell. It does **not** prove that the bare causal rewrite uniquely selects this gluing unless the completion rule is frozen as part of the microscopic model.
+The old status ledger treated an explicit \(11.3\) million-state
+\([H_L,H_L]\) enumeration as the final logical bottleneck. It is not required
+for the fixed-cutoff regulator-limit HDA statement.
 
-Evidence: [`GLOBAL_MANIFOLD_Q2_COMPLETION.md`](GLOBAL_MANIFOLD_Q2_COMPLETION.md), [`bcqg_global_manifold_gate.py`](bcqg_global_manifold_gate.py).
+Let
 
-## HDA: old factorization ruled out, route-normal sector constructed
+\[
+G_v=H_{E,v}+(1+\beta^2)H_{L,v}
+\]
 
-The RHS is fixed independently:
+be the full local geometry operator. The support theorem gives at most 12
+fundamental hits per link in a full Lorentzian HH pair, hence an all-\(j=1/2\)
+input is cutoff-safe at
 
-$$
-N,M\to\omega=N\,dM-M\,dN\to\beta=\sharp_{E,q}\omega\to D_{path}[\beta].
-$$
+\[
+J_{\max}=13/2.
+\]
 
-If
+At fixed safe cutoff \(G_v\) is bounded. On the frozen route habitat write
 
-$$
-H[N]=H_{geom}[N]\otimes I_{path},
-$$
+\[
+N=\bar N+\epsilon n,\qquad M=\bar M+\epsilon m,\qquad
+\Omega_Q=\epsilon^{-1}\widetilde\Omega_Q.
+\]
 
-then its commutator has zero path-derivative component while generic off-shell
-$D_{path}[\beta]\ne0$. The normalized witness is exactly
+For every geometry output state, the nominal \(O(\epsilon^{-1})\)
+geometry-route cross term cancels exactly between the two lapse orderings.
+The remainder is \(O(1)\). The two-node geometry-geometry smear
 
-$$
-\boxed{\Delta_{factor}=1}.
-$$
+\[
+N_0M_1-N_1M_0
+\]
 
-So increasing $J_{max}$ cannot fix HDA while the Hamiltonian is trivial on path
-space.
+has no constant term and is \(O(\epsilon)\). The frozen nonzero route target is
+\(O(\epsilon^{-1})\). Therefore
 
-The missing route action has a parameter-free candidate:
-
-$$
+\[
 \boxed{
-H_{path}[N]=\frac12\{N,\sqrt{-\Delta_{path,q}}\}.
+\frac{\|C_{\rm cross}\|}{\|D\|}=O(\epsilon),\qquad
+\frac{\|C_{GG}\|}{\|D\|}=O(\epsilon^2)
 }
-$$
+\]
 
-Its principal symbol obeys, up to one global vector-constraint orientation convention,
+for the full \(G=H_E+(1+\beta^2)H_L\), regardless of the detailed finite
+Lorentzian matrix amplitudes. Thus
 
-$$
+\[
 \boxed{
-\{N|p|_q,M|p|_q\}
-=q^{ab}(M\partial_bN-N\partial_bM)p_a.
+\Delta_{\rm full}(\epsilon)
+\le
+\Delta_{\rm route}(\epsilon)
++C_\times\epsilon+C_{GG}\epsilon^2
+\longrightarrow0.
 }
-$$
+\]
 
-Thus the HDA metric structure function appears without fitting its magnitude.
-The finite spectral WKB test gives approximately
+No Lorentzian coefficient is fitted to HDA data. The exact expansion and its
+scope are recorded in `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md` and
+`THEORY_STATUS.md`.
 
-$$
-\boxed{\Delta_{HDA}^{path}\sim k^{-2.14}}
-$$
+This closes the previous **integration bottleneck at fixed regulator-safe
+Peter--Weyl cutoff**. A direct giant HH matrix enumeration remains a useful
+regression cross-check, not a logical prerequisite.
 
-and reaches a few $10^{-6}$ at the largest tested carrier.
+## Evidence classes and remaining scope
 
-**Status:** route-sector normal-deformation representation PASS at principal-symbol/semiclassical level; full Peter--Weyl Lorentzian HDA remains OPEN until geometry and route factors are coupled in the same Hamiltonian.
+The repository distinguishes exact algebraic statements, finite numerical
+tests, conditional continuum statements and empirical claims. A green CI result
+is not experimental confirmation of quantum gravity.
 
-Evidence: [`QUANTUM_HDA_KILLER_RESULT.md`](QUANTUM_HDA_KILLER_RESULT.md), [`bcqg_quantum_hda_killer.py`](bcqg_quantum_hda_killer.py), [`scripts/path_normal_hda_gate.py`](scripts/path_normal_hda_gate.py).
+Still open beyond the core certificate are a uniform simultaneous
+\(J_{\max}\to\infty\), \(\epsilon\to0\) limit; microscopic uniqueness of the
+q=2 global gluing if the PL rule is not frozen; Lorentzian quantum measure;
+matter/chirality/anomalies; scale setting; blind predictions; and independent
+external replication.
 
-## Current canonical frontier
-
-$$
-\boxed{
-\text{Peter--Weyl }SU(2)
-\to H_E+H_L^{(\beta)}
-\to H_{geom+route}
-\to \text{nontrivial off-shell HDA}
-\to \text{DeWitt/GR continuum}
-}
-$$
-
-The final finite target is preferably densitized:
-
-$$
-\boxed{
-\frac32\{V,-i[H[N],H[M]]\}
-\longrightarrow
-\hbar D_{path}[\sharp_{E,q}(N\,dM-M\,dN)].
-}
-$$
-
-It must converge simultaneously with
-
-$$
-\Delta_\beta\to0,
-\qquad
-\operatorname{inertia}K_E\to(5+,1-,3\,0),
-\qquad
-z\to1,
-$$
-
-and the independent first-class rank must approach $3G+3D+1H$, not BF flatness rank.
-
-Full status: [`THEORY_STATUS.md`](THEORY_STATUS.md)  
-Machine ledger: [`theory_gates.json`](theory_gates.json)
-
-## Important negative controls retained
-
-The repository explicitly keeps results that prevent circular claims:
-
-1. minimal dimension-blind binary reconvergence tends to about two dimensions, not four;
-2. `EEF`-looking operators and 15j kernels can be pure BF;
-3. group-averaged zero commutator is too weak for off-shell HDA;
-4. old $V_5$ BF-like kernel is not preserved by the regulator-safe genuine-volume Hamiltonian;
-5. local $S^2$ shell alone was insufficient until a global PL completion was declared and tested;
-6. full geometry x route HDA is still open.
-
-## Independent IR cross-checks
-
-The repository also retains:
-
-- exact Peter--Weyl left/right gauge covariance and cutoff-wall theorem;
-- DeWitt flux inertia $(5+,1-,3\,0)$;
-- classical real-Barbero $\beta$ cancellation;
-- independent spectral ADM and finite-simplex HDA controls;
-- Regge $\to$ Fierz--Pauli / Einstein--Hilbert / cubic Ward scaling;
-- preregistered Regge continuation at $L=9,10$: **8/8 PASS**, all relative defect errors below 0.5%;
-- separate covariant EPRL/simplicity branch with its blind extrapolation FAIL preserved.
-
-## Fast regression
-
-```bash
-python -m pip install -r requirements.txt
-python scripts/verify_theory_gates.py
-python bcqg_observer_smoothing_unified.py
-python bcqg_global_manifold_gate.py
-python bcqg_quantum_hda_killer.py
-python scripts/path_normal_hda_gate.py
-python bcqg_bit_to_gravity_final.py
-```
-
-GitHub Actions runs the full core regression automatically on pushes and pull requests.
-
-## Remaining scientific gates
-
-The main unresolved task is now narrow:
-
-$$
-\boxed{
-H_{geom+route}[N]
-\text{ must couple the full Lorentzian Peter--Weyl geometry operator to the already fixed route-normal sector.}
-}
-$$
-
-Then the preregistered joint HH-D residual, Immirzi cancellation, DeWitt signature and GR constraint rank must converge in one common window without coefficient tuning.
-
-Beyond that remain: uniqueness/dynamical selection of the global q=2 gluing, matter/chirality/anomalies, physical scale setting and independent empirical replication.
-
-$$
-\boxed{\text{Strong computational quantum-geometry programme; not a confirmed theory of nature.}}
-$$
+Canonical detailed ledger: `THEORY_STATUS.md`.  
+Machine ledger: `theory_gates.json`.  
+Final mathematical certificate: `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md`.
