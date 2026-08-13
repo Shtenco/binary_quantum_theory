@@ -1,25 +1,20 @@
-# Off-shell quantum HDA killer: factorized-Hamiltonian no-go
+# Off-shell quantum HDA killer and route-normal completion
 
 ## Target fixed independently
 
-The desired canonical continuum relation is not chosen after looking at the
-Hamiltonian commutator. Its RHS has already been built independently:
+The desired relation is not chosen after inspecting the Hamiltonian commutator:
 
 $$
 \omega=N\,dM-M\,dN,
-$$
-
-$$
+\qquad
 \beta=\sharp_{E,q}\omega,
 $$
 
 $$
-\boxed{
-D_{\rm path}[\beta].
-}
+\boxed{D_{\rm path}[\beta].}
 $$
 
-The preferred finite target is the densitized, inverse-volume-free form
+The preferred finite target is
 
 $$
 \boxed{
@@ -29,96 +24,133 @@ $$
 }
 $$
 
-## Exact structural no-go for the current Hamiltonian domain
+## Exact no-go for the old tensor factorisation
 
-The current regulator-safe Peter--Weyl Hamiltonian acts on geometry/spin data,
-while the nontrivial diffeomorphism representation lives on a separate refined
-path/rerouting register. If the operator still factorises as
+If
 
 $$
 H[N]=H_{\rm geom}[N]\otimes I_{\rm path},
 $$
 
-then identically
+then
 
 $$
-[H[N],H[M]]
-=
-[H_{\rm geom}[N],H_{\rm geom}[M]]\otimes I_{\rm path}.
+[H[N],H[M]]=[H_{\rm geom}[N],H_{\rm geom}[M]]\otimes I_{\rm path}.
 $$
 
-Its path-derivative/traceless component is therefore exactly zero.
-
-For generic nonconstant lapses, however,
-
-$$
-\beta=\sharp(NdM-MdN)\ne0
-$$
-
-and the already verified path representation gives
+Its path-derivative component is identically zero, while for generic
+nonconstant lapses
 
 $$
-D_{\rm path}[\beta]\ne0.
+D_{\rm path}[\sharp(NdM-MdN)]\ne0.
 $$
 
-`bcqg_quantum_hda_killer.py` supplies an explicit smooth finite witness. After
-normalising by the nonzero RHS norm, the factorised path-channel residual is
+`bcqg_quantum_hda_killer.py` contains an explicit finite witness with normalized
+path-channel residual
 
 $$
 \boxed{\Delta_{\rm factor}=1}.
 $$
 
-This is independent of $J_{\max}$. Therefore increasing the Peter--Weyl cutoff,
-adding more spin-network states, or changing numerical precision cannot repair
-the off-shell HDA while $H$ remains proportional to the identity on path space.
+Therefore no increase of $J_{\max}$ can fix the off-shell HDA while the
+Hamiltonian is proportional to $I_{\rm path}$.
 
-## What already passes
+## Constructive route-normal operator
 
-The same killer script executes the independent prerequisites:
-
-1. exact dual-$K_5$ lapse cochain
-   $$\omega_{vw}=N_vM_w-N_wM_v;$$
-2. generic flux/Hodge `sharp` reconstruction;
-3. gauge-covariant elementary path rerouting;
-4. two-transverse vector-field path Lie algebra with approximately $O(a^2)$
-   defect;
-5. classical real-Ashtekar--Barbero $\beta$ cancellation;
-6. conservative Peter--Weyl hit-wall enumeration for the full Lorentzian HH
-   support.
-
-Thus the missing object is no longer ambiguous.
-
-## Single required architecture change
-
-The Hamiltonian itself must become
+The no-go also identifies the minimal missing structure. On the refined path
+sheet define
 
 $$
-\boxed{H_{\rm geom+route}[N]}
+\Omega_q=\sqrt{-\Delta_{{\rm path},q}}
 $$
 
-and each local move must include a **gauge-covariant controlled rerouting** on
-the same cylindrical/path domain used by $D_{\rm path}$.
-
-It must preserve, without refitting:
-
-- exact endpoint SU(2) covariance;
-- the fixed Lorentzian coefficient $(1+\beta^2)$;
-- the Peter--Weyl regulator-safe hit bound;
-- nonconstant lapse dependence;
-- the independently frozen `sharp` and $D_{\rm path}$ definitions.
-
-Only after this coupling exists is the expensive HH amplitude calculation
-scientifically meaningful.
-
-## Status
-
-The result is a **successful falsifier**, not a positive HDA closure:
+and
 
 $$
 \boxed{
-H_{\rm geom}\otimes I_{\rm path}
-\quad\text{is ruled out for nontrivial off-shell HDA.}
+H_{\rm path}[N]=\frac12\{N,\Omega_q\}.
 }
 $$
 
-The full route-coupled Lorentzian quantum HDA remains OPEN.
+Its principal symbol is
+
+$$
+h_N(x,p)=N(x)|p|_q,
+\qquad
+|p|_q=\sqrt{q^{ab}p_ap_b}.
+$$
+
+Using standard symbol calculus,
+
+$$
+\{h_N,h_M\}
+=
+q^{ab}(M\partial_bN-N\partial_bM)p_a,
+$$
+
+up to the single global orientation convention for the vector constraint. The
+terms involving derivatives of the metric cancel pairwise. Thus the HDA metric
+structure function is generated **without fitting its magnitude**.
+
+The executable `scripts/path_normal_hda_gate.py` checks the finite spectral
+quantum commutator on WKB route states. For carrier modes
+
+$$
+k=2,3,4,6,8,12,16,24
+$$
+
+the defect falls approximately as
+
+$$
+\boxed{\Delta_{\rm HDA}^{path}\sim k^{-2.14}},
+$$
+
+and reaches a few parts in $10^{-6}$ at the largest preregistered carrier.
+
+This closes the **route-sector normal-deformation representation at principal
+symbol / semiclassical level**.
+
+## What already passes together
+
+The killer now executes:
+
+1. exact dual-$K_5$ lapse cochain;
+2. generic flux/Hodge `sharp` reconstruction;
+3. gauge-covariant elementary rerouting;
+4. two-transverse vector-field path Lie algebra;
+5. square-root route-normal HDA gate;
+6. classical real-Ashtekar--Barbero $\beta$ cancellation;
+7. conservative Peter--Weyl Lorentzian hit-wall enumeration.
+
+## Single remaining operator task
+
+The geometry and route sectors must now be coupled in the **same** Hamiltonian:
+
+$$
+\boxed{H_{\rm geom+route}[N].}
+$$
+
+It must preserve without refitting:
+
+- endpoint SU(2) covariance;
+- the fixed Lorentzian coefficient $(1+\beta^2)$;
+- the Peter--Weyl safe cutoff;
+- the frozen `sharp` map;
+- the square-root route-normal principal symbol;
+- nonconstant off-shell lapse dependence.
+
+Then, and only then, the expensive joint HH calculation is meaningful.
+
+## Status
+
+Two statements are now cleanly separated:
+
+$$
+\boxed{H_{\rm geom}\otimes I_{\rm path}\ \text{is exactly ruled out}.}
+$$
+
+$$
+\boxed{H_{\rm path}[N]=\tfrac12\{N,\sqrt{-\Delta_{path,q}}\}\ \text{has the correct HDA principal symbol}.}
+$$
+
+The **full route-coupled Peter--Weyl Lorentzian quantum HDA** remains OPEN.
