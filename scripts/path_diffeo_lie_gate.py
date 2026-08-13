@@ -2,10 +2,10 @@
 """Refined path-position register -> continuum diffeomorphism Lie algebra.
 
 A local path-rerouting qubit is the elementary carrier.  A refined coarse edge
-has many neighboring microscopic route realizations |m>.  The unitary shift
-S|m>=|m+1> gives the centered path derivative
+has many neighboring microscopic route realizations |m>.  The unitary ket shift
+S|m>=|m+1> induces the centered derivative on coefficient wavefunctions
 
-    nabla = (S-S^dag)/(2a)
+    nabla = (S^dag-S)/(2a)
 
 with symbol i sin(ka)/a.  For variable shift functions N,M define the scalar
 Lie-derivative approximants D_N f=N nabla f.  The continuum target is
@@ -43,14 +43,16 @@ def run():
     errors=np.array([defect(int(L)) for L in sizes])
     p=-float(np.polyfit(np.log(sizes),np.log(errors),1)[0])
 
-    # Separate exact shift unitarity / sine-symbol regression.
+    # Separate exact shift unitarity / sine-symbol regression.  With
+    # S|m>=|m+1>, S acts on coefficient waves with eigenvalue exp(-ika), so
+    # (S^dag-S)/(2a) has the +i sin(ka)/a symbol used by der() above.
     max_unitarity=0.0;max_symbol=0.0
     for L in (16,31,64):
         S=np.zeros((L,L),complex)
         for m in range(L):S[(m+1)%L,m]=1
         max_unitarity=max(max_unitarity,float(np.linalg.norm(S.conj().T@S-np.eye(L))))
         a=2*np.pi/L
-        D=(S-S.conj().T)/(2*a)
+        D=(S.conj().T-S)/(2*a)
         for n in range(1,min(4,L//2)):
             f=np.exp(1j*n*2*np.pi*np.arange(L)/L)
             lam=np.vdot(f,D@f)/np.vdot(f,f)
