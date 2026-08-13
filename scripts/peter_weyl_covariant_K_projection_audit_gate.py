@@ -8,7 +8,7 @@ recomputing the expensive C(K) column; this changes runtime only, not physics or
 acceptance criteria.
 """
 from __future__ import annotations
-import argparse,itertools,json,math,sys
+import argparse,functools,itertools,json,math,sys
 from pathlib import Path
 import numpy as np
 HERE=Path(__file__).resolve().parent
@@ -114,11 +114,27 @@ def run():
     return base
 
 def run_composition_prerequisites():
-    """Fail-fast research-only composition checks, with no threshold changes."""
+    """Fail-fast research-only composition checks, with exact memoization only."""
     import peter_weyl_covariant_composition_gate as CVCOMP
     import peter_weyl_covariant_K_composition_gate as CKCOMP
     cv=CVCOMP.run(0,1)
-    ck=CKCOMP.run(0,1)
+
+    # Runtime-only wrapper. apply_HE_complete_key is deterministic in its full
+    # immutable argument tuple.  No result, threshold, projection or operator
+    # ordering is altered.  Restore the original function after the gate.
+    original=CKCOMP.CK.apply_HE_complete_key
+    cached=functools.lru_cache(maxsize=None)(original)
+    CKCOMP.CK.apply_HE_complete_key=cached
+    try:
+        ck=CKCOMP.run(0,1)
+        ci=cached.cache_info()
+    finally:
+        CKCOMP.CK.apply_HE_complete_key=original
+    ck['runtime_memoization']={
+        'exact_apply_HE_complete_key_cache':True,
+        'hits':ci.hits,'misses':ci.misses,'currsize':ci.currsize,
+        'physics_changed':False,
+    }
     return {
         'C_V_state_to_state':cv,
         'C_K_state_to_state':ck,
