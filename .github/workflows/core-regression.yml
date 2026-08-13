@@ -60,7 +60,8 @@ jobs:
             GLOBAL_MANIFOLD_Q2_COMPLETION.md \
             QUANTUM_HDA_KILLER_RESULT.md \
             PETER_WEYL_ROUTE_DRESSED_LOCAL_RESULT.md \
-            PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md
+            PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md \
+            PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md
 
       - name: Frozen bit-to-spacetime gate
         run: |
@@ -87,6 +88,11 @@ jobs:
         run: |
           python scripts/peter_weyl_two_node_euclidean_joint_gate.py \
             --output verification_results/PETER_WEYL_TWO_NODE_EUCLIDEAN.json
+
+      - name: Lorentzian K equals volume-HE commutator amplitude gate
+        run: |
+          python scripts/peter_weyl_lorentzian_K_block_gate.py \
+            --output verification_results/PETER_WEYL_LORENTZIAN_K_BLOCK.json
 
       - name: Off-shell HDA structural killer
         run: |
