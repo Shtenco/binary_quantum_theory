@@ -30,7 +30,8 @@ jobs:
             scripts/peter_weyl_euclidean_sine_ordering_gate.py \
             scripts/peter_weyl_covariant_composition_gate.py \
             scripts/peter_weyl_covariant_K_composition_cached_gate.py \
-            scripts/peter_weyl_covariant_K_sine_composition_gate.py
+            scripts/peter_weyl_covariant_K_sine_composition_gate.py \
+            scripts/peter_weyl_lorentzian_sine_ordered_triple_gate.py
       - name: Physical Euclidean sine ordering
         run: |
           python scripts/peter_weyl_euclidean_sine_ordering_gate.py \
@@ -45,16 +46,6 @@ jobs:
         run: |
           python scripts/peter_weyl_covariant_K_sine_composition_gate.py \
             --output verification_results/PETER_WEYL_CK_SINE_COMPOSITION.json
-      - name: Upload sine frontier
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: sine-lorentzian-k-frontier
-          path: |
-            verification_results/PETER_WEYL_EUCLIDEAN_SINE_ORDERING.json
-            verification_results/PETER_WEYL_CV_COMPOSITION.json
-            verification_results/PETER_WEYL_CK_SINE_COMPOSITION.json
-          if-no-files-found: error
       - name: Enforce C(K_sine)
         if: always()
         run: |
@@ -68,4 +59,35 @@ jobs:
           print(json.dumps(d,indent=2))
           if not d.get('passed',False):
               raise SystemExit('physical sine-ordered C(K) composition FAILED')
+          PY
+      - name: First physical ordered K_sine-K_sine-V triple
+        id: sine_triple
+        continue-on-error: true
+        run: |
+          python scripts/peter_weyl_lorentzian_sine_ordered_triple_gate.py \
+            --output verification_results/PETER_WEYL_SINE_ORDERED_TRIPLE.json
+      - name: Upload sine frontier
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sine-lorentzian-k-frontier
+          path: |
+            verification_results/PETER_WEYL_EUCLIDEAN_SINE_ORDERING.json
+            verification_results/PETER_WEYL_CV_COMPOSITION.json
+            verification_results/PETER_WEYL_CK_SINE_COMPOSITION.json
+            verification_results/PETER_WEYL_SINE_ORDERED_TRIPLE.json
+          if-no-files-found: error
+      - name: Enforce physical ordered triple
+        if: always()
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('verification_results/PETER_WEYL_SINE_ORDERED_TRIPLE.json')
+          if not p.is_file():
+              raise SystemExit('sine ordered triple JSON missing')
+          d=json.loads(p.read_text())
+          print(json.dumps(d,indent=2))
+          if not d.get('passed',False):
+              raise SystemExit('physical sine-ordered K-K-V triple FAILED')
           PY
