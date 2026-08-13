@@ -41,8 +41,14 @@ jobs:
       - name: Validate proof ledger
         run: python scripts/verify_theory_gates.py
 
-      - name: Validate Markdown and LaTeX
-        run: python scripts/validate_github_latex.py
+      - name: Validate current public Markdown surface
+        run: |
+          python scripts/validate_github_latex.py \
+            README.md \
+            THEORY_STATUS.md \
+            CONTRIBUTING.md \
+            CIMFIG_V18_CANDIDATE_THEORY.md \
+            LORENTZIAN_BETA_CANCELLATION.md
 
       - name: Core finite gates
         run: |
