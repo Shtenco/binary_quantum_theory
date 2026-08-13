@@ -61,7 +61,8 @@ jobs:
             QUANTUM_HDA_KILLER_RESULT.md \
             PETER_WEYL_ROUTE_DRESSED_LOCAL_RESULT.md \
             PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md \
-            PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md
+            PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md \
+            PETER_WEYL_COVARIANT_K_PROJECTION_AUDIT.md
 
       # Fast frontier-first Lorentzian bricks: fail here before expensive HH.
       - name: Charged-intertwiner Lorentzian recoupling gate
@@ -79,10 +80,10 @@ jobs:
           python scripts/peter_weyl_lorentzian_K_block_gate.py \
             --output verification_results/PETER_WEYL_LORENTZIAN_K_BLOCK.json
 
-      - name: Covariantized K leg h[h^-1,K] gate
+      - name: Invariant covariant-K projection audit
         run: |
-          python scripts/peter_weyl_covariant_K_leg_gate.py \
-            --output verification_results/PETER_WEYL_COVARIANT_K_LEG.json
+          python scripts/peter_weyl_covariant_K_projection_audit_gate.py \
+            --output verification_results/PETER_WEYL_COVARIANT_K_AUDIT.json
 
       - name: Frozen bit-to-spacetime gate
         run: |
