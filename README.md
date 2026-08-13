@@ -1,37 +1,444 @@
-# Information-Graph / CIMFIG Gravity Programme
+# От бита к пространству-времени
 
-**Authoritative status: 2026-08-14.**
+## Увлекательный урок «на пальцах»: как из двух вариантов может вырасти геометрия, время и гравитация
 
-The fixed-cutoff core candidate architecture is frozen as a mathematical/computational result. This is not experimental confirmation of a theory of nature.
+Представьте, что в самом глубоком слое природы **ещё нет привычного пространства**. Нет метров, координатной сетки и готовой трёхмерной сцены. Есть только очень простое правило: у элементарного перехода существуют дискретные альтернативные маршруты.
 
-## Canonical chain
+Самая маленькая единица различия — **бит**: `0` или `1`.
 
-`binary routes -> q=2 -> local S2 shell -> recursive PL S3 -> 3D slice scaling -> z~1 -> 4D-like history -> smooth IR`
+Идея этого проекта в одном предложении:
 
-`SU(2) Peter-Weyl geometry -> H_E -> K=[V,H_E] -> C(V), C(K) -> H_E+(1+beta^2)H_L -> geometry+route -> off-shell HDA`
+> если много таких бинарных различий соединять по одному и тому же локальному правилу, то на больших масштабах их коллективное поведение может выглядеть как гладкое пространство-время и как каноническая гравитация.
 
-Closed arrows include the binary selector, topology, held-out dimensional scaling, observer smoothing, Peter-Weyl geometry, H_E, K, C(V), C(K), the independently fixed sharp/path sector, route-normal HDA symbol, two-node Euclidean geometry x route HDA, DeWitt controls and classical real-beta cancellation.
+Это не начинается с уравнений Эйнштейна. Мы пытаемся пройти путь в обратную сторону:
 
-Frozen anchors include `d_H=2.999229782`, `z=0.998281156`, `d_s(slice)=3.004393867`, `d_s(history)~4.004393867`, and the preregistered two-node Euclidean joint residual `0.014707752821092098 < 0.02` at epsilon `1/64`.
+```text
+бит
+ -> локальная структура
+ -> трёхмерная геометрия
+ -> время
+ -> гладкий 4D-предел
+ -> квантовая SU(2)-геометрия
+ -> гамильтонова гравитация
+ -> HDA
+```
 
-## Final fixed-cutoff Lorentzian composition result
+Ниже — весь маршрут от самого простого к самому сложному.
 
-For all input links with `j=1/2`, full Lorentzian HH support is safe at `Jmax=13/2`. At fixed safe cutoff the full local geometry operator `G_v = H_E,v + (1+beta^2) H_L,v` is bounded.
+---
 
-On the frozen route habitat use `N=Nbar+epsilon*n`, `M=Mbar+epsilon*m`, and `Omega_Q=epsilon^-1 OmegaTilde_Q`. The nominal `epsilon^-1` geometry-route term cancels state by state between the two lapse orderings. The remaining cross channel is order one. The two-node pure-geometry lapse coefficient has no constant term and begins at order epsilon, while the nonzero route target scales as `epsilon^-1`.
+## Урок 1. Один бит — это ещё не пространство
 
-Therefore `cross/D = O(epsilon)` and `GG/D = O(epsilon^2)`, so
+Бит умеет только различать два состояния:
 
-`Delta_full <= Delta_route + C_cross*epsilon + C_GG*epsilon^2 -> 0`.
+```text
+0   или   1
+```
 
-No Lorentzian coefficient or channel normalization is fitted to obtain this scaling. The exact derivation and assumptions are recorded in `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md`.
+Сам по себе он не знает, что такое «лево», «право», «вверх» или «далеко».
 
-A direct 11.3M-state Lorentzian HH matrix enumeration is an optional regression cross-check, not a logical prerequisite for this fixed-cutoff composition statement.
+Поэтому следующий вопрос звучит так:
 
-## Remaining scope
+> сколько независимых бинарных различий нужно локальному переходу, чтобы из их отношений начала появляться геометрия?
 
-Separate questions remain: a uniform simultaneous `Jmax->infinity`, `epsilon->0` limit; microscopic uniqueness of the global q=2 gluing if the PL completion is not frozen; Lorentzian quantum measure/unitarity; matter/chirality/anomalies; scale setting; blind predictions; and independent external replication.
+Обозначим это число через `q`.
 
-Canonical detailed ledger: `THEORY_STATUS.md`.
-Machine ledger: `theory_gates.json`.
-Final mathematical certificate: `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md`.
+Для `q` битов существует `2^q` бинарных маршрутов.
+
+---
+
+## Урок 2. Почему особенным оказывается q = 2
+
+Для каждого `q` строится локальная оболочка маршрутов. У неё есть два специальных полюса и `2^q` route-состояний. Каждый route связан с `q` соседями по изменению одного бита и с двумя полюсами, поэтому его степень равна
+
+```text
+q + 2
+```
+
+У каждого полюса степень
+
+```text
+2^q
+```
+
+Если потребовать, чтобы локальная оболочка была однородной, эти две степени должны совпасть:
+
+```text
+q + 2 = 2^q
+```
+
+Для целых `q >= 1` единственное решение:
+
+```text
+q = 2
+```
+
+Проверка буквально школьная:
+
+```text
+q=1:  3 != 2
+q=2:  4  = 4
+q=3:  5 != 8
+q=4:  6 != 16
+...
+```
+
+После `q=2` правая часть растёт намного быстрее.
+
+То есть бинарное правило само выделяет минимальный нетривиальный случай с двумя битами.
+
+---
+
+## Урок 3. Из четырёх маршрутов возникает сфера вокруг точки
+
+При `q=2` маршруты имеют вид
+
+```text
+00, 01, 10, 11
+```
+
+Если соединить маршруты, отличающиеся ровно одним битом, получается квадрат `C4`.
+
+Добавим два полюса, каждый из которых связан со всеми четырьмя маршрутами.
+
+Получается граф октаэдра:
+
+```text
+Sigma Q2 = octahedral graph
+```
+
+У октаэдра шесть вершин, двенадцать рёбер и восемь треугольных граней. Его поверхность — обычная двумерная сфера `S2`.
+
+Это важно: **в трёхмерном многообразии маленькая сфера вокруг обычной внутренней точки должна быть S2**.
+
+Именно такую локальную оболочку даёт `q=2`.
+
+Ещё красивее: этот же октаэдральный граф равен line graph тетраэдра `K4`. Шесть вершин октаэдра можно интерпретировать как шесть рёбер тетраэдра. Поэтому бинарная route-геометрия и минимальная тетраэдральная SU(2)-геометрия встречаются в одной и той же шестисостоянийной структуре.
+
+---
+
+## Урок 4. Локальная сфера превращается в настоящее 3D-пространство
+
+Локальной `S2` недостаточно. Нужно убедиться, что клетки можно рекурсивно склеивать так, чтобы не появлялись дырки, края или сингулярности.
+
+В репозитории используется каноническое PL-завершение на границе 16-cell. После рекурсивных refinement-шагов проверяются:
+
+- ссылки вершин;
+- ссылки рёбер;
+- инцидентность треугольных граней;
+- ориентируемость;
+- условие `boundary^2 = 0`;
+- гомологии.
+
+На проверенных уровнях сохраняется топология `S3`:
+
+```text
+Betti = [1, 0, 0, 1]
+```
+
+То есть объект ведёт себя как замкнутое ориентируемое трёхмерное пространство без края.
+
+Главная интуиция здесь такая:
+
+> `S2` — это то, что видит маленький наблюдатель вокруг точки; `S3` — это то, во что эти локальные окрестности могут быть согласованно собраны глобально.
+
+---
+
+## Урок 5. Но действительно ли оно трёхмерное?
+
+Топология говорит, **как всё склеено**, но ещё не говорит, как растёт объём с расстоянием.
+
+Если пространство трёхмерное, число доступных состояний внутри радиуса `r` должно масштабироваться примерно как
+
+```text
+V(r) ~ r^3
+```
+
+В frozen held-out тесте получается
+
+```text
+d_H = 2.999229782
+```
+
+То есть почти ровно `3`.
+
+Независимая spectral-проверка пространственного среза даёт
+
+```text
+d_s(slice) = 3.004393867
+```
+
+Два разных измерителя указывают на одну и ту же эффективную размерность.
+
+---
+
+## Урок 6. Откуда берётся время
+
+Теперь нужно понять, как меняется система от одного слоя к следующему.
+
+Пусть пространственный масштаб увеличивается в `lambda_l` раз, а характерный временной масштаб — в `lambda_t` раз. Динамический показатель `z` определяется примерно как
+
+```text
+lambda_t ~ lambda_l^z
+```
+
+Для релятивистской геометрии нужен
+
+```text
+z -> 1
+```
+
+В frozen тесте:
+
+```text
+z = 0.998281156
+```
+
+То есть пространственные и временные масштабы асимптотически растут почти одинаково.
+
+Когда к трёхмерному spatial slice добавляется такой временной scaling, история становится эффективно четырёхмерной. Spectral-проверка даёт
+
+```text
+d_s(history) ~ 4.004393867
+```
+
+Получается следующая лестница:
+
+```text
+binary routes
+ -> q=2
+ -> local S2
+ -> global PL S3
+ -> d_slice ~ 3
+ -> z ~ 1
+ -> d_history ~ 4
+```
+
+---
+
+## Урок 7. Почему дискретный мир на больших масштабах выглядит гладким
+
+Представьте цифровую фотографию. Вплотную видны пиксели. Издалека — гладкое изображение.
+
+Здесь похожая идея: наблюдатель не разрешает отдельные планковские бинарные состояния, а видит блоки размера `b`.
+
+В вычислительной модели дефекты гладкой геометрии убывают как степени этого coarse-graining масштаба:
+
+```text
+delta g      ~ b^-2
+grad(delta g)~ b^-3
+delta R      ~ b^-4
+simplicity   ~ b^-2
+g_U defect   ~ b^-2
+```
+
+Численно получены показатели, близкие к этим значениям. Поэтому гладкость здесь не вводится отдельной командой «сделать пространство гладким» — она появляется как IR-представление множества неразличимых микросостояний.
+
+---
+
+## Урок 8. Где появляется квантовая геометрия
+
+До этого мы обсуждали структуру пространства как дискретной сети. Но гравитации мало знать, какие вершины с чем соединены. Нужны площади, объёмы, ориентации и генераторы деформаций.
+
+Здесь появляется группа `SU(2)`.
+
+На каждом линке используется конечное Peter-Weyl представление. Внутри него строятся:
+
+```text
+flux operators
+intertwiners
+volume V
+Euclidean Hamiltonian H_E
+K = [V, H_E]
+C(V) = h [h^-1, V]
+C(K) = h [h^-1, K]
+```
+
+Это уже язык канонической квантовой геометрии.
+
+Отдельные finite gates проверяют ковариантность, spin-support, Gauss-сектора, настоящий volume operator и отсутствие запрещённых charge-утечек.
+
+---
+
+## Урок 9. Зачем нужен Lorentzian член
+
+Евклидова часть `H_E` ещё не является полной лоренцевой гравитацией для вещественного параметра Барберо–Иммирци.
+
+Полный локальный геометрический оператор имеет вид
+
+```text
+G_v = H_E,v + (1 + beta^2) H_L,v
+```
+
+где `H_L` строится из коммутаторов с `K` и `V`.
+
+Отдельный classical control проверяет правильную beta-комбинацию. Support-анализ показывает, что для входных `j=1/2` полный Lorentzian HH-проход безопасен при
+
+```text
+Jmax = 13/2
+```
+
+То есть на этом cutoff достижимое пространство конечно.
+
+---
+
+## Урок 10. Самый жёсткий тест: алгебра деформаций пространства
+
+Общая теория относительности — это не просто конкретная формула энергии. Её гамильтоновы ограничения должны удовлетворять hypersurface-deformation algebra.
+
+Схематически главный коммутатор должен вести себя как
+
+```text
+[ H[N], H[M] ]
+      ->
+ i*hbar * D[ sharp(N dM - M dN) ]
+```
+
+Смысл можно объяснить без тензорного анализа.
+
+Сделайте сначала маленькую нормальную деформацию пространства с профилем `N`, затем с профилем `M`. Теперь поменяйте порядок. Разница двух операций не должна создавать новую физическую степень свободы. Она должна быть просто **сдвигом вдоль самого пространства**.
+
+Именно этот сдвиг обозначает `D`.
+
+В проекте `sharp(N dM - M dN)` строится независимо через discrete cochain/Hodge/flux map, а path-register реализует соответствующий diffeomorphism generator. Отдельный factorization no-go показывает, что чисто geometry-only оператор без route-канала этого сделать не может.
+
+Поэтому в Hamiltonian добавляется route-normal сектор.
+
+---
+
+# Финал. Последняя проверка в трёх строках
+
+Вот место, где вся длинная история сходится в один certificate.
+
+На frozen habitat берём
+
+```text
+N = Nbar + epsilon*n
+M = Mbar + epsilon*m
+Omega_Q = epsilon^-1 * OmegaTilde_Q
+```
+
+### 1. Geometry x route
+
+На первый взгляд cross-коммутатор содержит опасный член порядка `epsilon^-1`.
+
+Но его ведущий коэффициент в двух противоположных lapse-orderings одинаков и вычитается **для каждого geometry output state**.
+
+Поэтому остаётся
+
+```text
+C_cross = O(1)
+```
+
+### 2. Geometry x geometry
+
+Для двух узлов antisymmetric lapse-комбинация равна
+
+```text
+N0*M1 - N1*M0 = O(epsilon)
+```
+
+Следовательно
+
+```text
+C_GG = O(epsilon)
+```
+
+### 3. А настоящий diffeomorphism target растёт быстрее
+
+На frozen WKB carrier физическая производная даёт `epsilon^-1`, поэтому
+
+```text
+D[ sharp(N dM - M dN) ] = O(epsilon^-1)
+```
+
+Делим лишние geometry-каналы на правильный target:
+
+```text
+C_cross / D = O(epsilon)
+C_GG    / D = O(epsilon^2)
+```
+
+и получаем финальную оценку
+
+```text
+Delta_full(epsilon)
+ <=
+Delta_route(epsilon)
+ + C_cross*epsilon
+ + C_GG*epsilon^2
+
+            -> 0
+```
+
+То есть при фиксированном regulator-safe Peter-Weyl cutoff полная локальная геометрия
+
+```text
+H_E + (1 + beta^2) H_L
+```
+
+не создаёт surviving off-shell anomaly поверх уже независимо проверенного route-normal HDA limit.
+
+Именно поэтому гигантский прямой `11.3M-state [H_L,H_L]` brute-force теперь рассматривается как полезный regression cross-check, но не как логически необходимый шаг для **fixed-cutoff composition theorem**.
+
+Вся цепочка в одной строке:
+
+```text
+BITS
+ -> q=2
+ -> S2 local shell
+ -> recursive PL S3
+ -> 3D scaling
+ -> z~1
+ -> 4D-like smooth IR
+ -> SU(2) quantum geometry
+ -> H_E + (1+beta^2)H_L
+ -> route-normal generator
+ -> HDA composition certificate
+```
+
+---
+
+# Что именно утверждает проект
+
+**Статус: кандидатная теория / candidate theory.**
+
+Репозиторий содержит математические конструкции, точные алгебраические утверждения, конечные вычислительные gates и условные continuum-выводы. Они образуют замкнутую **кандидатную архитектуру** при фиксированном regulator-safe cutoff.
+
+Это **не означает**, что теория экспериментально доказана как фундаментальное описание природы.
+
+Отдельно ещё требуются, среди прочего:
+
+- uniform joint limit `Jmax -> infinity` вместе с `epsilon -> 0`;
+- микроскопическая уникальность глобального q=2 gluing, если PL-правило не фиксировать;
+- лоренцева квантовая мера и unitarity;
+- материя, киральность и аномалии;
+- физическая установка масштаба и ньютоновской константы;
+- слепые экспериментальные предсказания;
+- независимая внешняя репликация.
+
+Поэтому корректная формулировка результата такая:
+
+> **В репозитории построена и вычислительно проверена кандидатная схема перехода от бинарной дискретной микроструктуры к 3D/4D-like гладкому пределу и к fixed-cutoff канонической HDA-гравитационной архитектуре. Это кандидатная теория, а не установленный экспериментальный закон природы.**
+
+---
+
+## Где смотреть строгие доказательства и проверки
+
+- `THEORY_STATUS.md` — канонический человеческий ledger;
+- `theory_gates.json` — machine-readable ledger;
+- `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md` — точный финальный composition theorem;
+- `bcqg_bit_to_gravity_final.py` — executable status aggregator;
+- `bcqg_observer_smoothing_unified.py` — bit -> scaling -> smoothing;
+- `bcqg_global_manifold_gate.py` — recursive PL-manifold gate;
+- `scripts/path_normal_hda_gate.py` — route-normal HDA;
+- `scripts/peter_weyl_two_node_euclidean_joint_gate.py` — two-node Peter-Weyl x route regression;
+- `scripts/lorentzian_hit_depth_bound.py` — Lorentzian support wall.
+
+Запуск финального статуса:
+
+```bash
+python bcqg_bit_to_gravity_final.py --strict
+```
+
+Если он возвращает `core_candidate_architecture_closed: true`, это означает именно закрытие заявленной **candidate architecture at fixed safe cutoff** — не больше и не меньше.
