@@ -5,9 +5,82 @@
 
 > Главный принцип репозитория: конечное тождество, regression test и continuum/physics claim — разные уровни доказательности. Ни один численный PASS внутри выбранной модели не считается экспериментальным подтверждением природы.
 
-## Текущий frontier
+## Новый центральный результат: `bit -> spacetime candidate`
 
-Наиболее сильная canonical ветвь сейчас формулируется как
+Positive branch больше **не начинается с заранее заданного 4D torus**.
+
+Введено coordinate-free frozen rule family $R_q$:
+
+- causal link раскрывается в $2^q$ двухшаговых маршрутов;
+- маршруты имеют только `q` binary labels;
+- intra-cell frame links задаются Hamming-distance-one между binary labels;
+- рекурсивно переписываются только causal child links.
+
+Train generations `g=2,3,4` выбирают `q` только по $D_{slice}\approx3$ и $z\approx1$. До просмотра generation 5 правило замораживается:
+
+$$
+\boxed{q_*=2}.
+$$
+
+Held-out transition `g=4 -> 5` даёт
+
+$$
+\boxed{d_H=2.999229782},\qquad
+\boxed{z=0.998281156},
+$$
+
+и scaling-derived
+
+$$
+\boxed{d_s^{slice}\approx3.004393867},\qquad
+\boxed{d_s^{history}\approx4.004393867}.
+$$
+
+Независимый topology check, который **не использовался при выборе `q`**, даёт для local route shell
+
+$$
+\boxed{\beta=(1,0,1)},
+$$
+
+то есть single homology-$S^2$ boundary и natural local 3-cell completion.
+
+На том же frozen rule observer coarse graining даёт
+
+$$
+\boxed{
+\delta g\sim b^{-2.001707},\qquad
+\nabla\delta g\sim b^{-3.001458},\qquad
+\delta R\sim b^{-4.000524}
+}
+$$
+
+и
+
+$$
+\boxed{
+\Delta_{simp}\sim b^{-1.994838},\qquad
+\Delta_{g_U}\sim b^{-2.019746}.
+}
+$$
+
+Две binary route coordinates в refined limit поддерживают transverse path-diffeomorphism Lie algebra с
+
+$$
+\boxed{\Delta_{Lie}\sim L^{-1.981810}}.
+$$
+
+Подробный вывод: **[`BIT_TO_SPACETIME_CENTRAL_EQUATION.md`](BIT_TO_SPACETIME_CENTRAL_EQUATION.md)**  
+Unified executable gate: **[`bcqg_observer_smoothing_unified.py`](bcqg_observer_smoothing_unified.py)**  
+Finite report: **[`OBSERVER_SCALE_SMOOTHING.md`](OBSERVER_SCALE_SMOOTHING.md)**
+
+Это **finite candidate-geometrogenesis PASS**, а не доказательство quantum GR. Два главных блокера остаются открыты:
+
+1. local homology-$S^2$ shell ещё не доказывает global recursively glued 3-manifold;
+2. microscopic graph-changing Hamiltonian ещё должен воспроизвести полный off-shell HDA.
+
+## Текущий canonical frontier
+
+Наиболее сильная canonical ветвь формулируется как
 
 $$
 \boxed{
@@ -58,6 +131,9 @@ Machine-readable gates: **[`theory_gates.json`](theory_gates.json)**
 
 ## Что уже воспроизводимо
 
+- frozen binary-route search без coordinate dimension и held-out generation-5 scaling;
+- local homology-$S^2$ route shell для frozen `q=2`;
+- observer smoothing $b^{-2/-3/-4}$ без заранее заданного 4D torus;
 - exact periodic sine/Laplacian identities для $L=B^\dagger B$;
 - finite SU(2) frame/connection Ward checks и algebraic geometric-cell controls;
 - finite Peter--Weyl links с exact left/right gauge covariance и cutoff-wall theorem;
@@ -71,7 +147,7 @@ Machine-readable gates: **[`theory_gates.json`](theory_gates.json)**
 - preregistered Regge continuation $L=9,10$: **8/8 held-out checks PASS**, все relative defect errors < 0.5%;
 - отдельная covariant EPRL/simplicity ветвь с честно сохранённым blind extrapolation FAIL.
 
-Это сильные **finite/conditional** результаты. Они не заменяют вывод одной Lorentzian microscopic theory, общего RG-окна и экспериментальную проверку.
+Эти результаты имеют разный статус: exact, finite, conditional или open. Они не заменяют вывод одной Lorentzian microscopic theory и экспериментальную проверку.
 
 ## Что принципиально не считается доказательством GR
 
@@ -80,7 +156,9 @@ Machine-readable gates: **[`theory_gates.json`](theory_gates.json)**
 3. 15j/BF kernel или flatness constraints.
 4. Нулевой commutator только после group averaging.
 5. Выход Hamiltonian из fixed $K_5$ sector: graph/spin change разрешён canonical LQG dynamics.
-6. Совпадение заранее известных констант или post-hoc fitting.
+6. Local $S^2$ cell shell без global manifold test.
+7. Central-limit smoothing без frozen microscopic measure/correlation proof.
+8. Совпадение заранее известных констант или post-hoc fitting.
 
 BF/GR discriminator зафиксирован отдельно в [`BF_GR_DIRAC_COUNT_DISCRIMINATOR.md`](BF_GR_DIRAC_COUNT_DISCRIMINATOR.md).
 
@@ -113,8 +191,8 @@ Simplicity constraints select a gravity sector from BF/Spin(4) data. Эта ве
 
 ```bash
 python -m pip install -r requirements.txt
+python bcqg_observer_smoothing_unified.py
 python scripts/verify_theory_gates.py
-python scripts/validate_github_latex.py
 python scripts/verify_sine_bridge.py
 python scripts/verify_connection_ward.py
 python scripts/verify_geometric_cell.py
@@ -126,23 +204,17 @@ python scripts/path_vector_diffeo_gate.py
 python scripts/lorentzian_hit_depth_bound.py
 ```
 
-GitHub Actions запускает этот core regression автоматически на `push` в `main` и на pull request.
+GitHub Actions запускает core regression автоматически на `push` в `main` и на pull request.
 
 ## Правило изменения теории
 
-Любой PR, который меняет физический claim, обязан одновременно:
-
-1. обновить `THEORY_STATUS.md`;
-2. обновить соответствующий gate в `theory_gates.json`;
-3. добавить/обновить воспроизводимый evidence-файл;
-4. сохранить отрицательные и blind FAIL результаты;
-5. не повышать `tested_finite`/`conditional` до `proved` без нового доказательства;
-6. быть основанным на актуальном `main`, чтобы старые Codex-ветки не откатывали frontier.
+Любой change, который повышает физический claim, должен одновременно обновлять status/ledger, добавлять воспроизводимый evidence и сохранять negative/blind FAIL controls. `tested_finite` и `conditional` не повышаются до `proved` без отдельного доказательства.
 
 См. [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ## Навигация
 
+- **Новый bit -> spacetime вывод:** [`BIT_TO_SPACETIME_CENTRAL_EQUATION.md`](BIT_TO_SPACETIME_CENTRAL_EQUATION.md)
 - **Текущий статус:** [`THEORY_STATUS.md`](THEORY_STATUS.md)
 - **Machine ledger:** [`theory_gates.json`](theory_gates.json)
 - **Кандидатная теория:** [`CIMFIG_V18_CANDIDATE_THEORY.md`](CIMFIG_V18_CANDIDATE_THEORY.md)
@@ -155,7 +227,8 @@ GitHub Actions запускает этот core regression автоматиче�
 
 Главные незакрытые задачи:
 
-- один frozen microscopic Lorentzian rule/measure без post-hoc tuning;
+- global 3-manifold emergence from the frozen binary-route rule;
+- frozen microscopic measure/correlation law beyond independent-bit smoothing control;
 - full off-shell quantum HDA на общем graph-changing domain;
 - simultaneous RG window: dimension/topology, large spin, Lorentzian DeWitt, $z=1$, GR constraint rank;
 - matter/chirality/anomaly cancellation;
