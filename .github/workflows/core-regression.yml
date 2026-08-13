@@ -186,12 +186,26 @@ jobs:
       - name: Syntax check frontier
         run: |
           python -m py_compile \
+            scripts/peter_weyl_euclidean_sine_ordering_gate.py \
             scripts/peter_weyl_covariant_composition_gate.py \
             scripts/peter_weyl_covariant_K_composition_gate.py \
             scripts/peter_weyl_covariant_K_composition_cached_gate.py \
             scripts/peter_weyl_lorentzian_scalar_channel_gate.py \
             scripts/peter_weyl_lorentzian_triple_algebra_gate.py \
             scripts/peter_weyl_lorentzian_ordered_triple_gate.py
+
+      - name: Physical Euclidean sine-Hermitian ordering audit
+        run: |
+          python scripts/peter_weyl_euclidean_sine_ordering_gate.py \
+            --output verification_results/PETER_WEYL_EUCLIDEAN_SINE_ORDERING.json
+
+      - name: Upload Euclidean ordering audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: peter-weyl-euclidean-ordering
+          path: verification_results/PETER_WEYL_EUCLIDEAN_SINE_ORDERING.json
+          if-no-files-found: error
 
       - name: Lorentzian exact scalar-channel gate
         run: python scripts/peter_weyl_lorentzian_scalar_channel_gate.py
