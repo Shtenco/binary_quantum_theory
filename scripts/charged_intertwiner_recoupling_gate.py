@@ -15,18 +15,19 @@ The oriented seed
     Q = J1 . (J2 x J3)
 
 is an SU(2) scalar and must preserve every fixed-(J,M) sector.  We first verify
-that statement directly to machine precision.  Then, inside the exact small
-2x2/3x3 charged block, define
+that statement directly to machine precision and verify that its reduced block
+is independent of M.  A single canonical reduced block is then used for the
+whole J=1/2 multiplet:
 
     V_J = sqrt(|Q_J|).
 
-This ordering is essential numerically: diagonalising Q in the full magnetic
-space leaves arbitrary rotations inside degenerate SU(2) multiplets, and a
-subsequent spectral sqrt can create spurious 1e-9--1e-8 apparent inter-sector
-leakage.  The block construction preserves the representation exactly by
-construction and is the compressed primitive needed by C_e(K)=h_e[h_e^-1,K].
+The invariant functional-calculus check is V_J^4 = Q_J^2.  We deliberately do
+not compare two independently diagonalised copies of V_J for M=+/-1/2 because
+arbitrary eigensolver rotations inside exact-zero eigenspaces can produce a
+spurious O(sqrt(machine epsilon)) matrix difference even when Q_J is identical.
 
-This is a representation-theory prerequisite, not H_L or HDA closure.
+This is the compressed representation primitive needed by
+C_e(K)=h_e[h_e^-1,K], not H_L or HDA closure.
 """
 from __future__ import annotations
 
@@ -94,11 +95,10 @@ def close_with_external_half(TJM, J2, M2):
 
 @functools.lru_cache(None)
 def q123_matrix(spins3):
-    """Hermitian magnetic-space Q=J1.(J2 x J3) on the first three legs."""
     spins3 = tuple(spins3)
     mats = [PW.spin_mats_cached(s) for s in spins3]
-    d = np.prod([s + 1 for s in spins3], dtype=int)
-    Q = np.zeros((int(d), int(d)), complex)
+    d = int(np.prod([s + 1 for s in spins3]))
+    Q = np.zeros((d, d), complex)
     for a, b, c in itertools.product(range(3), repeat=3):
         e = PW.EPS3[a, b, c]
         if e:
@@ -118,7 +118,7 @@ def project_to_basis(X, basis):
     return coeff, recon
 
 
-def block_q_and_v(spins, J2, M2):
+def q_block(spins, J2, M2):
     labels = allowed_charged_labels(spins, J2)
     basis = [charged_tensor(tuple(spins), a, b, J2, M2) for a, b in labels]
     n = len(basis)
@@ -134,9 +134,14 @@ def block_q_and_v(spins, J2, M2):
         max_abs_leak = max(max_abs_leak, abs_leak)
         max_rel_leak = max(max_rel_leak, rel_leak)
     Qb = 0.5 * (Qb + Qb.conj().T)
+    return basis, Qb, max_abs_leak, max_rel_leak
+
+
+def canonical_volume_block(Qb):
     ev, U = np.linalg.eigh(Qb)
     Vb = (U * np.sqrt(np.abs(ev))) @ U.conj().T
-    return basis, Qb, Vb, max_abs_leak, max_rel_leak
+    Vb = 0.5 * (Vb + Vb.conj().T)
+    return Vb
 
 
 def run():
@@ -154,36 +159,46 @@ def run():
     max_q_rel_leak = 0.0
     max_q_herm = 0.0
     max_v_herm = 0.0
-    max_m_block_difference = 0.0
+    max_q_m_difference = 0.0
+    max_volume_function_error = 0.0
     min_v_eig = float("inf")
     rows = []
 
     for spins in one_hit:
         labels = allowed_charged_labels(spins, 1)
-        blocks = {}
+        qblocks = {}
         basis_by_M = {}
-        row_q_abs = row_q_rel = row_q_herm = row_v_herm = 0.0
+        row_q_abs = row_q_rel = row_q_herm = 0.0
         for M2 in PW.m2vals_t(1):
-            basis, Qb, Vb, q_abs, q_rel = block_q_and_v(spins, 1, M2)
+            basis, Qb, q_abs, q_rel = q_block(spins, 1, M2)
             basis_by_M[M2] = basis
-            blocks[M2] = (Qb, Vb)
+            qblocks[M2] = Qb
             G = np.array([[np.vdot(A, B) for B in basis] for A in basis], complex)
             max_orth = max(max_orth, float(np.linalg.norm(G - np.eye(len(basis)))))
             qh = float(np.linalg.norm(Qb - Qb.conj().T))
-            vh = float(np.linalg.norm(Vb - Vb.conj().T))
             row_q_abs = max(row_q_abs, q_abs); row_q_rel = max(row_q_rel, q_rel)
-            row_q_herm = max(row_q_herm, qh); row_v_herm = max(row_v_herm, vh)
+            row_q_herm = max(row_q_herm, qh)
             max_q_abs_leak = max(max_q_abs_leak, q_abs)
             max_q_rel_leak = max(max_q_rel_leak, q_rel)
-            max_q_herm = max(max_q_herm, qh); max_v_herm = max(max_v_herm, vh)
-            if len(Vb):
-                min_v_eig = min(min_v_eig, float(np.linalg.eigvalsh(Vb).min()))
+            max_q_herm = max(max_q_herm, qh)
 
-        # Scalar Q/V must be identical for M=+/-1/2 in the same recoupling basis.
         Mp, Mm = PW.m2vals_t(1)
-        qdiff = float(np.linalg.norm(blocks[Mp][0] - blocks[Mm][0]))
-        vdiff = float(np.linalg.norm(blocks[Mp][1] - blocks[Mm][1]))
-        max_m_block_difference = max(max_m_block_difference, qdiff, vdiff)
+        qdiff = float(np.linalg.norm(qblocks[Mp] - qblocks[Mm]))
+        max_q_m_difference = max(max_q_m_difference, qdiff)
+        # Average only machine-roundoff differences between two proven copies
+        # of the same scalar reduced operator; this is not a physics fit.
+        Qcanon = 0.5 * (qblocks[Mp] + qblocks[Mm])
+        Qcanon = 0.5 * (Qcanon + Qcanon.conj().T)
+        Vcanon = canonical_volume_block(Qcanon)
+        vh = float(np.linalg.norm(Vcanon - Vcanon.conj().T))
+        max_v_herm = max(max_v_herm, vh)
+        V2 = Vcanon @ Vcanon
+        V4 = V2 @ V2
+        Q2 = Qcanon @ Qcanon
+        func_err = float(np.linalg.norm(V4 - Q2) / max(np.linalg.norm(Q2), 1.0))
+        max_volume_function_error = max(max_volume_function_error, func_err)
+        if len(Vcanon):
+            min_v_eig = min(min_v_eig, float(np.linalg.eigvalsh(Vcanon).min()))
 
         closed = []
         for ilabel, _ in enumerate(labels):
@@ -204,13 +219,13 @@ def run():
             "max_Q_absolute_sector_leakage": row_q_abs,
             "max_Q_relative_sector_leakage": row_q_rel,
             "max_Q_block_hermiticity_error": row_q_herm,
-            "max_V_block_hermiticity_error": row_v_herm,
             "Q_block_M_difference": qdiff,
-            "V_block_M_difference": vdiff,
-            "Q_block_real": blocks[Mp][0].real.tolist(),
-            "Q_block_imag": blocks[Mp][0].imag.tolist(),
-            "V_block_real": blocks[Mp][1].real.tolist(),
-            "V_block_imag": blocks[Mp][1].imag.tolist(),
+            "V_block_hermiticity_error": vh,
+            "V4_minus_Q2_relative_error": func_err,
+            "Q_canonical_real": Qcanon.real.tolist(),
+            "Q_canonical_imag": Qcanon.imag.tolist(),
+            "V_canonical_real": Vcanon.real.tolist(),
+            "V_canonical_imag": Vcanon.imag.tolist(),
         })
 
     dims = sorted({r["charged_dimension"] for r in rows})
@@ -224,12 +239,13 @@ def run():
         and max_q_abs_leak < 1e-12
         and max_q_rel_leak < 1e-12
         and max_q_herm < 1e-12
+        and max_q_m_difference < 1e-12
         and max_v_herm < 1e-12
-        and max_m_block_difference < 1e-12
+        and max_volume_function_error < 1e-12
         and min_v_eig > -1e-12
     )
     return {
-        "status": "symmetry-adapted charged-intertwiner Q/V blocks for Lorentzian holonomy commutators",
+        "status": "canonical symmetry-adapted charged-intertwiner Q/V blocks for Lorentzian holonomy commutators",
         "passed": bool(passed),
         "one_fundamental_hit_quartets": len(one_hit),
         "charged_dimensions_observed": dims,
@@ -239,17 +255,18 @@ def run():
         "max_Q_absolute_JM_sector_leakage": max_q_abs_leak,
         "max_Q_relative_JM_sector_leakage": max_q_rel_leak,
         "max_Q_block_hermiticity_error": max_q_herm,
+        "max_Q_M_block_difference": max_q_m_difference,
         "max_V_block_hermiticity_error": max_v_herm,
-        "max_M_block_difference": max_m_block_difference,
+        "max_V4_minus_Q2_relative_error": max_volume_function_error,
         "minimum_V_block_eigenvalue": min_v_eig,
         "representation_statement": (
             "A one-hit endpoint is exactly compressed into a total-J=1/2 four-leg charged block of dimension 2 or 3; the external fundamental closes it to a five-valent singlet."
         ),
         "volume_statement": (
-            "The SU(2)-scalar seed Q preserves fixed (J,M) to machine precision. The physical absolute-volume block is then V_J=sqrt(|Q_J|), taken after symmetry reduction, preventing spurious degenerate-multiplet mixing from a global magnetic eigensolver."
+            "Q is first reduced as an SU(2) scalar and verified M-independent. One canonical V_J=sqrt(|Q_J|) is then defined for the entire multiplet and satisfies V_J^4=Q_J^2."
         ),
         "next_use": (
-            "Use these exact Q_J/V_J blocks as the intermediate charged-state volume primitive inside h_e^-1, K_v and h_e closure to compute C_e(K_v)=h_e[h_e^-1,K_v]."
+            "Use the canonical charged V_J blocks inside the charged K_v action and close the spectator fundamental with h_e to compute C_e(K_v)=h_e[h_e^-1,K_v]."
         ),
         "scope_note": "Exact representation/volume prerequisite only; C_e(K), the Lorentzian triple and HDA remain open.",
     }
