@@ -38,11 +38,21 @@ def complete_HE_sine(key, source_v, Jmax2, charged_nodes=(0,1)):
     return out,max_v,max_b
 
 
+def gauss_HE_sine_with_historical_K_cutoff(state,node,Jmax2):
+    """Match peter_weyl_lorentzian_K_block_gate.apply_HE_local exactly.
+
+    The historical Gauss K reference prunes H_E at 1e-9.  The standalone sine
+    ordering equivalence audit keeps 1e-10 to expose representation tails, but
+    C(K_sine) must inherit the same 1e-9 Gauss K cutoff as C(K_plus).
+    """
+    return KC.PW.prune_state(SINE.safe_H_sine(state,node,Jmax2),1e-9)
+
+
 def run(v=0,w=1):
     old_complete=KC.CK.apply_HE_complete_key
     old_gauss=KC.KG.apply_HE_local
     KC.CK.apply_HE_complete_key=complete_HE_sine
-    KC.KG.apply_HE_local=lambda state,node,Jmax2:SINE.safe_H_sine(state,node,Jmax2)
+    KC.KG.apply_HE_local=gauss_HE_sine_with_historical_K_cutoff
     if hasattr(KC.CK.HE_complete_cached,'cache_clear'):
         KC.CK.HE_complete_cached.cache_clear()
     try:
@@ -54,6 +64,8 @@ def run(v=0,w=1):
             KC.CK.HE_complete_cached.cache_clear()
     out['euclidean_ordering']='sine-Hermitian (T-T^dagger)/(2i)'
     out['K_definition']='K_sine=[V,H_E^sine]'
+    out['gauss_HE_cutoff']=1e-9
+    out['historical_Gauss_K_cutoff_preserved']=True
     out['old_plus_K_reused']=False
     return out
 
