@@ -1,32 +1,36 @@
 #!/usr/bin/env python3
-"""Exact first Lorentzian covariant leg C_e(V)=h_e[h_e^-1,V_v].
+"""Exact matrix-covariant Lorentzian volume leg C_e(V)=h_e[h_e^-1,V_v].
 
-This is the cheapest genuine factor appearing in Thiemann's Lorentzian kinetic
-operator.  It uses the same Peter-Weyl holonomy hit matrices as the safe H_E
-engine and the symmetry-adapted charged J=1/2 volume blocks from
-charged_intertwiner_recoupling_gate.py.
+A crucial representation point is kept explicit: C_e(V) is a 2x2 matrix at the
+source vertex, not a Gauss-scalar by itself.  After h^-1 and h close the edge at
+the target vertex, the source geometry is correlated with the open fundamental
+matrix pair
 
-For one oriented K5 radial edge e=(v,w), the matrix-valued operator is
+    1/2 tensor 1/2* = J=0 plus J=1.
 
-    C_ij(V) = delta_ij V - sum_k h_ik V h^-1_kj.
+Therefore the final source tensor is NOT projected to J=0.  It is decomposed
+into exact total-J recoupling tensors, while every other K5 node is projected to
+its ordinary Gauss singlet.  Only the later trace of three covariant legs is a
+full scalar.
 
 Before evaluating C(V), the script checks the stronger two-hit identity
 
     sum_k h_ik h^-1_kj = delta_ij
 
-on the same Gauss spin-network input, including all Peter-Weyl normalization,
-endpoint orientation tensors and final Gauss projection.  Failure of that
-identity is a hard implementation stop.
+in this enlarged covariant basis.  The identity must contain only the J=0
+source sector and reproduce the original Gauss state.  The nontrivial C(V) leg
+may contain J=0 and J=1, but any J>1 content is a hard covariance failure.
 
-The intermediate state after h^-1 is charged.  Its endpoint tensor is projected
-onto total J=1/2 recoupling blocks; V_J=sqrt(|Q_J|) acts there and the second
-holonomy closes the state back to the Gauss sector.
+At the intermediate one-hit source state, V acts in the symmetry-adapted
+charged J=1/2 blocks constructed by charged_intertwiner_recoupling_gate.py.
 
-This gate does not yet contain K=[V,H_E], the triple Lorentzian product or HDA.
+This is one genuine factor of Thiemann's Lorentzian kinetic operator; K legs,
+the triple trace and HDA remain separate gates.
 """
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import math
 import sys
@@ -39,43 +43,7 @@ if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 import k5_peter_weyl_safe_hda_column as PW
 import charged_intertwiner_recoupling_gate as CH
-
-
-def project_factorized_branches(branches, tol=1e-11, return_leak=False):
-    out = {}
-    max_node_leak = 0.0
-    for spins, tensors, amp in branches:
-        local_opts = []
-        ok = True
-        for v in PW.VERT:
-            ls = PW.local_spins(spins, v)
-            opts = []
-            recon = np.zeros_like(tensors[v])
-            for K in PW.allowed_k2_t(*ls):
-                B = PW.oriented_intertwiner(v, ls, K)
-                c = np.vdot(B, tensors[v])
-                if abs(c) > 1e-13:
-                    opts.append((K, c))
-                    recon += c * B
-            nrm = float(np.linalg.norm(tensors[v]))
-            leak = float(np.linalg.norm(tensors[v] - recon) / max(nrm, 1e-30))
-            max_node_leak = max(max_node_leak, leak)
-            if not opts:
-                ok = False
-                break
-            local_opts.append(opts)
-        if not ok:
-            continue
-        import itertools
-        for ch in itertools.product(*local_opts):
-            val = amp
-            for _, c in ch:
-                val *= c
-            if abs(val) > tol:
-                key = (spins, tuple(k for k, _ in ch))
-                out[key] = out.get(key, 0j) + val
-    out = PW.prune_state(out, tol)
-    return (out, max_node_leak) if return_leak else out
+import peter_weyl_lorentzian_K_block_gate as KG
 
 
 def unorient_local(T, spins_local, v):
@@ -96,20 +64,22 @@ def orient_local(T, spins_local, v):
 
 def canonical_charged_volume(spins_local):
     Mp, Mm = PW.m2vals_t(1)
-    bp, Qp, _, _ = CH.q_block(tuple(spins_local), 1, Mp)
-    bm, Qm, _, _ = CH.q_block(tuple(spins_local), 1, Mm)
+    _, Qp, _, _ = CH.q_block(tuple(spins_local), 1, Mp)
+    _, Qm, _, _ = CH.q_block(tuple(spins_local), 1, Mm)
     Q = 0.5 * (Qp + Qm)
     Q = 0.5 * (Q + Q.conj().T)
-    V = CH.canonical_volume_block(Q)
-    return {Mp: bp, Mm: bm}, V
+    return CH.canonical_volume_block(Q)
 
 
 def apply_charged_volume_oriented(T, spins_local, v):
+    """Apply V on the exact one-hit J=1/2 source sector."""
     X = unorient_local(T, spins_local, v)
-    bases, V = canonical_charged_volume(tuple(spins_local))
+    V = canonical_charged_volume(tuple(spins_local))
     Y = np.zeros_like(X)
     recon = np.zeros_like(X)
-    for M2, basis in bases.items():
+    labels = CH.allowed_charged_labels(tuple(spins_local), 1)
+    for M2 in PW.m2vals_t(1):
+        basis = [CH.charged_tensor(tuple(spins_local), a, b, 1, M2) for a, b in labels]
         coeff = np.asarray([np.vdot(B, X) for B in basis], complex)
         for c, B in zip(coeff, basis):
             recon += c * B
@@ -120,17 +90,74 @@ def apply_charged_volume_oriented(T, spins_local, v):
     return orient_local(Y, spins_local, v), leak
 
 
+def all_total_J2(spins_local):
+    maxJ = sum(spins_local)
+    return tuple(J for J in range(maxJ + 1) if CH.allowed_charged_labels(tuple(spins_local), J))
+
+
+def project_covariant_branches(branches, source_v, tol=1e-11):
+    """Project nonsource nodes to J=0 and source to every allowed total J.
+
+    Key layout:
+      (spins, K_other_tuple, J2, M2, K12, K34)
+    where K_other_tuple has -1 at source_v and Gauss recoupling labels elsewhere.
+    """
+    out = {}
+    for spins, tensors, amp in branches:
+        other_opts = []
+        ok = True
+        for u in PW.VERT:
+            if u == source_v:
+                other_opts.append(((None, 1 + 0j),))
+                continue
+            ls = PW.local_spins(spins, u)
+            opts = []
+            for K in PW.allowed_k2_t(*ls):
+                c = np.vdot(PW.oriented_intertwiner(u, ls, K), tensors[u])
+                if abs(c) > 1e-13:
+                    opts.append((K, c))
+            if not opts:
+                ok = False
+                break
+            other_opts.append(tuple(opts))
+        if not ok:
+            continue
+
+        ls0 = PW.local_spins(spins, source_v)
+        X0 = unorient_local(tensors[source_v], ls0, source_v)
+        src_opts = []
+        for J2 in all_total_J2(ls0):
+            for M2 in PW.m2vals_t(J2):
+                for K12, K34 in CH.allowed_charged_labels(tuple(ls0), J2):
+                    B = CH.charged_tensor(tuple(ls0), K12, K34, J2, M2)
+                    c = np.vdot(B, X0)
+                    if abs(c) > 1e-13:
+                        src_opts.append((J2, M2, K12, K34, c))
+
+        for chosen in itertools.product(*other_opts):
+            base_amp = amp
+            Kother = []
+            for u, (K, c) in enumerate(chosen):
+                if u == source_v:
+                    Kother.append(-1)
+                else:
+                    Kother.append(K)
+                    base_amp *= c
+            for J2, M2, K12, K34, cs in src_opts:
+                val = base_amp * cs
+                if abs(val) > tol:
+                    key = (spins, tuple(Kother), J2, M2, K12, K34)
+                    out[key] = out.get(key, 0j) + val
+    return {k: v for k, v in out.items() if abs(v) > tol}
+
+
 def inverse_then_forward(initial, v, w, i, j, Jmax2, with_volume):
     total = {}
     max_charged_projection_leak = 0.0
-    max_final_gauss_leak = 0.0
     for k in range(2):
-        branches = [PW.initial_factorized_oriented(initial)]
-        # h^{-1}_{k j}: reverse path w -> v.
-        nb = []
-        for br in branches:
-            nb.extend(PW.apply_hit_branch(br, w, v, k, j, Jmax2))
-        branches = nb
+        branches = []
+        for br in [PW.initial_factorized_oriented(initial)]:
+            branches.extend(PW.apply_hit_branch(br, w, v, k, j, Jmax2))
         if with_volume:
             vb = []
             for spins, tensors, amp in branches:
@@ -140,91 +167,116 @@ def inverse_then_forward(initial, v, w, i, j, Jmax2, with_volume):
                 max_charged_projection_leak = max(max_charged_projection_leak, leak)
                 vb.append((spins, tuple(t), amp))
             branches = vb
-        # h_{i k}: forward path v -> w.
-        nb = []
+        closed = []
         for br in branches:
-            nb.extend(PW.apply_hit_branch(br, v, w, i, k, Jmax2))
-        branches = nb
-        projected, gleak = project_factorized_branches(branches, return_leak=True)
-        max_final_gauss_leak = max(max_final_gauss_leak, gleak)
+            closed.extend(PW.apply_hit_branch(br, v, w, i, k, Jmax2))
+        projected = project_covariant_branches(closed, v)
         PW.add_dict(total, projected, +1)
-    return PW.prune_state(total, 1e-10), max_charged_projection_leak, max_final_gauss_leak
+    return {k: a for k, a in total.items() if abs(a) > 1e-10}, max_charged_projection_leak
 
 
-def volume_on_gauss(initial, v):
-    # Reuse exact local symmetry-preserving Gauss volume column from K gate.
-    import peter_weyl_lorentzian_K_block_gate as KG
-    return dict(KG.local_volume_column(initial, v))
+def gauss_to_covariant(state, source_v):
+    out = {}
+    for (spins, Ks), amp in state.items():
+        K = Ks[source_v]
+        Kother = tuple(-1 if u == source_v else Ks[u] for u in PW.VERT)
+        key = (spins, Kother, 0, 0, K, K)
+        out[key] = out.get(key, 0j) + amp
+    return out
 
 
-def state_diff_norm(a, b):
+def covariant_state_norm2(state):
+    return float(sum(abs(a) ** 2 for a in state.values()))
+
+
+def diff_norm(a, b):
     keys = set(a) | set(b)
     return math.sqrt(sum(abs(a.get(k, 0j) - b.get(k, 0j)) ** 2 for k in keys))
 
 
-def matrix_state_norm(M):
-    return math.sqrt(sum(PW.norm2_state(s) for row in M for s in row))
+def weight_by_J(matrix_states):
+    out = {}
+    for row in matrix_states:
+        for state in row:
+            for key, amp in state.items():
+                J2 = key[2]
+                out[J2] = out.get(J2, 0.0) + abs(amp) ** 2
+    return {str(J2 / 2): float(v) for J2, v in sorted(out.items())}
+
+
+def matrix_state_norm(matrix_states):
+    return math.sqrt(sum(covariant_state_norm2(s) for row in matrix_states for s in row))
 
 
 def run(v=0, w=1):
-    # Two fundamental hits can reach j=3/2 from j=1/2.
     JMAX2 = 3
     initial = PW.basis_full_jhalf()[0]
-    ket = {initial: 1 + 0j}
+    target_identity = gauss_to_covariant({initial: 1 + 0j}, v)
 
     ident = [[{} for _ in range(2)] for _ in range(2)]
     max_identity_error = 0.0
-    max_final_gauss_leak_identity = 0.0
     for i in range(2):
         for j in range(2):
-            s, _, gleak = inverse_then_forward(initial, v, w, i, j, JMAX2, False)
+            s, _ = inverse_then_forward(initial, v, w, i, j, JMAX2, False)
             ident[i][j] = s
-            target = ket if i == j else {}
-            max_identity_error = max(max_identity_error, state_diff_norm(s, target))
-            max_final_gauss_leak_identity = max(max_final_gauss_leak_identity, gleak)
+            target = target_identity if i == j else {}
+            max_identity_error = max(max_identity_error, diff_norm(s, target))
+    ident_weights = weight_by_J(ident)
+    ident_nonzero_J_weight = sum(vv for jj, vv in ident_weights.items() if abs(float(jj)) > 1e-15)
 
-    Vstate = volume_on_gauss(initial, v)
+    Vgauss = dict(KG.local_volume_column(initial, v))
+    Vcov = gauss_to_covariant(Vgauss, v)
     C = [[{} for _ in range(2)] for _ in range(2)]
     max_charged_leak = 0.0
-    max_final_gauss_leak_volume = 0.0
     for i in range(2):
         for j in range(2):
-            hVh, cleak, gleak = inverse_then_forward(initial, v, w, i, j, JMAX2, True)
+            hVh, cleak = inverse_then_forward(initial, v, w, i, j, JMAX2, True)
             max_charged_leak = max(max_charged_leak, cleak)
-            max_final_gauss_leak_volume = max(max_final_gauss_leak_volume, gleak)
             out = {}
             if i == j:
-                PW.add_dict(out, Vstate, +1)
+                PW.add_dict(out, Vcov, +1)
             PW.add_dict(out, hVh, -1)
-            C[i][j] = PW.prune_state(out, 1e-10)
+            C[i][j] = {k: a for k, a in out.items() if abs(a) > 1e-10}
 
     Cnorm = matrix_state_norm(C)
+    Cweights = weight_by_J(C)
+    C_high_J_weight = sum(vv for jj, vv in Cweights.items() if float(jj) > 1.0 + 1e-15)
+    C_total_weight = sum(Cweights.values())
+    high_fraction = C_high_J_weight / max(C_total_weight, 1e-30)
+    J1_weight = Cweights.get("1.0", 0.0)
     supports = [[len(C[i][j]) for j in range(2)] for i in range(2)]
-    max_spin = max((max(k[0]) for row in C for s in row for k in s), default=0) / 2
+    max_spin = max((max(key[0]) for row in C for s in row for key in s), default=0) / 2
 
     passed = (
         max_identity_error < 1e-10
-        and max_final_gauss_leak_identity < 1e-10
+        and ident_nonzero_J_weight < 1e-20
         and max_charged_leak < 1e-10
-        and max_final_gauss_leak_volume < 1e-10
         and Cnorm > 1e-10
+        and J1_weight > 1e-14
+        and high_fraction < 1e-20
         and max_spin <= 1.5 + 1e-12
     )
     return {
-        "status": "exact Peter-Weyl covariantized volume leg C_e(V)=h[h^-1,V]",
+        "status": "exact matrix-covariant Peter-Weyl volume leg C_e(V)=h[h^-1,V]",
         "passed": bool(passed),
         "edge": [v, w],
         "input": "all ten links j=1/2; all five K=0",
         "Jmax": 1.5,
-        "two_hit_identity_max_state_error": max_identity_error,
-        "two_hit_identity_max_final_Gauss_projection_leakage": max_final_gauss_leak_identity,
+        "two_hit_identity_max_covariant_state_error": max_identity_error,
+        "two_hit_identity_weight_by_source_J": ident_weights,
+        "two_hit_identity_nonzero_J_weight": ident_nonzero_J_weight,
         "charged_volume_max_Jhalf_projection_leakage": max_charged_leak,
-        "volume_leg_max_final_Gauss_projection_leakage": max_final_gauss_leak_volume,
         "C_matrix_supports": supports,
-        "C_matrix_Frobenius_state_norm": Cnorm,
+        "C_matrix_Frobenius_covariant_state_norm": Cnorm,
+        "C_weight_by_source_J": Cweights,
+        "C_J1_weight": J1_weight,
+        "C_J_greater_than_1_weight_fraction": high_fraction,
         "max_spin_reached": max_spin,
-        "definition": "C_ij(V)=delta_ij V-sum_k h_ik V h^-1_kj",
-        "next_use": "Replace V by K_v=[V_v,H_E,v] on the same charged layer to obtain C_e(K_v), then assemble the epsilon^{ijk} trace of two K legs and one V leg.",
+        "definition": "C_ij(V)=delta_ij V-sum_k h_ik V h^-1_kj, retaining source J=0+1 covariant geometry",
+        "representation_note": (
+            "C_ij is not projected to a Gauss scalar. Its source geometry carries the same J=0+1 content as the open fundamental matrix pair; only the later traced triple is gauge scalar."
+        ),
+        "next_use": "Construct the same matrix-covariant leg with K_v=[V_v,H_E,v], then contract two K legs and one V leg with the frozen epsilon^{ijk} orientation trace.",
         "scope_note": "One exact Lorentzian covariant volume factor only; K legs, triple H_L and HDA remain open.",
     }
 
