@@ -120,7 +120,7 @@ jobs:
 
       - name: Covariant C(K) state-to-state composition gate
         run: |
-          python scripts/peter_weyl_covariant_K_composition_gate.py \
+          python scripts/peter_weyl_covariant_K_composition_cached_gate.py \
             --output verification_results/PETER_WEYL_CK_COMPOSITION.json
 
       - name: Lorentzian operator-order algebra gate
