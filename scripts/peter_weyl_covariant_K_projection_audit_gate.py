@@ -60,6 +60,10 @@ def prune(s,t): return {k:a for k,a in s.items() if abs(a)>t}
 def relerr(a,b):
     keys=set(a)|set(b); num=math.sqrt(sum(abs(a.get(k,0j)-b.get(k,0j))**2 for k in keys)); den=math.sqrt(norm2(b)); return num/max(den,1e-30)
 
+def freeze_state(state):
+    """Hashable exact sparse-state representation; no numerical rounding."""
+    return tuple(sorted(state.items(),key=lambda kv:repr(kv[0])))
+
 def run():
     # Research-branch migration experiment only: use one zero-eigenspace
     # convention on both independently existing volume realizations. Frozen
@@ -119,20 +123,52 @@ def run_composition_prerequisites():
     import peter_weyl_covariant_K_composition_gate as CKCOMP
     cv=CVCOMP.run(0,1)
 
-    # Runtime-only wrapper. apply_HE_complete_key is deterministic in its full
-    # immutable argument tuple.  No result, threshold, projection or operator
-    # ordering is altered.  Restore the original function after the gate.
-    original=CKCOMP.CK.apply_HE_complete_key
-    cached=functools.lru_cache(maxsize=None)(original)
-    CKCOMP.CK.apply_HE_complete_key=cached
+    # Every cache key below contains the COMPLETE sparse state with exact complex
+    # amplitudes and all discrete labels.  There is no rounding, pruning or
+    # physical identification in the cache key.
+    original_he=CKCOMP.CK.apply_HE_complete_key
+    original_k=CKCOMP.apply_K_complete_custom
+    original_inv=CKCOMP.COMP.inverse_complete
+    cached_he=functools.lru_cache(maxsize=None)(original_he)
+
+    @functools.lru_cache(maxsize=None)
+    def cached_k_frozen(frozen,source_v,Jmax2,charged_nodes):
+        out,vleak,bleak=original_k(dict(frozen),source_v,Jmax2,tuple(charged_nodes))
+        return tuple(out.items()),float(vleak),float(bleak)
+
+    def cached_k(state,source_v,Jmax2,charged_nodes):
+        items,vleak,bleak=cached_k_frozen(
+            freeze_state(state),source_v,Jmax2,tuple(charged_nodes)
+        )
+        return dict(items),vleak,bleak
+
+    @functools.lru_cache(maxsize=None)
+    def cached_inv_frozen(frozen,source_v,target_v,k,j,Jmax2):
+        out,leak=original_inv(dict(frozen),source_v,target_v,k,j,Jmax2)
+        return tuple(out.items()),float(leak)
+
+    def cached_inv(state,source_v,target_v,k,j,Jmax2):
+        items,leak=cached_inv_frozen(
+            freeze_state(state),source_v,target_v,k,j,Jmax2
+        )
+        return dict(items),leak
+
+    CKCOMP.CK.apply_HE_complete_key=cached_he
+    CKCOMP.apply_K_complete_custom=cached_k
+    CKCOMP.COMP.inverse_complete=cached_inv
     try:
         ck=CKCOMP.run(0,1)
-        ci=cached.cache_info()
+        hi=cached_he.cache_info(); ki=cached_k_frozen.cache_info(); ii=cached_inv_frozen.cache_info()
     finally:
-        CKCOMP.CK.apply_HE_complete_key=original
+        CKCOMP.CK.apply_HE_complete_key=original_he
+        CKCOMP.apply_K_complete_custom=original_k
+        CKCOMP.COMP.inverse_complete=original_inv
+
     ck['runtime_memoization']={
-        'exact_apply_HE_complete_key_cache':True,
-        'hits':ci.hits,'misses':ci.misses,'currsize':ci.currsize,
+        'exact_apply_HE_complete_key_cache':{'hits':hi.hits,'misses':hi.misses,'currsize':hi.currsize},
+        'exact_apply_K_complete_state_cache':{'hits':ki.hits,'misses':ki.misses,'currsize':ki.currsize},
+        'exact_inverse_complete_state_cache':{'hits':ii.hits,'misses':ii.misses,'currsize':ii.currsize},
+        'cache_keys_use_full_exact_sparse_states':True,
         'physics_changed':False,
     }
     return {
@@ -142,13 +178,31 @@ def run_composition_prerequisites():
     }
 
 def main():
-    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--output',type=Path); a=ap.parse_args(); out=run()
-    if out.get('passed',False):
-        comp=run_composition_prerequisites()
-        out['composition_prerequisites']=comp
-        out['passed']=bool(out['passed'] and comp['passed'])
-        out['scope_note']='Finite H_E/C(K) invariant audit plus executed C(V)/C(K) state-to-state composition prerequisites; traced H_L and HDA remain open.'
-        out['next_use']='If this combined gate is green, assemble the real traced two-K one-V H_L column at Jmax=7/2 with the preregistered operator ordering.'
+    ap=argparse.ArgumentParser(description=__doc__); ap.add_argument('--output',type=Path); a=ap.parse_args()
+
+    # CK.run and CKCOMP.reference_CK_matrix use the identical deterministic
+    # covariant_K_leg(initial,v,w,i,j,Jmax2).  Cache it across those two audit
+    # phases so the independently defined reference column is numerically the
+    # same object but not recomputed.  Restore the original before exit.
+    original_covleg=CK.covariant_K_leg
+    cached_covleg=functools.lru_cache(maxsize=None)(original_covleg)
+    CK.covariant_K_leg=cached_covleg
+    try:
+        out=run()
+        if out.get('passed',False):
+            comp=run_composition_prerequisites()
+            out['composition_prerequisites']=comp
+            out['passed']=bool(out['passed'] and comp['passed'])
+            out['scope_note']='Finite H_E/C(K) invariant audit plus executed C(V)/C(K) state-to-state composition prerequisites; traced H_L and HDA remain open.'
+            out['next_use']='If this combined gate is green, assemble the real traced two-K one-V H_L column at Jmax=7/2 with the preregistered operator ordering.'
+        ci=cached_covleg.cache_info()
+        out['reference_covariant_K_leg_memoization']={
+            'hits':ci.hits,'misses':ci.misses,'currsize':ci.currsize,
+            'physics_changed':False,
+        }
+    finally:
+        CK.covariant_K_leg=original_covleg
+
     text=json.dumps(out,indent=2); print(text)
     if a.output: a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(text+'\n',encoding='utf-8')
     return 0 if out['passed'] else 1
