@@ -71,6 +71,11 @@ jobs:
           python bcqg_global_manifold_gate.py \
             --output verification_results/GLOBAL_MANIFOLD_RESULTS.json
 
+      - name: Route-normal HDA principal-symbol gate
+        run: |
+          python scripts/path_normal_hda_gate.py \
+            --output verification_results/PATH_NORMAL_HDA_RESULTS.json
+
       - name: Off-shell HDA structural killer
         run: |
           python bcqg_quantum_hda_killer.py \
