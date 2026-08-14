@@ -51,6 +51,8 @@ jobs:
           python scripts/lorentzian_beta_cancellation_gate.py
       - name: Graviton helicity qubit and foam resonance bridge
         run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json
+      - name: Mirror chirality and antigravity falsifier
+        run: python scripts/mirror_chirality_gravity_gate.py --output verification_results/MIRROR_CHIRALITY_GRAVITY.json
       - name: Canonical final architecture status
         run: python bcqg_bit_to_gravity_final.py --strict --output verification_results/FINAL_CORE_ARCHITECTURE.json
       - name: Upload canonical evidence
