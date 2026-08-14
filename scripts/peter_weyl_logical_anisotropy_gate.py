@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Project Peter-Weyl Euclidean dynamics onto the logical geometry-qubit sector.
 
-Goal: test whether the already existing Euclidean geometry dynamics can gap the
-continuous Bell-gluing/Heisenberg mirror parent by generating logical
+The gate tests whether the already existing Euclidean geometry dynamics can gap
+the continuous Bell-gluing/Heisenberg mirror parent by generating logical
 pseudospin anisotropy.
 
 Two levels are kept sharply separate.
@@ -10,41 +10,38 @@ Two levels are kept sharply separate.
 1. Exact first-order support no-go.
    On the all-j=1/2 K5 logical sector, every oriented Euclidean triangle term
    contains fundamental holonomy hits on loop edges. A single fundamental hit
-   sends j -> j +/- 1/2, while V does not change spin. Therefore one H_E action
-   cannot return to the all-j=1/2 sector. The executable gate checks
+   sends j -> j +/- 1/2, while V does not change spin. Therefore
 
-       P H_E^sine P = 0
-
-   on the four two-logical-qubit basis states used below.
+       P H_E^sine P = 0.
 
 2. Second-order structural return kernel.
-   Since H_E^sine is Hermitian, for H_01=H_E,0+H_E,1,
+   For H_01=H_E,0+H_E,1,
 
-       K_return = P H_01^2 P
-
-   has matrix elements
-
+       K_return = P H_01^2 P,
        K_ij = <H_01 i | H_01 j>.
 
-   This requires only first-action states and no arbitrary energy denominator.
-   K_return is decomposed exactly into the 16 Pauli tensors
+   The four-state pair kernel is decomposed into all Pauli tensors. Two versions
+   are reported:
 
-       I,X,Y,Z tensor I,X,Y,Z.
+   (a) a shape-polarized control with the other three logical K5 qubits fixed
+       to K=0;
+   (b) the environment-unbiased pair kernel
 
-   The 3x3 two-qubit coupling tensor is then transformed by the same B-sublattice
-   pi rotation around Y that maps the frozen Bell gluing to the AF Heisenberg
-   parent. Its traceless/off-diagonal part is the finite structural anisotropy
-   diagnostic.
+       Kbar_01 = (1/2^3) Tr_{2,3,4} K_return,
 
-IMPORTANT: K_return is NOT claimed to be a physical Schrieffer-Wolff effective
-Hamiltonian. A true effective Hamiltonian needs a justified dynamical
-resolvent/energy denominator in the constrained theory. This gate answers the
-more primitive question: does the first nonzero return channel already carry
-logical-axis anisotropy?
+       implemented by averaging the pair Gram matrix over all eight logical
+       environment basis states. Because the traced environment is the identity,
+       this result is basis independent and does not prefer K=0 by construction.
+
+IMPORTANT: K_return is NOT a physical Schrieffer-Wolff Hamiltonian. A true
+second-order effective Hamiltonian needs a justified constrained-theory
+resolvent/energy denominator. This gate measures structural symmetry breaking
+in the first nonzero return channel.
 """
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import math
 import sys
@@ -61,7 +58,7 @@ import peter_weyl_euclidean_sine_ordering_gate as SINE
 import peter_weyl_zeroaware_volume_migration_experiment as ZVM
 
 
-JMAX2 = 3  # j<=3/2 is the complete support wall for one H_E hit from all-j=1/2.
+JMAX2 = 3
 TOL = 1e-11
 PAULI = {
     "I": np.eye(2, dtype=complex),
@@ -69,6 +66,10 @@ PAULI = {
     "Y": np.array([[0, -1j], [1j, 0]], dtype=complex),
     "Z": np.array([[1, 0], [0, -1]], dtype=complex),
 }
+LABELS = ("X", "Y", "Z")
+RB = np.diag([-1.0, +1.0, -1.0])
+PAIR_STATES = ((0, 0), (0, 2), (2, 0), (2, 2))
+ENV_STATES = tuple(itertools.product((0, 2), repeat=3))
 
 
 def sparse_add(dst, src, scale=1.0):
@@ -90,11 +91,14 @@ def sparse_norm(a):
     return math.sqrt(float(sum(abs(v) ** 2 for v in a.values())))
 
 
-def logical_key(k0, k1, v=0, w=1):
+def logical_key(k0, k1, env=(0, 0, 0), v=0, w=1):
     spins = (1,) * len(PW.EDGES)
     Ks = [0] * len(PW.VERT)
     Ks[v] = int(k0)
     Ks[w] = int(k1)
+    env_nodes = [u for u in PW.VERT if u not in (v, w)]
+    for u, K in zip(env_nodes, env):
+        Ks[u] = int(K)
     return spins, tuple(Ks)
 
 
@@ -127,47 +131,24 @@ def cjson(z):
     return [float(z.real), float(z.imag)]
 
 
-def run():
-    ZVM.patch_and_clear()
-
-    # Basis order |00>,|01>,|10>,|11>, with K=0/2 as logical 0/1.
-    logical_pairs = [(0, 0), (0, 2), (2, 0), (2, 2)]
-    keys = [logical_key(a, b) for a, b in logical_pairs]
-    images = []
-    first_order_projection_norms = []
-    image_rows = []
-
-    for pair, key in zip(logical_pairs, keys):
-        img = apply_pair_HE(key)
-        projected = {k: v for k, v in img.items() if is_all_jhalf(k)}
-        pnorm = sparse_norm(projected)
-        first_order_projection_norms.append(pnorm)
-        images.append(img)
-        image_rows.append({
-            "logical_K_pair": list(pair),
-            "H01_support": len(img),
-            "H01_norm": sparse_norm(img),
-            "PH01P_norm": pnorm,
-            "max_spin_after_one_hit": max((max(k[0]) / 2 for k in img), default=0.0),
-        })
-
+def kernel_from_images(images):
     K = np.zeros((4, 4), dtype=complex)
     for i in range(4):
         for j in range(4):
             K[i, j] = sparse_inner(images[i], images[j])
+    return K
 
+
+def analyze_kernel(K):
     herm_err = float(np.linalg.norm(K - K.conj().T))
-    evals = np.linalg.eigvalsh((K + K.conj().T) / 2).real
+    Kh = (K + K.conj().T) / 2
+    evals = np.linalg.eigvalsh(Kh).real
     coeff, recon_err = pauli_decompose(K)
 
-    labels = ("X", "Y", "Z")
-    J_orig = np.array([[coeff[a + b] for b in labels] for a in labels], dtype=complex)
-    hA = np.array([coeff[a + "I"] for a in labels], dtype=complex)
-    hB = np.array([coeff["I" + b] for b in labels], dtype=complex)
-
-    # Same B-sublattice pi rotation around Y used in MIRRORHEIS.
-    Rb = np.diag([-1.0, +1.0, -1.0])
-    J_rot = J_orig @ Rb
+    J_orig = np.array([[coeff[a + b] for b in LABELS] for a in LABELS], dtype=complex)
+    hA = np.array([coeff[a + "I"] for a in LABELS], dtype=complex)
+    hB = np.array([coeff["I" + b] for b in LABELS], dtype=complex)
+    J_rot = J_orig @ RB
     J_real = J_rot.real
     J_imag_norm = float(np.linalg.norm(J_rot.imag))
     j_iso = float(np.trace(J_real) / 3.0)
@@ -177,49 +158,23 @@ def run():
     anis_rel = anis_abs / max(Jnorm, 1e-30)
     offdiag = J_real - np.diag(np.diag(J_real))
 
-    first_order_zero = max(first_order_projection_norms, default=0.0) < 1e-12
-    algebra_pass = (
-        first_order_zero
-        and herm_err < 1e-9
-        and recon_err < 1e-8
-        and float(np.min(evals)) > -1e-8
-        and J_imag_norm < 1e-8
-    )
+    mirror_forbidden = ("IY", "YI", "XY", "YX", "YZ", "ZY")
+    mirror_forbidden_norm = math.sqrt(sum(abs(coeff[x]) ** 2 for x in mirror_forbidden))
+    allowed_norm = math.sqrt(sum(abs(v) ** 2 for k, v in coeff.items() if k not in mirror_forbidden))
 
     if Jnorm < 1e-14:
-        classification = "no two-logical-qubit coupling resolved in the quadratic return kernel"
+        classification = "no two-logical-qubit coupling resolved"
     elif anis_rel < 1e-8:
         classification = "Heisenberg-isotropic quadratic return kernel"
     else:
         classification = "anisotropic quadratic return kernel"
 
     return {
-        "status": "Peter-Weyl logical pseudospin anisotropy gate",
-        "passed": bool(algebra_pass),
-        "scope": (
-            "PASS certifies the projection/decomposition computation, not isotropy. Anisotropy is a physical "
-            "measurement reported separately. K_return=P(H_E0+H_E1)^2P is a structural return kernel, not a "
-            "Schrieffer-Wolff Hamiltonian because no constrained-theory energy denominator has been assumed."
-        ),
-        "ordering": "physical structural H_E^sine=(T-T^dagger)/(2i)",
-        "Jmax_one_hit": JMAX2 / 2,
-        "basis_order": ["K0K1=00", "02", "20", "22"],
-        "first_order": {
-            "claim": "P_all-jhalf (H_E0+H_E1) P_all-jhalf = 0",
-            "passed": bool(first_order_zero),
-            "max_projection_norm": max(first_order_projection_norms, default=0.0),
-            "columns": image_rows,
-            "support_reason": (
-                "fundamental triangle holonomy hits change odd-hit loop-edge spins by +/-1/2 while V preserves spin"
-            ),
-        },
-        "quadratic_return_kernel": {
-            "matrix": [[cjson(K[i, j]) for j in range(4)] for i in range(4)],
-            "eigenvalues": [float(x) for x in evals],
-            "hermiticity_error": herm_err,
-            "pauli_reconstruction_error": recon_err,
-            "pauli_coefficients": {k: cjson(v) for k, v in coeff.items()},
-        },
+        "matrix": [[cjson(K[i, j]) for j in range(4)] for i in range(4)],
+        "eigenvalues": [float(x) for x in evals],
+        "hermiticity_error": herm_err,
+        "pauli_reconstruction_error": recon_err,
+        "pauli_coefficients": {k: cjson(v) for k, v in coeff.items()},
         "heisenberg_frame": {
             "B_sublattice_rotation": "diag(X,Y,Z)=(-1,+1,-1)",
             "coupling_tensor_XYZ": [[cjson(J_rot[i, j]) for j in range(3)] for i in range(3)],
@@ -233,9 +188,104 @@ def run():
             "imaginary_norm": J_imag_norm,
             "classification": classification,
         },
+        "mirror_selection": {
+            "forbidden_coefficients": list(mirror_forbidden),
+            "forbidden_norm": mirror_forbidden_norm,
+            "allowed_norm": allowed_norm,
+            "relative_forbidden_norm": mirror_forbidden_norm / max(allowed_norm, 1e-30),
+        },
+    }
+
+
+def run():
+    ZVM.patch_and_clear()
+
+    environment_kernels = []
+    environment_rows = []
+    all_first_projection = []
+    all_max_spin = []
+
+    for env in ENV_STATES:
+        images = []
+        cols = []
+        for pair in PAIR_STATES:
+            key = logical_key(pair[0], pair[1], env)
+            img = apply_pair_HE(key)
+            projected = {k: v for k, v in img.items() if is_all_jhalf(k)}
+            pnorm = sparse_norm(projected)
+            all_first_projection.append(pnorm)
+            max_spin = max((max(k[0]) / 2 for k in img), default=0.0)
+            all_max_spin.append(max_spin)
+            images.append(img)
+            cols.append({
+                "logical_K_pair": list(pair),
+                "H01_support": len(img),
+                "H01_norm": sparse_norm(img),
+                "PH01P_norm": pnorm,
+                "max_spin_after_one_hit": max_spin,
+            })
+        Kenv = kernel_from_images(images)
+        environment_kernels.append(Kenv)
+        environment_rows.append({
+            "environment_K234": list(env),
+            "columns": cols,
+            "kernel_anisotropy_relative": analyze_kernel(Kenv)["heisenberg_frame"]["anisotropy_relative"],
+        })
+
+    fixed_K = environment_kernels[0]
+    averaged_K = sum(environment_kernels) / len(environment_kernels)
+    fixed = analyze_kernel(fixed_K)
+    averaged = analyze_kernel(averaged_K)
+
+    first_order_zero = max(all_first_projection, default=0.0) < 1e-12
+    algebra_pass = (
+        first_order_zero
+        and fixed["hermiticity_error"] < 1e-9
+        and averaged["hermiticity_error"] < 1e-9
+        and fixed["pauli_reconstruction_error"] < 1e-8
+        and averaged["pauli_reconstruction_error"] < 1e-8
+        and min(fixed["eigenvalues"]) > -1e-8
+        and min(averaged["eigenvalues"]) > -1e-8
+        and fixed["heisenberg_frame"]["imaginary_norm"] < 1e-8
+        and averaged["heisenberg_frame"]["imaginary_norm"] < 1e-8
+    )
+
+    return {
+        "status": "Peter-Weyl logical pseudospin anisotropy gate",
+        "passed": bool(algebra_pass),
+        "scope": (
+            "PASS certifies the projection, environment trace and Pauli decomposition. K_return=P(H_E0+H_E1)^2P "
+            "is a structural return kernel, not a physical Schrieffer-Wolff Hamiltonian because no constrained-theory "
+            "energy denominator/resolvent has been assumed."
+        ),
+        "ordering": "physical structural H_E^sine=(T-T^dagger)/(2i)",
+        "Jmax_one_hit": JMAX2 / 2,
+        "basis_order": ["K0K1=00", "02", "20", "22"],
+        "first_order": {
+            "claim": "P_all-jhalf (H_E0+H_E1) P_all-jhalf = 0",
+            "passed": bool(first_order_zero),
+            "max_projection_norm_over_all_32_logical_columns": max(all_first_projection, default=0.0),
+            "max_spin_after_one_hit": max(all_max_spin, default=0.0),
+            "support_reason": (
+                "fundamental triangle holonomy hits change odd-hit loop-edge spins by +/-1/2 while V preserves spin"
+            ),
+        },
+        "shape_polarized_environment_K234_000": fixed,
+        "maximally_mixed_environment_partial_trace": {
+            "definition": "(1/8) Tr_{logical nodes 2,3,4} P(H_E0+H_E1)^2P",
+            "environment_dimension": 8,
+            **averaged,
+        },
+        "environment_controls": environment_rows,
+        "comparison": {
+            "fixed_anisotropy_relative": fixed["heisenberg_frame"]["anisotropy_relative"],
+            "traced_anisotropy_relative": averaged["heisenberg_frame"]["anisotropy_relative"],
+            "traced_mirror_forbidden_relative_norm": averaged["mirror_selection"]["relative_forbidden_norm"],
+        },
         "next_physics_gate": (
-            "If anisotropic, derive the correct constrained second-order/resolvent effective kernel and its RG "
-            "scaling under PL refinement. If isotropic, test the Lorentzian and route-dressed return channels next."
+            "If the maximally mixed environment remains anisotropic, construct a justified constrained resolvent or "
+            "RG/coarse-grained return kernel. If the trace restores isotropy, treat the K=0 result as environment-induced "
+            "rather than intrinsic pseudospin breaking."
         ),
     }
 
