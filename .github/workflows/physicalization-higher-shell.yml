@@ -13,9 +13,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lambda32:
+  columns:
+    name: column-${{ matrix.column }}
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        column: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,9 +31,45 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-      - name: Actual 32D higher-shell Peter-Weyl Lambda
+      - name: Exact Peter-Weyl higher-shell column
+        run: |
+          mkdir -p verification_results/columns
+          python scripts/peter_weyl_higher_shell_lambda_gate.py \
+            --column ${{ matrix.column }} \
+            --output verification_results/columns/column_${{ matrix.column }}.json
+      - name: Upload exact sparse column
+        uses: actions/upload-artifact@v4
+        with:
+          name: lambda-column-${{ matrix.column }}
+          path: verification_results/columns/column_${{ matrix.column }}.json
+          if-no-files-found: error
+          compression-level: 6
+
+  assemble:
+    name: assemble-lambda32
+    needs: columns
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Download all exact columns
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lambda-column-*
+          path: verification_results/columns
+          merge-multiple: true
+      - name: Assemble Lambda and block-Lanczos matrices
         run: |
           python scripts/peter_weyl_higher_shell_lambda_gate.py \
+            --assemble-dir verification_results/columns \
             --output verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json
       - name: Upload higher-shell evidence
         if: always()
@@ -36,4 +77,4 @@ jobs:
         with:
           name: peter-weyl-higher-shell-lambda
           path: verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json
-          if-no-files-found: warn
+          if-no-files-found: error
