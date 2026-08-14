@@ -1,28 +1,28 @@
 # Mirror matter matrix element: static-source gate
 
-Status: **exact free-Dirac source-selection result + finite positive-mass mirror-doublet construction; numerical microscopic coupling still open**.
+Status: **exact mirror-covariant mass-derivative theorem + exact free-Dirac source-selection result + finite positive-mass control; numerical microscopic coupling still open**.
 
-The mirror branch had reached
+The mirror branch has reached
 
 ```text
 Y_L/Q -> Sigma -> sigma(x) -> Z_sigma -> beta_m -> alpha -> F_mirror.
 ```
 
-This note attacks the remaining matter coefficient `beta_m` rather than assigning it by hand.
+The remaining matter coefficient is no longer assigned by hand: it is a rest-energy matrix element.
 
 ---
 
 ## 1. The old axial bridge is not a universal static mass source
 
-The mirror/chirality construction naturally allows the parity-even product
+The mirror/chirality construction naturally allows
 
 ```text
 sigma * J5^0,
 ```
 
-because both `sigma` and the axial density are parity odd.
+because both factors are parity odd.
 
-That remains a legitimate chirality/spin-sensitive coupling. But for a free on-shell massive Dirac state the exact bilinear identity gives
+That remains a legitimate chirality/spin-sensitive coupling. But for a free on-shell massive Dirac state,
 
 ```text
 J5^0/J^0 = h |p|/E,
@@ -30,55 +30,44 @@ J5^0/J^0 = h |p|/E,
 
 with helicity `h=+/-1`.
 
-Therefore in the rest frame
+Therefore
 
 ```text
-p=0 -> J5^0=0.
+p=0 -> J5^0=0,
 ```
 
-For an unpolarized ensemble the two helicities cancel at every momentum:
+and for an unpolarized ensemble
 
 ```text
-<J5^0>_unpolarized = 0.
+<J5^0> = 0
 ```
 
-The diagonal pseudoscalar bilinear also vanishes for the same on-shell state:
+at every momentum. The diagonal pseudoscalar bilinear also vanishes:
 
 ```text
 ubar i gamma5 u = 0.
 ```
 
-`scripts/mirror_matter_matrix_element_gate.py` verifies these identities directly with explicit Dirac gamma matrices and normalized positive-energy spinors.
+`scripts/mirror_matter_matrix_element_gate.py` verifies these statements with explicit Dirac matrices and positive-energy spinors.
 
-### Consequence
-
-The earlier `sigma J5^0` bridge survives as a candidate for
-
-```text
-chirality / spin / velocity dependent physics,
-```
-
-but it cannot by itself generate the universal static mirror charge required for a long-range force between cold unpolarized massive bodies.
-
-This is a genuine negative result.
+Thus the old axial bridge survives for chirality/spin/velocity-dependent physics, but not as a universal static charge of cold unpolarized massive matter.
 
 ---
 
 ## 2. The static source is an energy derivative
 
-Let a matter Hamiltonian depend on the coarse mirror order `sigma`.
-
 For a normalized stationary matter state, Hellmann--Feynman gives
 
 ```text
-dE/dsigma = < dH_m/dsigma >.
+dE/dsigma = <dH_m/dsigma>.
 ```
 
-For a rest state with physical mass `m=E_rest`, define the dimensionless mirror charge-to-mass coefficient by
+For a rest state with `m=E_rest`, define
 
 ```text
 beta_m
- = (1/(chi*m)) < dH_m/dsigma >_rest.
+ = (1/(chi*m))
+   <dH_m/dsigma>_rest.
 ```
 
 Equivalently,
@@ -87,93 +76,125 @@ Equivalently,
 Q_sigma = chi beta_m m.
 ```
 
-This is now the operational definition of the missing microscopic coefficient.
+This is the operational definition of the missing matter coefficient.
 
-It supplies a direct falsifier:
+If the derivative vanishes for every admissible physical state,
 
 ```text
-if <dH_m/dsigma>_rest = 0
-for every physical matter state,
-then beta_m=0
+beta_m=0
 ```
 
-and the static mirror-force branch dies even if the geometry has a perfectly robust `Sigma=+/-1` order.
+and the static mirror-force branch fails regardless of how robust the geometric mirror order is.
 
 ---
 
-## 3. Minimal positive mirror doublet
+## 3. General mirror-mass derivative theorem
 
-Introduce an internal mirror label
+Introduce a matter mirror label
 
 ```text
 q=+/-1
 ```
 
-with mirror operation
+with mirror transformation
 
 ```text
 (sigma,q) -> (-sigma,-q).
 ```
 
-Require simultaneously:
-
-1. positive rest mass;
-2. equal masses for exact mirror partners;
-3. a constant universal logarithmic response to `sigma`:
+Let the positive rest-mass function satisfy only mirror covariance:
 
 ```text
-d ln m_q / d sigma = q beta.
+m_q(sigma)=m_-q(-sigma).
 ```
 
-This first-order equation has the unique solution for fixed normalization `m_*`:
+Take the two aligned mirror vacua
 
 ```text
-m_q(sigma) = m_* exp(q beta sigma).
+(q,sigma)=(+1,+v)
+```
+
+and
+
+```text
+(q,sigma)=(-1,-v).
+```
+
+Then mirror covariance immediately gives
+
+```text
+m_+(v)=m_-(-v).
+```
+
+So exact mirror partners have equal rest mass.
+
+Differentiate the covariance identity:
+
+```text
+m_+'(sigma)=-m_-'(-sigma).
+```
+
+At the aligned vacua,
+
+```text
+m_+'(v)=-m_-'(-v).
+```
+
+Thus, whenever the derivative is nonzero, mirror symmetry itself gives **equal positive mass and opposite static sigma charge**.
+
+The charge-to-mass magnitude is
+
+```text
+beta_m
+ = m_+'(v)/m_+(v)
+ = -m_-'(-v)/m_-(-v).
+```
+
+This conclusion does **not** require the exponential mass law.
+
+It is the general microscopic quantity to compute.
+
+---
+
+## 4. Constant-beta special case
+
+If one further requires a constant logarithmic response,
+
+```text
+d ln m_q/dsigma = q beta,
+```
+
+the solution at fixed normalization is
+
+```text
+m_q(sigma)=m_* exp(q beta sigma).
 ```
 
 It is positive for every real `sigma`.
 
-Take the two aligned mirror branches
+For aligned mirror states `(sigma,q)=(chi v,chi)`,
 
 ```text
-(sigma,q) = (chi v, chi).
+m_phys=m_* exp(beta v)
 ```
 
-Their physical mass is
+is identical in the two branches, while
 
 ```text
-m_phys = m_* exp(beta v),
-```
-
-which is identical for `chi=+1` and `chi=-1`.
-
-But their static source is
-
-```text
-dm/dsigma
- = q beta m
- = chi beta m_phys.
+dm/dsigma=chi beta m_phys.
 ```
 
 Hence
 
 ```text
-Q_sigma = chi beta m_phys
+beta_m=beta.
 ```
 
-and therefore
-
-```text
-beta_m = beta.
-```
-
-The sign of the **charge** reverses; the rest energy stays positive.
-
-This is exactly the structure needed by the healthy mirror-force construction without negative mass or a ghost graviton.
+The exponential model is therefore a globally positive constant-`beta_m` control, not an assumption required by the general sign theorem.
 
 ---
 
-## 4. Dirac Hellmann--Feynman control
+## 5. Dirac Hellmann--Feynman control
 
 For
 
@@ -184,122 +205,122 @@ H_D = alpha.p + beta_D m_q(sigma),
 we have
 
 ```text
-dH_D/dsigma = beta_D dm_q/dsigma.
+dH_D/dsigma=beta_D dm_q/dsigma.
 ```
 
 For a positive-energy Dirac state,
 
 ```text
-<beta_D> = m/E.
+<beta_D>=m/E,
 ```
 
-Therefore
+so
 
 ```text
-dE/dsigma
- = q beta m^2/E.
+dE/dsigma=(dm/dsigma) m/E.
 ```
 
-At rest `E=m`, so
+In the constant-beta control this becomes
 
 ```text
-dE_rest/dsigma = q beta m.
+dE/dsigma=q beta m^2/E.
 ```
 
-The executable gate verifies both the rest and moving identities to machine precision.
+At rest,
+
+```text
+dE_rest/dsigma=q beta m.
+```
+
+The executable gate verifies these identities to machine precision.
 
 ---
 
-## 5. beta can be read directly from a mirror-resolved mass spectrum
+## 6. Direct extraction from a microscopic spectrum
 
-At any nonzero probe value `sigma`, the exponential doublet obeys
+The completely general local extraction is
 
 ```text
-m_+(sigma)/m_-(sigma) = exp(2 beta sigma).
+beta_m
+ = (1/m)
+   d m_+(sigma)/d sigma |_(sigma=v).
 ```
 
-Thus
+For the constant-beta exponential control one may equivalently use a finite mirror ratio:
 
 ```text
 beta
- = [ln m_+(sigma) - ln m_-(sigma)]/(2 sigma).
+ = [ln m_+(sigma)-ln m_-(sigma)]/(2 sigma).
 ```
 
-This gives a concrete future microscopic calculation:
+Thus the next actual matter calculation is
 
 ```text
 construct H_m(sigma)
  -> diagonalize mirror-resolved rest spectrum
- -> extract m_+(sigma), m_-(sigma)
- -> compute beta
+ -> differentiate the physical mass eigenvalue
+ -> obtain beta_m
  -> compute alpha.
 ```
 
-No fifth-force strength needs to be fitted in that calculation.
+No fifth-force strength needs to be fitted.
 
 ---
 
-## 6. Force strength after the matter gate
+## 7. Force strength after the matter theorem
 
-The continuum normalization already gives
-
-```text
-alpha = beta_m^2/(4*pi*G*Z_sigma).
-```
-
-For the minimal mirror doublet `beta_m=beta`, so
+The continuum normalization gives
 
 ```text
-alpha = beta^2/(4*pi*G*Z_sigma).
+alpha=beta_m^2/(4*pi*G*Z_sigma).
 ```
 
 Using the regular-seed Hodge stiffness
 
 ```text
-Z_sigma = (2*sqrt(2)/3) J/ell,
+Z_sigma=(2*sqrt(2)/3)J/ell,
 ```
 
 one gets
 
 ```text
 alpha
- = 3 beta^2 ell
+ = 3 beta_m^2 ell
    /(8*sqrt(2)*pi*G*J).
 ```
 
-The repulsion criterion remains
+The repulsion criterion is
 
 ```text
 alpha > exp(m_sigma r)/(1+m_sigma r).
 ```
 
-Thus the matter problem is no longer “choose alpha”. It is
+Equivalently, the microscopic mass derivative must satisfy
 
 ```text
-compute beta from the microscopic rest spectrum.
+|d ln m/dsigma|_vac
+ > sqrt(
+     4*pi*G*Z_sigma
+     * exp(m_sigma r)/(1+m_sigma r)
+   ).
 ```
+
+This is the sharp matter-side threshold.
 
 ---
 
-## 7. Important remaining selection problem
+## 8. Remaining selection problem
 
-The finite construction demonstrates a consistent mirror doublet, but the present repository has not yet derived why low-energy physical matter should select the aligned sector
+The theorem says what happens **if** low-energy matter has a mirror-covariant `sigma`-dependent rest spectrum. The repository has not yet derived:
 
-```text
-q=chi
-```
-
-rather than another combination of `q` and the background mirror order.
-
-A realistic matter theory must derive:
-
-- the microscopic matter Hilbert space;
+- the realistic microscopic matter Hilbert space;
 - its gauge/chiral representations;
-- the `sigma`-dependent mass operator;
-- which mirror branch is low energy;
-- anomaly cancellation and the fate of any hidden mirror partner.
+- the actual `sigma`-dependent mass matrix;
+- why the low-energy branch aligns its matter mirror label with the background mirror order;
+- the numerical derivative `beta_m`;
+- the fate of the mirror partner and all local/global anomalies.
 
-So `beta_m=beta` is an exact extraction rule **within the positive mirror-doublet candidate**, not yet a numerical Standard-Model prediction.
+So the form of the source is now fixed, but its physical magnitude remains an open matter calculation.
 
 ---
 
