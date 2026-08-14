@@ -7,6 +7,7 @@ on:
       - 'MIRROR_CHIRALITY_GRAVITY.md'
       - 'MICROSCOPIC_MIRROR_ORDER.md'
       - 'MIRROR_HEISENBERG_PARENT.md'
+      - 'MIRROR_GOLDSTONE_SOURCE.md'
       - 'ORIENTATION_ODD_HDA_CONSTRUCTION.md'
       - 'MIRROR_FORCE_NORMALIZATION.md'
       - 'MIRROR_MATTER_MATRIX_ELEMENT.md'
@@ -22,6 +23,7 @@ on:
       - 'MIRROR_CHIRALITY_GRAVITY.md'
       - 'MICROSCOPIC_MIRROR_ORDER.md'
       - 'MIRROR_HEISENBERG_PARENT.md'
+      - 'MIRROR_GOLDSTONE_SOURCE.md'
       - 'ORIENTATION_ODD_HDA_CONSTRUCTION.md'
       - 'MIRROR_FORCE_NORMALIZATION.md'
       - 'MIRROR_MATTER_MATRIX_ELEMENT.md'
@@ -60,6 +62,7 @@ jobs:
             scripts/mirror_order_16cell_gate.py \
             scripts/mirror_order_recursive_pl_gate.py \
             scripts/mirror_heisenberg_parent_gate.py \
+            scripts/mirror_goldstone_source_gate.py \
             scripts/orientation_odd_hda_gate.py \
             scripts/mirror_force_normalization_gate.py \
             scripts/mirror_hodge_stiffness_gate.py \
@@ -76,6 +79,8 @@ jobs:
         run: python scripts/mirror_order_recursive_pl_gate.py --refinements 2 --output verification_results/MIRROR_ORDER_RECURSIVE_PL.json
       - name: Exact Bell-gluing Heisenberg parent
         run: python scripts/mirror_heisenberg_parent_gate.py --output verification_results/MIRROR_HEISENBERG_PARENT.json
+      - name: Longitudinal mirror Goldstone-source control
+        run: python scripts/mirror_goldstone_source_gate.py --output verification_results/MIRROR_GOLDSTONE_SOURCE.json
       - name: Orientation-odd HDA and healthy force
         run: python scripts/orientation_odd_hda_gate.py --output verification_results/ORIENTATION_ODD_HDA.json
       - name: Force normalization and source selection
