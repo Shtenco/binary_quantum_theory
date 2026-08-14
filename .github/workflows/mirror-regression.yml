@@ -9,6 +9,7 @@ on:
       - 'ORIENTATION_ODD_HDA_CONSTRUCTION.md'
       - 'MIRROR_FORCE_NORMALIZATION.md'
       - 'MIRROR_MATTER_MATRIX_ELEMENT.md'
+      - 'MIRROR_WILSON_MATTER.md'
       - 'MIRROR_SIGMA_RANGE.md'
       - 'MIRROR_MASTER_CRITERION.md'
       - 'scripts/mirror_*.py'
@@ -22,6 +23,7 @@ on:
       - 'ORIENTATION_ODD_HDA_CONSTRUCTION.md'
       - 'MIRROR_FORCE_NORMALIZATION.md'
       - 'MIRROR_MATTER_MATRIX_ELEMENT.md'
+      - 'MIRROR_WILSON_MATTER.md'
       - 'MIRROR_SIGMA_RANGE.md'
       - 'MIRROR_MASTER_CRITERION.md'
       - 'scripts/mirror_*.py'
@@ -59,6 +61,7 @@ jobs:
             scripts/mirror_force_normalization_gate.py \
             scripts/mirror_hodge_stiffness_gate.py \
             scripts/mirror_matter_matrix_element_gate.py \
+            scripts/mirror_wilson_matter_gate.py \
             scripts/mirror_sigma_range_gate.py \
             scripts/mirror_master_criterion_gate.py
           python scripts/verify_theory_gates.py
@@ -76,6 +79,8 @@ jobs:
         run: python scripts/mirror_hodge_stiffness_gate.py --output verification_results/MIRROR_HODGE_STIFFNESS.json
       - name: Matter matrix element and axial static-source falsifier
         run: python scripts/mirror_matter_matrix_element_gate.py --output verification_results/MIRROR_MATTER_MATRIX_ELEMENT.json
+      - name: Mirror-covariant Wilson-Dirac matter carrier
+        run: python scripts/mirror_wilson_matter_gate.py --output verification_results/MIRROR_WILSON_MATTER.json
       - name: Symmetry-resolved sigma gap and temporal response
         run: python scripts/mirror_sigma_range_gate.py --output verification_results/MIRROR_SIGMA_RANGE.json
       - name: Dimensionless mirror-force master criterion
