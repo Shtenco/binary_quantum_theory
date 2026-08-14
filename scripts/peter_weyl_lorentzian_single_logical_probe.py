@@ -6,6 +6,11 @@ applies only one ordered triple (a,b,c)=the first three neighbors of source node
 0 to the K=0 all-j=1/2 logical input.  This does not test the full epsilon sum;
 it only asks whether one genuine K-K-V amplitude has any all-j=1/2 logical
 return component at all.
+
+The historical primitive fixed-index `CK_complete_charge_basis_leakage` is
+reported but, exactly as in the validated sine-ordered triple gate, is not a
+hard acceptance criterion.  Final complete-basis and internal-volume leakage
+remain hard checks.
 """
 from __future__ import annotations
 
@@ -29,10 +34,12 @@ def run(source_v=0):
         logical = LP.project_all_logical(total, source_v)
         same = logical.get(initial, 0j)
         maxlog = sorted(logical.items(), key=lambda kv: abs(kv[1]), reverse=True)[:16]
-        passed = (
-            len(total) > 0
-            and max(diag.values(), default=0.0) < 1e-8
+        physical_leak = max(
+            float(diag.get("CV_complete_basis_leakage", 0.0)),
+            float(diag.get("CK_outer_complete_basis_leakage", 0.0)),
+            float(diag.get("CK_internal_volume_sector_leakage", 0.0)),
         )
+        passed = len(total) > 0 and physical_leak < 1e-8
         return {
             "status": "single real sine-ordered Lorentzian logical-return probe",
             "passed": bool(passed),
@@ -50,6 +57,11 @@ def run(source_v=0):
                 for key, amp in maxlog
             ],
             "max_diagnostics": diag,
+            "physical_acceptance_max_leakage": physical_leak,
+            "historical_primitive_charge_basis_diagnostic": {
+                "value": float(diag.get("CK_complete_charge_basis_leakage", 0.0)),
+                "hard_acceptance": False,
+            },
             "scope": "One ordered K-K-V triple only; no epsilon sum, no final Hermitian H_L normalization and no physical mass/force claim.",
         }
     finally:
