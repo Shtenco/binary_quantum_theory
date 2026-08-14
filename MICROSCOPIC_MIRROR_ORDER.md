@@ -1,8 +1,8 @@
 # Microscopic mirror order from the 16-cell geometry qubits
 
-Status: **exact finite 16-cell combinatorics + sparse 16-qubit ordered-phase control; force normalization still open**.
+Status: **exact finite 16-cell combinatorics + sparse 16-qubit ordered-phase control + recursive PL persistence; force normalization still open**.
 
-The continuum mirror-force construction introduced a coarse pseudoscalar `sigma`. This note derives a natural candidate for that order parameter directly from the already frozen 16-cell / geometry-qubit structure.
+The continuum mirror-force construction introduced a coarse pseudoscalar `sigma`. This note derives a natural candidate for that order parameter directly from the already frozen 16-cell / geometry-qubit structure and checks that the staggered order survives the actual recursive PL branch used by the global-manifold gate.
 
 ---
 
@@ -280,7 +280,7 @@ The soft collective fluctuations of this order parameter can themselves act as a
 
 ---
 
-## 8. What this does and does not derive
+## 8. What the seed calculation does and does not derive
 
 ### Derived / finite
 
@@ -301,13 +301,93 @@ The soft collective fluctuations of this order parameter can themselves act as a
 - therefore the dimensionless force ratio `alpha`;
 - the enlarged microscopic Peter-Weyl x route x mirror HDA.
 
-So the bottleneck has moved from
+---
+
+## 9. Recursive PL persistence: the mirror order survives refinement
+
+The seed result would be much weaker if bipartiteness disappeared as soon as the manifold were refined. Therefore `scripts/mirror_order_recursive_pl_gate.py` applies **the same global barycentric subdivision** used by `bcqg_global_manifold_gate.py`, constructs the tetrahedron dual graph at every checked generation, and solves its two-colouring problem independently.
+
+The result is:
+
+| generation | tetrahedra | dual edges | degree | bipartite |
+|---:|---:|---:|---:|:---:|
+| 0 | 16 | 32 | 4 | yes |
+| 1 | 384 | 768 | 4 | yes |
+| 2 | 9216 | 18432 | 4 | yes |
+
+For every checked generation there exists `eta_t=+/-1` such that
+
+```text
+eta_t eta_u = -1
+```
+
+on every shared-face dual edge. Therefore
+
+```text
+sigma_t = eta_t Y_t
+```
+
+again converts the geometric orientation rule
+
+```text
+Y_t Y_u = -1
+```
+
+into uniform order
+
+```text
+sigma_t sigma_u = +1.
+```
+
+Both exact global mirror branches survive:
+
+```text
+Sigma_g = (1/T_g) sum_t eta_t Y_t = +1
+```
+
+or
+
+```text
+Sigma_g = -1.
+```
+
+Thus the staggered mirror variable is not a special accident of the 16-cell seed. It persists through the checked recursive PL `S3` family that the candidate theory already uses for its continuum route.
+
+### Low-mode diagnostic
+
+The gate also records the first combinatorial dual-Laplacian eigenvalue:
+
+```text
+g=0: lambda_2 = 2.0000000000
+g=1: lambda_2 = 0.152240935...
+g=2: lambda_2 = 0.011719063...
+```
+
+The decreasing low mode is the expected qualitative signal of growing long-wavelength structure under refinement. It is **not yet converted into a physical mass or `Z_sigma`**, because that requires a physical dual-edge length/volume normalization and the time-kinetic normalization of the collective mode.
+
+This makes the remaining bottleneck narrower:
+
+```text
+mirror order survives recursive PL refinement
+ -> derive physical length/time normalization
+ -> Z_sigma
+ -> matter coupling beta_m
+ -> alpha.
+```
+
+---
+
+## 10. Current bottleneck
+
+The question
 
 ```text
 where could sigma come from?
 ```
 
-to the much narrower question
+is now finite-tested both at the seed and through two recursive PL refinements.
+
+The remaining question is
 
 ```text
 what is the physical normalization and matter coupling of the derived Sigma mode?
@@ -319,7 +399,17 @@ That is the quantity needed to predict `alpha` rather than postulate it.
 
 ## Reproduction
 
+Seed quantum-order gate:
+
 ```bash
 python scripts/mirror_order_16cell_gate.py \
   --output verification_results/MIRROR_ORDER_16CELL.json
+```
+
+Recursive PL persistence gate:
+
+```bash
+python scripts/mirror_order_recursive_pl_gate.py \
+  --refinements 2 \
+  --output verification_results/MIRROR_ORDER_RECURSIVE_PL.json
 ```
