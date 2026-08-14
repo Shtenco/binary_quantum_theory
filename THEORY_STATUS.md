@@ -2,262 +2,575 @@
 
 **Frozen 2026-08-14.** This file supersedes historical frontier wording elsewhere in the repository.
 
-## Closed core candidate chain
+The project is a **candidate theory**, not an experimentally established theory of nature.
 
-`bits -> q=2 -> S2 -> recursive PL S3 -> 3D slice scaling -> z~1 -> 4D-like history -> smooth IR`
+---
 
-`SU(2) -> H_E -> K=[V,H_E] -> C(V), C(K) -> H_E+(1+beta^2)H_L -> H_geom+route -> HDA`
+## 1. Closed core candidate chain
 
-The first line is supported by the frozen binary-route family, q=2 octahedral shell, canonical PL completion, held-out scaling and observer smoothing. The second line uses the finite Peter-Weyl geometry gates, the independently fixed sharp/path sector, the two-node Euclidean joint gate, the Lorentzian support wall and the final fixed-cutoff composition theorem.
+The frozen structural chain is
 
-Frozen numerical anchors include `d_H=2.999229782`, `z=0.998281156`, `d_s(slice)=3.004393867`, `d_s(history)~4.004393867`, and `Delta_joint(1/64)=0.014707752821092098` in the preregistered two-node Euclidean geometry x route gate.
+```text
+bits
+ -> q=2
+ -> local octahedral S2
+ -> minimal/recursive PL S3
+ -> 3D slice scaling
+ -> z~1
+ -> 4D-like history
+ -> smooth IR
+ -> SU(2)/Peter-Weyl quantum geometry
+ -> H_E
+ -> K=[V,H_E]
+ -> C(V), C(K)
+ -> H_E+(1+beta^2)H_L
+ -> route-normal generator
+ -> HDA composition certificate.
+```
 
-## Final fixed-cutoff Lorentzian composition theorem
+Frozen numerical anchors include
 
-For an all-`j=1/2` input the full Lorentzian HH support is safe at `Jmax=13/2`. At that fixed cutoff the local operator `G_v=H_E,v+(1+beta^2)H_L,v` is bounded.
+```text
+d_H          = 2.999229782
+z            = 0.998281156
+d_s(slice)   = 3.004393867
+d_s(history) ~ 4.004393867
+```
 
-Use the frozen route-habitat family `N=Nbar+epsilon*n`, `M=Mbar+epsilon*m`, and `Omega_Q=epsilon^-1 OmegaTilde_Q`. For every geometry transition, the apparent `epsilon^-1` geometry-route contribution cancels state by state between the two lapse orderings. The remainder is order one.
+and the preregistered two-node Euclidean geometry x route residual
 
-For two nodes, the coefficient `N0*M1-N1*M0` starts at order epsilon. The independently fixed nonzero route target is order `epsilon^-1`. Consequently the normalized geometry-route correction is `O(epsilon)` and the normalized pure-geometry correction is `O(epsilon^2)`.
+```text
+Delta_joint(1/64)=0.014707752821092098.
+```
 
-`Delta_full <= Delta_route + C_cross*epsilon + C_GG*epsilon^2 -> 0`.
+For all-`j=1/2` input, the full Lorentzian HH support is safe at `Jmax=13/2`.
 
-**Status:** the previous fixed-cutoff Lorentzian integration bottleneck is closed. A direct 11.3M-state `[H_L,H_L]` matrix enumeration is optional regression evidence, not a logical prerequisite.
+At fixed safe cutoff,
 
-## Admissible simultaneous cutoff path
+```text
+C_cross/D = O(epsilon)
+C_GG/D    = O(epsilon^2)
+```
 
-Using conservative fixed-valence norm bounds,
+so
 
-`||V||=O(J^(3/2))`, `||H_E||=O(J^(3/2))`, `||K||=O(J^3)`, `||H_L||=O(J^(15/2))`, while the nondegenerate route target scales as `D=O(J^2/epsilon)`.
+```text
+Delta_full
+ <= Delta_route
+  + C_cross epsilon
+  + C_GG epsilon^2
+ -> 0.
+```
 
-Hence
+The admissible simultaneous cutoff estimate remains
 
-`C_cross/D = O(epsilon*J^(13/2))`,
+```text
+Jmax=o(epsilon^-2/13),
+```
 
-`C_GG/D = O(epsilon^2*J^13)`.
+not a uniform theorem for every possible joint path.
 
-For `Jmax(epsilon)=epsilon^-alpha`, both vanish whenever `0<alpha<2/13`. Thus an admissible simultaneous family exists, e.g. `Jmax=epsilon^-1/8`. This is not a uniform theorem for every possible joint path.
+---
 
-## Spin-2, foam and GW extension
+## 2. Spin-2 / foam extension
 
-The exact four-qubit decomposition contains one `j=2` irrep. The extremal `m=+/-2` states form a two-state code inside that spin-2 sector and pass the finite projector gate. This supports the candidate identification of a massless spin-2 polarization space with one logical helicity qubit.
+Four spin-`1/2` qubits contain one exact `j=2` irrep. The extremal `m=+/-2` states pass the finite projector gate and provide the exact finite carrier for a candidate massless spin-2 helicity qubit after the usual TT/gauge reduction.
 
-If the frozen metric smoothing exponent is additionally interpreted as a quantum RMS exponent, the low-k conditional prediction is `P_foam(k)~k^1.003414`. If a physical TT information mode exists and has nonzero quadratic metric coupling, the candidate parametric resonance is centered near `Omega_GW=2*omega_I`. These are conditional physical extensions, not experimentally established facts.
+The foam inference
 
-## Mirror/chirality result
+```text
+P_foam(k)~k^1.003414
+```
 
-The logical-qubit mirror operation is complex conjugation in the real singlet basis:
+remains conditional on interpreting the frozen smoothing defect exponent as a quantum RMS exponent.
 
-`X_L -> X_L`, `Z_L -> Z_L`, `Y_L -> -Y_L`.
+The GW-driven information-mode resonance also remains conditional on a nonzero microscopic TT coupling.
 
-Because `Q=(sqrt(3)/4)Y_L`, mirror swaps `Q=+/-sqrt(3)/4` while preserving shape observables and absolute-volume information. A reflected tetrahedron reverses orientation but preserves the metric Gram matrix, absolute volume and face-flux Gram data.
+---
 
-Therefore in the currently tested mirror-even metric/HDA architecture
+## 3. Exact mirror/chirality result
 
-`g00(+chi)=g00(-chi)`.
+On the two-dimensional logical geometry qubit,
 
-**Orientation alone does not produce metric antigravity.** `H->-H` is lapse/time-orientation reversal, while a negative Einstein-Hilbert coefficient gives a wrong-sign graviton kinetic term relative to positive-energy matter.
+```text
+X -> +X
+Z -> +Z
+Y -> -Y
+Q_orientation=(sqrt(3)/4)Y.
+```
 
-The same mirror/conjugation structure gives `d(Rbar)=-d(R)` for the perturbative cubic gauge-anomaly coefficient. This is not yet a realistic chiral matter spectrum or a proof of all global anomaly conditions.
+Mirror conjugation flips orientation while preserving the intrinsic metric/shape data and absolute volume.
 
-## Microscopic 16-cell mirror order
+Therefore the currently tested mirror-even metric architecture gives
 
-The 16 tetrahedra of the minimal flag 16-cell are labelled by four binary antipodal choices. Two tetrahedra share a face iff their labels differ in one bit, so the tetrahedron dual graph is exactly the four-dimensional hypercube `Q4` with 16 vertices, 32 edges and degree four.
+```text
+g00(+chi)=g00(-chi).
+```
 
-Define
+So mirror orientation by itself does **not** produce metric antigravity.
 
-`eta_v=(-1)^popcount(v)`,
+Two simple sign-flip routes are also excluded as healthy mechanisms:
 
-`sigma_v=eta_v Y_v`,
+```text
+H -> -H
+```
 
-`Sigma=(1/16) sum_v eta_v Y_v`.
+is lapse/time-orientation reversal, while a negative Einstein-Hilbert coefficient gives a wrong-sign graviton kinetic term relative to positive-energy matter.
 
-Because `Q4` is bipartite, the geometric gluing preference `Y_vY_w=-1` becomes uniform `sigma_vsigma_w=+1`. The two exact gluing vacua have `Sigma=+1` and `Sigma=-1`.
+The perturbative cubic gauge-anomaly coefficient changes sign under conjugate representation, but realistic chiral matter and all global anomalies remain open.
 
-A local orientation defect costs exactly `8J`; a half-hypercube domain wall costs `16J`.
+---
 
-The full `2^16=65536` transverse-field control at `h/J=0.2` gives `<Sigma^2>=0.997653947371...`, `<|Sigma|>=0.998747825258...` and a mirror-doublet splitting below `1e-12 J`.
+## 4. Microscopic mirror order
 
-The staggered two-colouring persists through the checked recursive PL refinements with 16, 384 and 9216 tetrahedra. Thus
+The 16 tetrahedra of the minimal 16-cell have dual graph `Q4`.
 
-`Y_L/Q -> staggered Sigma -> sigma(x)`
+With
 
-has a finite microscopic candidate along the actual recursive PL branch.
+```text
+eta_v=(-1)^popcount(v)
+sigma_v=eta_v Y_v
+Sigma=(1/16)sum_v eta_v Y_v,
+```
 
-## Healthy orientation-dependent force construction
+the alternating local orientation rule becomes uniform staggered order.
 
-The healthy candidate keeps tensor gravity positive-energy and adds a canonical mirror-odd order/mediator sector. The continuum canonical matter HDA principal identity passes at relative defect `7.146414566848946e-15`.
+The two exact mirror vacua are
 
-For opposite orientation charges, the Yukawa channel exceeds tensor attraction when
+```text
+Sigma=+1
+Sigma=-1.
+```
 
-`alpha > alpha_crit(x)=exp(x)/(1+x)`, `x=m_sigma r`.
+A local orientation defect costs `8J`; a half-hypercube domain wall costs `16J`.
 
-Canonical normalization gives
+At `h/J=0.2`, the full `2^16=65536` transverse-field control gives
 
-`alpha=beta_m^2/(4*pi*G*Z_sigma)`.
+```text
+<Sigma^2>=0.997653947371...
+```
 
-The existing Hodge geometry fixes the spatial stiffness matching
+with an unresolved-at-machine-scale mirror doublet splitting.
 
-`J_f=Z_sigma A_f/d_f`, hence `Z_sigma=J_f d_f/A_f`.
+The bipartite staggered structure persists through the checked PL refinement family
+
+```text
+16 -> 384 -> 9216 tetrahedra.
+```
+
+Thus
+
+```text
+Y_L/Q -> staggered Sigma -> coarse sigma(x)
+```
+
+has a finite microscopic candidate.
+
+---
+
+## 5. Healthy positive-energy mirror-force branch
+
+A canonical positive-kinetic mirror sector reproduces the matter HDA principal identity at relative defect
+
+```text
+7.146414566848946e-15.
+```
+
+For a light one-particle mirror mode,
+
+```text
+V_sigma(r)
+ = - beta_1 beta_2 m1 m2 chi1 chi2
+   exp(-m_sigma r)/(4*pi*Z_sigma*r).
+```
+
+Relative to tensor gravity,
+
+```text
+alpha=beta_m^2/(4*pi*G*Z_sigma).
+```
+
+The exact opposite-charge screening threshold is
+
+```text
+alpha_crit(x)=exp(x)/(1+x),
+x=m_sigma r.
+```
+
+The existing circumcentric Hodge geometry fixes the spatial stiffness matching
+
+```text
+J_f=Z_sigma A_f/d_f.
+```
 
 For a regular tetrahedral seed,
 
-`Z_sigma=(2sqrt(2)/3)J/ell`
+```text
+Z_sigma=(2sqrt(2)/3)J/ell
+```
 
 and therefore
 
-`alpha=3 beta_m^2 ell/(8sqrt(2)pi G J)`
+```text
+alpha
+ = 3 beta_m^2 ell
+   /(8sqrt(2)pi GJ).
+```
 
-in natural units.
+Pure geometry has no automatic linear mirror charge: `beta_geometry=0`.
 
-Pure geometry does not automatically source the force: the minimal orientation defect has equal energy in the two mirror vacua, so `beta_geometry=0`.
+---
 
-## Matter matrix element: the static source is now sharply defined
+## 6. Matter matrix element
 
-The earlier chirality bridge `sigma J5^0` remains parity allowed and can describe spin/chirality-sensitive physics. But the explicit free-Dirac gate gives
+The earlier axial bridge remains useful for chirality/spin-sensitive physics but fails as a universal static cold-matter source:
 
-`J5^0/J^0 = h |p|/E`.
+```text
+J5^0/J^0=h|p|/E,
+```
 
-Thus `J5^0=0` at rest and its unpolarized average vanishes at every momentum. The diagonal on-shell pseudoscalar bilinear also vanishes. Therefore this axial channel **cannot by itself supply a universal static mirror charge for cold unpolarized matter**.
+so it vanishes at rest and averages to zero in unpolarized matter. The diagonal on-shell pseudoscalar bilinear also vanishes.
 
-The static coefficient is instead the Hellmann-Feynman rest-energy response
+The static matter coefficient is now operationally defined by Hellmann-Feynman:
 
-`beta_m=(1/(chi*m)) <dH_m/dsigma>_rest`.
+```text
+beta_m
+ = (1/(chi m))
+   <dH_m/dsigma>_rest.
+```
 
-If this vanishes for every physical state, then `beta_m=0`, `alpha=0`, and the static mirror-force branch fails.
+If this derivative vanishes for every physical matter state, then
 
-More generally, let matter have a mirror label `q=+/-1` and a positive rest-mass law obeying only
+```text
+beta_m=0
+alpha=0
+```
 
-`m_q(sigma)=m_-q(-sigma)`.
+and the one-particle static mirror-force branch fails.
 
-For aligned mirror vacua `(q,sigma)=(+1,+v)` and `(-1,-v)`, mirror covariance gives
+For any mirror-covariant positive rest spectrum
 
-`m_+(v)=m_-(-v)`
+```text
+m_q(sigma)=m_-q(-sigma),
+```
 
-and, after differentiation,
+aligned mirror partners automatically have equal positive masses and opposite `sigma` derivatives.
 
-`m_+'(v)=-m_-'(-v)`.
+A concrete Wilson-Dirac carrier has been finite-tested. It supports equal positive mirror spectra, opposite Hellmann-Feynman rest charges and standard Wilson corner-doubler removal simultaneously. Its numerical `beta_m` is still an input, not a derived Standard-Model prediction.
 
-So mirror symmetry itself implies **equal positive mirror-partner masses and opposite static sigma derivatives**, whenever that derivative is nonzero. The source magnitude is
+---
 
-`beta_m=m_+'(v)/m_+(v)=-m_-'(-v)/m_-(-v)`.
+## 7. Massive Ising range is a conservative negative control
 
-The exponential law `m_q=m_*exp(q beta sigma)` is only the globally positive constant-`beta_m` control, not a prerequisite for the sign theorem.
+The mirror order is `Z2`, so the tiny finite mirror-doublet splitting is tunnelling, not a mediator mass.
 
-## Concrete microscopic matter carrier: mirror Wilson-Dirac
+After exact global parity resolution, the first additional `Sigma`-coupled odd excitation is
 
-A concrete finite matter Hamiltonian has now been built:
+```text
+Delta_sigma,odd/J
+ = 7.9700878769647...
+```
 
-`H_q(k,sigma)=sum_i alpha_i sin(k_i)+beta_D[m_q(sigma)+r_W sum_i(1-cos k_i)]`.
+at `h/J=0.2`, and the softest checked finite-Q4 value is about
 
-For a mirror-covariant positive mass law, aligned mirror partners have identical positive spectra and opposite Hellmann-Feynman rest sources.
+```text
+5.58410566853 J.
+```
 
-In the deterministic control `m_*=0.4`, `beta=0.37`, `v=0.8`, `r_W=1`,
+The earlier raw `E2-E0 ~= 3.39685J` at `h/J=2.625` is not the physical `Sigma` spectral gap because it has the wrong parity.
 
-`m_phys=0.5377880627328211`
+The symmetry-resolved Lehmann expansion also supplies a finite-block temporal response, but not yet a continuum physical `m_sigma`.
+
+---
+
+## 8. Exact Bell-gluing Heisenberg parent
+
+The frozen Bell-gluing term
+
+```text
+-J(XX-YY+ZZ)
+```
+
+is exactly mapped on the bipartite dual graph, by a `pi` rotation around logical `Y` on one sublattice, to
+
+```text
++J(XX+YY+ZZ).
+```
+
+Thus the mirror order sits inside an antiferromagnetic Heisenberg pseudospin parent.
+
+On the exact Q4 16-qubit parent,
+
+```text
+E0/J=-44.9139328337...
+first triplet gap/J=2.31439334306...
+```
+
+with substantial staggered Neel correlations.
+
+The recursive degree-four dual graphs also show a strongly softening graph spin-wave scale.
+
+However this `SU(2)` is a property of the Bell-gluing parent, not yet a symmetry of the complete geometry dynamics.
+
+---
+
+## 9. Exact S4 coarse symmetry
+
+The exact face-permutation twirl gives
+
+```text
+one-cell:
+  only I survives
+
+two-cell invariant space:
+  span{II, XX+ZZ, YY}.
+```
+
+Therefore full tetrahedral face symmetry permits one and only one coarse pseudospin split:
+
+```text
+Delta_aniso
+ = J_orientation-J_shape.
+```
+
+Tetrahedral symmetry and mirror `Z2` do **not** force `Delta_aniso=0`.
+
+---
+
+## 10. Decisive Peter-Weyl logical anisotropy result
+
+Let `P` project to the all-`j=1/2` logical sector.
+
+The fundamental holonomy support rule gives and the finite gate verifies
+
+```text
+P H_E P = 0
+```
+
+exactly on all 32 logical columns of the unbiased environment calculation.
+
+Thus there is no first-order logical field or mirror splitting from `H_E`.
+
+The first nonzero structural return object is
+
+```text
+K_ret
+ = (1/8)Tr_{2,3,4}
+   P(H_E,0+H_E,1)^2P.
+```
+
+This maximally mixed environment trace removes the earlier `K_2=K_3=K_4=0` shape bias.
+
+The mirror-forbidden odd-`Y` Pauli channels remain suppressed to relative norm
+
+```text
+3.1887751872821285e-17.
+```
+
+So mirror `Z2` survives.
+
+But in the Heisenberg frame the environment-unbiased coupling tensor is approximately
+
+```text
+[
+  [-0.5020918898, 0, -0.6892178651],
+  [ 0,            2.5842530087, 0],
+  [+0.6892178651, 0, -1.6958521572]
+].
+```
+
+The relative pseudospin anisotropy is
+
+```text
+A_rel=0.9627752706476244.
+```
+
+After exact `S4` twirling,
+
+```text
+J_shape  = -1.0989720235137607
+J_orient = +2.5842530086520437
+```
+
+so
+
+```text
+Delta_aniso,ret
+ = 3.6832250321658044.
+```
+
+Therefore the Bell-parent `SU(2)` is strongly broken in the first nonzero Euclidean Peter-Weyl return channel, while mirror `Z2` remains intact.
+
+`K_ret` is **not** yet a static Schrieffer-Wolff Hamiltonian. Without a justified constrained resolvent it must not be called a physical mass gap.
+
+It does have an exact short-time meaning because `P H_E P=0`:
+
+```text
+P exp(-itH_E)P
+ = P - t^2 K_ret/2 + O(t^3),
+```
+
+so
+
+```text
+P_leak(t|psi)
+ = t^2 <psi|K_ret|psi> + ... .
+```
+
+Thus the anisotropy is already a tested state-dependent short-time logical leakage anisotropy.
+
+---
+
+## 11. Route logical metric and ordering
+
+The logical flux metric has only
+
+```text
+I,X,Z
+```
+
+components and no `Y`, so it is exactly mirror even.
+
+For isotropic route-direction averaging, the linear metric contraction becomes scalar.
+
+In the currently frozen expectation-first square-root control,
+
+```text
+<omega>_K=0
+ = <omega>_K=2
+ = 0.8598466001022401.
+```
+
+So the frozen averaged route gate does not itself establish a `K=0/K=2` split.
+
+An operator-first spectral square-root ordering retains a finite `X/Z` component of norm
+
+```text
+0.04007491854520556.
+```
+
+Therefore additional route pseudospin anisotropy is an operator-ordering question that must be closed together with HDA; mirror `Z2` remains protected in both controls.
+
+---
+
+## 12. Conditional Goldstone branch has a different radial law
+
+Even if an emergent Heisenberg symmetry reappears in the IR and a Neel vacuum selects the physical mirror `Y` direction,
+
+```text
+Sigma_Y
+ = v-(pi_x^2+pi_z^2)/(2v)+...
+```
+
+has no one-Goldstone matrix element.
+
+For a purely longitudinal mirror source, the leading free massless channel is two-Goldstone exchange:
+
+```text
+V_2G(r)
+ = -Q1Q2/(32*pi^3*v^2*r^3).
+```
+
+Opposite charges repel, but
+
+```text
+F_2G ~ r^-4,
+```
+
+not Newton-like `r^-2`.
+
+Therefore a `1/r` mirror potential still requires a light one-particle pole or a microscopic source that couples linearly to a transverse mode.
+
+---
+
+## 13. MIRRORMASTER massive one-particle criterion
+
+For the light one-particle/Yukawa branch define
+
+```text
+g_*=GJ/ell
+j_sigma=J ell/(hbar c_sigma)
+R=r/ell
+Delta_sigma=delta_sigma J.
+```
+
+Then
+
+```text
+alpha
+ = 3 beta_m^2/(8sqrt(2)pi g_*),
+```
 
 and
 
-`Q_sigma=+/-0.19898158321114381`.
+```text
+x=m_sigma r=delta_sigma j_sigma R.
+```
 
-The moving-state identity is satisfied to machine precision. In the separate massless Wilson corner control, only `k=(0,0,0)` remains zero; the other seven three-dimensional Brillouin corners are lifted by the Wilson term.
+Opposite-charge repulsion is equivalent to
 
-This proves compatibility of positive spectrum, opposite static mirror charge and Wilson corner-doubler removal in a concrete carrier. **It does not derive the numerical beta, realistic gauge/chiral matter, or the irregular PL/Peter-Weyl matter theory.**
+```text
+beta_m^2
+ > (8sqrt(2)pi/3)
+   g_*
+   exp(x)/(1+x).
+```
 
-## Sigma range: corrected symmetry-resolved result
+Thus `alpha` is not an independent force knob.
 
-The mirror order is `Z2`, so two ordered vacua do not imply a Goldstone mediator. The tiny finite mirror-doublet splitting is tunnelling, not a propagating sigma mass.
+---
 
-There is a second trap: raw `E2-E0` can belong to the wrong `Z2` parity and therefore have zero matrix element with the mirror-odd order operator `Sigma`.
+# Current single mirror frontier
 
-The physically relevant finite diagnostic is
+The old frontier
 
-`Delta_sigma,odd = min(E_n-E0)`
+```text
+find m_sigma
+```
 
-for states outside the tunnelling doublet with nonzero `|<0|Sigma|n>|^2`.
+is superseded.
 
-`scripts/mirror_sigma_range_gate.py` block-diagonalizes the 65536-state Hilbert space into exact even/odd parity sectors of dimension 32768 each and computes the `Sigma` spectral weights.
+The primary dynamical question is now
 
-At `h/J=0.2`,
+```text
+Delta_aniso^eff
+ = J_orientation^eff-J_shape^eff
+ -> 0 ?
+```
 
-`Delta_sigma,odd/J = 7.9700878769647...`.
+under the physically correct constrained intermediate-state weighting and PL/RG flow.
 
-The softest checked mirror-odd point is near `h/J=2.2`,
+The immediate hierarchy is
 
-`Delta_sigma,odd/J = 5.5841056685297...`.
+```text
+1. resolve the constrained/resolvent weighting of Peter-Weyl intermediate states;
+2. determine the RG flow of Delta_aniso^eff;
+3. if Delta_aniso^eff != 0:
+      determine the anisotropic/massive mirror spectrum and use the one-particle MIRRORMASTER criterion if a light pole exists;
+4. if Delta_aniso^eff -> 0:
+      test the emergent continuous branch, remembering that a longitudinal source begins at two-Goldstone r^-3 potential;
+5. derive a realistic microscopic beta_m and physical scale g_*;
+6. close the full Peter-Weyl x route x mirror-matter HDA.
+```
 
-At `h/J=2.625`, the previously quoted raw value `E2-E0 ~= 3.39685J` is **not** the sigma mediator gap; the actual first additional `Sigma`-coupled odd excitation is
+The current executable robustness test is
 
-`Delta_sigma,odd/J = 6.110727269331...`.
+```text
+scripts/peter_weyl_anisotropy_weight_robustness_gate.py.
+```
 
-Thus the finite seed is less favorable to long-range propagation than the raw spectrum suggested.
+It decomposes `Delta_aniso,ret` state by state and asks whether **any positive state-diagonal weighting** can change its sign.
 
-The gate also evaluates the low-frequency Lehmann response after removing the tunnelling state,
+---
 
-`chi_*(i omega)=A_*-B_* omega^2+...`,
+## Other open questions beyond the fixed-cutoff core
 
-so the finite-block inverse-susceptibility time coefficient is
+Still separate and genuinely open:
 
-`Z_t^(16)=B_*/A_*^2`.
-
-At `h/J=0.2`, the 16-level odd spectrum captures more than `99.9998%` of the non-tunnelling `Sigma` weight, gives `J Z_t^(16) ~= 401.15`, and `omega_eff/J ~= 7.97009`.
-
-This is microscopic finite-block time-response information, **not yet the continuum temporal normalization**. A physical `m_sigma` requires refined block/volume normalization, low-momentum dispersion and scale setting.
-
-## Dimensionless MIRRORMASTER criterion
-
-For the regular-seed Hodge normalization define
-
-`g_*=GJ/ell`,
-
-`j_sigma=J ell/(hbar c_sigma)`,
-
-`R=r/ell`,
-
-`Delta_sigma=delta_sigma J`.
-
-Then `alpha` is no longer an independent phenomenological parameter:
-
-`alpha=3 beta_m^2/(8sqrt(2)pi g_*)`.
-
-The Yukawa range exponent is
-
-`x=m_sigma r=delta_sigma j_sigma R`.
-
-Therefore opposite-`chi` repulsion is exactly equivalent to
-
-`beta_m^2 > (8sqrt(2)pi/3) g_* exp(x)/(1+x)`.
-
-Equivalently,
-
-`beta_m^2 > (8sqrt(2)pi/3) g_* exp(delta_sigma j_sigma R)/(1+delta_sigma j_sigma R)`.
-
-The order-one range requirement `x<=1` gives
-
-`j_sigma <= 1/(delta_sigma R)`.
-
-So any future microscopic matter+mirror calculation only has to provide the genuinely microscopic inputs `beta_m`, `g_*`, and the refined `delta_sigma*j_sigma`; it is no longer legitimate to choose `alpha` by hand.
-
-## Retained GR controls
-
-The repository retains the DeWitt inertia result `(5+,1-,3 0)`, the declared ADM/HDA uniqueness result `c_DW=1/2` and `AB=1`, the corresponding `c_T=1` statement, two local physical metric configuration modes in D=3, BF/Ooguri negative controls, and the independent Regge IR universality branch.
-
-## Beyond the certificate
-
-No core integration arrow remains `OPEN` at fixed safe cutoff. Separate questions include a fully uniform simultaneous `Jmax->infinity`, `epsilon->0` theorem; Lorentzian quantum measure/global unitarity; a microscopic TT information-mode action and coupling; realistic matter/gauge content, generations, chirality and all local/global anomalies; physical scale/Newton constant; blind empirical predictions; and independent external replication.
-
-For the mirror-force branch the unresolved chain is now sharply reduced to
-
-`realistic microscopic H_m(sigma)`
-
-`-> numerical beta_m=(chi m)^-1 <dH_m/dsigma>_rest`
-
-`-> absolute g_*=GJ/ell`
-
-`-> refined mirror-odd dispersion / delta_sigma*j_sigma`
-
-`-> MIRRORMASTER PASS/FAIL`
-
-`-> full Peter-Weyl x route x mirror-matter quantum HDA`.
-
-A viable macroscopic cross-sector repulsion requires all of these conditions simultaneously. The project does **not** currently claim that they are satisfied in nature.
+- a fully uniform arbitrary-path `Jmax->infinity`, `epsilon->0` theorem;
+- Lorentzian quantum history measure/global unitarity;
+- a microscopic TT information-mode action/coupling;
+- realistic gauge group, generations, chirality, Yukawa structure and all local/global anomalies;
+- absolute Newton/length/time scale setting;
+- blind physical predictions and observational comparison;
+- independent external replication.
