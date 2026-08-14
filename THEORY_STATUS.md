@@ -74,6 +74,36 @@ The same mirror/conjugation structure gives an exact perturbative cubic gauge-an
 
 Ordinary antimatter is not identified with the project orientation label `chi`. Charge conjugation, parity and the project-local orientation bit are distinct operations. The ALPHA-g antihydrogen result is consistent with attractive Earth gravity and rules out repulsive `1g` gravity for ordinary antihydrogen.
 
+## Microscopic 16-cell mirror order
+
+The 16 tetrahedra of the minimal flag 16-cell can be labelled by the four binary choices of one vertex from each antipodal pair. Two tetrahedra share a face exactly when their four-bit labels differ in one bit, so their dual graph is the four-dimensional hypercube `Q4` with 16 vertices, 32 edges and degree four.
+
+Because `Q4` is bipartite, define
+
+`eta_v=(-1)^popcount(v)`
+
+and the staggered logical orientation variable
+
+`sigma_v=eta_v Y_v`.
+
+The geometric gluing preference `Y_v Y_w=-1` across a shared face then becomes `sigma_v sigma_w=+1`. This removes the alternating local frame orientation and exposes a genuine block order parameter
+
+`Sigma=(1/16) sum_v eta_v Y_v`.
+
+The two exact gluing vacua have `Sigma=+1` and `Sigma=-1` and are mirror partners. A single local orientation defect costs exactly `8J`; a half-hypercube mirror domain wall frustrates eight bonds and costs exactly `16J`.
+
+`scripts/mirror_order_16cell_gate.py` diagonalizes the full `2^16=65536` staggered transverse-field Hilbert space. At `h/J=0.2` it finds
+
+`<Sigma^2>=0.997653947371...`,
+
+`<|Sigma|>=0.998747825258...`,
+
+an unresolved-at-machine-scale mirror-doublet splitting below `1e-12 J`, and a gap to the next state of `7.97008787696 J`.
+
+As `h/J` is increased to 4, `<Sigma^2>` falls to about `0.146274`, providing a finite ordered-to-disordered control.
+
+This is the first finite microscopic derivation of the coarse mirror order parameter: `Y_L/Q -> staggered Sigma -> sigma(x)`. The physical normalization, continuum kinetic coefficient and matter coupling are not fixed by this gate.
+
 ## Healthy orientation-dependent force construction
 
 A direct metric sign flip was tested conceptually and rejected as the minimal healthy mechanism. If one simply rescales the gravitational Hamiltonian,
@@ -84,7 +114,7 @@ then the HDA bracket scales as `s_chi^2 D`. Preserving the same HDA normalizatio
 
 Likewise, making the Einstein-Hilbert coefficient negative would make an effective Newton coupling negative only by also flipping the graviton kinetic sign, producing a ghost relative to positive-energy matter.
 
-The first healthy candidate therefore keeps the tensor-gravity kinetic term positive and introduces a separate mirror-odd matter sector. Let `sigma` be a coarse orientation order parameter with `chi=sign(sigma)` and let `phi` be a second pseudoscalar mediator. Use positive canonical kinetic terms and the mirror-even bounded potential
+The first healthy candidate therefore keeps the tensor-gravity kinetic term positive and introduces a mirror-odd order/mediator sector. A conservative continuum realization uses `sigma` plus a second pseudoscalar `phi`, positive canonical kinetic terms and the mirror-even bounded potential
 
 `U=mu^2 phi^2/2 + lambda phi^4/4 + g phi sigma + kappa(sigma^2-v^2)^2/4`.
 
@@ -116,7 +146,7 @@ Thus the exact screening threshold is
 
 In the long-range limit `x<<1`, `alpha=1` gives complete screening and `alpha>1` gives cross-sector repulsion. At the finite demonstration point `alpha=2`, `x=0.1`, the net opposite-chi outward force is `0.990642319679...` times the bare tensor-gravity force after cancellation.
 
-This is a **healthy antigravity-like fifth-force candidate**, not yet a mirror sign flip of `g00`. Its main unresolved microscopic step is to derive `sigma`, `phi` and `alpha` from the existing `Y_L/Q`, Peter-Weyl and route operators, and then close the enlarged off-shell quantum HDA.
+This is a **healthy antigravity-like fifth-force candidate**, not yet a mirror sign flip of `g00`. The microscopic mirror-order gate now removes the need to postulate `sigma` from nothing. A minimal next branch can test whether soft fluctuations of the derived `Sigma/sigma` order parameter itself can play the mediator role, eliminating the auxiliary `phi` field.
 
 ## Retained GR controls
 
@@ -126,8 +156,12 @@ The repository retains the DeWitt inertia result `(5+,1-,3 0)`, the declared ADM
 
 No core integration arrow above remains `OPEN` at fixed safe cutoff. Separate questions include a fully uniform simultaneous `Jmax->infinity`, `epsilon->0` theorem; Lorentzian quantum measure/global unitarity; a microscopic TT information-mode action and coupling; realistic matter/gauge content, generations, chirality and all local/global anomalies; an explanation of any hidden mirror sector; physical scale/Newton constant; blind empirical predictions; and independent external replication.
 
-For the mirror-force branch, the next admissible calculation is no longer an arbitrary parity-odd term. It is the microscopic derivation
+For the mirror-force branch, the open chain is now narrower:
 
-`Y_L/Q -> sigma -> orientation charge -> phi -> alpha`
+`Y_L/Q -> staggered Sigma` is finite-tested,
 
-followed by a full Peter-Weyl x route x orientation HDA regression. A viable cross-sector repulsion requires `alpha>alpha_crit(m_phi r)` in the desired range while keeping the Hamiltonian bounded and the enlarged constraint algebra first class.
+while
+
+`Sigma -> continuum normalization -> matter charge -> alpha -> full Peter-Weyl x route x mirror HDA`
+
+remains to be derived. A viable cross-sector repulsion requires `alpha>alpha_crit(m_phi r)` in the desired range while keeping the Hamiltonian bounded and the enlarged constraint algebra first class.
