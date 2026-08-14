@@ -61,6 +61,8 @@ jobs:
         run: python scripts/orientation_odd_hda_gate.py --output verification_results/ORIENTATION_ODD_HDA.json
       - name: Mirror-force normalization and source selection
         run: python scripts/mirror_force_normalization_gate.py --output verification_results/MIRROR_FORCE_NORMALIZATION.json
+      - name: Hodge-weighted mirror stiffness
+        run: python scripts/mirror_hodge_stiffness_gate.py --output verification_results/MIRROR_HODGE_STIFFNESS.json
       - name: Canonical final architecture status
         run: python bcqg_bit_to_gravity_final.py --strict --output verification_results/FINAL_CORE_ARCHITECTURE.json
       - name: Upload canonical evidence
