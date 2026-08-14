@@ -54,7 +54,6 @@ ETA_Q4 = np.array([1 if int(v).bit_count() % 2 == 0 else -1 for v in range(N)], 
 
 
 def two_qubit_unitary_identity():
-    # A pi rotation around Y is U_B=-iY up to a physically irrelevant global phase.
     UB = -1j * Y
     U = np.kron(I2, UB)
     Hglue = -(np.kron(X, X) - np.kron(Y, Y) + np.kron(Z, Z))
@@ -72,8 +71,6 @@ def q4_heisenberg_low_spectrum():
     diag = np.zeros(DIM, dtype=float)
     exchange = []
 
-    # H=J sum sigma_i.sigma_j. ZZ is diagonal. XX+YY flips an opposite-spin
-    # pair with amplitude 2 and annihilates a same-spin pair.
     for s in range(DIM):
         z = [1 - 2 * ((s >> i) & 1) for i in range(N)]
         diag[s] = J * sum(z[a] * z[b] for a, b in Q4_EDGES)
@@ -88,13 +85,23 @@ def q4_heisenberg_low_spectrum():
         return out
 
     H = LinearOperator((DIM, DIM), matvec=mv, dtype=float)
-    vals, vecs = eigsh(H, k=4, which="SA", tol=1e-11, maxiter=4000)
+
+    # A Krylov request with k=4 can numerically return only two representatives
+    # of an exactly degenerate triplet and then the next level. Request a wider
+    # low-energy window and identify the multiplet by energy clustering instead
+    # of array position.
+    vals, vecs = eigsh(H, k=8, which="SA", tol=1e-11, maxiter=5000)
     order = np.argsort(vals)
     vals = vals[order]
-    psi0 = vecs[:, order[0]]
+    vecs = vecs[:, order]
+    psi0 = vecs[:, 0]
 
-    # By exact SU(2) symmetry of the Heisenberg parent, <N_x^2>=<N_y^2>=<N_z^2>
-    # in the nondegenerate singlet ground state. N_z is diagonal in this basis.
+    gaps = vals - vals[0]
+    first_gap = float(gaps[1])
+    triplet_idx = np.flatnonzero(np.abs(gaps - first_gap) < 1e-8)
+    triplet_vals = vals[triplet_idx]
+    triplet_spread = float(np.ptp(triplet_vals)) if len(triplet_vals) else float("inf")
+
     nz = np.zeros(DIM, dtype=float)
     mtot = np.zeros(DIM, dtype=float)
     for s in range(DIM):
@@ -104,14 +111,15 @@ def q4_heisenberg_low_spectrum():
 
     nz2 = float(np.sum(np.abs(psi0) ** 2 * nz**2))
     mtot2 = float(np.sum(np.abs(psi0) ** 2 * mtot**2))
-    gaps = vals - vals[0]
 
     return {
         "hilbert_dimension": DIM,
+        "krylov_levels_requested": 8,
         "lowest_energies_over_J": [float(x / J) for x in vals],
         "lowest_gaps_over_J": [float(x / J) for x in gaps],
-        "first_triplet_gap_over_J": float(gaps[1] / J),
-        "triplet_internal_spread_over_J": float((max(vals[1:4]) - min(vals[1:4])) / J),
+        "first_triplet_gap_over_J": first_gap / J,
+        "first_gap_cluster_multiplicity": int(len(triplet_idx)),
+        "triplet_internal_spread_over_J": triplet_spread / J,
         "Neel_y_squared_by_SU2": nz2,
         "Neel_vector_squared_by_SU2": 3.0 * nz2,
         "total_sigma_z_squared": mtot2,
@@ -119,9 +127,6 @@ def q4_heisenberg_low_spectrum():
 
 
 def spinwave_from_laplacian(mu, degree=4):
-    # Standard linear spin-wave dispersion for H_Pauli=J sum sigma.sigma
-    # = 4J sum S.S, S=1/2:
-    # omega/J = 2*z*sqrt(1-(lambda_adj/z)^2), lambda_adj=z-mu.
     z = float(degree)
     lam = z - float(mu)
     inside = max(0.0, 1.0 - (lam / z) ** 2)
@@ -159,6 +164,7 @@ def run():
         unitary["frobenius_error"] < 1e-12
         and exact["hilbert_dimension"] == 65536
         and abs(exact["first_triplet_gap_over_J"] - 2.31439334306155) < 5e-8
+        and exact["first_gap_cluster_multiplicity"] >= 3
         and exact["triplet_internal_spread_over_J"] < 1e-9
         and exact["Neel_y_squared_by_SU2"] > 0.3
         and exact["total_sigma_z_squared"] < 1e-18
