@@ -31,6 +31,7 @@
  -> HDA
  -> вакуумные флуктуации и квантовая пена
  -> зеркальная ориентация / chirality
+ -> здоровый mirror-force candidate
 ```
 
 Ниже — этот маршрут как последовательный урок: сначала школьная интуиция, затем строгая математика.
@@ -1271,6 +1272,369 @@ DOI: 10.1038/s41586-023-06527-1
 
 ---
 
+# Часть IX. Как всё-таки построить здоровую mirror-repulsion
+
+## Урок 28. Почему просто заменить H на -H не работает
+
+Самый простой соблазн — объявить, что для зеркальной ветви
+
+```text
+H_chi[N] = s_chi * H_GR[N].
+```
+
+Но HDA тут же даёт строгий тест.
+
+Если
+
+```text
+{H_GR[N],H_GR[M]} = D[beta],
+```
+
+то
+
+```text
+{H_chi[N],H_chi[M]} = s_chi^2 * D[beta].
+```
+
+Чтобы сохранить тот же `D` и ту же нормировку lapse, нужно
+
+```text
+s_chi^2 = 1.
+```
+
+Остаются только
+
+```text
+s=+1
+s=-1.
+```
+
+Но
+
+```text
+-H[N] = H[-N].
+```
+
+То есть `s=-1` просто разворачивает нормальное/time направление эволюции. Статическая ньютоновская сила от этого не становится отталкивающей.
+
+Итак:
+
+```text
+H -> -H
+```
+
+**не является антигравитацией**.
+
+---
+
+## Урок 29. Почему отрицательный Newton sign почти сразу создаёт ghost
+
+Второй соблазн — сделать коэффициент при Einstein-Hilbert term отрицательным:
+
+```text
+S_grav ~ F_chi * integral sqrt(-g) R
+```
+
+и выбрать
+
+```text
+F_- < 0.
+```
+
+Тогда формально можно говорить об opposite sign effective Newton coupling.
+
+Но этот же `F_chi` стоит перед кинетическим членом линейного spin-2 поля.
+
+Поэтому
+
+```text
+F_- < 0
+```
+
+означает отрицательную kinetic energy гравитона относительно обычной positive-energy matter.
+
+Получается ghost instability.
+
+То есть прямой metric-sign flip даёт нужный знак ценой разрушения устойчивости.
+
+Это второй no-go.
+
+---
+
+## Урок 30. Здоровая альтернатива: orientation order parameter sigma и mediator phi
+
+Вместо отрицательной массы оставим Einstein gravity обычной и положительно-энергетической.
+
+Микроскопически у нас уже есть
+
+```text
+chi = sign(Q)
+Q ~ Y_L.
+```
+
+На coarse scale введём pseudoscalar order parameter
+
+```text
+sigma ~ +v  -> chi=+1
+sigma ~ -v  -> chi=-1.
+```
+
+И второй pseudoscalar `phi`, который будет mediator.
+
+Mirror действует как
+
+```text
+(phi,sigma) -> (-phi,-sigma).
+```
+
+Возьмём action
+
+```text
+S = integral sqrt(-g) [
+      Mpl^2 R/2
+    - (d phi)^2/2
+    - (d sigma)^2/2
+    - U(phi,sigma)
+]
+```
+
+с
+
+```text
+U = mu^2 phi^2/2
+  + lambda phi^4/4
+  + g phi sigma
+  + kappa (sigma^2-v^2)^2/4.
+```
+
+При
+
+```text
+mu^2 > 0
+lambda > 0
+kappa > 0
+```
+
+оба kinetic terms положительные, а quartic potential bounded at large field.
+
+То есть две mirror branches существуют без отрицательной excitation energy.
+
+### И теперь главный тест: HDA
+
+Для canonical two-field sector
+
+```text
+H[N] = integral N [
+    p_phi^2/2 + (phi')^2/2
+  + p_sigma^2/2 + (sigma')^2/2
+  + U(phi,sigma)
+].
+```
+
+В antisymmetric bracket все local potential terms сокращаются.
+
+Остаётся
+
+```text
+{H[N],H[M]}
+ = D[N M' - M N'].
+```
+
+Новый spectral gate при `L=512` получает
+
+```text
+H-H bracket = 0.0007282211771021175
+D target    = 0.0007282211771021123
+abs error   = 5.204170427930421e-18
+rel error   = 7.146414566848946e-15
+```
+
+То есть новый mirror/orientation matter sector воспроизводит canonical HDA principal identity практически до machine precision.
+
+Это уже принципиальное отличие от произвольного `lambda_chi Y_L` term: мы построили continuum extension, у которой constraint structure заранее правильного типа.
+
+---
+
+## Урок 31. Как из orientation bit возникает реальное отталкивание
+
+Пусть coarse object несёт orientation charge
+
+```text
+Q_chi = eta * m * chi.
+```
+
+Важно:
+
+```text
+m > 0
+```
+
+для обеих ветвей.
+
+Меняется знак **charge**, а не знак энергии.
+
+Exchange mediator `phi` даёт potential
+
+```text
+U_12(r)
+ = -G_T m1 m2/r
+   -alpha G_T m1 m2 chi1 chi2 exp(-m_phi r)/r.
+```
+
+Для одинаковых orientations
+
+```text
+chi1*chi2 = +1
+```
+
+новый канал добавляет притяжение.
+
+Для противоположных
+
+```text
+chi1*chi2 = -1
+```
+
+он становится отталкивающим.
+
+Положим
+
+```text
+x = m_phi*r.
+```
+
+Тогда magnitude orientation force относительно bare tensor gravity:
+
+```text
+F_chi/F_T = alpha*(1+x)*exp(-x).
+```
+
+Полное screening происходит ровно при
+
+```text
+alpha_crit(x) = exp(x)/(1+x).
+```
+
+А repulsion начинается при
+
+```text
+alpha > alpha_crit(x).
+```
+
+Несколько точных порогов:
+
+```text
+m_phi*r = 0.0 -> alpha_crit = 1.0000000000
+m_phi*r = 0.1 -> alpha_crit = 1.0047008346
+m_phi*r = 0.5 -> alpha_crit = 1.0991475138
+m_phi*r = 1.0 -> alpha_crit = 1.3591409142
+m_phi*r = 2.0 -> alpha_crit = 2.4630186996
+m_phi*r = 5.0 -> alpha_crit = 24.7355265171
+```
+
+В long-range limit:
+
+```text
+m_phi*r << 1
+```
+
+получаем очень простой результат:
+
+```text
+alpha = 1 -> complete screening
+alpha > 1 -> opposite-chi repulsion.
+```
+
+Тестовый пример:
+
+```text
+alpha = 2
+m_phi*r = 0.1
+```
+
+даёт
+
+```text
+orientation repulsion / bare tensor gravity
+= 1.990642319679...
+```
+
+поэтому после вычитания обычного притяжения остаётся
+
+```text
+net outward force / bare tensor gravity
+= 0.990642319679...
+```
+
+Это уже настоящий математический **antigravity-like cross-sector effect**, но без negative mass и без ghost graviton.
+
+---
+
+## Урок 32. Почему это пока называется mirror-force, а не доказанная антигравитация
+
+Новая конструкция не меняет непосредственно
+
+```text
+g_00 -> -g_00.
+```
+
+Она даёт
+
+```text
+tensor gravity
++
+orientation-dependent fifth force.
+```
+
+Поэтому её правильное название на текущем этапе:
+
+```text
+healthy mirror-force candidate
+```
+
+или
+
+```text
+antigravity-like cross-sector repulsion.
+```
+
+Это даже сильнее с точки зрения устойчивости: spin-2 sector остаётся positive-energy, а repulsion несёт отдельный canonical mediator.
+
+Теперь bottleneck стал очень конкретным:
+
+```text
+microscopic Y_L/Q
+ -> coarse sigma
+ -> orientation charge Q_chi
+ -> mediator phi
+ -> derive alpha
+ -> embed into Peter-Weyl x route HDA
+```
+
+Главное число, которое теория должна вывести **сама**, а не получить fitting-ом:
+
+```text
+alpha.
+```
+
+Если microscopic derivation даст
+
+```text
+alpha <= alpha_crit
+```
+
+в нужном range, mirror antigravity не возникает.
+
+Если даст
+
+```text
+alpha > alpha_crit
+```
+
+при bounded Hamiltonian и closed enlarged quantum HDA, тогда появится настоящий стабильный механизм mirror repulsion.
+
+---
+
 # Феерический итог: вся теория в одной лестнице
 
 Теперь весь рассказ можно собрать в одну цепочку:
@@ -1305,8 +1669,15 @@ BITS
  -> orientation bit chi=+/-1
  -> Q -> -Q but metric -> same metric
  -> mirror-conjugate anomaly sign cancellation
- -> current antigravity falsifier: f_current = 0
- -> future parity-odd HDA gate if gravity sign control is attempted
+ -> current metric antigravity falsifier: f_current = 0
+ -> H->-H no-go: only time orientation reversal
+ -> negative Einstein-Hilbert sign no-go: graviton ghost
+ -> coarse orientation field sigma
+ -> positive-kinetic mediator phi
+ -> canonical mirror-sector HDA identity
+ -> exact alpha_crit = exp(m_phi r)/(1+m_phi r)
+ -> healthy cross-sector repulsion if alpha > alpha_crit
+ -> microscopic derivation of alpha is the next killer gate
 ```
 
 Самая короткая HDA-кульминация остаётся:
@@ -1342,7 +1713,7 @@ Jmax = o(epsilon^-2/13)
 
 то эта иерархия сохраняется вдоль допустимого joint-limit family.
 
-Mirror calculation добавляет ещё одну очень короткую пару формул:
+Mirror calculation добавляет ещё одну короткую пару формул:
 
 ```text
 M X M^-1 = +X
@@ -1353,10 +1724,25 @@ M Y M^-1 = -Y
 но
 
 ```text
-metric(+chi) = metric(-chi)
+metric(+chi) = metric(-chi).
 ```
 
-То есть **ориентация действительно бинарна, а стандартная гравитационная метрика — mirror-even**.
+А новый healthy-force branch добавляет:
+
+```text
+{H_mirror[N],H_mirror[M]}
+ = D_mirror[N dM - M dN]
+```
+
+и
+
+```text
+opposite-chi repulsion
+<=>
+alpha*(1+m_phi*r)*exp(-m_phi*r) > 1.
+```
+
+То есть **ориентация бинарна, стандартная метрика mirror-even, но дополнительная положительно-энергетическая mirror-charge dynamics уже может математически давать отталкивание.**
 
 ---
 
@@ -1376,7 +1762,9 @@ metric(+chi) = metric(-chi)
 - operator-ordering identities;
 - fixed-cutoff composition scaling theorem в заявленном habitat;
 - mirror algebra `X,Z even; Y,Q odd`;
-- conjugate-representation identity `d(Rbar) = -d(R)`.
+- conjugate-representation identity `d(Rbar) = -d(R)`;
+- rescaling no-go `H_chi=sH_GR => same HDA only if s^2=1`;
+- Yukawa screening threshold `alpha_crit=exp(x)/(1+x)`.
 
 ### Tested finite
 
@@ -1390,7 +1778,9 @@ metric(+chi) = metric(-chi)
 - Mathieu/Floquet resonance gate;
 - 256-tetrahedron mirror metric/orientation gate;
 - mirror-state swap and oriented-phase gate;
-- numerical conjugate-anomaly cancellation stress-test.
+- numerical conjugate-anomaly cancellation stress-test;
+- two-pseudoscalar canonical HDA gate with relative defect `~7.15e-15`;
+- mirror-force screening/repulsion threshold regression.
 
 ### Conditional physical interpretations
 
@@ -1401,7 +1791,10 @@ metric(+chi) = metric(-chi)
 - существование физического TT infoton mode;
 - ненулевой microscopic coupling `xi` к gravitational waves;
 - возможный `Y_L J5^0` bridge к fermion chirality;
-- возможный будущий parity-odd gravitational response.
+- coarse identification `Y_L/Q -> sigma`;
+- существование physical mediator `phi`;
+- first-principles value `alpha`;
+- microscopic Peter-Weyl x route x orientation HDA closure.
 
 ### Что расчёт уже опровергает внутри текущей архитектуры
 
@@ -1410,18 +1803,34 @@ metric(+chi) = metric(-chi)
 ```text
 chi -> -chi
    =>
-g_00 -> -g_00
+g_00 -> -g_00.
 ```
 
-и потому не выводит antigravity из одной только зеркальности.
+Также простое
 
-Это тоже научный результат: гипотеза получила falsifier и уже сузилась.
+```text
+H -> -H
+```
+
+не даёт статическую антигравитацию, а negative Einstein-Hilbert coefficient даёт ghost tensor sector.
+
+То есть здоровая ветка должна быть сложнее прямого sign flip.
+
+### Что теперь впервые построено положительно
+
+Построен continuum canonical mirror sector с positive kinetic energy и exact HDA principal identity. Он допускает orientation-charge Yukawa force, которая для opposite `chi` становится repulsive и может превысить tensor attraction при
+
+```text
+alpha > exp(m_phi*r)/(1+m_phi*r).
+```
+
+Это **кандидатный стабильный mirror-force mechanism**, а не экспериментально обнаруженная антигравитация.
 
 **Проект не утверждает, что фундаментальная физика природы экспериментально доказана.**
 
 Корректная формулировка результата:
 
-> **В репозитории построена математически и вычислительно проверяемая кандидатная схема перехода от бинарной дискретной микроструктуры к 3D/4D-like гладкому пределу, SU(2)/Peter-Weyl квантовой геометрии и канонической HDA-гравитационной архитектуре. Дополнительно построены exact finite мост от четырёх microscopic qubits к spin-2 сектору, условная модель квантовой пены и GW-squeezing, а также mirror/chirality gate, который точно отделяет ориентационный знак от metric sign. Зеркальность даёт естественный chirality/anomaly-pairing mechanism, но в текущем mirror-even sector не создаёт антигравитацию. Это кандидатная теория, а не установленный экспериментальный закон природы.**
+> **В репозитории построена математически и вычислительно проверяемая кандидатная схема перехода от бинарной дискретной микроструктуры к 3D/4D-like гладкому пределу, SU(2)/Peter-Weyl квантовой геометрии и канонической HDA-гравитационной архитектуре. Дополнительно построены exact finite мост от четырёх microscopic qubits к spin-2 сектору, условная модель квантовой пены и GW-squeezing, mirror/chirality gate и continuum healthy mirror-force extension. Последняя сохраняет положительные kinetic terms, проходит canonical matter-HDA gate и допускает cross-sector repulsion выше точного порога `alpha_crit`, но её microscopic coupling ещё не выведен. Это кандидатная теория, а не установленный экспериментальный закон природы.**
 
 ---
 
@@ -1438,8 +1847,12 @@ g_00 -> -g_00
 - реалистичная matter sector: gauge group, masses, generations, chirality и Yukawa structure;
 - полная anomaly cancellation, включая global anomalies, не только exact `R/Rbar` cubic pair identity;
 - объяснение, почему mirror sector скрыт/decoupled, если он существует;
-- построение parity-odd или multi-metric gravity operator, если исследуется antigravity;
-- повторная проверка HDA для любого такого нового gravity operator;
+- derivation `Y_L/Q -> sigma` вместо phenomenological coarse field;
+- derivation mediator `phi` и charge-to-mass coupling `eta`;
+- first-principles prediction of `alpha` и mediator mass/range;
+- full Peter-Weyl x route x orientation quantum HDA regression;
+- проверка fifth-force/equivalence-principle/cosmological bounds после появления physical scale;
+- literal metric antigravity branch, если она всё ещё нужна после healthy mirror-force construction;
 - physical scale и Newton constant;
 - blind predictions в физических единицах;
 - независимая внешняя репликация другой группой/кодом/экспериментом.
@@ -1455,6 +1868,7 @@ g_00 -> -g_00
 - `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md` — fixed-cutoff HDA composition theorem;
 - `GRAVITON_INFOTON_FOAM_BRIDGE.md` — spin-2/helicity, foam и GW-resonance bridge;
 - `MIRROR_CHIRALITY_GRAVITY.md` — mirror orientation, chirality, anomaly sign и antigravity falsifier;
+- `ORIENTATION_ODD_HDA_CONSTRUCTION.md` — healthy mirror-force construction, HDA control и exact repulsion threshold;
 - `SPATIAL_QUBIT_GEOMETRY_BRIDGE.md` — exact four-qubit geometry decomposition;
 - `GLOBAL_MANIFOLD_Q2_COMPLETION.md` — q=2 PL globalization;
 - `bcqg_bit_to_gravity_final.py` — executable canonical status aggregator;
@@ -1464,7 +1878,8 @@ g_00 -> -g_00
 - `scripts/peter_weyl_two_node_euclidean_joint_gate.py` — two-node Peter-Weyl x route regression;
 - `scripts/lorentzian_hit_depth_bound.py` — Lorentzian support wall;
 - `scripts/graviton_infoton_foam_gate.py` — exact j=2 projector + Floquet resonance checks;
-- `scripts/mirror_chirality_gravity_gate.py` — mirror/chirality/phase/anomaly finite gate.
+- `scripts/mirror_chirality_gravity_gate.py` — mirror/chirality/phase/anomaly finite gate;
+- `scripts/orientation_odd_hda_gate.py` — continuum mirror-sector HDA + Yukawa screening/repulsion gate.
 
 Запуск канонического статуса:
 
@@ -1484,6 +1899,14 @@ Mirror/chirality gate:
 python scripts/mirror_chirality_gravity_gate.py \
   --trials 256 \
   --output verification_results/MIRROR_CHIRALITY_GRAVITY.json
+```
+
+Healthy orientation-force gate:
+
+```bash
+python scripts/orientation_odd_hda_gate.py \
+  --L 512 \
+  --output verification_results/ORIENTATION_ODD_HDA.json
 ```
 
 Если canonical aggregator возвращает
