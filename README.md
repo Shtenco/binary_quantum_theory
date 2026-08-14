@@ -1,6 +1,6 @@
 # От бита к пространству-времени
 
-## Увлекательный урок «на пальцах»: как из двух вариантов могут вырасти пространство, время, гравитация и квантовая пена
+## Увлекательный урок «на пальцах»: как из двух вариантов могут вырасти пространство, время, гравитация, квантовая пена и зеркальная хиральность
 
 Представьте, что в самом глубоком слое природы **ещё нет привычного пространства**. Нет метров, координатной сетки, готового трёхмерного фона и даже заранее заданной геометрии.
 
@@ -30,6 +30,7 @@
  -> гамильтонова гравитация
  -> HDA
  -> вакуумные флуктуации и квантовая пена
+ -> зеркальная ориентация / chirality
 ```
 
 Ниже — этот маршрут как последовательный урок: сначала школьная интуиция, затем строгая математика.
@@ -171,15 +172,15 @@ Betti     = (1,0,0,1)
 
 На проверенных уровнях всё остаётся согласованным с `S3`.
 
-### Новое наблюдение: почему minimal+flag gluing почти неизбежно даёт именно 16-cell
+### Почему minimal+flag gluing почти неизбежно даёт именно 16-cell
 
-Если дополнительно использовать фактическую simplicial semantics проекта — **минимальные 8 вершин + flag/clique closure** — появляется очень короткое доказательство уникальности этой глобализации с точностью до переименования вершин.
+Если дополнительно использовать фактическую simplicial semantics проекта — **минимальные 8 вершин + flag/clique closure** — появляется короткое доказательство уникальности этой глобализации с точностью до переименования вершин.
 
 Каждая вершина должна иметь октаэдральную ссылку, значит среди остальных семи вершин она соединена ровно с шестью.
 
 Следовательно у каждой вершины есть ровно **одна antipodal вершина**, с которой ребра нет.
 
-Граф отсутствующих рёбер поэтому состоит из четырёх независимых пар:
+Граф отсутствующих рёбер состоит из четырёх независимых пар:
 
 ```text
 4 antipodal pairs
@@ -199,7 +200,7 @@ K8 minus 4 antipodal edges
 2^4 = 16
 ```
 
-И мы снова получаем
+И снова получаем
 
 ```text
 (V,E,F,T) = (8,24,32,16)
@@ -207,7 +208,7 @@ K8 minus 4 antipodal edges
 
 — границу 16-cell.
 
-Точный scope этого результата важен: **minimal 8-vertex flag globalization уникальна**, но произвольная bare-causal nonflag completion без этих правил всё ещё может быть неединственной.
+Точный scope результата важен: **minimal 8-vertex flag globalization уникальна**, но произвольная bare-causal nonflag completion без этих правил всё ещё может быть неединственной.
 
 ---
 
@@ -415,8 +416,6 @@ Finite gates отдельно проверяют:
 
 ## Урок 10. Четыре микроскопических qubits содержат spin-2
 
-Вот один из самых красивых новых результатов.
-
 Четыре spin-1/2 qubits разлагаются по полному угловому моменту так:
 
 ```text
@@ -500,7 +499,7 @@ Fock occupation  x  C^2_helicity
 
 Именно Fock sector даёт vacuum occupation statistics, а helicity-qubit говорит, в какой spin-2 polarization живёт возбуждение.
 
-Поэтому точная цепочка проекта звучит так:
+Точная цепочка:
 
 ```text
 4 microscopic spin-1/2 qubits
@@ -574,7 +573,7 @@ Jmax = 13/2
  i*hbar * D[ sharp(N dM - M dN) ]
 ```
 
-Интуиция очень простая.
+Интуиция простая.
 
 Сначала слегка «подтолкните» spatial slice по нормали с профилем `N`, затем с профилем `M`.
 
@@ -706,7 +705,7 @@ Q = O(J^2)
 D = O(J^2 / epsilon)
 ```
 
-Из уже доказанного cancellation structure тогда следует грубая верхняя оценка
+Из уже доказанного cancellation structure следует грубая верхняя оценка
 
 ```text
 C_cross / D = O(epsilon * J^(13/2))
@@ -738,13 +737,13 @@ C_cross / D = O(epsilon^(3/16))
 C_GG    / D = O(epsilon^(3/8))
 ```
 
-Это уже снимает fixed-cutoff ограничение **вдоль целого класса диагональных траекторий**:
+Это снимает fixed-cutoff ограничение **вдоль целого класса диагональных траекторий**:
 
 ```text
 Jmax = o(epsilon^-2/13)
 ```
 
-Но это ещё не uniform theorem для абсолютно любого способа одновременно отправлять `Jmax -> infinity` и `epsilon -> 0`. Поэтому этот результат следует читать как **admissible joint-limit family**, а не как окончательное снятие всех cutoff-вопросов.
+Но это ещё не uniform theorem для абсолютно любого способа одновременно отправлять `Jmax -> infinity` и `epsilon -> 0`.
 
 ---
 
@@ -778,7 +777,7 @@ mu ~= |xi*h| * omega_I / 4
 
 где `mu` — Floquet/squeezing growth exponent, а `xi` — микроскопический coupling, который теория пока **не вывела**.
 
-Finite gate использует видимую тестовую модуляцию
+Finite gate использует тестовую модуляцию
 
 ```text
 xi*h = 0.02
@@ -823,8 +822,6 @@ existing vacuum fluctuations
  -> squeezed / amplified fluctuation quadrature
 ```
 
-Это аккуратная физическая версия фразы «гравитационная волна резонирует с квантовой пеной».
-
 ---
 
 ## Урок 19. Два разных резонанса — важный экспериментальный fingerprint
@@ -857,7 +854,420 @@ Omega_GW ~= 2*omega_I
 
 То есть **2:1 resonance**.
 
-Эти два положения резонанса различны. Если когда-нибудь будет построен физический infoton sector и вычислен coupling, это даст очень конкретный спектральный falsifier.
+Если когда-нибудь будет построен физический infoton sector и вычислен coupling, эти два разных положения резонанса дадут конкретный спектральный falsifier.
+
+---
+
+# Часть VII. Зеркальная ветвь: что действительно переворачивается
+
+## Урок 20. В логическом geometry-qubit есть точный ориентационный бит
+
+У четырёх spin-1/2 face qubits gauge-invariant singlet sector двумерен. В естественном basis два shape-оператора выражаются через `X_L` и `Z_L`, а ориентированный triple product имеет вид
+
+```text
+Q = (sqrt(3)/4) * Y_L
+```
+
+Теперь возьмём mirror operation как complex conjugation:
+
+```text
+M = K
+ i -> -i
+```
+
+Тогда точно:
+
+```text
+X_L -> +X_L
+Z_L -> +Z_L
+Y_L -> -Y_L
+Q   -> -Q
+```
+
+То есть mirror не стирает геометрию. Он меняет **только ориентационный знак**.
+
+Естественный binary label:
+
+```text
+chi = sign(Q) = +1 or -1
+```
+
+Точные eigenvalues:
+
+```text
+Q_+ = +sqrt(3)/4 = +0.433012701892...
+Q_- = -sqrt(3)/4 = -0.433012701892...
+```
+
+Новый finite gate проверяет, что complex conjugation меняет эти состояния местами с overlap
+
+```text
+0.9999999999999998
+```
+
+при этом shape observables и absolute-volume information совпадают до machine precision.
+
+Так возникает строгая версия идеи «биты разворачиваются от нуля в другую сторону»:
+
+```text
+bit state
+ + orientation chi=+1/-1
+```
+
+Но `chi=-1` пока означает **mirror orientation**, а не отрицательную энергию.
+
+---
+
+## Урок 21. Что значит «число pi идёт в зеркальном порядке»
+
+Само число
+
+```text
+pi = 3.14159265...
+```
+
+не становится другим и его десятичные цифры не переворачиваются.
+
+Зато у фазы есть направление обхода:
+
+```text
+theta -> -theta
+```
+
+или
+
+```text
+exp(i*theta) -> exp(-i*theta)
+```
+
+Поэтому можно ввести **ориентированный угол**
+
+```text
+pi_chi = chi*pi
+```
+
+где
+
+```text
+pi_+ = +pi
+pi_- = -pi
+```
+
+Два пути вокруг unit circle противоположны по orientation, но их endpoint одинаков:
+
+```text
+exp(+i*pi) = exp(-i*pi) = -1
+```
+
+Новый gate проверяет `theta -> -theta` через complex conjugation точно; остаток на `+pi/-pi` равен лишь floating-point roundoff около
+
+```text
+2.45e-16
+```
+
+То есть физически осмысленная версия «зеркального pi» — **обратная ориентация фазы**, не обратный порядок цифр.
+
+---
+
+## Урок 22. Зеркальный тетраэдр имеет другую ориентацию, но ту же метрику
+
+Пусть три edge-вектора образуют matrix
+
+```text
+A = (a,b,c)
+```
+
+а intrinsic metric
+
+```text
+G = A^T A
+```
+
+Возьмём reflection `R`:
+
+```text
+R^T R = I
+det(R) = -1
+A' = R A
+```
+
+Тогда
+
+```text
+G' = A'^T A'
+   = A^T R^T R A
+   = A^T A
+   = G
+```
+
+но
+
+```text
+det(A') = -det(A)
+```
+
+То есть:
+
+```text
+orientation flips
+metric stays the same
+absolute volume stays the same
+```
+
+Новый finite gate прогоняет 256 deterministic random nondegenerate tetrahedra и получает:
+
+```text
+max metric-Gram error       = 0
+max absolute-volume error   = 0
+max orientation-flip error  = 0
+max face-flux-Gram error    = 0
+```
+
+Это очень важный результат.
+
+**Текущая микрогеометрия умеет различать зеркальную ориентацию, но физическая metric geometry не меняет знак.**
+
+---
+
+## Урок 23. Почему из зеркальности пока НЕ следует антигравитация
+
+В ADM metric variables
+
+```text
+g_00 = -N^2 + q_ab N^a N^b
+```
+
+Здесь нет отдельного множителя `chi`.
+
+И Hamiltonian, который выбран HDA/DeWitt gate, строится из
+
+```text
+q_ab
+pi_ab*pi^ab
+pi^2
+R[q]
+```
+
+то есть из parity-even metric contractions.
+
+Поэтому для mirror-related configurations с одной и той же физической metric data текущая архитектура даёт
+
+```text
+g_00(+chi) = g_00(-chi)
+```
+
+и, следовательно,
+
+```text
+delta g_00^mirror = 0
+```
+
+Это **negative result**, но очень полезный:
+
+> ориентационный бит существует, однако сам по себе он не переворачивает гравитационный знак.
+
+В существующей ветке
+
+```text
+mirror orientation != negative gravitational mass
+```
+
+---
+
+## Урок 24. Какой именно новый эффект потребовался бы для антигравитации
+
+Пусть будущая теория добавит orientation-odd gravitational response:
+
+```text
+a_chi = a_even + chi*a_odd
+```
+
+Калибруем обычную `chi=+1` ветвь на измеренное Newton gravity:
+
+```text
+a_+ = g_N
+```
+
+Введём долю
+
+```text
+f = a_odd / g_N
+```
+
+Тогда противоположная mirror branch имеет
+
+```text
+a_- / g_N = 1 - 2*f
+```
+
+И сразу получаем точные пороги:
+
+```text
+f = 0      -> обе ориентации гравитируют одинаково
+f = 1/2    -> полное экранирование mirror branch
+f > 1/2    -> mirror branch становится repulsive
+f = 1      -> равная по модулю противоположная gravity
+```
+
+Текущий mirror-even geometry gate соответствует
+
+```text
+f_current = 0
+```
+
+Поэтому antigravity не «спрятана» в уже построенной метрике. Для неё нужен **новый оператор**.
+
+Самый простой mirror-odd local geometry operator — `Y_L`:
+
+```text
+H_odd = lambda_chi * Y_L
+```
+
+Но здесь появляется главный killer-test.
+
+Полный constraint станет
+
+```text
+H = H_0 + lambda_chi*H_chi
+```
+
+а его algebra:
+
+```text
+[H,H]
+ = [H_0,H_0]
+ + lambda_chi * ([H_0,H_chi] + [H_chi,H_0])
+ + lambda_chi^2 * [H_chi,H_chi]
+```
+
+Каждый новый канал обязан снова замкнуться в правильный diffeomorphism generator либо образовать новую согласованную first-class constraint.
+
+Поэтому настоящий antigravity criterion такой:
+
+```text
+nonzero mirror gravity response
+AND
+stable Hamiltonian
+AND
+first-class modified HDA
+```
+
+Без последнего условия можно получить красивый знак, но не согласованную гравитационную теорию.
+
+---
+
+# Часть VIII. Зеркальность, материя и аномалии
+
+## Урок 25. Chirality может возникнуть без отрицательной энергии
+
+Mirror orientation особенно естественно связывается не с negative energy, а с **left/right chirality**.
+
+У fermion axial density
+
+```text
+J5^0 = psi_bar gamma^0 gamma^5 psi
+```
+
+parity меняет знак.
+
+Наш oriented geometry coordinate `Y_L` тоже mirror-odd.
+
+Поэтому product
+
+```text
+H_chi-psi = lambda * Y_L * J5^0
+```
+
+parity-even.
+
+Это даёт очень естественную кандидатную цепочку:
+
+```text
+orientation bit chi
+ -> local handedness
+ -> left/right fermion preference
+```
+
+при этом metric и energy sign могут оставаться обычными.
+
+То есть зеркальная ветвь может оказаться гораздо полезнее для **происхождения хиральности материи**, чем для антигравитации.
+
+---
+
+## Урок 26. Mirror-conjugate pair автоматически меняет знак perturbative gauge anomaly
+
+Для left-handed Weyl fermion в representation `R` cubic gauge anomaly пропорциональна
+
+```text
+d_R^(abc) = Tr[ T^a {T^b,T^c} ]
+```
+
+Для conjugate representation
+
+```text
+T_Rbar^a = -(T_R^a)^T
+```
+
+поэтому алгебраически
+
+```text
+d_Rbar^(abc) = -d_R^(abc)
+```
+
+и точная mirror-conjugate pair даёт
+
+```text
+d_R + d_Rbar = 0
+```
+
+Новый finite stress-test на deterministic noncommuting Hermitian generators получает residual
+
+```text
+~2.3e-15
+```
+
+То есть сам **знак anomaly действительно зеркалится**.
+
+Это не вывод Standard Model и не доказательство всех global anomalies. Но это реальный механизм:
+
+```text
+chiral sector R
+ + mirror-conjugate sector Rbar
+ -> perturbative cubic anomaly cancellation
+```
+
+Главная открытая задача теперь не «может ли зеркало менять anomaly sign?» — может.
+
+Главный вопрос:
+
+> почему видимый low-energy мир остаётся chiral, а mirror sector не делает всю теорию просто vector-like и где этот sector физически находится?
+
+---
+
+## Урок 27. Антиматерия — не то же самое, что mirror orientation
+
+Здесь особенно важно не смешать разные симметрии:
+
+```text
+C   charge conjugation: particle <-> antiparticle
+P   parity: spatial mirror / left <-> right
+chi project orientation: sign of oriented geometry Q
+```
+
+Физическая antiparticle имеет положительную excitation energy. Антиматерия в современной QFT не означает макроскопическую отрицательную энергию.
+
+Есть и прямой experimental reality check: ALPHA Collaboration измерила motion antihydrogen в поле Земли. Антиводород ускорялся **к Земле**, согласованно с обычным притяжением; repulsive gravity magnitude `1g` для antihydrogen была исключена.
+
+Reference:
+
+```text
+E. K. Anderson et al. (ALPHA Collaboration)
+Observation of the effect of gravity on the motion of antimatter
+Nature 621, 716-722 (2023)
+DOI: 10.1038/s41586-023-06527-1
+```
+
+Поэтому если в CIMFIG когда-нибудь появится mirror-antigravity sector, его нельзя автоматически назвать обычной антиматерией. Он должен быть **другим квантовым сектором**, отличающимся от standard charge-conjugated matter.
 
 ---
 
@@ -891,9 +1301,15 @@ BITS
  -> quantum metric fluctuations
  -> candidate hyperuniform foam spectrum
  -> possible GW-driven squeezing/resonance
+ -> mirror K: i -> -i
+ -> orientation bit chi=+/-1
+ -> Q -> -Q but metric -> same metric
+ -> mirror-conjugate anomaly sign cancellation
+ -> current antigravity falsifier: f_current = 0
+ -> future parity-odd HDA gate if gravity sign control is attempted
 ```
 
-Самая короткая математическая кульминация всё ещё остаётся удивительно простой:
+Самая короткая HDA-кульминация остаётся:
 
 ```text
 C_cross = O(1)
@@ -924,7 +1340,23 @@ Delta_full
 Jmax = o(epsilon^-2/13)
 ```
 
-то эта иерархия сохраняется и вдоль допустимого joint-limit family.
+то эта иерархия сохраняется вдоль допустимого joint-limit family.
+
+Mirror calculation добавляет ещё одну очень короткую пару формул:
+
+```text
+M X M^-1 = +X
+M Z M^-1 = +Z
+M Y M^-1 = -Y
+```
+
+но
+
+```text
+metric(+chi) = metric(-chi)
+```
+
+То есть **ориентация действительно бинарна, а стандартная гравитационная метрика — mirror-even**.
 
 ---
 
@@ -942,7 +1374,9 @@ Jmax = o(epsilon^-2/13)
 - SU(2) representation decompositions;
 - `4 spin-1/2 qubits -> unique j=2 irrep`;
 - operator-ordering identities;
-- fixed-cutoff composition scaling theorem в заявленном habitat.
+- fixed-cutoff composition scaling theorem в заявленном habitat;
+- mirror algebra `X,Z even; Y,Q odd`;
+- conjugate-representation identity `d(Rbar) = -d(R)`.
 
 ### Tested finite
 
@@ -953,7 +1387,10 @@ Jmax = o(epsilon^-2/13)
 - Peter-Weyl covariance/support;
 - two-node geometry x route HDA regression;
 - graviton-helicity qubit projector gate;
-- Mathieu/Floquet resonance gate.
+- Mathieu/Floquet resonance gate;
+- 256-tetrahedron mirror metric/orientation gate;
+- mirror-state swap and oriented-phase gate;
+- numerical conjugate-anomaly cancellation stress-test.
 
 ### Conditional physical interpretations
 
@@ -962,21 +1399,35 @@ Jmax = o(epsilon^-2/13)
 - отождествление старого `delta g` smoothing exponent с quantum RMS;
 - из него следует кандидатный `P_foam(k) ~ k^1.003414`;
 - существование физического TT infoton mode;
-- ненулевой microscopic coupling `xi` к gravitational waves.
+- ненулевой microscopic coupling `xi` к gravitational waves;
+- возможный `Y_L J5^0` bridge к fermion chirality;
+- возможный будущий parity-odd gravitational response.
 
-Это различие принципиально.
+### Что расчёт уже опровергает внутри текущей архитектуры
 
-**Проект не утверждает, что фундаментальная физика природы уже экспериментально доказана.**
+Текущая mirror-even geometry **не** даёт
+
+```text
+chi -> -chi
+   =>
+g_00 -> -g_00
+```
+
+и потому не выводит antigravity из одной только зеркальности.
+
+Это тоже научный результат: гипотеза получила falsifier и уже сузилась.
+
+**Проект не утверждает, что фундаментальная физика природы экспериментально доказана.**
 
 Корректная формулировка результата:
 
-> **В репозитории построена математически и вычислительно проверяемая кандидатная схема перехода от бинарной дискретной микроструктуры к 3D/4D-like гладкому пределу, SU(2)/Peter-Weyl квантовой геометрии и канонической HDA-гравитационной архитектуре. Дополнительно построен exact finite мост от четырёх microscopic qubits к spin-2 сектору и условная модель квантовой пены и её резонансного squeezing гравитационными волнами. Это кандидатная теория, а не установленный экспериментальный закон природы.**
+> **В репозитории построена математически и вычислительно проверяемая кандидатная схема перехода от бинарной дискретной микроструктуры к 3D/4D-like гладкому пределу, SU(2)/Peter-Weyl квантовой геометрии и канонической HDA-гравитационной архитектуре. Дополнительно построены exact finite мост от четырёх microscopic qubits к spin-2 сектору, условная модель квантовой пены и GW-squeezing, а также mirror/chirality gate, который точно отделяет ориентационный знак от metric sign. Зеркальность даёт естественный chirality/anomaly-pairing mechanism, но в текущем mirror-even sector не создаёт антигравитацию. Это кандидатная теория, а не установленный экспериментальный закон природы.**
 
 ---
 
 # Что ещё действительно остаётся открытым
 
-После последних результатов список стал уже, но он не исчез.
+После последних результатов список стал уже, но не исчез.
 
 Остаются, среди прочего:
 
@@ -984,12 +1435,16 @@ Jmax = o(epsilon^-2/13)
 - вывод Lorentzian quantum history measure и глобальной unitarity;
 - вывод microscopic TT information-mode action и coupling `xi`;
 - прямой quantum two-point function вакуума для проверки или опровержения `P(k) ~ k^1.003414`;
-- matter, chirality и anomaly cancellation;
-- физическая установка абсолютного масштаба и Newton constant;
-- blind predictions с физическими единицами и чувствительностью реальных экспериментов;
+- реалистичная matter sector: gauge group, masses, generations, chirality и Yukawa structure;
+- полная anomaly cancellation, включая global anomalies, не только exact `R/Rbar` cubic pair identity;
+- объяснение, почему mirror sector скрыт/decoupled, если он существует;
+- построение parity-odd или multi-metric gravity operator, если исследуется antigravity;
+- повторная проверка HDA для любого такого нового gravity operator;
+- physical scale и Newton constant;
+- blind predictions в физических единицах;
 - независимая внешняя репликация другой группой/кодом/экспериментом.
 
-Отдельно: произвольная bare-causal nonflag globalization всё ещё может быть неединственной; доказанная выше уникальность относится к minimal 8-vertex flag semantics, используемой в simplicial branch проекта.
+Отдельно: произвольная bare-causal nonflag globalization всё ещё может быть неединственной; доказанная выше уникальность относится к minimal 8-vertex flag semantics.
 
 ---
 
@@ -999,6 +1454,7 @@ Jmax = o(epsilon^-2/13)
 - `theory_gates.json` — machine-readable proof ledger;
 - `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md` — fixed-cutoff HDA composition theorem;
 - `GRAVITON_INFOTON_FOAM_BRIDGE.md` — spin-2/helicity, foam и GW-resonance bridge;
+- `MIRROR_CHIRALITY_GRAVITY.md` — mirror orientation, chirality, anomaly sign и antigravity falsifier;
 - `SPATIAL_QUBIT_GEOMETRY_BRIDGE.md` — exact four-qubit geometry decomposition;
 - `GLOBAL_MANIFOLD_Q2_COMPLETION.md` — q=2 PL globalization;
 - `bcqg_bit_to_gravity_final.py` — executable canonical status aggregator;
@@ -1007,7 +1463,8 @@ Jmax = o(epsilon^-2/13)
 - `scripts/path_normal_hda_gate.py` — route-normal HDA;
 - `scripts/peter_weyl_two_node_euclidean_joint_gate.py` — two-node Peter-Weyl x route regression;
 - `scripts/lorentzian_hit_depth_bound.py` — Lorentzian support wall;
-- `scripts/graviton_infoton_foam_gate.py` — exact j=2 projector + Floquet resonance checks.
+- `scripts/graviton_infoton_foam_gate.py` — exact j=2 projector + Floquet resonance checks;
+- `scripts/mirror_chirality_gravity_gate.py` — mirror/chirality/phase/anomaly finite gate.
 
 Запуск канонического статуса:
 
@@ -1015,10 +1472,18 @@ Jmax = o(epsilon^-2/13)
 python bcqg_bit_to_gravity_final.py --strict
 ```
 
-А новый spin-2 / foam bridge можно воспроизвести отдельно:
+Spin-2 / foam bridge:
 
 ```bash
 python scripts/graviton_infoton_foam_gate.py
+```
+
+Mirror/chirality gate:
+
+```bash
+python scripts/mirror_chirality_gravity_gate.py \
+  --trials 256 \
+  --output verification_results/MIRROR_CHIRALITY_GRAVITY.json
 ```
 
 Если canonical aggregator возвращает
