@@ -7,6 +7,7 @@ on:
   pull_request:
     paths:
       - 'scripts/peter_weyl_lorentzian_logical_projection_gate.py'
+      - 'scripts/peter_weyl_lorentzian_logical_projection_v2_gate.py'
       - 'scripts/peter_weyl_lorentzian_sine_ordered_triple_gate.py'
       - 'scripts/peter_weyl_lorentzian_ordered_triple_gate.py'
       - 'scripts/peter_weyl_covariant_K_composition_gate.py'
@@ -28,10 +29,12 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
       - name: Syntax
-        run: python -m py_compile scripts/peter_weyl_lorentzian_logical_projection_gate.py
+        run: |
+          python -m py_compile scripts/peter_weyl_lorentzian_logical_projection_gate.py
+          python -m py_compile scripts/peter_weyl_lorentzian_logical_projection_v2_gate.py
       - name: Full epsilon-oriented raw Lorentzian logical projection
         run: |
-          python scripts/peter_weyl_lorentzian_logical_projection_gate.py \
+          python scripts/peter_weyl_lorentzian_logical_projection_v2_gate.py \
             --node 0 \
             --output verification_results/PETER_WEYL_LORENTZIAN_LOGICAL_PROJECTION.json
       - name: Upload evidence
