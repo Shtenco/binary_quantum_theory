@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/peter_weyl_logical_anisotropy_gate.py'
+      - 'scripts/logical_route_metric_operator_gate.py'
       - 'scripts/peter_weyl_euclidean_sine_ordering_gate.py'
       - 'scripts/k5_peter_weyl_safe_hda_column.py'
       - 'scripts/peter_weyl_zeroaware_volume_migration_experiment.py'
@@ -13,6 +14,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/peter_weyl_logical_anisotropy_gate.py'
+      - 'scripts/logical_route_metric_operator_gate.py'
       - 'scripts/peter_weyl_euclidean_sine_ordering_gate.py'
       - 'scripts/k5_peter_weyl_safe_hda_column.py'
       - 'scripts/peter_weyl_zeroaware_volume_migration_experiment.py'
@@ -40,7 +42,11 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
       - name: Syntax
-        run: python -m py_compile scripts/peter_weyl_logical_anisotropy_gate.py
+        run: |
+          python -m py_compile scripts/peter_weyl_logical_anisotropy_gate.py
+          python -m py_compile scripts/logical_route_metric_operator_gate.py
+      - name: Logical route flux-metric ordering control
+        run: python scripts/logical_route_metric_operator_gate.py --output verification_results/LOGICAL_ROUTE_METRIC_OPERATOR.json
       - name: Peter-Weyl logical anisotropy return kernel
         run: python scripts/peter_weyl_logical_anisotropy_gate.py --output verification_results/PETER_WEYL_LOGICAL_ANISOTROPY.json
       - name: Upload anisotropy evidence
