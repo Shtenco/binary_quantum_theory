@@ -1,0 +1,57 @@
+name: peter-weyl-lorentzian-24-mitm
+on:
+  push:
+    branches: [research/pw-lorentzian-24-mitm]
+jobs:
+  triple:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        include:
+          - {a: 2, b: 3, c: 4, s: 1}
+          - {a: 2, b: 4, c: 3, s: -1}
+          - {a: 3, b: 2, c: 4, s: -1}
+          - {a: 3, b: 4, c: 2, s: 1}
+          - {a: 4, b: 2, c: 3, s: 1}
+          - {a: 4, b: 3, c: 2, s: -1}
+          - {a: 1, b: 3, c: 4, s: -1}
+          - {a: 1, b: 4, c: 3, s: 1}
+          - {a: 3, b: 1, c: 4, s: 1}
+          - {a: 3, b: 4, c: 1, s: -1}
+          - {a: 4, b: 1, c: 3, s: -1}
+          - {a: 4, b: 3, c: 1, s: 1}
+          - {a: 1, b: 2, c: 4, s: 1}
+          - {a: 1, b: 4, c: 2, s: -1}
+          - {a: 2, b: 1, c: 4, s: -1}
+          - {a: 2, b: 4, c: 1, s: 1}
+          - {a: 4, b: 1, c: 2, s: 1}
+          - {a: 4, b: 2, c: 1, s: -1}
+          - {a: 1, b: 2, c: 3, s: -1}
+          - {a: 1, b: 3, c: 2, s: 1}
+          - {a: 2, b: 1, c: 3, s: 1}
+          - {a: 2, b: 3, c: 1, s: -1}
+          - {a: 3, b: 1, c: 2, s: -1}
+          - {a: 3, b: 2, c: 1, s: 1}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Safe ordered triple
+        run: |
+          python scripts/peter_weyl_lorentzian_ordered_mitm_param_gate.py \
+            --a ${{ matrix.a }} --b ${{ matrix.b }} --c ${{ matrix.c }} \
+            --coefficient ${{ matrix.s }} \
+            --output verification_results/T_${{ matrix.a }}${{ matrix.b }}${{ matrix.c }}.json
+      - name: Upload triple evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-triple-${{ matrix.a }}${{ matrix.b }}${{ matrix.c }}
+          path: verification_results/T_${{ matrix.a }}${{ matrix.b }}${{ matrix.c }}.json
