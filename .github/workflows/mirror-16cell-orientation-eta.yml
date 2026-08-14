@@ -1,0 +1,21 @@
+name: mirror-16cell-orientation-eta
+on:
+  push:
+    branches: [research/mirror-orientation-eta]
+  pull_request:
+    paths:
+      - 'scripts/mirror_16cell_orientation_eta_gate.py'
+      - '.github/workflows/mirror-16cell-orientation-eta.yml'
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Exact facet orientation vs eta
+        run: python scripts/mirror_16cell_orientation_eta_gate.py
