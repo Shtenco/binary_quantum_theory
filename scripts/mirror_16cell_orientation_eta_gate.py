@@ -22,10 +22,15 @@ to bipartition the Q4 dual graph.  Thus the simplicial orientation sign and the
 staggered mirror eta agree exactly, up to the one global convention that flips
 all facet orientations simultaneously.
 
-Consequence: if an epsilon/sign-covariant one-cell logical term is ell*Y_v in a
-locally positively oriented frame, then on the globally labelled 16-cell its
-assembled pattern is ell*eta_v*Y_v, hence N*ell*Sigma.  This is a conditional
-operator consequence; the gate does not assert ell is nonzero.
+Consequently a local epsilon/sign-covariant one-cell term ell*Y_v assembles on
+the globally labelled 16-cell as
+
+    ell sum_v eta_v Y_v = 16 ell Sigma.
+
+For the two exact classical mirror vacua Y_v=chi eta_v, chi=+/-1, the unit-ell
+energies are +/-16 and the splitting is exactly 32|ell|.  On N cells the same
+algebra gives 2N|ell|.  This is a conditional operator consequence; the gate
+does not assert the Lorentzian coefficient ell is nonzero.
 """
 from __future__ import annotations
 
@@ -54,7 +59,6 @@ def run():
         det=int(round(np.linalg.det(facet_matrix(bits))))
         e=eta(bits)
         all_match &= (det==e)
-        # each one-bit flip is a dual Q4 neighbor and must reverse orientation
         neigh=[]
         for a in range(4):
             bb=list(bits); bb[a]^=1; bb=tuple(bb)
@@ -71,21 +75,43 @@ def run():
             'Q4_neighbors':sorted(neigh),
         })
     rows.sort(key=lambda r:r['label'])
-    eta_vec=[r['eta'] for r in rows]
-    orient_vec=[r['facet_orientation_det_sign'] for r in rows]
-    passed=(len(rows)==16 and all_match and dual_ok and eta_vec==orient_vec)
+    eta_vec=np.array([r['eta'] for r in rows],dtype=int)
+    orient_vec=np.array([r['facet_orientation_det_sign'] for r in rows],dtype=int)
+
+    vacua={}
+    for chi in (+1,-1):
+        Y=chi*eta_vec
+        Sigma=float(np.mean(eta_vec*Y))
+        unit_ell_energy=float(np.sum(orient_vec*Y))
+        vacua[str(chi)]={
+            'Sigma':Sigma,
+            'Y_vector':Y.tolist(),
+            'unit_ell_orientation_field_energy':unit_ell_energy,
+        }
+    unit_split=abs(vacua['1']['unit_ell_orientation_field_energy']-vacua['-1']['unit_ell_orientation_field_energy'])
+
+    passed=(
+        len(rows)==16 and all_match and dual_ok
+        and np.array_equal(eta_vec,orient_vec)
+        and vacua['1']['Sigma']==1.0 and vacua['-1']['Sigma']==-1.0
+        and abs(unit_split-32.0)<1e-12
+    )
     return {
         'status':'exact 16-cell orientation-sign / staggered-eta gate',
         'passed':bool(passed),
         'facet_count':len(rows),
-        'eta_vector':eta_vec,
-        'orientation_sign_vector':orient_vec,
+        'eta_vector':eta_vec.tolist(),
+        'orientation_sign_vector':orient_vec.tolist(),
         'all_orientation_signs_equal_eta':bool(all_match),
         'every_Q4_edge_flips_both_signs':bool(dual_ok),
         'identity':'sgn det[v0 v1 v2 v3]=(-1)^popcount(b)=eta_b',
+        'mirror_vacua_under_unit_orientation_field':vacua,
+        'unit_ell_mirror_pair_energy_splitting':float(unit_split),
+        'general_N_splitting':'Delta E = 2 N |ell| for Y_v=chi eta_v under ell sum_v eta_v Y_v',
         'global_sign_note':'Reversing the global orientation multiplies every facet sign and every assembled epsilon coefficient by the same overall -1; the staggered pattern is unchanged up to that global convention.',
-        'conditional_lorentzian_consequence':'If a nonzero local epsilon/sign-covariant logical amplitude has coefficient ell_L times Y in the positively oriented local frame, its 16-cell assembly is ell_L sum_v eta_v Y_v = 16 ell_L Sigma. It is then a longitudinal staggered field for the mirror order, not a mediator mass term.',
-        'scope':'Exact finite simplicial orientation statement. It does not prove ell_L is nonzero, does not fix the physical Lorentzian prefactor, and does not establish a mirror force.',
+        'conditional_lorentzian_consequence':'If a nonzero local epsilon/sign-covariant logical amplitude has coefficient ell_L times Y in the positively oriented local frame, its 16-cell assembly is ell_L sum_v eta_v Y_v = 16 ell_L Sigma. On a fixed global orientation it is a longitudinal staggered field and splits the two ideal mirror vacua by 32|ell_L|, rather than acting as a mediator mass term.',
+        'survival_condition':'For an exact spontaneous two-vacuum mirror branch on a fixed global orientation, the renormalized one-cell coefficient must vanish in the symmetry-restored/full operator limit (or an additional mechanism must identify global orientation reversal as gauge-equivalent).',
+        'scope':'Exact finite simplicial orientation and classical-vacuum response statement. It does not prove ell_L is nonzero, does not fix the physical Lorentzian prefactor, and does not establish a mirror force.',
         'facets':rows,
     }
 
