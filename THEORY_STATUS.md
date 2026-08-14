@@ -30,10 +30,56 @@ The exact algebraic expansion is recorded in `FINAL_CORE_ARCHITECTURE_CERTIFICAT
 
 **Status:** the previous fixed-cutoff Lorentzian integration bottleneck is closed. A direct 11.3M-state `[H_L,H_L]` matrix enumeration is optional regression evidence, not a logical prerequisite.
 
+## Admissible simultaneous cutoff path
+
+Using conservative fixed-valence norm bounds,
+
+`||V||=O(J^(3/2))`, `||H_E||=O(J^(3/2))`, `||K||=O(J^3)`, `||H_L||=O(J^(15/2))`, while the nondegenerate route target scales as `D=O(J^2/epsilon)`.
+
+Hence the normalized extra channels obey the conservative estimates
+
+`C_cross/D = O(epsilon*J^(13/2))`,
+
+`C_GG/D = O(epsilon^2*J^13)`.
+
+For `Jmax(epsilon)=epsilon^-alpha`, both vanish whenever `0<alpha<2/13`. Thus an admissible simultaneous family exists, for example `Jmax=epsilon^-1/8`, but this is not yet a uniform theorem for every possible joint path.
+
+## Spin-2, foam and GW extension
+
+The exact four-qubit decomposition contains one `j=2` irrep. The extremal `m=+/-2` states form a two-state code inside that spin-2 sector and pass the finite projector gate. This supports the candidate identification of a massless spin-2 polarization space with one logical helicity qubit.
+
+If the frozen metric smoothing exponent is additionally interpreted as a quantum RMS exponent, the low-k conditional prediction is `P_foam(k)~k^1.003414`. If a physical TT information mode exists and has nonzero quadratic metric coupling, the candidate parametric resonance is centered near `Omega_GW=2*omega_I`. These are conditional physical extensions, not experimentally established facts.
+
+## Mirror/chirality result
+
+The exact logical-qubit mirror operation is complex conjugation in the real singlet basis:
+
+`X_L -> X_L`, `Z_L -> Z_L`, `Y_L -> -Y_L`.
+
+Because the oriented volume coordinate is `Q=(sqrt(3)/4)Y_L`, mirror conjugation swaps the two orientation states `Q=+/-sqrt(3)/4` while preserving the two intrinsic shape observables and absolute-volume information. `scripts/mirror_chirality_gravity_gate.py` verifies this and an independent reflected-tetrahedron control.
+
+For `A' = R A` with `R^T R=I` and `det R=-1`,
+
+`det(A')=-det(A)` but `(A')^T A'=A^T A`.
+
+Thus orientation reverses while the metric, absolute volume and face-flux Gram data remain unchanged. In the currently tested mirror-even metric/HDA architecture,
+
+`g00(+chi)=g00(-chi)`.
+
+Therefore **chirality/orientation alone does not produce antigravity in the present theory**.
+
+A phenomenological orientation-odd acceleration `a_chi=a_even+chi*a_odd`, calibrated by `a_+=g_N`, gives `a_-/g_N=1-2f` with `f=a_odd/g_N`. Complete screening requires `f=1/2`, repulsion requires `f>1/2`, and equal-magnitude opposite acceleration requires `f=1`. The current mirror-even gate corresponds to `f=0`.
+
+The same mirror/conjugation structure gives an exact perturbative cubic gauge-anomaly sign identity `d(Rbar)=-d(R)`, so a perfect `R + Rbar` mirror pair cancels that anomaly coefficient. This does not yet derive a realistic chiral matter spectrum or all global anomalies.
+
+Ordinary antimatter is not identified with the project orientation label `chi`. Charge conjugation, parity and the project-local orientation bit are distinct operations. The ALPHA-g antihydrogen result is consistent with attractive Earth gravity and rules out repulsive `1g` gravity for ordinary antihydrogen.
+
 ## Retained GR controls
 
 The repository retains the DeWitt inertia result `(5+,1-,3 0)`, the declared ADM/HDA uniqueness result `c_DW=1/2` and `AB=1`, the corresponding `c_T=1` statement, two local physical metric configuration modes in D=3, BF/Ooguri negative controls, and the independent Regge IR universality branch.
 
 ## Beyond the certificate
 
-No core integration arrow above remains `OPEN` at fixed safe cutoff. Separate questions are a uniform simultaneous `Jmax->infinity`, `epsilon->0` limit; uniqueness of the global q=2 gluing from the bare causal rewrite if the PL completion is not frozen; Lorentzian quantum measure/unitarity; matter/chirality/anomalies; scale setting; blind empirical predictions; and independent external replication.
+No core integration arrow above remains `OPEN` at fixed safe cutoff. Separate questions include a fully uniform simultaneous `Jmax->infinity`, `epsilon->0` theorem; Lorentzian quantum measure/global unitarity; a microscopic TT information-mode action and coupling; realistic matter/gauge content, generations, chirality and all local/global anomalies; an explanation of any hidden mirror sector; physical scale/Newton constant; blind empirical predictions; and independent external replication.
+
+If antigravity is pursued, the next admissible object is a parity-odd or multi-metric gravitational operator with nonzero mirror response **and** a stable first-class modified HDA. Adding a sign-changing term without re-closing the constraint algebra does not count as a viable gravity theory.
