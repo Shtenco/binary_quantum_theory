@@ -10,6 +10,7 @@ on:
       - 'MIRROR_FORCE_NORMALIZATION.md'
       - 'MIRROR_MATTER_MATRIX_ELEMENT.md'
       - 'MIRROR_SIGMA_RANGE.md'
+      - 'MIRROR_MASTER_CRITERION.md'
       - 'scripts/mirror_*.py'
       - 'theory_gates.json'
       - '.github/workflows/mirror-regression.yml'
@@ -22,6 +23,7 @@ on:
       - 'MIRROR_FORCE_NORMALIZATION.md'
       - 'MIRROR_MATTER_MATRIX_ELEMENT.md'
       - 'MIRROR_SIGMA_RANGE.md'
+      - 'MIRROR_MASTER_CRITERION.md'
       - 'scripts/mirror_*.py'
       - 'theory_gates.json'
       - '.github/workflows/mirror-regression.yml'
@@ -57,7 +59,8 @@ jobs:
             scripts/mirror_force_normalization_gate.py \
             scripts/mirror_hodge_stiffness_gate.py \
             scripts/mirror_matter_matrix_element_gate.py \
-            scripts/mirror_sigma_range_gate.py
+            scripts/mirror_sigma_range_gate.py \
+            scripts/mirror_master_criterion_gate.py
           python scripts/verify_theory_gates.py
       - name: Mirror chirality and metric falsifier
         run: python scripts/mirror_chirality_gravity_gate.py --output verification_results/MIRROR_CHIRALITY_GRAVITY.json
@@ -73,8 +76,10 @@ jobs:
         run: python scripts/mirror_hodge_stiffness_gate.py --output verification_results/MIRROR_HODGE_STIFFNESS.json
       - name: Matter matrix element and axial static-source falsifier
         run: python scripts/mirror_matter_matrix_element_gate.py --output verification_results/MIRROR_MATTER_MATRIX_ELEMENT.json
-      - name: Finite sigma gap and range falsifier
+      - name: Symmetry-resolved sigma gap and temporal response
         run: python scripts/mirror_sigma_range_gate.py --output verification_results/MIRROR_SIGMA_RANGE.json
+      - name: Dimensionless mirror-force master criterion
+        run: python scripts/mirror_master_criterion_gate.py --output verification_results/MIRROR_MASTER_CRITERION.json
       - name: Upload mirror evidence
         if: always()
         uses: actions/upload-artifact@v4
