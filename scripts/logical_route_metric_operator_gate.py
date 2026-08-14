@@ -23,10 +23,12 @@ B. operator-first route normal:
    followed by angular averaging over route direction theta.
 
 The operator-first branch is a kinematic ordering control, not yet the frozen
-route Hamiltonian ordering. Both branches test whether the flux metric is
-mirror-even (no logical Y) and whether nonlinear square-root averaging can
-retain shape-plane X/Z anisotropy even though the linear angular average of
-Q(p) is proportional to identity.
+route Hamiltonian ordering. The result is intentionally asymmetric between the
+two orderings: the current expectation-first isotropic angular average restores
+K=0/K=2 equality, whereas the operator-first square-root average retains a
+finite X/Z shape-plane component. This makes operator ordering a genuine open
+quantized-route question rather than evidence that the frozen route gate is
+already anisotropic.
 """
 from __future__ import annotations
 
@@ -109,8 +111,6 @@ def run(n_theta=8192):
     S00 = logical_operator(0, 0)
     S22 = logical_operator(2, 2)
     c02 = pauli_coeff(S02)
-    c00 = pauli_coeff(S00)
-    c22 = pauli_coeff(S22)
 
     theta = 2.0 * np.pi * np.arange(n_theta) / n_theta
     linear_avg = np.zeros((2, 2), dtype=complex)
@@ -154,6 +154,7 @@ def run(n_theta=8192):
     )
     nonlinear_shape_norm = math.sqrt(abs(csqrt["X"]) ** 2 + abs(csqrt["Z"]) ** 2)
     linear_shape_norm = math.sqrt(abs(clinear["X"]) ** 2 + abs(clinear["Z"]) ** 2)
+    expectation_difference = float(abs(expectation_averages[0] - expectation_averages[1]))
 
     passed = (
         exact_formula_error < 1e-12
@@ -161,8 +162,8 @@ def run(n_theta=8192):
         and min_q_eig > -1e-10
         and mirror_y_norm < 1e-12
         and linear_shape_norm < 1e-12
+        and expectation_difference < 1e-12
         and nonlinear_shape_norm > 1e-4
-        and abs(expectation_averages[0] - expectation_averages[1]) > 1e-3
     )
 
     return {
@@ -178,19 +179,22 @@ def run(n_theta=8192):
         "linear_angular_average_Qp_pauli": {k: cjson(v) for k, v in clinear.items()},
         "operator_first_angular_average_sqrtQp_pauli": {k: cjson(v) for k, v in csqrt.items()},
         "expectation_first_average_omega_K0_K2": expectation_averages.tolist(),
-        "expectation_first_branch_difference": float(abs(expectation_averages[0] - expectation_averages[1])),
+        "expectation_first_branch_difference": expectation_difference,
         "linear_shape_anisotropy_norm": float(linear_shape_norm),
         "nonlinear_operator_sqrt_shape_anisotropy_norm": float(nonlinear_shape_norm),
         "mirror_Y_norm": float(mirror_y_norm),
         "interpretation": (
-            "The flux metric is exactly mirror-even and contains shape-plane X/Z but no orientation Y. Isotropic "
-            "angular averaging makes the linear contraction scalar, but the nonlinear square-root operation and "
-            "the current expectation-first ordering both retain a finite distinction between logical shape states."
+            "The flux metric is exactly mirror-even: its logical content lies in I/X/Z and contains no orientation Y. "
+            "Isotropic angular averaging makes the linear Q(p) contraction scalar. In the current expectation-first "
+            "ordering the angularly averaged route normal is also exactly equal on the K=0 and K=2 basis states in "
+            "this control. By contrast, the operator-first spectral square root retains a finite X/Z component. "
+            "Therefore route pseudospin anisotropy is ordering-dependent and is not established by the frozen "
+            "expectation-first route gate alone."
         ),
         "scope": (
             "The operator-first square root is an ordering diagnostic, not yet the frozen route constraint. The "
-            "current route gates use diagonal geometry expectations. A full operator-valued route/HDA construction "
-            "must choose and test an ordering before this nonlinear anisotropy can be promoted to a dynamical claim."
+            "current route gates use geometry expectations. A full operator-valued route/HDA construction must "
+            "choose and test an ordering before the nonlinear X/Z component can be promoted to a dynamical claim."
         ),
     }
 
