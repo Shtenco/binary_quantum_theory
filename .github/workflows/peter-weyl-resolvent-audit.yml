@@ -1,0 +1,42 @@
+name: peter-weyl-resolvent-audit
+
+on:
+  push:
+    branches:
+      - research/mirror-anisotropy-audit-v2
+  pull_request:
+    paths:
+      - 'scripts/peter_weyl_anisotropy_resolvent_audit_gate.py'
+      - 'scripts/peter_weyl_anisotropy_resolvent_audit_fast_gate.py'
+      - 'scripts/peter_weyl_logical_anisotropy_gate.py'
+      - 'scripts/k5_peter_weyl_safe_hda_column.py'
+      - '.github/workflows/peter-weyl-resolvent-audit.yml'
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Syntax
+        run: |
+          python -m py_compile scripts/peter_weyl_anisotropy_resolvent_audit_gate.py
+          python -m py_compile scripts/peter_weyl_anisotropy_resolvent_audit_fast_gate.py
+      - name: Audited direct-vs-state decomposition and geometry fingerprint
+        run: |
+          python scripts/peter_weyl_anisotropy_resolvent_audit_fast_gate.py \
+            --output verification_results/PETER_WEYL_ANISOTROPY_RESOLVENT_AUDIT.json
+      - name: Upload audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: peter-weyl-resolvent-audit-evidence
+          path: verification_results/PETER_WEYL_ANISOTROPY_RESOLVENT_AUDIT.json
