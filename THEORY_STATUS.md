@@ -72,7 +72,7 @@ A phenomenological orientation-odd acceleration `a_chi=a_even+chi*a_odd`, calibr
 
 The same mirror/conjugation structure gives an exact perturbative cubic gauge-anomaly sign identity `d(Rbar)=-d(R)`, so a perfect `R + Rbar` mirror pair cancels that anomaly coefficient. This does not yet derive a realistic chiral matter spectrum or all global anomalies.
 
-Ordinary antimatter is not identified with the project orientation label `chi`. Charge conjugation, parity and the project-local orientation bit are distinct operations. The ALPHA-g antihydrogen result is consistent with attractive Earth gravity and rules out repulsive `1g` gravity for ordinary antihydrogen.
+Ordinary antimatter is not identified with the project orientation label `chi`. Charge conjugation, parity and the project-local orientation bit are distinct operations.
 
 ## Microscopic 16-cell mirror order
 
@@ -92,61 +92,95 @@ The geometric gluing preference `Y_v Y_w=-1` across a shared face then becomes `
 
 The two exact gluing vacua have `Sigma=+1` and `Sigma=-1` and are mirror partners. A single local orientation defect costs exactly `8J`; a half-hypercube mirror domain wall frustrates eight bonds and costs exactly `16J`.
 
-`scripts/mirror_order_16cell_gate.py` diagonalizes the full `2^16=65536` staggered transverse-field Hilbert space. At `h/J=0.2` it finds
-
-`<Sigma^2>=0.997653947371...`,
-
-`<|Sigma|>=0.998747825258...`,
-
-an unresolved-at-machine-scale mirror-doublet splitting below `1e-12 J`, and a gap to the next state of `7.97008787696 J`.
+`scripts/mirror_order_16cell_gate.py` diagonalizes the full `2^16=65536` staggered transverse-field Hilbert space. At `h/J=0.2` it finds `<Sigma^2>=0.997653947371...`, `<|Sigma|>=0.998747825258...`, an unresolved-at-machine-scale mirror-doublet splitting below `1e-12 J`, and a gap to the next state of `7.97008787696 J`.
 
 As `h/J` is increased to 4, `<Sigma^2>` falls to about `0.146274`, providing a finite ordered-to-disordered control.
 
-This is the first finite microscopic derivation of the coarse mirror order parameter: `Y_L/Q -> staggered Sigma -> sigma(x)`. The physical normalization, continuum kinetic coefficient and matter coupling are not fixed by this gate.
+The same staggered two-colouring persists through the checked global barycentric PL refinements with 16, 384 and 9216 tetrahedra. Thus `Y_L/Q -> staggered Sigma -> sigma(x)` has a finite microscopic candidate along the actual recursive PL branch.
 
 ## Healthy orientation-dependent force construction
 
-A direct metric sign flip was tested conceptually and rejected as the minimal healthy mechanism. If one simply rescales the gravitational Hamiltonian,
+A direct metric sign flip was rejected as the minimal healthy mechanism. `H_chi=s_chi H_GR` preserves the same normalized HDA only for `s_chi^2=1`; the `s=-1` case is lapse/time-orientation reversal, not static antigravity. A negative Einstein-Hilbert coefficient would instead flip the graviton kinetic sign and create a ghost relative to positive-energy matter.
 
-`H_chi[N]=s_chi H_GR[N]`,
+The healthy candidate keeps tensor gravity positive-energy and adds a canonical mirror-odd order/mediator sector. The continuum matter HDA principal identity passes numerically at relative defect `7.146414566848946e-15`.
 
-then the HDA bracket scales as `s_chi^2 D`. Preserving the same HDA normalization requires `s_chi^2=1`. The `s=-1` branch is equivalent to `N->-N`, i.e. reversal of normal/time orientation, not reversal of static gravity.
+For opposite orientation charges, the Yukawa force exceeds tensor attraction when
 
-Likewise, making the Einstein-Hilbert coefficient negative would make an effective Newton coupling negative only by also flipping the graviton kinetic sign, producing a ghost relative to positive-energy matter.
+`alpha > alpha_crit(x)=exp(x)/(1+x)`, with `x=m_sigma r`.
 
-The first healthy candidate therefore keeps the tensor-gravity kinetic term positive and introduces a mirror-odd order/mediator sector. A conservative continuum realization uses `sigma` plus a second pseudoscalar `phi`, positive canonical kinetic terms and the mirror-even bounded potential
+Canonical normalization gives
 
-`U=mu^2 phi^2/2 + lambda phi^4/4 + g phi sigma + kappa(sigma^2-v^2)^2/4`.
+`alpha=beta_m^2/(4*pi*G*Z_sigma)`.
 
-Mirror acts as `(phi,sigma)->(-phi,-sigma)`.
+The existing Hodge geometry fixes the spatial stiffness matching
 
-The canonical matter-sector HDA principal identity is
+`J_f=Z_sigma A_f/d_f`, hence `Z_sigma=J_f d_f/A_f`.
 
-`{H_m[N],H_m[M]} = D_m[N dM - M dN]`.
+For a regular tetrahedral seed,
 
-`scripts/orientation_odd_hda_gate.py` checks it on a periodic spectral grid with `L=512` and obtains
+`Z_sigma=(2sqrt(2)/3)J/ell`
 
-`abs error = 5.204170427930421e-18`,
+and therefore
 
-`relative error = 7.146414566848946e-15`.
+`alpha=3 beta_m^2 ell/(8sqrt(2)pi G J)`
 
-The local potential terms cancel from the antisymmetric bracket exactly at continuum level.
+in natural units.
 
-For a coarse orientation charge `Q_chi=eta*m*chi`, mediator exchange gives the candidate Yukawa potential
+Pure geometry does not automatically source this force: the minimal orientation defect has the same energy in the two mirror vacua, hence `beta_geometry=0`.
 
-`U12=-G_T m1 m2/r - alpha G_T m1 m2 chi1 chi2 exp(-m_phi r)/r`.
+## Matter matrix-element result: beta_m is now operationally defined
 
-Equal `chi` gives extra attraction. Opposite `chi` gives repulsion. With `x=m_phi r`, the orientation-force magnitude relative to bare tensor gravity is
+The earlier parity-even chirality bridge `sigma J5^0` remains a valid spin/chirality-sensitive candidate, but `scripts/mirror_matter_matrix_element_gate.py` gives a decisive static-source result for free massive Dirac matter:
 
-`alpha(1+x)exp(-x)`.
+`J5^0/J^0 = h |p|/E`.
 
-Thus the exact screening threshold is
+Therefore the axial density vanishes at rest, and its unpolarized average vanishes at every momentum. The diagonal on-shell pseudoscalar bilinear also vanishes. Thus the old axial channel **cannot by itself provide a universal static mirror charge for cold unpolarized matter**.
 
-`alpha_crit(x)=exp(x)/(1+x)`.
+The missing coefficient is instead defined directly by the rest-energy response:
 
-In the long-range limit `x<<1`, `alpha=1` gives complete screening and `alpha>1` gives cross-sector repulsion. At the finite demonstration point `alpha=2`, `x=0.1`, the net opposite-chi outward force is `0.990642319679...` times the bare tensor-gravity force after cancellation.
+`beta_m=(1/(chi m)) <dH_m/dsigma>_rest`.
 
-This is a **healthy antigravity-like fifth-force candidate**, not yet a mirror sign flip of `g00`. The microscopic mirror-order gate now removes the need to postulate `sigma` from nothing. A minimal next branch can test whether soft fluctuations of the derived `Sigma/sigma` order parameter itself can play the mediator role, eliminating the auxiliary `phi` field.
+This gives an immediate falsifier: if every physical microscopic matter state has zero mirror-odd rest-energy derivative, then `beta_m=0`, `alpha=0`, and the static mirror-force branch fails.
+
+A minimal positive mirror-doublet control introduces `q=+/-1`, with `(sigma,q)->(-sigma,-q)`, and demands constant logarithmic response
+
+`d ln m_q/dsigma=q beta`.
+
+The unique positive solution at fixed normalization is
+
+`m_q(sigma)=m_* exp(q beta sigma)`.
+
+For aligned mirror partners `(sigma,q)=(chi v,chi)`, both branches have the same positive physical mass but opposite rest source `dE/dsigma=chi beta m`, so within this finite candidate `beta_m=beta`.
+
+The same coefficient can be extracted from a mirror-resolved mass spectrum as
+
+`beta=[ln m_+(sigma)-ln m_-(sigma)]/(2 sigma)`.
+
+This derives the **form and extraction rule** for `beta_m`; it does not yet derive a numerical value from a realistic microscopic matter Hamiltonian.
+
+## Sigma range result: long range is not automatic
+
+The mirror order is `Z2`, so two ordered vacua do not imply a Goldstone mediator.
+
+`scripts/mirror_sigma_range_gate.py` explicitly excludes the tiny finite-size tunnelling splitting and tracks
+
+`Delta_sigma^(16)=E2-E0`.
+
+At `h/J=0.2`,
+
+`Delta_sigma^(16)/J=7.9700878769645...`.
+
+The scanned finite-Q4 crossover softens the gap to about `3.39685259213 J` near `h/J=2.625`, but does not close it on the finite block.
+
+Therefore the seed mirror order is not automatically long ranged. A physical mediator mass/range requires a refined collective-mode identification and temporal normalization. If a relativistic low-energy sigma mode exists,
+
+`lambda_sigma=hbar c_sigma/Delta_sigma`.
+
+Macroscopic mirror repulsion therefore requires an independent range condition
+
+`m_sigma r <= O(1)`.
+
+A mode that remains gapped at order microscopic `J` and has only microscopic range kills macroscopic repulsion even if `beta_m` is nonzero.
 
 ## Retained GR controls
 
@@ -156,12 +190,18 @@ The repository retains the DeWitt inertia result `(5+,1-,3 0)`, the declared ADM
 
 No core integration arrow above remains `OPEN` at fixed safe cutoff. Separate questions include a fully uniform simultaneous `Jmax->infinity`, `epsilon->0` theorem; Lorentzian quantum measure/global unitarity; a microscopic TT information-mode action and coupling; realistic matter/gauge content, generations, chirality and all local/global anomalies; an explanation of any hidden mirror sector; physical scale/Newton constant; blind empirical predictions; and independent external replication.
 
-For the mirror-force branch, the open chain is now narrower:
+For the mirror-force branch, the remaining chain is now sharply reduced to
 
-`Y_L/Q -> staggered Sigma` is finite-tested,
+`construct microscopic H_m(sigma)`
 
-while
+`-> compute beta_m=(chi m)^-1 <dH_m/dsigma>_rest`
 
-`Sigma -> continuum normalization -> matter charge -> alpha -> full Peter-Weyl x route x mirror HDA`
+`-> derive the refined/temporal sigma dispersion and m_sigma`
 
-remains to be derived. A viable cross-sector repulsion requires `alpha>alpha_crit(m_phi r)` in the desired range while keeping the Hamiltonian bounded and the enlarged constraint algebra first class.
+`-> combine with Hodge Z_sigma to predict alpha`
+
+`-> require alpha>exp(m_sigma r)/(1+m_sigma r)`
+
+`-> close the full Peter-Weyl x route x mirror quantum HDA`.
+
+A viable macroscopic cross-sector repulsion requires all of these conditions simultaneously. The theory does not currently claim that they are satisfied in nature.
