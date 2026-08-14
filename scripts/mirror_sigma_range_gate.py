@@ -79,9 +79,12 @@ def parity_operator(h, parity):
     return LinearOperator((PARITY_DIM, PARITY_DIM), matvec=mv, dtype=float)
 
 
-def spectral_row(h, odd_levels=8, weight_tol=1e-10):
+def spectral_row(h, odd_levels=16, weight_tol=1e-10):
     # The ground state is even for h>0. The lowest odd state is the finite-size
     # tunnelling partner. Additional odd states are the sector seen by Sigma.
+    # k=16 is deliberately used: at the deep ordered control it captures
+    # >99.9998% of the non-tunnelling Sigma spectral weight, while k=8 captures
+    # only about 99.782% and is insufficient for the preregistered >99.9% gate.
     even_vals, even_vecs = eigsh(
         parity_operator(h, +1), k=1, which="SA", tol=1e-10, maxiter=3500
     )
@@ -129,6 +132,7 @@ def spectral_row(h, odd_levels=8, weight_tol=1e-10):
 
     return {
         "h_over_J": float(h / J),
+        "odd_levels_computed": int(odd_levels),
         "E0_even_over_J": E0 / J,
         "tunnelling_gap_over_J": tunnelling_gap / J,
         "tunnelling_Sigma_weight": tunnelling_weight,
