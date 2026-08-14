@@ -1,0 +1,39 @@
+name: physicalization-higher-shell
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: physicalization-higher-shell-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lambda32:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Actual 32D higher-shell Peter-Weyl Lambda
+        run: |
+          python scripts/peter_weyl_higher_shell_lambda_gate.py \
+            --output verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json
+      - name: Upload higher-shell evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: peter-weyl-higher-shell-lambda
+          path: verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json
+          if-no-files-found: warn
