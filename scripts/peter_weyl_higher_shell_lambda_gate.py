@@ -40,12 +40,13 @@ import peter_weyl_euclidean_sine_ordering_gate as SINE
 
 
 TOL = 1e-11
+JMAX2_SECOND_HIT_SAFE = 5  # Jmax=5/2, required by the proven HH reachability wall.
 
 
 def apply_H_state(state, v=0, w=1):
     out = {}
-    AN.sparse_add(out, SINE.safe_H_sine(state, v, AN.JMAX2))
-    AN.sparse_add(out, SINE.safe_H_sine(state, w, AN.JMAX2))
+    AN.sparse_add(out, SINE.safe_H_sine(state, v, JMAX2_SECOND_HIT_SAFE))
+    AN.sparse_add(out, SINE.safe_H_sine(state, w, JMAX2_SECOND_HIT_SAFE))
     return out
 
 
@@ -79,8 +80,6 @@ def pair_partial_trace(K32):
 
 
 def full_pauli_weight_summary(M):
-    # Basis ordering is env-major then pair-minor = (q2,q3,q4,q0,q1).
-    I = AN.PAULI["I"]
     labels = ("I", "X", "Y", "Z")
     weight_norm2 = {w: 0.0 for w in range(6)}
     largest = []
@@ -137,7 +136,7 @@ def run():
 
     K = gram(first)
     H4 = gram(second)
-    M = (H4 - K @ K)
+    M = H4 - K @ K
     M = (M + M.conj().T) / 2
 
     ek, Uk = np.linalg.eigh(K)
@@ -155,7 +154,6 @@ def run():
     pair = pair_partial_trace(Lam)
     pair_analysis = AN.analyze_kernel(pair)
     coeff, _ = AN.pauli_decompose(pair)
-    # AN.analyze_kernel already rotates the B pseudospin by diag(-,+,-).
     Jrot = pair_analysis["heisenberg_frame"]["coupling_tensor_XYZ"]
     Jrot_real = np.array([[complex(*z).real for z in row] for row in Jrot])
     j_shape = float(0.5 * (Jrot_real[0, 0] + Jrot_real[2, 2]))
@@ -169,6 +167,7 @@ def run():
         first_proj_max < 1e-12
         and rank == 32
         and h4_error < 1e-8
+        and second_max_spin <= JMAX2_SECOND_HIT_SAFE / 2 + 1e-12
         and float(np.min(em)) > -positivity_tol
         and float(np.min(el)) > -1e-7
         and pair_analysis["hermiticity_error"] < 1e-9
@@ -186,7 +185,8 @@ def run():
             "second_support_min": int(min(second_support)),
             "second_support_max": int(max(second_support)),
             "second_max_spin": second_max_spin,
-            "Jmax_used": AN.JMAX2 / 2,
+            "Jmax_used": JMAX2_SECOND_HIT_SAFE / 2,
+            "regulator_note": "Jmax=5/2 is the proven safe HH wall for all-j=1/2 input.",
         },
         "K": {
             "rank": rank,
@@ -226,7 +226,7 @@ def run():
             "the Lorentzian/route sectors and recursive spatial RG are included."
         ),
         "scientific_scope": (
-            "Finite Euclidean H_E0+H_E1 Peter-Weyl calculation at the declared safe second-hit cutoff. "
+            "Finite Euclidean H_E0+H_E1 Peter-Weyl calculation at regulator-safe Jmax=5/2. "
             "No arbitrary energy denominator, mirror-force fit or external data is used."
         ),
     }
