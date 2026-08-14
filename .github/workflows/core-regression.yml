@@ -53,6 +53,8 @@ jobs:
         run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json
       - name: Mirror chirality and antigravity falsifier
         run: python scripts/mirror_chirality_gravity_gate.py --output verification_results/MIRROR_CHIRALITY_GRAVITY.json
+      - name: Microscopic 16-cell mirror order
+        run: python scripts/mirror_order_16cell_gate.py --output verification_results/MIRROR_ORDER_16CELL.json
       - name: Orientation-odd HDA and healthy mirror force
         run: python scripts/orientation_odd_hda_gate.py --output verification_results/ORIENTATION_ODD_HDA.json
       - name: Canonical final architecture status
