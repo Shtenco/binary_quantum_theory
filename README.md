@@ -31,6 +31,7 @@
  -> HDA
  -> вакуумные флуктуации и квантовая пена
  -> зеркальная ориентация / chirality
+ -> 16-cell mirror order
  -> здоровый mirror-force candidate
 ```
 
@@ -1372,7 +1373,7 @@ chi = sign(Q)
 Q ~ Y_L.
 ```
 
-На coarse scale введём pseudoscalar order parameter
+На coarse scale используем pseudoscalar order parameter
 
 ```text
 sigma ~ +v  -> chi=+1
@@ -1600,38 +1601,226 @@ antigravity-like cross-sector repulsion.
 
 Это даже сильнее с точки зрения устойчивости: spin-2 sector остаётся positive-energy, а repulsion несёт отдельный canonical mediator.
 
-Теперь bottleneck стал очень конкретным:
+Но теперь возникает последний неудобный вопрос:
+
+> откуда в микроскопической теории вообще берётся поле `sigma`? Не вставили ли мы его руками?
+
+Оказалось, что minimal 16-cell даёт на этот вопрос очень конкретный ответ.
+
+---
+
+## Урок 33. Как сам 16-cell создаёт зеркальный order parameter sigma
+
+У 16-cell есть четыре antipodal пары вершин. Каждый из его 16 тетраэдров выбирает по одной вершине из каждой пары.
+
+Поэтому каждый тетраэдр естественно кодируется **четырьмя битами**:
 
 ```text
-microscopic Y_L/Q
- -> coarse sigma
- -> orientation charge Q_chi
- -> mediator phi
- -> derive alpha
- -> embed into Peter-Weyl x route HDA
+b = b1 b2 b3 b4
 ```
 
-Главное число, которое теория должна вывести **сама**, а не получить fitting-ом:
+и всего таких клеток ровно
 
 ```text
-alpha.
+2^4 = 16.
 ```
 
-Если microscopic derivation даст
+Два тетраэдра имеют общую треугольную грань тогда и только тогда, когда их строки отличаются ровно одним битом.
+
+Значит dual graph этих 16 клеток — не произвольный граф, а точно
 
 ```text
-alpha <= alpha_crit
+Q4 = 4D hypercube
 ```
 
-в нужном range, mirror antigravity не возникает.
-
-Если даст
+с
 
 ```text
-alpha > alpha_crit
+16 vertices
+32 edges
+degree 4.
 ```
 
-при bounded Hamiltonian и closed enlarged quantum HDA, тогда появится настоящий стабильный механизм mirror repulsion.
+Это снова неожиданная встреча бинарности и геометрии.
+
+### Почему локальные ориентации чередуются, но глобальный mirror bit всё равно существует
+
+Правильная склейка соседних тетраэдров требует противоположных outward orientations. В logical geometry-qubit это соответствует
+
+```text
+Y_v * Y_w = -1
+```
+
+на каждом dual edge.
+
+`Q4` — bipartite graph. Определим
+
+```text
+eta_v = (-1)^popcount(v).
+```
+
+На каждом ребре
+
+```text
+eta_v * eta_w = -1.
+```
+
+Теперь введём staggered variable
+
+```text
+sigma_v = eta_v * Y_v.
+```
+
+Тогда геометрическое условие
+
+```text
+Y_v * Y_w = -1
+```
+
+превращается в обычный uniform order:
+
+```text
+sigma_v * sigma_w = +1.
+```
+
+И появляется настоящий block order parameter
+
+```text
+Sigma = (1/16) * sum_v eta_v * Y_v.
+```
+
+У него есть две точные mirror-вакуумные ветви:
+
+```text
+Y_v = +eta_v  -> Sigma = +1
+Y_v = -eta_v  -> Sigma = -1.
+```
+
+Mirror меняет их местами:
+
+```text
+Sigma -> -Sigma.
+```
+
+То есть цепочка
+
+```text
+Y_L / Q
+ -> Sigma=+/-1
+ -> coarse sigma(x)
+```
+
+теперь имеет **конкретный finite microscopic bridge**.
+
+### Сколько энергии стоит испортить mirror order
+
+Для orientation part gluing Hamiltonian
+
+```text
+H_Y = J * sum_<vw> Y_v Y_w
+```
+
+идеальная ветвь имеет
+
+```text
+E0 = -32J.
+```
+
+Если перевернуть один local orientation bit, портятся четыре соседних bond. Каждый стоит `2J`, поэтому
+
+```text
+Delta E_single = 8J.
+```
+
+Если сделать domain wall, перевернув половину hypercube, пересекаются восемь связей:
+
+```text
+Delta E_wall = 16J.
+```
+
+Новый gate получает эти числа **точно**.
+
+### А переживает ли mirror order квантовые флуктуации?
+
+Проверяется полный 16-qubit transverse-field Hamiltonian
+
+```text
+H = -J * sum_<vw> sigma_v sigma_w
+    -h * sum_v X_v.
+```
+
+Его Hilbert space уже имеет
+
+```text
+2^16 = 65536
+```
+
+состояний.
+
+Sparse Lanczos diagonalization при
+
+```text
+h/J = 0.2
+```
+
+даёт
+
+```text
+<Sigma^2>  = 0.9976539474
+<|Sigma|>  = 0.9987478253
+```
+
+две нижние mirror-состояния образуют практически вырожденный doublet со splitting меньше `1e-12 J`, а gap до следующего уровня равен примерно
+
+```text
+7.970087877 J.
+```
+
+То есть на минимальном 16-cell block зеркальный order не только существует классически — он **очень устойчив квантово** при слабом flip field.
+
+Для negative control увеличиваем quantum flipping до
+
+```text
+h/J = 4
+```
+
+и получаем
+
+```text
+<Sigma^2> = 0.1462741385.
+```
+
+Order разрушается, как и должен.
+
+Поэтому `sigma` больше не является полностью придуманным continuum полем. Естественный кандидат:
+
+```text
+sigma(x)
+ ~ coarse block average of eta_v Y_v.
+```
+
+Более того, soft fluctuations самого `Sigma/sigma` могут оказаться mediator mode, поэтому отдельный `phi` в консервативной двухполевой конструкции, возможно, не фундаментален.
+
+Теперь главный bottleneck уже не
+
+```text
+откуда взять sigma?
+```
+
+а
+
+```text
+какова физическая normalization sigma
+и как она связывается с matter charge?
+```
+
+Именно из этого должно выйти главное число
+
+```text
+alpha
+```
+
+без ручной подгонки.
 
 ---
 
@@ -1672,12 +1861,16 @@ BITS
  -> current metric antigravity falsifier: f_current = 0
  -> H->-H no-go: only time orientation reversal
  -> negative Einstein-Hilbert sign no-go: graviton ghost
- -> coarse orientation field sigma
- -> positive-kinetic mediator phi
+ -> 16-cell tetrahedra form dual Q4
+ -> staggered Sigma=(1/16)sum eta_v Y_v
+ -> two exact mirror sectors Sigma=+/-1
+ -> finite 16-qubit ordered mirror doublet
+ -> coarse sigma(x)
+ -> positive-kinetic mediator sector
  -> canonical mirror-sector HDA identity
  -> exact alpha_crit = exp(m_phi r)/(1+m_phi r)
  -> healthy cross-sector repulsion if alpha > alpha_crit
- -> microscopic derivation of alpha is the next killer gate
+ -> physical normalization and first-principles alpha are the next killer gate
 ```
 
 Самая короткая HDA-кульминация остаётся:
@@ -1713,7 +1906,7 @@ Jmax = o(epsilon^-2/13)
 
 то эта иерархия сохраняется вдоль допустимого joint-limit family.
 
-Mirror calculation добавляет ещё одну короткую пару формул:
+Mirror calculation добавляет:
 
 ```text
 M X M^-1 = +X
@@ -1727,7 +1920,16 @@ M Y M^-1 = -Y
 metric(+chi) = metric(-chi).
 ```
 
-А новый healthy-force branch добавляет:
+Microscopic mirror-order gate добавляет:
+
+```text
+Sigma = (1/16) sum eta_v Y_v
+Sigma = +/-1
+Delta E_single = 8J
+Delta E_wall   = 16J.
+```
+
+А healthy-force branch добавляет:
 
 ```text
 {H_mirror[N],H_mirror[M]}
@@ -1742,7 +1944,7 @@ opposite-chi repulsion
 alpha*(1+m_phi*r)*exp(-m_phi*r) > 1.
 ```
 
-То есть **ориентация бинарна, стандартная метрика mirror-even, но дополнительная положительно-энергетическая mirror-charge dynamics уже может математически давать отталкивание.**
+То есть **ориентация бинарна, стандартная метрика mirror-even, глобальный mirror order уже возникает на минимальном 16-cell block, а дополнительная положительно-энергетическая mirror-charge dynamics математически может давать отталкивание.**
 
 ---
 
@@ -1763,6 +1965,9 @@ alpha*(1+m_phi*r)*exp(-m_phi*r) > 1.
 - fixed-cutoff composition scaling theorem в заявленном habitat;
 - mirror algebra `X,Z even; Y,Q odd`;
 - conjugate-representation identity `d(Rbar) = -d(R)`;
+- 16-cell tetrahedron dual graph `Q4`;
+- exact staggered mirror vacua `Sigma=+/-1`;
+- exact defect costs `8J` и `16J`;
 - rescaling no-go `H_chi=sH_GR => same HDA only if s^2=1`;
 - Yukawa screening threshold `alpha_crit=exp(x)/(1+x)`.
 
@@ -1779,6 +1984,9 @@ alpha*(1+m_phi*r)*exp(-m_phi*r) > 1.
 - 256-tetrahedron mirror metric/orientation gate;
 - mirror-state swap and oriented-phase gate;
 - numerical conjugate-anomaly cancellation stress-test;
+- full 16-qubit `2^16=65536` mirror-order sparse diagonalization;
+- ordered mirror doublet with `<Sigma^2>=0.9976539474` at `h/J=0.2`;
+- disordered control `<Sigma^2>=0.1462741385` at `h/J=4`;
 - two-pseudoscalar canonical HDA gate with relative defect `~7.15e-15`;
 - mirror-force screening/repulsion threshold regression.
 
@@ -1791,8 +1999,9 @@ alpha*(1+m_phi*r)*exp(-m_phi*r) > 1.
 - существование физического TT infoton mode;
 - ненулевой microscopic coupling `xi` к gravitational waves;
 - возможный `Y_L J5^0` bridge к fermion chirality;
-- coarse identification `Y_L/Q -> sigma`;
-- существование physical mediator `phi`;
+- continuum normalization и propagation law derived `Sigma/sigma` mode;
+- coupling derived `sigma` к physical matter charge;
+- существование отдельного physical mediator `phi` либо доказательство, что soft `sigma` mode сам является mediator;
 - first-principles value `alpha`;
 - microscopic Peter-Weyl x route x orientation HDA closure.
 
@@ -1818,7 +2027,13 @@ H -> -H
 
 ### Что теперь впервые построено положительно
 
-Построен continuum canonical mirror sector с positive kinetic energy и exact HDA principal identity. Он допускает orientation-charge Yukawa force, которая для opposite `chi` становится repulsive и может превысить tensor attraction при
+Построен finite microscopic mirror-order bridge
+
+```text
+Y_L/Q -> staggered Sigma -> coarse sigma(x)
+```
+
+и continuum canonical mirror sector с positive kinetic energy и exact HDA principal identity. Он допускает orientation-charge Yukawa force, которая для opposite `chi` становится repulsive и может превысить tensor attraction при
 
 ```text
 alpha > exp(m_phi*r)/(1+m_phi*r).
@@ -1830,7 +2045,7 @@ alpha > exp(m_phi*r)/(1+m_phi*r).
 
 Корректная формулировка результата:
 
-> **В репозитории построена математически и вычислительно проверяемая кандидатная схема перехода от бинарной дискретной микроструктуры к 3D/4D-like гладкому пределу, SU(2)/Peter-Weyl квантовой геометрии и канонической HDA-гравитационной архитектуре. Дополнительно построены exact finite мост от четырёх microscopic qubits к spin-2 сектору, условная модель квантовой пены и GW-squeezing, mirror/chirality gate и continuum healthy mirror-force extension. Последняя сохраняет положительные kinetic terms, проходит canonical matter-HDA gate и допускает cross-sector repulsion выше точного порога `alpha_crit`, но её microscopic coupling ещё не выведен. Это кандидатная теория, а не установленный экспериментальный закон природы.**
+> **В репозитории построена математически и вычислительно проверяемая кандидатная схема перехода от бинарной дискретной микроструктуры к 3D/4D-like гладкому пределу, SU(2)/Peter-Weyl квантовой геометрии и канонической HDA-гравитационной архитектуре. Дополнительно построены exact finite мост от четырёх microscopic qubits к spin-2 сектору, условная модель квантовой пены и GW-squeezing, mirror/chirality gate, finite 16-cell mirror-order bridge и continuum healthy mirror-force extension. Последняя сохраняет положительные kinetic terms, проходит canonical matter-HDA gate и допускает cross-sector repulsion выше точного порога `alpha_crit`; однако physical normalization и microscopic force coupling ещё не выведены. Это кандидатная теория, а не установленный экспериментальный закон природы.**
 
 ---
 
@@ -1847,8 +2062,8 @@ alpha > exp(m_phi*r)/(1+m_phi*r).
 - реалистичная matter sector: gauge group, masses, generations, chirality и Yukawa structure;
 - полная anomaly cancellation, включая global anomalies, не только exact `R/Rbar` cubic pair identity;
 - объяснение, почему mirror sector скрыт/decoupled, если он существует;
-- derivation `Y_L/Q -> sigma` вместо phenomenological coarse field;
-- derivation mediator `phi` и charge-to-mass coupling `eta`;
+- physical normalization, kinetic coefficient и propagation speed derived `Sigma/sigma` mode;
+- derivation coupling of `Sigma/sigma` к matter и charge-to-mass coefficient `eta`;
 - first-principles prediction of `alpha` и mediator mass/range;
 - full Peter-Weyl x route x orientation quantum HDA regression;
 - проверка fifth-force/equivalence-principle/cosmological bounds после появления physical scale;
@@ -1868,6 +2083,7 @@ alpha > exp(m_phi*r)/(1+m_phi*r).
 - `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md` — fixed-cutoff HDA composition theorem;
 - `GRAVITON_INFOTON_FOAM_BRIDGE.md` — spin-2/helicity, foam и GW-resonance bridge;
 - `MIRROR_CHIRALITY_GRAVITY.md` — mirror orientation, chirality, anomaly sign и antigravity falsifier;
+- `MICROSCOPIC_MIRROR_ORDER.md` — Q4 dual 16-cell, staggered Sigma, defect/domain-wall energies и 16-qubit ordered phase;
 - `ORIENTATION_ODD_HDA_CONSTRUCTION.md` — healthy mirror-force construction, HDA control и exact repulsion threshold;
 - `SPATIAL_QUBIT_GEOMETRY_BRIDGE.md` — exact four-qubit geometry decomposition;
 - `GLOBAL_MANIFOLD_Q2_COMPLETION.md` — q=2 PL globalization;
@@ -1879,6 +2095,7 @@ alpha > exp(m_phi*r)/(1+m_phi*r).
 - `scripts/lorentzian_hit_depth_bound.py` — Lorentzian support wall;
 - `scripts/graviton_infoton_foam_gate.py` — exact j=2 projector + Floquet resonance checks;
 - `scripts/mirror_chirality_gravity_gate.py` — mirror/chirality/phase/anomaly finite gate;
+- `scripts/mirror_order_16cell_gate.py` — microscopic 16-cell staggered mirror-order gate;
 - `scripts/orientation_odd_hda_gate.py` — continuum mirror-sector HDA + Yukawa screening/repulsion gate.
 
 Запуск канонического статуса:
@@ -1899,6 +2116,13 @@ Mirror/chirality gate:
 python scripts/mirror_chirality_gravity_gate.py \
   --trials 256 \
   --output verification_results/MIRROR_CHIRALITY_GRAVITY.json
+```
+
+Microscopic mirror-order gate:
+
+```bash
+python scripts/mirror_order_16cell_gate.py \
+  --output verification_results/MIRROR_ORDER_16CELL.json
 ```
 
 Healthy orientation-force gate:
