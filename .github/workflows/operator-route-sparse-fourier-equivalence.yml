@@ -1,0 +1,37 @@
+name: operator-route-sparse-fourier-equivalence
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/operator_route_sparse_fourier.py'
+      - 'scripts/operator_route_sparse_fourier_equivalence_gate.py'
+      - 'scripts/operator_first_two_node_route_hda_gate.py'
+      - '.github/workflows/operator-route-sparse-fourier-equivalence.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numpy
+        run: python -m pip install numpy
+      - name: Syntax
+        run: |
+          python -m py_compile scripts/operator_route_sparse_fourier.py
+          python -m py_compile scripts/operator_route_sparse_fourier_equivalence_gate.py
+      - name: Compare sparse Fourier to 48x48 FFT
+        run: |
+          python scripts/operator_route_sparse_fourier_equivalence_gate.py \
+            --L 48 --carrier 8 \
+            --output verification_results/OPERATOR_ROUTE_SPARSE_FOURIER_EQUIVALENCE.json
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: operator-route-sparse-fourier-equivalence
+          path: verification_results/OPERATOR_ROUTE_SPARSE_FOURIER_EQUIVALENCE.json
+          if-no-files-found: warn
