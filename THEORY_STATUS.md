@@ -141,7 +141,7 @@ scripts/joint_cutoff_diagonal_gate.py
 
 ---
 
-## 4. Lorentzian sector — raw amplitude is now nonzero
+## 4. Lorentzian sector — raw amplitude is nonzero
 
 The real-Ashtekar-Barbero relative structure is frozen as
 
@@ -161,7 +161,7 @@ The old amplitude frontier
 P H_L P = 0 ?
 ```
 
-is now superseded at the **raw structural** level.
+is superseded at the **raw structural** level.
 
 A completed exact environment-unbiased Peter-Weyl calculation at
 
@@ -207,44 +207,81 @@ scripts/peter_weyl_lorentzian_envtrace_orbit_collector.py
 
 ---
 
-## 5. Lorentzian ordering is the new killer frontier
+## 5. Canonical commutator phase selects the nonzero Hermitian branch
 
-The frozen raw one-body operator is anti-Hermitian to numerical precision. Therefore
-
-\[
-H_{even}=\frac{L_{raw}+L_{raw}^\dagger}{2}\simeq0,
-\]
-
-while
-
-\[
-H_{odd}=\frac{L_{raw}-L_{raw}^\dagger}{2i}
-\simeq1.3389293521464034\,Y.
-\]
-
-The second completion has eigenvalues
+The repository's raw Lorentzian stack uses
 
 ```text
-+/- 1.3389293521464034
+K_raw=[V,H_E]
+C_raw(O)=h[h^-1,O]
+L_raw~Tr[C_raw(K_raw) C_raw(K_raw) C_raw(V)].
 ```
 
-before the final canonical overall prefactor.
-
-This is a **pre-registered ordering fork**, not a licence to choose whichever result is more interesting. The physical Hermitian ordering, overall `i`/sign and `kappa/beta/hbar` normalization must be fixed independently from the canonical quantization/classical-limit prescription.
-
-Executable audit:
+The corresponding declared classical Thiemann structure is
 
 ```text
+{A,K}{A,K}{A,V}
+with K~{V,H_E}.
+```
+
+After substituting the two `K` factors there are exactly five Poisson brackets. Under the canonical correspondence
+
+\[
+\{\ ,\ \}\to\frac1{i\hbar}[\ ,\ ],
+\]
+
+the universal complex phase is
+
+\[
+\boxed{(1/i)^5=-i}.
+\]
+
+Therefore the phase-completed one-body block is
+
+\[
+\boxed{
+-iL_{raw,1body}
+=1.3389293521464034\,Y+O(10^{-16}),
+}
+\]
+
+up to the remaining **real** normalization/sign convention.
+
+For the frozen matrix the Hermiticity defect of `-i L_raw` is about
+
+```text
+3.2e-16,
+```
+
+and its dimensionless structural eigenvalues are
+
+```text
++/-1.3389293521464034.
+```
+
+Thus the earlier purely algebraic fork
+
+```text
+(L+L^dagger)/2  versus  (L-L^dagger)/(2i)
+```
+
+is narrowed by the declared nested-bracket quantization: the missing canonical bracket phase selects the second branch. The even projection performed **before** restoring the missing phase is not the quantization of the declared five-bracket structure.
+
+Evidence:
+
+```text
+LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md
+scripts/lorentzian_commutator_phase_gate.py
 scripts/peter_weyl_lorentzian_onebody_ordering_gate.py
 ```
 
-The next decisive gravity calculation is therefore
+What remains open is no longer the complex phase. It is:
 
 ```text
-independently fixed physical H_L
- -> two-node H_E+H_L+R_Q
- -> full route-coupled Lorentzian HDA
- -> multiple independent habitats / collective-spin sectors.
+real kappa/beta/hbar/regulator normalization
++ overall real sign convention
++ uniqueness/stability of the full symmetric factor ordering
++ complete two-node Lorentzian route-coupled HDA.
 ```
 
 ---
@@ -354,7 +391,7 @@ Neither extension is used as evidence for the gravity-core HDA.
 # Primary open problems
 
 ```text
-1. fix the physical Lorentzian Hermitian ordering and canonical prefactor independently;
+1. freeze the remaining real Lorentzian normalization/sign and full symmetric factor ordering;
 2. run the completed two-node H_E+H_L+R_Q commutator on the same route habitat;
 3. repeat the full HDA on independent WKB/habitat channels and higher collective-spin sectors;
 4. extend the simultaneous-cutoff proof beyond the current polynomial envelope / alpha=1/8 trajectory;
@@ -368,4 +405,4 @@ Neither extension is used as evidence for the gravity-core HDA.
 
 ## Canonical status statement
 
-> **BCQG Core Candidate v1 currently has a frozen q=2 / PL-S3 kinematic sector, 3+1D-like scaling, SU(2) Peter-Weyl quantum geometry, a geometry-dependent route-normal generator, a fixed-cutoff HDA composition certificate, an explicit conditional simultaneous-cutoff path `Jmax~epsilon^-1/8`, and a nonzero exact finite Lorentzian raw logical one-body amplitude. The principal operator bottleneck is now the independently fixed physical Lorentzian Hermitian ordering/prefactor followed by the complete two-node Lorentzian route-coupled HDA.**
+> **BCQG Core Candidate v1 currently has a frozen q=2 / PL-S3 kinematic sector, 3+1D-like scaling, SU(2) Peter-Weyl quantum geometry, a geometry-dependent route-normal generator, a fixed-cutoff HDA composition certificate, an explicit conditional simultaneous-cutoff path `Jmax~epsilon^-1/8`, a nonzero exact finite Lorentzian raw logical one-body amplitude, and a canonical five-bracket phase completion that converts that raw `iY` block into a Hermitian `Y` block. The principal operator bottleneck is now the remaining real Lorentzian normalization/full factor-ordering freeze followed by the complete two-node Lorentzian route-coupled HDA.**
