@@ -1,0 +1,30 @@
+{
+  "status": "operator-first route singular-kernel Sylvester safety",
+  "passed": true,
+  "HE_basis_outputs": 41,
+  "reached_distinct_sectors": 33,
+  "momentum_modes": 25,
+  "derivative_rows": 1650,
+  "singular_cases": 24,
+  "minimum_symbol_eigenvalue": -7.105427357601002e-15,
+  "max_Qp_on_kernel": 1.9133237149764433e-15,
+  "max_kernel_dA_block": 1.8736833294989963e-15,
+  "max_sylvester_residual": 1.7614399735154202e-13,
+  "thresholds": {
+    "negative_eigenvalue_roundoff": 1e-10,
+    "kernel_defect": 1e-10,
+    "sylvester_residual": 1e-10
+  },
+  "checks": {
+    "all_33_reached_sectors_checked": true,
+    "all_25_modes_checked": true,
+    "singular_cases_actually_present": true,
+    "symbols_positive_semidefinite_up_to_roundoff": true,
+    "Qp_annihilates_kernel": true,
+    "kernel_kernel_derivative_block_zero": true,
+    "sylvester_equation_solvable": true
+  },
+  "theorem": "For A=sum_i B_i^dagger B_i, ker(A)=intersection_i ker(B_i), so the kernel-kernel block of partial A vanishes and Omega X+X Omega=partial A is solvable for singular Omega=sqrt(A).",
+  "scope": "Frozen one-step H_E-reached route sectors and declared 25 momentum modes. This certifies the principal anticommutator/kernel condition, not global Frechet differentiability across arbitrary rank-changing families.",
+  "provenance": "local exhaustive reproduction from the current BCQG route-block algebra before repository freeze; independent Actions reproduction may follow"
+}
