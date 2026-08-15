@@ -40,9 +40,9 @@ SINE_RUN = 31855735615
 SINE_DIGEST = "sha256:21e2da508fd583d9007a5bd400d074e8cee39990656e6c75e5968d2601323526"
 ROUTE_OP_ENDPOINT_TEXT = "3.837772425e-7"
 ROUTE_OP_EXP_TEXT = "0.999960897"
-EUNORM_TEXT = "-2/(3 hbar)"
-FULL_BETA1_TEXT = "32/9"
-BARE_BETA1_TEXT = "16/9"
+EUNORM_TEXT = "n_E=-2/(3 hbar)"
+FULL_BETA1_TEXT = "32/(9 hbar^7)"
+BARE_BETA1_TEXT = "16/(9 hbar^7)"
 COV_MAX = 1e-12
 LEAK_MAX = 1e-12
 
@@ -71,6 +71,7 @@ def main() -> int:
     pw = find_gate(gates, "PWLOGANISO")
     lor = find_gate(gates, "LORAMPRAW")
     phase = find_gate(gates, "LORPHASE")
+    eunorm = find_gate(gates, "EUNORM")
     norm = find_gate(gates, "LORNORM")
     route_op = find_gate(gates, "ROUTE_OP")
     sine = find_gate(gates, "E2NODE_SINE")
@@ -86,6 +87,7 @@ def main() -> int:
         "pw_gate_status": pw["status"] == "tested_finite",
         "lor_raw_gate_status": lor["status"] == "tested_finite",
         "lor_phase_gate_conditional": phase["status"] == "conditional",
+        "euclidean_norm_gate_conditional": eunorm["status"] == "conditional",
         "lor_norm_gate_conditional": norm["status"] == "conditional",
         "route_op_gate_tested": route_op["status"] == "tested_finite",
         "sine_gate_tested": sine["status"] == "tested_finite",
@@ -139,10 +141,11 @@ def main() -> int:
         "candidate_selects_operator_first": "R_{op}" in candidate or "R_op" in candidate,
         "start_selects_operator_first": "R_op" in start,
 
-        # Relative normalization.
-        "normalization_gate_has_nE": EUNORM_TEXT in norm["claim"],
-        "normalization_gate_has_full_beta1": FULL_BETA1_TEXT in norm["claim"],
-        "normalization_gate_has_bare_beta1": BARE_BETA1_TEXT in norm["claim"],
+        # Relative normalization.  The Euclidean scale and inherited
+        # Lorentzian magnitudes live in separate machine-ledger gates.
+        "euclidean_normalization_gate_has_nE": EUNORM_TEXT in eunorm["claim"],
+        "lorentzian_normalization_gate_has_full_beta1": FULL_BETA1_TEXT in norm["claim"],
+        "lorentzian_normalization_gate_has_bare_beta1": BARE_BETA1_TEXT in norm["claim"],
         "status_has_normalization": "32" in status and "16" in status and "9" in status,
         "candidate_has_normalization": "32" in candidate and "16" in candidate and "9" in candidate,
 
