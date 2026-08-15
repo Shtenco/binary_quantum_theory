@@ -2,6 +2,8 @@
 
 **Frozen before evaluating the new sine-ordering two-node result.**
 
+Protocol frozen in commit `9a53f5edf160f2b62efbaeb047e59f878dfc73d2`; implementation added only afterward. This edit exists solely to trigger the now-installed CI workflow and does not change any acceptance threshold.
+
 ## Why this gate is required
 
 The historical two-node Euclidean × route regression uses the earlier Hermitian structural ordering
