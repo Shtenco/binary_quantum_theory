@@ -1,30 +1,19 @@
 #!/usr/bin/env python3
-"""Quantify the logical Lorentzian-route cross channel for two route orderings.
+"""Quantify the signed logical Lorentzian-route cross channel.
 
-Inputs already frozen by independent calculations:
+Independent upstream gates now freeze, in beta=hbar=1 structural units,
 
-  H_L,phase / g_R = c_L Y, c_L=1.3389293521464034
+    H_phase = c_L Y,                c_L=1.3389293521464034
+    H_L,bare / H_phase = -16/9
+    H_corr,full / H_phase = -32/9.
 
-Expectation-first isotropic route average:
+The route-ordering diagnostic is therefore no longer reported only per an open
+normalization g_R.  This gate keeps the raw/unit coefficient for regression and
+also reports the signed bare-H_L and full-beta=1 correction cross operators.
 
-  Omega_exp = 0.8598466001022401 I
-
-Operator-first isotropic square-root diagnostic:
-
-  Omega_op ~= 0.8197716816 I -0.0347058975 X +0.0200374593 Z.
-
-This gate computes the Hermitian cross generator
-
-  C = -i [H_L, Omega].
-
-For expectation-first averaging C=0 exactly at the quoted logical level.
-For operator-first ordering C lies in the X/Z shape plane and is nonzero.
-
-This is a finite ordering discriminator, not a full HDA result. The fixed-cutoff
-composition theorem can still suppress such a finite cross coefficient by the
-regulator scaling; the purpose here is to freeze the coefficient that a future
-full two-node Lorentzian HDA test must reproduce if operator-first route
-ordering is chosen.
+Expectation-first isotropic route average is scalar and gives zero local cross.
+Operator-first gives a nonzero X/Z cross.  This remains a finite logical
+regression, not the full graph-changing two-node HDA.
 """
 from __future__ import annotations
 
@@ -35,6 +24,8 @@ from pathlib import Path
 import numpy as np
 
 C_L = 1.3389293521464034
+BARE_HL_PHASE_COEFF = -16.0/9.0
+FULL_CORR_PHASE_COEFF = -32.0/9.0
 OMEGA_EXP_I = 0.8598466001022401
 OMEGA_OP_I = 0.8197716816
 OMEGA_OP_X = -0.0347058975
@@ -60,53 +51,76 @@ def cross(H, O):
     return -1j * (H @ O - O @ H)
 
 
+def summary_for(scale, Cop):
+    C = scale * Cop
+    c = {k: np.trace(P @ C) / 2.0 for k, P in PAULI.items()}
+    return {
+        "phase_scale": scale,
+        "pauli": {k: zpair(v) for k, v in c.items()},
+        "shape_coefficient_norm": float(np.hypot(abs(c["X"]), abs(c["Z"]))),
+        "frobenius_norm": float(np.linalg.norm(C)),
+    }
+
+
 def run():
-    H = C_L * Y
+    Hphase = C_L * Y
     Oexp = OMEGA_EXP_I * I
     Oop = OMEGA_OP_I * I + OMEGA_OP_X * X + OMEGA_OP_Z * Z
 
-    Cexp = cross(H, Oexp)
-    Cop = cross(H, Oop)
+    Cexp = cross(Hphase, Oexp)
+    Cop = cross(Hphase, Oop)
     cop = {k: np.trace(P @ Cop) / 2.0 for k, P in PAULI.items()}
 
     expected_x = 2.0 * C_L * OMEGA_OP_Z
     expected_z = -2.0 * C_L * OMEGA_OP_X
-    shape_norm = float(np.hypot(abs(cop["X"]), abs(cop["Z"])))
-    frob = float(np.linalg.norm(Cop))
+    raw_shape_norm = float(np.hypot(abs(cop["X"]), abs(cop["Z"])))
+    raw_frob = float(np.linalg.norm(Cop))
+
+    bare = summary_for(BARE_HL_PHASE_COEFF, Cop)
+    full = summary_for(FULL_CORR_PHASE_COEFF, Cop)
 
     checks = {
         "expectation_first_cross_zero": float(np.linalg.norm(Cexp)) < 1e-14,
-        "operator_first_cross_nonzero": frob > 1e-6,
+        "operator_first_cross_nonzero": raw_frob > 1e-6,
         "operator_first_cross_hermitian": float(np.linalg.norm(Cop-Cop.conj().T)) < 1e-14,
         "operator_first_no_I": abs(cop["I"]) < 1e-14,
         "operator_first_no_Y": abs(cop["Y"]) < 1e-14,
         "operator_first_X_formula": abs(cop["X"].real-expected_x) < 1e-12 and abs(cop["X"].imag) < 1e-12,
         "operator_first_Z_formula": abs(cop["Z"].real-expected_z) < 1e-12 and abs(cop["Z"].imag) < 1e-12,
+        "bare_phase_scale_frozen": abs(bare["phase_scale"] + 16.0/9.0) < 1e-15,
+        "full_phase_scale_frozen": abs(full["phase_scale"] + 32.0/9.0) < 1e-15,
+        "bare_signed_X": abs(bare["pauli"]["X"][0] + 0.09539108408604444) < 2e-12,
+        "bare_signed_Z": abs(bare["pauli"]["Z"][0] + 0.16522220393013332) < 2e-12,
+        "full_signed_X": abs(full["pauli"]["X"][0] + 0.19078216817208887) < 2e-12,
+        "full_signed_Z": abs(full["pauli"]["Z"][0] + 0.33044440786026663) < 2e-12,
     }
 
     return {
-        "status": "finite logical Lorentzian-route ordering discriminator",
+        "status": "finite signed logical Lorentzian-route ordering regression",
         "passed": all(checks.values()),
-        "lorentzian_phase_completed_coefficient_per_gR": C_L,
+        "beta": 1.0,
+        "hbar": 1.0,
+        "phase_completed_local_coefficient": C_L,
+        "frozen_bare_HL_phase_scale": BARE_HL_PHASE_COEFF,
+        "frozen_full_correction_phase_scale": FULL_CORR_PHASE_COEFF,
         "expectation_first_route_operator": {"I": OMEGA_EXP_I, "X": 0.0, "Y": 0.0, "Z": 0.0},
-        "expectation_first_cross_frobenius_norm_per_abs_gR": float(np.linalg.norm(Cexp)),
+        "expectation_first_cross_frobenius_norm": float(np.linalg.norm(Cexp)),
         "operator_first_route_operator": {"I": OMEGA_OP_I, "X": OMEGA_OP_X, "Y": 0.0, "Z": OMEGA_OP_Z},
         "operator_first_cross_identity": "-i[c_L Y, Omega_op] = 2 c_L (Omega_Z X - Omega_X Z)",
-        "operator_first_cross_pauli_per_gR": coeffs(Cop),
-        "operator_first_cross_shape_coefficient_norm_per_abs_gR": shape_norm,
-        "operator_first_cross_frobenius_norm_per_abs_gR": frob,
+        "unit_phase_cross_pauli": coeffs(Cop),
+        "unit_phase_cross_shape_coefficient_norm": raw_shape_norm,
+        "unit_phase_cross_frobenius_norm": raw_frob,
+        "signed_bare_HL_cross": bare,
+        "signed_full_beta1_correction_cross": full,
         "checks": checks,
         "interpretation": (
-            "Expectation-first isotropic averaging erases this local logical cross, "
-            "whereas operator-first square-root ordering produces a finite X/Z shape "
-            "cross coefficient. A full route/HDA calculation must therefore select "
-            "the ordering dynamically/algebraically rather than treating them as "
-            "interchangeable."
+            "The previously open normalization is now fixed upstream. In beta=hbar=1 structural units the operator-first "
+            "logical route block predicts a definite negative X/Z cross for both the bare repository H_L and the full beta=1 "
+            "Lorentzian correction. The expectation-first isotropic surrogate still erases the same cross exactly."
         ),
         "scope": (
-            "Finite logical two-by-two diagnostic using previously frozen averaged "
-            "route coefficients. It is not a two-node HDA closure calculation and "
-            "does not include the still-open real Lorentzian normalization g_R."
+            "Finite logical two-by-two regression using frozen averaged route coefficients and the independently frozen signed "
+            "Lorentzian relative normalization. It is not the graph-changing two-node HDA and is not a physical energy/force prediction."
         ),
     }
 
