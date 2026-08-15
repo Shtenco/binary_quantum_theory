@@ -1,0 +1,38 @@
+name: lorentzian-repo-sign
+
+on:
+  push:
+    paths:
+      - 'LORENTZIAN_REAL_NORMALIZATION_LEDGER.md'
+      - 'scripts/lorentzian_repo_sign_gate.py'
+      - 'EUCLIDEAN_SINE_NORMALIZATION_MATCH.md'
+  pull_request:
+    paths:
+      - 'LORENTZIAN_REAL_NORMALIZATION_LEDGER.md'
+      - 'scripts/lorentzian_repo_sign_gate.py'
+      - 'theory_gates.json'
+      - 'THEORY_STATUS.md'
+      - 'BCQG_CORE_CANDIDATE_V1.md'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax
+        run: python -m py_compile scripts/lorentzian_repo_sign_gate.py
+      - name: Verify signed beta=1 repository coefficient
+        run: |
+          python scripts/lorentzian_repo_sign_gate.py \
+            --hbar 1 --beta 1 \
+            --output verification_results/LORENTZIAN_REPO_SIGN.json
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-repo-sign
+          path: verification_results/LORENTZIAN_REPO_SIGN.json
+          if-no-files-found: warn
