@@ -82,6 +82,8 @@ and at `beta=hbar=1`
 
 The historical `G=(-2/3)E+(32i/9)L_raw` is only the reduction on already anti-Hermitian raw sectors. The accepted one-body correction remains `-4.760637696520545 Y` in structural units.
 
+The projection `S=Herm(-iL_raw)` is itself unique as the linear projection with Hermitian range and anti-Hermitian kernel, and is the unique Hilbert-Schmidt closest Hermitian operator. Broader pre-projection ordering uniqueness is not claimed.
+
 ## 4. Multi-node Lorentzian evidence — tested finite
 
 The recovered diagonal-environment Walsh block contains finite pseudoscalar neighbor correlations. With nodes 3,4 fixed at K=0:
@@ -218,7 +220,7 @@ This remains conditional. A BF/topological first-class rank is a FAIL even if a 
 
 Still open:
 
-1. uniqueness of the Hermitian factor ordering;
+1. uniqueness among alternative microscopic factor orderings used to define `L_raw` before the unique Hermitian projection;
 2. exhaustive finite route test for all `S`-reached sectors;
 3. off-diagonal multi-node Lorentzian blocks;
 4. direct `ES/SE/SS` finite calibration;
@@ -232,4 +234,4 @@ Mirror/infoton/foam/GW-resonance branches remain extensions and are not used to 
 
 ## Canonical status statement
 
-> **BCQG Candidate Theory v1.2 has a single Hermitian production Hamiltonian, an exact finite spin wall at Jmax=13/2 for the preregistered all-j=1/2 two-node habitat, exhaustive route evidence over all 33 one-step Euclidean-reached sectors, and a cutoff-saturated operator-first HDA composition theorem on that habitat. The remaining frontier is extension and falsification — not invention of another core Hamiltonian.**
+> **BCQG Candidate Theory v1.2 has a single Hermitian production Hamiltonian, an exact finite spin wall at Jmax=13/2 for the preregistered all-j=1/2 two-node habitat, exhaustive route evidence over all 33 one-step Euclidean-reached sectors, a unique minimal Hermitian projection of the fixed raw stack, and a cutoff-saturated operator-first HDA composition theorem on that habitat. The remaining frontier is extension and falsification — not invention of another core Hamiltonian.**
