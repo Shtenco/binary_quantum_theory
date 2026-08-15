@@ -1,11 +1,12 @@
 name: operator-route-sparse-fourier-equivalence
 
 on:
-  pull_request:
+  push:
     paths:
       - 'scripts/operator_route_sparse_fourier.py'
       - 'scripts/operator_route_sparse_fourier_equivalence_gate.py'
       - 'scripts/operator_first_two_node_route_hda_gate.py'
+      - 'scripts/k5_peter_weyl_safe_hda_column.py'
       - '.github/workflows/operator-route-sparse-fourier-equivalence.yml'
 
 jobs:
@@ -17,8 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install numpy
-        run: python -m pip install numpy
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
       - name: Syntax
         run: |
           python -m py_compile scripts/operator_route_sparse_fourier.py
