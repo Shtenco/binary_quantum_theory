@@ -1,0 +1,32 @@
+{
+  "status": "signed operator-first full-HDA asymptotic composition certificate",
+  "passed": true,
+  "verification_environment": "local SymPy reproduction using frozen committed spin-changed route anchors; GitHub Actions theorem workflow remains independent confirmation",
+  "signed_geometry_operator": "G_v=(-2/3)E_sine,v+(32 i/9)L_raw,v at beta=hbar=1",
+  "signed_channel_weights": {"EE":"4/9","EL":"-64*I/27","LE":"-64*I/27","LL":"-1024/81"},
+  "geometry_smear_identity": "Mbar*epsilon*n0 - Mbar*epsilon*n1 - Nbar*epsilon*m0 + Nbar*epsilon*m1 - epsilon**2*m0*n1 + epsilon**2*m1*n0",
+  "mixed_cross_after_exact_inverse_epsilon_cancellation": "DeltaOmega*Mbar*n_v - DeltaOmega*Nbar*m_v - Mbar*S_n + Nbar*S_m + S_m*epsilon*n_v - S_n*epsilon*m_v",
+  "fixed_cutoff_result": {"route_only_relative":"Delta_route -> 0 (tested operator-first spin-changed sectors)","C_cross_over_D":"O(epsilon)","C_GG_over_D":"O(epsilon^2)","full_relative_residual":"Delta_R,op+O(epsilon)+O(epsilon^2)->0"},
+  "joint_cutoff_path": {"Jmax":"epsilon^(-1/8)","C_cross_over_D":"O(epsilon^(3/16))","C_GG_over_D":"O(epsilon^(3/8))"},
+  "spinchanged_route_evidence": {
+    "workflow_run_id":31858615323,
+    "artifact_id":9244277324,
+    "artifact_digest":"sha256:c1af8de00183fddf328f6bdfba386e2320b842e10d3de98d90ad150b0876213c",
+    "epsilon_exponents":[0.9998813243074853,0.9999820815585938,0.9999698910213726,0.999936261141077,0.9999583732056396],
+    "endpoints":[1.9931725228382313e-06,2.478354148544069e-06,2.2654862408311526e-06,3.636578178492724e-06,9.370651434361489e-07]
+  },
+  "checks": {
+    "signed_E_coefficient":true,
+    "signed_Lraw_coefficient":true,
+    "signed_channel_weights":true,
+    "geometry_smear_identity":true,
+    "geometry_smear_has_no_O1":true,
+    "dangerous_cross_inverse_epsilon_cancels":true,
+    "canonical_alpha_cross_power":true,
+    "canonical_alpha_GG_power":true,
+    "spinchanged_operator_first_route_evidence_passes":true,
+    "spinchanged_route_exponents_near_one":true,
+    "spinchanged_route_endpoints_small":true
+  },
+  "finite_falsifier_status": "EL/LE/LL and complete GxR finite collector remain independent finite falsifiers; prior timeout is not a physics FAIL"
+}
