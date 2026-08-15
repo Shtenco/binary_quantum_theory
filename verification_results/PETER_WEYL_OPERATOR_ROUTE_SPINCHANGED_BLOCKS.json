@@ -1,0 +1,39 @@
+{
+  "status": "operator-first shared-route blocks on genuine spin-changed Peter-Weyl sectors",
+  "passed": true,
+  "HE_sine_support": 41,
+  "checked_distinct_higher_spin_sectors": 5,
+  "initial_sector_dimension": 4,
+  "initial_sector_Q_error_vs_independent_4x4": 0.0,
+  "initial_defects": [1.3126605728879455e-05,6.563923939492645e-06,3.282039617903453e-06,1.6410295154019507e-06,8.205159710207802e-07],
+  "initial_epsilon_exponent": 0.9999594708960342,
+  "minimum_symbol_eigenvalue": -1.0658141036401503e-14,
+  "local_route_legs": [1,2],
+  "route_nodes": [0,1],
+  "sector_summary": [
+    {"endpoint":1.9931725228382313e-06,"epsilon_exponent":0.9998813243074853,"sector_dimension":4,"minimum_symbol_eigenvalue":24.00000000000001,"HE_source_abs_amplitude":1.2279066301505797},
+    {"endpoint":2.478354148544069e-06,"epsilon_exponent":0.9999820815585938,"sector_dimension":4,"minimum_symbol_eigenvalue":8.875000000000007,"HE_source_abs_amplitude":0.8186848785620853},
+    {"endpoint":2.2654862408311526e-06,"epsilon_exponent":0.9999698910213726,"sector_dimension":4,"minimum_symbol_eigenvalue":16.750000000000004,"HE_source_abs_amplitude":0.6236281918009059},
+    {"endpoint":3.636578178492724e-06,"epsilon_exponent":0.999936261141077,"sector_dimension":4,"minimum_symbol_eigenvalue":-1.0658141036401503e-14,"HE_source_abs_amplitude":0.5400778569414662},
+    {"endpoint":9.370651434361489e-07,"epsilon_exponent":0.9999583732056396,"sector_dimension":4,"minimum_symbol_eigenvalue":1.7763568394002505e-15,"HE_source_abs_amplitude":0.5353613888431392}
+  ],
+  "checks": {
+    "HE_output_nonzero": true,
+    "all_checked_symbols_positive_semidefinite": true,
+    "enough_distinct_spin_sectors": true,
+    "higher_spin_endpoints_small": true,
+    "higher_spin_route_exponents_near_one": true,
+    "initial_generic_Q_matches_independent_4x4_Q": true,
+    "initial_route_exponent_near_one": true,
+    "initial_sector_dimension_four": true,
+    "selected_outputs_are_spin_changed": true
+  },
+  "production_use": "This block completion is the route operator used on spin-changed G|psi> states in the full G x R_op cross commutator.",
+  "scope": "Route-only HDA on selected genuine H_E-reached sectors; no Lorentzian amplitudes enter this gate.",
+  "provenance": {
+    "workflow_run_id": 31858615323,
+    "head_sha": "905358f76699370aa13e017bd852c45b696b3e5f",
+    "artifact_id": 9244277324,
+    "artifact_digest": "sha256:c1af8de00183fddf328f6bdfba386e2320b842e10d3de98d90ad150b0876213c"
+  }
+}
