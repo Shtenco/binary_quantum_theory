@@ -1,0 +1,38 @@
+{
+  "status": "conditional signed Lorentzian coefficient in frozen repository convention",
+  "passed": true,
+  "hbar": 1.0,
+  "beta": 1.0,
+  "n_E": -0.6666666666666666,
+  "Hcorr_over_Lraw": [0.0, 3.5555555555555554],
+  "Hcorr_over_Hphase": -3.5555555555555554,
+  "Hcorr_over_Hphase_identity": "-32/(9 hbar^7)",
+  "bare_HL_over_Hphase": -1.7777777777777777,
+  "bare_HL_over_Hphase_identity": "-32/[9 hbar^7 (1+beta^2)]",
+  "beta1_bare_identity": "-16/(9 hbar^7)",
+  "local_phase_completed_raw_cL": 1.3389293521464034,
+  "local_full_correction_coefficient": -4.760637696520545,
+  "local_bare_HL_coefficient": -2.3803188482602726,
+  "raw_16cell_pair_split": 42.84573926868491,
+  "full_correction_pair_split_signed": -152.34040628865745,
+  "bare_HL_pair_split_signed": -76.17020314432872,
+  "fitting_used": false,
+  "checks": {
+    "nE_signed": true,
+    "K_phase": true,
+    "Hcorr_over_Lraw_is_plus_i_32_over_9_at_hbar1": true,
+    "Hcorr_over_Hphase_signed": true,
+    "bare_repo_HL_signed": true,
+    "beta1_bare_is_minus_16_over_9": true,
+    "local_coefficients_real": true,
+    "pair_coefficients_real": true
+  },
+  "provenance": {
+    "workflow": "lorentzian-repo-sign",
+    "workflow_run_id": 31857722477,
+    "head_sha": "f5a74346697bda40bb0c82df9c2e615fa92311b4",
+    "artifact_id": 9239557322,
+    "artifact_digest": "sha256:10f538abd68dc8945a46ec03410b5e4490a5d8e1fbbb05d56a10a56fd6220101"
+  },
+  "scope": "The sign is conditional on the already declared Thiemann correction sign and the repository definition G=H_E+(1+beta^2)H_L. A common overall sign reversal of the entire Hamiltonian constraint is physically different from flipping only H_L and does not reopen this relative sign."
+}
