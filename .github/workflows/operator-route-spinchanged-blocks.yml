@@ -1,7 +1,9 @@
 name: operator-route-spinchanged-blocks
 
+# Run only when the route-block implementation changes on the research branch.
+# PR path filters retriggered this gate on every later synchronize commit.
 on:
-  pull_request:
+  push:
     paths:
       - 'scripts/peter_weyl_operator_route_block_engine.py'
       - 'scripts/peter_weyl_operator_route_block_gate.py'
