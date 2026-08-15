@@ -6,14 +6,7 @@ on:
       - 'scripts/lorentzian_route_logical_cross_gate.py'
       - 'LORENTZIAN_ROUTE_LOGICAL_CROSS.md'
       - 'LOGICAL_ROUTE_METRIC_ORDERING.md'
-  pull_request:
-    paths:
-      - 'scripts/lorentzian_route_logical_cross_gate.py'
-      - 'LORENTZIAN_ROUTE_LOGICAL_CROSS.md'
-      - 'LOGICAL_ROUTE_METRIC_ORDERING.md'
-      - 'THEORY_STATUS.md'
-      - 'BCQG_CORE_CANDIDATE_V1.md'
-      - 'theory_gates.json'
+      - '.github/workflows/lorentzian-route-logical-cross.yml'
 
 jobs:
   verify:
