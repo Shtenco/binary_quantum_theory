@@ -1,0 +1,92 @@
+name: full-geometry-commutator
+
+on:
+  push:
+    paths:
+      - 'PETER_WEYL_FULL_GEOMETRY_COMMUTATOR_PREREGISTRATION.md'
+      - 'scripts/peter_weyl_full_geometry_channel_gate.py'
+      - 'scripts/peter_weyl_full_geometry_collect_gate.py'
+      - 'scripts/peter_weyl_lorentzian_gauss_action_gate.py'
+      - '.github/workflows/full-geometry-commutator.yml'
+  pull_request:
+    paths:
+      - 'PETER_WEYL_FULL_GEOMETRY_COMMUTATOR_PREREGISTRATION.md'
+      - 'scripts/peter_weyl_full_geometry_channel_gate.py'
+      - 'scripts/peter_weyl_full_geometry_collect_gate.py'
+      - 'scripts/peter_weyl_lorentzian_gauss_action_gate.py'
+      - '.github/workflows/full-geometry-commutator.yml'
+
+jobs:
+  channel:
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        channel: [EE, EL, LE, LL]
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: |
+          python -m py_compile scripts/peter_weyl_full_geometry_channel_gate.py
+          python -m py_compile scripts/peter_weyl_full_geometry_collect_gate.py
+          python -m py_compile scripts/peter_weyl_lorentzian_gauss_action_gate.py
+      - name: Compute raw channel
+        run: |
+          mkdir -p verification_results/full_geometry
+          python scripts/peter_weyl_full_geometry_channel_gate.py \
+            --channel "${{ matrix.channel }}" \
+            --json-output "verification_results/full_geometry/${{ matrix.channel }}.json" \
+            --state-output "verification_results/full_geometry/${{ matrix.channel }}.npz"
+      - name: Upload exact channel artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-geometry-${{ matrix.channel }}
+          path: |
+            verification_results/full_geometry/${{ matrix.channel }}.json
+            verification_results/full_geometry/${{ matrix.channel }}.npz
+          if-no-files-found: warn
+          compression-level: 6
+
+  collect:
+    needs: channel
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numpy
+        run: python -m pip install numpy
+      - name: Download channel artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: full-geometry-*
+          path: verification_results/full_geometry
+          merge-multiple: true
+      - name: List received evidence
+        run: find verification_results/full_geometry -maxdepth 2 -type f -print
+      - name: Collect signed commutator
+        run: |
+          python scripts/peter_weyl_full_geometry_collect_gate.py \
+            --input-dir verification_results/full_geometry \
+            --json-output verification_results/PETER_WEYL_FULL_GEOMETRY_COMMUTATOR.json \
+            --state-output verification_results/PETER_WEYL_FULL_GEOMETRY_COMMUTATOR.npz
+      - name: Upload collected exact geometry commutator
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-geometry-commutator
+          path: |
+            verification_results/PETER_WEYL_FULL_GEOMETRY_COMMUTATOR.json
+            verification_results/PETER_WEYL_FULL_GEOMETRY_COMMUTATOR.npz
+          if-no-files-found: warn
+          compression-level: 6
