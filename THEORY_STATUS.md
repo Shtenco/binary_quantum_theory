@@ -1,385 +1,235 @@
-# Theory status — canonical ledger
+# Theory status — BCQG Candidate Theory v1.2
 
 **Frozen working frontier: 2026-08-15.**
 
-The repository now develops **BCQG Candidate Theory v1.1**: a mathematically/computationally specified candidate quantum-gravity theory. It is **not** experimentally established and does not by itself establish antigravity, a fifth force, a new particle, or a dimensional physical energy scale.
+BCQG v1.2 is a computable candidate quantum-gravity architecture. It is not experimentally established and does not by itself establish a fifth force, antigravity, a new particle, or an absolute physical scale.
 
 Canonical entry points:
 
 ```text
 START_HERE.md
-BCQG_CANDIDATE_THEORY_V1_1.md
-BCQG_CORE_CANDIDATE_V1.md
+BCQG_CANDIDATE_THEORY_V1_2.md
+BCQG_CORE_CANDIDATE_V1_2.md
 THEORY_STATUS.md
 theory_gates.json
 ```
 
----
-
-## 1. Kinematic and dimensional core — tested finite / conditional continuum
+## 1. Kinematics / topology — definition + tested finite
 
 The frozen chain is
 
 ```text
-binary routes
--> q=2
--> octahedral S2 local shell
--> minimal flag / recursive PL S3
--> d_space~3
--> z~1
--> 4D-like history.
+binary route family -> q=2 -> octahedral S2 local link
+-> chosen minimal flag 16-cell boundary -> closed orientable PL S3
+-> recursive PL refinements.
 ```
 
-Numerical anchors:
+The PL completion is part of the candidate definition; uniqueness from the bare causal graph is not claimed.
+
+Finite scaling anchors:
 
 ```text
-d_H          = 2.999229782
-z            = 0.998281156
-d_s(slice)   = 3.004393867
-d_s(history) ~ 4.004393867
-16-cell seed Betti=(1,0,0,1)
-PL tetrahedra: 16 -> 384 -> 9216.
+d_H=2.999229782
+z=0.998281156
+d_s(slice)=3.004393867
+d_s(history)~4.004393867
 ```
 
-The minimal flag globalization is part of the candidate definition. The stronger statement that the bare causal graph uniquely forces every possible nonflag globalization is not asserted.
-
----
-
-## 2. Physical Euclidean ordering — preregistered finite PASS
-
-The production Euclidean operator is
+## 2. Euclidean geometry — tested finite PASS
 
 \[
-\boxed{H_E^{sine}=(T-T^\dagger)/(2i)},
-\qquad
-\boxed{K=[V,H_E^{sine}]}.
+E=H_E^{sine}=(T-T^\dagger)/(2i),\qquad K=[V,E].
 \]
 
-The preregistered physical-sine two-node gate gives
+Preregistered two-node result:
 
 ```text
-support(H0)=support(H1)=37
-||H0||=2.1712581763270546
-||H1||=2.171258176327055
-support([H0,H1])=514
+||H0||=||H1||=2.171258176327055
 ||[H0,H1]||=2.8794538147049544
 p_cross=1.0056948923496356
 p_GG=2.007490390559045
 p_joint=1.0076444430189475
-Delta_joint(1/64)=0.020030338775070305.
+Delta_joint(1/64)=0.020030338775070305
 ```
 
-No channel-dependent normalization/subtraction or post-result threshold change was used.
+The logical selection rule `P E P=0` remains exact on the tested all-`j=1/2` logical sector.
 
----
+## 3. Lorentzian sector — corrected production definition
 
-## 3. Quantum route normal — tested finite, including spin-changed sectors
-
-Expectation-first square-root maps are nonlinear on superpositions and are retained only as semiclassical controls.
-
-The quantum candidate is
+Raw structural operator:
 
 \[
-\boxed{
-R_{op}[N]=\frac12\left\{N,
-\sqrt{\hat Q^{ab}\hat P_a\hat P_b}
-\right\}.
-}
+L_{raw}\sim\mathrm{Tr}[C(K)C(K)C(V)].
 \]
 
-Positivity follows from
+Environment-unbiased one-body result:
 
 \[
-\hat Q^{ab}\hat P_a\hat P_b
-=\sum_iB_i^\dagger B_i\ge0.
+L_{raw,1body}=i\,1.3389293521464034Y+O(10^{-16}).
 \]
 
-The initial exact shared `4x4` sector gives
+The five nested Poisson brackets fix the universal `(1/i)^5=-i` phase. But exact conditional MITM blocks demonstrate that full unsymmetrized `L_raw` is not globally anti-Hermitian. Therefore v1.2 defines
+
+\[
+\boxed{S=-\frac{i}{2}(L_{raw}-L_{raw}^\dagger)}
+\]
+
+and at `beta=hbar=1`
+
+\[
+\boxed{G=-\frac23E-\frac{32}{9}S}.
+\]
+
+The historical `G=(-2/3)E+(32i/9)L_raw` is only the reduction on already anti-Hermitian raw sectors. The accepted one-body correction remains `-4.760637696520545 Y` in structural units.
+
+## 4. Multi-node Lorentzian evidence — tested finite
+
+The recovered diagonal-environment Walsh block contains finite pseudoscalar neighbor correlations. With nodes 3,4 fixed at K=0:
 
 ```text
-Delta_R(1/64)=8.205159710207802e-7
-p_R=0.9999594708960342.
+YII    = +i 0.3359014033398999
+YZ1I   = -i 0.00702861722247964
+YIZ2   = +i 0.002338130606598994
+YZ1Z2  = +i 0.004676261213197787
 ```
 
-More importantly, five distinct genuine higher-spin sectors reached by `H_E^sine` give
+The Hermitian completion removes the real unsymmetrized X/Z pieces and keeps the imaginary pseudoscalar sector. Off-diagonal environment transitions remain open.
+
+## 5. Route normal — exhaustive tested finite PASS
+
+Production route operator:
+
+\[
+R_{op}[N]=\frac12\{N,\sqrt{\hat Q^{ab}\hat P_a\hat P_b}\},
+\qquad \hat Q^{ab}\hat P_a\hat P_b=\sum_iB_i^\dagger B_i\ge0.
+\]
+
+The old five-sector sample has now been superseded by an exhaustive one-step `H_E^sine`-reached regression:
 
 ```text
-p_R in [0.9998813243, 0.9999820816]
-endpoint defects in [9.37065e-7, 3.63658e-6]
-minimum checked spectral eigenvalue ~= -1.07e-14.
+H_E basis support                 41
+distinct fixed-spin sectors       33
+nonzero power-law sectors         30
+numerical-zero sectors             3
+p_min=0.9997944068141106
+p_max=0.9999830934452917
+max endpoint=1.405841033798129e-05
+minimum symbol eigenvalue=-1.0658141036401503e-14
 ```
 
-Thus the operator-first HDA mechanism survives actual geometry change on the checked sectors rather than only a logical expectation-valued surrogate.
+All 33 distinct sectors pass the frozen criteria; the negative minimum is roundoff-consistent with zero.
 
-Evidence:
-
-```text
-verification_results/PETER_WEYL_OPERATOR_ROUTE_SPINCHANGED_BLOCKS.json
-run 31858615323
-artifact 9244277324
-sha256:c1af8de00183fddf328f6bdfba386e2320b842e10d3de98d90ad150b0876213c
-```
-
----
-
-## 4. Lorentzian amplitude, phase, sign and relative magnitude
-
-The exact environment-unbiased raw logical one-body amplitude is
-
-\[
-\boxed{L_{raw,1body}=i\,1.3389293521464034\,Y+O(10^{-16})}.
-\]
-
-The nested K-K-V structure contains five Poisson brackets, hence
-
-\[
-\boxed{(1/i)^5=-i}.
-\]
-
-The code-bound Euclidean normalization is
-
-\[
-\boxed{H_E^{phys}=-\frac{2}{3\hbar}E_{raw}}.
-\]
-
-The Thiemann correction then fixes the Lorentzian relative sign and magnitude upstream. At `beta=hbar=1`:
-
-\[
-\boxed{
-G_v=-\frac23E_v+\frac{32i}{9}L_{raw,v}.
-}
-\]
-
-Equivalently, relative to the phase-completed Hermitian block `H_phase=-iL_raw`,
-
-```text
-bare repo H_L/H_phase = -16/9
-full beta=1 correction/H_phase = -32/9.
-```
-
-These coefficients are not HDA fit parameters.
-
----
-
-## 5. New finite result — Lorentzian multi-node environment correlations
-
-The successful exact MITM environment-trace artifacts were reassembled before the final environment trace.
-
-With source node `0`, nodes `3,4` fixed at `K=0`, and nodes `1,2` varied over `K=0/2`, the exact diagonal-environment Walsh decomposition gives coefficient-vector norms
-
-```text
-source local             = 0.33709171624286727
-source x node1           = 0.03631787483605024
-source x node2           = 0.006983526478664483
-source x node1 x node2   = 0.01396705295732858.
-```
-
-Dominant raw pseudoscalar terms are
-
-```text
-Y I I   = +i 0.335901403339900
-Y Z1 I  = -i 0.007028617222480
-Y I Z2  = +i 0.002338130606599
-Y Z1 Z2 = +i 0.004676261213198.
-```
-
-The reconstruction error is at most `1.11e-16`; worker physical leakage is at most `6.70e-16`.
-
-Interpretation: the environment-unbiased one-body `Y` is the partial-trace result of a finite logical structure that contains neighbor-dependent diagonal correlations before tracing.
-
-Scope restriction: the historical workers measured diagonal environment matrix elements only. Off-diagonal environment transitions remain unmeasured, so these coefficients are **not yet the complete physical multi-qubit Lorentzian Hamiltonian**.
-
-Evidence:
-
-```text
-LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md
-verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_WALSH_NODE012.json
-```
-
----
-
-## 6. Signed operator-first full-HDA closure — conditional theorem
-
-The current full candidate is
-
-\[
-\boxed{H[N]=G[N]+R_{op}[N]}.
-\]
-
-For smooth lapse probes
-
-\[
-N=\bar N+\epsilon n,
-\qquad
-M=\bar M+\epsilon m,
-\]
-
-the pure geometry antisymmetric smear satisfies
-
-\[
-N_0M_1-N_1M_0=O(\epsilon)
-\]
-
-with no zeroth-order term.
-
-For a geometry change in the operator-first route sector, writing
-
-\[
-\Delta R_M=\frac{\bar M}{\epsilon}\Delta\widetilde\Omega+\Delta S_m,
-\qquad
-\Delta R_N=\frac{\bar N}{\epsilon}\Delta\widetilde\Omega+\Delta S_n,
-\]
-
-the apparent inverse-epsilon mixed term cancels algebraically in
-
-\[
-N_v\Delta R_M-M_v\Delta R_N.
-\]
-
-At every fixed regulator-safe finite Peter-Weyl cutoff, the local signed geometry operator is bounded. Since the diffeomorphism target on the frozen WKB family is `O(epsilon^-1)`,
-
-\[
-\boxed{C_{G\times R}/D=O(\epsilon)},
-\qquad
-\boxed{C_{GG}/D=O(\epsilon^2)}.
-\]
-
-Together with the tested operator-first route convergence on genuine spin-changed sectors,
-
-\[
-\boxed{
-\Delta_{full}
-=\Delta_{R,op}+O(\epsilon)+O(\epsilon^2)
-\longrightarrow0
-}
-\]
-
-on the declared fixed-cutoff WKB habitat.
-
-This is a **conditional asymptotic closure theorem**, not an unconditional theorem on the full Hilbert space.
-
-Evidence:
-
-```text
-FULL_OPERATOR_FIRST_HDA_CERTIFICATE.md
-scripts/full_operator_first_hda_theorem_gate.py
-verification_results/PETER_WEYL_OPERATOR_ROUTE_SPINCHANGED_BLOCKS.json
-```
-
----
-
-## 7. Conditional simultaneous-cutoff path
-
-The frozen polynomial norm envelope is
-
-```text
-C_GxR/D = O(epsilon Jmax^(13/2))
-C_GG/D  = O(epsilon^2 Jmax^13).
-```
+## 6. Exact parity structure — proved inside declared operator algebra
 
 For
 
 \[
-J_{max}\sim\epsilon^{-\alpha},
+\Pi=(-1)^{\sum_e2j_e}
 \]
 
-both vanish for
-
-\[
-0<\alpha<2/13.
-\]
-
-BCQG v1.1 freezes the explicit interior path
-
-\[
-\boxed{\alpha=1/8},
-\]
-
-so
-
-\[
-\boxed{C_{G\times R}/D=O(\epsilon^{3/16})},
-\qquad
-\boxed{C_{GG}/D=O(\epsilon^{3/8})}.
-\]
-
-This remains conditional on the norm envelope and is not a uniform arbitrary-path theorem.
-
----
-
-## 8. Remaining channel-resolved finite falsifier
-
-The exact geometry commutator is preregistered as
-
-\[
-\boxed{
-[G_0,G_1]
-=\frac49EE-\frac{64i}{27}(EL+LE)-\frac{1024}{81}LL.
-}
-\]
-
-with walls
+we have
 
 ```text
-EE : Jmax=5/2
-EL : Jmax=9/2
-LE : Jmax=9/2
-LL : Jmax=13/2.
+E odd
+S even
+R_op even
+D even.
 ```
 
-`EE` is complete:
+Therefore on the even seed:
 
 ```text
-support=514
-norm=2.879453814704955.
+even: EE, SS, SxR, route/D
+odd : ES, SE, ExR.
 ```
 
-The original monolithic `EL/LE/LL` workers exhausted the six-hour runner wall before writing artifacts. This is a computational timeout, **not a physics FAIL**.
+Even and odd outputs are orthogonal. Consequently a mixed odd anomaly cannot be concealed by destructive interference with the even target.
 
-The finite five-point full collector remains an important independent falsifier for:
+## 7. Spin-cutoff saturation — proved for the frozen finite-depth habitat
 
-- unexpectedly large finite Lorentzian coefficients;
-- scalar-projection/factor-ordering mistakes;
-- full `G x R_op` implementation errors;
-- habitat-specific anomalies invisible to the norm-level asymptotic theorem.
-
-Frozen thresholds remain unchanged:
+The exact support count gives
 
 ```text
-p_cross in [0.75,1.25]
-p_GG    in [1.75,2.25]
-p_joint in [0.75,1.25]
-Delta_joint(1/64)<0.05.
+max HE hits/link = 2
+max L hits/link  = 6
+max HH hits/link = 12
 ```
 
----
-
-## 9. IR physical content and predictions
-
-Conditional on first-class continuum HDA and a nondegenerate `D=3` metric sector, the retained DeWitt/Dirac chain gives
+starting from `j=1/2`, hence
 
 \[
-\boxed{
-\text{one massless spin-2 tensor sector with two TT helicities}
-}
+\boxed{J_{max}^{safe}=13/2}.
 \]
 
-and no non-decoupling scalar gravitational mode.
+`S` inherits the same L/L-dagger support and `R_op` preserves link irreps. Thus for the preregistered all-`j=1/2` finite-depth two-node calculation
 
-Core dimensionless predictions are collected in `BCQG_CANDIDATE_THEORY_V1_1.md` and include:
+\[
+\boxed{J_{max}\ge13/2\Rightarrow\text{spin-cutoff remainder}=0.}
+\]
 
-- `d_space -> 3`, `z -> 1`, 4D-like history;
-- the full-HDA regulator hierarchy above;
-- first-order logical Euclidean silence;
-- a signed microscopic orientation/chirality sector;
-- entangling two-node operator-first route channels;
-- finite Lorentzian neighbor/multi-node logical correlations before environment tracing;
-- positivity of the route symbol on physical spin sectors.
+This is stronger than the old conditional `Jmax~epsilon^-1/8` envelope for this habitat. The latter is now an extension tool for growing-spin/depth/refinement families.
 
-Absolute force strengths, eV splittings, ranges, meters and Newton normalization are **not** predicted until physical scale setting and matter coupling are derived.
+## 8. Full operator-first HDA — cutoff-saturated conditional closure
 
----
+For smooth lapse probes `N=Nbar+epsilon*n`, `M=Mbar+epsilon*m`, the pure geometry antisymmetric smear has no zeroth-order term. The dangerous mixed route inverse-epsilon piece cancels exactly before matrix elements.
+
+With the frozen WKB target `D=O(epsilon^-1)`:
+
+\[
+C_{G\times R}/D=O(\epsilon),\qquad C_{GG}/D=O(\epsilon^2).
+\]
+
+Since the exhaustive route regression has `p~1` and the cutoff remainder is zero above `13/2`, the v1.2 core result is
+
+\[
+\boxed{\Delta_{full}=O(\epsilon^{\min(p,1)})\to0}
+\]
+
+on the declared two-node WKB habitat.
+
+This closes the principal HDA bridge **on that controlled habitat**. It is not a uniform theorem for arbitrary initial spins, growing operator depth, arbitrary beta, or all collective states.
+
+## 9. Remaining physical finite channel falsifier
+
+The Hermitian geometry commutator is preregistered as
+
+\[
+\boxed{[G_0,G_1]=\frac49EE+\frac{64}{27}(ES+SE)+\frac{1024}{81}SS}
+\]
+
+with sufficient walls
+
+```text
+EE 5/2
+ES 9/2
+SE 9/2
+SS 13/2.
+```
+
+Completing `ES/SE/SS` remains valuable for detecting factor-ordering/scalar-projection/implementation anomalies and unusually large finite coefficients. It is an independent finite falsifier, not the logical foundation of the asymptotic theorem. A timeout is not a physics FAIL.
+
+## 10. Conditional GR universality
+
+If the collective IR has a nondegenerate local D=3 metric and the standard first-class HDA, then HDA fixes the inverse-DeWitt coefficient `c=1/2`; GR constraint rank is `3_G+3_D+1_H`; Dirac counting leaves two local configuration modes; and a local two-derivative tensor phase has the relativistic cone.
+
+This remains conditional. A BF/topological first-class rank is a FAIL even if a subset of commutators closes.
+
+## 11. Open frontier
+
+Still open:
+
+1. uniqueness of the Hermitian factor ordering;
+2. exhaustive finite route test for all `S`-reached sectors;
+3. off-diagonal multi-node Lorentzian blocks;
+4. direct `ES/SE/SS` finite calibration;
+5. independent habitats and collective states;
+6. uniform refinement theorem with growing spin/depth;
+7. collective IR first-class rank/reducibility;
+8. matter coupling, Newton normalization and physical scale;
+9. experiment.
+
+Mirror/infoton/foam/GW-resonance branches remain extensions and are not used to certify the gravity core.
 
 ## Canonical status statement
 
-> **BCQG Candidate Theory v1.1 is conditionally closed at the signed operator-first asymptotic HDA level on the declared finite-cutoff WKB habitat and explicit `Jmax~epsilon^-1/8` continuum trajectory. It has preregistered physical-sine finite HDA evidence, operator-first route PASSes on genuine spin-changed sectors, upstream-fixed Lorentzian phase/sign/magnitude, an exact nonzero environment-unbiased Lorentzian one-body amplitude, and newly recovered finite multi-node diagonal correlations. The principal remaining work is not to invent another Hamiltonian, but to attack the frozen channel-resolved finite falsifier, off-diagonal environment blocks, independent habitats, a stronger uniform joint limit, and physical Newton/matter scale setting.**
+> **BCQG Candidate Theory v1.2 has a single Hermitian production Hamiltonian, an exact finite spin wall at Jmax=13/2 for the preregistered all-j=1/2 two-node habitat, exhaustive route evidence over all 33 one-step Euclidean-reached sectors, and a cutoff-saturated operator-first HDA composition theorem on that habitat. The remaining frontier is extension and falsification — not invention of another core Hamiltonian.**
