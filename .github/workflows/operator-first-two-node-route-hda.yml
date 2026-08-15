@@ -1,17 +1,14 @@
 name: operator-first-two-node-route-hda
 
+# Fast but nontrivial Peter-Weyl gate: run on branch pushes only when its
+# operator implementation changes. This avoids duplicate PR synchronize runs.
 on:
   push:
     paths:
       - 'scripts/operator_first_two_node_route_hda_gate.py'
       - 'scripts/operator_first_route_hda_gate.py'
-  pull_request:
-    paths:
-      - 'scripts/operator_first_two_node_route_hda_gate.py'
-      - 'ROUTE_OPERATOR_FIRST_QUANTUM_SELECTION.md'
-      - 'THEORY_STATUS.md'
-      - 'BCQG_CORE_CANDIDATE_V1.md'
-      - 'theory_gates.json'
+      - 'scripts/k5_peter_weyl_safe_hda_column.py'
+      - '.github/workflows/operator-first-two-node-route-hda.yml'
 
 jobs:
   verify:
@@ -22,8 +19,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install numpy
-        run: python -m pip install numpy
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
       - name: Syntax
         run: python -m py_compile scripts/operator_first_two_node_route_hda_gate.py
       - name: Exact two-node operator-first route HDA
