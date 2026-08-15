@@ -1,0 +1,24 @@
+name: research-source-bundle-windows
+
+on:
+  push:
+    paths:
+      - '.github/workflows/research-source-bundle-windows.yml'
+
+jobs:
+  bundle:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upload executable research source snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: bcqg-research-source-windows
+          path: |
+            scripts
+            requirements.txt
+            theory_gates.json
+            verification_results/LORENTZIAN_REPO_SIGN.json
+          if-no-files-found: error
+          compression-level: 6
