@@ -1,0 +1,39 @@
+{
+  "status": "Hermitian completion of full Lorentzian raw operator",
+  "passed": true,
+  "definition": "H_phase_sym=-i/2 (L_raw-L_raw^dagger)",
+  "beta_hbar_1_full_correction": "Hcorr_sym=-(32/9)H_phase_sym=(16 i/9)(L_raw-L_raw^dagger)",
+  "reduction_when_raw_is_antihermitian": "if L_raw^dagger=-L_raw then Hcorr_sym=(32 i/9)L_raw",
+  "source_evidence": "verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_WALSH_NODE012.json",
+  "phase_completed_conditional_coefficients": {
+    "YI1I2": 0.3359014033398999,
+    "YZ1I2": -0.00702861722247964,
+    "YI1Z2": 0.002338130606598994,
+    "YZ1Z2": 0.004676261213197787
+  },
+  "removed_unsymmetrized_hermitian_raw_coefficients": {
+    "XI1I2": -0.018797139716995315,
+    "ZI1I2": 0.02115986607489263,
+    "XZ1I2": 0.028667867730953915,
+    "ZZ1I2": -0.021159866074892942,
+    "XI1Z2": 0.006580485342639476,
+    "XZ1Z2": 0.013160970685278613
+  },
+  "signed_full_beta1_conditional_coefficients": {
+    "YI1I2": -1.1943161007640883,
+    "YZ1I2": 0.02499063901326094,
+    "YI1Z2": -0.008313353267907534,
+    "YZ1Z2": -0.016626706535814353
+  },
+  "environment_unbiased_onebody_signed_Y": -4.760637696520545,
+  "checks": {
+    "source_evidence_passed": true,
+    "conditional_pseudoscalar_anchors_preserved": true,
+    "conditional_real_XZ_are_removed": true,
+    "signed_pseudoscalar_anchors": true,
+    "historical_onebody_reduction": true,
+    "hermiticity_identity": true,
+    "unitary_covariance_preserved": true
+  },
+  "scope": "Minimal Hermitian projection of the existing raw ordering. It fixes the candidate operator definition but does not prove uniqueness among all possible symmetric microscopic factor orderings. The physical finite HDA must be rerun with this completed operator."
+}
