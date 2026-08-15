@@ -19,14 +19,16 @@ Read these first, in this order:
 1. `BCQG_CORE_CANDIDATE_V1.md` — compact definition of the current gravity candidate;
 2. `THEORY_STATUS.md` — current human-readable proof/status ledger;
 3. `theory_gates.json` — machine-readable gate ledger;
-4. `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md` — fixed-cutoff HDA composition theorem;
-5. `JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md` — explicit conditional simultaneous-cutoff path;
-6. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` — exact nonzero raw Lorentzian logical amplitude;
-7. `LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md` — five-bracket canonical complex phase;
-8. `LORENTZIAN_16CELL_GLOBAL_ASSEMBLY.md` — globally oriented 16-cell interpretation;
-9. `PETER_WEYL_TWO_NODE_SINE_HDA_PREREGISTRATION.md` — frozen next finite HDA falsifier.
+4. `PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md` — preregistered physical Euclidean sine-order two-node HDA PASS;
+5. `ROUTE_OPERATOR_FIRST_QUANTUM_SELECTION.md` — linear positive operator-first quantum route selection and matrix HDA;
+6. `EUCLIDEAN_SINE_NORMALIZATION_MATCH.md` — code-bound canonical Euclidean relative normalization;
+7. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` — exact nonzero raw Lorentzian logical amplitude;
+8. `LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md` — five-bracket canonical complex phase;
+9. `LORENTZIAN_REAL_NORMALIZATION_LEDGER.md` — Lorentzian magnitude inherited from Euclidean normalization;
+10. `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md` — fixed-cutoff HDA composition theorem;
+11. `JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md` — explicit conditional simultaneous-cutoff path.
 
-The root `README.md` is a long pedagogical narrative and contains historical layers. When it conflicts with the files above, the canonical files above win.
+The root `README.md` is a long pedagogical narrative and contains historical layers. When it conflicts with the canonical files above, the canonical files win.
 
 ---
 
@@ -43,7 +45,7 @@ binary q=2
  -> physical H_E^sine
  -> K=[V,H_E^sine]
  -> Lorentzian K-K-V
- -> geometry-dependent route-normal generator
+ -> linear positive operator-first route normal R_op
  -> HDA
  -> GR-like tensor IR candidate.
 ```
@@ -58,7 +60,7 @@ conditional on the declared polynomial norm envelope.
 
 ---
 
-## 3. Current exact/finite anchors
+## 3. Current exact / finite anchors
 
 ### Dimension / topology
 
@@ -71,42 +73,71 @@ d_s(history) ~ 4.004393867
 16-cell seed Betti = (1,0,0,1)
 ```
 
-### Historical plus-order Euclidean two-node HDA control
-
-```text
-H_plus = (T+T^dagger)/2
-Delta_joint(1/64)=0.014707752821092098
-p_cross=1.0058917161144039
-p_EE=2.0074903905590453
-p_joint=1.0071260819282668
-```
-
-These numbers are **historical structural controls**. They must not be silently relabelled as the physical sine-order result.
-
-### Physical Euclidean ordering
-
-The current Euclidean/Lorentzian stack uses
+### Physical Euclidean sine-order two-node HDA — preregistered PASS
 
 ```text
 H_E^sine=(T-T^dagger)/(2i)
-K_sine=[V,H_E^sine].
+K_sine=[V,H_E^sine]
+
+||H0||=||H1||=2.171258176327055
+||[H0,H1]||=2.8794538147049544
+p_cross=1.0056948923496356
+p_GG=2.007490390559045
+p_joint=1.0076444430189475
+Delta_joint(1/64)=0.020030338775070305
 ```
 
-The dedicated two-node sine HDA gate is preregistered in
+Provenance:
 
 ```text
-PETER_WEYL_TWO_NODE_SINE_HDA_PREREGISTRATION.md
+GitHub Actions run 31855735615
+artifact digest sha256:21e2da508fd583d9007a5bd400d074e8cee39990656e6c75e5968d2601323526
 ```
 
-and implemented in
+The older `H_plus=(T+T^dagger)/2` endpoint `0.014707752821092098` is historical only and must not be relabelled as the physical result.
+
+### Quantum route operator-first HDA
+
+The production candidate is
 
 ```text
-scripts/peter_weyl_two_node_euclidean_sine_joint_gate.py.
+R_op[N] = 1/2 {N, sqrt(Qhat^{ab} P_a P_b)}.
 ```
 
-### Lorentzian raw amplitude
+Expectation-first state-dependent square-root maps are nonlinear on superpositions and remain semiclassical surrogates only.
 
-At `Jmax=7/2`, with all 16 logical environments and the full S4 orbit,
+Exact logical matrix control:
+
+```text
+operator-first route defect(epsilon=1/64, carrier=8)=3.837772425e-7
+p=0.999960897
+```
+
+The PASS is robust across five logical spinors and carriers `2,4,8,16`.
+
+### Euclidean / Lorentzian relative normalization
+
+The production `oriented_specs` and `T_sequences` match the canonical tetrahedral epsilon combinatorics. In the original fundamental-trace convention,
+
+```text
+H_E^phys = n_E H_sine^raw
+n_E = -2/(3 hbar).
+```
+
+Therefore the Lorentzian K-K-V magnitude is not an independent fit parameter. At `hbar=1`,
+
+```text
+full beta=1 correction magnitude = 32/9
+bare repository H_L magnitude    = 16/9
+```
+
+when the total constraint is written `H_E+(1+beta^2)H_L`.
+
+These are relative structural coefficients, not physical energies.
+
+### Lorentzian raw amplitude and phase
+
+At `Jmax=7/2`, all 16 logical environments and the full S4 orbit give
 
 ```text
 L_raw,1body = i*1.3389293521464034*Y + O(1e-16)
@@ -114,56 +145,19 @@ S4 covariance defect = 1.3976239359266602e-15
 physical basis/volume leakage = 6.532094795930893e-16.
 ```
 
-### Lorentzian complex phase
-
-For the declared nested Thiemann bracket structure,
+The declared nested Thiemann stack contains five Poisson brackets, hence
 
 ```text
-{A,{V,H_E}} {A,{V,H_E}} {A,V}
+(1/i)^5=-i
 ```
 
-there are five Poisson brackets, so
+and
 
 ```text
-(1/i)^5=-i.
+-i L_raw = 1.3389293521464034 Y + O(1e-16).
 ```
 
-Hence the phase-completed finite logical block is Hermitian:
-
-```text
--i L_raw = 1.3389293521464034 Y + O(1e-16)
-```
-
-before the remaining real normalization/sign.
-
-### Global oriented 16-cell assembly
-
-Exact facet orientation is
-
-```text
-eta_v=(-1)^popcount(v).
-```
-
-Therefore
-
-```text
-H_L,1body = g_R*c_L*sum_v eta_v Y_v
-           = 16*g_R*c_L*Sigma.
-```
-
-For the ideal fixed-orientation mirror pair the structural splitting is
-
-```text
-42.84573926868491 * |g_R|.
-```
-
-This is a longitudinal orientation field, **not a mediator mass or a fifth force**.
-
----
-
-## 4. Corrected Peter-Weyl anisotropy
-
-Current audited values:
+### Corrected Euclidean anisotropy
 
 ```text
 A_rel = 0.9644798301915488
@@ -173,100 +167,85 @@ Delta_aniso,ret = 2.738458660882762
 648 states = 392 positive + 256 negative.
 ```
 
-The older
-
-```text
-Delta_aniso,ret = 3.6832250321658044
-```
-
-is retired and must not be used.
+The older `Delta_aniso,ret=3.6832250321658044` is retired.
 
 ---
 
-## 5. What is gravity core versus extension
+## 4. Current single decisive gravity gate
 
-### Gravity core
+The separate Euclidean-ordering and route-ordering questions are no longer the immediate bottlenecks.
+
+The next full operator is
+
+```text
+H_full[N]
+ = H_E^sine[N]
+ + (1+beta^2) H_L[N]
+ + R_op[N].
+```
+
+The immediate killer calculation is
+
+```text
+[H_full[N], H_full[M]]
+ -> i hbar D[sharp_Q(N dM - M dN)]
+```
+
+on the same graph-changing two-node Peter-Weyl habitat with:
+
+```text
+full spin-changing H_L amplitudes;
+canonical five-bracket phase;
+upstream-fixed relative magnitude;
+operator-first route square root;
+nonconstant off-shell lapses;
+no channel-dependent subtraction or post-hoc fit.
+```
+
+A PASS moves the frontier to independent habitats, collective-spin/refinement scaling and a stronger simultaneous-cutoff theorem. A FAIL stays recorded and identifies the anomalous full Lorentzian channel.
+
+---
+
+## 5. Gravity core versus extensions
+
+Gravity core:
 
 - q=2 selector and PL manifold completion;
 - dimension/dynamical scaling;
-- SU(2)/Peter-Weyl quantum geometry;
-- physical sine Euclidean ordering;
+- physical sine-Hermitian SU(2)/Peter-Weyl geometry;
 - Lorentzian K-K-V construction;
-- geometry-dependent route-normal generator;
-- HDA / simultaneous regulator limits;
-- IR tensor/DeWitt interpretation.
+- operator-first route-normal generator;
+- HDA and regulator limits;
+- IR DeWitt/tensor interpretation.
 
-### Separate extensions
+Separate extensions, not evidence for the gravity core:
 
-These are **not** evidence for the gravity core:
-
-- mirror force / antigravity-like fifth-force branch;
+- mirror-force / antigravity-like branch;
 - `infoton` route boson;
 - conditional `P_delta_g(k)~k^1.003414` vacuum spectrum;
 - GW-driven route-mode resonance;
-- realistic matter/chirality model.
+- realistic matter/chirality completion.
 
 ---
 
-## 6. Current decisive gates
-
-The immediate research order is:
-
-```text
-A. physical H_E^sine two-node route HDA
-B. real Lorentzian normalization/sign + full factor ordering
-C. completed two-node H_E^sine + H_L + R_Q HDA
-D. independent habitats / collective-spin / joint-cutoff scaling.
-```
-
-Do not reopen already separated questions unless one of these gates falsifies an upstream assumption.
-
----
-
-## 7. Reproduction shortcuts
-
-Machine ledger:
+## 6. Reproduction shortcuts
 
 ```bash
 python scripts/verify_theory_gates.py
 python scripts/canonical_ledger_consistency_gate.py
-```
-
-Joint cutoff:
-
-```bash
-python scripts/joint_cutoff_diagonal_gate.py
-```
-
-Lorentzian phase:
-
-```bash
-python scripts/lorentzian_commutator_phase_gate.py
-```
-
-Global 16-cell Lorentzian assembly:
-
-```bash
-python scripts/lorentzian_16cell_global_assembly_gate.py
-```
-
-Lorentzian × route logical ordering discriminator:
-
-```bash
-python scripts/lorentzian_route_logical_cross_gate.py
-```
-
-Physical sine two-node HDA:
-
-```bash
 python scripts/peter_weyl_two_node_euclidean_sine_joint_gate.py
+python scripts/operator_first_route_hda_gate.py
+python scripts/euclidean_sine_normalization_match_gate.py
+python scripts/lorentzian_commutator_phase_gate.py
+python scripts/lorentzian_real_normalization_gate.py
+python scripts/joint_cutoff_diagonal_gate.py
 ```
 
 ---
 
-## 8. Reporting rule
+## 7. Reporting rule
 
-Every result should be labelled as one of:
+Every result is labelled as one of:
 
 ```text
 proved
@@ -275,6 +254,4 @@ tested_finite
 open
 ```
 
-A finite gate is not an experiment. A conditional continuum inference is not an exact theorem. A successful regression target is not an independent observation.
-
-That distinction is part of the candidate theory, not a disclaimer added after the fact.
+A finite gate is not an experiment. A conditional continuum inference is not an exact theorem. A successful regression is not an independent observation.
