@@ -1,0 +1,102 @@
+name: lorentzian-fullstate-24-windows
+
+on:
+  push:
+    paths:
+      - '.github/workflows/lorentzian-fullstate-24-windows.yml'
+
+jobs:
+  triple:
+    runs-on: windows-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        include:
+          - {a: 2, b: 3, c: 4, s: 1, tag: '234'}
+          - {a: 2, b: 4, c: 3, s: -1, tag: '243'}
+          - {a: 3, b: 2, c: 4, s: -1, tag: '324'}
+          - {a: 3, b: 4, c: 2, s: 1, tag: '342'}
+          - {a: 4, b: 2, c: 3, s: 1, tag: '423'}
+          - {a: 4, b: 3, c: 2, s: -1, tag: '432'}
+          - {a: 1, b: 3, c: 4, s: -1, tag: '134'}
+          - {a: 1, b: 4, c: 3, s: 1, tag: '143'}
+          - {a: 3, b: 1, c: 4, s: 1, tag: '314'}
+          - {a: 3, b: 4, c: 1, s: -1, tag: '341'}
+          - {a: 4, b: 1, c: 3, s: -1, tag: '413'}
+          - {a: 4, b: 3, c: 1, s: 1, tag: '431'}
+          - {a: 1, b: 2, c: 4, s: 1, tag: '124'}
+          - {a: 1, b: 4, c: 2, s: -1, tag: '142'}
+          - {a: 2, b: 1, c: 4, s: -1, tag: '214'}
+          - {a: 2, b: 4, c: 1, s: 1, tag: '241'}
+          - {a: 4, b: 1, c: 2, s: 1, tag: '412'}
+          - {a: 4, b: 2, c: 1, s: -1, tag: '421'}
+          - {a: 1, b: 2, c: 3, s: -1, tag: '123'}
+          - {a: 1, b: 3, c: 2, s: 1, tag: '132'}
+          - {a: 2, b: 1, c: 3, s: 1, tag: '213'}
+          - {a: 2, b: 3, c: 1, s: -1, tag: '231'}
+          - {a: 3, b: 1, c: 2, s: -1, tag: '312'}
+          - {a: 3, b: 2, c: 1, s: 1, tag: '321'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Exact full-state ordered triple
+        shell: bash
+        run: |
+          mkdir -p verification_results/lorentzian_fullstate_24_windows
+          python scripts/peter_weyl_lorentzian_fullstate_triple_worker.py \
+            --a ${{ matrix.a }} --b ${{ matrix.b }} --c ${{ matrix.c }} \
+            --coefficient ${{ matrix.s }} --source 0 \
+            --json-output verification_results/lorentzian_fullstate_24_windows/T_${{ matrix.tag }}.json \
+            --state-output verification_results/lorentzian_fullstate_24_windows/T_${{ matrix.tag }}.npz
+      - name: Upload full-state triple
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-fullstate-win-${{ matrix.tag }}
+          path: |
+            verification_results/lorentzian_fullstate_24_windows/T_${{ matrix.tag }}.json
+            verification_results/lorentzian_fullstate_24_windows/T_${{ matrix.tag }}.npz
+          if-no-files-found: warn
+          compression-level: 6
+
+  collect:
+    needs: triple
+    if: always()
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numpy
+        run: python -m pip install numpy
+      - name: Download triple artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lorentzian-fullstate-win-*
+          path: verification_results/lorentzian_fullstate_24_windows
+          merge-multiple: true
+      - name: Collect exact raw Lorentzian column
+        shell: bash
+        run: |
+          python scripts/peter_weyl_lorentzian_fullstate_24_collect.py \
+            --input-dir verification_results/lorentzian_fullstate_24_windows \
+            --json-output verification_results/PETER_WEYL_LORENTZIAN_FULLSTATE_24_WINDOWS.json \
+            --state-output verification_results/PETER_WEYL_LORENTZIAN_FULLSTATE_24_WINDOWS.npz
+      - name: Upload exact raw Lorentzian column
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-fullstate-24-windows-column
+          path: |
+            verification_results/PETER_WEYL_LORENTZIAN_FULLSTATE_24_WINDOWS.json
+            verification_results/PETER_WEYL_LORENTZIAN_FULLSTATE_24_WINDOWS.npz
+          if-no-files-found: warn
+          compression-level: 6
