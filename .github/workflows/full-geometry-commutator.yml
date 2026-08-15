@@ -1,5 +1,8 @@
 name: full-geometry-commutator
 
+# Heavy preregistered calculation: run only when its science inputs change on
+# the branch.  A pull_request path filter would retrigger the full 4-channel
+# matrix on every later PR synchronize because these files remain in the PR.
 on:
   push:
     paths:
@@ -7,14 +10,6 @@ on:
       - 'scripts/peter_weyl_full_geometry_channel_gate.py'
       - 'scripts/peter_weyl_full_geometry_collect_gate.py'
       - 'scripts/peter_weyl_lorentzian_gauss_action_gate.py'
-      - '.github/workflows/full-geometry-commutator.yml'
-  pull_request:
-    paths:
-      - 'PETER_WEYL_FULL_GEOMETRY_COMMUTATOR_PREREGISTRATION.md'
-      - 'scripts/peter_weyl_full_geometry_channel_gate.py'
-      - 'scripts/peter_weyl_full_geometry_collect_gate.py'
-      - 'scripts/peter_weyl_lorentzian_gauss_action_gate.py'
-      - '.github/workflows/full-geometry-commutator.yml'
 
 jobs:
   channel:
