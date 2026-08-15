@@ -1,0 +1,46 @@
+name: lorentzian-16cell-global
+
+on:
+  push:
+    paths:
+      - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
+      - 'scripts/lorentzian_16cell_global_assembly_gate.py'
+      - 'LORENTZIAN_16CELL_GLOBAL_ASSEMBLY.md'
+      - 'scripts/mirror_16cell_orientation_eta_gate.py'
+      - 'scripts/lorentzian_epsilon_frame_sign_gate.py'
+  pull_request:
+    paths:
+      - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
+      - 'scripts/lorentzian_16cell_global_assembly_gate.py'
+      - 'LORENTZIAN_16CELL_GLOBAL_ASSEMBLY.md'
+      - 'THEORY_STATUS.md'
+      - 'BCQG_CORE_CANDIDATE_V1.md'
+      - 'theory_gates.json'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install minimal dependencies
+        run: python -m pip install numpy
+      - name: Syntax
+        run: python -m py_compile scripts/lorentzian_16cell_global_assembly_gate.py
+      - name: Global 16-cell Lorentzian assembly
+        run: |
+          python scripts/lorentzian_16cell_global_assembly_gate.py \
+            --output verification_results/LORENTZIAN_16CELL_GLOBAL_ASSEMBLY.json
+      - name: Recheck exact orientation eta
+        run: python scripts/mirror_16cell_orientation_eta_gate.py
+      - name: Recheck Lorentzian frame-sign covariance
+        run: python scripts/lorentzian_epsilon_frame_sign_gate.py
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-16cell-global
+          path: verification_results/LORENTZIAN_16CELL_GLOBAL_ASSEMBLY.json
+          if-no-files-found: warn
