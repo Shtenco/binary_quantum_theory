@@ -6,13 +6,6 @@ on:
       - 'scripts/peter_weyl_lorentzian_gauss_action_gate.py'
       - 'scripts/peter_weyl_lorentzian_logical_projection_gate.py'
       - 'scripts/peter_weyl_lorentzian_sine_ordered_triple_gate.py'
-  pull_request:
-    paths:
-      - 'scripts/peter_weyl_lorentzian_gauss_action_gate.py'
-      - 'scripts/peter_weyl_lorentzian_logical_projection_gate.py'
-      - 'THEORY_STATUS.md'
-      - 'BCQG_CORE_CANDIDATE_V1.md'
-      - 'theory_gates.json'
 
 jobs:
   verify:
