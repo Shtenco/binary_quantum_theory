@@ -1,0 +1,57 @@
+{
+  "asymptotic_result_at_cutoff_saturation": {
+    "full_relative": "O(epsilon^min(p,1)) -> 0",
+    "geometry_route_cross_relative": "O(epsilon)",
+    "pure_geometry_relative": "O(epsilon^2)",
+    "route_relative": "O(epsilon^p), exhaustive H_E-reached implementation regression p in [0.999794406814,0.999983093445] plus 3 numerical-zero sectors",
+    "spin_cutoff_remainder": "exactly zero for Jmax>=13/2 on the frozen finite-depth seed calculation"
+  },
+  "checks": {
+    "Hermitian_geometry_real_coefficients": true,
+    "channel_weights": true,
+    "cutoff_wall_13_over_2": true,
+    "dangerous_inverse_epsilon_cross_cancels": true,
+    "full_HH_max_hits_12": true,
+    "geometry_smear_exact": true,
+    "geometry_smear_no_O1": true,
+    "hit_depth_gate_passes": true,
+    "parity_E_odd_S_even": true,
+    "route_all_33_distinct_sectors": true,
+    "route_and_target_even": true,
+    "route_exhaustive_passes": true,
+    "route_nonzero_exponents_positive_near_one": true,
+    "route_symbol_psd": true,
+    "route_zero_sectors_handled": true
+  },
+  "exact_lapse_identities": {
+    "geometry_smear": "Mbar*epsilon*n0 - Mbar*epsilon*n1 - Nbar*epsilon*m0 + Nbar*epsilon*m1 - epsilon**2*m0*n1 + epsilon**2*m1*n0",
+    "mixed_cross_after_1_over_epsilon_cancellation": "DeltaOmega*Mbar*n_v - DeltaOmega*Nbar*m_v - Mbar*S_n + Nbar*S_m + S_m*epsilon*n_v - S_n*epsilon*m_v"
+  },
+  "parity_decomposition": {
+    "channel_parities": {"EE":1,"ES":-1,"E_x_R":-1,"SE":-1,"SS":1,"S_x_R":1,"route_residual":1},
+    "even_channels": ["EE","SS","S_x_R","route_residual"],
+    "grading": "Pi=(-1)^(sum_e 2j_e)",
+    "odd_channels": ["ES","SE","E_x_R"],
+    "operator_parities": {"D":1,"E":-1,"R":1,"S":1},
+    "orthogonality_statement": "On the even frozen seed, even and odd residual outputs are orthogonal. Hence ES+SE and E×R anomalies cannot be hidden by destructive interference with route/D or EE+SS/S×R channels."
+  },
+  "passed": true,
+  "physical_geometry": {
+    "G": "(-2/3) E_sine -(32/9) S",
+    "S": "-i/2 (L_raw-L_raw^dagger)",
+    "channel_weights": {"EE":"4/9","ES":"64/27","SE":"64/27","SS":"1024/81"}
+  },
+  "scope": [
+    "This closes the spin-cutoff issue for the preregistered all-j=1/2 finite-depth two-node habitat; it is stronger there than the older conditional Jmax~epsilon^-1/8 envelope.",
+    "It does not prove a uniform theorem for arbitrary initial spins, operator depth growing with refinement, arbitrary beta, or every collective state.",
+    "The exhaustive 33-sector route regression covers every distinct one-step H_E^sine-reached fixed-spin sector. S-reached sectors are not exhaustively finite-regressed here.",
+    "A channel-resolved ES/SE/SS calculation remains a valuable finite falsifier/calibration, but is not a logical prerequisite for the stated asymptotic composition theorem."
+  ],
+  "spin_cutoff_saturation": {
+    "input_spin": 0.5,
+    "max_fundamental_hits_per_link_full_HH": 12,
+    "statement": "For the fixed all-j=1/2 seed and this finite two-node commutator, Jmax>=13/2 is support-exact. S uses L and L^dagger with the same hit support; R_op does not change link irreps. Therefore no Jmax(epsilon) envelope is required for this habitat.",
+    "sufficient_Jmax": 6.5
+  },
+  "status": "BCQG v1.2 Hermitian full-HDA cutoff-saturated composition theorem on frozen two-node habitat"
+}
