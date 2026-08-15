@@ -2,13 +2,13 @@
 
 The repository contains several generations of exploratory calculations. **Do not infer current status from filename age or the long root README.**
 
-Current integrated candidate:
+Current integrated theory document:
 
 ```text
-BCQG Core Candidate v1
+BCQG Candidate Theory v1.1
 ```
 
-Status: **computable candidate quantum-gravity architecture, not an experimentally established theory of nature.**
+Status: **mathematically/computationally specified candidate quantum-gravity theory; not experimentally established.**
 
 ---
 
@@ -16,21 +16,20 @@ Status: **computable candidate quantum-gravity architecture, not an experimental
 
 Read these first:
 
-1. `BCQG_CORE_CANDIDATE_V1.md` — compact current gravity definition;
-2. `THEORY_STATUS.md` — human-readable canonical ledger;
-3. `theory_gates.json` — machine-readable gate ledger;
-4. `PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md` — preregistered physical sine-order Euclidean two-node HDA PASS;
-5. `ROUTE_OPERATOR_FIRST_QUANTUM_SELECTION.md` — positive linear operator-first route candidate;
-6. `EUCLIDEAN_SINE_NORMALIZATION_MATCH.md` — code-bound Euclidean normalization;
-7. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` — exact nonzero raw Lorentzian logical amplitude;
-8. `LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md` — five-bracket phase;
-9. `LORENTZIAN_REAL_NORMALIZATION_LEDGER.md` — signed Lorentzian coefficient inherited from the Euclidean/Thiemann convention;
-10. `verification_results/LORENTZIAN_REPO_SIGN.json` — CI evidence for signed beta=1 coefficient;
-11. `PETER_WEYL_FULL_GEOMETRY_COMMUTATOR_PREREGISTRATION.md` — frozen exact full geometry channel protocol;
-12. `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md` — fixed-cutoff composition theorem;
-13. `JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md` — explicit conditional simultaneous-cutoff path.
-
-`ROUTE_OPERATOR_FIRST_TWO_NODE_REFERENCE.md` is an independent numerical reference and is **not** promoted to canonical tested evidence until its repository CI completes.
+1. `BCQG_CANDIDATE_THEORY_V1_1.md` — current candidate theory, assumptions and physical/dimensionless predictions;
+2. `BCQG_CORE_CANDIDATE_V1.md` — compact gravity-core definition;
+3. `THEORY_STATUS.md` — human-readable status ledger;
+4. `theory_gates.json` — machine-readable gate ledger;
+5. `FULL_OPERATOR_FIRST_HDA_CERTIFICATE.md` — signed operator-first full-HDA asymptotic composition certificate;
+6. `PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md` — preregistered physical sine-order Euclidean two-node HDA PASS;
+7. `ROUTE_OPERATOR_FIRST_QUANTUM_SELECTION.md` — linear positive operator-first route construction;
+8. `verification_results/PETER_WEYL_OPERATOR_ROUTE_SPINCHANGED_BLOCKS.json` — successful `R_op` HDA evidence on genuine spin-changed sectors;
+9. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` — exact nonzero raw Lorentzian one-body partial trace;
+10. `LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md` — exact conditional neighbor/multi-node Lorentzian correlations recovered from MITM artifacts;
+11. `LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md` — five-bracket phase;
+12. `LORENTZIAN_REAL_NORMALIZATION_LEDGER.md` and `verification_results/LORENTZIAN_REPO_SIGN.json` — signed Lorentzian coefficient;
+13. `PETER_WEYL_FULL_GEOMETRY_COMMUTATOR_PREREGISTRATION.md` — frozen channel-resolved finite falsifier;
+14. `JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md` — explicit conditional simultaneous-cutoff path.
 
 ---
 
@@ -43,14 +42,25 @@ q=2
 -> d_space~3, z~1
 -> 3+1D-like history
 -> physical H_E^sine
--> K=[V,H_E^sine]
 -> signed Lorentzian K-K-V
--> positive operator-first route R_op
--> HDA
--> GR-like tensor IR candidate.
+-> positive operator-first R_op
+-> signed operator-first HDA composition
+-> GR-like two-helicity tensor IR candidate.
 ```
 
-Canonical joint path:
+At `beta=hbar=1`, the frozen raw-code geometry generator is
+
+```text
+G_v=(-2/3)E_v+(32 i/9)L_raw,v.
+```
+
+The route generator is
+
+\[
+R_{op}[N]=\frac12\{N,\sqrt{\hat Q^{ab}\hat P_a\hat P_b}\}.
+\]
+
+Canonical joint continuum path:
 
 ```text
 Jmax(epsilon) ~ epsilon^-1/8
@@ -60,9 +70,9 @@ conditional on the frozen polynomial norm envelope.
 
 ---
 
-## 3. Current anchors
+## 3. Current hard anchors
 
-### Physical Euclidean sine-order two-node HDA — preregistered PASS
+### Physical sine two-node HDA — preregistered PASS
 
 ```text
 ||H0||=||H1||=2.171258176327055
@@ -73,44 +83,28 @@ p_joint=1.0076444430189475
 Delta_joint(1/64)=0.020030338775070305
 ```
 
+### Operator-first route after genuine geometry change — PASS
+
+Five distinct higher-spin sectors reached by `H_E^sine` give
+
+```text
+p_R in [0.9998813243, 0.9999820816]
+endpoint defects in [9.37065e-7, 3.63658e-6]
+minimum symbol eigenvalue ~= -1.07e-14 (numerical zero).
+```
+
 Provenance:
 
 ```text
-GitHub Actions run 31855735615
-artifact digest sha256:21e2da508fd583d9007a5bd400d074e8cee39990656e6c75e5968d2601323526
+run      31858615323
+artifact 9244277324
+digest   sha256:c1af8de00183fddf328f6bdfba386e2320b842e10d3de98d90ad150b0876213c
 ```
 
-### Operator-first route
-
-Canonical logical finite gate:
+### Signed Lorentzian normalization
 
 ```text
-endpoint(1/64, carrier=8)=3.837772425e-7
-p=0.999960897
-```
-
-Independent two-node 4×4 reference:
-
-```text
-K0K0 endpoint(1/64)=8.205159710207801e-7
-p=0.9999594708960342
-sparse Fourier vs FFT max relative difference=5.74e-8
-```
-
-The two-node reference remains non-canonical until Actions evidence completes.
-
-### Lorentzian raw amplitude and phase
-
-```text
-L_raw,1body = i*1.3389293521464034*Y + O(1e-16)
-(1/i)^5 = -i
-H_phase = -i L_raw
-```
-
-### Signed relative normalization
-
-```text
-H_E^phys = -2/(3 hbar) * E_raw
+H_E^phys = -2/(3 hbar) E_raw
 Hcorr/Hphase = -32/(9 hbar^7)
 H_L/Hphase = -32/[9 hbar^7(1+beta^2)]
 ```
@@ -120,64 +114,92 @@ At `beta=hbar=1`:
 ```text
 bare H_L/Hphase = -16/9
 full correction/Hphase = -32/9
-G_v = (-2/3) E_v + (32 i/9) L_raw,v
+G_v=(-2/3)E_v+(32 i/9)L_raw,v
 ```
 
-CI provenance:
+No relative sign or magnitude is fitted against HDA data.
+
+### Environment-unbiased Lorentzian one-body result
 
 ```text
-lorentzian-repo-sign
-run 31857722477
-artifact digest sha256:10f538abd68dc8945a46ec03410b5e4490a5d8e1fbbb05d56a10a56fd6220101
-fitting_used=false
+L_raw,1body = i*1.3389293521464034*Y + O(1e-16)
+(1/i)^5=-i
 ```
 
-So **relative Lorentzian sign and magnitude are no longer open tuning parameters**.
+### Newly recovered conditional multi-node structure
 
-### Signed logical Lorentzian-route cross
-
-Unit phase-completed operator-first cross:
+From the successful exact MITM environment run, with nodes `3,4` frozen at `K=0`, the diagonal logical Walsh decomposition has coefficient-vector norms
 
 ```text
-+0.0536574847984 X +0.0929374897107 Z
+source local             0.33709171624286727
+source x node1           0.03631787483605024
+source x node2           0.006983526478664483
+source x node1 x node2   0.01396705295732858
 ```
 
-Full beta=1 signed correction regression:
+with dominant pseudoscalar correlations
 
 ```text
--0.1907821681721 X -0.3304444078603 Z
-shape norm = 0.3815643358315
+Y I I   = +i 0.335901403339900
+Y Z1 I  = -i 0.007028617222480
+Y I Z2  = +i 0.002338130606599
+Y Z1 Z2 = +i 0.004676261213198.
 ```
 
-### Corrected Euclidean anisotropy
-
-```text
-A_rel=0.9644798301915488
-J_shape=-0.5564630119591318
-J_orient=+2.18199564892363
-Delta_aniso,ret=2.738458660882762
-648 states=392 positive+256 negative
-```
-
-Old `Delta_aniso,ret=3.6832250321658044` is retired.
+This is a tested **diagonal-environment** correlation result, not yet the complete multi-qubit Lorentzian Hamiltonian because off-diagonal environment transitions were not part of the historical trace workers.
 
 ---
 
-## 4. Current single decisive gravity gate
+## 4. Current HDA status
 
-The next full operator is
+For smooth lapse probes
+
+\[
+N=\bar N+\epsilon n,\qquad M=\bar M+\epsilon m,
+\]
+
+the signed geometry smear has no zeroth-order term:
+
+\[
+N_0M_1-N_1M_0=O(\epsilon).
+\]
+
+For operator-first route transitions the apparently dangerous `1/epsilon` mixed term cancels algebraically before taking matrix elements. With bounded local geometry at every fixed safe finite Peter-Weyl cutoff,
+
+\[
+\boxed{C_{G\times R}/D=O(\epsilon)},
+\qquad
+\boxed{C_{GG}/D=O(\epsilon^2)}.
+\]
+
+Together with the measured operator-first route convergence on real spin-changed sectors,
+
+\[
+\boxed{\Delta_{full}=\Delta_{R,op}+O(\epsilon)+O(\epsilon^2)\to0}
+\]
+
+on the declared fixed-cutoff WKB habitat.
+
+With the separately frozen joint-cutoff envelope and
 
 ```text
-H_full[N] = H_E^sine[N] + (1+beta^2) H_L[N] + R_op[N].
+Jmax~epsilon^-1/8
 ```
 
-At `beta=hbar=1` the geometry part is frozen in raw-code units as
+the contaminating terms scale as
 
 ```text
-G_v=(-2/3)E_v+(32 i/9)L_raw,v.
+C_GxR/D = O(epsilon^(3/16))
+C_GG/D  = O(epsilon^(3/8)).
 ```
 
-The exact geometry commutator is preregistered as
+This is a **conditional candidate-theory closure statement**, not a uniform arbitrary-path theorem and not an experimental result.
+
+---
+
+## 5. Remaining decisive finite falsifier
+
+The exact channel-resolved geometry commutator remains frozen as
 
 ```text
 EE=E0E1-E1E0       Jmax wall 5/2
@@ -186,46 +208,56 @@ LE=L0E1-L1E0       Jmax wall 9/2
 LL=L0L1-L1L0       Jmax wall 13/2
 ```
 
-and the final target is
+with signed assembly
+
+\[
+[G_0,G_1]
+=\frac49EE-\frac{64i}{27}(EL+LE)-\frac{1024}{81}LL.
+\]
+
+`EE` is complete:
 
 ```text
-[H_full[N],H_full[M]]
--> i hbar D[sharp_Q(N dM-M dN)].
+support=514
+norm=2.879453814704955.
 ```
 
-No channel subtraction, sign flip, coefficient fit or threshold retuning is permitted after result inspection.
+The original brute-force `EL/LE/LL` jobs exhausted their runner wall before artifacts were written. This is a **computational timeout, not a physics FAIL**. The finite calculation remains valuable because it can falsify the candidate through unexpectedly large finite coefficients, scalar-projection/order errors, or a habitat-specific obstruction.
 
-The branch now contains the computational pieces needed for this calculation:
+Frozen final five-point acceptance remains:
 
-- general full-state Lorentzian covariant→Gauss adapter;
-- 24-way exact full-state Lorentzian ordered-triple workers + collector;
-- distributed EE/EL/LE/LL workers + signed collector;
-- exact sparse-Fourier operator-first route algebra;
-- generic spin-changing route blocks.
+```text
+p_cross in [0.75,1.25]
+p_GG    in [1.75,2.25]
+p_joint in [0.75,1.25]
+Delta_joint(1/64) < 0.05
+```
 
-The integration PR is temporarily closed while branch-push research workflows run, to prevent duplicate `pull_request synchronize` jobs from saturating Actions. The branch and all evidence remain intact.
+with no channel subtraction, sign flip, coefficient fit or threshold retuning after result inspection.
 
 ---
 
-## 5. Reproduction shortcuts
+## 6. Core physical predictions
 
-```bash
-python scripts/verify_theory_gates.py
-python scripts/canonical_ledger_consistency_gate.py
-python scripts/peter_weyl_two_node_euclidean_sine_joint_gate.py
-python scripts/operator_first_route_hda_gate.py
-python scripts/euclidean_sine_normalization_match_gate.py
-python scripts/lorentzian_commutator_phase_gate.py
-python scripts/lorentzian_repo_sign_gate.py --hbar 1 --beta 1
-python scripts/lorentzian_route_logical_cross_gate.py
-python scripts/joint_cutoff_diagonal_gate.py
-```
+The candidate currently predicts, conditionally on successful continuum HDA and scale-independent assumptions stated in `BCQG_CANDIDATE_THEORY_V1_1.md`:
+
+- spatial flow to `d_space=3`, dynamical exponent `z=1`, 4D-like history;
+- one massless spin-2 IR sector with two TT helicities and no non-decoupling scalar gravity mode;
+- restoration of relativistic tensor propagation in the IR;
+- the HDA regulator hierarchy above;
+- first-order logical Euclidean silence `P H_E^sine P=0`;
+- a signed microscopic staggered orientation/chirality field;
+- operator-first two-node entangling route channels;
+- finite neighbor-dependent Lorentzian logical correlations before environment trace;
+- positive route symbols on the tested physical spin sectors.
+
+Absolute eV, meter, Newton or force predictions are deliberately withheld until the IR Newton/matter scale is derived.
 
 ---
 
-## 6. Reporting rule
+## 7. Reporting rule
 
-Every result is labelled
+Every result must remain labelled
 
 ```text
 proved
@@ -234,4 +266,4 @@ tested_finite
 open
 ```
 
-A finite gate is not an experiment. A conditional continuum inference is not an exact theorem. A successful regression is not an independent observation.
+A finite gate is not an experiment. A conditional continuum theorem is not an unconditional theorem of the full Hilbert space. A computational timeout is not a falsification.
