@@ -1,0 +1,106 @@
+name: lorentzian-fullstate-node1-24
+
+on:
+  push:
+    paths:
+      - 'scripts/peter_weyl_lorentzian_fullstate_triple_worker.py'
+      - 'scripts/peter_weyl_lorentzian_fullstate_24_collect_generic.py'
+      - '.github/workflows/lorentzian-fullstate-node1-24.yml'
+
+jobs:
+  triple:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        include:
+          - {a: 2, b: 3, c: 4, s: 1, tag: '234'}
+          - {a: 2, b: 4, c: 3, s: -1, tag: '243'}
+          - {a: 3, b: 2, c: 4, s: -1, tag: '324'}
+          - {a: 3, b: 4, c: 2, s: 1, tag: '342'}
+          - {a: 4, b: 2, c: 3, s: 1, tag: '423'}
+          - {a: 4, b: 3, c: 2, s: -1, tag: '432'}
+          - {a: 0, b: 3, c: 4, s: -1, tag: '034'}
+          - {a: 0, b: 4, c: 3, s: 1, tag: '043'}
+          - {a: 3, b: 0, c: 4, s: 1, tag: '304'}
+          - {a: 3, b: 4, c: 0, s: -1, tag: '340'}
+          - {a: 4, b: 0, c: 3, s: -1, tag: '403'}
+          - {a: 4, b: 3, c: 0, s: 1, tag: '430'}
+          - {a: 0, b: 2, c: 4, s: 1, tag: '024'}
+          - {a: 0, b: 4, c: 2, s: -1, tag: '042'}
+          - {a: 2, b: 0, c: 4, s: -1, tag: '204'}
+          - {a: 2, b: 4, c: 0, s: 1, tag: '240'}
+          - {a: 4, b: 0, c: 2, s: 1, tag: '402'}
+          - {a: 4, b: 2, c: 0, s: -1, tag: '420'}
+          - {a: 0, b: 2, c: 3, s: -1, tag: '023'}
+          - {a: 0, b: 3, c: 2, s: 1, tag: '032'}
+          - {a: 2, b: 0, c: 3, s: 1, tag: '203'}
+          - {a: 2, b: 3, c: 0, s: -1, tag: '230'}
+          - {a: 3, b: 0, c: 2, s: -1, tag: '302'}
+          - {a: 3, b: 2, c: 0, s: 1, tag: '320'}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: |
+          python -m py_compile scripts/peter_weyl_lorentzian_fullstate_triple_worker.py
+          python -m py_compile scripts/peter_weyl_lorentzian_fullstate_24_collect_generic.py
+      - name: Exact node-1 ordered triple
+        run: |
+          mkdir -p verification_results/lorentzian_node1_24
+          python scripts/peter_weyl_lorentzian_fullstate_triple_worker.py \
+            --a ${{ matrix.a }} --b ${{ matrix.b }} --c ${{ matrix.c }} \
+            --coefficient ${{ matrix.s }} --source 1 \
+            --json-output verification_results/lorentzian_node1_24/T_${{ matrix.tag }}.json \
+            --state-output verification_results/lorentzian_node1_24/T_${{ matrix.tag }}.npz
+      - name: Upload node-1 triple
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-node1-${{ matrix.tag }}
+          path: |
+            verification_results/lorentzian_node1_24/T_${{ matrix.tag }}.json
+            verification_results/lorentzian_node1_24/T_${{ matrix.tag }}.npz
+          if-no-files-found: warn
+          compression-level: 6
+
+  collect:
+    needs: triple
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Download node-1 artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: lorentzian-node1-*
+          path: verification_results/lorentzian_node1_24
+          merge-multiple: true
+      - name: Collect exact raw node-1 column
+        run: |
+          python scripts/peter_weyl_lorentzian_fullstate_24_collect_generic.py \
+            --input-dir verification_results/lorentzian_node1_24 --source 1 \
+            --json-output verification_results/PETER_WEYL_LORENTZIAN_FULLSTATE_NODE1_24.json \
+            --state-output verification_results/PETER_WEYL_LORENTZIAN_FULLSTATE_NODE1_24.npz
+      - name: Upload exact node-1 raw column
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-fullstate-node1-24-column
+          path: |
+            verification_results/PETER_WEYL_LORENTZIAN_FULLSTATE_NODE1_24.json
+            verification_results/PETER_WEYL_LORENTZIAN_FULLSTATE_NODE1_24.npz
+          if-no-files-found: warn
+          compression-level: 6
