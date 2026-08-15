@@ -1,0 +1,35 @@
+{
+  "HE_sine_support": 41,
+  "checks": {
+    "HE_output_nonzero": true,
+    "all_distinct_HE_sectors_checked": true,
+    "all_endpoints_small": true,
+    "all_nonzero_route_exponents_near_one": true,
+    "all_outputs_spin_changed": true,
+    "all_symbols_positive_semidefinite": true,
+    "initial_generic_Q_matches_independent_4x4_Q": true,
+    "initial_route_exponent_near_one": true,
+    "zero_sectors_are_roundoff_small": true
+  },
+  "distinct_reached_sectors": 33,
+  "endpoint_max": 1.405841033798129e-05,
+  "endpoint_min": 0.0,
+  "full_local_result_sha256": "60c6b45b0a053d1c9991f3faef241a53780eaed975eeb22fd4135657b668364e",
+  "initial_Q_error": 0.0,
+  "initial_defects": [
+    1.3126605728879455e-05,
+    6.563923939492645e-06,
+    3.282039617903453e-06,
+    1.6410295154019507e-06,
+    8.205159710207802e-07
+  ],
+  "initial_epsilon_exponent": 0.9999594708960342,
+  "minimum_symbol_eigenvalue": -1.0658141036401503e-14,
+  "nonzero_exponent_max": 0.9999830934452917,
+  "nonzero_exponent_min": 0.9997944068141106,
+  "nonzero_powerlaw_sectors": 30,
+  "numerical_zero_sectors": 3,
+  "passed": true,
+  "scope": "Exhaustive over all distinct fixed-spin sectors in the one-step H_E^sine support of the frozen all-j=1/2 seed. It is not an exhaustive enumeration of all sectors reachable by the Lorentzian S operator.",
+  "status": "exhaustive operator-first route HDA on all distinct one-step H_E^sine-reached sectors"
+}
