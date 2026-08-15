@@ -7,20 +7,17 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: physicalization-higher-shell-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  columns:
-    name: column-${{ matrix.column }}
+  repair-and-assemble:
+    name: repair-column-28-and-assemble
     runs-on: ubuntu-latest
-    timeout-minutes: 25
-    strategy:
-      fail-fast: false
-      matrix:
-        column: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -31,50 +28,55 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-      - name: Exact Peter-Weyl higher-shell column
-        run: |
-          mkdir -p verification_results/columns
-          python scripts/peter_weyl_higher_shell_lambda_gate.py \
-            --column ${{ matrix.column }} \
-            --output verification_results/columns/column_${{ matrix.column }}.json
-      - name: Upload exact sparse column
-        uses: actions/upload-artifact@v4
-        with:
-          name: lambda-column-${{ matrix.column }}
-          path: verification_results/columns/column_${{ matrix.column }}.json
-          if-no-files-found: error
-          compression-level: 6
 
-  assemble:
-    name: assemble-lambda32
-    needs: columns
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-          cache: pip
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
-      - name: Download all exact columns
+      # Run 31844567559 already produced 31/32 exact sparse columns at the
+      # immediately preceding head.  The only missing artifact was column 28,
+      # which hit the old 25-minute CI wall.  Reuse those exact artifacts rather
+      # than recomputing successful physics.
+      - name: Download 31 certified exact columns from source run
         uses: actions/download-artifact@v4
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: Shtenco/info_graph_theory
+          run-id: 31844567559
           pattern: lambda-column-*
           path: verification_results/columns
           merge-multiple: true
-      - name: Assemble Lambda and block-Lanczos matrices
+
+      - name: Audit inherited column set
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('verification_results/columns')
+          got=sorted(int(x.stem.split('_')[-1]) for x in p.glob('column_*.json'))
+          print('inherited columns:', got)
+          missing=[i for i in range(32) if i not in got]
+          # Before repair the expected set is [28].  If the targeted rerun in the
+          # source run finished meanwhile, [] is also safe; column 28 is then
+          # recomputed below as an independent exact duplicate.
+          if missing not in ([28], []):
+              raise SystemExit(f'unexpected inherited missing set: {missing}')
+          PY
+
+      - name: Recompute sole heavy exact column 28 without 25-minute wall
+        run: |
+          python scripts/peter_weyl_higher_shell_lambda_gate.py \
+            --column 28 \
+            --output verification_results/columns/column_28.json
+
+      - name: Assemble exact Lambda and block-Lanczos matrices
         run: |
           python scripts/peter_weyl_higher_shell_lambda_gate.py \
             --assemble-dir verification_results/columns \
             --output verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json
-      - name: Upload higher-shell evidence
+
+      - name: Upload repaired column and final higher-shell evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: peter-weyl-higher-shell-lambda
-          path: verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json
+          name: peter-weyl-higher-shell-lambda-repaired
+          path: |
+            verification_results/columns/column_28.json
+            verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json
           if-no-files-found: error
+          compression-level: 6
