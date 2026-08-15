@@ -1,0 +1,41 @@
+name: euclidean-sine-normalization
+
+on:
+  push:
+    paths:
+      - 'EUCLIDEAN_SINE_NORMALIZATION_MATCH.md'
+      - 'scripts/euclidean_sine_normalization_match_gate.py'
+      - 'scripts/k5_peter_weyl_safe_hda_column.py'
+      - 'scripts/peter_weyl_euclidean_sine_ordering_gate.py'
+  pull_request:
+    paths:
+      - 'EUCLIDEAN_SINE_NORMALIZATION_MATCH.md'
+      - 'scripts/euclidean_sine_normalization_match_gate.py'
+      - 'THEORY_STATUS.md'
+      - 'BCQG_CORE_CANDIDATE_V1.md'
+      - 'theory_gates.json'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/euclidean_sine_normalization_match_gate.py
+      - name: Match canonical sine normalization to production combinatorics
+        run: |
+          python scripts/euclidean_sine_normalization_match_gate.py \
+            --hbar 1 \
+            --output verification_results/EUCLIDEAN_SINE_NORMALIZATION_MATCH.json
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: euclidean-sine-normalization
+          path: verification_results/EUCLIDEAN_SINE_NORMALIZATION_MATCH.json
+          if-no-files-found: warn
