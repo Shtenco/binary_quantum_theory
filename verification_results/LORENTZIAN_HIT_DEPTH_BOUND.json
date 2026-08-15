@@ -1,0 +1,12 @@
+{
+  "status": "conservative per-link Lorentzian Peter-Weyl wall",
+  "max_hits_per_link_HE": 2,
+  "max_hits_per_link_HL": 6,
+  "max_hits_per_link_HH": 12,
+  "HH_witness": {"nodes": [0,1], "shared_edge": [0,1]},
+  "input_spin": 0.5,
+  "sufficient_Jmax_for_full_Lorentzian_HH": 6.5,
+  "single_link_dimension_at_that_cutoff": 1015,
+  "scope_note": "Support-count bound for the stated nested-commutator regularization. It is sufficient, not necessarily minimal. For the fixed all-j=1/2 finite-depth HH action it provides a strict support wall.",
+  "passed": true
+}
