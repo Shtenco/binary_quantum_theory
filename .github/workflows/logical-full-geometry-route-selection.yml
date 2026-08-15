@@ -1,0 +1,35 @@
+name: logical-full-geometry-route-selection
+
+on:
+  push:
+    paths:
+      - 'scripts/logical_full_geometry_route_selection_gate.py'
+      - 'LOGICAL_FULL_GEOMETRY_ROUTE_SELECTION.md'
+      - 'scripts/lorentzian_route_logical_cross_gate.py'
+      - 'theory_gates.json'
+      - 'verification_results/LORENTZIAN_REPO_SIGN.json'
+      - '.github/workflows/logical-full-geometry-route-selection.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numpy
+        run: python -m pip install numpy
+      - name: Syntax
+        run: python -m py_compile scripts/logical_full_geometry_route_selection_gate.py
+      - name: Verify projected full G x R selection rule
+        run: |
+          python scripts/logical_full_geometry_route_selection_gate.py \
+            --output verification_results/LOGICAL_FULL_GEOMETRY_ROUTE_SELECTION.json
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logical-full-geometry-route-selection
+          path: verification_results/LOGICAL_FULL_GEOMETRY_ROUTE_SELECTION.json
+          if-no-files-found: warn
