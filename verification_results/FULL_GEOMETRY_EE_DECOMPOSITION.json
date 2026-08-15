@@ -1,0 +1,29 @@
+{
+  "status": "exact decomposition of preregistered full-geometry EE artifact",
+  "source_workflow_run_id": 31857907465,
+  "source_artifact_id": 9239900377,
+  "source_artifact_digest": "sha256:eed4a8d04d40044a5cc130a626fc2d9e21e3c7dcfc11e6a2273b41a9c811fd26",
+  "channel": "EE = E0 E1 - E1 E0",
+  "raw_support": 514,
+  "raw_norm": 2.8794538147049544,
+  "distinct_edge_spin_sectors": 309,
+  "all_jhalf_support": 2,
+  "all_jhalf_norm": 0.55034556368867,
+  "all_jhalf_norm_fraction_of_total": 0.19112845668096318,
+  "all_jhalf_components": [
+    {
+      "Ks2": [0, 2, 0, 0, 0],
+      "amplitude": [0.38915308008019156, -2.974640003993589e-17]
+    },
+    {
+      "Ks2": [2, 0, 0, 0, 0],
+      "amplitude": [-0.38915308008019156, 2.9746400039935896e-17]
+    }
+  ],
+  "logical_structure": "0.38915308008019156 * (|K0=0,K1=2> - |K0=2,K1=0>) with K2=K3=K4=0, up to numerical imaginary roundoff",
+  "signed_beta_hbar_1_EE_weight": 0.4444444444444444,
+  "signed_EE_total_norm": 1.2797572509799797,
+  "signed_all_jhalf_norm": 0.24459802830607558,
+  "signed_all_jhalf_component_abs_amplitude": 0.17295692448008515,
+  "interpretation": "The physical weighted EE contribution contains a concrete antisymmetric two-node logical return plus a dominant spin-changing component. This is decomposition evidence only; it does not change any preregistered HDA criterion."
+}
