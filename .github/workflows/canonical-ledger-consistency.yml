@@ -3,18 +3,31 @@ name: canonical-ledger-consistency
 on:
   push:
     paths:
+      - 'START_HERE.md'
       - 'THEORY_STATUS.md'
-      - 'BCQG_CORE_CANDIDATE_V1.md'
+      - 'BCQG_CANDIDATE_THEORY_V1_2.md'
+      - 'BCQG_CORE_CANDIDATE_V1_2.md'
       - 'theory_gates.json'
       - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
+      - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_WALSH_NODE012.json'
+      - 'verification_results/LORENTZIAN_HERMITIAN_COMPLETION.json'
+      - 'verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json'
+      - 'verification_results/LORENTZIAN_HIT_DEPTH_BOUND.json'
+      - 'verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json'
       - 'scripts/canonical_ledger_consistency_gate.py'
+      - 'scripts/bcqg_v12_cutoff_saturated_hda_gate.py'
+      - 'scripts/peter_weyl_operator_route_all_reached_gate.py'
   pull_request:
     paths:
+      - 'START_HERE.md'
       - 'THEORY_STATUS.md'
-      - 'BCQG_CORE_CANDIDATE_V1.md'
+      - 'BCQG_CANDIDATE_THEORY_V1_2.md'
+      - 'BCQG_CORE_CANDIDATE_V1_2.md'
       - 'theory_gates.json'
-      - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
+      - 'verification_results/**'
       - 'scripts/canonical_ledger_consistency_gate.py'
+      - 'scripts/bcqg_v12_cutoff_saturated_hda_gate.py'
+      - 'scripts/peter_weyl_operator_route_all_reached_gate.py'
 
 jobs:
   verify:
@@ -25,8 +38,13 @@ jobs:
         with:
           python-version: '3.11'
       - name: Syntax
-        run: python -m py_compile scripts/canonical_ledger_consistency_gate.py
+        run: |
+          python -m py_compile scripts/canonical_ledger_consistency_gate.py
+          python -m py_compile scripts/bcqg_v12_cutoff_saturated_hda_gate.py
+          python -m py_compile scripts/peter_weyl_operator_route_all_reached_gate.py
       - name: Verify canonical ledgers against frozen evidence
         run: python scripts/canonical_ledger_consistency_gate.py
       - name: Verify machine-ledger schema/evidence paths
         run: python scripts/verify_theory_gates.py
+      - name: Reproduce cutoff-saturated theorem from frozen evidence
+        run: python scripts/bcqg_v12_cutoff_saturated_hda_gate.py
