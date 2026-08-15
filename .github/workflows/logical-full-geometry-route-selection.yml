@@ -6,6 +6,8 @@ on:
       - 'scripts/logical_full_geometry_route_selection_gate.py'
       - 'LOGICAL_FULL_GEOMETRY_ROUTE_SELECTION.md'
       - 'scripts/lorentzian_route_logical_cross_gate.py'
+      - 'scripts/peter_weyl_euclidean_sine_ordering_gate.py'
+      - 'scripts/k5_peter_weyl_safe_hda_column.py'
       - 'theory_gates.json'
       - 'verification_results/LORENTZIAN_REPO_SIGN.json'
       - '.github/workflows/logical-full-geometry-route-selection.yml'
@@ -13,16 +15,18 @@ on:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install numpy
-        run: python -m pip install numpy
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
       - name: Syntax
         run: python -m py_compile scripts/logical_full_geometry_route_selection_gate.py
-      - name: Verify projected full G x R selection rule
+      - name: Verify physical-sine projected full G x R selection rule
         run: |
           python scripts/logical_full_geometry_route_selection_gate.py \
             --output verification_results/LOGICAL_FULL_GEOMETRY_ROUTE_SELECTION.json
