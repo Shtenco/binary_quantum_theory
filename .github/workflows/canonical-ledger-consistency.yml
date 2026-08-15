@@ -1,0 +1,32 @@
+name: canonical-ledger-consistency
+
+on:
+  push:
+    paths:
+      - 'THEORY_STATUS.md'
+      - 'BCQG_CORE_CANDIDATE_V1.md'
+      - 'theory_gates.json'
+      - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
+      - 'scripts/canonical_ledger_consistency_gate.py'
+  pull_request:
+    paths:
+      - 'THEORY_STATUS.md'
+      - 'BCQG_CORE_CANDIDATE_V1.md'
+      - 'theory_gates.json'
+      - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
+      - 'scripts/canonical_ledger_consistency_gate.py'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax
+        run: python -m py_compile scripts/canonical_ledger_consistency_gate.py
+      - name: Verify canonical ledgers against frozen evidence
+        run: python scripts/canonical_ledger_consistency_gate.py
+      - name: Verify machine-ledger schema/evidence paths
+        run: python scripts/verify_theory_gates.py
