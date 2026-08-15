@@ -30,43 +30,39 @@ The local route shell is the octahedral two-sphere
 
 ### P2. Spatial globalization
 
-BCQG v1.1 uses the minimal flag completion of the local shell. The seed is the boundary of the 16-cell,
+BCQG v1.1 uses the minimal 8-vertex flag completion. The seed is the boundary of the 16-cell,
 
 \[
 (V,E,F,T)=(8,24,32,16),
-\]
-
-with
-
-\[
+\qquad
 \beta=(1,0,0,1),
 \]
 
-so the microscopic spatial seed is a closed orientable PL `S^3`. Recursive PL refinements preserve the manifold class.
+a closed orientable PL `S^3`. Recursive PL refinements preserve the manifold class.
 
 ### P3. Quantum geometry
 
-Geometry is carried by an SU(2) Peter-Weyl spin-network sector with flux, volume and holonomy operations. The physical Euclidean ordering is
+Geometry is carried by an SU(2) Peter-Weyl spin-network sector. The physical Euclidean ordering is
 
 \[
-\boxed{H_E^{sine}=(T-T^\dagger)/(2i)}.
-\]
-
-The covariant extrinsic-curvature generator is
-
-\[
+\boxed{H_E^{sine}=(T-T^\dagger)/(2i)},
+\qquad
 \boxed{K=[V,H_E^{sine}]}.
 \]
 
 ### P4. Signed Lorentzian completion
 
-The exact nested Thiemann stack has five Poisson brackets. With
+The nested Thiemann stack contains five Poisson brackets. With
 
 \[
 \{\ ,\ \}\to [\ ,\ ]/(i\hbar),
 \]
 
-the universal phase is `(1/i)^5=-i`.
+the universal phase is
+
+\[
+\boxed{(1/i)^5=-i}.
+\]
 
 The upstream tetrahedral normalization gives
 
@@ -74,7 +70,7 @@ The upstream tetrahedral normalization gives
 H_E^{phys}=-\frac{2}{3\hbar}E_{raw}.
 \]
 
-At `beta=hbar=1`, the signed local geometry generator is therefore frozen as
+At `beta=hbar=1`, the signed local geometry generator is frozen as
 
 \[
 \boxed{
@@ -105,21 +101,15 @@ Positivity follows from
 
 ### P6. Hamiltonian constraint
 
-The frozen two-node/core form is
+The core constraint is
 
 \[
-\boxed{
-H[N]=G[N]+R_{op}[N]
-}
-\]
-
-with
-
-\[
+\boxed{H[N]=G[N]+R_{op}[N]},
+\qquad
 G[N]=\sum_vN_vG_v.
 \]
 
-The continuum target is the hypersurface-deformation algebra
+The continuum target is
 
 \[
 \boxed{
@@ -131,35 +121,33 @@ i\hbar D[\sharp_Q(NdM-MdN)].
 
 ### P7. Continuum trajectory
 
-At fixed safe cutoff the signed operator-first HDA has the conditional asymptotic composition
-
-\[
-\Delta_{full}
-=\Delta_{R,op}+O(\epsilon)+O(\epsilon^2)
-\to0.
-\]
-
-For the simultaneous-cutoff candidate trajectory,
+At fixed safe cutoff the signed operator-first composition is conditionally
 
 \[
 \boxed{
-J_{max}\sim\epsilon^{-1/8},
+\Delta_{full}
+=\Delta_{R,op}+O(\epsilon)+O(\epsilon^2)
+\to0.
 }
 \]
 
-with the declared norm envelope,
+For the simultaneous-cutoff candidate trajectory
 
 \[
-C_{G\times R}/D=O(\epsilon^{3/16}),
+\boxed{J_{max}\sim\epsilon^{-1/8}},
+\]
+
+with the separately frozen polynomial norm envelope,
+
+\[
+\boxed{C_{G\times R}/D=O(\epsilon^{3/16})},
 \qquad
-C_{GG}/D=O(\epsilon^{3/8}).
+\boxed{C_{GG}/D=O(\epsilon^{3/8})}.
 \]
 
 ---
 
 ## 2. Already measured candidate constants
-
-The present frozen calculations give
 
 ```text
 Hausdorff-like spatial exponent       d_H = 2.999229782
@@ -177,21 +165,21 @@ p_joint = 1.0076444430189475
 Delta_joint(1/64)=0.020030338775070305.
 ```
 
-Operator-first route on the initial exact 4x4 sector:
+Operator-first route on the initial exact shared `4x4` sector:
 
 ```text
 p_R = 0.9999594708960342
 Delta_R(1/64)=8.205159710207802e-7.
 ```
 
-On five genuine `H_E^sine`-reached higher-spin sectors:
+Five genuine `H_E^sine`-reached higher-spin sectors give
 
 ```text
 p_R in [0.9998813243, 0.9999820816]
 endpoint defects in [9.37065e-7, 3.63658e-6].
 ```
 
-Raw Lorentzian logical one-body coefficient:
+Environment-unbiased raw Lorentzian logical one-body coefficient:
 
 \[
 \boxed{
@@ -199,12 +187,10 @@ L_{raw,1body}=i\,1.3389293521464034\,Y.
 }
 \]
 
-At `beta=hbar=1`, the full signed Lorentzian correction on this logical block is
+At `beta=hbar=1`, the full signed correction on this one-body logical block is
 
 \[
-\boxed{
-H_{corr,1body}=-4.760637696520545\,Y
-}
+\boxed{H_{corr,1body}=-4.760637696520545\,Y}
 \]
 
 in repository structural units.
@@ -223,7 +209,7 @@ The continuum/refinement flow must approach
 \boxed{d_{space}=3,\qquad z=1,\qquad d_{history}=4}.
 \]
 
-The current finite estimates are already close to those values. Persistent flow to a different limiting dimension or a nonunit dynamical exponent falsifies this branch of BCQG.
+Persistent flow to a different limiting dimension or a nonunit dynamical exponent falsifies this branch of BCQG.
 
 ## Prediction B — two tensor gravitational degrees of freedom
 
@@ -233,37 +219,29 @@ Conditional on first-class continuum HDA and a nondegenerate three-metric, the D
 \boxed{2\ \text{local gravitational configuration modes}}.
 \]
 
-Thus the infrared gravitational sector predicts one massless spin-2 tensor field with two TT helicities and **no additional non-decoupling scalar gravitational polarization**.
-
-A robust extra scalar gravitational wave mode in the same infrared sector would falsify the minimal core.
+Thus the infrared sector predicts one massless spin-2 tensor field with two TT helicities and no additional non-decoupling scalar gravitational polarization.
 
 ## Prediction C — restoration of relativistic propagation in the infrared
 
-The candidate continuum requires
+The continuum requires
 
 \[
 \boxed{z\to1}.
 \]
 
-Therefore the minimal core predicts no finite infrared Lorentz-violating tensor dispersion once the continuum limit is reached. Any microscopic dispersion must vanish under the refinement/continuum flow rather than survive as an unsuppressed low-energy effect.
-
-This is a null prediction; the current finite `z=0.998281156` is treated as a regulator/refinement value, not a claim of measured low-energy Lorentz violation.
+Therefore microscopic dispersion must disappear under refinement rather than survive as an unsuppressed low-energy tensor Lorentz violation. The present finite `z=0.998281156` is treated as a regulator/refinement value, not as an observed low-energy violation.
 
 ## Prediction D — regulator hierarchy of the full constraint algebra
 
 On the declared WKB habitat at fixed safe cutoff,
 
 \[
-\boxed{
-C_{G\times R}/D=O(\epsilon),
+\boxed{C_{G\times R}/D=O(\epsilon)},
 \qquad
-C_{GG}/D=O(\epsilon^2).
-}
+\boxed{C_{GG}/D=O(\epsilon^2)}.
 \]
 
-The operator-first route-only residual has near-unit measured exponents both before and after genuine spin changes.
-
-Therefore a direct full finite calculation that exhibits an `O(1)` relative mixed anomaly or an `O(epsilon)` relative pure-geometry anomaly would falsify the present ordering/assembly even if individual one-body amplitudes look correct.
+The operator-first route-only residual has near-unit measured exponents both before and after genuine spin changes. A direct full finite calculation showing an `O(1)` relative mixed anomaly or an `O(epsilon)` relative pure-geometry anomaly would falsify the current assembly.
 
 ## Prediction E — first-order logical Euclidean silence
 
@@ -273,11 +251,9 @@ On the complete all-`j=1/2` logical sector,
 \boxed{P H_{E,v}^{sine}P=0}
 \]
 
-for both tested nodes separately.
+for both tested nodes separately. First-order logical dynamics in this sector is therefore not generated by the Euclidean block; Euclidean effects enter through leakage/return or higher order.
 
-Consequently first-order dynamics internal to this logical sector is not generated by the Euclidean block. Euclidean effects enter through leakage/return or higher order, while the nonzero first-order logical chirality channel is Lorentzian.
-
-## Prediction F — a signed microscopic orientation field
+## Prediction F — signed microscopic orientation field
 
 The phase-completed Lorentzian one-body block is proportional to `Y`. With exact 16-cell orientation
 
@@ -288,26 +264,20 @@ The phase-completed Lorentzian one-body block is proportional to `Y`. With exact
 it assembles as
 
 \[
-\boxed{
-H_{L,1body}\propto\sum_v\eta_vY_v=16\Sigma.
-}
+\boxed{H_{L,1body}\propto\sum_v\eta_vY_v=16\Sigma}.
 \]
 
-Thus at fixed global orientation the core predicts a microscopic field conjugate to staggered orientation/chirality.
-
-For `beta=hbar=1`, the ideal full-correction mirror-pair coefficient is
+At `beta=hbar=1`, the ideal full-correction fixed-orientation mirror-pair coefficient is
 
 ```text
 -152.34040628865745
 ```
 
-in structural units.
-
-This number is **not an energy in eV** until the microscopic Hamiltonian scale is fixed.
+in structural units. This is not an energy in eV until a physical Hamiltonian/Newton scale is derived.
 
 ## Prediction G — global-orientation covariance
 
-Under simultaneous reversal of the global cell orientation and the local chirality variable,
+Under simultaneous reversal
 
 \[
 \eta_v\to-\eta_v,
@@ -315,17 +285,17 @@ Under simultaneous reversal of the global cell orientation and the local chirali
 Y_v\to-Y_v,
 \]
 
-so
+one has
 
 \[
-\boxed{\eta_vY_v\ \text{is invariant}}.
+\boxed{\eta_vY_v\ \text{invariant}}.
 \]
 
-The orientation term therefore does not represent an arbitrary absolute handedness chosen by coordinates. A calculation that changes the physical spectrum merely by relabelling/reversing the entire frame would violate the candidate covariance.
+The orientation sector is therefore not an arbitrary absolute handedness selected by coordinates.
 
-## Prediction H — operator-first route generates genuine two-node entangling geometry channels
+## Prediction H — operator-first route generates genuine two-node entangling channels
 
-The exact shared two-node route square root is not equal to a direct sum of one-node square roots. In the logical `4x4` block its angular average factorizes as
+The exact shared two-node square root is not a direct sum of one-node square roots. In the symmetric logical `4x4` construction,
 
 \[
 \boxed{
@@ -339,7 +309,7 @@ where
 S=-\frac{\sqrt3}{2}X+\frac12Z.
 \]
 
-For the signed Lorentzian node-0 cross this produces local and entangling components. Numerically the representative coefficients are approximately
+A representative signed Lorentzian-route cross contains
 
 ```text
 XI = -0.09539104
@@ -350,28 +320,69 @@ ZX = -0.14308656
 ZZ = +0.08261107.
 ```
 
-The model predicts
+The symmetric construction predicts
 
 \[
-\boxed{
-\|C_{local}\|=\|C_{entangling}\|
-}
+\boxed{\|C_{local}\|=\|C_{entangling}\|}.
+\]
 
-for this symmetric two-node logical construction. Naively embedding the one-node cross into the two-node space misses an order-one correlated contribution.
-
-This is one of the sharpest microscopic dimensionless predictions currently available.
+Naively embedding a one-node cross into the two-node space misses an order-one correlated contribution.
 
 ## Prediction I — positivity of the route symbol on physical spin sectors
 
-Because `R_op` is defined from a positive spectral square root, checked physical sectors must have nonnegative route symbols up to numerical roundoff. Five genuine spin-changed sectors pass this test; the most negative measured eigenvalue is approximately
+Five genuine spin-changed sectors pass the positive-semidefinite symbol test. The most negative checked eigenvalue is approximately
 
 ```text
 -1.07e-14
 ```
 
-and is consistent with zero numerical error.
+and is consistent with floating-point zero. A robust negative eigenvalue in a correctly constructed physical block would invalidate the positive route-normal assembly.
 
-A robust negative eigenvalue on a correctly constructed physical block would invalidate the positive route-normal definition or the flux-metric assembly.
+## Prediction J — Lorentzian logical correlations survive before environment tracing
+
+The successful exact MITM environment calculation was reassembled before the final partial trace. With source node `0`, nodes `3,4` fixed at `K=0`, and neighboring nodes `1,2` varied over `K=0/2`, the diagonal-environment raw Lorentzian operator has coefficient-vector norms
+
+```text
+source local             0.33709171624286727
+source x node1           0.03631787483605024
+source x node2           0.006983526478664483
+source x node1 x node2   0.01396705295732858.
+```
+
+The dominant pseudoscalar pieces are
+
+\[
+\boxed{YI_1I_2=+i\,0.335901403339900},
+\]
+
+\[
+\boxed{YZ_1I_2=-i\,0.007028617222480},
+\]
+
+\[
+\boxed{YI_1Z_2=+i\,0.002338130606599},
+\]
+
+\[
+\boxed{YZ_1Z_2=+i\,0.004676261213198}.
+\]
+
+Thus the very clean environment-unbiased one-body `Y` is **not** evidence that the microscopic Lorentzian sector is purely one-body before tracing. The checked diagonal matrix elements contain neighbor and three-body logical correlations.
+
+Using the already frozen `beta=hbar=1` full-correction factor, the corresponding phase-compatible pseudoscalar structural coefficients would be
+
+```text
+YII    -> -1.1943161007640883
+YZ1I   -> +0.02499063901326094
+YIZ2   -> -0.008313353267907534
+YZ1Z2  -> -0.016626706535814353
+```
+
+for these diagonal components.
+
+**Scope restriction:** the historical workers measured `⟨e|L|e⟩`, not off-diagonal `⟨e'|L|e⟩`. Therefore Prediction J is a tested prediction for the diagonal-environment sector, not yet the complete multi-qubit Lorentzian Hamiltonian.
+
+Evidence: `LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md` and `verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_WALSH_NODE012.json`.
 
 ---
 
@@ -391,11 +402,11 @@ This interpretation is conditional; it is not yet a core prediction.
 
 ## GW-driven microscopic route resonance
 
-A route/information-mode resonance requires a derived nonzero TT microscopic coupling. The repository contains a candidate mechanism, but the coupling has not been derived strongly enough for this to be called a confirmed BCQG prediction.
+A route/information-mode resonance requires a derived nonzero TT microscopic coupling. The repository contains a candidate mechanism, but that coupling is not yet strong enough to call the resonance a confirmed BCQG prediction.
 
 ## Macroscopic mirror/orientation force
 
-The nonzero microscopic `Y` field does **not** by itself predict a fifth force, antigravity or a macroscopic mirror force. Such a prediction additionally requires
+The microscopic `Y` field and multi-node correlations do **not** by themselves predict a fifth force, antigravity or a macroscopic mirror force. Such a claim additionally requires
 
 1. a matter source operator;
 2. a nonzero matter matrix element;
@@ -403,15 +414,13 @@ The nonzero microscopic `Y` field does **not** by itself predict a fifth force, 
 4. a physical scale and Newton normalization;
 5. demonstration that the effect survives coarse graining.
 
-Until those are derived, the candidate predicts only the microscopic signed orientation field above.
-
 ---
 
 # 5. Scale setting required for dimensional predictions
 
 BCQG currently determines relative structural coefficients. To convert them to meters, seconds, joules or Newtons one additional physical calibration is required.
 
-A valid scale-setting stage must simultaneously fix at least:
+A valid scale-setting stage must simultaneously fix at least
 
 ```text
 microscopic length / area scale;
@@ -420,7 +429,7 @@ Newton coupling in the IR;
 normalization of matter sources.
 ```
 
-The preferred criterion is not to choose these independently: match the coefficient of the recovered infrared Einstein-Hilbert/ADM Hamiltonian to the observed Newton constant. Only after that match may the structural Lorentzian splitting be converted into an absolute physical energy.
+The preferred criterion is to match the recovered infrared Einstein-Hilbert/ADM coefficient to the observed Newton constant. Only after that match may structural Lorentzian splittings be converted into absolute physical energies.
 
 ---
 
@@ -441,14 +450,15 @@ The strongest remaining computational falsifiers are:
    p_joint in [0.75,1.25]
    Delta_joint(1/64) < 0.05;
    ```
-4. repeat the final PASS/FAIL on independent habitats and WKB carriers;
-5. strengthen the conditional `Jmax~epsilon^-1/8` path toward a uniform joint-limit theorem;
-6. perform physical scale setting and then confront gravitational-wave/Newtonian observations.
+4. compute off-diagonal multi-node Lorentzian environment blocks and test whether the diagonal correlation hierarchy survives in the complete reduced operator;
+5. repeat final HDA tests on independent habitats/WKB carriers;
+6. strengthen `Jmax~epsilon^-1/8` toward a uniform joint-limit theorem;
+7. perform physical scale setting and confront gravitational-wave/Newtonian observations.
 
-No threshold or signed coefficient may be altered after the finite channel results are observed.
+No threshold or signed coefficient may be altered after finite channel results are observed.
 
 ---
 
 # Candidate-theory statement
 
-> **BCQG v1.1 is now a fully specified signed operator-first candidate architecture: binary `q=2` kinematics, recursive PL `S^3`, an SU(2) sine-Hermitian Euclidean constraint, a five-bracket signed Lorentzian completion, a positive operator-first route normal, and a conditional full HDA continuum theorem. It makes concrete dimensionless predictions for dimensional flow, tensor degree count, regulator hierarchy, first-order logical selection rules, microscopic orientation structure and two-node entangling route channels. Absolute force/energy predictions are deliberately withheld until Newton/matter scale setting is derived.**
+> **BCQG v1.1 is now a fully specified signed operator-first candidate architecture: binary `q=2` kinematics, recursive PL `S^3`, an SU(2) sine-Hermitian Euclidean constraint, a five-bracket signed Lorentzian completion, a positive operator-first route normal, and a conditional full HDA continuum theorem. It makes concrete dimensionless predictions for dimensional flow, tensor degree count, regulator hierarchy, first-order logical selection rules, microscopic orientation structure, two-node entangling route channels, and finite diagonal multi-node Lorentzian correlations. Absolute force/energy predictions are deliberately withheld until Newton/matter scale setting is derived.**
