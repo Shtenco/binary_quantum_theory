@@ -18,17 +18,21 @@ Read in this order:
 
 1. `BCQG_CANDIDATE_THEORY_V1_2.md` — detailed canonical theory and scope;
 2. `BCQG_CORE_CANDIDATE_V1_2.md` — compact production definition;
-3. `THEORY_STATUS.md` — human status ledger;
-4. `theory_gates.json` — machine-readable obligations;
-5. `LORENTZIAN_HERMITIAN_COMPLETION.md` — why full `L_raw` must be Hermitian-completed;
-6. `LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md` — uniqueness of the minimal projection once `L_raw` is fixed;
-7. `PETER_WEYL_HERMITIAN_FULL_HDA_PREREGISTRATION.md` — frozen physical finite-channel falsifier;
-8. `verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json` — cutoff-saturated HDA certificate;
-9. `verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json` — exhaustive 33-sector route regression;
-10. `PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md` — preregistered Euclidean sine HDA PASS;
-11. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` and `LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md` — Lorentzian finite amplitudes/correlations;
-12. `GLOBAL_MANIFOLD_Q2_COMPLETION.md` — canonical PL-S3 completion;
-13. `DEWITT_HDA_UNIQUENESS.md` and `BF_GR_DIRAC_COUNT_DISCRIMINATOR.md` — conditional GR-universality discriminators.
+3. `BCQG_V12_DEEP_CLOSURE_CERTIFICATE.md` — exact boundary between frozen-habitat closure and remaining continuum physics;
+4. `BCQG_V12_PREDICTIONS.md` — falsifiable structural/conditional prediction ledger;
+5. `THEORY_STATUS.md` — human status ledger;
+6. `theory_gates.json` — machine-readable obligations;
+7. `LORENTZIAN_HERMITIAN_COMPLETION.md` — why full `L_raw` must be Hermitian-completed;
+8. `LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md` — uniqueness of the minimal projection once `L_raw` is fixed;
+9. `ROUTE_OPERATOR_KERNEL_SAFETY.md` — kernel-safe Sylvester theorem for singular positive route symbols;
+10. `PETER_WEYL_HERMITIAN_FULL_HDA_PREREGISTRATION.md` — frozen physical finite-channel falsifier;
+11. `verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json` — cutoff-saturated HDA certificate;
+12. `verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json` — exhaustive 33-sector route regression;
+13. `verification_results/OPERATOR_ROUTE_KERNEL_SAFETY.json` — exhaustive singular-symbol audit;
+14. `PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md` — preregistered Euclidean sine HDA PASS;
+15. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` and `LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md` — Lorentzian finite amplitudes/correlations;
+16. `GLOBAL_MANIFOLD_Q2_COMPLETION.md` — canonical PL-S3 completion;
+17. `DEWITT_HDA_UNIQUENESS.md` and `BF_GR_DIRAC_COUNT_DISCRIMINATOR.md` — conditional GR-universality discriminators.
 
 ## Production chain
 
@@ -43,7 +47,7 @@ binary routes
 -> L_raw = epsilon-oriented C(K)C(K)C(V)
 -> S = -i/2 (L_raw-L_raw^dagger)
 -> G = -2/3 E -32/9 S          (beta=hbar=1)
--> positive operator-first R_op
+-> positive kernel-safe operator-first R_op
 -> H = G + R_op
 -> cutoff-saturated two-node HDA
 -> conditional GR tensor IR.
@@ -86,6 +90,18 @@ max endpoint  1.405841033798129e-05
 min symbol eig -1.0658141036401503e-14 (roundoff zero)
 ```
 
+### Singular route-symbol safety
+
+The same 33 sectors were audited over 25 momentum modes. There are 24 genuinely singular PSD symbol cases. The kernel/Sylvester diagnostics are
+
+```text
+max ||Q.p|| on ker(A)     1.9133237149764433e-15
+max ||P0 dA P0||          1.8736833294989963e-15
+max Sylvester residual    1.7614399735154202e-13
+```
+
+so the zero-eigenvalue sectors satisfy the exact kernel compatibility required by the operator-valued HDA principal anticommutator.
+
 ### Lorentzian one-body
 
 \[
@@ -125,6 +141,8 @@ The exhaustive route regression has `p~1`, hence on the frozen two-node habitat
 \]
 
 with zero spin-cutoff remainder for `Jmax>=13/2`.
+
+Route-symbol zero modes do not open an extra principal-symbol anomaly: for `A=sum_i B_i^dagger B_i`, `ker A=intersection ker B_i` implies `P0(partial A)P0=0`, which is precisely the compatibility condition for the singular Sylvester equation `Omega X+X Omega=partial A`.
 
 The older `Jmax~epsilon^-1/8` certificate is retained only for **growing-spin/depth extension families**. It is not required for this finite-depth core closure.
 

@@ -7,9 +7,13 @@ on:
     paths:
       - 'BCQG_CANDIDATE_THEORY_V1_2.md'
       - 'BCQG_CORE_CANDIDATE_V1_2.md'
+      - 'BCQG_V12_DEEP_CLOSURE_CERTIFICATE.md'
+      - 'BCQG_V12_PREDICTIONS.md'
       - 'theory_gates.json'
       - 'LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md'
+      - 'ROUTE_OPERATOR_KERNEL_SAFETY.md'
       - 'scripts/peter_weyl_operator_route_all_reached_gate.py'
+      - 'scripts/operator_route_kernel_safety_gate.py'
       - 'scripts/bcqg_v12_cutoff_saturated_hda_gate.py'
       - 'scripts/lorentzian_hit_depth_bound.py'
       - 'scripts/lorentzian_hermitian_projection_uniqueness_gate.py'
@@ -31,11 +35,14 @@ jobs:
       - name: Syntax
         run: |
           python -m py_compile scripts/peter_weyl_operator_route_all_reached_gate.py
+          python -m py_compile scripts/operator_route_kernel_safety_gate.py
           python -m py_compile scripts/bcqg_v12_cutoff_saturated_hda_gate.py
           python -m py_compile scripts/lorentzian_hermitian_projection_uniqueness_gate.py
           python -m py_compile scripts/canonical_ledger_consistency_gate.py
       - name: Exhaust all one-step H_E-reached route sectors
         run: python scripts/peter_weyl_operator_route_all_reached_gate.py --output verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json
+      - name: Check singular operator-first route kernels
+        run: python scripts/operator_route_kernel_safety_gate.py --output verification_results/OPERATOR_ROUTE_KERNEL_SAFETY.json
       - name: Recompute exact finite hit-depth wall
         run: python scripts/lorentzian_hit_depth_bound.py > verification_results/LORENTZIAN_HIT_DEPTH_BOUND.json
       - name: Recompute unique Hermitian projection certificate
@@ -53,6 +60,7 @@ jobs:
           name: bcqg-v12-core-certificate
           path: |
             verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json
+            verification_results/OPERATOR_ROUTE_KERNEL_SAFETY.json
             verification_results/LORENTZIAN_HIT_DEPTH_BOUND.json
             verification_results/LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.json
             verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json
