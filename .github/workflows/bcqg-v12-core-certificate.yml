@@ -1,0 +1,53 @@
+name: bcqg-v12-core-certificate
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'BCQG_CANDIDATE_THEORY_V1_2.md'
+      - 'BCQG_CORE_CANDIDATE_V1_2.md'
+      - 'theory_gates.json'
+      - 'scripts/peter_weyl_operator_route_all_reached_gate.py'
+      - 'scripts/bcqg_v12_cutoff_saturated_hda_gate.py'
+      - 'scripts/lorentzian_hit_depth_bound.py'
+      - '.github/workflows/bcqg-v12-core-certificate.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: |
+          python -m py_compile scripts/peter_weyl_operator_route_all_reached_gate.py
+          python -m py_compile scripts/bcqg_v12_cutoff_saturated_hda_gate.py
+          python -m py_compile scripts/canonical_ledger_consistency_gate.py
+      - name: Exhaust all one-step H_E-reached route sectors
+        run: python scripts/peter_weyl_operator_route_all_reached_gate.py --output verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json
+      - name: Recompute exact finite hit-depth wall
+        run: python scripts/lorentzian_hit_depth_bound.py > verification_results/LORENTZIAN_HIT_DEPTH_BOUND.json
+      - name: Recompute cutoff-saturated Hermitian HDA certificate
+        run: python scripts/bcqg_v12_cutoff_saturated_hda_gate.py --output verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json
+      - name: Validate canonical surface and machine ledger
+        run: |
+          python scripts/canonical_ledger_consistency_gate.py
+          python scripts/verify_theory_gates.py
+      - name: Upload v1.2 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bcqg-v12-core-certificate
+          path: |
+            verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json
+            verification_results/LORENTZIAN_HIT_DEPTH_BOUND.json
+            verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json
+          if-no-files-found: warn
