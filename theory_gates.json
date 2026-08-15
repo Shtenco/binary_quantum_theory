@@ -57,10 +57,16 @@
       "evidence": ["PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md", "verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json", "scripts/peter_weyl_lorentzian_envtrace_block_gate.py", "scripts/peter_weyl_lorentzian_envtrace_orbit_collector.py"]
     },
     {
+      "id": "LORPHASE",
+      "status": "conditional",
+      "claim": "Within the declared Thiemann nested-bracket quantization and the standard correspondence {,}->[,]/(i hbar), the substituted Lorentzian K-K-V structure contains five Poisson brackets and therefore carries universal complex phase (1/i)^5=-i. Applied to the frozen raw iY block, this gives a Hermitian Y block with structural eigenvalues +/-1.3389293521464034 before the remaining real normalization.",
+      "evidence": ["LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md", "scripts/lorentzian_commutator_phase_gate.py", "PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md"]
+    },
+    {
       "id": "LORORDER",
       "status": "open",
-      "claim": "The raw Lorentzian one-body operator is anti-Hermitian: its even Hermitian projection vanishes while (L-L^dagger)/(2i) gives a nonzero Hermitian Y term. The physical Hermitian ordering and overall canonical prefactor must be fixed independently before the completed H_L is used in HDA or interpreted physically.",
-      "evidence": ["PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md", "scripts/peter_weyl_lorentzian_onebody_ordering_gate.py"]
+      "claim": "After fixing the universal complex bracket phase, the remaining Lorentzian operator obligations are the full real kappa/beta/hbar/regulator normalization, overall real sign convention, stability/uniqueness of the complete symmetric factor ordering, and the completed two-node Lorentzian route-coupled HDA.",
+      "evidence": ["LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md", "scripts/peter_weyl_lorentzian_onebody_ordering_gate.py"]
     },
     {
       "id": "DEWITT",
@@ -89,8 +95,8 @@
     {
       "id": "CORECERT",
       "status": "conditional",
-      "claim": "BCQG Core Candidate v1 combines the q=2/PL-S3 kinematics, 3+1D-like scaling, Peter-Weyl geometry, route-normal HDA mechanism, fixed-cutoff composition theorem, explicit alpha=1/8 simultaneous-cutoff path and a nonzero raw Lorentzian logical amplitude. The principal operator frontier is the independently fixed physical Lorentzian ordering/prefactor followed by the complete two-node Lorentzian route-coupled HDA.",
-      "evidence": ["BCQG_CORE_CANDIDATE_V1.md", "THEORY_STATUS.md", "PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md", "FINAL_CORE_ARCHITECTURE_CERTIFICATE.md", "JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md"]
+      "claim": "BCQG Core Candidate v1 combines the q=2/PL-S3 kinematics, 3+1D-like scaling, Peter-Weyl geometry, route-normal HDA mechanism, fixed-cutoff composition theorem, explicit alpha=1/8 simultaneous-cutoff path, a nonzero raw Lorentzian logical amplitude and a five-bracket canonical complex-phase completion. The principal operator frontier is the remaining real Lorentzian normalization/full factor-ordering freeze followed by the completed two-node Lorentzian route-coupled HDA.",
+      "evidence": ["BCQG_CORE_CANDIDATE_V1.md", "THEORY_STATUS.md", "PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md", "LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md", "FINAL_CORE_ARCHITECTURE_CERTIFICATE.md", "JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md"]
     }
   ]
 }
