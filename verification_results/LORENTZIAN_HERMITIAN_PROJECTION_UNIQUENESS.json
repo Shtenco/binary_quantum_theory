@@ -1,0 +1,20 @@
+{
+  "checks": {
+    "HS_real_orthogonality": true,
+    "H_is_Hermitian": true,
+    "K_is_antiHermitian": true,
+    "closest_point_pythagoras": true,
+    "fixes_Hermitian_inputs": true,
+    "kills_antiHermitian_inputs": true,
+    "projection_idempotent": true,
+    "unique_direct_sum_reconstruction": true,
+    "unitary_covariance": true
+  },
+  "closest_point_identity_defect": 0.0,
+  "operator_identity": "Herm(A)=(A+A^dagger)/2; for A=-i L_raw this is S=-i/2(L_raw-L_raw^dagger)",
+  "passed": true,
+  "scope": "This proves uniqueness of the minimal linear Hermitian projection of the already-defined raw operator. It does not prove uniqueness among all possible microscopic factor orderings used to define L_raw before projection.",
+  "status": "unique linear Hermitian projection certificate",
+  "uniqueness_statement": "On a finite cutoff block, End(H)=Herm(H) direct_sum AntiHerm(H) as real Hilbert spaces. The projection with range Herm(H) and kernel AntiHerm(H) is unique; it is also the unique Hilbert-Schmidt closest Hermitian operator.",
+  "unitary_covariance_defect": 1.3437330826322668e-15
+}
