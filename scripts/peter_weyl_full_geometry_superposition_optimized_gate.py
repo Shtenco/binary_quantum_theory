@@ -1,27 +1,26 @@
 #!/usr/bin/env python3
 """Exact whole-state optimized full signed two-node geometry commutator.
 
-This is a computationally factorized evaluation of the already preregistered
-operator
+This evaluates the already preregistered structural beta=hbar=1 operator
 
     G_v = a E_v + b L_v,
     a = -2/3,
     b = +32 i / 9,
 
-in structural beta=hbar=1 units, on the frozen all-j=1/2, all-K=0 seed.
+on the frozen all-j=1/2, all-K=0 seed.  Raw channel definitions and cutoff
+walls are unchanged:
 
-Raw channel definitions and frozen walls are unchanged:
+    EE = E0 E1 - E1 E0,                  5/2 -> 5/2
+    EL = E0 L1 - E1 L0,                  7/2 -> 9/2
+    LE = L0 E1 - L1 E0,                  5/2 -> 9/2
+    LL = L0 L1 - L1 L0,                  7/2 -> 13/2
 
-    EE = E0 E1 - E1 E0,                  Jmax=5/2 -> 5/2
-    EL = E0 L1 - E1 L0,                  Jmax=7/2 -> 9/2
-    LE = L0 E1 - L1 E0,                  Jmax=5/2 -> 9/2
-    LL = L0 L1 - L1 L0,                  Jmax=7/2 -> 13/2
-
-The only optimization is exact linearity.  Instead of applying a complete
-24-term L column separately to every intermediate Gauss basis key, each
-24-term epsilon sum is applied directly to the complete sparse Gauss
-superposition.  C(V) and C(K_sine) are linear sparse-state operators, and a
-reduced executable linearity gate is run before the production calculation.
+The optimization is exact linear regrouping only.  Each Lorentzian epsilon sum
+acts on the complete sparse Gauss superposition at once.  For strict production
+ordering the 24 ordered-triple *covariant* outputs are first epsilon-summed and
+only then scalar-projected back to the Gauss basis, exactly matching the
+existing production adapter.  A reduced executable equivalence preflight is
+run before the production calculation.
 
 No sign fitting, coefficient fitting, channel subtraction, channel deletion or
 post-result threshold change is performed.
@@ -29,6 +28,7 @@ post-result threshold change is performed.
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import math
 import sys
@@ -43,6 +43,7 @@ if str(HERE) not in sys.path:
 
 import k5_peter_weyl_safe_hda_column as PW
 import peter_weyl_euclidean_sine_ordering_gate as SINE
+import peter_weyl_lorentzian_gauss_action_gate as LGA
 import peter_weyl_lorentzian_logical_projection_gate as LP
 import peter_weyl_lorentzian_superposition_gate as SUP
 import peter_weyl_zeroaware_volume_migration_experiment as ZVM
@@ -71,17 +72,9 @@ def diff(a,b):
     out={}; add(out,a,+1); add(out,b,-1); return out
 
 
-def norm2(s):
-    return float(sum(abs(a)**2 for a in s.values()))
-
-
-def norm(s):
-    return math.sqrt(norm2(s))
-
-
-def max_spin(s):
-    return max((max(k[0]) for k in s),default=0)/2.0
-
+def norm2(s): return float(sum(abs(a)**2 for a in s.values()))
+def norm(s): return math.sqrt(norm2(s))
+def max_spin(s): return max((max(k[0]) for k in s),default=0)/2.0
 
 def finite_state(s):
     return all(np.isfinite([z.real,z.imag]).all() for z in s.values())
@@ -91,14 +84,43 @@ def E(state,node,jmax2):
     return PW.prune_state(SINE.safe_H_sine(state,node,jmax2),TOL)
 
 
+def L_whole_installed(state,node,jmax2):
+    """Production-order exact L_raw on a whole Gauss superposition.
+
+    LP.install_sine_cached_stack() must already be active.  We preserve the
+    production order
+
+        sum_24 covariant ordered triples -> scalar Gauss projection.
+    """
+    neighbors=PW.NEIG[node]
+    cov_total={}; rows=[]; diagmax={}
+    for r,omit in enumerate(neighbors):
+        base=tuple(x for x in neighbors if x!=omit)
+        face=(-1)**r
+        for perm in itertools.permutations(base):
+            coef=face*LP.parity(base,perm)
+            a,b,c=perm
+            cov,diag=SUP.ordered_triple_covariant_from_gauss(
+                state,node,a,b,c,jmax2
+            )
+            add(cov_total,cov,coef)
+            for name,val in diag.items():
+                if isinstance(val,(int,float)):
+                    diagmax[name]=max(diagmax.get(name,0.0),float(val))
+            rows.append({
+                'ordered_edges':[a,b,c],'coefficient':coef,
+                'covariant_support':len(cov),'covariant_norm':norm(cov),
+            })
+    gauss,accepted2,rejected2=LGA.project_scalar_gauss(cov_total,node,TOL)
+    return gauss,cov_total,rows,diagmax,accepted2,rejected2
+
+
 def L(state,node,jmax2,label):
     print(f'[L] start {label}: source={node} Jmax={jmax2/2} input_support={len(state)} input_norm={norm(state):.16g}',flush=True)
     t0=time.time()
     restore,caches=LP.install_sine_cached_stack()
     try:
-        out,rows,diag,accepted2,rejected2=SUP.epsilon_sum_gauss_from_gauss(
-            state,node,jmax2
-        )
+        out,cov,rows,diag,accepted2,rejected2=L_whole_installed(state,node,jmax2)
         cache_info={
             name:{'hits':fn.cache_info().hits,'misses':fn.cache_info().misses,'currsize':fn.cache_info().currsize}
             for name,fn in caches.items()
@@ -111,26 +133,78 @@ def L(state,node,jmax2,label):
         float(diag.get('CK_internal_volume_sector_leakage',0.0)),
     )
     rejected=math.sqrt(max(rejected2,0.0))
+    accepted=math.sqrt(max(accepted2,0.0))
+    scalar_fraction=accepted2/max(accepted2+rejected2,1e-300)
     meta={
         'label':label,'source_node':node,'Jmax':jmax2/2,
         'input_support':len(state),'input_norm':norm(state),
+        'covariant_sum_support':len(cov),'covariant_sum_norm':norm(cov),
         'output_support':len(out),'output_norm':norm(out),'output_max_spin':max_spin(out),
         'ordered_terms':rows,
         'max_physical_basis_volume_leakage':physical,
-        'scalar_accepted_norm_accumulated':math.sqrt(max(accepted2,0.0)),
-        'nonscalar_rejected_norm_accumulated':rejected,
+        'scalar_accepted_norm':accepted,
+        'nonscalar_rejected_norm':rejected,
+        'scalar_closure_fraction':scalar_fraction,
         'cache_info':cache_info,
         'elapsed_seconds':time.time()-t0,
         'checks':{
             'finite_output':finite_state(out) and math.isfinite(norm(out)),
             'physical_basis_volume_leakage':physical<1e-8,
+            'scalar_closure_fraction':scalar_fraction>1-1e-10,
             'nonscalar_rejected_norm':rejected<1e-8,
             'spin_within_frozen_wall':max_spin(out)<=jmax2/2+1e-12,
+            'orientation_term_count_24':len(rows)==24,
         },
     }
     meta['passed']=all(meta['checks'].values())
-    print(f'[L] done {label}: support={len(out)} norm={norm(out):.16g} max_spin={max_spin(out)} elapsed={meta["elapsed_seconds"]:.3f}s pass={meta["passed"]}',flush=True)
+    print(f'[L] done {label}: support={len(out)} norm={norm(out):.16g} max_spin={max_spin(out)} scalar_fraction={scalar_fraction:.16g} elapsed={meta["elapsed_seconds"]:.3f}s pass={meta["passed"]}',flush=True)
     return out,meta
+
+
+def relerr(a,b):
+    keys=set(a)|set(b)
+    num=math.sqrt(sum(abs(a.get(k,0j)-b.get(k,0j))**2 for k in keys))
+    return num/max(norm(b),1e-30)
+
+
+def production_equivalence_preflight():
+    """Compare whole-state regrouping with the original basis-column adapter."""
+    basis=PW.basis_full_jhalf()
+    k0,k1=basis[0],basis[1]
+    alpha=0.37-0.21j
+    test={k0:1+0j,k1:alpha}
+    node=0; jmax2=5
+
+    restore,caches=LP.install_sine_cached_stack()
+    try:
+        fast,cov,rows,diag,acc,rej=L_whole_installed(test,node,jmax2)
+        slow,slowdiag,slowrej,slowrows=LGA.apply_L_raw_state_installed(
+            test,node,jmax2,TOL
+        )
+        cache_info={
+            name:{'hits':fn.cache_info().hits,'misses':fn.cache_info().misses,'currsize':fn.cache_info().currsize}
+            for name,fn in caches.items()
+        }
+    finally:
+        restore()
+    err=relerr(fast,slow)
+    support_equal=set(fast)==set(slow)
+    checks={
+        'whole_state_output_nonzero':len(fast)>0 and norm2(fast)>1e-20,
+        'support_exact':support_equal,
+        'amplitude_relative_error':err<1e-9,
+        'orientation_term_count_24':len(rows)==24,
+        'finite_outputs':finite_state(fast) and finite_state(slow),
+    }
+    return {
+        'passed':all(checks.values()),'Jmax':jmax2/2,
+        'input_support':len(test),'fast_support':len(fast),'slow_support':len(slow),
+        'fast_norm':norm(fast),'slow_norm':norm(slow),
+        'relative_error':err,
+        'whole_covariant_scalar_fraction':acc/max(acc+rej,1e-300),
+        'original_weighted_rejected_norm':math.sqrt(max(slowrej,0.0)),
+        'cache_info':cache_info,'checks':checks,
+    }
 
 
 def channel_meta(name,state,Aseq,Bseq,wall,extra=None):
@@ -160,76 +234,65 @@ def save_state(path,state):
     np.savez_compressed(path,spins=spins,Ks=Ks,amp=amp)
 
 
-def relerr(a,b):
-    keys=set(a)|set(b)
-    num=math.sqrt(sum(abs(a.get(k,0j)-b.get(k,0j))**2 for k in keys))
-    return num/max(norm(b),1e-30)
-
-
 def run():
     t_all=time.time()
     ZVM.patch_and_clear()
 
-    # Executable prerequisite: whole-state ordered-triple linearity.
-    print('[preflight] exact Lorentzian superposition linearity',flush=True)
+    print('[preflight] ordered-triple superposition linearity',flush=True)
     linearity=SUP.run_linearity_gate(jmax2=5)
     if not linearity.get('passed',False):
         raise RuntimeError('superposition linearity gate failed')
 
+    print('[preflight] full-24 production-order equivalence',flush=True)
+    equivalence=production_equivalence_preflight()
+    if not equivalence.get('passed',False):
+        raise RuntimeError('whole-state production equivalence failed')
+
     initial=PW.basis_full_jhalf()[0]
     seed={initial:1+0j}
 
-    # First actions reused by all channels.
     print('[first] Euclidean node images',flush=True)
     E0=E(seed,0,5)
     E1=E(seed,1,5)
     L0,L0meta=L(seed,0,7,'L0_seed')
     L1,L1meta=L(seed,1,7,'L1_seed')
 
-    # EE = E0 E1 - E1 E0.
     print('[channel] EE',flush=True)
-    EE_A=E(E1,0,5)
-    EE_B=E(E0,1,5)
-    EE=diff(EE_A,EE_B)
+    EE_A=E(E1,0,5); EE_B=E(E0,1,5); EE=diff(EE_A,EE_B)
     EE_meta=channel_meta('EE',EE,
         {'sequence':'E0(E1(seed))','support':len(EE_A),'norm':norm(EE_A),'max_spin':max_spin(EE_A)},
         {'sequence':'E1(E0(seed))','support':len(EE_B),'norm':norm(EE_B),'max_spin':max_spin(EE_B)},
         2.5,
-        {'reference_expected_norm':2.879453814704955,'reference_norm_abs_error':abs(norm(EE)-2.879453814704955),
+        {'reference_expected_norm':2.879453814704955,
+         'reference_norm_abs_error':abs(norm(EE)-2.879453814704955),
          'reference_expected_support':514,'reference_support_match':len(EE)==514})
     EE_meta['passed']=EE_meta['passed'] and EE_meta['reference_norm_abs_error']<1e-11 and EE_meta['reference_support_match']
 
-    # EL = E0 L1 - E1 L0.  Cheap once first L columns are available.
     print('[channel] EL',flush=True)
-    EL_A=E(L1,0,9)
-    EL_B=E(L0,1,9)
-    EL=diff(EL_A,EL_B)
+    EL_A=E(L1,0,9); EL_B=E(L0,1,9); EL=diff(EL_A,EL_B)
     EL_meta=channel_meta('EL',EL,
         {'sequence':'E0(L1(seed))','support':len(EL_A),'norm':norm(EL_A),'max_spin':max_spin(EL_A)},
         {'sequence':'E1(L0(seed))','support':len(EL_B),'norm':norm(EL_B),'max_spin':max_spin(EL_B)},
         4.5)
 
-    # LE = L0 E1 - L1 E0: each second L acts once on the complete E superposition.
     print('[channel] LE',flush=True)
     LE_A,LE_A_meta=L(E1,0,9,'L0_on_E1')
     LE_B,LE_B_meta=L(E0,1,9,'L1_on_E0')
     LE=diff(LE_A,LE_B)
     LE_meta=channel_meta('LE',LE,LE_A_meta,LE_B_meta,4.5,
         {'max_physical_basis_volume_leakage':max(LE_A_meta['max_physical_basis_volume_leakage'],LE_B_meta['max_physical_basis_volume_leakage']),
-         'max_nonscalar_rejected_norm':max(LE_A_meta['nonscalar_rejected_norm_accumulated'],LE_B_meta['nonscalar_rejected_norm_accumulated'])})
+         'max_nonscalar_rejected_norm':max(LE_A_meta['nonscalar_rejected_norm'],LE_B_meta['nonscalar_rejected_norm'])})
     LE_meta['passed']=LE_meta['passed'] and LE_A_meta['passed'] and LE_B_meta['passed']
 
-    # LL = L0 L1 - L1 L0: each second L acts once on the complete first-L superposition.
     print('[channel] LL',flush=True)
     LL_A,LL_A_meta=L(L1,0,13,'L0_on_L1')
     LL_B,LL_B_meta=L(L0,1,13,'L1_on_L0')
     LL=diff(LL_A,LL_B)
     LL_meta=channel_meta('LL',LL,LL_A_meta,LL_B_meta,6.5,
         {'max_physical_basis_volume_leakage':max(LL_A_meta['max_physical_basis_volume_leakage'],LL_B_meta['max_physical_basis_volume_leakage']),
-         'max_nonscalar_rejected_norm':max(LL_A_meta['nonscalar_rejected_norm_accumulated'],LL_B_meta['nonscalar_rejected_norm_accumulated'])})
+         'max_nonscalar_rejected_norm':max(LL_A_meta['nonscalar_rejected_norm'],LL_B_meta['nonscalar_rejected_norm'])})
     LL_meta['passed']=LL_meta['passed'] and LL_A_meta['passed'] and LL_B_meta['passed']
 
-    # Frozen signed assembly [G0,G1].
     signed={}
     for name,state in [('EE',EE),('EL',EL),('LE',LE),('LL',LL)]:
         add(signed,state,WEIGHTS[name])
@@ -240,10 +303,10 @@ def run():
         'weights':{k:[float(v.real),float(v.imag)] for k,v in WEIGHTS.items()},
         'formula':'(4/9) EE + (-64 i/27)(EL+LE) + (-1024/81) LL',
     }
-
     channels={'EE':EE_meta,'EL':EL_meta,'LE':LE_meta,'LL':LL_meta}
     checks={
         'linearity_preflight':bool(linearity.get('passed',False)),
+        'production_equivalence_preflight':bool(equivalence.get('passed',False)),
         'first_L0_passed':bool(L0meta['passed']),
         'first_L1_passed':bool(L1meta['passed']),
         'EE_passed':bool(EE_meta['passed']),
@@ -253,7 +316,6 @@ def run():
         'signed_state_finite':signed_meta['finite_amplitudes'] and math.isfinite(signed_meta['norm']),
         'no_posthoc_fit':True,
     }
-
     out={
         'status':'exact whole-state optimized preregistered full signed geometry commutator',
         'passed':all(checks.values()),
@@ -261,6 +323,7 @@ def run():
         'physical_structural_units':{'beta':1.0,'hbar':1.0,'a_E':A,'b_L_raw':[B.real,B.imag]},
         'frozen_channel_weights':{k:[float(v.real),float(v.imag)] for k,v in WEIGHTS.items()},
         'linearity_preflight':linearity,
+        'production_equivalence_preflight':equivalence,
         'first_actions':{
             'E0':{'support':len(E0),'norm':norm(E0),'max_spin':max_spin(E0)},
             'E1':{'support':len(E1),'norm':norm(E1),'max_spin':max_spin(E1)},
@@ -270,7 +333,7 @@ def run():
         'signed_commutator':signed_meta,
         'checks':checks,
         'elapsed_seconds':time.time()-t_all,
-        'optimization_statement':'Only exact linear regrouping of sparse-state actions; operator algebra, orientation coefficients, cutoffs and signed physical weights are unchanged.',
+        'optimization_statement':'Only exact linear regrouping of sparse-state actions; the 24-term covariant epsilon sum, scalar projection, operator algebra, orientation coefficients, cutoffs and signed physical weights are unchanged.',
     }
     states={'EE':EE,'EL':EL,'LE':LE,'LL':LL,'SIGNED':signed,'L0':L0,'L1':L1}
     return states,out
@@ -280,8 +343,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--output-dir',type=Path,default=Path('verification_results/full_geometry_optimized'))
     a=p.parse_args(); states,out=run(); d=a.output_dir; d.mkdir(parents=True,exist_ok=True)
-    for name,state in states.items():
-        save_state(d/f'{name}.npz',state)
+    for name,state in states.items(): save_state(d/f'{name}.npz',state)
     (d/'RESULT.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\n',encoding='utf-8')
     print(json.dumps(out,indent=2,sort_keys=True))
     return 0 if out['passed'] else 1
