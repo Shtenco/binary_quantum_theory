@@ -1,0 +1,36 @@
+name: full-geometry-superposition-optimized
+
+on:
+  push:
+    paths:
+      - 'scripts/peter_weyl_full_geometry_superposition_optimized_gate.py'
+      - '.github/workflows/full-geometry-superposition-optimized.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/peter_weyl_full_geometry_superposition_optimized_gate.py
+      - name: Exact optimized full signed geometry commutator
+        run: |
+          python scripts/peter_weyl_full_geometry_superposition_optimized_gate.py \
+            --output-dir verification_results/full_geometry_optimized
+      - name: Upload exact channel states and result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-geometry-superposition-optimized
+          path: verification_results/full_geometry_optimized
+          if-no-files-found: warn
+          compression-level: 6
