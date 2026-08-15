@@ -1,0 +1,33 @@
+{
+  "status": "exact 2-neighbor diagonal-environment Walsh decomposition of raw Lorentzian source block",
+  "passed": true,
+  "source_node": 0,
+  "neighbors": [1, 2],
+  "fixed_other_nodes": [3, 4],
+  "fixed_other_K": 0,
+  "raw_pauli": {
+    "XI1I2": [-0.018797139716995315, 9.730234558748804e-17],
+    "YI1I2": [1.3280035950700684e-16, 0.3359014033398999],
+    "ZI1I2": [0.02115986607489263, 2.0424273223320684e-16],
+    "XZ1I2": [0.028667867730953915, -2.3267558989949854e-17],
+    "YZ1I2": [-1.5693770848524722e-17, -0.00702861722247964],
+    "ZZ1I2": [-0.021159866074892942, 2.2086520291927053e-18],
+    "XI1Z2": [0.006580485342639476, -2.286398040753873e-18],
+    "YI1Z2": [3.782657462488367e-18, 0.002338130606598994],
+    "XZ1Z2": [0.013160970685278613, -1.1207322741121088e-18],
+    "YZ1Z2": [3.5680888613061205e-18, 0.004676261213197787]
+  },
+  "group_norms": {
+    "onebody_local": 0.33709171624286727,
+    "source_x_node1": 0.03631787483605024,
+    "source_x_node2": 0.006983526478664483,
+    "source_x_node1node2": 0.01396705295732858
+  },
+  "reconstruction_errors": [6.162975822039155e-33, 4.96874995738118e-32, 5.551115123125783e-17, 1.1102230246251565e-16],
+  "artifact_run_id": 31836393368,
+  "artifact_head": "7a44506a3b17a341381a720ac27eae78b81e27b0",
+  "artifact_sampling": "fresh successful envtrace run; batch-0 artifacts job-index 0,4,...,92; each contains environments 0..3 for one of all 24 oriented triples",
+  "triple_count": 24,
+  "max_leakage": 6.694456401674905e-16,
+  "scope": "Exact diagonal logical-environment matrix elements for nodes1,2 with nodes3,4 fixed K=0; does not include off-diagonal environment transitions. It is a conditional multi-node diagnostic, not the complete two-node Lorentzian operator."
+}
