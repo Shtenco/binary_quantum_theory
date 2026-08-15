@@ -10,6 +10,8 @@ BCQG Candidate Theory v1.2
 
 Status: **candidate quantum-gravity architecture with a cutoff-saturated two-node HDA theorem on the frozen habitat; not experimentally established.**
 
+`README.md` is an explanatory/historical tutorial and contains older extension language. It is **not** the canonical status surface. Where README and the v1.2 files disagree, v1.2 wins.
+
 ## Canonical files
 
 Read in this order:
@@ -19,13 +21,14 @@ Read in this order:
 3. `THEORY_STATUS.md` — human status ledger;
 4. `theory_gates.json` — machine-readable obligations;
 5. `LORENTZIAN_HERMITIAN_COMPLETION.md` — why full `L_raw` must be Hermitian-completed;
-6. `PETER_WEYL_HERMITIAN_FULL_HDA_PREREGISTRATION.md` — frozen physical finite-channel falsifier;
-7. `verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json` — cutoff-saturated HDA certificate;
-8. `verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json` — exhaustive 33-sector route regression;
-9. `PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md` — preregistered Euclidean sine HDA PASS;
-10. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` and `LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md` — Lorentzian finite amplitudes/correlations;
-11. `GLOBAL_MANIFOLD_Q2_COMPLETION.md` — canonical PL-S3 completion;
-12. `DEWITT_HDA_UNIQUENESS.md` and `BF_GR_DIRAC_COUNT_DISCRIMINATOR.md` — conditional GR-universality discriminators.
+6. `LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md` — uniqueness of the minimal projection once `L_raw` is fixed;
+7. `PETER_WEYL_HERMITIAN_FULL_HDA_PREREGISTRATION.md` — frozen physical finite-channel falsifier;
+8. `verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json` — cutoff-saturated HDA certificate;
+9. `verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json` — exhaustive 33-sector route regression;
+10. `PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md` — preregistered Euclidean sine HDA PASS;
+11. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` and `LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md` — Lorentzian finite amplitudes/correlations;
+12. `GLOBAL_MANIFOLD_Q2_COMPLETION.md` — canonical PL-S3 completion;
+13. `DEWITT_HDA_UNIQUENESS.md` and `BF_GR_DIRAC_COUNT_DISCRIMINATOR.md` — conditional GR-universality discriminators.
 
 ## Production chain
 
@@ -137,7 +140,7 @@ with walls `5/2,9/2,9/2,13/2`. Completing `ES/SE/SS` remains a valuable finite i
 
 ## What remains genuinely open
 
-- uniqueness of the Hermitian microscopic factor ordering;
+- uniqueness among alternative microscopic factor orderings **before** the unique Hermitian projection;
 - exhaustive finite route regression over every `S`-reached sector;
 - off-diagonal multi-node Lorentzian blocks;
 - direct `ES/SE/SS` finite calibration;
