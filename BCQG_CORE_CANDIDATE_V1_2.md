@@ -172,7 +172,7 @@ GR first-class rank is `3_G+3_D+1_H`, and Dirac counting leaves two local gravit
 
 Open rather than hidden:
 
-- Hermitian factor-ordering uniqueness;
+- uniqueness among alternative microscopic factor orderings used to define `L_raw` before the unique Hermitian projection;
 - all `S`-reached route sectors as an exhaustive finite regression;
 - off-diagonal multi-node Lorentzian blocks;
 - direct `ES/SE/SS` finite calibration;
