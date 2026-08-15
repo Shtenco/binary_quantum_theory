@@ -1,0 +1,37 @@
+name: full-signed-geometry-route-cross
+
+on:
+  push:
+    paths:
+      - 'scripts/peter_weyl_full_signed_geometry_route_cross_gate.py'
+      - '.github/workflows/full-signed-geometry-route-cross.yml'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    env:
+      PYTHONHASHSEED: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/peter_weyl_full_signed_geometry_route_cross_gate.py
+      - name: Exact full signed G x operator-first route cross
+        run: |
+          python scripts/peter_weyl_full_signed_geometry_route_cross_gate.py \
+            --carrier 8 \
+            --output-dir verification_results/full_signed_geometry_route_cross
+      - name: Upload route/cross states and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-signed-geometry-route-cross
+          path: verification_results/full_signed_geometry_route_cross
+          if-no-files-found: warn
+          compression-level: 6
