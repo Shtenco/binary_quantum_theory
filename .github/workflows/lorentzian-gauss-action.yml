@@ -1,0 +1,41 @@
+name: lorentzian-gauss-action
+
+on:
+  push:
+    paths:
+      - 'scripts/peter_weyl_lorentzian_gauss_action_gate.py'
+      - 'scripts/peter_weyl_lorentzian_logical_projection_gate.py'
+      - 'scripts/peter_weyl_lorentzian_sine_ordered_triple_gate.py'
+  pull_request:
+    paths:
+      - 'scripts/peter_weyl_lorentzian_gauss_action_gate.py'
+      - 'scripts/peter_weyl_lorentzian_logical_projection_gate.py'
+      - 'THEORY_STATUS.md'
+      - 'BCQG_CORE_CANDIDATE_V1.md'
+      - 'theory_gates.json'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/peter_weyl_lorentzian_gauss_action_gate.py
+      - name: Verify general Gauss Lorentzian action
+        run: |
+          python scripts/peter_weyl_lorentzian_gauss_action_gate.py \
+            --node 0 \
+            --output verification_results/PETER_WEYL_LORENTZIAN_GAUSS_ACTION.json
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-gauss-action
+          path: verification_results/PETER_WEYL_LORENTZIAN_GAUSS_ACTION.json
+          if-no-files-found: warn
