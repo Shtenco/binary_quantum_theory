@@ -108,13 +108,7 @@ They are continuum evidence, not a proof of the Lorentzian quantum measure.
 
 The geometric sector uses gauge-invariant holonomy-flux/Peter-Weyl data. Local fluxes define volume and densitized metric observables.
 
-Let
-
-\[
-H_E
-\]
-
-be the regulator-safe Euclidean node constraint and
+Let `H_E` be the regulator-safe Euclidean node constraint and
 
 \[
 K=[V,H_E].
@@ -301,7 +295,7 @@ python scripts/joint_cutoff_diagonal_gate.py
 
 ---
 
-## 8. New Lorentzian amplitude result
+## 8. Exact finite Lorentzian raw amplitude
 
 The raw logical Lorentzian one-body amplitude is no longer an unknown.
 
@@ -347,41 +341,84 @@ verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json
 
 ---
 
-## 9. Physical Lorentzian ordering: current killer gate
+## 9. Canonical complex phase of the Lorentzian block
 
-The same raw amplitude is anti-Hermitian. Therefore
-
-\[
-H_{even}
-=\frac{L_{raw}+L_{raw}^\dagger}{2}
-\simeq0,
-\]
-
-whereas
+The repository's raw structural definitions are
 
 \[
-H_{odd}
-=\frac{L_{raw}-L_{raw}^\dagger}{2i}
-\simeq1.3389293521464034\,Y.
+K_{raw}=[V,H_E],
+\qquad
+C_{raw}(O)=h[h^{-1},O],
 \]
-
-The second completion is Hermitian and has eigenvalues
 
 \[
-\lambda=\pm1.3389293521464034
+L_{raw}\sim
+\operatorname{Tr}
+[C_{raw}(K_{raw})C_{raw}(K_{raw})C_{raw}(V)].
 \]
 
-before the overall canonical `kappa/beta/hbar` normalization.
+The corresponding declared classical Thiemann structure is
 
-The theory **does not choose between these completions from this result**. The physical Hermitian ordering, overall `i`/sign and normalization must be fixed independently from the canonical quantization/classical-limit prescription. Choosing the ordering after seeing which branch gives a desired mirror split would invalidate the test.
+\[
+\{A,K\}\{A,K\}\{A,V\},
+\qquad
+K\sim\{V,H_E\}.
+\]
 
-Cheap audit:
+After substituting both `K` factors there are **five** Poisson brackets. With the canonical correspondence
+
+\[
+\{\ ,\ \}\to\frac{1}{i\hbar}[\ ,\ ],
+\]
+
+the missing universal complex phase is
+
+\[
+\boxed{(1/i)^5=-i}.
+\]
+
+Therefore the phase-completed frozen block is
+
+\[
+\boxed{
+H_{L,phase}
+\propto
+-iL_{raw,1body}
+=1.3389293521464034\,Y+O(10^{-16})
+}
+\]
+
+up to the remaining real normalization and real sign convention.
+
+For the frozen matrix this phase-completed block is Hermitian to about `3.2e-16` relative defect and has dimensionless structural eigenvalues
+
+\[
+\boxed{\lambda=\pm1.3389293521464034}.
+\]
+
+Thus the complex phase is no longer treated as a free post-hoc ordering choice. The naive even projection `(L+L^dagger)/2` applied before restoring the five-bracket phase is not the quantization of the declared nested-bracket expression.
+
+Evidence:
 
 ```bash
+python scripts/lorentzian_commutator_phase_gate.py
 python scripts/peter_weyl_lorentzian_onebody_ordering_gate.py
 ```
 
-Once the physical completion is frozen, it must be inserted into the same two-node `H_E+H_L+R_Q` HDA calculation.
+and
+
+```text
+LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md.
+```
+
+### Remaining Lorentzian operator freedom
+
+Still open are:
+
+- the complete **real** `kappa/beta/hbar/regulator` normalization in the repository's dimensionless convention;
+- the overall real sign convention absorbed into `H_L`;
+- uniqueness/stability against alternative full symmetric factor orderings of the noncommuting node operator;
+- the complete two-node Lorentzian route-coupled HDA.
 
 ---
 
@@ -449,7 +486,7 @@ BCQG v1 must be rejected or materially modified if any of the following persists
 1. local manifold-link defects remain nonzero while spectral dimension merely mimics three;
 2. `z` fails to approach one in the same scaling phase;
 3. route-normal HDA residuals fail on independent habitat/WKB probes;
-4. the completed Lorentzian operator creates an `O(1)` anomalous channel relative to the diffeomorphism target;
+4. the **phase- and normalization-completed** Lorentzian operator creates an `O(1)` anomalous channel relative to the diffeomorphism target;
 5. the simultaneous-cutoff norm envelope fails on the declared trajectory;
 6. a scalar ghost or additional non-decoupling gravitational polarization survives in the IR;
 7. dimensionless predictions remain regulator dependent.
@@ -471,11 +508,11 @@ Mirror orientation alone does not flip the tested intrinsic metric `g00`. Any st
 
 ## 14. Remaining theorem frontier
 
-The gravity core is now concentrated into a short list:
+The gravity core is now concentrated into:
 
 ```text
-1. fix the physical Lorentzian Hermitian ordering and overall prefactor independently;
-2. insert that completed H_L into the two-node H_E+H_L+R_Q commutator;
+1. freeze the remaining real Lorentzian normalization/sign and full symmetric factor ordering;
+2. insert the completed H_L into the two-node H_E+H_L+R_Q commutator;
 3. repeat HDA closure on independent habitats and higher collective-spin sectors;
 4. enlarge/prove the simultaneous Jmax->infinity, epsilon->0 domain;
 5. derive a Lorentzian history measure with global positivity/unitarity;
@@ -514,4 +551,4 @@ J_{max}\sim\epsilon^{-1/8}\to\infty.
 }
 \]
 
-The new nonzero raw Lorentzian amplitude removes a missing-dynamics ambiguity; the main operator bottleneck is now the independently fixed physical Lorentzian ordering/prefactor followed by the full Lorentzian route-coupled HDA.
+The nonzero raw Lorentzian amplitude and the five-bracket phase certificate remove two former ambiguities. The principal operator bottleneck is now the remaining real normalization/full factor-ordering freeze followed by the completed two-node Lorentzian route-coupled HDA.
