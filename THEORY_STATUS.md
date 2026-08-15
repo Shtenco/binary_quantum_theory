@@ -2,7 +2,7 @@
 
 **Frozen working frontier: 2026-08-15.**
 
-The repository develops **BCQG Core Candidate v1**, a computable candidate quantum-gravity architecture. It is not an experimentally established theory of nature and does not by itself establish a mirror force, antigravity or a new particle.
+This repository develops **BCQG Core Candidate v1**, a computable candidate quantum-gravity architecture. It is not an experimentally established theory of nature and does not by itself establish a mirror force, antigravity or a new particle.
 
 Canonical entry points:
 
@@ -18,14 +18,9 @@ theory_gates.json
 ## 1. Frozen kinematic / dimensional core
 
 ```text
-binary routes
- -> q=2
- -> octahedral S2 local link
- -> minimal flag / recursive PL S3
- -> d_space~3
- -> z~1
- -> 4D-like history
- -> smooth IR candidate.
+binary routes -> q=2 -> octahedral S2 local link
+-> minimal flag / recursive PL S3
+-> d_space~3 -> z~1 -> 4D-like history -> smooth IR candidate.
 ```
 
 Frozen anchors:
@@ -39,39 +34,23 @@ d_s(history) ~ 4.004393867
 PL tetrahedra: 16 -> 384 -> 9216.
 ```
 
-The minimal 8-vertex flag globalization is part of the candidate definition. The stronger statement that the bare causal graph uniquely fixes every possible nonflag global pairing is not asserted.
+The minimal 8-vertex flag globalization is part of the candidate definition. The stronger statement that the bare causal graph uniquely fixes every possible nonflag globalization is not asserted.
 
 ---
 
-## 2. Physical Euclidean Peter-Weyl ordering is now calibrated
+## 2. Physical Euclidean Peter-Weyl ordering — preregistered PASS
 
-The physical Euclidean/Lorentzian stack uses
-
-\[
-\boxed{H_E^{sine}=(T-T^\dagger)/(2i)}
-\]
-
-and
+The physical stack uses
 
 \[
-K_{sine}=[V,H_E^{sine}].
+\boxed{H_E^{sine}=(T-T^\dagger)/(2i)},
+\qquad
+\boxed{K_{sine}=[V,H_E^{sine}]}.
 \]
 
-The older
+The older `H_plus=(T+T^dagger)/2` result is historical only.
 
-\[
-H_+=(T+T^\dagger)/2
-\]
-
-two-node result remains only a historical structural control.
-
-A dedicated physical-sine two-node Euclidean × route gate was preregistered **before execution**. GitHub Actions run `31855735615` completed successfully with artifact digest
-
-```text
-sha256:21e2da508fd583d9007a5bd400d074e8cee39990656e6c75e5968d2601323526.
-```
-
-Finite physical-sine anchors:
+Preregistered physical-sine two-node result:
 
 ```text
 support(H0)=support(H1)=37
@@ -79,115 +58,82 @@ support(H0)=support(H1)=37
 ||H1||=2.171258176327055
 support([H0,H1])=514
 ||[H0,H1]||=2.8794538147049544
+p_cross=1.0056948923496356
+p_GG=2.007490390559045
+p_joint=1.0076444430189475
+Delta_joint(1/64)=0.020030338775070305
 ```
 
-Frozen regulator fit:
+GitHub Actions provenance:
 
 ```text
-p_cross = 1.0056948923496356
-p_GG    = 2.007490390559045
-p_joint = 1.0076444430189475
+run 31855735615
+artifact digest sha256:21e2da508fd583d9007a5bd400d074e8cee39990656e6c75e5968d2601323526
 ```
 
-and
-
-```text
-Delta_joint(1/64)=0.020030338775070305 < 0.05.
-```
-
-All preregistered conditions passed without channel-dependent normalization, subtraction or post-hoc threshold changes.
-
-Therefore the physical sine ordering preserves
+Thus the physical sine ordering preserves
 
 \[
-\boxed{C_{cross}/D=O(\epsilon)},
+C_{cross}/D=O(\epsilon),
 \qquad
-\boxed{C_{GG}/D=O(\epsilon^2)},
+C_{GG}/D=O(\epsilon^2),
 \qquad
-\boxed{\Delta_{joint}=O(\epsilon)}.
+\Delta_{joint}=O(\epsilon).
 \]
-
-Canonical evidence:
-
-```text
-PETER_WEYL_TWO_NODE_SINE_HDA_PREREGISTRATION.md
-PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md
-verification_results/PETER_WEYL_TWO_NODE_SINE_HDA.json
-scripts/peter_weyl_two_node_euclidean_sine_joint_gate.py
-```
 
 ---
 
-## 3. Quantum route normal: operator-first is the production candidate
+## 3. Quantum route normal — operator-first
 
-Expectation-first maps such as
+Expectation-first square-root maps are state dependent and nonlinear on superpositions, so they remain semiclassical controls only.
 
-\[
-\psi\mapsto\sqrt{\langle\psi|Q|\psi\rangle}\,\psi
-\]
-
-are nonlinear on superpositions and therefore cannot define the final quantum Hamiltonian constraint. They remain useful semiclassical surrogates.
-
-On geometry × route Hilbert space define
+On geometry × route Hilbert space,
 
 \[
-B_i=\sum_a J_a^i\otimes P_a,
-\qquad
-A=Q^{ab}\otimes P_aP_b=\sum_iB_i^\dagger B_i\ge0.
+A=Q^{ab}\otimes P_aP_b=\sum_iB_i^\dagger B_i\ge0,
 \]
 
-Hence the unique positive spectral square root exists:
+hence the production route candidate is the positive linear operator
 
 \[
-\boxed{\Omega=A^{1/2}},
-\qquad
-\boxed{R_{op}[N]=\frac12\{N,\Omega\}}.
+\boxed{R_{op}[N]=\frac12\left\{N,\sqrt{\hat Q^{ab}\hat P_a\hat P_b}\right\}}.
 \]
 
-For the matrix symbol `Omega(p)^2=Q^{ab}p_ap_b`, differentiation gives the exact Sylvester identity
+The matrix Sylvester identity
 
 \[
-\boxed{\Omega\partial_{p_c}\Omega+(\partial_{p_c}\Omega)\Omega=2Q^{cb}p_b},
+\Omega\partial_{p_c}\Omega+(\partial_{p_c}\Omega)\Omega=2Q^{cb}p_b
 \]
 
-which supplies the same operator-valued HDA principal structure function.
+preserves the operator-valued HDA principal structure function.
 
-The exact logical 2×2 finite gate gives, for carrier 8 and `epsilon=1/64`,
+Canonical one-node/logical finite gate:
 
 ```text
-operator-first route defect = 3.837772425e-7
-fitted epsilon exponent     = 0.999960897.
+endpoint(epsilon=1/64, carrier=8)=3.837772425e-7
+p=0.999960897
 ```
 
-Five independent logical spinors give endpoint defects about `3.56e-7...3.84e-7`, all with exponent approximately one. Carrier checks `k=2,4,8,16` also retain exponent approximately one and improve with carrier.
-
-Therefore the production quantum route sector is frozen as
-
-\[
-\boxed{
-R_{op}[N]=\frac12\left\{N,\sqrt{\hat Q^{ab}\hat P_a\hat P_b}\right\}.
-}
-\]
-
-Evidence:
+An independent two-node 4×4 reference additionally gives
 
 ```text
-ROUTE_OPERATOR_FIRST_QUANTUM_SELECTION.md
-scripts/operator_first_route_hda_gate.py
+K0K0 endpoint(1/64)=8.205159710207801e-7
+p=0.9999594708960342
+sparse-Fourier vs 48x48 FFT max relative difference=5.74e-8
 ```
+
+but that two-node reference remains non-canonical until its branch CI completes.
 
 ---
 
-## 4. Fixed-cutoff and simultaneous-cutoff HDA structure
+## 4. Fixed-cutoff and simultaneous-cutoff structure
 
-For the bounded local geometry sector at fixed regulator-safe cutoff,
+At fixed regulator-safe cutoff,
 
 ```text
 C_cross/D = O(epsilon)
 C_GG/D    = O(epsilon^2).
 ```
-
-This composition statement is independent of the historical plus versus physical sine finite calibration; the new sine gate now verifies the same hierarchy numerically for the physical Euclidean ordering.
 
 The retained simultaneous-cutoff envelope is
 
@@ -196,26 +142,14 @@ C_cross/D = O(epsilon Jmax^(13/2))
 C_GG/D    = O(epsilon^2 Jmax^13).
 ```
 
-For
-
-```text
-Jmax~epsilon^-alpha
-```
-
-both bounds decay for
-
-```text
-0 < alpha < 2/13.
-```
-
-BCQG v1 freezes the explicit interior path
+For `Jmax~epsilon^-alpha`, both decay for `0<alpha<2/13`. BCQG v1 freezes
 
 ```text
 alpha=1/8
 Jmax~epsilon^-1/8
 ```
 
-with
+which gives
 
 ```text
 C_cross/D = O(epsilon^(3/16))
@@ -226,15 +160,9 @@ This is a conditional diagonal certificate, not a uniform arbitrary-path theorem
 
 ---
 
-## 5. Lorentzian raw amplitude is nonzero
+## 5. Lorentzian raw amplitude and five-bracket phase
 
-For all-`j=1/2` input, full Lorentzian HH support is finite at the declared wall
-
-```text
-Jmax=13/2.
-```
-
-The exact environment-unbiased logical amplitude at `Jmax=7/2`, with all 16 logical environments and the full 24-term S4 orbit, is
+The exact environment-unbiased Peter-Weyl amplitude at `Jmax=7/2`, all 16 logical environments and the full 24-term S4 orbit is
 
 \[
 \boxed{L_{raw,1body}=i\,1.3389293521464034\,Y+O(10^{-16})}.
@@ -248,40 +176,25 @@ physical basis/volume leakage = 6.532094795930893e-16
 raw Frobenius norm = 1.8935320488648653.
 ```
 
-Thus `P L_raw P != 0` is a tested amplitude result, not support counting.
+The nested Thiemann structure contains five Poisson brackets after substituting both `K~{V,H_E}` factors, hence
+
+\[
+\boxed{(1/i)^5=-i},
+\qquad
+\boxed{H_{phase}=-iL_{raw}}.
+\]
+
+Thus the frozen logical phase-completed block is Hermitian:
+
+\[
+H_{phase,1body}=1.3389293521464034Y+O(10^{-16}).
+\]
 
 ---
 
-## 6. Canonical phase and relative real normalization
+## 6. Euclidean normalization and Lorentzian **signed** relative coefficient
 
-The declared Lorentzian nested structure is
-
-```text
-{A,{V,H_E}} {A,{V,H_E}} {A,V},
-```
-
-so after substituting both `K~{V,H_E}` factors there are five Poisson brackets. Under
-
-\[
-\{\ ,\ \}\to\frac1{i\hbar}[\ ,\ ],
-\]
-
-the universal complex phase is
-
-\[
-\boxed{(1/i)^5=-i}.
-\]
-
-Therefore
-
-\[
--iL_{raw,1body}
-=1.3389293521464034Y+O(10^{-16})
-\]
-
-is Hermitian.
-
-The Euclidean tetrahedral normalization audit matches the repository's production `4 face blocks × 3 cyclic specs` and the forward-minus-reverse `T_sequences` to the canonical six epsilon permutations. In the original fundamental-trace convention,
+The production tetrahedral combinatorics fixes
 
 \[
 \boxed{H_E^{phys}=n_EH_E^{sine,raw}},
@@ -289,175 +202,160 @@ The Euclidean tetrahedral normalization audit matches the repository's productio
 \boxed{n_E=-\frac{2}{3\hbar}}.
 \]
 
-Hence the Lorentzian K-K-V magnitude is not an independent HDA fit parameter. The full `beta=1` correction has
+Keeping the declared Thiemann correction sign gives
 
 \[
-\boxed{|g_{corr}|=\frac{32}{9\hbar^7}},
+\boxed{H_{corr}=-\frac{32}{9\hbar^7}H_{phase}}.
 \]
 
-while in the repository convention
+The repository writes
 
 \[
-G=H_E+(1+\beta^2)H_L
+G=H_E+(1+\beta^2)H_L,
 \]
 
-the **bare** `H_L` magnitude at `beta=1` is
+therefore
 
 \[
-\boxed{|g_{H_L}|=\frac{16}{9\hbar^7}}.
+\boxed{H_L=-\frac{32}{9\hbar^7(1+\beta^2)}H_{phase}}.
 \]
 
-In structural `hbar=1` units this gives:
+At `beta=hbar=1`:
 
 ```text
-bare H_L local |Y| coefficient = 2.3803188482602727
-full beta=1 correction          = 4.760637696520545.
+H_E^phys / E_raw       = -2/3
+bare H_L / H_phase     = -16/9
+full correction/Hphase = -32/9
+full correction/L_raw  = +32 i/9
 ```
 
-These are relative dimensionless operator coefficients, not eV/Joule predictions. The remaining real sign and full noncommuting factor-ordering convention must still be frozen consistently.
+so the raw-code geometry operator is frozen as
 
-Evidence:
+\[
+\boxed{G_v=-\frac23E_v+\frac{32i}{9}L_{raw,v}}.
+\]
+
+Independent CI evidence:
 
 ```text
-EUCLIDEAN_SINE_NORMALIZATION_MATCH.md
-LORENTZIAN_REAL_NORMALIZATION_LEDGER.md
-LORENTZIAN_COMMUTATOR_PHASE_CERTIFICATE.md
-scripts/euclidean_sine_normalization_match_gate.py
-scripts/lorentzian_real_normalization_gate.py
+workflow: lorentzian-repo-sign
+run: 31857722477
+artifact digest: sha256:10f538abd68dc8945a46ec03410b5e4490a5d8e1fbbb05d56a10a56fd6220101
+fitting_used=false
 ```
+
+Signed structural consequences at `beta=hbar=1`:
+
+```text
+local bare H_L Y        = -2.3803188482602726
+local full correction Y = -4.760637696520545
+16-cell bare pair coeff  = -76.17020314432872
+16-cell full pair coeff  = -152.34040628865745
+```
+
+These are relative dimensionless operator coefficients, not physical energies. **The Lorentzian relative sign is no longer open.**
 
 ---
 
-## 7. Global 16-cell Lorentzian orientation field
+## 7. Signed Lorentzian × operator-first route regression
 
-Exact facet orientation is
-
-\[
-\eta_v=(-1)^{popcount(v)}.
-\]
-
-Together with Lorentzian S4 sign covariance, the phase-completed one-body term assembles as
-
-\[
-\boxed{H_{L,1body}=g_Rc_L\sum_v\eta_vY_v=16g_Rc_L\Sigma}.
-\]
-
-Raw fixed-orientation ideal mirror-pair splitting:
-
-```text
-42.84573926868491 * |g_R|.
-```
-
-With the conditional canonical `hbar=1` normalization:
-
-```text
-bare repository H_L pair split at beta=1 = 76.17020314432873
-full beta=1 correction pair split         = 152.34040628865745.
-```
-
-This is a longitudinal field conjugate to staggered orientation, not a mediator mass or force. Under simultaneous global-orientation reversal and `Y` reversal, `eta_vY_v` is invariant.
-
----
-
-## 8. Lorentzian × operator-first route cross is nonzero
-
-The logical operator-first route average is approximately
-
-\[
-\Omega_{op}=0.8197716816I-0.0347058975X+0.0200374593Z.
-\]
-
-For the phase-completed raw Lorentzian `c_LY`,
+For the logical operator-first route average,
 
 \[
 -i[c_LY,\Omega_{op}]
-=0.0536574848X+0.0929374897Z
+=0.0536574847984X+0.0929374897107Z.
 \]
 
-per unit raw real normalization, with shape coefficient norm `0.10731496945`.
+With the frozen full `beta=1` correction coefficient `-32/9`, the signed regression target is
 
-Expectation-first isotropic averaging would erase this cross, another reason it cannot be used as the final quantum operator. The operator-first route HDA PASS shows the nonzero cross is a legitimate finite candidate channel whose regulator scaling must be tested in the complete Hamiltonian.
+\[
+\boxed{-0.1907821681721X-0.3304444078603Z},
+\]
+
+with shape coefficient norm
+
+```text
+0.3815643358315.
+```
+
+Expectation-first isotropic averaging erases this cross exactly, reinforcing why it is not the final quantum ordering.
+
+This is a logical subchannel regression, not the full graph-changing HDA.
 
 ---
 
-## 9. Corrected Euclidean logical return
+## 8. Corrected Euclidean logical return
 
-The exact first-order selection rule remains
+The exact first-order rule remains
 
 ```text
 P H_E P=0.
 ```
 
-The audited Euclidean return kernel has
+The audited return kernel has
 
 ```text
-II       = 9.04524203998966
-A_rel    = 0.9644798301915488
-J_shape  = -0.5564630119591318
-J_orient = +2.18199564892363
-Delta_aniso,ret = 2.738458660882762
+A_rel=0.9644798301915488
+J_shape=-0.5564630119591318
+J_orient=+2.18199564892363
+Delta_aniso,ret=2.738458660882762
+648 states = 392 positive + 256 negative
 forbidden odd-Y norm = 2.7985693281119945e-33.
 ```
 
-The 648-state decomposition has `392 positive / 256 negative` contributions and matrix reconstruction error `8.606528098114035e-15`.
-
-The older `Delta_aniso,ret=3.6832250321658044` value is retired. The Euclidean return kernel is a short-time/leakage object, not a static physical mass Hamiltonian.
+The older `Delta_aniso,ret=3.6832250321658044` is retired.
 
 ---
 
-## 10. Current single gravity-operator frontier
+## 9. Current single gravity-operator frontier
 
-The separate Euclidean-ordering and route-ordering bottlenecks are now closed enough to define one next operator unambiguously:
-
-\[
-\boxed{
-H_{full}[N]
-=
-H_E^{sine}[N]
-+(1+\beta^2)H_L[N]
-+R_{op}[N].
-}
-\]
-
-The **single immediate killer calculation** is
+The current full operator is
 
 \[
-\boxed{
-[H_{full}[N],H_{full}[M]]
-\stackrel{?}{\longrightarrow}
-i\hbar D[\sharp_Q(NdM-MdN)]
-}
+\boxed{H_{full}[N]=H_E^{sine}[N]+(1+\beta^2)H_L[N]+R_{op}[N]}.
 \]
 
-on the same two-node graph-changing Peter-Weyl habitat, with:
+The next killer calculation is
+
+\[
+\boxed{[H_{full}[N],H_{full}[M]]\stackrel{?}{\longrightarrow}i\hbar D[\sharp_Q(NdM-MdN)]}.
+\]
+
+It is now preregistered with:
 
 ```text
-physical H_E^sine;
-full spin-changing H_L amplitudes;
-canonical five-bracket phase;
-upstream-fixed relative magnitude;
-operator-first positive route square root;
-no channel-dependent subtraction/refit.
+physical H_E^sine
+full spin-changing 24-term L_raw
+five-bracket phase
+signed upstream coefficient: G_v=(-2/3)E_v+(32i/9)L_raw,v at beta=hbar=1
+operator-first positive route square root
+nonconstant off-shell lapses
+no channel subtraction, sign flip, coefficient refit or threshold retuning.
 ```
 
-Only after this passes should the calculation be expanded to multiple WKB/habitat probes, collective-spin/refinement scaling and a stronger simultaneous-cutoff theorem.
+Exact geometry channels are decomposed as
+
+```text
+EE = E0E1-E1E0
+EL = E0L1-E1L0
+LE = L0E1-L1E0
+LL = L0L1-L1L0
+```
+
+with frozen walls `5/2`, `9/2`, `9/2`, `13/2` respectively. A distributed 24-way full-state Lorentzian column pipeline and an exact sparse-Fourier operator-route engine are now in the branch to make the off-shell calculation computationally feasible.
+
+No full-HDA result is promoted until those exact artifacts complete.
 
 ---
 
-## 11. IR interpretation and separate extensions
+## 10. IR target and extensions
 
-Conditional on first-class continuum HDA and a nondegenerate `D=3` metric sector, the retained DeWitt/Dirac chain gives the GR target:
+Conditional on first-class continuum HDA and a nondegenerate `D=3` metric sector, the retained DeWitt/Dirac chain targets one massless spin-2 tensor sector with two TT helicities and no non-decoupling scalar ghost.
 
-```text
-one massless spin-2 tensor sector
-with two TT helicities
-and no non-decoupling scalar ghost.
-```
-
-Mirror force, `infoton`, the conditional `P_delta_g(k)~k^1.003414` foam spectrum and GW-driven route-mode resonance remain separate extensions and are not evidence for the gravity-core HDA.
+Mirror force, `infoton`, the conditional foam spectrum and GW-resonance ideas remain separate extensions and are not evidence for the gravity-core HDA.
 
 ---
 
 ## Canonical status statement
 
-> **BCQG Core Candidate v1 now has a frozen q=2/PL-S3 kinematic sector, 3+1D-like scaling, a physically consistent sine-Hermitian Peter-Weyl Euclidean ordering with a preregistered two-node HDA PASS, a linear positive operator-first route-normal candidate with matrix-HDA PASS, a fixed-cutoff HDA composition theorem, an explicit conditional `Jmax~epsilon^-1/8` joint path, a nonzero exact Lorentzian raw logical amplitude, a five-bracket phase completion and an upstream conditional relative normalization. The principal operator bottleneck has collapsed to one calculation: the full spin-changing two-node `H_E^sine+(1+beta^2)H_L+R_operator-first` HDA.**
+> **BCQG Core Candidate v1 now has q=2/PL-S3 kinematics, 3+1D-like scaling, a physical sine-Hermitian Peter-Weyl Euclidean ordering with preregistered two-node HDA PASS, a linear positive operator-first route candidate with matrix-HDA PASS, fixed-cutoff and explicit conditional joint-cutoff control, a nonzero exact Lorentzian raw logical amplitude, a five-bracket phase completion, and an upstream CI-verified signed relative Lorentzian coefficient. The remaining principal operator bottleneck is the exact full spin-changing two-node `H_E^sine+(1+beta^2)H_L+R_operator-first` HDA; sign and relative magnitude are no longer fit freedoms.**

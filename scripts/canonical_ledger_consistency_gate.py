@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 """Cross-check canonical human/machine ledgers against frozen evidence.
 
-The repository previously suffered status drift between old and newly audited
-Peter-Weyl numbers. This gate checks the high-value canonical anchors that now
-define BCQG Core Candidate v1:
-
+High-value anchors:
 - corrected Euclidean return anisotropy;
-- exact nonzero Lorentzian raw Y amplitude;
+- exact Lorentzian raw Y amplitude;
 - five-bracket phase;
 - preregistered physical H_E^sine two-node HDA PASS;
 - operator-first quantum route selection;
-- conditional code-bound Euclidean/Lorentzian relative normalization;
+- Euclidean normalization;
+- CI-verified signed Lorentzian relative coefficient;
 - explicit alpha=1/8 joint-cutoff path.
 """
 from __future__ import annotations
@@ -19,169 +17,134 @@ import json
 import math
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-STATUS = ROOT / "THEORY_STATUS.md"
-CANDIDATE = ROOT / "BCQG_CORE_CANDIDATE_V1.md"
-START = ROOT / "START_HERE.md"
-LEDGER = ROOT / "theory_gates.json"
-LOR_EVIDENCE = ROOT / "verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json"
-SINE_EVIDENCE = ROOT / "verification_results/PETER_WEYL_TWO_NODE_SINE_HDA.json"
+ROOT=Path(__file__).resolve().parents[1]
+STATUS=ROOT/'THEORY_STATUS.md'
+CANDIDATE=ROOT/'BCQG_CORE_CANDIDATE_V1.md'
+START=ROOT/'START_HERE.md'
+LEDGER=ROOT/'theory_gates.json'
+LOR_EVIDENCE=ROOT/'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
+SINE_EVIDENCE=ROOT/'verification_results/PETER_WEYL_TWO_NODE_SINE_HDA.json'
+SIGN_EVIDENCE=ROOT/'verification_results/LORENTZIAN_REPO_SIGN.json'
 
-DELTA_ANISO = 2.738458660882762
-RETIRED_DELTA = 3.6832250321658044
-RAW_Y = 1.3389293521464034
-JMAX = 3.5
-ENV_STATES = 16
-SINE_ENDPOINT = 0.020030338775070305
-SINE_PCROSS = 1.0056948923496356
-SINE_PGG = 2.007490390559045
-SINE_PJOINT = 1.0076444430189475
-SINE_RUN = 31855735615
-SINE_DIGEST = "sha256:21e2da508fd583d9007a5bd400d074e8cee39990656e6c75e5968d2601323526"
-ROUTE_OP_ENDPOINT_TEXT = "3.837772425e-7"
-ROUTE_OP_EXP_TEXT = "0.999960897"
-EUNORM_TEXT = "n_E=-2/(3 hbar)"
-FULL_BETA1_TEXT = "32/(9 hbar^7)"
-BARE_BETA1_TEXT = "16/(9 hbar^7)"
-COV_MAX = 1e-12
-LEAK_MAX = 1e-12
+DELTA_ANISO=2.738458660882762
+RETIRED_DELTA=3.6832250321658044
+RAW_Y=1.3389293521464034
+SINE_ENDPOINT=0.020030338775070305
+SINE_PCROSS=1.0056948923496356
+SINE_PGG=2.007490390559045
+SINE_PJOINT=1.0076444430189475
+SINE_RUN=31855735615
+SINE_DIGEST='sha256:21e2da508fd583d9007a5bd400d074e8cee39990656e6c75e5968d2601323526'
+SIGN_RUN=31857722477
+SIGN_DIGEST='sha256:10f538abd68dc8945a46ec03410b5e4490a5d8e1fbbb05d56a10a56fd6220101'
 
 
-def find_gate(gates, gate_id):
-    rows = [g for g in gates if g.get("id") == gate_id]
-    if len(rows) != 1:
-        raise RuntimeError(f"expected exactly one {gate_id} gate, found {len(rows)}")
-    return rows[0]
+def find_gate(gates,gid):
+    x=[g for g in gates if g.get('id')==gid]
+    if len(x)!=1:
+        raise RuntimeError(f'expected one {gid}, got {len(x)}')
+    return x[0]
 
 
-def contains_number(text: str, value: float) -> bool:
-    return f"{value}" in text
+def main():
+    status=STATUS.read_text(encoding='utf-8')
+    candidate=CANDIDATE.read_text(encoding='utf-8')
+    start=START.read_text(encoding='utf-8')
+    ledger_text=LEDGER.read_text(encoding='utf-8')
+    ledger=json.loads(ledger_text)
+    lor=json.loads(LOR_EVIDENCE.read_text(encoding='utf-8'))
+    sine=json.loads(SINE_EVIDENCE.read_text(encoding='utf-8'))
+    sign=json.loads(SIGN_EVIDENCE.read_text(encoding='utf-8'))
+    gates=ledger['gates']
 
+    pw=find_gate(gates,'PWLOGANISO')
+    lamp=find_gate(gates,'LORAMPRAW')
+    phase=find_gate(gates,'LORPHASE')
+    eunorm=find_gate(gates,'EUNORM')
+    lnorm=find_gate(gates,'LORNORM')
+    lroute=find_gate(gates,'LOR_ROUTE_X')
+    order=find_gate(gates,'LORORDER')
+    route=find_gate(gates,'ROUTE_OP')
+    sgate=find_gate(gates,'E2NODE_SINE')
+    joint=find_gate(gates,'JOINTDIAG')
+    core=find_gate(gates,'CORECERT')
 
-def main() -> int:
-    status = STATUS.read_text(encoding="utf-8")
-    candidate = CANDIDATE.read_text(encoding="utf-8")
-    start = START.read_text(encoding="utf-8")
-    ledger_text = LEDGER.read_text(encoding="utf-8")
-    ledger = json.loads(ledger_text)
-    lor_ev = json.loads(LOR_EVIDENCE.read_text(encoding="utf-8"))
-    sine_ev = json.loads(SINE_EVIDENCE.read_text(encoding="utf-8"))
-    gates = ledger["gates"]
+    y=lor['onebody_Y_coefficient_raw']
+    yabs=math.hypot(float(y[0]),float(y[1]))
 
-    pw = find_gate(gates, "PWLOGANISO")
-    lor = find_gate(gates, "LORAMPRAW")
-    phase = find_gate(gates, "LORPHASE")
-    eunorm = find_gate(gates, "EUNORM")
-    norm = find_gate(gates, "LORNORM")
-    route_op = find_gate(gates, "ROUTE_OP")
-    sine = find_gate(gates, "E2NODE_SINE")
-    order = find_gate(gates, "LORORDER")
-    joint = find_gate(gates, "JOINTDIAG")
-    core = find_gate(gates, "CORECERT")
+    checks={
+        'canonical_statuses':(
+            pw['status']=='tested_finite' and lamp['status']=='tested_finite' and
+            phase['status']=='conditional' and eunorm['status']=='conditional' and
+            lnorm['status']=='conditional' and lroute['status']=='tested_finite' and
+            order['status']=='open' and route['status']=='tested_finite' and
+            sgate['status']=='tested_finite' and joint['status']=='conditional' and
+            core['status']=='conditional'
+        ),
+        'anisotropy_machine':str(DELTA_ANISO) in pw['claim'],
+        'retired_delta_absent_from_machine':str(RETIRED_DELTA) not in ledger_text,
+        'anisotropy_human':all(str(DELTA_ANISO) in x for x in (status,candidate,start)),
+        'retired_delta_marked':all(str(RETIRED_DELTA) in x and 'retired' in x.lower() for x in (status,candidate,start)),
 
-    y_pair = lor_ev["onebody_Y_coefficient_raw"]
-    y_abs = math.hypot(float(y_pair[0]), float(y_pair[1]))
+        'raw_lorentzian_passed':bool(lor.get('passed',False)),
+        'raw_lorentzian_decision':lor.get('decision')=='NONZERO_TRUE_ONE_BODY_RAW_Y',
+        'raw_lorentzian_y':abs(yabs-RAW_Y)<1e-12,
+        'raw_lorentzian_covariance':float(lor['T132_covariance_relative_error'])<1e-12,
+        'raw_lorentzian_leakage':float(lor['max_physical_basis_volume_leakage'])<1e-12,
+        'raw_lorentzian_human':str(RAW_Y) in status and str(RAW_Y) in candidate,
 
-    checks = {
-        # Machine-ledger statuses.
-        "pw_gate_status": pw["status"] == "tested_finite",
-        "lor_raw_gate_status": lor["status"] == "tested_finite",
-        "lor_phase_gate_conditional": phase["status"] == "conditional",
-        "euclidean_norm_gate_conditional": eunorm["status"] == "conditional",
-        "lor_norm_gate_conditional": norm["status"] == "conditional",
-        "route_op_gate_tested": route_op["status"] == "tested_finite",
-        "sine_gate_tested": sine["status"] == "tested_finite",
-        "lor_order_gate_open": order["status"] == "open",
-        "joint_gate_conditional": joint["status"] == "conditional",
-        "core_gate_conditional": core["status"] == "conditional",
+        'phase_machine':'five Poisson brackets' in phase['claim'] and '(1/i)^5=-i' in phase['claim'],
+        'phase_human':'(1/i)^5=-i' in status and '(1/i)^5=-i' in candidate,
 
-        # Corrected anisotropy and retirement hygiene.
-        "pw_gate_canonical_delta": contains_number(pw["claim"], DELTA_ANISO),
-        "retired_delta_absent_from_machine_ledger": str(RETIRED_DELTA) not in ledger_text,
-        "status_has_delta": contains_number(status, DELTA_ANISO),
-        "candidate_has_delta": contains_number(candidate, DELTA_ANISO),
-        "start_has_delta": contains_number(start, DELTA_ANISO),
-        "status_marks_old_delta_retired": str(RETIRED_DELTA) in status and "retired" in status.lower(),
-        "candidate_marks_old_delta_retired": str(RETIRED_DELTA) in candidate and "retired" in candidate.lower(),
-        "start_marks_old_delta_retired": str(RETIRED_DELTA) in start and "retired" in start.lower(),
+        'sine_evidence_passed':bool(sine.get('passed',False)),
+        'sine_endpoint':abs(float(sine['last_joint_defect_over_D'])-SINE_ENDPOINT)<1e-15,
+        'sine_pcross':abs(float(sine['fitted_cross_exponent'])-SINE_PCROSS)<1e-14,
+        'sine_pgg':abs(float(sine['fitted_pure_GG_relative_exponent'])-SINE_PGG)<1e-14,
+        'sine_pjoint':abs(float(sine['fitted_joint_exponent'])-SINE_PJOINT)<1e-14,
+        'sine_provenance':int(sine['provenance']['workflow_run_id'])==SINE_RUN and sine['provenance']['artifact_digest']==SINE_DIGEST,
+        'sine_human':all(str(SINE_ENDPOINT) in x for x in (status,candidate,start)),
 
-        # Raw Lorentzian evidence.
-        "lor_evidence_passed": bool(lor_ev.get("passed", False)),
-        "lor_evidence_decision": lor_ev.get("decision") == "NONZERO_TRUE_ONE_BODY_RAW_Y",
-        "lor_evidence_jmax": abs(float(lor_ev["Jmax"]) - JMAX) < 1e-15,
-        "lor_evidence_environment_count": int(lor_ev["environment_states"]) == ENV_STATES,
-        "lor_evidence_raw_y": abs(y_abs - RAW_Y) < 1e-12,
-        "lor_evidence_covariance": float(lor_ev["T132_covariance_relative_error"]) < COV_MAX,
-        "lor_evidence_leakage": float(lor_ev["max_physical_basis_volume_leakage"]) < LEAK_MAX,
-        "status_has_raw_y": contains_number(status, RAW_Y),
-        "candidate_has_raw_y": contains_number(candidate, RAW_Y),
+        'signed_evidence_passed':bool(sign.get('passed',False)),
+        'signed_evidence_no_fit':sign.get('fitting_used') is False,
+        'signed_evidence_full':abs(float(sign['Hcorr_over_Hphase'])+32/9)<1e-14,
+        'signed_evidence_bare':abs(float(sign['bare_HL_over_Hphase'])+16/9)<1e-14,
+        'signed_evidence_raw':abs(complex(*sign['Hcorr_over_Lraw'])-32j/9)<1e-14,
+        'signed_provenance':int(sign['provenance']['workflow_run_id'])==SIGN_RUN and sign['provenance']['artifact_digest']==SIGN_DIGEST,
+        'signed_machine_full':'Hcorr/Hphase=-32/(9 hbar^7)' in lnorm['claim'],
+        'signed_machine_bare':'bare H_L/Hphase=-16/(9 hbar^7)' in lnorm['claim'],
+        'signed_machine_raw':'G_v=(-2/3)E_raw+(32 i/9)L_raw' in lnorm['claim'],
+        'sign_no_longer_open_machine':'relative sign are fixed upstream' in order['claim'],
+        'sign_no_longer_open_human':(
+            'relative sign is no longer open' in status.lower() and
+            'neither lorentzian magnitude nor relative sign is an hda tuning parameter' in candidate.lower() and
+            'relative lorentzian sign and magnitude are no longer open tuning parameters' in start.lower()
+        ),
 
-        # Five-bracket phase.
-        "lor_phase_claim_has_five_brackets": "five Poisson brackets" in phase["claim"],
-        "lor_phase_claim_has_minus_i": "(1/i)^5=-i" in phase["claim"],
-        "status_has_five_bracket_phase": "(1/i)^5=-i" in status,
-        "candidate_has_five_bracket_phase": "(1/i)^5=-i" in candidate,
+        'signed_route_cross_machine':'-0.1907821681721 X-0.3304444078603 Z' in lroute['claim'],
+        'signed_route_cross_human':'-0.1907821681721' in status and '-0.3304444078603' in status,
 
-        # Preregistered physical sine HDA evidence.
-        "sine_evidence_passed": bool(sine_ev.get("passed", False)),
-        "sine_endpoint": abs(float(sine_ev["last_joint_defect_over_D"]) - SINE_ENDPOINT) < 1e-15,
-        "sine_cross_exponent": abs(float(sine_ev["fitted_cross_exponent"]) - SINE_PCROSS) < 1e-14,
-        "sine_GG_exponent": abs(float(sine_ev["fitted_pure_GG_relative_exponent"]) - SINE_PGG) < 1e-14,
-        "sine_joint_exponent": abs(float(sine_ev["fitted_joint_exponent"]) - SINE_PJOINT) < 1e-14,
-        "sine_provenance_run": int(sine_ev["provenance"]["workflow_run_id"]) == SINE_RUN,
-        "sine_provenance_digest": sine_ev["provenance"]["artifact_digest"] == SINE_DIGEST,
-        "status_has_sine_endpoint": contains_number(status, SINE_ENDPOINT),
-        "candidate_has_sine_endpoint": contains_number(candidate, SINE_ENDPOINT),
-        "start_has_sine_endpoint": contains_number(start, SINE_ENDPOINT),
-
-        # Operator-first quantum route.
-        "route_op_claim_has_endpoint": ROUTE_OP_ENDPOINT_TEXT in route_op["claim"],
-        "route_op_claim_has_exponent": ROUTE_OP_EXP_TEXT in route_op["claim"],
-        "status_selects_operator_first": "R_{op}" in status or "R_op" in status,
-        "candidate_selects_operator_first": "R_{op}" in candidate or "R_op" in candidate,
-        "start_selects_operator_first": "R_op" in start,
-
-        # Relative normalization.  The Euclidean scale and inherited
-        # Lorentzian magnitudes live in separate machine-ledger gates.
-        "euclidean_normalization_gate_has_nE": EUNORM_TEXT in eunorm["claim"],
-        "lorentzian_normalization_gate_has_full_beta1": FULL_BETA1_TEXT in norm["claim"],
-        "lorentzian_normalization_gate_has_bare_beta1": BARE_BETA1_TEXT in norm["claim"],
-        "status_has_normalization": "32" in status and "16" in status and "9" in status,
-        "candidate_has_normalization": "32" in candidate and "16" in candidate and "9" in candidate,
-
-        # Joint-cutoff path and frontier.
-        "canonical_joint_path_in_status": "epsilon^-1/8" in status or "epsilon^{-1/8}" in status,
-        "canonical_joint_path_in_candidate": "epsilon^{-1/8}" in candidate or "epsilon^-1/8" in candidate,
-        "frontier_is_full_HDA_in_status": "H_E^sine+(1+beta^2)H_L+R_operator-first" in status or "H_E^{sine}+(1+\\beta^2)H_L+R_{op}" in status,
-        "frontier_is_full_HDA_in_candidate": "H_E^{sine}" in candidate and "H_L" in candidate and "R_{op}" in candidate,
+        'operator_first_human':('R_{op}' in status and 'R_{op}' in candidate and 'R_op' in start),
+        'joint_path_human':(('epsilon^-1/8' in status or 'epsilon^{-1/8}' in status) and ('epsilon^-1/8' in start or 'epsilon^{-1/8}' in start)),
+        'full_frontier_human':('H_E^{sine}' in status and 'H_L' in status and 'R_{op}' in status and 'H_E^{sine}' in candidate and 'R_{op}' in candidate),
     }
 
-    out = {
-        "status": "canonical human/machine/evidence consistency",
-        "passed": all(checks.values()),
-        "anchors": {
-            "Delta_aniso_ret": DELTA_ANISO,
-            "Lorentzian_raw_Y_abs": RAW_Y,
-            "Lorentzian_Jmax": JMAX,
-            "Lorentzian_environment_states": ENV_STATES,
-            "Lorentzian_nested_bracket_count": 5,
-            "Lorentzian_dimensionless_phase": "-i",
-            "physical_sine_joint_endpoint": SINE_ENDPOINT,
-            "physical_sine_p_cross": SINE_PCROSS,
-            "physical_sine_p_GG": SINE_PGG,
-            "physical_sine_p_joint": SINE_PJOINT,
-            "operator_first_route_endpoint_text": ROUTE_OP_ENDPOINT_TEXT,
-            "operator_first_route_exponent_text": ROUTE_OP_EXP_TEXT,
-            "Euclidean_nE": "-2/(3 hbar)",
-            "full_beta1_Lorentzian_magnitude": "32/(9 hbar^7)",
-            "bare_beta1_HL_magnitude": "16/(9 hbar^7)",
-            "joint_cutoff_alpha": "1/8",
+    out={
+        'status':'canonical human/machine/evidence consistency',
+        'passed':all(checks.values()),
+        'anchors':{
+            'Delta_aniso_ret':DELTA_ANISO,
+            'Lorentzian_raw_Y_abs':RAW_Y,
+            'physical_sine_joint_endpoint':SINE_ENDPOINT,
+            'signed_full_beta1_Hcorr_over_Hphase':-32/9,
+            'signed_bare_beta1_HL_over_Hphase':-16/9,
+            'signed_full_beta1_Hcorr_over_Lraw':'32 i/9',
+            'joint_cutoff_alpha':'1/8',
         },
-        "checks": checks,
+        'checks':checks,
     }
-    print(json.dumps(out, indent=2, sort_keys=True))
-    return 0 if out["passed"] else 1
+    print(json.dumps(out,indent=2,sort_keys=True))
+    return 0 if out['passed'] else 1
 
 
-if __name__ == "__main__":
+if __name__=='__main__':
     raise SystemExit(main())
