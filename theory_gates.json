@@ -2,31 +2,95 @@
   "schema_version": 1,
   "allowed_statuses": ["proved", "conditional", "tested_finite", "open"],
   "gates": [
-    {"id":"BITQ2","status":"tested_finite","claim":"Frozen binary-route q=2 dimensional and smoothing results.","evidence":["BIT_TO_SPACETIME_CENTRAL_EQUATION.md","OBSERVER_SCALE_SMOOTHING.md","bcqg_observer_smoothing_unified.py"]},
-    {"id":"MAN3","status":"tested_finite","claim":"Canonical recursive q=2 PL three-manifold completion.","evidence":["GLOBAL_MANIFOLD_Q2_COMPLETION.md","bcqg_global_manifold_gate.py"]},
-    {"id":"PWGEO","status":"tested_finite","claim":"Peter-Weyl SU(2) geometry, Euclidean Hamiltonian, K, C(V), and C(K) finite gates.","evidence":["PETER_WEYL_TRUNCATION_GATE.md","K5_PETER_WEYL_SAFE_HDA_FIRST_COLUMN.md","scripts/peter_weyl_lorentzian_K_block_gate.py","scripts/peter_weyl_covariant_composition_gate.py","scripts/peter_weyl_covariant_K_composition_gate.py"]},
-    {"id":"ROUTE","status":"tested_finite","claim":"Independent sharp, path diffeomorphism, and route-normal HDA finite gates.","evidence":["DUAL_CELL_SHARP_RT0.md","QUANTUM_HDA_KILLER_RESULT.md","scripts/path_normal_hda_gate.py"]},
-    {"id":"E2NODE","status":"tested_finite","claim":"Two-node regulator-safe Euclidean Peter-Weyl by route HDA regression.","evidence":["PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md","scripts/peter_weyl_two_node_euclidean_joint_gate.py"]},
-    {"id":"LORENTZ","status":"tested_finite","claim":"Fixed beta control and full Lorentzian support wall through Jmax=13/2.","evidence":["LORENTZIAN_BETA_CANCELLATION.md","scripts/lorentzian_hit_depth_bound.py"]},
-    {"id":"LHDA_COMP","status":"proved","claim":"Fixed-cutoff Lorentzian-route composition scaling theorem documented in the final certificate.","evidence":["FINAL_CORE_ARCHITECTURE_CERTIFICATE.md"]},
-    {"id":"JOINTDIAG","status":"conditional","claim":"Given the frozen polynomial norm envelope C_cross/D=O(epsilon Jmax^(13/2)) and C_GG/D=O(epsilon^2 Jmax^13), every power trajectory Jmax~epsilon^-alpha with 0<alpha<2/13 suppresses both declared contaminants. The canonical alpha=1/8 path gives epsilon^(3/16) and epsilon^(3/8). This is not a uniform arbitrary-path theorem.","evidence":["JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md","scripts/joint_cutoff_diagonal_gate.py","BCQG_CORE_CANDIDATE_V1.md"]},
-    {"id":"LORAMP","status":"open","claim":"Direct physical Lorentzian logical amplitude P H_L P and its Hermitian/prefactor completion remain open. Spin parity permits P H_L P even though P H_E P=0, so support counting and the fixed-cutoff composition theorem do not answer this amplitude question.","evidence":["PETER_WEYL_LORENTZIAN_PARITY_FRONTIER.md","THEORY_STATUS.md"]},
-    {"id":"DEWITT","status":"proved","claim":"Declared ADM/HDA uniqueness and degree-counting results.","evidence":["DEWITT_HDA_UNIQUENESS.md","BF_GR_DIRAC_COUNT_DISCRIMINATOR.md"]},
-    {"id":"GQBIT","status":"tested_finite","claim":"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.","evidence":["GRAVITON_INFOTON_FOAM_BRIDGE.md","scripts/graviton_infoton_foam_gate.py"]},
-    {"id":"FOAMGW","status":"conditional","claim":"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resonance near Omega_GW=2 omega_I with mu~|xi h| omega_I/4.","evidence":["GRAVITON_INFOTON_FOAM_BRIDGE.md","scripts/graviton_infoton_foam_gate.py"]},
-    {"id":"MIRRORCHI","status":"tested_finite","claim":"Mirror complex conjugation flips the logical oriented Y/Q coordinate while preserving shape and absolute-volume data; reflected tetrahedra reverse orientation but preserve metric/flux Gram data, and conjugate representations carry opposite perturbative cubic gauge-anomaly coefficient.","evidence":["MIRROR_CHIRALITY_GRAVITY.md","scripts/mirror_chirality_gravity_gate.py"]},
-    {"id":"MIRRORORDER","status":"tested_finite","claim":"The 16-cell dual tetrahedron graph is Q4 and its staggered Y variable gives exact +/- mirror vacua with finite defect/domain-wall costs and a strongly ordered low-energy 16-qubit doublet. The same bipartite staggered order persists through two global barycentric PL refinements with 16, 384 and 9216 tetrahedra.","evidence":["MICROSCOPIC_MIRROR_ORDER.md","scripts/mirror_order_16cell_gate.py","scripts/mirror_order_recursive_pl_gate.py"]},
-    {"id":"MIRRORHEIS","status":"tested_finite","claim":"On every bipartite dual edge, a pi rotation about logical Y on one sublattice maps the frozen Bell-gluing term -J(XX-YY+ZZ) exactly to the antiferromagnetic Heisenberg parent +J(XX+YY+ZZ). The full Q4 16-qubit parent has a nondegenerate singlet ground state, a threefold first triplet with gap about 2.314393343 J, and substantial staggered Neel correlations. The recursive degree-four bipartite dual graphs have strongly softening graph spin-wave scales. A physical Goldstone mirror mode remains conditional and is not protected against the tested Peter-Weyl return anisotropy.","evidence":["MIRROR_HEISENBERG_PARENT.md","SPATIAL_QUBIT_GEOMETRY_BRIDGE.md","PETER_WEYL_LOGICAL_ANISOTROPY.md","scripts/mirror_heisenberg_parent_gate.py","scripts/mirror_order_recursive_pl_gate.py","scripts/peter_weyl_logical_anisotropy_gate.py"]},
-    {"id":"S4TWIRL","status":"proved","claim":"The exact diagonal S4 face-permutation twirl on two logical geometry qubits has invariant operator space span{II, XX+ZZ, YY}. Thus all one-cell logical fields and face-label artifacts twirl away, but the scalar anisotropy Delta_aniso=J_orientation-J_shape is symmetry allowed and is not forced to vanish by tetrahedral permutation symmetry.","evidence":["LOGICAL_S4_TWIRL.md","scripts/logical_s4_twirl_gate.py"]},
-    {"id":"ROUTELOGICAL","status":"tested_finite","claim":"The logical flux metric is mirror even and lives in the I/X/Z shape plane with no Y component. Isotropic angular averaging makes the linear metric scalar; in the frozen expectation-first square-root control the K=0 and K=2 averages are equal at 0.8598466001022401, while an operator-first spectral square-root ordering retains a finite X/Z shape norm about 0.0400749185. Therefore route pseudospin anisotropy is ordering dependent and is not established by the frozen expectation-first gate alone.","evidence":["LOGICAL_ROUTE_METRIC_ORDERING.md","SPATIAL_QUBIT_GEOMETRY_BRIDGE.md","scripts/logical_route_metric_operator_gate.py"]},
-    {"id":"PWLOGANISO","status":"tested_finite","claim":"For the all-j=1/2 logical sector P H_E P=0 exactly over all 32 tested logical columns. The audited environment-unbiased return kernel Kbar=(1/8)Tr_env P(H_E0+H_E1)^2P preserves mirror selection rules to relative forbidden norm 2.7985693281119945e-33 but strongly breaks accidental pseudospin SU(2), with A_rel=0.9644798301915488. After exact S4 reduction J_shape=-0.5564630119591318, J_orientation=2.18199564892363 and Delta_aniso,ret=2.738458660882762. The audited 648-state cone contains 392 positive and 256 negative contributions, so arbitrary positive diagonal weighting is not sign protected. Kbar is a short-time/leakage return kernel, not a proved static effective Hamiltonian.","evidence":["PETER_WEYL_LOGICAL_ANISOTROPY.md","PETER_WEYL_ANISOTROPY_WEIGHT_ROBUSTNESS.md","LOGICAL_S4_TWIRL.md","scripts/peter_weyl_logical_anisotropy_gate.py","scripts/peter_weyl_anisotropy_resolvent_audit_fast_gate.py","scripts/logical_s4_twirl_gate.py"]},
-    {"id":"MIRRORMAT","status":"tested_finite","claim":"The free massive Dirac axial density obeys J5^0/J^0=h|p|/E, so its rest-frame and unpolarized static source vanish; the diagonal pseudoscalar bilinear also vanishes. For any mirror-covariant rest-mass law m_q(sigma)=m_-q(-sigma), aligned mirror partners have equal mass and opposite sigma derivatives. The operational source is beta_m=(chi m)^-1 <dH_m/dsigma>_rest; the exponential law m_q=m_*exp(q beta sigma) is only the constant-beta positive-mass control. A numerical beta_m from realistic microscopic matter remains open.","evidence":["MIRROR_MATTER_MATRIX_ELEMENT.md","scripts/mirror_matter_matrix_element_gate.py"]},
-    {"id":"MIRRORWILSON","status":"tested_finite","claim":"A concrete three-dimensional Wilson-Dirac H_m(k,sigma) with a mirror-covariant positive mass law has identical aligned mirror-partner spectra, opposite Hellmann-Feynman rest charges, the expected moving-state source identity, and exactly one zero Brillouin corner in the massless Wilson negative control. This supplies a microscopic carrier but beta_m remains an input and realistic PL/gauge/chiral matter is open.","evidence":["MIRROR_WILSON_MATTER.md","scripts/mirror_wilson_matter_gate.py","scripts/fermion_zero_blitz.py"]},
-    {"id":"MIRRORRANGE","status":"tested_finite","claim":"In the conservative Z2 Ising truncation the finite Q4 mirror order is not automatically long ranged. After exact global-Z2 parity reduction, tunnelling and wrong-parity raw states are excluded; the first additional Sigma-coupled odd excitation is about 7.97009 J at h/J=0.2 and no lower than about 5.58411 J in the checked crossover scan. The full Bell-gluing Heisenberg parent is a distinct continuous-symmetry control, but the tested Peter-Weyl return dynamics strongly breaks its accidental pseudospin SU(2), so the actual refined range is an anisotropy/RG problem.","evidence":["MIRROR_SIGMA_RANGE.md","MIRROR_HEISENBERG_PARENT.md","PETER_WEYL_LOGICAL_ANISOTROPY.md","scripts/mirror_sigma_range_gate.py","scripts/mirror_heisenberg_parent_gate.py","scripts/peter_weyl_logical_anisotropy_gate.py"]},
-    {"id":"GOLDSOURCE","status":"conditional","claim":"If an O(3)/Heisenberg Neel phase nevertheless survives in the IR with the physical mirror observable longitudinal to the chosen vacuum, Sigma_Y=v-(pi_x^2+pi_z^2)/(2v)+..., so the one-Goldstone matrix element vanishes. The leading free two-Goldstone static channel is V_2G=-Q1 Q2/(32 pi^3 v^2 r^3): opposite charges repel but the force scales as r^-4, not Newton-like r^-2. A 1/r mirror potential still requires a light one-particle pole or a source that couples linearly to a transverse mode.","evidence":["MIRROR_GOLDSTONE_SOURCE.md","scripts/mirror_goldstone_source_gate.py"]},
-    {"id":"MIRRORMASTER","status":"proved","claim":"With regular-seed Hodge normalization, g_*=GJ/ell, j_sigma=J ell/(hbar c_sigma), R=r/ell and Delta_sigma=delta_sigma J, alpha is not independent: alpha=3 beta_m^2/(8 sqrt(2) pi g_*), x=m_sigma r=delta_sigma j_sigma R, and opposite-chi repulsion is exactly equivalent to beta_m^2>(8 sqrt(2) pi/3) g_* exp(x)/(1+x). The order-one range condition x<=1 gives j_sigma<=1/(delta_sigma R). The formula applies to the light one-particle massive/Yukawa branch, not automatically to the longitudinal two-Goldstone branch.","evidence":["MIRROR_MASTER_CRITERION.md","scripts/mirror_master_criterion_gate.py","MIRROR_FORCE_NORMALIZATION.md","MIRROR_SIGMA_RANGE.md","MIRROR_GOLDSTONE_SOURCE.md"]},
-    {"id":"MIRRORFORCE","status":"tested_finite","claim":"A positive-kinetic mirror sector preserves the canonical matter HDA principal identity to machine precision and yields the exact Yukawa screening/repulsion threshold alpha_crit=exp(m_sigma r)/(1+m_sigma r). Canonical normalization gives alpha=beta_m^2/(4*pi*G*Z_sigma); DEC/Hodge matching gives J_f=Z_sigma*A_f/d_f and, for regular tetrahedra, Z_sigma=(2sqrt2/3)J/ell. Pure geometry has beta_m=0, and the old axial density is not a universal static cold-matter source, so a nonzero one-particle force requires a genuine mirror-odd rest-energy derivative.","evidence":["ORIENTATION_ODD_HDA_CONSTRUCTION.md","MICROSCOPIC_MIRROR_ORDER.md","MIRROR_FORCE_NORMALIZATION.md","MIRROR_MATTER_MATRIX_ELEMENT.md","MIRROR_WILSON_MATTER.md","MIRROR_SIGMA_RANGE.md","MIRROR_MASTER_CRITERION.md","DUAL_CELL_SHARP_RT0.md","scripts/orientation_odd_hda_gate.py","scripts/mirror_order_16cell_gate.py","scripts/mirror_order_recursive_pl_gate.py","scripts/mirror_force_normalization_gate.py","scripts/mirror_hodge_stiffness_gate.py","scripts/mirror_matter_matrix_element_gate.py","scripts/mirror_wilson_matter_gate.py","scripts/mirror_sigma_range_gate.py","scripts/mirror_master_criterion_gate.py"]},
-    {"id":"ANTIGRAV","status":"conditional","claim":"Direct mirror-induced g00 sign flip remains absent. A healthy cross-sector repulsion candidate exists, but the current decisive unresolved quantity is the renormalized/constrained orientation-vs-shape anisotropy Delta_aniso^eff together with a realistic nonzero matter matrix element beta_m and physical scale setting. Euclidean Peter-Weyl return dynamics preserves mirror Z2 but strongly breaks the accidental Bell-parent pseudospin SU(2). If Delta_aniso^eff remains nonzero, the mirror sector is generically anisotropic/massive and the one-particle MIRRORMASTER branch applies if a light pole exists; if it flows to zero, a Goldstone-like sector may emerge, but a purely longitudinal mirror source then begins with an r^-3 two-Goldstone potential rather than an automatic 1/r force. Full Peter-Weyl x route x mirror-matter HDA remains open.","evidence":["MIRROR_CHIRALITY_GRAVITY.md","ORIENTATION_ODD_HDA_CONSTRUCTION.md","MICROSCOPIC_MIRROR_ORDER.md","MIRROR_HEISENBERG_PARENT.md","PETER_WEYL_LOGICAL_ANISOTROPY.md","LOGICAL_S4_TWIRL.md","LOGICAL_ROUTE_METRIC_ORDERING.md","MIRROR_FORCE_NORMALIZATION.md","MIRROR_MATTER_MATRIX_ELEMENT.md","MIRROR_WILSON_MATTER.md","MIRROR_SIGMA_RANGE.md","MIRROR_GOLDSTONE_SOURCE.md","MIRROR_MASTER_CRITERION.md"]},
-    {"id":"CORECERT","status":"conditional","claim":"BCQG Core Candidate v1 combines the fixed-cutoff HDA certificate with the independently tested route-normal limit and an explicit conditional simultaneous-cutoff trajectory. Direct Lorentzian logical amplitudes, a uniform joint-limit theorem, scale setting, realistic matter and experiment remain open.","evidence":["FINAL_CORE_ARCHITECTURE_CERTIFICATE.md","JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md","BCQG_CORE_CANDIDATE_V1.md","THEORY_STATUS.md"]}
+    {
+      "id": "BITQ2",
+      "status": "tested_finite",
+      "claim": "The frozen binary-route family selects q=2 and has held-out spatial/dynamical scaling near d_space=3 and z=1.",
+      "evidence": ["BIT_TO_SPACETIME_CENTRAL_EQUATION.md", "OBSERVER_SCALE_SMOOTHING.md", "bcqg_observer_smoothing_unified.py"]
+    },
+    {
+      "id": "MAN3",
+      "status": "tested_finite",
+      "claim": "The canonical minimal flag q=2 completion is a closed orientable PL S3 seed with checked recursive PL refinements.",
+      "evidence": ["GLOBAL_MANIFOLD_Q2_COMPLETION.md", "bcqg_global_manifold_gate.py"]
+    },
+    {
+      "id": "PWGEO",
+      "status": "tested_finite",
+      "claim": "The Peter-Weyl SU(2) geometry stack supplies finite regulator-safe H_E, V, K=[V,H_E], C(V) and C(K) operations on the declared sectors.",
+      "evidence": ["PETER_WEYL_TRUNCATION_GATE.md", "K5_PETER_WEYL_SAFE_HDA_FIRST_COLUMN.md", "scripts/peter_weyl_lorentzian_K_block_gate.py", "scripts/peter_weyl_covariant_composition_gate.py", "scripts/peter_weyl_covariant_K_composition_gate.py"]
+    },
+    {
+      "id": "ROUTE",
+      "status": "tested_finite",
+      "claim": "The geometry-dependent square-root route-normal generator has the required HDA principal symbol and convergent finite WKB/path tests.",
+      "evidence": ["DUAL_CELL_SHARP_RT0.md", "QUANTUM_HDA_KILLER_RESULT.md", "scripts/path_normal_hda_gate.py"]
+    },
+    {
+      "id": "E2NODE",
+      "status": "tested_finite",
+      "claim": "The two-node Euclidean Peter-Weyl x route test has cross residual O(epsilon), pure geometry residual O(epsilon^2), and joint residual O(epsilon) on the frozen probe.",
+      "evidence": ["PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md", "scripts/peter_weyl_two_node_euclidean_joint_gate.py"]
+    },
+    {
+      "id": "LORENTZSUPPORT",
+      "status": "tested_finite",
+      "claim": "The real-beta coefficient control is fixed classically and the all-j=1/2 full Lorentzian HH hit-depth support is safe at Jmax=13/2.",
+      "evidence": ["LORENTZIAN_BETA_CANCELLATION.md", "scripts/lorentzian_hit_depth_bound.py"]
+    },
+    {
+      "id": "LHDA_COMP",
+      "status": "proved",
+      "claim": "At fixed regulator-safe cutoff the declared Lorentzian-route composition has C_cross/D=O(epsilon) and C_GG/D=O(epsilon^2), so the full residual is controlled by the independently convergent route residual plus vanishing geometry corrections.",
+      "evidence": ["FINAL_CORE_ARCHITECTURE_CERTIFICATE.md"]
+    },
+    {
+      "id": "JOINTDIAG",
+      "status": "conditional",
+      "claim": "Given the frozen polynomial norm envelope, power trajectories Jmax~epsilon^-alpha suppress both declared contaminants for 0<alpha<2/13; the canonical alpha=1/8 path gives epsilon^(3/16) and epsilon^(3/8). This is not a uniform arbitrary-path theorem.",
+      "evidence": ["JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md", "scripts/joint_cutoff_diagonal_gate.py", "BCQG_CORE_CANDIDATE_V1.md"]
+    },
+    {
+      "id": "LORAMPRAW",
+      "status": "tested_finite",
+      "claim": "The exact Jmax=7/2 environment-unbiased full-24-term Peter-Weyl Lorentzian raw logical one-body amplitude is nonzero and equals i*1.3389293521464034*Y up to O(1e-16), with S4 covariance defect 1.3976239359266602e-15 and physical basis/volume leakage 6.532094795930893e-16.",
+      "evidence": ["PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md", "verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json", "scripts/peter_weyl_lorentzian_envtrace_block_gate.py", "scripts/peter_weyl_lorentzian_envtrace_orbit_collector.py"]
+    },
+    {
+      "id": "LORORDER",
+      "status": "open",
+      "claim": "The raw Lorentzian one-body operator is anti-Hermitian: its even Hermitian projection vanishes while (L-L^dagger)/(2i) gives a nonzero Hermitian Y term. The physical Hermitian ordering and overall canonical prefactor must be fixed independently before the completed H_L is used in HDA or interpreted physically.",
+      "evidence": ["PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md", "scripts/peter_weyl_lorentzian_onebody_ordering_gate.py"]
+    },
+    {
+      "id": "DEWITT",
+      "status": "proved",
+      "claim": "Under the declared first-class HDA and nondegenerate D=3 metric assumptions, the DeWitt/HDA uniqueness and Dirac-counting chain selects the GR kinetic structure and two local gravitational configuration modes.",
+      "evidence": ["DEWITT_HDA_UNIQUENESS.md", "BF_GR_DIRAC_COUNT_DISCRIMINATOR.md"]
+    },
+    {
+      "id": "PWLOGANISO",
+      "status": "tested_finite",
+      "claim": "P H_E P=0 on all 32 logical columns. The audited environment-unbiased Euclidean return kernel has A_rel=0.9644798301915488 and S4 split Delta_aniso,ret=2.738458660882762; its 648-state decomposition has 392 positive and 256 negative contributions, so arbitrary positive diagonal weighting is not sign protected.",
+      "evidence": ["PETER_WEYL_LOGICAL_ANISOTROPY.md", "PETER_WEYL_ANISOTROPY_WEIGHT_ROBUSTNESS.md", "LOGICAL_S4_TWIRL.md", "scripts/peter_weyl_logical_anisotropy_gate.py", "scripts/peter_weyl_anisotropy_resolvent_audit_fast_gate.py", "scripts/logical_s4_twirl_gate.py"]
+    },
+    {
+      "id": "MIRROREXT",
+      "status": "conditional",
+      "claim": "Mirror orientation flips the logical orientation variable while preserving the tested intrinsic metric/shape data. A healthy static mirror-force extension additionally requires a derived nonzero matter source, a physical mediator/range mechanism and scale setting; orientation alone does not flip g00.",
+      "evidence": ["MIRROR_CHIRALITY_GRAVITY.md", "MIRROR_FORCE_NORMALIZATION.md", "MIRROR_MATTER_MATRIX_ELEMENT.md", "MIRROR_GOLDSTONE_SOURCE.md"]
+    },
+    {
+      "id": "FOAMGW",
+      "status": "conditional",
+      "claim": "The k^1.003414 foam spectrum follows only if the measured smoothing exponent is a true quantum RMS exponent, and the GW information-mode resonance requires a derived nonzero microscopic TT coupling.",
+      "evidence": ["GRAVITON_INFOTON_FOAM_BRIDGE.md", "scripts/graviton_infoton_foam_gate.py"]
+    },
+    {
+      "id": "CORECERT",
+      "status": "conditional",
+      "claim": "BCQG Core Candidate v1 combines the q=2/PL-S3 kinematics, 3+1D-like scaling, Peter-Weyl geometry, route-normal HDA mechanism, fixed-cutoff composition theorem, explicit alpha=1/8 simultaneous-cutoff path and a nonzero raw Lorentzian logical amplitude. The principal operator frontier is the independently fixed physical Lorentzian ordering/prefactor followed by the complete two-node Lorentzian route-coupled HDA.",
+      "evidence": ["BCQG_CORE_CANDIDATE_V1.md", "THEORY_STATUS.md", "PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md", "FINAL_CORE_ARCHITECTURE_CERTIFICATE.md", "JOINT_CUTOFF_DIAGONAL_CERTIFICATE.md"]
+    }
   ]
 }
