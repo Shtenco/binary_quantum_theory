@@ -8,15 +8,18 @@ on:
       - 'BCQG_CANDIDATE_THEORY_V1_2.md'
       - 'BCQG_CORE_CANDIDATE_V1_2.md'
       - 'theory_gates.json'
+      - 'LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md'
       - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
       - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_WALSH_NODE012.json'
       - 'verification_results/LORENTZIAN_HERMITIAN_COMPLETION.json'
+      - 'verification_results/LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.json'
       - 'verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json'
       - 'verification_results/LORENTZIAN_HIT_DEPTH_BOUND.json'
       - 'verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json'
       - 'scripts/canonical_ledger_consistency_gate.py'
       - 'scripts/bcqg_v12_cutoff_saturated_hda_gate.py'
       - 'scripts/peter_weyl_operator_route_all_reached_gate.py'
+      - 'scripts/lorentzian_hermitian_projection_uniqueness_gate.py'
   pull_request:
     paths:
       - 'START_HERE.md'
@@ -24,10 +27,12 @@ on:
       - 'BCQG_CANDIDATE_THEORY_V1_2.md'
       - 'BCQG_CORE_CANDIDATE_V1_2.md'
       - 'theory_gates.json'
+      - 'LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md'
       - 'verification_results/**'
       - 'scripts/canonical_ledger_consistency_gate.py'
       - 'scripts/bcqg_v12_cutoff_saturated_hda_gate.py'
       - 'scripts/peter_weyl_operator_route_all_reached_gate.py'
+      - 'scripts/lorentzian_hermitian_projection_uniqueness_gate.py'
 
 jobs:
   verify:
@@ -42,9 +47,12 @@ jobs:
           python -m py_compile scripts/canonical_ledger_consistency_gate.py
           python -m py_compile scripts/bcqg_v12_cutoff_saturated_hda_gate.py
           python -m py_compile scripts/peter_weyl_operator_route_all_reached_gate.py
+          python -m py_compile scripts/lorentzian_hermitian_projection_uniqueness_gate.py
       - name: Verify canonical ledgers against frozen evidence
         run: python scripts/canonical_ledger_consistency_gate.py
       - name: Verify machine-ledger schema/evidence paths
         run: python scripts/verify_theory_gates.py
+      - name: Reproduce Hermitian projection uniqueness
+        run: python scripts/lorentzian_hermitian_projection_uniqueness_gate.py
       - name: Reproduce cutoff-saturated theorem from frozen evidence
         run: python scripts/bcqg_v12_cutoff_saturated_hda_gate.py
