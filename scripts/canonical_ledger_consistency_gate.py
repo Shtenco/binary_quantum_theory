@@ -12,6 +12,7 @@ HERM=ROOT/'verification_results/LORENTZIAN_HERMITIAN_COMPLETION.json'
 ROUTE=ROOT/'verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json'
 SAT=ROOT/'verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json'
 HIT=ROOT/'verification_results/LORENTZIAN_HIT_DEPTH_BOUND.json'
+HUNIQ=ROOT/'verification_results/LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.json'
 
 def gate(gs,i):
     x=[g for g in gs if g['id']==i]
@@ -20,15 +21,16 @@ def gate(gs,i):
 
 def main():
     status=STATUS.read_text(); cand=CAND.read_text(); core=CORE.read_text(); start=START.read_text(); ledger_text=LEDGER.read_text(); d=json.loads(ledger_text); gs=d['gates']
-    sine=json.loads(SINE.read_text()); lor=json.loads(LOR.read_text()); multi=json.loads(MULTI.read_text()); herm=json.loads(HERM.read_text()); route=json.loads(ROUTE.read_text()); sat=json.loads(SAT.read_text()); hit=json.loads(HIT.read_text())
+    sine=json.loads(SINE.read_text()); lor=json.loads(LOR.read_text()); multi=json.loads(MULTI.read_text()); herm=json.loads(HERM.read_text()); route=json.loads(ROUTE.read_text()); sat=json.loads(SAT.read_text()); hit=json.loads(HIT.read_text()); huniq=json.loads(HUNIQ.read_text())
     ids={g['id'] for g in gs}
     checks={
       'v12_named_everywhere':all('v1.2' in x for x in (status,cand,core,start)),
-      'required_gates':{'ROUTE_ALL','PARITY','CUTOFF_SAT','FULLHDA_OP','LOR_HERM','LORORDER','CORECERT'}<=ids,
-      'statuses':gate(gs,'ROUTE_ALL')['status']=='tested_finite' and gate(gs,'PARITY')['status']=='proved' and gate(gs,'CUTOFF_SAT')['status']=='proved' and gate(gs,'FULLHDA_OP')['status']=='conditional' and gate(gs,'LOR_HERM')['status']=='tested_finite' and gate(gs,'LORORDER')['status']=='open',
+      'required_gates':{'ROUTE_ALL','PARITY','CUTOFF_SAT','FULLHDA_OP','LOR_HERM','HERM_UNIQ','LORORDER','CORECERT'}<=ids,
+      'statuses':gate(gs,'ROUTE_ALL')['status']=='tested_finite' and gate(gs,'PARITY')['status']=='proved' and gate(gs,'CUTOFF_SAT')['status']=='proved' and gate(gs,'FULLHDA_OP')['status']=='conditional' and gate(gs,'LOR_HERM')['status']=='tested_finite' and gate(gs,'HERM_UNIQ')['status']=='proved' and gate(gs,'LORORDER')['status']=='open',
       'production_hermitian_G':all('G=-\\frac23E-\\frac{32}{9}S' in x or 'G_v=-\\frac23E_v-\\frac{32}{9}S_v' in x or 'G = -2/3 E -32/9 S' in x for x in (status,cand,core,start)),
       'old_raw_formula_explicitly_nonproduction':all(('only' in x[x.find('historical'):].lower()) if 'historical' in x else ('not' in x.lower()) for x in (status,cand,core,start)),
       'hermitian_evidence':bool(herm['passed']) and herm['definition']=='H_phase_sym=-i/2 (L_raw-L_raw^dagger)',
+      'hermitian_projection_unique':bool(huniq['passed']) and 'unique linear Hermitian projection' in huniq['status'] and huniq['closest_point_identity_defect']<1e-10,
       'raw_onebody_preserved':abs(math.hypot(*lor['onebody_Y_coefficient_raw'])-1.3389293521464034)<1e-12 and abs(float(herm['environment_unbiased_onebody_signed_Y'])+4.760637696520545)<1e-12,
       'multi_evidence':bool(multi['passed']) and int(multi['triple_count'])==24 and float(multi['max_leakage'])<1e-12,
       'route_all_pass':bool(route['passed']) and int(route['distinct_reached_sectors'])==33 and int(route['nonzero_powerlaw_sectors'])==30 and int(route['numerical_zero_sectors'])==3,
