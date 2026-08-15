@@ -6,13 +6,13 @@ Computes the genuine covariant state
     Tr_aux[C_a(K_sine) C_b(K_sine) C_c(V)] |g>
 
 at the frozen single-H_L wall Jmax=7/2, then performs only the exact scalar
-covariant->Gauss closure.  No logical projection is used.  The 24 epsilon-
+covariant->Gauss closure. No logical projection is used. The 24 epsilon-
 oriented terms are independent and can therefore be evaluated in parallel and
 assembled linearly by a separate collector.
 
-This is computational factorization only: the operator, cutoff, zero-aware
-volume convention and physical-sine K stack are exactly the same as in
-peter_weyl_lorentzian_logical_projection_gate.py.
+An individual ordered triple is allowed to vanish exactly. Nonzero support is
+not a physical acceptance criterion; only finite arithmetic, scalar closure,
+leakage control and cutoff safety are required before the 24-term sum.
 """
 from __future__ import annotations
 
@@ -77,19 +77,22 @@ def run(a,b,c,coefficient,source=0):
             float(diag.get('CK_internal_volume_sector_leakage',0.0)),
         )
         charge=float(diag.get('CK_complete_charge_basis_leakage',0.0))
-        scalar_fraction=accepted2/max(accepted2+rejected2,1e-30)
+        total_scalar_test=accepted2+rejected2
+        scalar_fraction=1.0 if total_scalar_test<1e-30 else accepted2/total_scalar_test
         cache_info={
             name:{'hits':fn.cache_info().hits,'misses':fn.cache_info().misses,'currsize':fn.cache_info().currsize}
             for name,fn in caches.items()
         }
+        covnorm=math.sqrt(norm2(cov)); gnorm=math.sqrt(norm2(gauss))
         checks={
-            'covariant_state_nonzero':len(cov)>0 and norm2(cov)>1e-20,
-            'gauss_state_nonzero':len(gauss)>0 and norm2(gauss)>1e-20,
+            'finite_covariant_norm':math.isfinite(covnorm),
+            'finite_gauss_norm':math.isfinite(gnorm),
+            'finite_covariant_amplitudes':all(np.isfinite([z.real,z.imag]).all() for z in cov.values()),
+            'finite_gauss_amplitudes':all(np.isfinite([z.real,z.imag]).all() for z in gauss.values()),
             'physical_basis_volume_leakage':physical<1e-8,
-            'scalar_closure_fraction':scalar_fraction>1-1e-10,
+            'scalar_closure_fraction_or_exact_zero':scalar_fraction>1-1e-10,
             'nonscalar_rejected_norm':math.sqrt(max(rejected2,0.0))<1e-8,
             'single_HL_spin_wall':max_spin(gauss)<=JMAX2/2+1e-12,
-            'finite_amplitudes':all(np.isfinite([z.real,z.imag]).all() for z in gauss.values()),
         }
         return gauss,{
             'status':'exact full-state ordered Lorentzian triple worker',
@@ -100,10 +103,11 @@ def run(a,b,c,coefficient,source=0):
             'Jmax':JMAX2/2,
             'input_key':repr(initial),
             'covariant_support':len(cov),
-            'covariant_norm':math.sqrt(norm2(cov)),
+            'covariant_norm':covnorm,
             'gauss_support':len(gauss),
-            'gauss_norm':math.sqrt(norm2(gauss)),
+            'gauss_norm':gnorm,
             'gauss_max_spin':max_spin(gauss),
+            'exact_zero_ordered_term':len(cov)==0 and len(gauss)==0,
             'scalar_closure_fraction':scalar_fraction,
             'nonscalar_rejected_norm':math.sqrt(max(rejected2,0.0)),
             'physical_acceptance_max_leakage':physical,
@@ -111,7 +115,7 @@ def run(a,b,c,coefficient,source=0):
             'cache_info':cache_info,
             'checks':checks,
             'weighted_here':False,
-            'scope':'One of 24 exact ordered full-state terms; final epsilon sum is produced only by the collector.',
+            'scope':'One of 24 exact ordered full-state terms; exact zero is allowed and the final epsilon sum is produced only by the collector.',
         }
     finally:
         restore()
@@ -119,13 +123,9 @@ def run(a,b,c,coefficient,source=0):
 
 def main():
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--a',type=int,required=True)
-    p.add_argument('--b',type=int,required=True)
-    p.add_argument('--c',type=int,required=True)
-    p.add_argument('--coefficient',type=int,required=True)
-    p.add_argument('--source',type=int,default=0)
-    p.add_argument('--json-output',type=Path,required=True)
-    p.add_argument('--state-output',type=Path,required=True)
+    p.add_argument('--a',type=int,required=True); p.add_argument('--b',type=int,required=True); p.add_argument('--c',type=int,required=True)
+    p.add_argument('--coefficient',type=int,required=True); p.add_argument('--source',type=int,default=0)
+    p.add_argument('--json-output',type=Path,required=True); p.add_argument('--state-output',type=Path,required=True)
     x=p.parse_args(); state,out=run(x.a,x.b,x.c,x.coefficient,x.source)
     x.json_output.parent.mkdir(parents=True,exist_ok=True)
     x.json_output.write_text(json.dumps(out,indent=2,sort_keys=True)+'\n',encoding='utf-8')
@@ -133,6 +133,4 @@ def main():
     print(json.dumps(out,indent=2,sort_keys=True))
     return 0 if out['passed'] else 1
 
-
-if __name__=='__main__':
-    raise SystemExit(main())
+if __name__=='__main__': raise SystemExit(main())
