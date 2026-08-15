@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Cross-check the canonical human/machine ledgers against frozen evidence.
+"""Cross-check canonical human/machine ledgers against frozen evidence.
 
 This gate exists because the repository previously developed status drift: an
 older Peter-Weyl anisotropy number remained in THEORY_STATUS after the audited
-calculation had changed the canonical value.  The gate intentionally checks a
-small set of high-value anchors rather than attempting to parse every equation
-from Markdown.
+calculation had changed the canonical value. The gate checks a compact set of
+high-value numerical and logical anchors, including the newer Lorentzian raw
+amplitude and five-bracket phase result.
 """
 from __future__ import annotations
 
@@ -44,6 +44,7 @@ def main() -> int:
 
     pw = find_gate(gates, "PWLOGANISO")
     lor = find_gate(gates, "LORAMPRAW")
+    phase = find_gate(gates, "LORPHASE")
     order = find_gate(gates, "LORORDER")
     joint = find_gate(gates, "JOINTDIAG")
     core = find_gate(gates, "CORECERT")
@@ -56,6 +57,9 @@ def main() -> int:
         "pw_gate_canonical_delta": f"{DELTA_ANISO}" in pw["claim"],
         "retired_delta_absent_from_machine_ledger": "3.6832250321658044" not in ledger_text,
         "lor_raw_gate_status": lor["status"] == "tested_finite",
+        "lor_phase_gate_conditional": phase["status"] == "conditional",
+        "lor_phase_claim_has_five_brackets": "five Poisson brackets" in phase["claim"],
+        "lor_phase_claim_has_minus_i": "(1/i)^5=-i" in phase["claim"],
         "lor_order_gate_open": order["status"] == "open",
         "joint_gate_conditional": joint["status"] == "conditional",
         "core_gate_conditional": core["status"] == "conditional",
@@ -70,6 +74,8 @@ def main() -> int:
         "candidate_has_delta": f"{DELTA_ANISO}" in candidate,
         "status_has_raw_y": f"{RAW_Y}" in status,
         "candidate_has_raw_y": f"{RAW_Y}" in candidate,
+        "status_has_five_bracket_phase": "(1/i)^5=-i" in status,
+        "candidate_has_five_bracket_phase": "(1/i)^5=-i" in candidate,
         "status_marks_old_delta_retired": "3.6832250321658044" in status and "retired" in status.lower(),
         "candidate_excludes_retired_delta": "3.6832250321658044" not in candidate,
         "canonical_joint_path_in_status": "epsilon^-1/8" in status,
@@ -84,6 +90,8 @@ def main() -> int:
             "Lorentzian_raw_Y_abs": RAW_Y,
             "Lorentzian_Jmax": JMAX,
             "Lorentzian_environment_states": ENV_STATES,
+            "Lorentzian_nested_bracket_count": 5,
+            "Lorentzian_dimensionless_phase": "-i",
             "joint_cutoff_alpha": "1/8",
         },
         "checks": checks,
