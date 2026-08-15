@@ -1,0 +1,36 @@
+name: lorentzian-real-normalization
+
+on:
+  push:
+    paths:
+      - 'LORENTZIAN_REAL_NORMALIZATION_LEDGER.md'
+      - 'scripts/lorentzian_real_normalization_gate.py'
+  pull_request:
+    paths:
+      - 'LORENTZIAN_REAL_NORMALIZATION_LEDGER.md'
+      - 'scripts/lorentzian_real_normalization_gate.py'
+      - 'THEORY_STATUS.md'
+      - 'BCQG_CORE_CANDIDATE_V1.md'
+      - 'theory_gates.json'
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Syntax
+        run: python -m py_compile scripts/lorentzian_real_normalization_gate.py
+      - name: Verify symbolic real-normalization relation
+        run: |
+          python scripts/lorentzian_real_normalization_gate.py \
+            --output verification_results/LORENTZIAN_REAL_NORMALIZATION.json
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-real-normalization
+          path: verification_results/LORENTZIAN_REAL_NORMALIZATION.json
+          if-no-files-found: warn
