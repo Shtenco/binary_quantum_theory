@@ -1,109 +1,179 @@
-# Sharp-spin linear metric-response obstruction
+# Sharp-spin metric-response obstruction and coarse-graining bypass
 
-## Result
+## Status
 
-The current six-column collective carrier `W_g` is an exact dynamical Hilbert-space carrier, but the original sharp all-`j=1/2` Peter-Weyl seed is **not** yet a semiclassical background with a nonzero linear expectation-value metric response.
+Two statements are now simultaneously established and must not be conflated:
 
-The reason is a representation-sector selection rule, not a numerical accident.
+1. **microscopic selection theorem:** a spin-preserving fine-graph flux/metric operator has zero linear matrix element between the sharp all-`j=1/2` seed and the strict `q=4` changed-spin carrier;
+2. **coarse-block result:** after exact internal-link contraction, the coarse total-face flux Gram observable has a full-rank linear response on the same six collective directions.
 
-## 1. Direct-sum structure
+Thus the old obstruction remains correct in its microscopic domain, but it does **not** imply that the sharp seed is unusable for every coarse geometric observable.
 
-The spin-network Hilbert space decomposes into orthogonal fixed-irrep sectors
+## 1. Microscopic direct-sum selection rule
+
+The fine spin-network Hilbert space decomposes as
 
 \[
 \mathcal H=\bigoplus_{\mathbf j}\mathcal H_{\mathbf j}.
 \]
 
-The homogeneous seed lies in one sharp sector `j0` with every microscopic edge at `j=1/2`.
-
-Every basis state entering the strict-interior `q=4` columns used to build `W_g` changes exactly four microscopic doubled-spin labels. Therefore
+The homogeneous seed lies in one sharp sector `j0` with every microscopic edge at `j=1/2`. Every basis state entering the strict-interior `q=4` columns used to build the six-edge carrier changes exactly four microscopic doubled-spin labels. Therefore
 
 \[
 P_{\mathbf j_0}W_g=0,
-\qquad \langle\Omega_0|W_g=0.
+\qquad
+\langle\Omega_0|W_g=0.
 \]
 
-This orthogonality is already checked by `collective_l1_microscopic_edge_lift_gate.py`.
-
-## 2. Flux metric is spin preserving
-
-Flux generators act inside a fixed SU(2) irrep. Products such as
+For a fine-graph spin-preserving observable `O_micro`, such as a polynomial in local flux generators at fixed microscopic edges,
 
 \[
-\hat Q^{ab}\sim \hat J^a\hat J^b
+P_{\mathbf j}O_{micro}P_{\mathbf j'}=0
+\qquad(\mathbf j\ne\mathbf j'),
 \]
 
-and volume/flux functions can mix intertwiner labels at fixed edge spins, but do not change the edge representation labels themselves. Hence for every spin-preserving geometric observable `O_g`,
+so
 
 \[
-P_{\mathbf j}\,O_g\,P_{\mathbf j'}=0\qquad(\mathbf j\ne\mathbf j').
+\boxed{\langle\Omega_0|O_{micro}|w_A\rangle=0}.
 \]
+
+Hence the microscopic linear expectation-value Jacobian vanishes:
+
+\[
+\boxed{B_{micro}=0}.
+\]
+
+This remains an exact representation-selection theorem.
+
+## 2. Why coarse flux is different
+
+The canonical first barycentric block contains 24 fine tetrahedral chambers, 36 internal dual links and 24 open boundary links. The coarse observable is defined **after exact contraction of the internal block**, using total coarse-face fluxes
+
+\[
+X_f=\sum_{\ell\in f}J_\ell
+\]
+
+on the open boundary and the six gauge-invariant pair observables
+
+\[
+Z_{fg}=X_f\cdot X_g,
+\qquad f<g.
+\]
+
+The effective coarse matrix element is therefore not the same object as a local fine-edge operator inserted between two different fixed-`\mathbf j` sectors. Internal contraction maps the changed-spin microscopic amplitudes into the common coarse boundary Hilbert space before `Z_fg` is read out.
+
+The direct exact tensor contraction gives the regular background
+
+\[
+\langle X_f^2\rangle=\frac92,
+\qquad
+\langle X_f\cdot X_g\rangle=-\frac32\quad(f\ne g),
+\]
+
+and for the physically real Schrödinger tangent `|tau_e>=-i|w_e>`:
+
+\[
+(B_F)_{(fg),e}=2\,\mathrm{Re}\langle0|Z_{fg}|\tau_e\rangle.
+\]
+
+The three tetrahedral response classes are
+
+```text
+same      ~ 0
+adjacent  ~ 0
+opposite  = -1.7320508075688885
+```
+
+with the opposite class agreeing with `-sqrt(3)` to `1.13e-14` in the finite contraction.
 
 Therefore
 
 \[
-\boxed{\langle\Omega_0|O_g|w_A\rangle=0}
+\boxed{\operatorname{rank}B_F=6},
+\qquad
+\boxed{\operatorname{cond}B_F=1.0000000000000002}.
 \]
 
-for each column of `W_g`.
+This is a finite exact-coarse-graining bypass of the microscopic selection obstruction.
 
-## 3. Consequence for direct metric calibration
+## 3. Consequence for metric calibration
 
-For
+The six pairwise coarse-face flux Gram observables have an independently derived invertible metric Jacobian
 
 \[
-|\psi(q)\rangle=\frac{|\Omega_0\rangle+W_gq}{\sqrt{1+q^Tq}},
+\delta Z=J_Fh,
+\qquad
+\det J_F=\frac{128\sqrt2}{729}\ne0.
 \]
 
-a spin-preserving metric observable has no term linear in `q`:
+Using the measured background scale gives
 
 \[
-\left.\frac{\partial\langle O_g\rangle}{\partial q_A}\right|_{q=0}=0.
+J_F^{bg}=\frac92J_F,
 \]
 
-Thus the linear calibration matrix required by the DeWitt extractor,
+hence
 
 \[
-B_{eA}=\left.\frac{\partial\langle \hat y_e\rangle}{\partial q_A}\right|_0,
+\boxed{h=(J_F^{bg})^{-1}B_Fq}.
 \]
 
-obeys
+The direct finite `q -> h` map has rank six and condition number `sqrt(2)` to numerical precision. Therefore a coherent spin packet is **not mandatory merely to obtain the first finite coarse metric calibration**.
+
+A coherent/refinement background remains valuable for semiclassicality, fluctuation suppression and refinement robustness, but it is now a separate physics question rather than a forced repair of a missing linear metric map.
+
+## 4. Relation to gravitational dynamics
+
+The existence of a direct coarse metric response does not imply a direct gravitational scalar block. The separate homogeneous phase/S4 theorem gives
 
 \[
-\boxed{B=0}
+W_g^\dagger H_E^{sine}W_g=0,
+\qquad
+W_g^\dagger S W_g=0,
 \]
 
-on the sharp-spin seed whenever `y_e` is built from spin-preserving flux/metric observables.
+for the Hermitian-completed Lorentzian `S`, so
 
-Accordingly the current sharp-spin seed cannot be used to turn the Hilbert-space `W_g` coordinates into a classical linear metric perturbation by expectation values. Any `c_eff` obtained by setting `B=I` here would be a coordinate convention, not a BCQG derivation.
+\[
+W_g^\dagger G W_g=0
+\]
 
-## 4. Required resolution
+for `G=-2H_E/3-32S/9` at `beta=hbar=1`.
 
-The collective GR science run must use a target-independent background with overlapping representation support, for example a Gauss-projected coherent/refinement packet, and demonstrate directly that its metric-response Jacobian `B` is nonsingular and stable under refinement.
-
-This does **not** invalidate the six-edge carrier. The previous exact results remain:
-
-- 24 fine Euclidean source directions;
-- exact six-channel intrinsic boundary image;
-- exact six-edge/Sym^2 metric representation isomorphism;
-- canonical six-column microscopic isometry.
-
-What changes is the status of the word `metric`: on the sharp seed the six channels are a **metric-labelled dynamical carrier**, while a classical metric tangent requires a coherent background with nonzero linear response.
+Thus the same six directions can be **linearly readable as coarse geometry** while their gravitational kinetic curvature first appears through depth-two leakage/return.
 
 ## 5. Photon consequence
 
-The same selection rule clarifies the optical interpretation.
-
-On a sharp-spin background a spin-preserving metric/Hodge observable has no first-order expectation shift along a single `W_g` excitation, so a classical mean fringe displacement need not appear at first order. Quantum fluctuations can nevertheless enter the path coherence
+The direct coarse map feeds the optical response without waiting for a coherent packet:
 
 \[
-\mathcal C_{12}=\langle\Psi_g|U_2^\dagger U_1|\Psi_g\rangle
+\Delta\Phi=\kappa D J_{edge}(J_F^{bg})^{-1}B_Fq,
+\qquad
+\kappa=\frac{k\ell_*}{2}.
 \]
 
-at second order, producing phase variance and potentially visibility loss.
+The finite response has rank five and unique null vector proportional to
 
-On a coherent background with nonzero `B`, the standard linear eikonal phase channel is restored. This gives two experimentally distinct regimes rather than forcing a classical metric interpretation onto a sharp spin-network basis state.
+\[
+(1,1,1,1,1,1),
+\]
 
-## Status
+so balanced photon interferometry reads the complete five-dimensional traceless/shape sector while rejecting the common trace mode.
 
-`PROVED_SELECTION_RULE` for spin-preserving geometric observables on the frozen sharp-spin seed. Construction and validation of the coherent collective background remain open.
+Absolute phase in radians still requires the physical block scale `ell_*`; visibility loss still requires the quantum geometry correlator.
+
+## 6. Reproducibility
+
+- `scripts/collective_l1_coarse_flux_response_gate.py`
+- `verification_results/COLLECTIVE_L1_COARSE_FLUX_RESPONSE.json`
+- `scripts/collective_flux_metric_coordinate_gate.py`
+- `verification_results/COLLECTIVE_FLUX_METRIC_COORDINATE.json`
+- `scripts/collective_gravitational_direct_block_gate.py`
+- `verification_results/COLLECTIVE_GRAVITATIONAL_DIRECT_BLOCK.json`
+
+## Final status
+
+`PROVED_MICROSCOPIC_SELECTION_RULE + TESTED_FINITE_COARSE_BYPASS`.
+
+Open: repeat the coarse response under refinement/coherent packets and compute the depth-two gravitational return channels needed for the DeWitt Hessian.
