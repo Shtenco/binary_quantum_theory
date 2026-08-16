@@ -1,0 +1,49 @@
+{
+  "status": "exact distributed L0 amplitude-level Euclidean Krylov precursor",
+  "passed": true,
+  "science_status": "AMPLITUDE_PRECURSOR_E_ONLY",
+  "provenance": {
+    "workflow_run": 31959116492,
+    "head_sha": "2ab86718726a7c2bc88832f771e48183428e400b",
+    "artifact_id": 9266775163,
+    "artifact_digest": "sha256:991560145137a5a2d7de8f97a9b863b16d3e67205763106d697758746318d481"
+  },
+  "hard_checks": {
+    "all_16_columns_loaded": true,
+    "gram_hermitian": true,
+    "positive_gram": true,
+    "regulator_all_even_edge_valence": true,
+    "regulator_E_parity_rule_satisfied": true,
+    "nonzero_krylov_rank": true
+  },
+  "diagnostic_checks": {
+    "uniform_local_norms": false,
+    "q4_distance_covariance_manifest": false
+  },
+  "nodes": 16,
+  "svd_relative_threshold": 1e-10,
+  "local_support_sizes": [84,84,84,84,84,84,84,84,84,84,84,84,84,84,84,84],
+  "local_norms": [2.144278032692428,2.144278032692428,2.144278032692428,2.1442780326924273,2.144278035131559,2.1442780326924282,2.1442780326924282,2.1442780351315602,2.1442780326924273,2.144278032692428,2.1442780326924282,2.1442780326924287,2.1442780326924282,2.1442780326924287,2.1442780326924296,2.144278035131561],
+  "local_norm_spread": 2.4391337838380878e-09,
+  "constant_lapse_support": 455,
+  "constant_lapse_norm": 7.646755712824014,
+  "gram_hermitian_relative_defect": 0.0,
+  "gram_min_raw_eigenvalue": 3.6545545582254197,
+  "gram_eigenvalues_ascending": [3.6545545582254197,3.952865229754752,4.092117195762907,4.092117197381755,4.231369161132053,4.390427867439841,4.390427868763485,4.529679832485744,4.529679835094884,4.805428697972807,4.805428699618377,4.8279905064485735,5.103739369650495,5.103739370999348,5.379488236459126,5.67779890798846],
+  "amplitude_singular_values_descending": [2.382813233971236,2.3193723798603636,2.259145717079655,2.259145716781123,2.1972688744094504,2.192128805435113,2.1921288050597774,2.128304450752966,2.128304450140004,2.095334786797443,2.0953347864815877,2.057029207651669,2.022898217257051,2.02289821685692,1.9881813875385597,1.911688928206004],
+  "amplitude_krylov_rank": 16,
+  "regulator_edge_valences": [4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4],
+  "seed_sum_doubled_spin_parity": 0,
+  "expected_output_sum_doubled_spin_parity": 0,
+  "q4_normalized_gram_by_distance": {
+    "0": {"count":16,"mean_re":0.9999999999999999,"mean_im":0.0,"max_abs_spread":1.1102230246251565e-16},
+    "1": {"count":32,"mean_re":-0.05500423845904148,"mean_im":-1.34301891333266e-18,"max_abs_spread":0.022564555618490197},
+    "2": {"count":48,"mean_re":0.0024738840861579176,"mean_im":-2.1414824519653753e-20,"max_abs_spread":0.004947768175481702},
+    "3": {"count":32,"mean_re":0.0,"mean_im":0.0,"max_abs_spread":0.0},
+    "4": {"count":8,"mean_re":0.0,"mean_im":0.0,"max_abs_spread":0.0}
+  },
+  "q4_max_covariance_spread": 0.022564555618490197,
+  "wrong_seed_parity_outputs": 0,
+  "interpretation": "Target-independent dimension and singular spectrum of span{E_v|Omega_0>} from sixteen independently computed exact complex PL Peter-Weyl columns. The even-valence 16-cell preserves doubled-spin parity. The rank-one static background obstruction is therefore already lifted to a 16-dimensional E-only amplitude tangent span. Manifest Q4 covariance remains diagnostic until the automorphism-induced recoupling basis map is constructed explicitly.",
+  "scope_note": "E-only depth-1 precursor; production W0 still requires S, R and depth-2 histories."
+}
