@@ -1,0 +1,36 @@
+name: collective-face-complete-recoupling
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_face_complete_recoupling_gate.py'
+      - 'scripts/k5_peter_weyl_safe_hda_column.py'
+      - '.github/workflows/collective-face-complete-recoupling.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-face-basis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Complete six-link recoupling gate
+        run: python scripts/collective_face_complete_recoupling_gate.py --output verification_results/COLLECTIVE_FACE_COMPLETE_RECOUPLING.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-face-complete-recoupling
+          path: verification_results/COLLECTIVE_FACE_COMPLETE_RECOUPLING.json
+          if-no-files-found: error
