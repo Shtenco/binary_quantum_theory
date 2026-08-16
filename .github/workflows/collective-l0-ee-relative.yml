@@ -1,0 +1,70 @@
+name: collective-l0-ee-relative
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_l0_ee_relative_column.py'
+      - 'scripts/collective_l0_ee_relative_collect.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_dual_complex.py'
+      - '.github/workflows/collective-l0-ee-relative.yml'
+  workflow_dispatch:
+
+jobs:
+  relative-columns:
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        mask: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact A_r, B_r and commutator
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          python scripts/collective_l0_ee_relative_column.py --mask ${{ matrix.mask }} --out-dir out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-ee-mask-${{ matrix.mask }}
+          path: out/
+          if-no-files-found: error
+
+  collect:
+    needs: relative-columns
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: collective-ee-mask-*
+          path: out
+          merge-multiple: true
+      - name: Exact relative depth-2 sparse Gram analysis
+        run: python scripts/collective_l0_ee_relative_collect.py --root out --output verification_results/COLLECTIVE_L0_EE_RELATIVE.json
+      - name: Guard Euclidean-only scope
+        shell: pwsh
+        run: |
+          python -c "import json; d=json.load(open('verification_results/COLLECTIVE_L0_EE_RELATIVE.json')); assert d['passed']; assert d['self_commutator_norm']<1e-10; assert d['science_status']=='E_DEPTH2_PRECURSOR'"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-l0-ee-relative
+          path: verification_results/COLLECTIVE_L0_EE_RELATIVE.json
+          if-no-files-found: error
