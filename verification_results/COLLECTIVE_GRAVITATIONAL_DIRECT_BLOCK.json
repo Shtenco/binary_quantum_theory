@@ -1,0 +1,32 @@
+{
+  "status": "homogeneous six-edge direct gravitational projection theorem",
+  "passed": true,
+  "science_status": "COLLECTIVE_SYMMETRY_THEOREM",
+  "checks": {
+    "V_symmetric": true,
+    "A_E_antisymmetric": true,
+    "K_real_core_B_symmetric": true,
+    "two_K_phase_is_real": true,
+    "ordinary_edge_antisymmetric_commutant_zero": true,
+    "sign_twisted_edge_antisymmetric_commutant_zero": true,
+    "Lorentzian_raw_reality_from_KKV_phase": true,
+    "Hermitian_completion_is_i_times_real_antisymmetric": true
+  },
+  "ordinary_antisymmetric_commutant_nullity": 0,
+  "sign_twisted_antisymmetric_commutant_nullity": 0,
+  "phase_chain": {
+    "H_E_sine": "i A_E, A_E real antisymmetric",
+    "V": "real symmetric",
+    "K_commutator": "[V,H_E]=i B_K, B_K real symmetric",
+    "L_raw": "real (two K factors, one V factor, real recoupling contractions)",
+    "S_Hermitian": "-i/2(L_raw-L_raw^T)=i A_S, A_S real antisymmetric"
+  },
+  "direct_blocks": {
+    "Wg_dag_HE_Wg": "0",
+    "Wg_dag_S_Wg": "0",
+    "Wg_dag_G_Wg": "0 for G=-2/3 HE-32/9 S at beta=hbar=1"
+  },
+  "conclusion": "On an exactly homogeneous S4 six-edge carrier, both physical Euclidean sine and Hermitian-completed Lorentzian gravitational terms have vanishing direct 6x6 projection. Any nontrivial gravitational kinetic/DeWitt tensor must therefore enter through depth-two leakage/return (or symmetry-breaking/refinement corrections), not by fitting a direct first-order block.",
+  "route_note": "This theorem does not set the spin-preserving operator-first route block to zero; a homogeneous real-symmetric route operator may carry the three A1/E/T2 S4 channels.",
+  "scope_note": "Independent exact local SymPy reproduction of scripts/collective_gravitational_direct_block_gate.py under the frozen real Peter-Weyl recoupling/absolute-volume convention. GitHub Actions confirmation is separate."
+}
