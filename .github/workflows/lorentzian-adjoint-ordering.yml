@@ -1,0 +1,30 @@
+name: lorentzian-adjoint-ordering
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'PL_16CELL_HERMITIAN_LORENTZIAN_PREREGISTRATION.md'
+      - 'scripts/lorentzian_adjoint_ordering_identity_gate.py'
+      - '.github/workflows/lorentzian-adjoint-ordering.yml'
+  workflow_dispatch:
+
+jobs:
+  identity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python scripts/lorentzian_adjoint_ordering_identity_gate.py --output verification_results/LORENTZIAN_ADJOINT_ORDERING_IDENTITY.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lorentzian-adjoint-ordering
+          path: verification_results/LORENTZIAN_ADJOINT_ORDERING_IDENTITY.json
+          if-no-files-found: error
