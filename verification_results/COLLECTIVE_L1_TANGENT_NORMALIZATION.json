@@ -1,0 +1,25 @@
+{
+  "status": "frozen first-block background-orthogonal six-edge tangent normalization",
+  "passed": true,
+  "background_boundary_norm_square": 3.725290298461954e-09,
+  "parity_rephased_background_overlap": {
+    "real": -1.926265599770057e-26,
+    "imag": -9.981342616531272e-10
+  },
+  "representative_source_boundary_norm_square": 3.137686859428212e-10,
+  "background_component_norm_square": 2.674347297704988e-10,
+  "background_orthogonal_per_source_norm_square": 4.633395617232242e-11,
+  "canonical_edges": [[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]],
+  "representative_local_indices": [0,2,4,8,10,16],
+  "representative_parity_rephasing": [1,-1,1,1,-1,1],
+  "six_edge_norm_checks": [
+    1.0000000000000027,
+    0.9999999999999991,
+    1.0000000000000009,
+    1.0000000000000018,
+    1.0000000000000018,
+    1.0
+  ],
+  "interpretation": "After permutation-parity rephasing, all six strict-interior source columns have the same overlap with the static boundary state. Subtracting h/n0 times the background and dividing by sqrt(d_perp) gives the canonical orthonormal six-edge frame used by the coarse flux response and depth-two workers.",
+  "scope_note": "Independent exact local tensor-network reproduction using the same overlap engine as collective_l1_background_orthogonal_metric_tangent_gate.py."
+}
