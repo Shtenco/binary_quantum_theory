@@ -1,0 +1,18 @@
+{
+  "status": "frozen intrinsic S3 l=1 collective lapse family",
+  "passed": true,
+  "science_status": "PROTOCOL_ONLY",
+  "provenance": "local independent reproduction before collective HDA science data",
+  "primary_pair": [0,1],
+  "heldout_pairs": [[0,2],[0,3],[1,2],[1,3],[2,3]],
+  "definition": "N_mu(x)=x_mu at radially normalized dual-cell centroid; no per-level amplitude fit",
+  "levels": [
+    {"level":0,"vertices":8,"tetrahedra":16,"minimum_centroid_radius":0.5,"max_abs_lapse_mean":0.0,"covariance_isotropy_defect":0.0,"lapse_rms":[0.5,0.5,0.5,0.5]},
+    {"level":1,"vertices":80,"tetrahedra":384,"minimum_centroid_radius":0.6081049799719342,"max_abs_lapse_mean":1.2721305490496585e-17,"covariance_isotropy_defect":3.1106107331833028e-15,"lapse_rms":[0.5,0.5,0.5,0.5]},
+    {"level":2,"vertices":1696,"tetrahedra":9216,"minimum_centroid_radius":0.5275607192541916,"max_abs_lapse_mean":7.668321032173866e-17,"covariance_isotropy_defect":3.0434607064035495e-16,"lapse_rms":[0.5,0.5,0.5,0.5]},
+    {"level":3,"vertices":40256,"tetrahedra":221184,"minimum_centroid_radius":0.5076373748362433,"max_abs_lapse_mean":3.781039629089645e-16,"covariance_isotropy_defect":3.757908591608682e-16,"lapse_rms":[0.5,0.5,0.5,0.5]}
+  ],
+  "max_lapse_RMS_drift": 2.220446049250313e-15,
+  "interpretation": "The four lowest nonconstant radial S3 harmonics are transported without per-level renormalization through L3; all six antisymmetric pairs are frozen before any collective HDA result.",
+  "scope_note": "Protocol evidence only; sharp_Q still comes from the measured collective metric and no HDA science field is populated by this file."
+}
