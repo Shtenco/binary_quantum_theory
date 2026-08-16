@@ -1,0 +1,43 @@
+name: pl-euclidean-local-equivalence
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/pl_peter_weyl_euclidean_local.py'
+      - 'scripts/pl_peter_weyl_euclidean_local_equivalence_gate.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_dual_complex.py'
+      - 'scripts/peter_weyl_zeroaware_volume_migration_experiment.py'
+      - '.github/workflows/pl-euclidean-local-equivalence.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-equivalence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: |
+          python -m py_compile scripts/pl_peter_weyl_euclidean_local.py
+          python -m py_compile scripts/pl_peter_weyl_euclidean_local_equivalence_gate.py
+      - name: Exact full-vs-local sparse columns
+        run: python scripts/pl_peter_weyl_euclidean_local_equivalence_gate.py --output verification_results/PL_EUCLIDEAN_LOCAL_EQUIVALENCE.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-euclidean-local-equivalence
+          path: verification_results/PL_EUCLIDEAN_LOCAL_EQUIVALENCE.json
+          if-no-files-found: error
