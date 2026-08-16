@@ -20,19 +20,22 @@ Read in this order:
 2. `BCQG_CORE_CANDIDATE_V1_2.md` — compact production definition;
 3. `BCQG_V12_DEEP_CLOSURE_CERTIFICATE.md` — exact boundary between frozen-habitat closure and remaining continuum physics;
 4. `BCQG_V12_PREDICTIONS.md` — falsifiable structural/conditional prediction ledger;
-5. `THEORY_STATUS.md` — human status ledger;
-6. `theory_gates.json` — machine-readable obligations;
-7. `LORENTZIAN_HERMITIAN_COMPLETION.md` — why full `L_raw` must be Hermitian-completed;
-8. `LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md` — uniqueness of the minimal projection once `L_raw` is fixed;
-9. `ROUTE_OPERATOR_KERNEL_SAFETY.md` — kernel-safe Sylvester theorem for singular positive route symbols;
-10. `PETER_WEYL_HERMITIAN_FULL_HDA_PREREGISTRATION.md` — frozen physical finite-channel falsifier;
-11. `verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json` — cutoff-saturated HDA certificate;
-12. `verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json` — exhaustive 33-sector route regression;
-13. `verification_results/OPERATOR_ROUTE_KERNEL_SAFETY.json` — exhaustive singular-symbol audit;
-14. `PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md` — preregistered Euclidean sine HDA PASS;
-15. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` and `LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md` — Lorentzian finite amplitudes/correlations;
-16. `GLOBAL_MANIFOLD_Q2_COMPLETION.md` — canonical PL-S3 completion;
-17. `DEWITT_HDA_UNIQUENESS.md` and `BF_GR_DIRAC_COUNT_DISCRIMINATOR.md` — conditional GR-universality discriminators.
+5. `COLLECTIVE_GR_UNIVERSALITY_PREREGISTRATION.md` — frozen next-stage AND gate for collective GR emergence;
+6. `COLLECTIVE_EFFECTIVE_CONSTRAINT_PRODUCER.md` — non-circular direct-data producer contract;
+7. `collective_gr_measurement_template.json` — direct collective measurement schema;
+8. `THEORY_STATUS.md` — human status ledger;
+9. `theory_gates.json` — machine-readable obligations;
+10. `LORENTZIAN_HERMITIAN_COMPLETION.md` — why full `L_raw` must be Hermitian-completed;
+11. `LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md` — uniqueness of the minimal projection once `L_raw` is fixed;
+12. `ROUTE_OPERATOR_KERNEL_SAFETY.md` — kernel-safe Sylvester theorem for singular positive route symbols;
+13. `PETER_WEYL_HERMITIAN_FULL_HDA_PREREGISTRATION.md` — frozen physical finite-channel falsifier;
+14. `verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json` — cutoff-saturated HDA certificate;
+15. `verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json` — exhaustive 33-sector route regression;
+16. `verification_results/OPERATOR_ROUTE_KERNEL_SAFETY.json` — exhaustive singular-symbol audit;
+17. `PETER_WEYL_TWO_NODE_SINE_HDA_RESULT.md` — preregistered Euclidean sine HDA PASS;
+18. `PETER_WEYL_LORENTZIAN_ENVTRACE_RESULT.md` and `LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md` — Lorentzian finite amplitudes/correlations;
+19. `GLOBAL_MANIFOLD_Q2_COMPLETION.md` — canonical PL-S3 completion;
+20. `DEWITT_HDA_UNIQUENESS.md` and `BF_GR_DIRAC_COUNT_DISCRIMINATOR.md` — conditional GR-universality discriminators.
 
 ## Production chain
 
@@ -50,6 +53,7 @@ binary routes
 -> positive kernel-safe operator-first R_op
 -> H = G + R_op
 -> cutoff-saturated two-node HDA
+-> collective/refinement GR-universality killer
 -> conditional GR tensor IR.
 ```
 
@@ -146,6 +150,39 @@ Route-symbol zero modes do not open an extra principal-symbol anomaly: for `A=su
 
 The older `Jmax~epsilon^-1/8` certificate is retained only for **growing-spin/depth extension families**. It is not required for this finite-depth core closure.
 
+## Collective GR frontier — active
+
+The next science question is no longer whether the frozen two-node microscopic core closes. The active killer gate is
+
+\[
+\text{microscopic first-class BCQG}\longrightarrow\text{collective first-class GR phase}.
+\]
+
+A science PASS is an AND of five direct refinement trends on the same BCQG family:
+
+\[
+D_{space}\to3,\qquad c_{DW}\to1/2,
+\]
+
+\[
+(r_G,r_D,r_H,r_{extra})\to(3,3,1,0),
+\]
+
+\[
+N_{phys}\to2,\qquad \Delta_{HH}^{collective}\to0.
+\]
+
+The protocol is frozen in `COLLECTIVE_GR_UNIVERSALITY_PREREGISTRATION.md`. Target/oracle controls cannot fill missing direct BCQG measurements; missing data means `INCOMPLETE`, not PASS.
+
+Current verified prerequisites:
+
+- canonical 16-cell PL-S3 barycentric refinement carrier: exact f-vectors through explicit level 2 and no sampled link-homology defects;
+- symmetric collective-volume ladder: the scalar `j=1/2` |V| obstruction is removed at `j=1` and nontrivial volume branches persist through `j=5/2`;
+- exact first blocking map `scripts/collective_j1_block_isometry_gate.py`: two microscopic spin-1/2 carriers per face -> symmetric `j=1`, with SU(2), Gauss and oriented-volume compression defects at roundoff scale;
+- classical DeWitt/ADM safe-window controls identify the GR target but are not counted as collective BCQG measurements.
+
+The exact first block isometry is a real coarse-graining result, but **the collective science verdict remains INCOMPLETE** until production `G,D,H` are compressed through the block map on at least four independent levels/habitats and the five preregistered observables are measured.
+
 ## Physical finite falsifier
 
 The production Hermitian geometry channels are
@@ -158,13 +195,17 @@ with walls `5/2,9/2,9/2,13/2`. Completing `ES/SE/SS` remains a valuable finite i
 
 ## What remains genuinely open
 
+- direct compression of production `G,D,H` through the first exact collective block isometry;
+- four-or-more complete collective levels for the GR-universality AND gate;
+- metric (not merely topological) `D_space` from the collective flux geometry;
+- effective kinetic Hessian and non-circular `c_DeWitt` extraction;
+- collective constraint-rank SVD and exclusion of extra/BF generators;
+- collective HDA residual trend;
 - uniqueness among alternative microscopic factor orderings **before** the unique Hermitian projection;
 - exhaustive finite route regression over every `S`-reached sector;
 - off-diagonal multi-node Lorentzian blocks;
 - direct `ES/SE/SS` finite calibration;
-- independent habitats and collective refinement;
 - uniform theorem when initial spin/operator depth grows;
-- demonstration of GR first-class rank in the collective IR;
 - matter coupling, Newton normalization, physical scale setting;
 - experiment.
 
@@ -182,4 +223,4 @@ tested_finite
 open
 ```
 
-Do not promote a finite computation into an experiment or a controlled-habitat theorem into a uniform full-Hilbert-space theorem.
+Do not promote a finite computation into an experiment, a target control into a BCQG derivation, or a controlled-habitat theorem into a uniform full-Hilbert-space theorem.
