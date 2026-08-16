@@ -1,0 +1,32 @@
+{
+  "status": "exact S4 channel spectrum of BCQG coarse metric calibration",
+  "passed": true,
+  "checks": {
+    "source_passed": true,
+    "measured_map_matches_closed_form": true,
+    "Gram_closed_form": true,
+    "plus_projector_rank3": true,
+    "minus_projector_rank3": true,
+    "plus_scale_square_one_sixth": true,
+    "minus_scale_square_one_third": true,
+    "det_closed_form": true
+  },
+  "metric_calibration_Gram_formula": "M_hq^T M_hq = (1/4) I - (1/12) O_opposite",
+  "det_M_hq": "-sqrt(2)/108",
+  "S4_channel_scale_squared": {
+    "A1": "1/6",
+    "E": "1/6",
+    "T2": "1/3"
+  },
+  "S4_channel_singular_scale": {
+    "A1": "1/sqrt(6)",
+    "E": "1/sqrt(6)",
+    "T2": "1/sqrt(3)"
+  },
+  "condition_number": "sqrt(2)",
+  "finite_metric_isotropy_raw_q_criterion": "lambda_T2_q = 2 lambda_E_q",
+  "DeWitt_c_half_raw_q_blind_ratio": "lambda_A1_q : lambda_E_q : lambda_T2_q = -1/2 : 1 : 2",
+  "interpretation": "The first finite coarse metric calibration is tetrahedrally equivariant but not orthonormal across irreps. Equal raw Hilbert-space E and T2 kinetic eigenvalues would create a false physical anisotropy. Universality tests must transform through the measured M_hq before comparing continuum metric eigenvalues.",
+  "noncircularity_note": "The -1/2:1:2 ratio is an external blind discriminator implied by the independently measured metric calibration plus the GR/DeWitt target. It is not inserted into the depth-two amplitude producer or used to select states/cutoffs.",
+  "scope_note": "Independent exact SymPy reconstruction from verification_results/COLLECTIVE_L1_COARSE_FLUX_RESPONSE.json."
+}
