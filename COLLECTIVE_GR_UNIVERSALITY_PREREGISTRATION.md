@@ -104,25 +104,56 @@ The `p>=0.50` threshold tests actual decay while allowing collective corrections
 The following are required protocol/target controls but cannot fill direct collective fields:
 
 1. `collective_16cell_refinement_gate.py`: verifies the growing PL-S3 refinement carrier and local topological dimension 3.
-2. `collective_volume_rg_gate.py` / extended ladder: verifies that blocking beyond `j=1/2` creates persistent nontrivial volume branches.
-3. `dewitt_hda_uniqueness_gate.py`: verifies the classical target `c=1/2` in its safe spectral window.
-4. `adm_hda_parameter_selection_gate.py`: verifies standard HDA selects `c=1/2, AB=1` but not Newton normalization `A/B` or `Lambda`.
-5. `dimension_emergence_gate.py`: minimal binary-diamond model is a negative dimension control and must not be promoted to the BCQG continuum geometry.
-6. oracle-encoded Einstein reconstruction scripts are positive reconstruction controls only.
+2. `collective_volume_rg_gate.py` / extended ladder: verifies that representation blocking beyond `j=1/2` creates persistent nontrivial volume branches.
+3. `collective_j1_block_isometry_gate.py`: exact two-carrier-per-face SU(2)/Gauss/volume fusion control. It is a minimal representation-blocking check, **not** the first canonical barycentric spatial block.
+4. `collective_barycentric_tetra_block_gate.py`: finite tensor-network gate for the first canonical barycentric spatial tetra block.
+5. `dewitt_hda_uniqueness_gate.py`: verifies the classical target `c=1/2` in its safe spectral window.
+6. `adm_hda_parameter_selection_gate.py`: verifies standard HDA selects `c=1/2, AB=1` but not Newton normalization `A/B` or `Lambda`.
+7. `dimension_emergence_gate.py`: minimal binary-diamond model is a negative dimension control and must not be promoted to the BCQG continuum geometry.
+8. oracle-encoded Einstein reconstruction scripts are positive reconstruction controls only.
 
-## 6. First blocking ladder already fixed
+## 6. Canonical first spatial block and representation ladder
 
-For each face, the first symmetric collective map is
+For any set of `n` parallel boundary spin-1/2 carriers, the fully symmetric SU(2) channel is
 
 \[
 (\tfrac12)^{\otimes n}_{sym}\longrightarrow j=n/2.
 \]
 
-At a four-valent node the singlet intertwiner dimension is `2j+1`. The microscopic `j=1/2` absolute-volume operator is scalar, while `j=1` is the first representation with nontrivial volume spectrum. The extended finite ladder through `j=5/2` is a prerequisite/control for the effective-geometry producer; it is not itself GR emergence.
+The minimal `n=2 -> j=1` gate is useful because `j=1` is the first equal-spin four-valent representation where the absolute-volume operator is non-scalar. That is a representation-RG prerequisite only.
+
+For the **canonical first barycentric subdivision of one coarse tetrahedron**, however, the combinatorics are fixed:
+
+```text
+24 fine tetrahedral chambers
+36 internal dual links
+24 boundary dual links
+6 fine boundary triangles per coarse triangular face
+```
+
+Therefore the fully symmetric boundary channel of the canonical first spatial block is
+
+\[
+\boxed{(\tfrac12)^{\otimes6}_{sym}\to j=3}
+\]
+
+on each of four coarse faces, with a seven-dimensional four-`j=3` coarse Gauss intertwiner space.
+
+The finite gate `collective_barycentric_tetra_block_gate.py` finds that the **static all-j=1/2 block projected to maximal symmetric j=3 on every face has rank-one image** in that seven-dimensional coarse singlet space. Its selected normalized intertwiner is
+
+\[
+\boxed{
+\frac{1}{\sqrt{3241}}(7\sqrt5,0,-24,0,22\sqrt5,0,0)
+}
+\]
+
+in the ordered coarse basis `K2=0,2,4,6,8,10,12`.
+
+This finite rank-one result is a selection/obstruction, not a failure of the enlarged theory: the direct collective producer must retain production spin-changing sectors and/or non-maximal face irreps before attempting a generic GR tangent-space/Hessian/rank analysis. The static maximal-symmetric state alone is not allowed to stand in for six metric perturbation directions.
 
 ## 7. Required direct collective producer
 
-For each refinement/block level `l`, construct a boundary collective isometry `W_l` from microscopic Peter-Weyl states to a collective block space. The recommended operator-first compression is
+For each refinement/block level `l`, construct a boundary collective isometry/effective embedding `W_l` from microscopic Peter-Weyl states to a collective block space. The operator-first compression is
 
 \[
 C_A^{(l)}=W_l^\dagger C_A W_l,
@@ -135,6 +166,8 @@ with a separately reported leakage
 \]
 
 If leakage is not small, a Feshbach/Schrieffer-Wolff correction may be evaluated, but its prescription must be frozen before the science run.
+
+The block space must be large enough that its measured kinetic tangent rank is not artificially fixed by the static rank-one maximal-symmetric sector. In particular, spin sectors reached by the frozen production `E`, Hermitian `S`, and route operator must be included according to a target-independent support rule.
 
 On each level, the producer must then output:
 
@@ -154,13 +187,15 @@ No target value (`3`, `1/2`, rank tuple, `2`) may be used inside the constructio
 
 A collective `FAIL` is scientifically meaningful and must not be repaired by deleting levels, changing the blocking map after looking at the target, fitting the DeWitt coefficient to `1/2`, removing extra constraints, or widening thresholds.
 
-## 9. Current status at preregistration
+## 9. Current status
 
 Already green prerequisites/controls:
 
 - microscopic BCQG v1.2 core and HDA certificate;
 - canonical PL-S3 refinement carrier;
 - onset and persistence of nontrivial collective volume branches;
-- classical DeWitt/ADM target controls in the safe window.
+- exact minimal `j=1` representation fusion;
+- explicit first barycentric tetra block geometry and its static rank-one maximal-symmetric selection rule;
+- classical DeWitt/ADM target controls in the safe window (when run with their required Torch dependency).
 
-**Science verdict remains `INCOMPLETE` until the direct collective effective-constraint producer supplies four-or-more complete levels.**
+**Science verdict remains `INCOMPLETE` until the direct dynamical collective effective-constraint producer supplies four-or-more complete levels.**
