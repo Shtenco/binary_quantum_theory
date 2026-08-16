@@ -1,0 +1,15 @@
+{
+  "status":"exact photon covariance tomography of BCQG traceless metric carrier",
+  "passed":true,
+  "science_status":"STRUCTURAL_QUANTUM_OPTICAL_BRIDGE",
+  "det_R":"sqrt(6)/2",
+  "rank_R":5,
+  "R_Gram_eigenvalues":{"1/2":1,"11/4 - sqrt(73)/4":1,"sqrt(73)/4 + 11/4":1,"1":2},
+  "condition_number_squared_exact":"(11+sqrt(73))/2",
+  "covariance_map":"Sigma_phi=kappa^2 R Sigma_g R^T",
+  "inverse_map":"Sigma_g=kappa^-2 R^-1 Sigma_phi R^-T",
+  "det_covariance_map":"det(Sigma_phi)=(3/2) kappa^10 det(Sigma_g)",
+  "gaussian_visibility":"V=exp[-Var(Delta_phi)/2] for a zero-mean Gaussian commuting/semiclassical phase fluctuation",
+  "checks":{"rank_5":true,"det_exact":true,"inverse_exact":true,"covariance_determinant_factor":true},
+  "scope_note":"Tomographic linear algebra only. Requires physical kappa=k ell_star/2, a derived BCQG metric correlator, and the eikonal/commuting Gaussian regime."
+}
