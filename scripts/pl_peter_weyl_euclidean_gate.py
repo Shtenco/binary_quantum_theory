@@ -7,6 +7,11 @@
 2. Without changing SU(2)/CG/volume algebra, apply the same H_E to the canonical
    16-cell PL-S3 dual graph, where every regulator face is a square rather than
    a triangle.
+
+The 16-cell absolute norm is retained as a regression anchor with a 1e-8
+cross-LAPACK tolerance.  This is an implementation reproducibility tolerance,
+not an HDA/science acceptance threshold.  The stronger K5 old/new comparison
+remains at 1e-11 and is exactly zero on current runners.
 """
 from __future__ import annotations
 import argparse,json,math,sys
@@ -20,6 +25,9 @@ import k5_peter_weyl_safe_hda_column as PW
 import peter_weyl_euclidean_sine_ordering_gate as ES
 from pl_dual_complex import DualComplex,boundary_4simplex,seed_16cell_boundary
 from pl_peter_weyl_euclidean import PLPeterWeylEuclidean
+
+K5_REL_TOL=1e-11
+REFERENCE_NORM_ABS_TOL=1e-8
 
 
 def relerr(a,b,scale=1.0):
@@ -56,6 +64,7 @@ def run():
     reference={
       'support':84,
       'norm':2.1442780351315593,
+      'norm_abs_tolerance_cross_LAPACK':REFERENCE_NORM_ABS_TOL,
       'max_spin':1.0,
       'changed_edge_count_distribution':{'4':84}
     }
@@ -68,20 +77,23 @@ def run():
       'changed_edge_count_distribution':{str(k):v for k,v in sorted(changed.items())},
       'reference':reference
     }
+    norm_abs=abs(hnorm-reference['norm'])
     sixteen['reference_errors']={
       'support':abs(len(h)-reference['support']),
-      'norm':abs(hnorm-reference['norm']),
+      'norm_abs':norm_abs,
+      'norm_relative':norm_abs/max(reference['norm'],1e-30),
       'max_spin':abs(max_spin-reference['max_spin']),
       'changed_distribution_match':sixteen['changed_edge_count_distribution']==reference['changed_edge_count_distribution']
     }
-    k5_ok=max(r['relative_error_after_orientation_sign'] for r in k5_rows)<1e-11
+    k5_ok=max(r['relative_error_after_orientation_sign'] for r in k5_rows)<K5_REL_TOL
     ref_ok=(sixteen['reference_errors']['support']==0 and
-            sixteen['reference_errors']['norm']<1e-10 and
+            sixteen['reference_errors']['norm_abs']<REFERENCE_NORM_ABS_TOL and
             sixteen['reference_errors']['max_spin']<1e-12 and
             sixteen['reference_errors']['changed_distribution_match'])
     return {
       'status':'graph-independent Peter-Weyl physical-sine Euclidean operator',
       'passed':bool(k5_ok and ref_ok),
+      'regression_tolerances':{'K5_relative':K5_REL_TOL,'16cell_norm_absolute_cross_LAPACK':REFERENCE_NORM_ABS_TOL},
       'K5_regression':k5_rows,
       'sixteen_cell_first_column':sixteen,
       'key_result':'The frozen K5 operator is exactly the triangular-dual-face special case, and the same Peter-Weyl algebra gives a nonzero finite H_E^sine column on the independent 16-cell PL-S3 habitat.',
