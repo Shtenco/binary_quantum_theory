@@ -1,0 +1,83 @@
+name: collective-l1-e-q4-rank
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_l1_block_e_q4_worker.py'
+      - 'scripts/collective_l1_block_e_q4_collect.py'
+      - 'scripts/pl_peter_weyl_euclidean_local.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_dual_complex.py'
+      - 'scripts/collective_barycentric_E_boundary_support_gate.py'
+      - 'scripts/peter_weyl_zeroaware_volume_migration_experiment.py'
+      - 'COLLECTIVE_L1_E_Q4_RANK_THEOREM.md'
+      - '.github/workflows/collective-l1-e-q4-rank.yml'
+  workflow_dispatch:
+
+jobs:
+  q4-columns:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        local_index: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact q4-projected column
+        run: python scripts/collective_l1_block_e_q4_worker.py --local-index ${{ matrix.local_index }} --output q4_${{ matrix.local_index }}.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-l1-q4-${{ matrix.local_index }}
+          path: q4_${{ matrix.local_index }}.json
+          if-no-files-found: error
+
+  collect:
+    needs: q4-columns
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: collective-l1-q4-*
+          path: columns
+          merge-multiple: true
+      - name: Exact projected Gram and rank theorem
+        run: python scripts/collective_l1_block_e_q4_collect.py --root columns --output verification_results/COLLECTIVE_L1_E_Q4_RANK.json
+      - name: Reproduce local theorem numbers
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_L1_E_Q4_RANK.json'))
+          assert d['passed']
+          assert d['projected_rank']==24
+          assert d['full_E_column_rank_inferred_exactly']==24
+          assert min(d['unique_state_count_per_source'])>0
+          assert abs(d['Gram_min_eigenvalue']-0.8436999771224867)<1e-8
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-l1-e-q4-rank
+          path: verification_results/COLLECTIVE_L1_E_Q4_RANK.json
+          if-no-files-found: error
