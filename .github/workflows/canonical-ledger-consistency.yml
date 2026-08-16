@@ -2,41 +2,36 @@ name: canonical-ledger-consistency
 
 on:
   push:
+    branches:
+      - research/bcqg-core-candidate-v1
     paths:
       - 'START_HERE.md'
       - 'THEORY_STATUS.md'
+      - 'BCQG_CANDIDATE_THEORY_V1_3_DRAFT.md'
       - 'BCQG_CANDIDATE_THEORY_V1_2.md'
-      - 'BCQG_CORE_CANDIDATE_V1_2.md'
+      - 'theory_gates_v13.json'
       - 'theory_gates.json'
-      - 'LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md'
-      - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
-      - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_WALSH_NODE012.json'
-      - 'verification_results/LORENTZIAN_HERMITIAN_COMPLETION.json'
+      - 'PL_16CELL_HERMITIAN_LORENTZIAN_PREREGISTRATION_V2.md'
+      - 'TETRAHEDRAL_CHARGED_VOLUME_UNIQUENESS.md'
+      - 'verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT_LOCAL.json'
+      - 'verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json'
+      - 'verification_results/COLLECTIVE_E_ONLY_KRYLOV_BASIS_LOCAL.json'
+      - 'verification_results/COLLECTIVE_16CELL_XOR_COVARIANCE_LOCAL.json'
+      - 'verification_results/PL_16CELL_ROUTE_E_REACHED_LOCAL.json'
       - 'verification_results/LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.json'
-      - 'verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json'
       - 'verification_results/LORENTZIAN_HIT_DEPTH_BOUND.json'
       - 'verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json'
-      - 'scripts/canonical_ledger_consistency_gate.py'
+      - 'scripts/v13_operator_correction_consistency_gate.py'
+      - 'scripts/verify_theory_gates.py'
       - 'scripts/bcqg_v12_cutoff_saturated_hda_gate.py'
-      - 'scripts/peter_weyl_operator_route_all_reached_gate.py'
       - 'scripts/lorentzian_hermitian_projection_uniqueness_gate.py'
-  pull_request:
-    paths:
-      - 'START_HERE.md'
-      - 'THEORY_STATUS.md'
-      - 'BCQG_CANDIDATE_THEORY_V1_2.md'
-      - 'BCQG_CORE_CANDIDATE_V1_2.md'
-      - 'theory_gates.json'
-      - 'LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md'
-      - 'verification_results/**'
-      - 'scripts/canonical_ledger_consistency_gate.py'
-      - 'scripts/bcqg_v12_cutoff_saturated_hda_gate.py'
-      - 'scripts/peter_weyl_operator_route_all_reached_gate.py'
-      - 'scripts/lorentzian_hermitian_projection_uniqueness_gate.py'
+      - '.github/workflows/canonical-ledger-consistency.yml'
+  workflow_dispatch:
 
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -44,15 +39,15 @@ jobs:
           python-version: '3.11'
       - name: Syntax
         run: |
-          python -m py_compile scripts/canonical_ledger_consistency_gate.py
+          python -m py_compile scripts/v13_operator_correction_consistency_gate.py
+          python -m py_compile scripts/verify_theory_gates.py
           python -m py_compile scripts/bcqg_v12_cutoff_saturated_hda_gate.py
-          python -m py_compile scripts/peter_weyl_operator_route_all_reached_gate.py
           python -m py_compile scripts/lorentzian_hermitian_projection_uniqueness_gate.py
-      - name: Verify canonical ledgers against frozen evidence
-        run: python scripts/canonical_ledger_consistency_gate.py
-      - name: Verify machine-ledger schema/evidence paths
+      - name: Verify current v1.3 canonical addendum
+        run: python scripts/v13_operator_correction_consistency_gate.py
+      - name: Preserve historical v1.2 ledger schema/evidence paths
         run: python scripts/verify_theory_gates.py
       - name: Reproduce Hermitian projection uniqueness
         run: python scripts/lorentzian_hermitian_projection_uniqueness_gate.py
-      - name: Reproduce cutoff-saturated theorem from frozen evidence
+      - name: Reproduce stable cutoff-saturated architecture theorem
         run: python scripts/bcqg_v12_cutoff_saturated_hda_gate.py
