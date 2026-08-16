@@ -1,0 +1,84 @@
+name: k5-lorentzian-envtrace-v2
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/tetrahedral_volume_backend.py'
+      - 'scripts/peter_weyl_lorentzian_envtrace_block_gate_v2.py'
+      - 'scripts/peter_weyl_lorentzian_envtrace_orbit_collector_v2.py'
+      - '.github/workflows/k5-lorentzian-envtrace-v2.yml'
+  workflow_dispatch:
+
+jobs:
+  blocks:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        triple: ['123','132']
+        batch: [0,1,2,3]
+    runs-on: macos-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact corrected environment block
+        shell: bash
+        run: |
+          T='${{ matrix.triple }}'
+          A=${T:0:1}; B=${T:1:1}; C=${T:2:1}
+          START=$((4*${{ matrix.batch }})); STOP=$((START+4))
+          mkdir -p out
+          python scripts/peter_weyl_lorentzian_envtrace_block_gate_v2.py \
+            --a "$A" --b "$B" --c "$C" --coefficient 1 \
+            --env-start "$START" --env-stop "$STOP" \
+            --output "out/block_${T}_${START}_${STOP}.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k5-lor-v2-${{ matrix.triple }}-${{ matrix.batch }}
+          path: out/
+          if-no-files-found: error
+
+  collect:
+    needs: blocks
+    runs-on: macos-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: k5-lor-v2-*
+          path: out
+          merge-multiple: true
+      - name: Corrected S4 sign-twirl one-body collector
+        run: python scripts/peter_weyl_lorentzian_envtrace_orbit_collector_v2.py --root out --output verification_results/K5_LORENTZIAN_ENVTRACE_V2.json
+      - name: Guard corrected provenance without fitting historical coefficient
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/K5_LORENTZIAN_ENVTRACE_V2.json'))
+          assert d['passed']
+          assert d['operator_version']=='tetrahedral-charged-volume-v2'
+          assert d['T132_covariance_relative_error']<1e-8
+          assert d['max_physical_basis_volume_leakage']<1e-8
+          assert d['comparison_is_diagnostic_not_acceptance'] is True
+          # Deliberately no assertion on equality with 1.3389293521464034.
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: k5-lorentzian-envtrace-v2
+          path: verification_results/K5_LORENTZIAN_ENVTRACE_V2.json
+          if-no-files-found: error
