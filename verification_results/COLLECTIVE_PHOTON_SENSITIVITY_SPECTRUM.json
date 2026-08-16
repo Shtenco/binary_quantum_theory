@@ -1,0 +1,39 @@
+{
+  "status": "exact BCQG five-channel photon sensitivity spectrum",
+  "passed": true,
+  "checks": {
+    "source_passed": true,
+    "measured_response_matches_closed_form": true,
+    "rank5": true,
+    "uniform_null": true,
+    "closed_form_singular_values_match": true,
+    "finite_tomography_condition_number": true
+  },
+  "RRt_eigenvalues_closed_form": [
+    "1/12",
+    "1/3",
+    "1/3",
+    "(19-sqrt(265))/24",
+    "(19+sqrt(265))/24"
+  ],
+  "singular_values_numeric_descending": [
+    1.212415299380059,
+    0.5773502691896292,
+    0.5773502691896292,
+    0.33672314319409913,
+    0.2886751345948148
+  ],
+  "tomography_condition_number_closed_form": "sqrt((19+sqrt(265))/2)",
+  "tomography_condition_number_numeric": 4.199929796800158,
+  "uniform_trace_null_vector": [
+    1.0000000000000002,
+    0.9999999999999998,
+    1.0,
+    1.0,
+    0.9999999999999994,
+    1.0000000000000004
+  ],
+  "interpretation": "After the common trace mode is rejected, all five BCQG shape directions are optically observable with finite conditioning. The weakest-to-strongest phase sensitivity ratio is fixed by the closed-form condition number, independent of the unknown overall kappa.",
+  "scale_note": "All singular values multiply kappa=k ell_*/2. The condition number and relative sensitivity spectrum are dimensionless and require no absolute length-scale setting.",
+  "scope_note": "Independent exact local SymPy/NumPy reproduction against verification_results/COLLECTIVE_L1_COARSE_FLUX_RESPONSE.json; not an absolute phase prediction until ell_* is scale-set."
+}
