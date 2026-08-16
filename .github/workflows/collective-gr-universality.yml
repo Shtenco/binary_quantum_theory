@@ -12,6 +12,8 @@ on:
       - 'scripts/collective_volume_rg_extended_gate.py'
       - 'scripts/collective_j1_block_isometry_gate.py'
       - 'scripts/collective_barycentric_tetra_block_gate.py'
+      - 'scripts/collective_barycentric_background_metric_gate.py'
+      - 'scripts/collective_barycentric_E_boundary_support_gate.py'
       - 'scripts/pl_dual_complex.py'
       - 'scripts/pl_dual_regulator_gate.py'
       - 'scripts/pl_peter_weyl_euclidean.py'
@@ -42,6 +44,8 @@ jobs:
           python -m py_compile scripts/collective_volume_rg_extended_gate.py
           python -m py_compile scripts/collective_j1_block_isometry_gate.py
           python -m py_compile scripts/collective_barycentric_tetra_block_gate.py
+          python -m py_compile scripts/collective_barycentric_background_metric_gate.py
+          python -m py_compile scripts/collective_barycentric_E_boundary_support_gate.py
           python -m py_compile scripts/pl_dual_complex.py
           python -m py_compile scripts/pl_dual_regulator_gate.py
           python -m py_compile scripts/pl_peter_weyl_euclidean.py
@@ -55,6 +59,10 @@ jobs:
         run: python scripts/collective_j1_block_isometry_gate.py --output verification_results/COLLECTIVE_J1_BLOCK_ISOMETRY.json
       - name: Canonical first barycentric tetra block selection
         run: python scripts/collective_barycentric_tetra_block_gate.py --output verification_results/COLLECTIVE_BARYCENTRIC_TETRA_BLOCK.json
+      - name: Metric content of selected barycentric background
+        run: python scripts/collective_barycentric_background_metric_gate.py --output verification_results/COLLECTIVE_BARYCENTRIC_BACKGROUND_METRIC.json
+      - name: Exact one-E boundary support of barycentric blocks
+        run: python scripts/collective_barycentric_E_boundary_support_gate.py --output verification_results/COLLECTIVE_BARYCENTRIC_E_BOUNDARY_SUPPORT.json
       - name: PL dual-complex regulator geometry
         run: python scripts/pl_dual_regulator_gate.py --output verification_results/PL_DUAL_REGULATOR.json
       - name: K5-regressed 16-cell Peter-Weyl Euclidean column
@@ -75,6 +83,8 @@ jobs:
             'volume_ladder':'verification_results/COLLECTIVE_VOLUME_RG_EXTENDED.json',
             'j1_representation_fusion':'verification_results/COLLECTIVE_J1_BLOCK_ISOMETRY.json',
             'barycentric_spatial_block':'verification_results/COLLECTIVE_BARYCENTRIC_TETRA_BLOCK.json',
+            'barycentric_background_metric':'verification_results/COLLECTIVE_BARYCENTRIC_BACKGROUND_METRIC.json',
+            'one_E_boundary_support':'verification_results/COLLECTIVE_BARYCENTRIC_E_BOUNDARY_SUPPORT.json',
             'PL_dual_regulator':'verification_results/PL_DUAL_REGULATOR.json',
             'independent_16cell_Euclidean':'verification_results/PL_PETER_WEYL_EUCLIDEAN_16CELL.json',
             'DeWitt_target':'verification_results/DEWITT_HDA_UNIQUENESS_COLLECTIVE_CONTROL.json',
@@ -98,6 +108,8 @@ jobs:
             verification_results/COLLECTIVE_VOLUME_RG_EXTENDED.json
             verification_results/COLLECTIVE_J1_BLOCK_ISOMETRY.json
             verification_results/COLLECTIVE_BARYCENTRIC_TETRA_BLOCK.json
+            verification_results/COLLECTIVE_BARYCENTRIC_BACKGROUND_METRIC.json
+            verification_results/COLLECTIVE_BARYCENTRIC_E_BOUNDARY_SUPPORT.json
             verification_results/PL_DUAL_REGULATOR.json
             verification_results/PL_PETER_WEYL_EUCLIDEAN_16CELL.json
             verification_results/DEWITT_HDA_UNIQUENESS_COLLECTIVE_CONTROL.json
