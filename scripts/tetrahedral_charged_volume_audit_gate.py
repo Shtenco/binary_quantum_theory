@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+"""Audit the tetrahedral charged-volume completion before any new S result.
+
+The gate is intentionally both a negative and positive control:
+1. demonstrate that fixed q_123 is not a tetrahedrally covariant extension on
+   one-hit charged J=1/2 sectors;
+2. show that the normalized four-leg Q_tet preserves the old Gauss-sector
+   absolute-volume normalization;
+3. show that H_E^sine on both K5 and independent 16-cell is unchanged;
+4. show that the four 16-cell covariant C_r(V) slot norms become equal and
+   nonzero, removing the historical preferred-leg null channel.
+
+No Lorentzian science amplitude is used to choose the completion or thresholds.
+"""
+from __future__ import annotations
+import argparse,itertools,json,math,sys
+from pathlib import Path
+import numpy as np
+HERE=Path(__file__).resolve().parent
+if str(HERE) not in sys.path:sys.path.insert(0,str(HERE))
+import k5_peter_weyl_safe_hda_column as PW
+import charged_intertwiner_recoupling_gate as CH
+import peter_weyl_covariant_volume_leg_gate as CV
+import peter_weyl_lorentzian_logical_projection_gate as LP
+import peter_weyl_zeroaware_volume_migration_experiment as ZVM
+from tetrahedral_volume_backend import tetra_q_block,tetra_volume_block_general,install_tetrahedral_volume_backend
+from pl_dual_complex import DualComplex,boundary_4simplex,seed_16cell_boundary
+from pl_peter_weyl_euclidean import PLPeterWeylEuclidean
+from pl_covariant_backend import install_pl_graph
+
+
+def state_rel(a,b):
+    keys=set(a)|set(b);num=math.sqrt(sum(abs(a.get(k,0j)-b.get(k,0j))**2 for k in keys));den=math.sqrt(sum(abs(z)**2 for z in b.values()))
+    return num/max(den,1e-30)
+def n2(s):return float(sum(abs(a)**2 for a in s.values()))
+
+def old_volume_block(sp,J2):
+    qs=[CH.q_block(tuple(sp),J2,M)[1] for M in PW.m2vals_t(J2)];Q=sum(qs)/len(qs);Q=.5*(Q+Q.conj().T)
+    return ZVM.zeroaware_sqrt_abs(Q)[0]
+
+def gauss_volume_regression():
+    rows=[];mx=0.0;checked=0
+    for sp in itertools.product(range(4),repeat=4):
+        labs=CH.allowed_charged_labels(tuple(sp),0)
+        if not labs:continue
+        Vo=old_volume_block(sp,0);Vn=tetra_volume_block_general(tuple(sp),0)
+        err=float(np.linalg.norm(Vo-Vn)/max(np.linalg.norm(Vo),1e-30)) if np.linalg.norm(Vo)>1e-14 else float(np.linalg.norm(Vn))
+        mx=max(mx,err);checked+=1
+        if len(labs)>1:rows.append({'spins':list(sp),'singlet_dimension':len(labs),'relative_volume_error':err})
+    return checked,mx,rows
+
+def charged_negative_control():
+    base=[1,1,1,1];rows=[];max_nonprop=0.0;max_old_zero_new=0.0
+    for leg in range(4):
+      for so in (0,2):
+        sp=base.copy();sp[leg]=so;sp=tuple(sp);J2=1;M=PW.m2vals_t(J2)[0]
+        Qo=CH.q_block(sp,J2,M)[1];Qn=tetra_q_block(sp,J2,M)[0]
+        den=np.vdot(Qo,Qo)
+        sc=np.vdot(Qo,Qn)/den if abs(den)>1e-30 else 0j
+        nonprop=float(np.linalg.norm(Qn-sc*Qo)/max(np.linalg.norm(Qn),1e-30));max_nonprop=max(max_nonprop,nonprop)
+        if np.linalg.norm(Qo)<1e-14:max_old_zero_new=max(max_old_zero_new,float(np.linalg.norm(Qn)))
+        rows.append({'spins':list(sp),'changed_leg':leg,'changed_doubled_spin':so,
+                     'old_q123_norm':float(np.linalg.norm(Qo)),'tetra_Q_norm':float(np.linalg.norm(Qn)),
+                     'best_scalar_tetra_over_old':[float(sc.real),float(sc.imag)],'relative_nonproportional_residual':nonprop})
+    return rows,max_nonprop,max_old_zero_new
+
+def he_pair(tets):
+    D=DualComplex(tets);G=PLPeterWeylEuclidean(D);seed=((1,)*len(G.EDGES),(0,)*D.n_tets)
+    G.primitive_items.cache_clear();old=G.H_sine_basis(seed,0,5)
+    with install_tetrahedral_volume_backend():
+        G.primitive_items.cache_clear();new=G.H_sine_basis(seed,0,5)
+    G.primitive_items.cache_clear()
+    return {'old_support':len(old),'new_support':len(new),'old_norm':G.norm(old),'new_norm':G.norm(new),
+            'relative_error':state_rel(new,old),'support_identical':set(new)==set(old)}
+
+def cv_slot_norms(use_tetra):
+    D=DualComplex(seed_16cell_boundary());G=PLPeterWeylEuclidean(D);seed=((1,)*len(G.EDGES),(0,)*D.n_tets)
+    ctx=install_tetrahedral_volume_backend() if use_tetra else None
+    def compute():
+      with install_pl_graph(G):
+        psi=CV.gauss_to_covariant({seed:1+0j},0);out=[]
+        for r in range(4):
+          w=D.neighbor[(0,r)];tot=0.0;leak=0.0;supports=[]
+          for i,j in itertools.product(range(2),repeat=2):
+            s,l=LP.RAW.COMP.C_volume_component(psi,0,w,i,j,7);tot+=n2(s);leak=max(leak,float(l));supports.append(len(s))
+          out.append({'slot':r,'target_node':w,'matrix_Frobenius_norm':math.sqrt(tot),'component_supports':supports,'max_complete_basis_leakage':leak})
+        return out
+    if ctx is None:return compute()
+    with ctx:return compute()
+
+def run():
+    ZVM.patch_and_clear();checked,gauss_err,gauss_rows=gauss_volume_regression();charged,max_nonprop,oldzero=charged_negative_control()
+    k5=he_pair(boundary_4simplex());cell=he_pair(seed_16cell_boundary())
+    oldslots=cv_slot_norms(False);newslots=cv_slot_norms(True)
+    oldnorm=[x['matrix_Frobenius_norm'] for x in oldslots];newnorm=[x['matrix_Frobenius_norm'] for x in newslots]
+    oldspread=max(oldnorm)-min(oldnorm);newspread=max(newnorm)-min(newnorm)
+    checks={
+      'charged_q123_preferred_leg_negative_control':oldzero>0.1 and max_nonprop>0.5,
+      'gauss_absolute_volume_normalization_preserved':gauss_err<1e-12,
+      'K5_H_E_sine_exactly_preserved':k5['support_identical'] and k5['relative_error']<1e-12,
+      '16cell_H_E_sine_exactly_preserved':cell['support_identical'] and cell['relative_error']<1e-12,
+      'old_CV_slot_asymmetry_detected':oldspread>0.1 and min(oldnorm)<1e-12,
+      'tetra_CV_all_slots_nonzero':min(newnorm)>1e-3,
+      'tetra_CV_slot_covariance_restored':newspread<1e-12,
+      'tetra_CV_basis_complete':max(x['max_complete_basis_leakage'] for x in newslots)<1e-10,
+    }
+    return {'status':'tetrahedral charged-volume covariance correction audit','passed':bool(all(checks.values())),
+            'science_status':'PRE_LORENTZIAN_OPERATOR_CORRECTION','definition':'Q_tet=(1/4) sum_r (-1)^r q_{omit r}; V_tet=sqrt(abs(Q_tet)) with production zero-aware spectral convention',
+            'checks':checks,'gauss_small_spin_quartets_checked':checked,'max_gauss_absolute_volume_relative_error':gauss_err,
+            'nontrivial_gauss_rows':gauss_rows,'charged_one_hit_negative_control':charged,
+            'max_charged_nonproportional_residual_old_vs_tetra':max_nonprop,'max_tetra_Q_norm_where_old_q123_was_zero':oldzero,
+            'K5_H_E_comparison':k5,'sixteen_cell_H_E_comparison':cell,
+            'old_q123_CV_slots':oldslots,'tetrahedral_CV_slots':newslots,
+            'old_CV_slot_norm_spread':oldspread,'tetra_CV_slot_norm_spread':newspread,
+            'interpretation':'The fixed q_123 extension is valid for frozen Gauss absolute volume but not for charged intermediate states. The four-leg completion restores local tetrahedral slot covariance while leaving the gauge-invariant Euclidean Hamiltonian columns unchanged on both regulators.',
+            'consequence':'All Lorentzian C(K)/S calculations that used the old charged q_123 extension are retained only as historical diagnostics and must be recomputed with the tetrahedral backend before physical promotion.',
+            'scope_note':'This correction does not change the already tested E_sine amplitudes. Full corrected Lorentzian normalization/HDA must be re-audited.'}
+def main():
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path);a=p.parse_args();o=run();t=json.dumps(o,indent=2);print(t)
+    if a.output:a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(t+'\n',encoding='utf-8')
+    return 0 if o['passed'] else 1
+if __name__=='__main__':raise SystemExit(main())
