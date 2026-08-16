@@ -1,92 +1,148 @@
 # BCQG collective coherent/refinement background protocol
 
-## Motivation
+## Updated motivation
 
-The sharp all-`j=1/2` seed is an excellent exact algebraic reference state but fails as a **linear expectation-value metric background** for the six-edge `P4` carrier: spin-preserving flux/metric observables have zero cross matrix elements between the sharp seed and changed-spin `W_g` states.
+The sharp all-`j=1/2` seed has an exact **microscopic** selection obstruction: a fine-graph spin-preserving local flux/metric operator cannot have a linear cross matrix element into the strict changed-spin `q=4` carrier.
 
-The GR-universality science run therefore needs a background with overlapping representation support. The choice must be frozen without looking at `c_eff`, constraint ranks or photon data.
+However the exact first barycentric coarse block now supplies a stronger finite result. After contracting the 36 internal links and reading total coarse-face flux Gram observables on the open boundary, the direct response matrix is full rank:
 
-## 1. Minimal S4-homogeneous finite precursor
+\[
+\boxed{rank(B_F)=6},
+\qquad
+\boxed{cond(B_F)\simeq1}.
+\]
 
-Let the six orthonormal microscopic edge columns be `|w_e>` and define the uniform intrinsic mode
+Therefore a coherent spin packet is **no longer required merely to rescue the first finite metric calibration**. The role of coherent/refinement backgrounds is now cleaner: test semiclassicality, suppress fluctuations, verify stability of the coarse map and follow the carrier toward the continuum.
+
+No background parameter may be selected using `c_eff`, constraint ranks or photon data.
+
+## 1. Sharp coarse-block control
+
+The canonical finite control is the exact contracted sharp-seed block used by
+
+- `collective_l1_background_orthogonal_metric_tangent_gate.py`;
+- `collective_l1_coarse_flux_response_gate.py`.
+
+It already provides six orthonormal collective directions and the BCQG-native map
+
+\[
+h=(J_F^{bg})^{-1}B_Fq.
+\]
+
+This sharp coarse block is now the primary **finite calibration control**.
+
+It is not automatically the final semiclassical vacuum: volume fluctuations, refinement stability and long-wavelength correlations remain separate tests.
+
+## 2. Minimal S4-homogeneous coherent precursor
+
+Let the six orthonormal microscopic/coarse edge columns be `|w_e>` and define
 
 \[
 |u\rangle=\frac1{\sqrt6}\sum_{e=1}^6|w_e\rangle.
 \]
 
-Since the six-edge representation decomposes as `A1+E+T2`, `|u>` is the unique `A1` direction.
+Since
 
-Define
+\[
+6=A_1\oplus E\oplus T_2,
+\]
+
+`|u>` is the unique `A1` direction.
+
+Define the optional homogeneous packet
 
 \[
 \boxed{|\Omega_\alpha\rangle=\frac{|0\rangle+\alpha|u\rangle}{\sqrt{1+\alpha^2}}}.
 \]
 
-This state is target-independent, preserves tetrahedral homogeneity and mixes the original sharp spin sector with the first intrinsic dynamical sector.
-
-Primary finite precursor:
-
-```text
-alpha = 1
-```
-
-Mandatory robustness scan:
+Frozen finite diagnostic values:
 
 ```text
 alpha = 1/4, 1/2, 1, 2
 ```
 
-No value may be selected or discarded because it makes `c_eff` closer to `1/2`.
+with `alpha=1` retained as the nominal central diagnostic. No value may be selected or discarded because it moves `c_eff` toward `1/2` or improves an optical signal.
 
-## 2. Tangent frame about the mixed background
+## 3. Tangent frame
 
-The normalized trace/radial tangent is
-
-\[
-|t_{A1}\rangle=\frac{|u\rangle-\alpha|0\rangle}{\sqrt{1+\alpha^2}}.
-\]
-
-The five shape tangents are any frozen orthonormal `E(2)+T2(3)` combinations of the six edge vectors orthogonal to `|u>`. They remain orthogonal to `|Omega_alpha>`.
-
-This yields a six-dimensional orthonormal tangent frame with no use of GR target data.
-
-## 3. Direct metric-response requirement
-
-For six coarse geometric observables `y_e` constructed from BCQG flux/metric data, measure
+For the mixed packet the normalized `A1` tangent is
 
 \[
-B_{eA}(\alpha)=2\,\mathrm{Re}\langle\Omega_\alpha|\hat y_e|t_A\rangle.
+|t_{A1}\rangle=\frac{|u\rangle-\alpha|0\rangle}{\sqrt{1+\alpha^2}},
 \]
 
-The background qualifies for the metric Hessian only if:
+and the five shape tangents are the frozen orthonormal `E(2)+T2(3)` combinations orthogonal to `|u>`.
 
-1. `rank B = 6` at the frozen numerical tolerance;
-2. the rank is stable over `1e-7,1e-8,1e-9` SVD thresholds;
-3. the `A1`, `E`, `T2` channel singular values are finite and reported separately;
-4. the condition number is acceptable and improves/stabilizes under refinement;
-5. no `alpha` is tuned using the DeWitt result.
+The sharp coarse control and every coherent packet must use the **same irrep labelling and the same BCQG flux-metric observable** so channel trends are comparable.
 
-At finite tetrahedral symmetry `B` is allowed three channel scales `b_A1,b_E,b_T2`. Continuum rotational isotropy requires the `E` and `T2` calibrations to merge.
+## 4. Direct metric-response requirement
 
-## 4. Beyond the minimal two-sector precursor
+Use the six coarse face-flux Gram observables
 
-`Omega_alpha` is a finite diagnostic, not asserted to be the final semiclassical vacuum. If it fails nondegeneracy/semiclassicality, the extension order is frozen as:
+\[
+Z_{fg}=X_f\cdot X_g,
+\qquad f<g.
+\]
 
-1. enlarge with target-independent depth-2 `E,S,R_op` Krylov sectors;
-2. construct a Gauss-projected representation packet using only BCQG geometric/dynamical observables;
-3. determine its parameters by a background stationarity/minimum-uncertainty criterion, never by the GR target values.
+For any tested background `Omega`, measure
 
-Every extension must retain the sharp-spin state as a reproducible control.
+\[
+(B_F)_{(fg),A}=2\,\mathrm{Re}\langle\Omega|Z_{fg}|t_A\rangle.
+\]
 
-## 5. Photon interpretation
+A background qualifies for metric-Hessian use only if:
 
-The distinction between sharp and coherent backgrounds is experimentally meaningful in the optical bridge.
+1. `rank B_F = 6` at the frozen tolerance;
+2. the rank is stable under the declared SVD thresholds;
+3. `A1`, `E`, `T2` channel scales are finite and separately reported;
+4. conditioning is acceptable;
+5. the response is converted to the same physical metric coordinates through the independently derived `J_F`;
+6. no state parameter is tuned using the GR or photon target.
 
-- Sharp spin reference: first-order mean metric response to `W_g` excitations vanishes for spin-preserving metric/Hodge observables; leading optical effects can instead enter through phase variance/path-geometry entanglement.
-- Mixed/coherent background: nonzero `B` permits the conventional linear eikonal phase `Delta Phi=(k ell_*/2) D J h`.
+At finite tetrahedral symmetry three calibration scales are allowed. Continuum rotational isotropy requires the `E` and `T2` calibrations to merge under refinement.
 
-Thus phase shift and visibility are separate observables of the same collective geometry rather than interchangeable claims.
+## 5. Dynamical selection theorem
+
+A nonzero coarse metric response does not imply a nonzero direct gravitational scalar matrix. Under the frozen real recoupling convention and exact homogeneous `S4` covariance,
+
+\[
+W_g^\dagger H_E^{sine}W_g=0,
+\qquad
+W_g^\dagger S W_g=0,
+\]
+
+so the signed gravitational block `G=-2H_E/3-32S/9` also has zero direct `6x6` projection.
+
+Therefore the DeWitt question is fundamentally a **depth-two return/backreaction** question. The coherent packet may change finite response and leakage, but it may not be used to manufacture a direct first-order gravitational Hessian forbidden by the symmetry theorem.
+
+## 6. Refinement extension order
+
+If the sharp finite block or the minimal packet is not sufficiently semiclassical, enlarge in this target-independent order:
+
+1. include depth-2 `E,S,R_op` Krylov sectors;
+2. construct Gauss-projected representation packets from BCQG geometric/dynamical observables;
+3. determine packet parameters by stationarity/minimum-uncertainty or refinement criteria;
+4. retain all tested parameter values and bad levels in the published ledger.
+
+The sharp-spin block remains a reproducible control at every stage.
+
+## 7. Photon interpretation
+
+The updated optical picture has two layers:
+
+- **coarse mean phase:** already nonzero at the first sharp contracted block because `B_F` is full rank;
+- **quantum visibility/covariance:** depends on the geometry state and therefore remains a major use of coherent/refinement packets.
+
+For the first finite block
+
+\[
+\Delta\Phi=\kappa D J_{edge}(J_F^{bg})^{-1}B_Fq
+\]
+
+has rank five on the traceless sector. Coherent packets should therefore be tested primarily for the refinement and covariance of this response, not introduced merely to make the mean phase exist.
 
 ## Status
 
-`PREREGISTERED_BACKGROUND_PRECURSOR`. The next direct calculation is the six-by-six metric-response matrix `B(alpha)` followed by the three representative S4 channels of the effective scalar constraint.
+`PREREGISTERED_SEMICLASSICAL_ROBUSTNESS_PATH`.
+
+The immediate dynamics bottleneck is no longer `B(alpha)`: the sharp coarse block already has a direct invertible metric map. The next calculation is the three-channel depth-two gravitational return on the same six directions, followed by the normalized-state metric Hessian and constraint-rank experiment.
