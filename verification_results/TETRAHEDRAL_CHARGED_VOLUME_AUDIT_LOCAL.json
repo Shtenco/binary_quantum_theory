@@ -1,0 +1,32 @@
+{
+  "status": "tetrahedral charged-volume covariance correction audit",
+  "passed": true,
+  "science_status": "PRE_LORENTZIAN_OPERATOR_CORRECTION",
+  "provenance": "independent local exact prototype before corrected Lorentzian science result",
+  "definition": "Q_tet=(1/4) sum_r (-1)^r q_{omit r}; V_tet=sqrt(abs(Q_tet)) with production zero-aware spectral convention",
+  "gauss_absolute_volume": {
+    "max_relative_error_old_q123_vs_tetra_on_nontrivial_J0_small_spin_blocks": 2.1067175172317148e-16,
+    "all_jhalf_Q_relation": "Q_tet=-q123 at canonical orientation; absolute volume identical"
+  },
+  "charged_negative_control_examples": [
+    {"spins":[0,1,1,1],"J":0.5,"old_q123_norm":0.0,"tetra_Q_norm":0.6123724356957945,"relative_nonproportional_residual":1.0},
+    {"spins":[2,1,1,1],"J":0.5,"old_q123_norm":1.0000000000000002,"tetra_Q_norm":3.061862178478973,"best_scalar_tetra_over_old":-2.4999999999999996,"relative_nonproportional_residual":0.5773502691896257},
+    {"spins":[1,1,1,0],"J":0.5,"old_q123_norm":0.6123724356957945,"tetra_Q_norm":0.6123724356957945,"best_scalar_tetra_over_old":-1.0,"relative_nonproportional_residual":0.0},
+    {"spins":[1,1,1,2],"J":0.5,"old_q123_norm":0.6123724356957946,"tetra_Q_norm":3.061862178478973,"best_scalar_tetra_over_old":-5.000000000000001,"relative_nonproportional_residual":1.8291371294620985e-16}
+  ],
+  "gauge_invariant_E_sine_invariance": {
+    "K5": {"old_support":37,"new_support":37,"old_norm":2.1712581763270546,"new_norm":2.1712581763270546,"relative_error":0.0},
+    "16cell": {"old_support":82,"new_support":82,"old_norm":2.144278042516496,"new_norm":2.144278042516496,"relative_error":1.7655141849026937e-16}
+  },
+  "gauss_K_invariance": {
+    "K5": {"old_support":37,"new_support":37,"old_norm":0.7096764880277939,"new_norm":0.7096764880277942,"relative_error":1.2198834607482716e-15},
+    "16cell": {"old_support":82,"new_support":82,"old_norm":0.5780963015579995,"new_norm":0.5780963015579997,"relative_error":1.5346813654748965e-15}
+  },
+  "old_q123_CV_slot_Frobenius_norms_16cell_seed": [0.6453707252087338,0.645370725208734,0.5163939349118883,0.0],
+  "tetrahedral_CV_slot_Frobenius_norms_16cell_seed": [0.2513477706186925,0.25134777061869257,0.25134777061869235,0.25134777061869235],
+  "tetrahedral_CV_max_slot_spread": 2.220446049250313e-16,
+  "tetrahedral_CV_max_complete_basis_leakage": 4.440892098500625e-16,
+  "interpretation": "The historical fixed q123 continuation is a preferred-leg artifact only on charged intermediate states. The normalized full four-leg completion restores tetrahedral slot covariance while preserving the already frozen gauge-invariant Euclidean Hamiltonian and Gauss K columns.",
+  "consequence": "All old charged-q123 Lorentzian finite amplitudes are historical diagnostics until recomputed with V_tet. Microscopic E_sine and route/refinement E-based collective evidence are unchanged.",
+  "scope_note": "Local reproduction; the repository executable audit and CI provide the independent rerun."
+}
