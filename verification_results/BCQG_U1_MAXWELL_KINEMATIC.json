@@ -1,0 +1,25 @@
+{
+  "status": "exact U(1) Maxwell kinematic gate on BCQG 16-cell S3",
+  "passed": true,
+  "science_status": "MATTER_KINEMATIC_PRECURSOR",
+  "counts": {"V": 8, "E": 24, "F": 32, "T": 16},
+  "rank_d0": 7,
+  "rank_d1": 17,
+  "rank_weighted_Maxwell": 17,
+  "Maxwell_nullity": 7,
+  "sample_action": "6904/17",
+  "gauge_shift_action_change": "0",
+  "checks": {
+    "f_vector_seed": true,
+    "d1_d0_exact_zero": true,
+    "gauge_curvature_exact": true,
+    "gauge_action_exact": true,
+    "rank_d0_Vminus1": true,
+    "rank_d1_17": true,
+    "weighted_Maxwell_rank_17": true,
+    "Maxwell_kernel_equals_gradient_dim": true,
+    "gradient_annihilated_by_K": true
+  },
+  "identity": "F=d1 A; A->A+d0 lambda; d1 d0=0; S=1/2 F^T *_2 F; K=d1^T *_2 d1",
+  "scope_note": "Spatial/kinematic Maxwell precursor only; no calibrated photon dispersion or BCQG optical anomaly is claimed."
+}
