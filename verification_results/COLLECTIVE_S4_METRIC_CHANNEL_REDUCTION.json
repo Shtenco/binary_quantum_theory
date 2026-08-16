@@ -1,0 +1,12 @@
+{
+  "status":"exact S4 six-edge commutant reduction",
+  "passed":true,
+  "science_status":"COLLECTIVE_SYMMETRY_THEOREM",
+  "edge_order":[[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]],
+  "decomposition":"6=A1(1)+E(2)+T2(3)",
+  "generic_invariant_operator":"M=a I+b A_adj+c O_opposite",
+  "eigenvalues":{"A1":"a+4b+c","E":"a-2b+c","T2":"a-c"},
+  "representative_elements_required":3,
+  "checks":{"octahedral_relation":true,"rank_A1":true,"rank_E":true,"rank_T2":true,"projectors_sum_I":true,"projectors_orthogonal":true,"lambda_A1":true,"lambda_E":true,"lambda_T2":true,"all_24_S4_covariant":true},
+  "interpretation":"Finite tetrahedral symmetry reduces every invariant six-edge scalar/response to three channel coefficients; SO(3) recovery requires E and T2 channel merger."
+}
