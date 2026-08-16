@@ -1,0 +1,113 @@
+name: pl-16cell-hermitian-lorentzian-v2-single
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/pl_lorentzian_single_worker_v2.py'
+      - 'scripts/pl_lorentzian_group_worker.py'
+      - 'scripts/pl_lorentzian_triple_worker.py'
+      - 'scripts/pl_lorentzian_48_collect_v2.py'
+      - 'scripts/tetrahedral_volume_backend.py'
+      - 'PL_16CELL_HERMITIAN_LORENTZIAN_PREREGISTRATION_V2.md'
+      - '.github/workflows/pl-16cell-hermitian-lorentzian-v2-single.yml'
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax and frozen correction audit
+        run: |
+          python -m py_compile scripts/pl_lorentzian_single_worker_v2.py scripts/pl_lorentzian_48_collect_v2.py scripts/tetrahedral_volume_backend.py scripts/tetrahedral_charged_volume_audit_gate.py
+          python scripts/tetrahedral_charged_volume_audit_gate.py --output verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT.json
+      - name: Require the same V2 operator correction
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT.json'))
+          assert d['passed']
+          assert d['checks']['charged_q123_preferred_leg_negative_control']
+          assert d['checks']['K5_H_E_sine_exactly_preserved']
+          assert d['checks']['16cell_H_E_sine_exactly_preserved']
+          assert d['checks']['tetra_CV_slot_covariance_restored']
+          PY
+
+  term:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        mode: [forward, adjoint]
+        index: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: One exact frozen V2 ordered term
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          python scripts/pl_lorentzian_single_worker_v2.py --mode "${{ matrix.mode }}" --index ${{ matrix.index }} --source 0 --out-dir out
+      - name: Require one serialized term with V2 provenance
+        shell: pwsh
+        run: |
+          python -c "import json,glob; p=glob.glob('out/term_${{ matrix.mode }}_${{ matrix.index }}.json'); assert len(p)==1; d=json.load(open(p[0])); assert d['passed']; assert d['operator_version']=='tetrahedral-charged-volume-v2'; assert d['index']==${{ matrix.index }}; assert d['mode']=='${{ matrix.mode }}'"
+          if (!(Test-Path "out/term_${{ matrix.mode }}_${{ matrix.index }}.npz")) { throw 'missing NPZ term' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-lorentzian-v21-${{ matrix.mode }}-${{ matrix.index }}
+          path: out/
+          if-no-files-found: error
+
+  collect:
+    needs: term
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pl-lorentzian-v21-*
+          path: out
+          merge-multiple: true
+      - name: Require exact 24 forward plus 24 adjoint orbit
+        shell: pwsh
+        run: |
+          $j=(Get-ChildItem out -Filter 'term_*.json').Count
+          $n=(Get-ChildItem out -Filter 'term_*.npz').Count
+          if ($j -ne 48 -or $n -ne 48) { throw "Expected 48 V2 JSON/NPZ terms; got $j/$n" }
+      - name: Exact V2 reduction and Hermitian completion
+        run: python scripts/pl_lorentzian_48_collect_v2.py --root out --json-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V2.json --state-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V2.npz
+      - name: Guard preregistered V2 semantics
+        shell: pwsh
+        run: |
+          python -c "import json; d=json.load(open('verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V2.json')); assert d['passed']; assert d['operator_version']=='tetrahedral-charged-volume-v2'; assert d['worker_count']==48; assert d['max_worker_physical_leakage']<1e-8; assert d['wrong_seed_parity_outputs']==0; assert d['max_spin_S']<=3.5+1e-12"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-16cell-hermitian-lorentzian-v2-single
+          path: |
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V2.json
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V2.npz
+          if-no-files-found: error
