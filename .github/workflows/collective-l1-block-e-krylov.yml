@@ -1,0 +1,79 @@
+name: collective-l1-block-e-krylov
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_l1_block_e_node_column.py'
+      - 'scripts/collective_l1_block_e_krylov_collect.py'
+      - 'scripts/collective_barycentric_E_boundary_support_gate.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_dual_complex.py'
+      - '.github/workflows/collective-l1-block-e-krylov.yml'
+  workflow_dispatch:
+
+jobs:
+  fine-columns:
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        local_index: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact L1 fine-node column in parent block 0
+        run: python scripts/collective_l1_block_e_node_column.py --local-index ${{ matrix.local_index }} --output node_${{ matrix.local_index }}.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-l1-block-e-${{ matrix.local_index }}
+          path: node_${{ matrix.local_index }}.json
+          if-no-files-found: error
+
+  collect:
+    needs: fine-columns
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: collective-l1-block-e-*
+          path: columns
+          merge-multiple: true
+      - name: Exact 24-column fine-Hilbert Gram
+        run: python scripts/collective_l1_block_e_krylov_collect.py --root columns --output verification_results/COLLECTIVE_L1_BLOCK_E_KRYLOV.json
+      - name: Guard precursor scope
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_L1_BLOCK_E_KRYLOV.json'))
+          assert d['passed']
+          assert d['fine_nodes']==24 and d['global_L1_nodes']==384 and d['global_L1_dual_links']==768
+          assert d['science_status']=='L1_BLOCK_E_PRECURSOR'
+          assert d['amplitude_rank']>0
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-l1-block-e-krylov
+          path: verification_results/COLLECTIVE_L1_BLOCK_E_KRYLOV.json
+          if-no-files-found: error
