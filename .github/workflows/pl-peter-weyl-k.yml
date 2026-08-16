@@ -1,0 +1,49 @@
+name: pl-peter-weyl-k
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/pl_dual_complex.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_peter_weyl_K_gate.py'
+      - '.github/workflows/pl-peter-weyl-k.yml'
+  workflow_dispatch:
+
+jobs:
+  pl-k:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/pl_peter_weyl_K_gate.py
+      - name: Exact graph-independent PL K amplitude gate
+        run: python scripts/pl_peter_weyl_K_gate.py --node 0 --output verification_results/PL_PETER_WEYL_K_16CELL.json
+      - name: Freeze scope guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/PL_PETER_WEYL_K_16CELL.json'))
+          assert d['passed']
+          assert d['K5_regression']['relative_error'] < 5e-8
+          assert d['sixteen_cell']['K_support'] > 0
+          assert d['sixteen_cell']['K_norm'] > 1e-10
+          assert d['sixteen_cell']['max_local_volume_hermiticity_error'] < 1e-10
+          assert d['checks']['K_preserves_expected_PL_parity']
+          assert 'K prerequisite only' in d['scope_note']
+          PY
+      - name: Upload PL K evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pl-peter-weyl-k-16cell
+          path: verification_results/PL_PETER_WEYL_K_16CELL.json
+          if-no-files-found: error
