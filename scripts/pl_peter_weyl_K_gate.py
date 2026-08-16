@@ -2,12 +2,13 @@
 """Graph-independent PL Peter-Weyl prerequisite K_v=[V_v,E_v^sine].
 
 This is the first amplitude-level Lorentzian bridge on an arbitrary closed
-tetrahedral PL dual complex.  It reuses the graph-independent physical-sine
-Euclidean engine and the same exact four-valent absolute-volume primitive.
+tetrahedral PL dual complex. It reuses the graph-independent physical-sine
+Euclidean engine and the production zero-aware four-valent absolute-volume
+convention used by the canonical Lorentzian stack.
 
 The gate first reduces to the historical K5 sine-K implementation on the
 boundary of a 4-simplex (up to the independently fixed tetrahedron orientation
-sign), then evaluates a genuine 16-cell PL-S3 K column.  No Lorentzian
+sign), then evaluates a genuine 16-cell PL-S3 K column. No Lorentzian
 coefficient, beta fit or GR target enters.
 """
 from __future__ import annotations
@@ -20,6 +21,7 @@ if str(HERE) not in sys.path:sys.path.insert(0,str(HERE))
 import k5_peter_weyl_safe_hda_column as PW
 import peter_weyl_euclidean_sine_ordering_gate as SINE
 import peter_weyl_lorentzian_K_block_gate as K5K
+import peter_weyl_zeroaware_volume_migration_experiment as ZVM
 from pl_dual_complex import DualComplex,boundary_4simplex,seed_16cell_boundary
 from pl_peter_weyl_euclidean import PLPeterWeylEuclidean
 
@@ -70,15 +72,18 @@ def relerr(a,b,scale=1.0):
     return num/max(den,1e-30)
 
 def run(node=0):
+    # Canonical v1.2 Lorentzian stack uses the zero-aware nullspace convention.
+    # Apply it before constructing either side of the K5 reduction so this PL
+    # prerequisite is exactly production-consistent rather than a near-equivalent
+    # default-volume diagnostic.
+    ZVM.patch_and_clear()
     JMAX2=5
-    # Special-case reduction: boundary 4-simplex -> historical K5 regulator.
     KD=DualComplex(boundary_4simplex());KG=PLPeterWeylEuclidean(KD)
     initial=PW.basis_full_jhalf()[0];kv,KV=make_volume_ops(KG)
     knew,_=apply_K(KG,{initial:1+0j},node,JMAX2,kv,KV)
     kold=k5_reference({initial:1+0j},node,JMAX2)
     k5_error=relerr(knew,kold,KD.orientation[node])
 
-    # Independent PL-S3 16-cell column.
     D=DualComplex(seed_16cell_boundary());G=PLPeterWeylEuclidean(D)
     seed=((1,)*len(G.EDGES),(0,)*D.n_tets);vcol,V=make_volume_ops(G)
     K,H=apply_K(G,{seed:1+0j},node,JMAX2,vcol,V)
@@ -87,7 +92,6 @@ def run(node=0):
     changed=Counter(sum(s!=1 for s in k[0]) for k in K)
     parity=Counter(sum(k[0])%2 for k in K)
 
-    # V is Hermitian on every local block actually reached by E|seed>.
     max_V_herm=0.0
     for key in {seed,*H.keys()}:
         col=dict(vcol(key,node))
@@ -101,6 +105,7 @@ def run(node=0):
     parity_ok=expected_parity is not None and all((sum(k[0])%2)==expected_parity for k in K)
 
     checks={
+      'production_zeroaware_volume_installed':PW.volume123_matrix is ZVM.zeroaware_volume123_matrix,
       'K5_sine_reduction':k5_error<5e-8,
       'sixteen_cell_E_nonzero':len(H)>0 and Hnorm>1e-10,
       'sixteen_cell_K_nonzero':len(K)>0 and Knorm>1e-10,
@@ -110,8 +115,9 @@ def run(node=0):
       'K_does_not_exceed_E_spin_wall':max_spin<=1.0+1e-12,
     }
     return {
-      'status':'graph-independent PL amplitude prerequisite K=[V,H_E^sine]',
+      'status':'production-consistent graph-independent PL amplitude prerequisite K=[V,H_E^sine]',
       'passed':bool(all(checks.values())),'checks':checks,'node':node,'Jmax':JMAX2/2,
+      'volume_convention':'zero-aware sqrt(abs(Q)); tau=1000 eps dim(Q) max(1,||Q||)',
       'K5_regression':{'orientation_sign':KD.orientation[node],'relative_error':k5_error,
                        'new_support':len(knew),'old_support':len(kold),
                        'new_norm':KG.norm(knew),'old_norm':KG.norm(kold)},
@@ -123,7 +129,7 @@ def run(node=0):
                       'max_local_volume_hermiticity_error':max_V_herm,
                       'seed_diagonal_K_amplitude':[K.get(seed,0j).real,K.get(seed,0j).imag]},
       'definition':'K_v=[V_v,H_E,v^sine], H_E^sine=(T-T^dagger)/(2i)',
-      'interpretation':'The graph-dependent Euclidean ingredient of the Lorentzian stack is now lifted from K5 to the independent 16-cell PL-S3 regulator with genuine complex Peter-Weyl amplitudes. This is the required inner K block for a future graph-independent C(K)C(K)C(V) construction.',
+      'interpretation':'The graph-dependent Euclidean ingredient of the production Lorentzian stack is lifted from K5 to the independent 16-cell PL-S3 regulator with the same zero-aware volume convention and genuine complex Peter-Weyl amplitudes.',
       'scope_note':'K prerequisite only. It is not yet the Hermitian Lorentzian S amplitude, an effective collective W0, or a collective HDA result.'
     }
 
