@@ -1,0 +1,17 @@
+{
+  "status": "noncommutative Lorentzian auxiliary-index adjoint identity",
+  "passed": true,
+  "provenance": "local independent NumPy reproduction before PL Lorentzian science result",
+  "seed": 1729,
+  "physical_operator_dimension": 5,
+  "relative_identity_defect": 2.1143417480129008e-16,
+  "wrong_order_relative_defect": 1.2486650030209112,
+  "identity": "(sum_ijk Ka_ij Kb_jk V_ki)^dag = sum_ijk V_ik Kb_kj Ka_ji",
+  "assumptions": [
+    "Ka_ij^dag=-Ka_ji",
+    "Kb_ij^dag=-Kb_ji",
+    "V_ij^dag=V_ji"
+  ],
+  "interpretation": "The two anti-Hermitian K signs cancel and the operator order used by the PL adjoint workers is the unique direct dagger order. A deliberately wrong noncommutative order is rejected at O(1).",
+  "scope_note": "Algebra/index-order evidence only; Peter-Weyl component adjointness and PL amplitudes remain separate gates."
+}
