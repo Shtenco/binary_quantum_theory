@@ -1,0 +1,12 @@
+{
+  "status": "full local S4 covariance of tetrahedral charged-volume grasping",
+  "passed": true,
+  "provenance": "local deterministic magnetic-tensor reproduction before corrected Lorentzian science result",
+  "seed": 20260816,
+  "spin_quartets": [[1,1,1,1],[0,1,1,2],[1,2,2,3],[0,2,1,3],[2,3,1,2]],
+  "permutations_per_quartet": 24,
+  "maximum_relative_covariance_defect": 2.7215876592157653e-16,
+  "identity": "Q_tet(pi.j) U_pi = sgn(pi) U_pi Q_tet(j)",
+  "consequence": "Q_tet is a tetrahedral pseudoscalar and V_tet=sqrt(abs(Q_tet)) is permutation-even on charged as well as Gauss sectors; no local leg is preferred.",
+  "scope_note": "Local operator covariance evidence; it does not supply a Lorentzian amplitude or GR target."
+}
