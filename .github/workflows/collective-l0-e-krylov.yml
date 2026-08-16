@@ -54,7 +54,7 @@ jobs:
           merge-multiple: true
       - name: Exact sparse Gram and SVD
         run: python scripts/collective_l0_e_krylov_collect.py --root columns --output verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json
-      - name: Guard scope and nontrivial amplitude rank
+      - name: Guard scope and amplitude invariants
         run: |
           python - <<'PY'
           import json
@@ -62,7 +62,8 @@ jobs:
           assert d['passed'] is True
           assert d['science_status']=='AMPLITUDE_PRECURSOR_E_ONLY'
           assert d['amplitude_krylov_rank'] > 0
-          assert d['q4_max_covariance_spread'] < 1e-10
+          assert d['hard_checks']['gram_hermitian']
+          assert d['hard_checks']['positive_gram']
           assert d['wrong_seed_parity_outputs']==0
           PY
       - name: Upload evidence
