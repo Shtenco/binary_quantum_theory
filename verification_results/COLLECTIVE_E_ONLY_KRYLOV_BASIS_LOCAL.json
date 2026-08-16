@@ -1,0 +1,23 @@
+{
+  "status": "target-independent sparse collective Krylov compressor",
+  "passed": true,
+  "science_status": "E_ONLY_PRECURSOR",
+  "provenance": "local reconstruction from all 16 successful node artifacts of workflow run 31959116492",
+  "raw_columns": 16,
+  "union_support": 552,
+  "raw_column_rank": 16,
+  "gram_min_eigenvalue": 3.6545545582254197,
+  "gram_max_eigenvalue": 5.677798907988457,
+  "gram_condition_number": 1.5536226967002744,
+  "whitened_basis_dimension": 16,
+  "whitened_orthonormality_defect_fro": 4.829781776841939e-15,
+  "raw_column_reconstruction_relative_error": 1.230800442496354e-15,
+  "seed_in_union_support": false,
+  "seed_overlap_norm": 0.0,
+  "seed_plus_E_span_dimension": 17,
+  "changed_edge_count_distribution": {"4": 552},
+  "max_doubled_spin_distribution": {"1": 20, "2": 532},
+  "changed_K_node_count_distribution": {"0": 8, "1": 32, "4": 512},
+  "interpretation": "The static rank-one collective background plus the exact Euclidean node images already defines a compact 17-dimensional seed+E embedding. The 16 Euclidean directions are well conditioned and can be reconstructed from a 552-state reached union without a dense Hilbert-space representation.",
+  "scope_note": "E-only precursor. Production W0 still requires Hermitian S, route and target-independent depth-2 images with leakage."
+}
