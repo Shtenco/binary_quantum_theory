@@ -1,0 +1,18 @@
+{
+  "schema": "BCQG collective GR universality direct measurements v1",
+  "levels": [
+    {
+      "level": 0,
+      "epsilon": 1.0,
+      "D_space_metric": null,
+      "kinetic_hessian_sym6": null,
+      "r_G": null,
+      "r_D": null,
+      "r_H": null,
+      "r_extra": null,
+      "r_secondclass": null,
+      "delta_HH_collective": null,
+      "provenance": "direct BCQG collective effective-constraint producer only"
+    }
+  ]
+}
