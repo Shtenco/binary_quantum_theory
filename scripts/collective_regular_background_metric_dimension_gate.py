@@ -69,7 +69,7 @@ def grouped_points(d,mass,selector):
     while i<len(ds):
         j=i+1;tol=1e-10*max(1.0,abs(float(ds[i])))
         while j<len(ds) and abs(float(ds[j]-ds[i]))<=tol:j+=1
-        r=float(ds[i]);V=float(cum[j-1]);frac=V/tot
+        r=float(ds[i]);V=float(cum[j-1]);frac=float(V/tot)
         if r>1e-12 and selector(r,V,frac):out.append((r,V,frac))
         i=j
     return out
@@ -77,7 +77,7 @@ def fit(points):
     if len(points)<3:return None
     x=np.log([p[0] for p in points]);y=np.log([p[1] for p in points]);s,b=np.polyfit(x,y,1);pred=s*x+b
     r2=1-float(np.sum((y-pred)**2))/max(float(np.sum((y-y.mean())**2)),1e-30)
-    return {'D':float(s),'r2':r2,'n_points':len(points)}
+    return {'D':float(s),'r2':r2,'n_points':int(len(points))}
 def roots(n):
     if n<=100:return np.arange(n,dtype=int)
     return np.unique(np.linspace(0,n-1,32 if n>10000 else 64,dtype=int))
@@ -85,7 +85,7 @@ def summarize(fits):
     good=[x for x in fits if x]
     if not good:return None
     D=np.array([x['D'] for x in good]);R=np.array([x['r2'] for x in good])
-    return {'roots_fit':len(good),'D_median':float(np.median(D)),'D_mean':float(np.mean(D)),
+    return {'roots_fit':int(len(good)),'D_median':float(np.median(D)),'D_mean':float(np.mean(D)),
             'D_min':float(D.min()),'D_max':float(D.max()),'r2_median':float(np.median(R)),
             'points_median':float(np.median([x['n_points'] for x in good]))}
 def level(coords,tets,l):
@@ -96,24 +96,25 @@ def level(coords,tets,l):
     for f in (math.sqrt(2),1.5,2.0):
         lo=rho/f;hi=rho*f
         rows=[fit(grouped_points(d,mass,lambda r,V,q,lo=lo,hi=hi:lo<=r<=hi)) for d in dist]
-        meso[str(f)]={'window':[lo,hi],**(summarize(rows) or {})}
-    return {'level':l,'vertices':len(coords),'tetrahedra':len(tets),'edges':G.nnz//2,
+        meso[str(f)]={'window':[float(lo),float(hi)],**(summarize(rows) or {})}
+    return {'level':int(l),'vertices':int(len(coords)),'tetrahedra':int(len(tets)),'edges':int(G.nnz//2),
             'total_volume':float(mass.sum()),'median_edge_h':h,'macroscopic_R_V13':R,'rho_sqrt_hR':rho,
-            'rho_over_h':rho/h,'rho_over_R':rho/R,'fixed_fraction_5_35':summarize(fixed),'mesoscopic':meso}
+            'rho_over_h':float(rho/h),'rho_over_R':float(rho/R),'fixed_fraction_5_35':summarize(fixed),'mesoscopic':meso}
 def run():
     c,t=seed();clean=[]
     for l in range(1,4):
         c,t=subdivide(c,t);clean.append(level(c,t,l))
     vols=[r['total_volume'] for r in clean]
-    vol_rel=(max(vols)-min(vols))/max(np.mean(vols),1e-30)
-    meso2=[r['mesoscopic']['2.0']['D_median'] for r in clean]
-    fixed=[r['fixed_fraction_5_35']['D_median'] for r in clean]
-    checks={'barycentric_volume_conserved':vol_rel<1e-12,
-            'mesoscopic_scale_separates':clean[-1]['rho_over_h']>clean[0]['rho_over_h'] and clean[-1]['rho_over_R']<clean[0]['rho_over_R'],
-            'metric_fits_exist_all_levels':all(r['fixed_fraction_5_35'] and all('D_median' in x for x in r['mesoscopic'].values()) for r in clean),
-            'mesoscopic_dimension_rises_across_refinement':meso2[-1]>meso2[0],
-            'fixed_fraction_dimension_rises_across_refinement':fixed[-1]>fixed[0]}
-    return {'status':'static regular-background metric-dimension precursor','passed':all(checks.values()),'checks':checks,
+    vol_rel=float((max(vols)-min(vols))/max(float(np.mean(vols)),1e-30))
+    meso2=[float(r['mesoscopic']['2.0']['D_median']) for r in clean]
+    fixed=[float(r['fixed_fraction_5_35']['D_median']) for r in clean]
+    checks={'barycentric_volume_conserved':bool(vol_rel<1e-12),
+            'mesoscopic_scale_separates':bool(clean[-1]['rho_over_h']>clean[0]['rho_over_h'] and clean[-1]['rho_over_R']<clean[0]['rho_over_R']),
+            'metric_fits_exist_all_levels':bool(all(r['fixed_fraction_5_35'] and all('D_median' in x for x in r['mesoscopic'].values()) for r in clean)),
+            'mesoscopic_dimension_rises_across_refinement':bool(meso2[-1]>meso2[0]),
+            'fixed_fraction_dimension_rises_across_refinement':bool(fixed[-1]>fixed[0])}
+    passed=bool(all(checks.values()))
+    return {'status':'static regular-background metric-dimension precursor','passed':passed,'checks':checks,
             'levels':clean,
             'primary_mesoscopic_factor2_D_medians':meso2,'fixed_fraction_D_medians':fixed,
             'interpretation':'The metric observable is derived from the regular coarse flux background, not bare graph distance. Fixed-fraction balls retain compact-S3 curvature; the mesoscopic sqrt(hR) window increasingly separates lattice and curvature scales and trends toward a local three-dimensional value.',
