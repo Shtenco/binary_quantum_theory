@@ -1,0 +1,64 @@
+name: collective-strict-e-depth2
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_l1_strict_E_depth2_worker.py'
+      - 'verification_results/COLLECTIVE_L1_TANGENT_NORMALIZATION.json'
+      - 'COLLECTIVE_DEPTH2_RETURN_PREREGISTRATION.md'
+      - '.github/workflows/collective-strict-e-depth2.yml'
+
+jobs:
+  shard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        edge_class: [same, adjacent, opposite]
+        node_index: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/collective_l1_strict_E_depth2_worker.py
+      - name: Exact strict E depth-two shard
+        run: >-
+          python scripts/collective_l1_strict_E_depth2_worker.py
+          --edge-class "${{ matrix.edge_class }}"
+          --node-index "${{ matrix.node_index }}"
+          --normalization verification_results/COLLECTIVE_L1_TANGENT_NORMALIZATION.json
+          --out-dir shard
+      - name: Hard shard guards
+        run: |
+          python - <<'PY'
+          import glob,json
+          p=glob.glob('shard/*.json')
+          assert len(p)==1,p
+          d=json.load(open(p[0]))
+          assert d['passed']
+          assert d['science_status']=='STRICT_E_DEPTH2_SHARD'
+          assert d['Jmax']==2.0
+          assert d['input_support']==21
+          assert d['max_reached_doubled_spin']<=4
+          assert d['checks']['strict_exact_spin_wall_doubled_le4']
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: strict-e-depth2-${{ matrix.edge_class }}-${{ matrix.node_index }}
+          path: shard/
+          if-no-files-found: error
+          retention-days: 14
