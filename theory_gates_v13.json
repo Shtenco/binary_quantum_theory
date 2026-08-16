@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "status": "v1.3 operator-correction addendum",
+  "inherits_historical_ledger": "theory_gates.json",
+  "rule": "For IDs/scopes listed here, this addendum supersedes conflicting v1.2 status text. Unlisted v1.2 gates remain historical/current according to their own scope.",
+  "allowed_statuses": ["proved", "conditional", "tested_finite", "open"],
+  "gates": [
+    {
+      "id": "E_STABLE",
+      "status": "tested_finite",
+      "claim": "Physical E=H_E^sine and Gauss K=[V,E] are unchanged by the tetrahedral charged-volume correction on K5 and the independent 16-cell to machine precision.",
+      "evidence": ["scripts/tetrahedral_charged_volume_audit_gate.py", "verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT_LOCAL.json", "THEORY_STATUS.md"]
+    },
+    {
+      "id": "TETRA_VOL",
+      "status": "tested_finite",
+      "claim": "Fixed q123 is falsified as a tetrahedrally covariant charged-state continuation. Production corrected volume is Q_tet=(1/4)sum_r(-1)^r q_hat_r, V_tet=sqrt(abs(Q_tet)) with the frozen zero-aware spectrum. It preserves Gauss absolute volume and restores equal nonzero C_r(V) norms on all four slots.",
+      "evidence": ["scripts/tetrahedral_volume_backend.py", "scripts/tetrahedral_charged_volume_audit_gate.py", "verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT_LOCAL.json"]
+    },
+    {
+      "id": "LOR_FINITE_V13",
+      "status": "open",
+      "claim": "Historical fixed-q123 finite Lorentzian amplitudes, including i*1.3389293521464034 Y and -4.760637696520545 Y, are regression anchors only. The 24-forward + 24-adjoint V_tet rerun must complete before new finite Lorentzian numbers are promoted.",
+      "evidence": ["PL_16CELL_HERMITIAN_LORENTZIAN_PREREGISTRATION_V2.md", "BCQG_CANDIDATE_THEORY_V1_3_DRAFT.md", "THEORY_STATUS.md"]
+    },
+    {
+      "id": "HERM_PROJECTION",
+      "status": "proved",
+      "claim": "Once corrected raw L is fixed, S=-i/2(L-L^dagger) remains the unique real-linear Hermitian projection / Hilbert-Schmidt nearest Hermitian operator. The charged-volume correction changes raw L, not this projection theorem.",
+      "evidence": ["LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.md", "verification_results/LORENTZIAN_HERMITIAN_PROJECTION_UNIQUENESS.json"]
+    },
+    {
+      "id": "LOR_NORMALIZATION",
+      "status": "conditional",
+      "claim": "Structural geometry normalization remains G=(-2/3)E-(32/9)S at beta=hbar=1; no finite Lorentzian amplitude is fitted to GR/HDA targets.",
+      "evidence": ["EUCLIDEAN_SINE_NORMALIZATION_MATCH.md", "LORENTZIAN_REAL_NORMALIZATION_LEDGER.md", "BCQG_CANDIDATE_THEORY_V1_3_DRAFT.md"]
+    },
+    {
+      "id": "PARITY_SCOPE",
+      "status": "proved",
+      "claim": "Parity transfer is regulator-dependent: Pi_out/Pi_in=(-1)^q. K5 triangular q=3 flips E parity, while even-valence 16-cell/barycentric collective regulators preserve it. Collective ES/SE cannot be dropped using the K5 grading.",
+      "evidence": ["scripts/pl_regulator_parity_transfer_gate.py", "THEORY_STATUS.md"]
+    },
+    {
+      "id": "ROUTE_MICRO",
+      "status": "tested_finite",
+      "claim": "Operator-first route remains exhaustive-PASS on all 33 microscopic one-step E-reached fixed-spin sectors, including singular-symbol kernel safety.",
+      "evidence": ["verification_results/PETER_WEYL_OPERATOR_ROUTE_ALL_REACHED.json", "verification_results/OPERATOR_ROUTE_KERNEL_SAFETY.json"]
+    },
+    {
+      "id": "ROUTE_PL_E",
+      "status": "tested_finite",
+      "claim": "On the independent 16-cell collective habitat, all 26 production E-reached local spin sectors / 54 intertwiner carriers pass the same route scaling thresholds; max endpoint is 1.405841033797955e-05 and nonzero exponents remain approximately one.",
+      "evidence": ["scripts/pl_16cell_operator_route_E_reached_gate.py", "verification_results/PL_16CELL_ROUTE_E_REACHED_LOCAL.json"]
+    },
+    {
+      "id": "CUTOFF_WALL",
+      "status": "proved",
+      "claim": "The finite-depth holonomy hit-count wall Jmax=13/2 is unchanged by the charged-volume correction because the operator word/hit count is unchanged.",
+      "evidence": ["verification_results/LORENTZIAN_HIT_DEPTH_BOUND.json", "THEORY_STATUS.md"]
+    },
+    {
+      "id": "HDA_ARCHITECTURE",
+      "status": "conditional",
+      "claim": "The microscopic operator-first HDA composition theorem remains an architecture theorem for bounded Hermitian G; it does not depend on the historical numerical q123 Lorentzian coefficient. Corrected finite ES/SE/SS amplitudes remain a required falsifier/re-audit.",
+      "evidence": ["FINAL_CORE_ARCHITECTURE_CERTIFICATE.md", "verification_results/BCQG_V12_CUTOFF_SATURATED_HDA.json", "BCQG_CANDIDATE_THEORY_V1_3_DRAFT.md"]
+    },
+    {
+      "id": "COLL_E_KRYLOV",
+      "status": "tested_finite",
+      "claim": "Exact 16-cell span{E_v|Omega0>} has rank 16; sparse union support 552, Gram condition number 1.5536226967, whitened basis defect below 5e-15, and preliminary seed+E embedding dimension 17.",
+      "evidence": ["verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json", "verification_results/COLLECTIVE_E_ONLY_KRYLOV_BASIS_LOCAL.json", "scripts/collective_sparse_krylov_compressor.py"]
+    },
+    {
+      "id": "COLL_XOR",
+      "status": "tested_finite",
+      "claim": "16-cell XOR translations are node-transitive and exact E amplitudes obey E_m|Omega>=(-1)^popcount(m) U_m E_0|Omega> with exact sparse-support equality and max direct relative error below 1e-8. S transport remains preregistered until one direct held-out S node passes.",
+      "evidence": ["scripts/collective_16cell_xor_covariance_gate.py", "verification_results/COLLECTIVE_16CELL_XOR_COVARIANCE_LOCAL.json"]
+    },
+    {
+      "id": "COLL_PROTOCOL",
+      "status": "tested_finite",
+      "claim": "Before any collective HDA science result, lapses are frozen to S3 l=1 harmonics N_mu=x_mu with primary pair (0,1) and five held-out pairs; refinement epsilon is frozen to measured h/R.",
+      "evidence": ["COLLECTIVE_S3_L1_LAPSE_FAMILY.md", "verification_results/COLLECTIVE_S3_L1_LAPSE_FAMILY_LOCAL.json", "COLLECTIVE_REFINEMENT_EPSILON.md"]
+    },
+    {
+      "id": "COLL_GR",
+      "status": "open",
+      "claim": "Collective GR universality remains INCOMPLETE. A science PASS still requires >=4 direct levels with D_space->3, c_DeWitt->1/2, ranks (3,3,1,0), N_phys->2 and Delta_HH_collective->0. Target controls/static precursors cannot fill missing fields.",
+      "evidence": ["COLLECTIVE_GR_UNIVERSALITY_PREREGISTRATION.md", "COLLECTIVE_EFFECTIVE_CONSTRAINT_PRODUCER.md", "scripts/collective_gr_universality_killer_gate.py"]
+    }
+  ]
+}
