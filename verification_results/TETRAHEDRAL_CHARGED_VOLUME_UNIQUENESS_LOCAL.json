@@ -1,0 +1,15 @@
+{
+  "status": "uniqueness of tetrahedral charged-volume pseudoscalar linear completion",
+  "passed": true,
+  "provenance": "local exact integer S4 representation calculation before corrected Lorentzian science result",
+  "constraint_matrix_shape": [96,4],
+  "singular_values": [6.928203230275508,6.928203230275509,6.928203230275509,1.895076456072789e-15],
+  "constraint_rank": 3,
+  "sign_eigenspace_nullity": 1,
+  "normalized_null_vector_projective": [0.5,-0.5,0.5,-0.5],
+  "alternating_target_normalized": [0.5,-0.5,0.5,-0.5],
+  "projective_defect_vs_alternating_vector": 0.0,
+  "maximum_exact_generator_defect": 0.0,
+  "result": "Within span{q_hat_r}, S4 pseudoscalar covariance uniquely selects Q proportional to sum_r (-1)^r q_hat_r; Gauss absolute-volume continuity fixes the remaining scale to 1/4.",
+  "scope_note": "Uniqueness within the linear four-triple-grasping S4-pseudoscalar ansatz only."
+}
