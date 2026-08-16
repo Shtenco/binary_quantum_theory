@@ -11,6 +11,7 @@ on:
       - 'scripts/collective_16cell_refinement_gate.py'
       - 'scripts/collective_volume_rg_extended_gate.py'
       - 'scripts/collective_j1_block_isometry_gate.py'
+      - 'scripts/collective_barycentric_tetra_block_gate.py'
       - 'scripts/collective_gr_universality_killer_gate.py'
       - '.github/workflows/collective-gr-universality.yml'
   workflow_dispatch:
@@ -27,20 +28,23 @@ jobs:
           cache: pip
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
-      - name: Install CPU torch for classical target controls
-        run: python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - name: Install collective-control dependencies
+        run: python -m pip install opt_einsum torch --index-url https://download.pytorch.org/whl/cpu
       - name: Syntax
         run: |
           python -m py_compile scripts/collective_16cell_refinement_gate.py
           python -m py_compile scripts/collective_volume_rg_extended_gate.py
           python -m py_compile scripts/collective_j1_block_isometry_gate.py
+          python -m py_compile scripts/collective_barycentric_tetra_block_gate.py
           python -m py_compile scripts/collective_gr_universality_killer_gate.py
       - name: Collective PL-S3 refinement carrier
         run: python scripts/collective_16cell_refinement_gate.py --max-explicit-level 2 --sample-level2 64 --output verification_results/COLLECTIVE_16CELL_REFINEMENT.json
       - name: Collective volume representation ladder
         run: python scripts/collective_volume_rg_extended_gate.py --output verification_results/COLLECTIVE_VOLUME_RG_EXTENDED.json
-      - name: Exact first j=1 collective block isometry
+      - name: Minimal j=1 representation fusion control
         run: python scripts/collective_j1_block_isometry_gate.py --output verification_results/COLLECTIVE_J1_BLOCK_ISOMETRY.json
+      - name: Canonical first barycentric tetra block selection
+        run: python scripts/collective_barycentric_tetra_block_gate.py --output verification_results/COLLECTIVE_BARYCENTRIC_TETRA_BLOCK.json
       - name: DeWitt target safe-window control
         run: python scripts/dewitt_hda_uniqueness_gate.py --L 7 --output verification_results/DEWITT_HDA_UNIQUENESS_COLLECTIVE_CONTROL.json
       - name: ADM target safe-window control
@@ -55,7 +59,8 @@ jobs:
             'note':'protocol controls only; never substituted for direct BCQG collective measurements',
             'PL_refinement':'verification_results/COLLECTIVE_16CELL_REFINEMENT.json',
             'volume_ladder':'verification_results/COLLECTIVE_VOLUME_RG_EXTENDED.json',
-            'j1_block_isometry':'verification_results/COLLECTIVE_J1_BLOCK_ISOMETRY.json',
+            'j1_representation_fusion':'verification_results/COLLECTIVE_J1_BLOCK_ISOMETRY.json',
+            'barycentric_spatial_block':'verification_results/COLLECTIVE_BARYCENTRIC_TETRA_BLOCK.json',
             'DeWitt_target':'verification_results/DEWITT_HDA_UNIQUENESS_COLLECTIVE_CONTROL.json',
             'ADM_target':'verification_results/ADM_HDA_SELECTION_COLLECTIVE_CONTROL.json'
           }
@@ -76,6 +81,7 @@ jobs:
             verification_results/COLLECTIVE_16CELL_REFINEMENT.json
             verification_results/COLLECTIVE_VOLUME_RG_EXTENDED.json
             verification_results/COLLECTIVE_J1_BLOCK_ISOMETRY.json
+            verification_results/COLLECTIVE_BARYCENTRIC_TETRA_BLOCK.json
             verification_results/DEWITT_HDA_UNIQUENESS_COLLECTIVE_CONTROL.json
             verification_results/ADM_HDA_SELECTION_COLLECTIVE_CONTROL.json
             verification_results/COLLECTIVE_GR_KILLER_SELFTEST.json
