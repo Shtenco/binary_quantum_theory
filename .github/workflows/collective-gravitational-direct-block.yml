@@ -1,0 +1,44 @@
+name: collective-gravitational-direct-block
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_gravitational_direct_block_gate.py'
+      - 'COLLECTIVE_GRAVITATIONAL_DIRECT_BLOCK_THEOREM.md'
+      - '.github/workflows/collective-gravitational-direct-block.yml'
+  workflow_dispatch:
+
+jobs:
+  theorem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/collective_gravitational_direct_block_gate.py
+      - name: Direct gravitational block theorem
+        run: python scripts/collective_gravitational_direct_block_gate.py --output verification_results/COLLECTIVE_GRAVITATIONAL_DIRECT_BLOCK.json
+      - name: Frozen guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_GRAVITATIONAL_DIRECT_BLOCK.json'))
+          assert d['passed']
+          assert d['ordinary_antisymmetric_commutant_nullity']==0
+          assert d['sign_twisted_antisymmetric_commutant_nullity']==0
+          assert d['direct_blocks']['Wg_dag_HE_Wg']=='0'
+          assert d['direct_blocks']['Wg_dag_S_Wg']=='0'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-gravitational-direct-block
+          path: verification_results/COLLECTIVE_GRAVITATIONAL_DIRECT_BLOCK.json
+          if-no-files-found: error
