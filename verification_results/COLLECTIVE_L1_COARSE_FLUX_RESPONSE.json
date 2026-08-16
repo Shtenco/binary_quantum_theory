@@ -1,0 +1,54 @@
+{
+  "status": "direct L1 coarse face-flux response of BCQG strict q4 carrier",
+  "passed": true,
+  "science_status": "DIRECT_L1_METRIC_RESPONSE_PRECURSOR",
+  "checks": {
+    "L1_closed_384": true,
+    "four_representative_columns_support20": true,
+    "background_norm_positive": true,
+    "regular_pair_flux_minus_three_halves": true,
+    "regular_face_Casimir_nine_halves": true,
+    "coarse_flux_closure": true,
+    "projected_tangent_norm_positive": true,
+    "same_adjacent_linear_response_zero": true,
+    "opposite_linear_response_nonzero": true,
+    "rotated_S4_class_spotcheck": true,
+    "metric_response_rank6": true,
+    "metric_response_well_conditioned": true,
+    "metric_map_rank6": true,
+    "photon_balanced_response_rank5": true,
+    "photon_response_uniform_null": true
+  },
+  "background_norm_square": 3.725290298461954e-09,
+  "background_face_Casimir": 4.5,
+  "background_pair_flux_dot": -1.5,
+  "background_closure_scalar_defect": 0.0,
+  "representative_source_boundary_norm_square": 3.137686859428212e-10,
+  "background_component_norm_square": 2.674347297704988e-10,
+  "background_orthogonal_per_source_norm_square": 4.633395617232242e-11,
+  "representative_response_classes": {
+    "(0, 1)": {
+      "same": {"source_edge": [0,1], "raw_operator_image_cross_re": 1.3815316588843752e-32, "raw_operator_image_cross_im": -4.977492371321772e-16, "Schrodinger_tangent_derivative": -9.954984742643545e-16},
+      "adjacent": {"source_edge": [0,2], "raw_operator_image_cross_re": 2.7630633177687504e-32, "raw_operator_image_cross_im": 0.0, "Schrodinger_tangent_derivative": 0.0},
+      "opposite": {"source_edge": [2,3], "raw_operator_image_cross_re": -1.75503190884828e-17, "raw_operator_image_cross_im": -0.8660254037844443, "Schrodinger_tangent_derivative": -1.7320508075688885}
+    },
+    "(0, 2)": {
+      "same": {"source_edge": [0,2], "raw_operator_image_cross_re": 2.7630633177687504e-32, "raw_operator_image_cross_im": 0.0, "Schrodinger_tangent_derivative": 0.0},
+      "adjacent": {"source_edge": [0,1], "raw_operator_image_cross_re": 1.3815316588843752e-32, "raw_operator_image_cross_im": -4.977492371321772e-16, "Schrodinger_tangent_derivative": -9.954984742643545e-16},
+      "opposite": {"source_edge": [1,3], "raw_operator_image_cross_re": -1.7550319088482783e-17, "raw_operator_image_cross_im": -0.8660254037844433, "Schrodinger_tangent_derivative": -1.7320508075688865}
+    }
+  },
+  "B_flux_raw_6x6": [[-9.954984742643545e-16,0,0,0,0,-1.7320508075688885],[0,-9.954984742643545e-16,0,0,-1.7320508075688885,0],[0,0,-9.954984742643545e-16,-1.7320508075688885,0,0],[0,0,-1.7320508075688885,-9.954984742643545e-16,0,0],[0,-1.7320508075688885,0,0,-9.954984742643545e-16,0],[-1.7320508075688885,0,0,0,0,-9.954984742643545e-16]],
+  "B_flux_rank": 6,
+  "B_flux_singular_values": [1.7320508075688885,1.7320508075688885,1.7320508075688885,1.732050807568888,1.732050807568888,1.732050807568888],
+  "B_flux_condition_number": 1.0000000000000002,
+  "opposite_closed_form_minus_sqrt3_defect_diagnostic": 1.1324274851176597e-14,
+  "q_to_metric_Gram_eigenvalues": [0.16666666666666896,0.16666666666666896,0.16666666666666896,0.33333333333333726,0.33333333333333726,0.33333333333333726],
+  "q_to_metric_condition_number": 1.4142135623730934,
+  "balanced_photon_phase_response_per_kappa": [[0.5773502691896292,0,0,0,0,-0.5773502691896292],[0.4330127018922221,0.14433756729740713,0,0,-0.433012701892222,-0.14433756729740715],[0.4330127018922221,0,0.14433756729740713,-0.433012701892222,0,-0.14433756729740715],[0.4330127018922221,0,-0.4330127018922221,0.14433756729740715,0,-0.14433756729740715],[0.4330127018922221,-0.4330127018922221,0,0,0.14433756729740715,-0.14433756729740715]],
+  "balanced_photon_phase_rank": 5,
+  "balanced_photon_phase_null_vector_normalized": [1.0000000000000002,0.9999999999999998,1.0,1.0,0.9999999999999994,1.0000000000000004],
+  "runtime_seconds": 21.83832502400037,
+  "interpretation": "After exact block contraction, the sharp microscopic spin-selection obstruction is removed at the coarse observable level. The Schrodinger tangent -i E|Omega> has a full-rank face-flux Gram response. Same and adjacent channels vanish while the opposite dual edge/face-pair channel is nonzero; numerically it equals -sqrt(3) to roundoff. Combining the measured B_flux with independent flux-to-metric and metric-to-optical maps yields a rank-five balanced photon phase response whose only null direction is the uniform trace mode.",
+  "scope_note": "Finite strict-q4 Euclidean precursor. Full E+S+R depth-two effective scalar, leakage, refinement trend and absolute optical scale remain open."
+}
