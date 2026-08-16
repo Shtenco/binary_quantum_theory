@@ -1,0 +1,45 @@
+name: collective-fem-spectral-dimension
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'COLLECTIVE_FEM_SPECTRAL_DIMENSION.md'
+      - 'scripts/collective_fem_spectral_dimension_gate.py'
+      - '.github/workflows/collective-fem-spectral-dimension.yml'
+  workflow_dispatch:
+
+jobs:
+  fem-spectral-dimension:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/collective_fem_spectral_dimension_gate.py
+      - name: Independent intrinsic FEM spectral dimension
+        run: python scripts/collective_fem_spectral_dimension_gate.py --probes 24 --output verification_results/COLLECTIVE_FEM_SPECTRAL_DIMENSION.json
+      - name: Guard scientific scope and frozen trend
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_FEM_SPECTRAL_DIMENSION.json'))
+          assert d['passed'] is True
+          assert d['science_status']=='PRECURSOR_ONLY'
+          assert d['D_peak_sequence'][0] < d['D_peak_sequence'][1] < d['D_peak_sequence'][2] < d['D_peak_sequence'][3]
+          assert d['GR_target_comparison_only']['killer_static_threshold_0p10_met'] is False
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: collective-fem-spectral-dimension
+          path: verification_results/COLLECTIVE_FEM_SPECTRAL_DIMENSION.json
+          if-no-files-found: error
