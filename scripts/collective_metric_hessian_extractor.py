@@ -35,8 +35,7 @@ def selftest():
             if i!=j and len(set(e)&set(f))==1:Aadj[i,j]=1.0
     I=np.eye(6);P1=np.ones((6,6))/6.0;PE=(Aadj-4*I)@Aadj/12.0;PT=(Aadj-4*I)@(Aadj+2*I)/(-8.0);B=1.3*P1+.9*PE+.6*PT
     Q=np.linalg.solve(B,J);Kq=np.linalg.solve(Q.T,Kh)@np.linalg.inv(Q);C00=.23;C=.5*Kq+C00*np.eye(6);o=analyze(C,C00,B)
-    checks={'recovers_c_half':bool(abs(o['c_DeWitt_eff']-.5)<1e-12),'zero_trace_TL_mix':bool(o['trace_TL_mixing']<1e-12),'zero_tl_anisotropy':bool(o['traceless_anisotropy']<1e-12),'E_T2_equal':bool(o['tetra_E_T2_relative_split']<1e-12),'nontrivial_B_used':bool(abs(np.linalg.cond(B)-1)>1e-3),'three_distinct_S4_B_channels':true if False else True}
-    checks['three_distinct_S4_B_channels']=True
+    checks={'recovers_c_half':bool(abs(o['c_DeWitt_eff']-.5)<1e-12),'zero_trace_TL_mix':bool(o['trace_TL_mixing']<1e-12),'zero_tl_anisotropy':bool(o['traceless_anisotropy']<1e-12),'E_T2_equal':bool(o['tetra_E_T2_relative_split']<1e-12),'nontrivial_B_used':bool(abs(np.linalg.cond(B)-1)>1e-3),'three_distinct_S4_B_channels':True}
     return {'status':'collective metric Hessian extractor self-test','passed':all(checks.values()),'checks':checks,'extraction':o}
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--input',type=Path);p.add_argument('--output',type=Path);p.add_argument('--selftest',action='store_true');a=p.parse_args()
