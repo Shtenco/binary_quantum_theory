@@ -1,0 +1,49 @@
+name: bcqg-ir-hda-universality-closure
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'BCQG_IR_HDA_UNIVERSALITY_CLOSURE.md'
+      - 'scripts/bcqg_ir_hda_universality_closure_gate.py'
+      - 'verification_results/BCQG_IR_HDA_UNIVERSALITY_CLOSURE.json'
+      - 'verification_results/COLLECTIVE_L1_COARSE_FLUX_RESPONSE.json'
+      - 'verification_results/COLLECTIVE_METRIC_CALIBRATION_IRREP.json'
+      - 'verification_results/COLLECTIVE_GRAVITATIONAL_DIRECT_BLOCK.json'
+      - '.github/workflows/bcqg-ir-hda-universality-closure.yml'
+  workflow_dispatch:
+
+jobs:
+  theorem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/bcqg_ir_hda_universality_closure_gate.py
+      - name: Restricted IR HDA universality theorem
+        run: python scripts/bcqg_ir_hda_universality_closure_gate.py --output verification_results/BCQG_IR_HDA_UNIVERSALITY_CLOSURE_CI.json
+      - name: Guard theorem semantics
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/BCQG_IR_HDA_UNIVERSALITY_CLOSURE_CI.json'))
+          assert d['passed']
+          assert d['science_status']=='CONDITIONAL_IR_UNIVERSALITY_THEOREM'
+          assert d['S4_metric_control']['raw_GR_ratio']==['-1/2','1','2']
+          assert d['restricted_HDA_control']['unique_c_solution']==['1/2']
+          assert d['restricted_HDA_control']['connection_flux_mode_count']=='2'
+          assert len(d['remaining_hypotheses_NOT_claimed_by_this_PASS'])==5
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bcqg-ir-hda-universality-closure
+          path: verification_results/BCQG_IR_HDA_UNIVERSALITY_CLOSURE_CI.json
+          if-no-files-found: error
