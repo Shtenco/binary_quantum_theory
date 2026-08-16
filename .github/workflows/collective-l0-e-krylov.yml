@@ -8,6 +8,7 @@ on:
       - 'scripts/collective_l0_e_node_column.py'
       - 'scripts/collective_l0_e_krylov_collect.py'
       - 'scripts/collective_sparse_krylov_compressor.py'
+      - 'scripts/collective_16cell_xor_covariance_gate.py'
       - 'scripts/pl_peter_weyl_euclidean.py'
       - 'scripts/pl_dual_complex.py'
       - '.github/workflows/collective-l0-e-krylov.yml'
@@ -64,6 +65,11 @@ jobs:
             --root columns \
             --json-output verification_results/COLLECTIVE_E_ONLY_KRYLOV_BASIS.json \
             --npz-output verification_results/COLLECTIVE_E_ONLY_KRYLOV_WHITENING.npz
+      - name: Exact XOR node-translation covariance
+        run: |
+          python scripts/collective_16cell_xor_covariance_gate.py \
+            --root columns \
+            --output verification_results/COLLECTIVE_16CELL_XOR_COVARIANCE.json
       - name: Guard scope and amplitude invariants
         run: |
           python - <<'PY'
@@ -87,6 +93,11 @@ jobs:
           assert w['gram_condition_number']<2
           assert w['whitened_orthonormality_defect_fro']<1e-12
           assert w['raw_column_reconstruction_relative_error']<1e-12
+          x=json.load(open('verification_results/COLLECTIVE_16CELL_XOR_COVARIANCE.json'))
+          assert x['passed'] is True
+          assert x['max_relative_amplitude_error']<1e-8
+          assert x['checks']['all_sparse_supports_identical_under_XOR']
+          assert x['checks']['all_structural_XOR_identities']
           PY
       - name: Upload evidence
         if: always()
@@ -97,4 +108,5 @@ jobs:
             verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json
             verification_results/COLLECTIVE_E_ONLY_KRYLOV_BASIS.json
             verification_results/COLLECTIVE_E_ONLY_KRYLOV_WHITENING.npz
+            verification_results/COLLECTIVE_16CELL_XOR_COVARIANCE.json
           if-no-files-found: error
