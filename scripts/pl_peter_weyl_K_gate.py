@@ -27,6 +27,10 @@ from pl_peter_weyl_euclidean import PLPeterWeylEuclidean
 
 TOL=1e-10
 
+def json_default(x):
+    if isinstance(x,np.generic):return x.item()
+    raise TypeError(f'Object of type {type(x).__name__} is not JSON serializable')
+
 def add(dst,src,scale=1.0,tol=TOL):
     for k,a in src.items():
         z=dst.get(k,0j)+scale*a
@@ -72,10 +76,6 @@ def relerr(a,b,scale=1.0):
     return num/max(den,1e-30)
 
 def run(node=0):
-    # Canonical v1.2 Lorentzian stack uses the zero-aware nullspace convention.
-    # Apply it before constructing either side of the K5 reduction so this PL
-    # prerequisite is exactly production-consistent rather than a near-equivalent
-    # default-volume diagnostic.
     ZVM.patch_and_clear()
     JMAX2=5
     KD=DualComplex(boundary_4simplex());KG=PLPeterWeylEuclidean(KD)
@@ -100,34 +100,34 @@ def run(node=0):
             max_V_herm=max(max_V_herm,abs(a-np.conjugate(rev)))
 
     edge_valences=sorted(len(x) for x in D.edge_incidence.values())
-    all_even=all(q%2==0 for q in edge_valences)
+    all_even=bool(all(q%2==0 for q in edge_valences))
     expected_parity=sum(seed[0])%2 if all_even else None
-    parity_ok=expected_parity is not None and all((sum(k[0])%2)==expected_parity for k in K)
+    parity_ok=bool(expected_parity is not None and all((sum(k[0])%2)==expected_parity for k in K))
 
     checks={
-      'production_zeroaware_volume_installed':PW.volume123_matrix is ZVM.zeroaware_volume123_matrix,
-      'K5_sine_reduction':k5_error<5e-8,
-      'sixteen_cell_E_nonzero':len(H)>0 and Hnorm>1e-10,
-      'sixteen_cell_K_nonzero':len(K)>0 and Knorm>1e-10,
-      'local_volume_hermitian_on_reached_blocks':max_V_herm<1e-10,
+      'production_zeroaware_volume_installed':bool(PW.volume123_matrix is ZVM.zeroaware_volume123_matrix),
+      'K5_sine_reduction':bool(k5_error<5e-8),
+      'sixteen_cell_E_nonzero':bool(len(H)>0 and Hnorm>1e-10),
+      'sixteen_cell_K_nonzero':bool(len(K)>0 and Knorm>1e-10),
+      'local_volume_hermitian_on_reached_blocks':bool(max_V_herm<1e-10),
       'even_valence_collective_regulator':all_even,
       'K_preserves_expected_PL_parity':parity_ok,
-      'K_does_not_exceed_E_spin_wall':max_spin<=1.0+1e-12,
+      'K_does_not_exceed_E_spin_wall':bool(max_spin<=1.0+1e-12),
     }
     return {
       'status':'production-consistent graph-independent PL amplitude prerequisite K=[V,H_E^sine]',
       'passed':bool(all(checks.values())),'checks':checks,'node':node,'Jmax':JMAX2/2,
       'volume_convention':'zero-aware sqrt(abs(Q)); tau=1000 eps dim(Q) max(1,||Q||)',
-      'K5_regression':{'orientation_sign':KD.orientation[node],'relative_error':k5_error,
+      'K5_regression':{'orientation_sign':int(KD.orientation[node]),'relative_error':float(k5_error),
                        'new_support':len(knew),'old_support':len(kold),
-                       'new_norm':KG.norm(knew),'old_norm':KG.norm(kold)},
-      'sixteen_cell':{'nodes':D.n_tets,'dual_edges':len(G.EDGES),'edge_valences':edge_valences,
-                      'E_support':len(H),'E_norm':Hnorm,'K_support':len(K),'K_norm':Knorm,
-                      'max_spin_reached':max_spin,
-                      'changed_edge_count_distribution':{str(k):v for k,v in sorted(changed.items())},
-                      'output_sum_doubled_spin_parity':{str(k):v for k,v in sorted(parity.items())},
-                      'max_local_volume_hermiticity_error':max_V_herm,
-                      'seed_diagonal_K_amplitude':[K.get(seed,0j).real,K.get(seed,0j).imag]},
+                       'new_norm':float(KG.norm(knew)),'old_norm':float(KG.norm(kold))},
+      'sixteen_cell':{'nodes':D.n_tets,'dual_edges':len(G.EDGES),'edge_valences':[int(x) for x in edge_valences],
+                      'E_support':len(H),'E_norm':float(Hnorm),'K_support':len(K),'K_norm':float(Knorm),
+                      'max_spin_reached':float(max_spin),
+                      'changed_edge_count_distribution':{str(k):int(v) for k,v in sorted(changed.items())},
+                      'output_sum_doubled_spin_parity':{str(k):int(v) for k,v in sorted(parity.items())},
+                      'max_local_volume_hermiticity_error':float(max_V_herm),
+                      'seed_diagonal_K_amplitude':[float(K.get(seed,0j).real),float(K.get(seed,0j).imag)]},
       'definition':'K_v=[V_v,H_E,v^sine], H_E^sine=(T-T^dagger)/(2i)',
       'interpretation':'The graph-dependent Euclidean ingredient of the production Lorentzian stack is lifted from K5 to the independent 16-cell PL-S3 regulator with the same zero-aware volume convention and genuine complex Peter-Weyl amplitudes.',
       'scope_note':'K prerequisite only. It is not yet the Hermitian Lorentzian S amplitude, an effective collective W0, or a collective HDA result.'
@@ -135,7 +135,7 @@ def run(node=0):
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--node',type=int,default=0);ap.add_argument('--output',type=Path)
-    a=ap.parse_args();o=run(a.node);t=json.dumps(o,indent=2);print(t)
+    a=ap.parse_args();o=run(a.node);t=json.dumps(o,indent=2,default=json_default);print(t)
     if a.output:a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(t+'\n',encoding='utf-8')
     return 0 if o['passed'] else 1
 if __name__=='__main__':raise SystemExit(main())
