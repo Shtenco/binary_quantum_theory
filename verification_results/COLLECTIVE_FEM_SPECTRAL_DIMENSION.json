@@ -1,0 +1,99 @@
+{
+  "status": "independent intrinsic-FEM spectral-dimension precursor",
+  "passed": true,
+  "science_status": "PRECURSOR_ONLY",
+  "checks": {
+    "volume_conserved": true,
+    "exact_peaks_strictly_rise_L0_L2": true,
+    "heldout_L3_peak_exceeds_L2": true,
+    "finite_L3_uncertainty": true
+  },
+  "levels_exact": [
+    {
+      "level": 0,
+      "vertices": 8,
+      "tetrahedra": 16,
+      "edges": 24,
+      "h_median": 1.4142135623730951,
+      "h_min": 1.4142135623730951,
+      "h_max": 1.4142135623730951,
+      "total_volume": 5.333333333333333,
+      "lambda_gap": 2.999999999999997,
+      "lambda_max": 4.0,
+      "peak_time": 0.5811539865421708,
+      "D_spectral_peak": 1.9085210169186553,
+      "heat_return_at_peak": 0.24913978035581413
+    },
+    {
+      "level": 1,
+      "vertices": 80,
+      "tetrahedra": 384,
+      "edges": 464,
+      "h_median": 0.5,
+      "h_min": 0.28867513459481287,
+      "h_max": 0.8660254037844386,
+      "total_volume": 5.333333333333329,
+      "lambda_gap": 5.332044802677321,
+      "lambda_max": 113.99108290354773,
+      "peak_time": 0.2594041901777204,
+      "D_spectral_peak": 2.3877002596177874,
+      "heat_return_at_peak": 0.03561415303162374
+    },
+    {
+      "level": 2,
+      "vertices": 1696,
+      "tetrahedra": 9216,
+      "edges": 10912,
+      "h_median": 0.23570226039551584,
+      "h_min": 0.08333333333333331,
+      "h_max": 0.5728219618694801,
+      "total_volume": 5.333333333333339,
+      "lambda_gap": 6.628900363696285,
+      "lambda_max": 1845.0470841114986,
+      "peak_time": 0.04043037917281176,
+      "D_spectral_peak": 2.7553265234957394,
+      "heat_return_at_peak": 0.01119489933744511
+    }
+  ],
+  "level3_heldout": {
+    "level": 3,
+    "vertices": 40256,
+    "tetrahedra": 221184,
+    "edges": 261440,
+    "h_median": 0.09316949906249125,
+    "h_min": 0.01869848891366145,
+    "h_max": 0.3871021703346261,
+    "total_volume": 5.33333333333333,
+    "heldout_window_rule": "t3_pred=t2_peak*(h3/h2)^2; scan [t3_pred/4,2*t3_pred]",
+    "predicted_center_time": 0.00631724674575184,
+    "probes": 24,
+    "rng_seed": 424242,
+    "scan_points": 12,
+    "D_spectral_peak_mean": 2.8529008752576517,
+    "D_spectral_peak_standard_error": 0.02179767340541047,
+    "peak_time": 0.004594361269637702,
+    "rows": [
+      {"time": 0.00157931168643796, "D_mean": 2.6784178018579525, "D_standard_error": 0.009838133161829056, "heat_return_mean": 0.0325652064537268},
+      {"time": 0.002584328214171207, "D_mean": 2.751435067571853, "D_standard_error": 0.012446387334646576, "heat_return_mean": 0.01684268472851998},
+      {"time": 0.003589344741904454, "D_mean": 2.8301776828391323, "D_standard_error": 0.01704232411474072, "heat_return_mean": 0.010636201139259062},
+      {"time": 0.004594361269637702, "D_mean": 2.8529008752576517, "D_standard_error": 0.02179767340541047, "heat_return_mean": 0.0074820329007989255},
+      {"time": 0.005599377797370949, "D_mean": 2.839477240726108, "D_standard_error": 0.02647565965699936, "heat_return_mean": 0.005644866597876299},
+      {"time": 0.006604394325104196, "D_mean": 2.8108243126338706, "D_standard_error": 0.030838902055295162, "heat_return_mean": 0.004472023859389155},
+      {"time": 0.0076094108528374435, "D_mean": 2.779516541120248, "D_standard_error": 0.034762319914476904, "heat_return_mean": 0.0036708937225335084},
+      {"time": 0.00861442738057069, "D_mean": 2.7514612482751772, "D_standard_error": 0.03822689497262372, "heat_return_mean": 0.003094474054653011},
+      {"time": 0.009619443908303937, "D_mean": 2.7287664506664018, "D_standard_error": 0.04127533525334183, "heat_return_mean": 0.002662432996060117},
+      {"time": 0.010624460436037184, "D_mean": 2.711692380217014, "D_standard_error": 0.04397294601107801, "heat_return_mean": 0.0023278507353724047},
+      {"time": 0.011629476963770431, "D_mean": 2.699719363556669, "D_standard_error": 0.04638473212116048, "heat_return_mean": 0.0020617850201506767},
+      {"time": 0.01263449349150368, "D_mean": 2.695071089092931, "D_standard_error": 0.047499122460555376, "heat_return_mean": 0.0018455486154514203}
+    ]
+  },
+  "D_peak_sequence": [1.9085210169186553, 2.3877002596177874, 2.7553265234957394, 2.8529008752576517],
+  "volume_relative_spread": 1.998401444325282e-15,
+  "GR_target_comparison_only": {
+    "target_D_space": 3.0,
+    "L3_abs_error": 0.14709912474234832,
+    "killer_static_threshold_0p10_met": false
+  },
+  "interpretation": "An intrinsic tetrahedral FEM Laplacian, independent of bare/weighted graph-distance fitting, shows monotone spectral-dimension growth across the canonical PL-S3 barycentric refinement. The held-out L3 value is not promoted to the collective killer because it is a static background, not a dynamically enlarged effective BCQG block state.",
+  "scope_note": "Do not copy this D into D_space_metric. The direct collective producer must recompute the same kind of metric observable after E/S/R support enlargement and operator compression."
+}
