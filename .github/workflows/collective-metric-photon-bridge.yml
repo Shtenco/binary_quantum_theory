@@ -1,0 +1,61 @@
+name: collective-metric-photon-bridge
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_photon_interference_metric_gate.py'
+      - 'scripts/bcqg_u1_maxwell_kinematic_gate.py'
+      - 'scripts/collective_s4_metric_channel_reduction_gate.py'
+      - 'scripts/collective_metric_hessian_extractor.py'
+      - 'BCQG_PHOTON_INTERFERENCE_BRIDGE.md'
+      - 'COLLECTIVE_METRIC_HESSIAN_PROTOCOL.md'
+      - 'COLLECTIVE_SHARP_SPIN_METRIC_RESPONSE_OBSTRUCTION.md'
+      - '.github/workflows/collective-metric-photon-bridge.yml'
+  workflow_dispatch:
+
+jobs:
+  structural-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/collective_photon_interference_metric_gate.py scripts/bcqg_u1_maxwell_kinematic_gate.py scripts/collective_s4_metric_channel_reduction_gate.py scripts/collective_metric_hessian_extractor.py
+      - name: Photon metric response theorem
+        run: python scripts/collective_photon_interference_metric_gate.py --output verification_results/COLLECTIVE_PHOTON_INTERFERENCE_METRIC.json
+      - name: U1 Maxwell kinematic gate
+        run: python scripts/bcqg_u1_maxwell_kinematic_gate.py --output verification_results/BCQG_U1_MAXWELL_KINEMATIC.json
+      - name: S4 six-edge reduction
+        run: python scripts/collective_s4_metric_channel_reduction_gate.py --output verification_results/COLLECTIVE_S4_METRIC_CHANNEL_REDUCTION.json
+      - name: Metric Hessian extractor self-test
+        run: python scripts/collective_metric_hessian_extractor.py --selftest --output verification_results/COLLECTIVE_METRIC_HESSIAN_EXTRACTOR_SELFTEST.json
+      - name: Hard guards
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/COLLECTIVE_PHOTON_INTERFERENCE_METRIC.json'))
+          m=json.load(open('verification_results/BCQG_U1_MAXWELL_KINEMATIC.json'))
+          s=json.load(open('verification_results/COLLECTIVE_S4_METRIC_CHANNEL_REDUCTION.json'))
+          h=json.load(open('verification_results/COLLECTIVE_METRIC_HESSIAN_EXTRACTOR_SELFTEST.json'))
+          assert p['passed'] and p['rank_DJ']==5 and p['traceless_response_det']=='sqrt(6)/2'
+          assert m['passed'] and m['gauge_shift_action_change']=='0'
+          assert s['passed'] and s['decomposition']=='6=A1(1)+E(2)+T2(3)'
+          assert h['passed'] and abs(h['extraction']['c_DeWitt_eff']-0.5)<1e-12
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-metric-photon-bridge
+          path: |
+            verification_results/COLLECTIVE_PHOTON_INTERFERENCE_METRIC.json
+            verification_results/BCQG_U1_MAXWELL_KINEMATIC.json
+            verification_results/COLLECTIVE_S4_METRIC_CHANNEL_REDUCTION.json
+            verification_results/COLLECTIVE_METRIC_HESSIAN_EXTRACTOR_SELFTEST.json
+          if-no-files-found: error
