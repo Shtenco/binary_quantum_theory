@@ -6,8 +6,10 @@ on:
       - research/bcqg-core-candidate-v1
     paths:
       - 'COLLECTIVE_BARYCENTRIC_S_BOUNDARY_SUPPORT.md'
+      - 'COLLECTIVE_KRYLOV_EFFECTIVE_BASIS.md'
       - 'scripts/collective_barycentric_E_boundary_support_gate.py'
       - 'scripts/collective_barycentric_S_boundary_support_gate.py'
+      - 'scripts/collective_hda_depth2_support_wall_gate.py'
       - 'scripts/pl_dual_complex.py'
       - '.github/workflows/collective-dynamical-support.yml'
   workflow_dispatch:
@@ -26,20 +28,26 @@ jobs:
           python -m py_compile scripts/pl_dual_complex.py
           python -m py_compile scripts/collective_barycentric_E_boundary_support_gate.py
           python -m py_compile scripts/collective_barycentric_S_boundary_support_gate.py
+          python -m py_compile scripts/collective_hda_depth2_support_wall_gate.py
       - name: Exact one-E support
         run: python scripts/collective_barycentric_E_boundary_support_gate.py --output verification_results/COLLECTIVE_BARYCENTRIC_E_BOUNDARY_SUPPORT.json
       - name: Exact conservative one-S support
         run: python scripts/collective_barycentric_S_boundary_support_gate.py --output verification_results/COLLECTIVE_BARYCENTRIC_S_BOUNDARY_SUPPORT.json
-      - name: Cross-check production wall
+      - name: Exact depth-two HDA support wall
+        run: python scripts/collective_hda_depth2_support_wall_gate.py --output verification_results/COLLECTIVE_HDA_DEPTH2_SUPPORT_WALL.json
+      - name: Cross-check production walls
         run: |
           python - <<'PY'
           import json
           e=json.load(open('verification_results/COLLECTIVE_BARYCENTRIC_E_BOUNDARY_SUPPORT.json'))
           s=json.load(open('verification_results/COLLECTIVE_BARYCENTRIC_S_BOUNDARY_SUPPORT.json'))
-          assert e['passed'] and s['passed']
+          h=json.load(open('verification_results/COLLECTIVE_HDA_DEPTH2_SUPPORT_WALL.json'))
+          assert e['passed'] and s['passed'] and h['passed']
           assert e['required_coarse_face_spins']==[x/2 for x in range(9)]
           assert s['required_coarse_face_spins']==[x/2 for x in range(13)]
           assert s['one_step_production_face_wall']==6.0
+          assert h['required_depth2_coarse_face_spins']==[x/2 for x in range(19)]
+          assert h['sufficient_depth2_face_Jmax']==9.0
           PY
       - name: Upload support evidence
         if: always()
@@ -49,4 +57,5 @@ jobs:
           path: |
             verification_results/COLLECTIVE_BARYCENTRIC_E_BOUNDARY_SUPPORT.json
             verification_results/COLLECTIVE_BARYCENTRIC_S_BOUNDARY_SUPPORT.json
+            verification_results/COLLECTIVE_HDA_DEPTH2_SUPPORT_WALL.json
           if-no-files-found: error
