@@ -1,0 +1,89 @@
+name: pl-16cell-hermitian-lorentzian-8shard-windows
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'PL_16CELL_HERMITIAN_LORENTZIAN_PREREGISTRATION.md'
+      - 'scripts/pl_dual_complex.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_covariant_backend.py'
+      - 'scripts/pl_lorentzian_triple_worker.py'
+      - 'scripts/pl_lorentzian_group_worker.py'
+      - 'scripts/pl_lorentzian_48_collect.py'
+      - '.github/workflows/pl-16cell-hermitian-lorentzian-8shard-windows.yml'
+  workflow_dispatch:
+
+jobs:
+  shards:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        mode: [forward, adjoint]
+        slot: [0,1,2,3]
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/pl_covariant_backend.py scripts/pl_lorentzian_triple_worker.py scripts/pl_lorentzian_group_worker.py
+      - name: Six exact ordered terms with shared caches
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          python scripts/pl_lorentzian_group_worker.py --mode "${{ matrix.mode }}" --first-slot ${{ matrix.slot }} --source 0 --out-dir out
+      - name: Upload shard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pl-lorentzian-shard-${{ matrix.mode }}-${{ matrix.slot }}
+          path: out/
+          if-no-files-found: error
+
+  collect:
+    needs: shards
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Download all shards
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pl-lorentzian-shard-*
+          path: out
+          merge-multiple: true
+      - name: Verify exactly 48 term files
+        shell: pwsh
+        run: |
+          $jsonCount=(Get-ChildItem out -Filter 'term_*.json').Count
+          $npzCount=(Get-ChildItem out -Filter 'term_*.npz').Count
+          if ($jsonCount -ne 48 -or $npzCount -ne 48) { throw "Expected 48 JSON and 48 NPZ terms; got $jsonCount/$npzCount" }
+      - name: Exact 48-term reduction and Hermitian completion
+        run: python scripts/pl_lorentzian_48_collect.py --root out --json-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.json --state-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.npz
+      - name: Guard preregistered semantics
+        shell: pwsh
+        run: |
+          python -c "import json; d=json.load(open('verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.json')); assert d['passed']; assert d['worker_count']==48; assert d['max_worker_physical_leakage']<1e-8; assert d['max_worker_nonscalar_rejected_norm']<1e-8; assert d['wrong_seed_parity_outputs']==0; assert d['max_spin_S']<=3.5+1e-12"
+      - name: Upload physical PL Lorentzian evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pl-16cell-hermitian-lorentzian-8shard
+          path: |
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.json
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.npz
+          if-no-files-found: error
