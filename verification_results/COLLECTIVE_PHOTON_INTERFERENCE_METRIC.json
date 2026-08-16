@@ -1,0 +1,34 @@
+{
+  "status": "exact BCQG metric-to-photon-interference structural bridge",
+  "passed": true,
+  "science_status": "STRUCTURAL_OPTICAL_BRIDGE",
+  "edge_order": [[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]],
+  "metric_basis": ["xx","yy","zz","sqrt2_xy","sqrt2_xz","sqrt2_yz"],
+  "det_J": "-sqrt(2)/2",
+  "rank_J": 6,
+  "balanced_difference_rank": 5,
+  "balanced_difference_common_mode": ["0","0","0","0","0"],
+  "rank_DJ": 5,
+  "trace_response": ["0","0","0","0","0"],
+  "traceless_response_det": "sqrt(6)/2",
+  "traceless_response_rank": 5,
+  "traceless_response_gram_eigenvalues": {
+    "1/2": 1,
+    "11/4 - sqrt(73)/4": 1,
+    "sqrt(73)/4 + 11/4": 1,
+    "1": 2
+  },
+  "checks": {
+    "edge_metric_map_rank_6": true,
+    "edge_metric_map_exact_det": true,
+    "tetrahedral_isotropy_sum_nnT_2I": true,
+    "five_balanced_phase_channels": true,
+    "balanced_common_mode_null": true,
+    "trace_mode_null": true,
+    "traceless_response_rank_5": true,
+    "traceless_response_exact_det": true
+  },
+  "phase_map": "For y=J h with y_e=delta(ell_e^2)/ell_star^2, delta_phi=(k ell_star/2)y. Five balanced channels give Delta_phi=(k ell_star/2) D J h.",
+  "interpretation": "Balanced equal-arm edge interferometry removes the common six-edge mode exactly. Under the exact six-edge/Sym^2 isomorphism this is the trace mode, while the five differential channels are injective on the full traceless metric tangent space.",
+  "scope_note": "Structural linear response only; no absolute BCQG phase or decoherence prediction is claimed without scale, metric normalization, and explicit photon coupling."
+}
