@@ -1,0 +1,98 @@
+name: pl-16cell-hermitian-lorentzian-48
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'PL_16CELL_HERMITIAN_LORENTZIAN_PREREGISTRATION.md'
+      - 'scripts/pl_dual_complex.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_covariant_backend.py'
+      - 'scripts/pl_lorentzian_triple_worker.py'
+      - 'scripts/pl_lorentzian_48_collect.py'
+      - '.github/workflows/pl-16cell-hermitian-lorentzian-48.yml'
+  workflow_dispatch:
+
+jobs:
+  ordered-terms:
+    strategy:
+      fail-fast: false
+      max-parallel: 24
+      matrix:
+        mode: [forward, adjoint]
+        index: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/pl_covariant_backend.py scripts/pl_lorentzian_triple_worker.py
+      - name: Exact ordered PL Lorentzian term
+        run: |
+          mkdir -p out
+          python scripts/pl_lorentzian_triple_worker.py \
+            --mode ${{ matrix.mode }} --index ${{ matrix.index }} --source 0 \
+            --json-output out/term_${{ matrix.mode }}_${{ matrix.index }}.json \
+            --state-output out/term_${{ matrix.mode }}_${{ matrix.index }}.npz
+      - name: Upload ordered term
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pl-lorentzian-${{ matrix.mode }}-${{ matrix.index }}
+          path: out/
+          if-no-files-found: error
+
+  collect:
+    needs: ordered-terms
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Download all ordered terms
+        uses: actions/download-artifact@v4
+        with:
+          pattern: pl-lorentzian-*
+          path: out
+          merge-multiple: true
+      - name: Exact 48-term reduction and Hermitian completion
+        run: |
+          python scripts/pl_lorentzian_48_collect.py \
+            --root out \
+            --json-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.json \
+            --state-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.npz
+      - name: Guard preregistered semantics
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.json'))
+          assert d['passed']
+          assert d['worker_count']==48
+          assert d['max_worker_physical_leakage'] < 1e-8
+          assert d['max_worker_nonscalar_rejected_norm'] < 1e-8
+          assert d['wrong_seed_parity_outputs']==0
+          assert d['max_spin_S'] <= 3.5 + 1e-12
+          assert d['definition'].startswith('S=-i(')
+          # Deliberately no assertion that S is nonzero.
+          PY
+      - name: Upload physical PL Lorentzian evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pl-16cell-hermitian-lorentzian
+          path: |
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.json
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN.npz
+          if-no-files-found: error
