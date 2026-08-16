@@ -1,0 +1,49 @@
+name: tetrahedral-charged-volume-audit
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/tetrahedral_volume_backend.py'
+      - 'scripts/tetrahedral_charged_volume_audit_gate.py'
+      - 'scripts/pl_dual_complex.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - '.github/workflows/tetrahedral-charged-volume-audit.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - run: python -m py_compile scripts/tetrahedral_volume_backend.py scripts/tetrahedral_charged_volume_audit_gate.py
+      - name: Tetrahedral charged-volume covariance audit
+        run: python scripts/tetrahedral_charged_volume_audit_gate.py --output verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT.json
+      - name: Guard forced-correction semantics
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT.json'))
+          assert d['passed']
+          assert d['checks']['charged_q123_preferred_leg_negative_control']
+          assert d['checks']['gauss_absolute_volume_normalization_preserved']
+          assert d['checks']['K5_H_E_sine_exactly_preserved']
+          assert d['checks']['16cell_H_E_sine_exactly_preserved']
+          assert d['checks']['old_CV_slot_asymmetry_detected']
+          assert d['checks']['tetra_CV_all_slots_nonzero']
+          assert d['checks']['tetra_CV_slot_covariance_restored']
+          assert d['tetra_CV_slot_norm_spread']<1e-12
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tetrahedral-charged-volume-audit
+          path: verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT.json
+          if-no-files-found: error
