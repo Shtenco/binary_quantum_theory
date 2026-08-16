@@ -7,6 +7,7 @@ on:
     paths:
       - 'scripts/collective_l0_e_node_column.py'
       - 'scripts/collective_l0_e_krylov_collect.py'
+      - 'scripts/collective_sparse_krylov_compressor.py'
       - 'scripts/pl_peter_weyl_euclidean.py'
       - 'scripts/pl_dual_complex.py'
       - '.github/workflows/collective-l0-e-krylov.yml'
@@ -57,6 +58,12 @@ jobs:
           merge-multiple: true
       - name: Exact sparse Gram and SVD
         run: python scripts/collective_l0_e_krylov_collect.py --root columns --output verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json
+      - name: Explicit sparse Gram-whitened embedding
+        run: |
+          python scripts/collective_sparse_krylov_compressor.py \
+            --root columns \
+            --json-output verification_results/COLLECTIVE_E_ONLY_KRYLOV_BASIS.json \
+            --npz-output verification_results/COLLECTIVE_E_ONLY_KRYLOV_WHITENING.npz
       - name: Guard scope and amplitude invariants
         run: |
           python - <<'PY'
@@ -64,15 +71,30 @@ jobs:
           d=json.load(open('verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json'))
           assert d['passed'] is True
           assert d['science_status']=='AMPLITUDE_PRECURSOR_E_ONLY'
-          assert d['amplitude_krylov_rank'] > 0
+          assert d['amplitude_krylov_rank']==16
           assert d['hard_checks']['gram_hermitian']
           assert d['hard_checks']['positive_gram']
           assert d['wrong_seed_parity_outputs']==0
+          w=json.load(open('verification_results/COLLECTIVE_E_ONLY_KRYLOV_BASIS.json'))
+          assert w['passed'] is True
+          assert w['science_status']=='E_ONLY_PRECURSOR'
+          assert w['input_columns']==16
+          assert w['union_support']==552
+          assert w['raw_column_rank']==16
+          assert w['whitened_basis_dimension']==16
+          assert w['seed_plus_column_span_dimension']==17
+          assert w['seed_overlap_norm']<1e-14
+          assert w['gram_condition_number']<2
+          assert w['whitened_orthonormality_defect_fro']<1e-12
+          assert w['raw_column_reconstruction_relative_error']<1e-12
           PY
       - name: Upload evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: collective-l0-e-krylov
-          path: verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json
+          path: |
+            verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json
+            verification_results/COLLECTIVE_E_ONLY_KRYLOV_BASIS.json
+            verification_results/COLLECTIVE_E_ONLY_KRYLOV_WHITENING.npz
           if-no-files-found: error
