@@ -1,0 +1,75 @@
+name: collective-gr-universality-prerequisites
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'COLLECTIVE_GR_UNIVERSALITY_PREREGISTRATION.md'
+      - 'COLLECTIVE_EFFECTIVE_CONSTRAINT_PRODUCER.md'
+      - 'collective_gr_measurement_template.json'
+      - 'scripts/collective_16cell_refinement_gate.py'
+      - 'scripts/collective_volume_rg_extended_gate.py'
+      - 'scripts/collective_gr_universality_killer_gate.py'
+      - '.github/workflows/collective-gr-universality.yml'
+  workflow_dispatch:
+
+jobs:
+  protocol-and-prerequisites:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: |
+          python -m py_compile scripts/collective_16cell_refinement_gate.py
+          python -m py_compile scripts/collective_volume_rg_extended_gate.py
+          python -m py_compile scripts/collective_gr_universality_killer_gate.py
+      - name: Collective PL-S3 refinement carrier
+        run: python scripts/collective_16cell_refinement_gate.py --max-explicit-level 2 --sample-level2 64 --output verification_results/COLLECTIVE_16CELL_REFINEMENT.json
+      - name: Collective volume representation ladder
+        run: python scripts/collective_volume_rg_extended_gate.py --output verification_results/COLLECTIVE_VOLUME_RG_EXTENDED.json
+      - name: DeWitt target safe-window control
+        run: python scripts/dewitt_hda_uniqueness_gate.py --L 7 --output verification_results/DEWITT_HDA_UNIQUENESS_COLLECTIVE_CONTROL.json
+      - name: ADM target safe-window control
+        run: python scripts/adm_hda_parameter_selection_gate.py --L 7 --output verification_results/ADM_HDA_SELECTION_COLLECTIVE_CONTROL.json
+      - name: Killer protocol positive/negative controls
+        run: python scripts/collective_gr_universality_killer_gate.py --self-test --output verification_results/COLLECTIVE_GR_KILLER_SELFTEST.json
+      - name: Record honest bootstrap science status
+        run: |
+          python - <<'PY'
+          import json
+          controls={
+            'note':'protocol controls only; never substituted for direct BCQG collective measurements',
+            'PL_refinement':'verification_results/COLLECTIVE_16CELL_REFINEMENT.json',
+            'volume_ladder':'verification_results/COLLECTIVE_VOLUME_RG_EXTENDED.json',
+            'DeWitt_target':'verification_results/DEWITT_HDA_UNIQUENESS_COLLECTIVE_CONTROL.json',
+            'ADM_target':'verification_results/ADM_HDA_SELECTION_COLLECTIVE_CONTROL.json'
+          }
+          open('/tmp/collective_controls.json','w').write(json.dumps(controls))
+          PY
+          python scripts/collective_gr_universality_killer_gate.py --bootstrap-controls /tmp/collective_controls.json --output verification_results/COLLECTIVE_GR_UNIVERSALITY_BOOTSTRAP.json
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_GR_UNIVERSALITY_BOOTSTRAP.json'))
+          assert d['science_status']=='INCOMPLETE' and d['science_passed'] is False
+          PY
+      - name: Upload collective frontier evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: collective-gr-universality-prerequisites
+          path: |
+            verification_results/COLLECTIVE_16CELL_REFINEMENT.json
+            verification_results/COLLECTIVE_VOLUME_RG_EXTENDED.json
+            verification_results/DEWITT_HDA_UNIQUENESS_COLLECTIVE_CONTROL.json
+            verification_results/ADM_HDA_SELECTION_COLLECTIVE_CONTROL.json
+            verification_results/COLLECTIVE_GR_KILLER_SELFTEST.json
+            verification_results/COLLECTIVE_GR_UNIVERSALITY_BOOTSTRAP.json
+          if-no-files-found: error
