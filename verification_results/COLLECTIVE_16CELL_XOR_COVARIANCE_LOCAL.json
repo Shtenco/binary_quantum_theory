@@ -1,0 +1,37 @@
+{
+  "status": "exact 16-cell XOR translation covariance of collective E node columns",
+  "passed": true,
+  "science_status": "AUTOMORPHISM_PREREQUISITE",
+  "provenance": "local reproduction from all 16 exact successful E node artifacts of workflow 31959116492",
+  "group": "(Z2)^4 primal sign flips / dual-node XOR translations",
+  "character": "chi(mask)=(-1)^popcount(mask)",
+  "tolerance": 1e-8,
+  "max_relative_amplitude_error": 4.3244797957450486e-9,
+  "exact_sparse_support_match_all_16_masks": true,
+  "structural_checks": {
+    "tetra_bit_action_all_masks": true,
+    "neighbor_local_slot_equivariance_all_masks": true,
+    "localSign_character_all_masks": true
+  },
+  "amplitude_errors_by_mask": [
+    0.0,
+    3.4430486088608664e-16,
+    3.1961281105816073e-16,
+    4.621379898705277e-16,
+    4.3244795928867226e-9,
+    5.90467793753275e-16,
+    5.258159218015019e-16,
+    4.324479655002978e-9,
+    5.759094165242364e-16,
+    6.470006916707646e-16,
+    7.539114148493134e-16,
+    7.146082013873055e-16,
+    7.860228232265361e-16,
+    8.838607333958399e-16,
+    1.1967077439041997e-15,
+    4.3244797957450486e-9
+  ],
+  "interpretation": "The XOR translation subgroup is already node-transitive. Exact E columns transform with the orientation character and require no S4 coordinate-permutation assumption. The three ~4.3e-9 cases have exact support equality and track the already observed zero-aware numerical backend norm drift.",
+  "S_transport_preregistered_consequence": "V is orientation-even; K=[V,E] carries chi; the two K factors contribute chi^2=1; the PL epsilon/localSign contributes chi. Therefore raw L and Hermitian S are predicted to carry chi. Production use still requires a direct held-out nonzero-mask S comparison.",
+  "scope_note": "E-amplitude/PL-structure automorphism evidence. No S node is inferred as science data before the held-out S validation."
+}
