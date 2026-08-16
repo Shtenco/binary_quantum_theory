@@ -3,19 +3,19 @@
 
 Use the regular 16-cell tetrahedral realization selected by the static
 collective flux Gram and carry its intrinsic piecewise-flat coordinates through
-barycentric subdivision.  Edge lengths are Euclidean simplex lengths and vertex
-masses are one quarter of incident tetrahedral volumes.  Weighted 1-skeleton
+barycentric subdivision. Edge lengths are Euclidean simplex lengths and vertex
+masses are one quarter of incident tetrahedral volumes. Weighted 1-skeleton
 shortest paths then define a concrete metric ball-volume observable.
 
 Two estimators are reported:
   * fixed volume fraction 5-35%: useful compact/global diagnostic but not a
     local continuum estimator because r/R does not shrink;
   * mesoscopic r*=sqrt(h R), with h=median mesh-edge length and
-    R=V_total^(1/3), so h/r* ->0 and r*/R ->0 under refinement.  Three fixed
+    R=V_total^(1/3), so h/r* ->0 and r*/R ->0 under refinement. Three fixed
     log-window factors sqrt(2), 1.5 and 2 are reported to avoid tuning one
     window to D=3.
 
-This is a static-background metric precursor.  It is not substituted for the
+This is a static-background metric precursor. It is not substituted for the
 direct dynamical D_space field required by the collective GR killer.
 """
 from __future__ import annotations
@@ -90,24 +90,17 @@ def summarize(fits):
             'points_median':float(np.median([x['n_points'] for x in good]))}
 def level(coords,tets,l):
     G,mass,lengths=graph(coords,tets);rr=roots(len(coords));dist=cs.dijkstra(G,directed=False,indices=rr)
-    fixed=[]
-    for d in dist:fixed.append(fit(grouped_points(d,mass,lambda r,V,f:.05<=f<=.35)))
+    fixed=[fit(grouped_points(d,mass,lambda r,V,f:.05<=f<=.35)) for d in dist]
     h=float(np.median(lengths));R=float(mass.sum()**(1/3));rho=math.sqrt(h*R)
     meso={}
     for f in (math.sqrt(2),1.5,2.0):
-        lo=rho/f;hi=rho*f;rows=[]
-        for d in dist:rows.append(fit(grouped_points(d,mass,lambda r,V,q,lo=lo,hi=hi:lo<=r<=hi)))
+        lo=rho/f;hi=rho*f
+        rows=[fit(grouped_points(d,mass,lambda r,V,q,lo=lo,hi=hi:lo<=r<=hi)) for d in dist]
         meso[str(f)]={'window':[lo,hi],**(summarize(rows) or {})}
     return {'level':l,'vertices':len(coords),'tetrahedra':len(tets),'edges':G.nnz//2,
             'total_volume':float(mass.sum()),'median_edge_h':h,'macroscopic_R_V13':R,'rho_sqrt_hR':rho,
             'rho_over_h':rho/h,'rho_over_R':rho/R,'fixed_fraction_5_35':summarize(fixed),'mesoscopic':meso}
 def run():
-    c,t=seed();rows=[]
-    for l in range(4):
-        if l>=1:rows.append(level(c,t,l-1))
-        if l<3:c,t=subdivide(c,t)
-    # loop structure above reports seed as level0 then L1/L2 after subdivision? Correct labels explicitly.
-    # Recompute cleanly for L1-L3 to avoid ambiguity.
     c,t=seed();clean=[]
     for l in range(1,4):
         c,t=subdivide(c,t);clean.append(level(c,t,l))
