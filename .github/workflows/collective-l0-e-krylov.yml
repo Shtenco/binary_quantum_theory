@@ -1,0 +1,47 @@
+name: collective-l0-e-krylov
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_l0_e_krylov_amplitude_gate.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_dual_complex.py'
+      - '.github/workflows/collective-l0-e-krylov.yml'
+  workflow_dispatch:
+
+jobs:
+  l0-e-krylov:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/collective_l0_e_krylov_amplitude_gate.py
+      - name: Exact amplitude Krylov image
+        run: python scripts/collective_l0_e_krylov_amplitude_gate.py --output verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json
+      - name: Guard scope and nontrivial amplitude rank
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json'))
+          assert d['passed'] is True
+          assert d['science_status']=='AMPLITUDE_PRECURSOR_E_ONLY'
+          assert d['amplitude_krylov_rank'] > 0
+          assert d['q4_max_covariance_spread'] < 1e-10
+          assert d['wrong_seed_parity_outputs']==0
+          PY
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: collective-l0-e-krylov
+          path: verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json
+          if-no-files-found: error
