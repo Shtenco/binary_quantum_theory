@@ -1,0 +1,31 @@
+{
+  "status": "exhaustive operator-first route HDA on production E-reached 16-cell PL sectors",
+  "passed": true,
+  "provenance": "local exact reproduction using production zero-aware E and the repository sparse-Fourier route engine; CI run queued independently",
+  "source_node": 0,
+  "neighbor_node": 8,
+  "epsilon": [0.25,0.125,0.0625,0.03125,0.015625],
+  "E_support": 82,
+  "E_norm": 2.144278042516496,
+  "distinct_fixed_spin_sectors": 26,
+  "total_intertwiner_carriers": 54,
+  "numerical_zero_carriers": 3,
+  "minimum_symbol_eigenvalue": -1.3891389039662206e-15,
+  "max_endpoint_defect": 1.405841033797955e-05,
+  "nonzero_exponent_min": 0.99979440681411,
+  "nonzero_exponent_max": 0.9999830934452917,
+  "checks": {
+    "production_zeroaware_E_nonzero": true,
+    "all_26_reached_sectors_present": true,
+    "symbol_PSD_roundoff": true,
+    "all_endpoints_below_2e-5": true,
+    "all_nonzero_exponents_near_one": true
+  },
+  "notable_sectors": [
+    {"local_spins_node0":[0,1,2,1],"local_spins_neighbor":[0,1,2,1],"block_dimension":1,"endpoint":1.405841033797955e-05,"epsilon_exponent":0.99979440681411,"minimum_symbol_eigenvalue":23.999999999999993},
+    {"local_spins_node0":[1,1,2,2],"local_spins_neighbor":[1,1,1,1],"block_dimension":4,"maximum_endpoint":5.346940632982038e-06,"minimum_exponent":0.9999774878668397,"minimum_symbol_eigenvalue":12.750000000000018},
+    {"local_spins_node0":[2,2,1,1],"local_spins_neighbor":[2,2,1,1],"block_dimension":4,"maximum_endpoint":2.8090878055464333e-06,"minimum_exponent":0.9998638265374393,"minimum_symbol_eigenvalue":34.00000000000002}
+  ],
+  "interpretation": "The positive operator-first route normal retains its nearly linear HDA residual on every fixed-spin local sector actually generated with nonzero production Euclidean amplitude on the first independent PL-S3 collective habitat.",
+  "scope_note": "Node0 plus one adjacent pair after one E action. Hermitian S-reached route sectors and the compressed multi-block collective route operator remain separate."
+}
