@@ -1,0 +1,54 @@
+name: collective-l1-coarse-flux-response
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_l1_coarse_flux_response_gate.py'
+      - 'scripts/collective_barycentric_E_boundary_support_gate.py'
+      - 'scripts/pl_peter_weyl_euclidean_local.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_dual_complex.py'
+      - '.github/workflows/collective-l1-coarse-flux-response.yml'
+  workflow_dispatch:
+
+jobs:
+  direct-response:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/collective_l1_coarse_flux_response_gate.py
+      - name: Direct L1 coarse flux response
+        run: python scripts/collective_l1_coarse_flux_response_gate.py --output verification_results/COLLECTIVE_L1_COARSE_FLUX_RESPONSE.json
+      - name: Frozen guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_L1_COARSE_FLUX_RESPONSE.json'))
+          assert d['passed']
+          assert d['B_flux_rank']==6
+          assert d['B_flux_condition_number']<1.0000001
+          assert d['balanced_photon_phase_rank']==5
+          assert max(abs(x-1) for x in d['balanced_photon_phase_null_vector_normalized'])<1e-10
+          assert abs(d['background_face_Casimir']-4.5)<1e-10
+          assert abs(d['background_pair_flux_dot']+1.5)<1e-10
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-l1-coarse-flux-response
+          path: verification_results/COLLECTIVE_L1_COARSE_FLUX_RESPONSE.json
+          if-no-files-found: error
