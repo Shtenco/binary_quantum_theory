@@ -1,0 +1,38 @@
+name: pl-16cell-covariant-volume-leg
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/pl_peter_weyl_covariant_compat.py'
+      - 'scripts/pl_16cell_covariant_volume_leg_gate.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_dual_complex.py'
+      - '.github/workflows/pl-16cell-covariant-volume-leg.yml'
+  workflow_dispatch:
+
+jobs:
+  covariant-volume:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: |
+          python -m py_compile scripts/pl_peter_weyl_covariant_compat.py
+          python -m py_compile scripts/pl_16cell_covariant_volume_leg_gate.py
+      - name: Exact PL covariant C(V)
+        run: python scripts/pl_16cell_covariant_volume_leg_gate.py --node 0 --output verification_results/PL_16CELL_COVARIANT_VOLUME_LEG.json
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pl16-covariant-volume-leg
+          path: verification_results/PL_16CELL_COVARIANT_VOLUME_LEG.json
+          if-no-files-found: error
