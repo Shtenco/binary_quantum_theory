@@ -1,0 +1,12 @@
+{
+  "status":"homogeneous Euclidean first-order six-edge projection theorem",
+  "passed":true,
+  "science_status":"COLLECTIVE_SYMMETRY_THEOREM",
+  "ordinary_edge_antisymmetric_commutant_nullity":0,
+  "sign_twisted_edge_antisymmetric_commutant_nullity":0,
+  "ordinary_full_commutant_dimension":3,
+  "sign_twisted_full_commutant_dimension":3,
+  "checks":{"ordinary_edge_antisymmetric_commutant_zero":true,"sign_twisted_edge_antisymmetric_commutant_zero":true,"ordinary_complex_commutant_dimension3":true,"sign_twisted_complex_commutant_dimension3":true},
+  "conclusion":"For either orientation phase convention, an S4-invariant pure-imaginary Hermitian operator i*A with A real antisymmetric has zero direct matrix on the six-edge carrier. The homogeneous W^dagger E_sine W block vanishes; Euclidean metric dynamics first appears through depth-two/leakage or other sectors.",
+  "scope_note":"Assumes exact homogeneous S4 covariance and the frozen real recoupling/absolute-volume convention; does not set Euclidean leakage to zero."
+}
