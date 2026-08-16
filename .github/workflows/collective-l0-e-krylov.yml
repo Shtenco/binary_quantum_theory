@@ -5,28 +5,55 @@ on:
     branches:
       - research/bcqg-core-candidate-v1
     paths:
-      - 'scripts/collective_l0_e_krylov_amplitude_gate.py'
+      - 'scripts/collective_l0_e_node_column.py'
+      - 'scripts/collective_l0_e_krylov_collect.py'
       - 'scripts/pl_peter_weyl_euclidean.py'
       - 'scripts/pl_dual_complex.py'
       - '.github/workflows/collective-l0-e-krylov.yml'
   workflow_dispatch:
 
 jobs:
-  l0-e-krylov:
+  node-columns:
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        node: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: pip
-      - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+      - run: python -m pip install -r requirements.txt
       - name: Syntax
-        run: python -m py_compile scripts/collective_l0_e_krylov_amplitude_gate.py
-      - name: Exact amplitude Krylov image
-        run: python scripts/collective_l0_e_krylov_amplitude_gate.py --output verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json
+        run: python -m py_compile scripts/collective_l0_e_node_column.py
+      - name: Exact node column
+        run: python scripts/collective_l0_e_node_column.py --node ${{ matrix.node }} --output node_${{ matrix.node }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: collective-l0-e-node-${{ matrix.node }}
+          path: node_${{ matrix.node }}.json
+          if-no-files-found: error
+
+  collect:
+    needs: node-columns
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: collective-l0-e-node-*
+          path: columns
+          merge-multiple: true
+      - name: Exact sparse Gram and SVD
+        run: python scripts/collective_l0_e_krylov_collect.py --root columns --output verification_results/COLLECTIVE_L0_E_KRYLOV_AMPLITUDE.json
       - name: Guard scope and nontrivial amplitude rank
         run: |
           python - <<'PY'
