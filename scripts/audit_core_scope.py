@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Fail CI when retired speculative sectors leak back into the GR/QM core.
+"""Fail CI when retired side sectors leak back into the GR/QM core.
 
 The repository has one canonical programme: discrete quantum microstructure ->
 quantum geometry -> coarse-grained smooth geometry -> GR/HDA continuum limit.
-This audit keeps retired side-sector vocabulary and deleted Python modules out of
-source, documentation, ledgers and workflows.
+This audit keeps retired vocabulary and deleted Python modules out of source,
+documentation, ledgers and workflows.
 """
 from __future__ import annotations
 
@@ -26,7 +26,15 @@ RETIRED_TERMS = {
     "fifth" + " force",
 }
 
+# Every module removed by the scope reset is pinned here.  AST parsing of every
+# Python file then prevents stale imports from surviving even if the retired
+# concept is not mentioned in prose.
 RETIRED_MODULES = {
+    "bcqg_unified_verification",
+    "bcqg_critical_phase_demo",
+    "action_tunneling_blitz",
+    "eml_blitz",
+    "fermion_zero_blitz",
     "grav" + "iton_in" + "foton_foam_gate",
     "orientation_odd_hda_gate",
     "mir" + "ror_16cell_orientation_eta_gate",
