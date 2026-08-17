@@ -1,123 +1,108 @@
 # From microscopic TT Wilson coefficients to real observables
 
-Status: **algebraically closed observable bridge; numerical prediction waits only for frozen `eta2_IR`, `zeta4_IR` and the one declared absolute scale calibration.**
+Status: **algebraically closed observable bridge.**  The generic parity-even tetrahedral quartic prediction is a six-dimensional TT Wilson vector.  The familiar `eta2/zeta4` and single-`Q_tet` formulas below are retained as exact nested submodels, not assumed as the most general answer.
 
-This note turns the dimensionless infrared TT coefficients into quantities an experiment can constrain.  It does not insert an experimental number into the microscopic calculation.
+No experimental number is inserted into the microscopic calculation.
 
 ---
 
-## 1. Frozen infrared TT pole
+## 1. General frozen infrared TT poles
 
-After the microscopic six-edge kernel has been projected through the exact shape-to-metric Jacobian and the TT projector, write the low-energy pole as
-
-\[
-\omega^2
-= c^2 k^2\left[
-1+a_*^2 k^2 F(\hat n)+O(a_*^4k^4)
-\right],
-\]
-
-where
+After the full interblock kernel has been projected through the metric and TT bridges, the two physical pole branches are written
 
 \[
 \boxed{
-F(\hat n)
-=\eta_2^{IR}
-+\zeta_4^{IR}Q_4^{cub}(\hat n)
+\omega_\sigma^2
+=c^2k^2\left[
+1+a_*^2k^2e_{4,\sigma}(\hat n)
++O(a_*^4k^4)
+\right],
+\qquad \sigma=1,2.
 }
 \]
 
-and
-
-\[
-Q_4^{cub}(\hat n)
-=\sum_{i=1}^{3}n_i^4-\frac35.
-\]
-
-The normalization is the one frozen in `C6_TO_TT_WILSON_COEFFICIENTS.md`.
-
-For the three diagnostic directions,
-
-\[
-Q_{100}=\frac25,\qquad
-Q_{110}=-\frac1{10},\qquad
-Q_{111}=-\frac4{15}.
-\]
-
-Thus the directional coefficients are
-
-\[
-e_{100}=\eta_2+\frac25\zeta_4,
-\]
-\[
-e_{110}=\eta_2-\frac1{10}\zeta_4,
-\]
-\[
-e_{111}=\eta_2-\frac4{15}\zeta_4.
-\]
-
-The exact consistency relation is
-
-\[
-\boxed{e_{100}-4e_{110}+3e_{111}=0.}
-\]
-
----
-
-## 2. Phase and group velocity
-
-For `a_* k << 1`, choose the positive-frequency branch:
-
-\[
-\omega
-=ck\left[1+\frac12a_*^2k^2F(\hat n)+O(a_*^4k^4)\right].
-\]
-
-Therefore
+The pair of real functions
 
 \[
 \boxed{
-\frac{v_g-c}{c}
-=\frac32a_*^2k^2F(\hat n)
+\mathcal E_4(\hat n)
+=\{e_{4,1}(\hat n),e_{4,2}(\hat n)\}
+}
+\]
+
+is the direct physical quartic prediction.
+
+`S4_TT_QUARTIC_COMPLETE_BASIS.md` proves that, for the stated parity-even spatial tetrahedral symmetry, the complete TT quartic response is determined by six dimensionless Wilson coefficients
+
+\[
+\boxed{
+\mathbf c=(c_1,c_2,c_3,c_4,c_5,c_6).
+}
+\]
+
+A frozen six-vector therefore predicts the complete sky-direction and polarization dependence of `mathcal E_4(n)` with no further tensor fit.
+
+---
+
+## 2. Phase velocity, group velocity and propagation phase
+
+For `a_*k << 1`,
+
+\[
+\omega_\sigma
+=ck\left[
+1+\frac12a_*^2k^2e_{4,\sigma}(\hat n)
++O(a_*^4k^4)
+\right].
+\]
+
+Hence
+
+\[
+\boxed{
+\frac{v_{g,\sigma}-c}{c}
+=\frac32a_*^2k^2e_{4,\sigma}(\hat n)
 +O(a_*^4k^4).
 }
 \]
 
-At fixed angular frequency, inversion gives
+At fixed angular frequency,
 
 \[
-k(\omega)
-=\frac{\omega}{c}
-\left[1-\frac12a_*^2\left(\frac\omega c\right)^2F(\hat n)+\cdots\right].
+k_\sigma(\omega)
+=\frac\omega c\left[
+1-\frac12a_*^2\left(\frac\omega c\right)^2e_{4,\sigma}(\hat n)
++\cdots
+\right],
 \]
 
-A wave propagating a physical distance `L` therefore accumulates the beyond-GR phase
+so a baseline `L` gives
 
 \[
 \boxed{
-\delta\phi(\omega,\hat n)
-=-\frac12La_*^2\left(\frac\omega c\right)^3F(\hat n)
+\delta\phi_\sigma
+=-\frac12La_*^2\left(\frac\omega c\right)^3e_{4,\sigma}(\hat n)
 +O(a_*^4\omega^5L/c^5).
 }
 \]
 
-and the leading flight-time shift is
+and, relative to the leading Einstein light cone,
 
 \[
 \boxed{
-\delta t
+\delta t_\sigma
 \simeq
--\frac32\frac{L}{c}a_*^2k^2F(\hat n).
+-\frac32\frac{L}{c}a_*^2k^2e_{4,\sigma}(\hat n).
 }
 \]
 
-These formulas are observables after a convention for what reference signal is being compared is declared.  They should not be interpreted as a photon-vs-graviton delay unless the photon sector is independently shown to have the standard reference dispersion.
+A photon-vs-graviton interpretation requires the photon reference dispersion to be independently fixed.  The equations themselves are intrinsic gravitational propagation observables.
 
 ---
 
-## 3. Insert the one-scale map
+## 3. One absolute scale map
 
-The repository scale map is
+The repository scale bridge is
 
 \[
 \lambda_R^{eff}=\frac{a_*^2}{8\pi\ell_P^2},
@@ -125,104 +110,238 @@ The repository scale map is
 a_*^2=8\pi\lambda_R^{eff}\ell_P^2.
 \]
 
-With
+Using
 
 \[
+E=\hbar\omega,
+\qquad
 E_P=\frac{\hbar c}{\ell_P},
-\qquad E=\hbar\omega,
 \]
 
-we obtain
+we obtain for each polarization branch
 
 \[
 \boxed{
-\frac{v_g-c}{c}
+\frac{v_{g,\sigma}-c}{c}
 =12\pi\lambda_R^{eff}
-F(\hat n)
-\left(\frac{E}{E_P}\right)^2
+e_{4,\sigma}(\hat n)
+\left(\frac E{E_P}\right)^2
++O(E^4/E_P^4),
+}
+\]
+
+\[
+\boxed{
+\delta\phi_\sigma
+=-4\pi\lambda_R^{eff}
+e_{4,\sigma}(\hat n)
+\frac L{\ell_P}
+\left(\frac E{E_P}\right)^3
++O(E^5/E_P^5),
+}
+\]
+
+\[
+\boxed{
+\delta t_\sigma
+=-12\pi\lambda_R^{eff}
+e_{4,\sigma}(\hat n)
+\frac Lc
+\left(\frac E{E_P}\right)^2
 +O(E^4/E_P^4).
 }
 \]
 
-The propagation phase becomes
+Thus the data flow is
+
+```text
+microscopic dynamics -> c1...c6                    dimensionless, blind
+one common scale      -> lambda_R_eff or a_*/lP    absolute normalization
+algebra               -> e4_1(n), e4_2(n)
+experiment            -> phase, delay, sky pattern, polarization splitting
+```
+
+No second phenomenological scale fit is required.
+
+---
+
+## 4. Polarization-average and birefringent observables
+
+Define
+
+\[
+\bar e_4(\hat n)
+=\frac12[e_{4,1}(\hat n)+e_{4,2}(\hat n)],
+\]
+
+\[
+\Delta e_4(\hat n)
+=e_{4,1}(\hat n)-e_{4,2}(\hat n).
+\]
+
+Then
 
 \[
 \boxed{
-\delta\phi
-=-4\pi\lambda_R^{eff}
-F(\hat n)
-\frac{L}{\ell_P}
-\left(\frac{E}{E_P}\right)^3
-+O(E^5/E_P^5).
+\frac{\bar v_g-c}{c}
+=\frac32a_*^2k^2\bar e_4(\hat n),
 }
+\]
+
+while the polarization group-velocity splitting is
+
+\[
+\boxed{
+\frac{v_{g,1}-v_{g,2}}{c}
+=\frac32a_*^2k^2\Delta e_4(\hat n).
+}
+\]
+
+The accumulated polarization phase difference is
+
+\[
+\boxed{
+\Delta\phi_{pol}
+=-\frac12La_*^2\left(\frac\omega c\right)^3\Delta e_4(\hat n).
+}
+\]
+
+These are basis-independent because they are functions of the two TT eigenvalues.
+
+---
+
+## 5. Nested eta2/zeta4 scalar model
+
+If and only if the complete six-coefficient result passes the restricted scalar-cubic hypothesis,
+
+\[
+\boxed{
+\bar e_4(\hat n)
+=\eta_2+\zeta_4Q_4^{cub}(\hat n),
+}
+\]
+
+with
+
+\[
+Q_4^{cub}=\sum_i n_i^4-\frac35,
+\]
+
+then the compact two-number description is valid.
+
+For `(100),(110),(111)`:
+
+\[
+Q=\left(\frac25,-\frac1{10},-\frac4{15}\right),
 \]
 
 and
 
 \[
-\boxed{
-\delta t
-=-12\pi\lambda_R^{eff}
-F(\hat n)
-\frac{L}{c}
-\left(\frac{E}{E_P}\right)^2
-+O(E^4/E_P^4).
-}
+\zeta_4=2(e_{100}-e_{110}),
+\qquad
+\eta_2=\frac15e_{100}+\frac45e_{110},
 \]
 
-This exhibits the separation cleanly:
+with held-out relation
 
-```text
-microscopic dynamics -> eta2_IR, zeta4_IR       dimensionless, blind
-one scale datum      -> lambda_R_eff or a_*/lP absolute normalization
-experiment           -> phase / group delay / directional modulation
-```
+\[
+\boxed{e_{100}-4e_{110}+3e_{111}=0.}
+\]
 
-No second phenomenological fit is required.
+The general six-coefficient result is **not required** to obey this identity unless it lies in that nested subspace.
 
 ---
 
-## 4. Pure anisotropy observable that cancels the scalar coefficient
+## 6. Nested single-Qtet birefringence model
 
-Take two propagation directions at the same frequency.  The isotropic `eta2` term cancels:
-
-\[
-\delta\phi(\hat n_1)-\delta\phi(\hat n_2)
-=-\frac12La_*^2\left(\frac\omega c\right)^3
-\zeta_4^{IR}
-\left[Q_4(\hat n_1)-Q_4(\hat n_2)\right].
-\]
-
-In particular,
+If the anisotropic quartic tensor is dominated by the single spin-2 splitter
 
 \[
-Q_{100}-Q_{110}=\frac12,
+Q_{tet}=\frac35P_E-\frac25P_{T_2},
 \]
 
-so
+then `TETRAHEDRAL_TT_BIREFRINGENCE_THEOREM.md` gives
+
+\[
+\zeta_4=\gamma_4/4
+\]
+
+for the polarization average and the parameter-free splitting pattern
 
 \[
 \boxed{
-\delta\phi_{100}-\delta\phi_{110}
-=-\frac14La_*^2\left(\frac\omega c\right)^3\zeta_4^{IR}.
+\Delta e_{100}:\Delta e_{110}:\Delta e_{111}=4:3:0.
 }
 \]
 
-Likewise
-
-\[
-Q_{110}-Q_{111}=\frac16,
-\]
-
-which supplies an independent ratio check.
-
-This is the cleanest external target for a nonzero cubic/tetrahedral fixed point because it removes the scalar quartic correction at leading order.
+This is a strong blind nested test.  A future microscopic result that violates it has not “failed tetrahedral physics”; it has shown that more than one of the six allowed quartic TT Wilson structures is active.
 
 ---
 
-## 5. Five-channel optical readout of the same traceless metric sector
+## 7. Angular fingerprint of the scalar cubic nested model
 
-The independent finite optical bridge gives, for five balanced channels,
+The scalar cubic harmonic has the exact complex spherical-harmonic decomposition
+
+\[
+\boxed{
+Q_4^{cub}(\hat n)
+=\frac{4\sqrt\pi}{15}
+\left[
+Y_{40}(\hat n)
++\sqrt{\frac5{14}}
+\left(Y_{44}(\hat n)+Y_{4,-4}(\hat n)\right)
+\right]
+}
+\]
+
+in the intrinsic microscopic frame.
+
+Therefore the nested scalar-cubic model is a pure `l=4` sky pattern with a fixed `m=0` versus `m=±4` ratio.  An arbitrary rotation to the astronomical frame changes only the Euler orientation of the multiplet, not its internal harmonic ratios.
+
+This gives a zero-fit angular fingerprint once the microscopic frame/transport is defined globally.
+
+---
+
+## 8. Mapping to the common modified-dispersion notation
+
+For either TT pole branch, multiply
+
+\[
+\omega_\sigma^2
+=c^2k^2+c^2a_*^2k^4e_{4,\sigma}
+\]
+
+by `hbar^2` and use `p=hbar k`, `E=hbar omega`:
+
+\[
+\boxed{
+E^2
+=(pc)^2+A_{4,\sigma}(\hat n)(pc)^4+\cdots,
+}
+\]
+
+where
+
+\[
+\boxed{
+A_{4,\sigma}(\hat n)
+=\frac{a_*^2}{(\hbar c)^2}
+e_{4,\sigma}(\hat n)
+=\frac{8\pi\lambda_R^{eff}}{E_P^2}
+e_{4,\sigma}(\hat n).
+}
+\]
+
+Thus the candidate theory lands directly in the `alpha=4` / quartic modified-dispersion observational class once its microscopic six-vector and one absolute scale are frozen.
+
+The anisotropic/polarization-resolved prediction is stronger than an isotropic `A4`: it supplies a correlated sky and polarization pattern rather than one free coefficient per event.
+
+---
+
+## 9. Five-channel optical readout of the same traceless metric sector
+
+The independent collective optical bridge gives
 
 \[
 \Delta\Phi=\kappa R x,
@@ -230,63 +349,57 @@ The independent finite optical bridge gives, for five balanced channels,
 \kappa=\frac{k_\gamma\ell_*}{2},
 \]
 
-where `x` are the five orthonormal traceless metric coordinates and `R` is nonsingular on that five-dimensional sector.  Its exact singular-value spectrum is already derived in `BCQG_PHOTON_INTERFERENCE_BRIDGE.md` on the collective branch.
+for five balanced phase channels and five traceless metric coordinates.
 
-Therefore a TT two-point function/covariance `S_h` maps to an optical phase covariance by
+The response is invertible on that sector, and its exact finite-condition-number sensitivity spectrum is derived in `BCQG_PHOTON_INTERFERENCE_BRIDGE.md` on the collective branch.
+
+For a metric covariance/spectrum `S_h`,
 
 \[
 \boxed{
-S_{\Phi}(\omega)
-=\kappa^2 R\,S_h(\omega)\,R^T.
+S_\Phi(\omega)
+=\kappa^2RS_h(\omega)R^T,
 }
 \]
-
-Conversely,
 
 \[
 \boxed{
 S_h(\omega)
-=\kappa^{-2}R^{-1}S_{\Phi}(\omega)R^{-T}
+=\kappa^{-2}R^{-1}S_\Phi(\omega)R^{-T}.
 }
 \]
 
-within the linear traceless sector.
-
-Once the absolute TT residue and state prescription are fixed, the retarded kernel
-
-\[
-G^R_{TT}(\omega,\mathbf k)=K_{TT}^{-1}(\omega,\mathbf k)
-\]
-
-can be converted into the appropriate state-dependent symmetrized spectrum.  That final statistical step must state the vacuum/thermal/non-equilibrium state; the retarded pole alone does not determine a unique noise amplitude.
+The retarded TT kernel determines poles/response; a unique noise spectrum additionally requires a declared quantum/statistical state.  The bridge does not confuse those two objects.
 
 ---
 
-## 6. What is and is not calibrated
+## 10. Calibration and anti-overfitting protocol
 
-HDA fixes the GR tensor structure and relative kinetic/curvature normalization but leaves the familiar common gravitational normalization.  The microscopic composition law reduces that freedom to one overall action slope.
+The correct order is now:
 
-Accordingly the honest protocol is:
+1. freeze the microscopic commit, ordering, regulator and block prescription;
+2. compute onsite and interblock dynamics;
+3. verify the leading Einstein/HDA cone and absence of anisotropy at derivative order `<=2`;
+4. extract all six quartic TT Wilson coefficients using the frozen full-rank protocol;
+5. freeze their uncertainties and continuum/blocking extrapolation;
+6. test the `eta/zeta` and single-`Q_tet` nested hypotheses **without changing the six-vector**;
+7. derive or calibrate the single common absolute scale `lambda_R_eff`;
+8. convert to `A4`, group delay, phase and polarization patterns;
+9. only then open the chosen external posterior / dataset.
 
-1. freeze `eta2_IR` and `zeta4_IR` from the microscopic theory;
-2. freeze regulator sequence, momentum extraction and uncertainty;
-3. use **one** declared absolute datum to set `lambda_R_eff` / `a_*` if it is not derived internally;
-4. predict every other frequency, distance and direction dependence without retuning;
-5. compare blind.
-
-The anisotropy ratios and the three-direction consistency relation are dimensionless and do not require the absolute scale calibration.
+If a nested hypothesis fails, the six-coefficient prediction is reported rather than retuned into the simpler model.
 
 ---
 
-## 7. Failure conditions
+## 11. Failure conditions
 
-The physicalization gate fails if any of the following occurs:
+The physicalization branch fails if:
 
-- the microscopic `C6(omega,k)` has no stable low-momentum expansion;
-- the TT pole is ghostlike/tachyonic;
-- `eta2` or `zeta4` depends on arbitrary regulator choices after the declared extrapolation;
-- the three-direction consistency relation fails beyond estimated higher-order/finite-size errors;
-- the scale requires more than the one declared common normalization freedom;
-- an external comparison is used to retune the already-frozen dimensionless coefficients.
+- no stable low-momentum TT expansion emerges;
+- a mass, ghost, tachyon, negative kinetic residue, or non-Einstein leading `k^2` cone survives;
+- quartic coefficients remain materially regulator/blocking dependent after the frozen extrapolation;
+- the six-observable extraction is internally inconsistent;
+- more than the one already-known common absolute normalization must be fitted;
+- external data are used to modify a previously frozen microscopic Wilson vector.
 
-This makes the bridge falsifiable rather than numerological.
+A failure of the two-parameter `eta/zeta` nested model alone is **not** a failure of the full theory; it simply means the more general six-coefficient tetrahedral prediction is active.
