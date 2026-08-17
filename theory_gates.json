@@ -99,7 +99,7 @@
       "status": "proved",
       "claim": "For the explicitly stated fixed-cutoff habitat assumptions, the composition algebra gives cross/D = O(epsilon) and geometry-geometry/D = O(epsilon^2), reducing the full defect to the route defect in the epsilon-to-zero limit.",
       "evidence": [
-        "FINAL_CORE_ARCHITECTURE_CERTIFICATE.md"
+        "FIXED_CUTOFF_COMPOSITION_BOUND.md"
       ]
     },
     {
@@ -126,7 +126,7 @@
       "status": "open",
       "claim": "A uniform simultaneous regulator/refinement theorem controlling epsilon-to-zero together with increasing Peter-Weyl cutoff remains open.",
       "evidence": [
-        "FINAL_CORE_ARCHITECTURE_CERTIFICATE.md",
+        "FIXED_CUTOFF_COMPOSITION_BOUND.md",
         "OPEN_PROBLEMS.md"
       ]
     },
@@ -153,7 +153,7 @@
       "status": "conditional",
       "claim": "The fixed-cutoff mathematical bridge is internally composable when the finite geometry, route-HDA and Lorentzian support gates are combined; this is not full quantum-GR closure or experimental confirmation.",
       "evidence": [
-        "FINAL_CORE_ARCHITECTURE_CERTIFICATE.md",
+        "FIXED_CUTOFF_COMPOSITION_BOUND.md",
         "THEORY_STATUS.md"
       ]
     }
