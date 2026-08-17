@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-"""Canonical fixed-cutoff binary quantum geometry -> continuum-GR bridge aggregator.
+"""Canonical binary quantum geometry -> continuum-GR bridge aggregator.
 
-This executable deliberately separates two questions:
-
-1. Does the declared finite/fixed-cutoff mathematical bridge reproduce its
-   registered internal gates?
-2. Has full graph-changing, regulator-independent quantum general relativity
-   been proved and experimentally validated?
-
-Only the first can currently pass.  Open research gates remain visible in the
-machine ledger and are not silently promoted by a successful regression run.
+This executable separates finite/exact bridge results from stronger open claims.
+A successful run means that the registered internal regression suite is
+self-consistent on its declared domains.  It does not promote finite three-node
+HDA, fixed-input cutoff control or exact kinematic q=2 carrier maps into an
+arbitrary-graph theory of nature.
 """
 from __future__ import annotations
 
@@ -23,19 +19,21 @@ from bcqg_quantum_hda_killer import run as run_hda
 
 ROOT = Path(__file__).resolve().parent
 
-# These gates define the fixed-cutoff integration regression.  They are not a
-# definition of a complete theory of nature.
 REQUIRED_FIXED_CUTOFF_GATES = {
     "BITQ2": {"tested_finite", "proved"},
     "MAN3": {"tested_finite", "proved"},
+    "MICRO_WALSH_TETRA": {"proved"},
+    "MICRO_GLOBAL_GLUE": {"proved"},
     "Q2EIN": {"tested_finite", "proved"},
     "REGGEEH": {"tested_finite", "proved"},
     "PLEBANSKI": {"tested_finite", "proved"},
     "PWGEO": {"tested_finite", "proved"},
     "ROUTE": {"tested_finite", "proved"},
     "E2NODE": {"tested_finite", "proved"},
+    "HDA_3NODE": {"tested_finite", "proved"},
     "LORENTZ": {"tested_finite", "proved"},
     "LHDA_COMP": {"proved"},
+    "JOINT_FIXED_INPUT": {"tested_finite", "proved", "conditional"},
     "DEWITT": {"proved"},
     "CORECERT": {"conditional", "tested_finite", "proved"},
 }
@@ -56,39 +54,31 @@ def run():
     ledger_required = {}
     for gate_id, accepted in REQUIRED_FIXED_CUTOFF_GATES.items():
         status = gates.get(gate_id, {}).get("status")
-        ledger_required[gate_id] = {
-            "status": status,
-            "accepted": bool(status in accepted),
-        }
+        ledger_required[gate_id] = {"status": status, "accepted": bool(status in accepted)}
 
     ledger_pass = all(item["accepted"] for item in ledger_required.values())
-    fixed_cutoff_bridge_passed = bool(
-        bits_pass
-        and manifold_pass
-        and hda_prereq_pass
-        and route_hda_pass
-        and ledger_pass
+    registered_bridge_passed = bool(
+        bits_pass and manifold_pass and hda_prereq_pass and route_hda_pass and ledger_pass
     )
 
     open_frontiers = [
-        {
-            "id": g["id"],
-            "claim": g["claim"],
-        }
+        {"id": g["id"], "claim": g["claim"]}
         for g in ledger["gates"]
         if g.get("status") == "open"
     ]
 
     return {
-        "status": "fixed-cutoff binary quantum geometry -> continuum-GR integration regression",
-        "fixed_cutoff_bridge_passed": fixed_cutoff_bridge_passed,
-        # Backward-compatible key used by older automation.  Its meaning is now
-        # explicitly limited to the fixed-cutoff candidate bridge.
-        "core_candidate_architecture_closed": fixed_cutoff_bridge_passed,
+        "status": "registered binary quantum geometry -> continuum-GR integration regression",
+        "fixed_cutoff_bridge_passed": registered_bridge_passed,
+        "core_candidate_architecture_closed": registered_bridge_passed,
         "candidate_framework": True,
         "experimentally_confirmed_theory_of_nature": False,
+        "local_q2_geometry_carrier_exact": gates.get("MICRO_WALSH_TETRA", {}).get("status") == "proved",
+        "selected_PL_q2_global_carrier_gluing_exact": gates.get("MICRO_GLOBAL_GLUE", {}).get("status") == "proved",
+        "three_node_graph_changing_HDA_tested_finite": gates.get("HDA_3NODE", {}).get("status") in {"tested_finite", "proved"},
+        "fixed_input_joint_cutoff_limit_controlled": gates.get("JOINT_FIXED_INPUT", {}).get("status") in {"tested_finite", "proved", "conditional"},
         "full_graph_changing_multi_node_quantum_HDA_closed": False,
-        "uniform_joint_regulator_removal_theorem": False,
+        "uniform_unbounded_refinement_joint_limit_theorem": False,
         "blind_external_physical_prediction_completed": False,
         "runtime_chain": {
             "binary_route_geometrogenesis": bits_pass,
@@ -96,17 +86,16 @@ def run():
             "HDA_prerequisites_and_factorization_no_go": hda_prereq_pass,
             "route_sector_HDA_principal_symbol": route_hda_pass,
         },
-        "registered_fixed_cutoff_gates": ledger_required,
+        "registered_bridge_gates": ledger_required,
         "open_research_frontiers": open_frontiers,
+        "euclidean_three_node_HH_safe_Jmax_for_all_j_half": 2.5,
         "safe_full_Lorentzian_HH_Jmax_for_all_j_half": 6.5,
-        "fixed_cutoff_composition_bound": (
-            "Delta_full <= Delta_route + C_cross*epsilon + C_GG*epsilon^2"
-        ),
+        "fixed_cutoff_composition_bound": "Delta_full <= Delta_route + C_cross*epsilon + C_GG*epsilon^2",
         "canonical_status": "THEORY_STATUS.md",
         "scope": (
-            "A passing result certifies internal regression of the declared finite/fixed-cutoff bridge only. "
-            "It does not prove microscopic uniqueness, full graph-changing multi-node HDA closure, "
-            "uniform regulator removal, physical scale setting or experimental validity."
+            "A passing result certifies the declared exact/finite bridge subresults only. "
+            "It does not prove dynamical microscopic selection of the full Peter-Weyl phase, arbitrary-graph Lorentzian HDA closure, "
+            "uniform refinement with growing collective spin, physical scale setting or experimental validity."
         ),
     }
 
@@ -114,11 +103,7 @@ def run():
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--output", type=Path)
-    ap.add_argument(
-        "--strict",
-        action="store_true",
-        help="fail unless the declared fixed-cutoff integration regression passes",
-    )
+    ap.add_argument("--strict", action="store_true", help="fail unless the registered integration regression passes")
     args = ap.parse_args()
     out = run()
     text = json.dumps(out, indent=2, ensure_ascii=False)
