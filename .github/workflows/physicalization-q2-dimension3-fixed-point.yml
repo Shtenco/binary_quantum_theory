@@ -1,0 +1,50 @@
+name: physicalization-q2-dimension3-fixed-point
+
+on:
+  push:
+    branches:
+      - research/physicalization-scale-observable-prediction
+    paths:
+      - 'scripts/q2_dimension3_fixed_point_gate.py'
+      - 'Q2_DIMENSION3_FIXED_POINT_CLOSURE.md'
+      - '.github/workflows/physicalization-q2-dimension3-fixed-point.yml'
+  pull_request:
+    paths:
+      - 'scripts/q2_dimension3_fixed_point_gate.py'
+      - 'Q2_DIMENSION3_FIXED_POINT_CLOSURE.md'
+      - '.github/workflows/physicalization-q2-dimension3-fixed-point.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-fixed-point:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact q=2 dimension-three fixed point
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_dimension3_fixed_point_gate.py \
+            --max-generation 10 \
+            --output verification_results/Q2_DIMENSION3_FIXED_POINT.json
+      - name: Scope guard
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/Q2_DIMENSION3_FIXED_POINT.json'))
+          assert d['passed'] is True
+          assert abs(d['exact_fixed_point_dimension']-3.0) < 1e-15
+          assert d['checks']['monotone_increase_to_three']
+          assert d['checks']['all_finite_steps_below_three']
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-dimension3-fixed-point
+          path: verification_results/Q2_DIMENSION3_FIXED_POINT.json
+          if-no-files-found: error

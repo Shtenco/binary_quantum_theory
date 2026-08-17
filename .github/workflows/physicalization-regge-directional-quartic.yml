@@ -1,0 +1,58 @@
+name: physicalization-regge-directional-quartic
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: physicalization-regge-directional-quartic-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regge-directional:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Recompute frozen three-direction Regge metric Hessians with absolute coefficients
+        run: |
+          python scripts/gravity_bridge_scaling.py \
+            --sizes 3 4 5 \
+            --orientations axial diagonal2 diagonal3 \
+            --output verification_results/GRAVITY_BRIDGE_DIRECTIONAL_ABSOLUTE.json
+      - name: Audit absolute coefficient payload
+        run: |
+          python - <<'PY'
+          import json
+          p='verification_results/GRAVITY_BRIDGE_DIRECTIONAL_ABSOLUTE.json'
+          d=json.load(open(p))
+          assert set(d['results'])=={'axial','diagonal2','diagonal3'}
+          for name,rows in d['results'].items():
+              assert [r['L'] for r in rows]==[3,4,5]
+              for r in rows:
+                  c=r['fierz_pauli']['coefficients']
+                  assert len(c)==4
+                  assert abs(c[0])>0
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: regge-directional-absolute
+          path: |
+            verification_results/GRAVITY_BRIDGE_DIRECTIONAL_ABSOLUTE.json
+            verification_results/GRAVITY_BRIDGE_DIRECTIONAL_ABSOLUTE.md
+          if-no-files-found: error
