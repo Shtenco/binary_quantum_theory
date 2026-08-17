@@ -1,0 +1,41 @@
+{
+  "status": "BCQG collective metric regularity and gap-locality theorem controls",
+  "passed": true,
+  "science_status": "CONDITIONAL_METRIC_REGULARITY_LOCALITY_THEOREM",
+  "verification_environment": "independent local NumPy reproduction of the executable theorem controls; production refinement quantities remain open",
+  "metric_control": {
+    "smin_ref": 0.4082482904638631,
+    "smax_ref": 0.5773502691896258,
+    "delta_norm": 0.10206207261596578,
+    "theorem_lower_bound": 0.3061862178478973,
+    "actual_smin": 0.3103368056140271,
+    "theorem_upper_bound": 0.6794123418055916,
+    "actual_smax": 0.6710928269183508,
+    "condition_upper_bound": 2.21895141649746,
+    "actual_condition": 2.1624661167422214,
+    "checks": {
+      "delta_below_smin": true,
+      "actual_smin_above_theorem_lower_bound": true,
+      "actual_smax_below_theorem_upper_bound": true,
+      "rank_six_preserved": true
+    }
+  },
+  "locality_control": {
+    "dimension": 18,
+    "D0_mass": 4.0,
+    "nearest_neighbor_hopping": 0.45,
+    "r_norm_D0inv_T": 0.2219312932656126,
+    "D0inv_norm": 0.25,
+    "prefactor_bound": 0.32130838553997204,
+    "bound_violations": 0,
+    "worst_actual_over_bound": 0.7985443718320674,
+    "neumann_inverse_relative_error_120_terms": 1.8405269565591623e-16,
+    "checks": {
+      "r_below_one": true,
+      "all_resolvent_elements_below_distance_bound": true,
+      "neumann_series_reconstructs_inverse": true
+    }
+  },
+  "production_guard": "This validates the sufficient theorem machinery only. H1/H2 become production-certified only after the actual C2 refinement family reports a uniform positive dynamic metric lower bound and a target-independent residual-Q locality/gap certificate.",
+  "theorem_file": "COLLECTIVE_METRIC_REGULARITY_LOCALITY_THEOREM.md"
+}
