@@ -1,290 +1,289 @@
-# Exact Feshbach / block-Lanczos definition of the coarse gravitational kernel
+# Exact Feshbach / block-Lanczos reduction of the microscopic constraint operator
 
-Status: **exact operator definition.**  This document closes the semantic gap between finite Peter–Weyl moments and the frequency-dependent coarse kernel.  No depth-two moment is renamed an effective action by itself.
+Status: **exact operator/spectral definition, not yet the physical history graviton propagator.**  This document defines how Peter–Weyl constraint moments become a controlled coarse **constraint resolvent**.  The separate bridge from Hamiltonian constraints to a physical history effective action is fixed in `HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md`.
+
+No depth-two moment, no raw overlap and no constraint spectral parameter `z` is silently renamed a physical `omega`-propagator.
 
 ---
 
-## 1. Start with the microscopic Hamiltonian and a coarse carrier
+## 1. Microscopic constraint operator and coarse carrier
 
-Let `H` be the frozen finite-regulator microscopic Hermitian Hamiltonian on the chosen reachable Peter–Weyl habitat.
+Let `H` be a frozen finite-regulator Hermitian constraint operator on a chosen reachable Peter–Weyl habitat.
 
-Let the non-orthonormal coarse metric carrier be stored in the columns of a map `V` from coarse coefficient space into the microscopic Hilbert space.  Its Gram matrix is
+Let coarse carrier columns form the map `V`.  Their Gram matrix is
 
 \[
 K=V^\dagger V.
 \]
 
-When `K>0`, define the orthonormalized coarse embedding
+For `K>0`, define
 
 \[
-\boxed{
-Q_0=VK^{-1/2},
-\qquad Q_0^\dagger Q_0=I.
-}
+\boxed{Q_0=VK^{-1/2},\qquad Q_0^\dagger Q_0=I}
 \]
 
-The corresponding orthogonal projector is
+and
 
 \[
-\boxed{
 P_c=Q_0Q_0^\dagger,
 \qquad Q_c=I-P_c.
-}
 \]
 
-This definition works for one block or for a multi-block carrier assembled from several neighboring tetrahedra.
+This works for one block or a multi-block carrier.
 
 ---
 
-## 2. Exact projected resolvent
+## 2. Exact projected **constraint** resolvent
 
-For complex spectral parameter `z` away from the microscopic spectrum, the exact coarse Green function is
-
-\[
-\boxed{
-G_c(z)=Q_0^\dagger(z-H)^{-1}Q_0.
-}
-\]
-
-Equivalently, in projector notation it is the representation of
-
-\[
-P_c(z-H)^{-1}P_c
-\]
-
-inside the orthonormal coarse basis.
-
-Define the coarse inverse propagator / effective kernel by
+For spectral parameter `z`,
 
 \[
 \boxed{
-C_c(z)=G_c(z)^{-1}.
+G_c^{constraint}(z)
+=Q_0^\dagger(z-H)^{-1}Q_0.
 }
 \]
 
-No additional definition of an “effective Hamiltonian” is needed.
+Its inverse
+
+\[
+\boxed{
+C_c^{constraint}(z)
+=[G_c^{constraint}(z)]^{-1}
+}
+\]
+
+is an exact coarse spectral kernel for `H`.
+
+Unless a relational physical Hamiltonian has been derived, or a history/rigging-map construction has established the correspondence, one must keep
+
+\[
+\boxed{z\ne\omega\quad\text{as a physical statement}.}
+\]
 
 ---
 
 ## 3. Exact Feshbach–Schur complement
 
-Block-decompose `z-H` with respect to `P_c+Q_c=I`.
-
-The Schur complement gives exactly
+Block decomposition with respect to `P_c+Q_c=I` gives
 
 \[
 \boxed{
-C_c(z)
+C_c^{constraint}(z)
 =zI-H_{PP}
--H_{PQ}(zI-H_{QQ})^{-1}H_{QP},
+-H_{PQ}(zI-H_{QQ})^{-1}H_{QP}.
 }
 \]
 
-where
+Thus
 
 \[
-H_{PP}=Q_0^\dagger H Q_0,
+\Sigma_c(z)=H_{PQ}(zI-H_{QQ})^{-1}H_{QP}.
 \]
 
-and the other blocks are the corresponding coarse/complement matrix elements.
-
-Thus the self-energy is
-
-\[
-\boxed{
-\Sigma_c(z)
-=H_{PQ}(zI-H_{QQ})^{-1}H_{QP}.
-}
-\]
-
-This is the unique exact object that local return amplitudes and interblock transfer amplitudes must approximate/reconstruct.
+This is the exact spectral object reconstructed by block-Lanczos or direct reachable-space inversion.
 
 ---
 
-## 4. Relation to the currently computed K/A/B moments
+## 4. Exact K/A/B identities
 
-For coarse source columns `V`, define
+For one and the same Hermitian operator `H`, define
 
 \[
 K=V^\dagger V,
+\qquad
+A=V^\dagger HV,
+\qquad
+B=V^\dagger H^2V=(HV)^\dagger(HV).
 \]
 
-\[
-A=V^\dagger H V,
-\]
-
-\[
-B=(HV)^\dagger(HV)=V^\dagger H^2V.
-\]
-
-Then the first block-Lanczos diagonal block is
+Then
 
 \[
 \boxed{
-A_0=Q_0^\dagger H Q_0
-=K^{-1/2}AK^{-1/2}.
+A_0=K^{-1/2}AK^{-1/2}
 }
 \]
 
-The first residual is
-
-\[
-R_1=(I-P_c)HQ_0.
-\]
-
-Therefore
-
-\[
-R_1^\dagger R_1
-=Q_0^\dagger H(I-P_c)HQ_0.
-\]
-
-Substituting `Q0=V K^-1/2` gives the exact identity
+and the first block-Lanczos residual obeys
 
 \[
 \boxed{
 B_1^\dagger B_1
 =K^{-1/2}
-\left[
-B-A^\dagger K^{-1}A
-\right]
+[B-A^\dagger K^{-1}A]
 K^{-1/2}.
 }
 \]
 
-For Hermitian `H` and an exactly assembled `A`, `A=A^dagger` up to numerical tolerance.
-
-This is the correct meaning of the current onsite depth-two `K/A/B` calculation: it determines `A0` and the positive first leakage/return block `B1^dag B1` of the exact coarse resolvent.
-
-It does **not** by itself determine the complete frequency dependence.
+`scripts/feshbach_block_krylov_identity_gate.py` independently verifies these identities on deterministic finite Hermitian systems.
 
 ---
 
-## 5. Block-Lanczos continued fraction
+## 5. Continued fraction
 
-Normalize the residual to obtain the next orthonormal block `Q1`, continue the block-Lanczos recursion, and obtain
+After normalizing the first residual and continuing block Lanczos,
 
 \[
-H\;\longrightarrow\;
+H\to
 \begin{pmatrix}
 A_0&B_1^\dagger&0&\cdots\\
 B_1&A_1&B_2^\dagger&\cdots\\
 0&B_2&A_2&\cdots\\
 \vdots&\vdots&\vdots&\ddots
-\end{pmatrix}.
+\end{pmatrix}
 \]
 
-Then the exact projected resolvent has the matrix continued fraction
+and
 
 \[
 \boxed{
 G_0(z)=
 \left[
- zI-A_0
+zI-A_0
 -B_1^\dagger
- \left(zI-A_1-B_2^\dagger(\cdots)^{-1}B_2\right)^{-1}
- B_1
+(zI-A_1-B_2^\dagger(\cdots)^{-1}B_2)^{-1}
+B_1
 \right]^{-1}.
 }
 \]
 
-The previously completed local logical higher-shell calculation is a special parity-graded example of this same construction.
-
-A finite Lanczos truncation is a controlled approximation only when convergence / terminator dependence is explicitly checked.  A depth-two truncation must never be labelled exact full `C(z)`.
+A finite depth is a truncation unless convergence / terminator dependence is bounded.
 
 ---
 
-## 6. Multi-block carrier and spatial momentum
+## 6. Critical scope correction for the current 72-shard calculation
 
-For physical propagation, assemble coarse edge/metric carriers on several PL blocks:
-
-\[
-V=(V_{P_1},V_{P_2},\ldots).
-\]
-
-The combined Gram matrix includes interblock overlaps and is orthonormalized **globally** on the chosen local patch before Feshbach projection.
-
-The exact patch kernel is
-
-\[
-C_{PQ}(z).
-\]
-
-In a translation-like scaling window, or more generally in a locally reconstructed tangent frame with controlled normal modes, form the spatial symbol
+The current production worker does **not** apply the full refined-complex constraint sum.  It defines the parent-block operator
 
 \[
 \boxed{
-C(z,\mathbf k)
-=\sum_{\delta}C^{(\delta)}(z)e^{i\mathbf k\cdot\mathbf r_\delta}
+H_B=\sum_{w\in B}H_w
 }
 \]
 
-or the corresponding discrete normal-mode representation when no exact translational symmetry is assumed.
-
-This order matters:
-
-```text
-microscopic H
- -> multi-block coarse embedding V
- -> exact/global Gram orthonormalization
- -> Feshbach / converged block-Lanczos kernel C_PQ(z)
- -> local momentum or normal-mode symbol
- -> metric / TT projection
- -> derivative expansion
- -> six quartic Wilson coefficients.
-```
-
-A raw overlap matrix is not a propagator.
-
----
-
-## 7. Frequency variable and Lorentzian continuation
-
-The Euclidean Peter–Weyl Hamiltonian computation produces a resolvent in the spectral variable `z`.
-
-The physical Lorentzian pole prescription must be fixed consistently with the repository's Lorentzian Hamiltonian/HDA construction before identifying
+over the 24 fine chambers of one parent tetrahedron and computes
 
 \[
-z\leftrightarrow\omega+i0
+u_e=(1/2)\sum_{c\to e}H_c|\Omega\rangle,
+\qquad
+v_e=H_Bu_e.
 \]
 
-or an equivalent transfer-time variable.
+Therefore its matrices are exactly
 
-The reduced TT kernel already supplies a positive-control convention.  The full microscopic branch must reproduce the leading massless Einstein pole before quartic coefficients are declared physical.
+\[
+K=V^\dagger V,
+\qquad
+A_B=V^\dagger H_BV,
+\qquad
+B_B=V^\dagger H_B^2V.
+\]
 
----
+They are an exact **local block-constraint Krylov diagnostic**.
 
-## 8. Exact failure tests before any quartic prediction
+They are **not** automatically the first Lanczos blocks of the full global constraint `H_total`, and they are not the 1PI metric Hessian.
 
-The coarse physicalization fails if the converged/Feshbach kernel has any of the following after the declared continuum/refinement extrapolation:
-
-- nonzero TT mass not already permitted by the target theory;
-- negative physical residue / ghost pole;
-- unstable or regulator-dependent leading light cone;
-- anisotropic order-`k^2` pole splitting that does not vanish in the IR;
-- substantial dependence on the block-Lanczos terminator at the claimed extraction scale;
-- nonlocal transfer tails that do not decrease with block separation.
-
-Only after these gates pass are order-`k^4` Wilson coefficients interpreted as irrelevant physical corrections.
+This distinction is now frozen in the scientific scope.
 
 ---
 
-## 9. Minimal production consequence
+## 7. Why simply replacing HB by a global sum is also not enough
 
-The current 72-shard onsite calculation provides the exact ingredients for the first local block-Lanczos step.
+For a global kinematical reference spin-network, distant local constraint terms can create disconnected excitations unrelated to a local metric insertion.
 
-The nearest-block calculation should therefore **not** merely compute six arbitrary cross overlaps.  It should construct the combined two-block carrier and report at minimum
+A raw extensive
+
+\[
+V^\dagger H_{total}^2V
+\]
+
+would therefore mix connected local propagation with vacuum/disconnected processes unless the physical state/history normalization is treated correctly.
+
+The physical history generating functional
+
+\[
+W[J]=-i\hbar\log Z[J]
+\]
+
+is the natural object that removes disconnected vacuum factors.
+
+So the path to the physical kernel is not
 
 ```text
-K_patch = V^dag V
-A_patch = V^dag H V
-B_patch = V^dag H^2 V
+make H sum larger -> call its resolvent the graviton propagator.
+```
+
+It is
+
+```text
+constraint local data
+ -> physical history/projector + connected metric sources
+ -> Gamma[g]
+ -> physical K_TT(omega,k).
+```
+
+---
+
+## 8. Multi-block Feshbach remains valuable
+
+Within the microscopic constraint analysis, a combined carrier
+
+\[
+V=(V_{P_1},V_{P_2},\ldots)
+\]
+
+must be Gram-orthonormalized globally before extracting spectral transfer blocks.
+
+A two-block/shared-face calculation should report, for a clearly named **patch constraint** `H_patch`,
+
+```text
+K_patch
+A_patch = V^dag H_patch V
+B_patch = V^dag H_patch^2 V
 A0_patch
 B1^dag B1_patch
 ```
 
-with the shared-face `S3` decomposition used as an exact compression/consistency check.
+and use the exact shared-face `S3` decomposition as a compression/covariance check.
 
-Subsequent shells or a direct reachable-space resolvent then determine the frequency-dependent six-edge block kernel.
+These quantities are valuable microscopic inputs to the history construction and linked-cluster analysis.
 
-This gives a precise operator meaning to every future `C6(omega,k)` coefficient.
+---
+
+## 9. From spectral block data to physical omega
+
+The legal chain is
+
+\[
+\boxed{
+\text{Peter--Weyl constraint moments/resolvents}
+\to
+\text{history / physical projector or relational deparametrization}
+\to
+Z[J]
+\to W[J]
+\to\Gamma[g]
+\to K_{TT}(\omega,\mathbf k).
+}
+\]
+
+`HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md` defines this bridge and its open measure/state requirements.
+
+Only `K_TT` from that physical construction supplies the poles whose quartic shifts are reconstructed as the six on-shell Wilson coefficients.
+
+---
+
+## 10. Failure tests
+
+Before any quartic microscopic number is called physical, the completed history kernel must pass:
+
+- massless leading TT pole;
+- positive common residue;
+- common `z~1` leading cone;
+- Fierz–Pauli/DeWitt structure;
+- no surviving anisotropy at derivative order `<=2`;
+- locality/refinement control;
+- history/measure and block-Lanczos/truncation stability.
+
+Only then do four-derivative pole coefficients enter the six-Wilson physical prediction.
