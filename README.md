@@ -1,176 +1,39 @@
-# Information Graph Theory: от бинарной квантовой микроструктуры к гладкому пространству-времени
+# Information Graph Theory: binary quantum microstructure → smooth GR
 
-Этот репозиторий исследует **кандидатную математико-вычислительную схему квантовой гравитации**, в которой микроскопические степени свободы дискретны и бинарны, а гладкая геометрия общей теории относительности должна возникать только в крупномасштабном пределе.
+This repository studies a **candidate mathematical/computational route to quantum gravity** in which the microscopic degrees of freedom are discrete and binary, while smooth spacetime geometry is required to emerge only after quantum-geometric reconstruction, coarse-graining/refinement and a controlled continuum limit.
 
-Главная задача проекта теперь формулируется узко:
-
-```text
-binary / qubit degrees of freedom
-        ↓
-quantum state and quantum operators
-        ↓
-discrete geometric observables
-        ↓
-coarse-graining / refinement
-        ↓
-smooth metric and curvature
-        ↓
-Einstein / ADM / HDA continuum limit
-```
-
-Это **не экспериментально подтверждённая теория природы**. Репозиторий содержит точные конечномерные результаты, численные регрессии, контролируемые toy-модели и явно отмеченные открытые переходы.
-
----
-
-## 1. Что значит «пространство-время состоит из битов»
-
-В модели фундаментальный объект — не заранее заданная гладкая координатная сетка, а конечный набор локальных двухуровневых квантовых степеней свободы. Классический бит имеет состояния `0/1`; квантовый двухуровневый объект имеет состояние
-
-$$
-|\psi\rangle=\alpha|0\rangle+\beta|1\rangle,
-\qquad
-|\alpha|^2+|\beta|^2=1.
-$$
-
-Для многих локальных двухуровневых систем пространство состояний является тензорным произведением
-
-$$
-\mathcal H=\bigotimes_e \mathcal H_e,
-\qquad
-\dim\mathcal H_e=2
-$$
-
-в минимальной бинарной модели. Геометрия должна быть не входным фоном, а набором наблюдаемых или эффективных переменных, построенных из состояния на $\mathcal H$.
-
-Микроскопический cutoff обозначим $\ell_*$. Отождествление $\ell_*$ с планковской длиной является **дополнительной физической гипотезой модели**, а не результатом конечных вычислений в этом репозитории.
-
----
-
-## 2. Квантовая механика: динамика микросостояний
-
-Для обычной квантовой системы динамика задаётся
-
-$$
-i\hbar\frac{\partial}{\partial t}|\Psi\rangle
-=\hat H|\Psi\rangle.
-$$
-
-В канонической гравитации ситуация тоньше: lapse и shift выступают множителями ограничений, а физическая теория должна согласовать гамильтоново и диффеоморфное ограничения. Поэтому ключевой объект проекта — не попытка просто подставить метрику в обычное уравнение Шрёдингера, а построение квантовых операторов геометрии и ограничений на общем пространстве состояний.
-
-Схематически:
-
-$$
-\hat H[N]|\Psi\rangle\approx0,
-\qquad
-\hat D[\vec N]|\Psi\rangle\approx0,
-$$
-
-а в semiclassical/continuum режиме коммутаторы должны воспроизводить классическую алгебру деформаций гиперповерхности.
-
----
-
-## 3. ОТО: целевой гладкий предел
-
-Классическая целевая динамика — уравнения Эйнштейна
-
-$$
-G_{\mu\nu}+\Lambda g_{\mu\nu}
-=\frac{8\pi G}{c^4}T_{\mu\nu},
-$$
-
-получаемые из действия Эйнштейна–Гильберта
-
-$$
-S_{EH}
-=\frac{c^3}{16\pi G}
-\int d^4x\,\sqrt{-g}\,(R-2\Lambda)+S_{matter}.
-$$
-
-Дискретная теория не считается связанной с ОТО только потому, что в ней есть граф или кванты площади. Нужны проверяемые мосты:
-
-1. квантовые данные $\to$ геометрические наблюдаемые;
-2. дискретная метрика/кривизна $\to$ гладкая метрика/кривизна;
-3. дискретное гравитационное действие $\to S_{EH}$ при refinement;
-4. гамильтоновы ограничения $\to$ правильная HDA;
-5. результаты должны быть устойчивы к увеличению cutoff и размерности вычислительного пространства.
-
----
-
-## 4. Центральный мост: qubit → two-form → metric → Einstein test
-
-Один из самых чистых конечномерных тестов проекта начинается непосредственно с qubit density matrices на ориентированных 2-faces:
-
-$$
-\rho_{\mu\nu}
-\longrightarrow
-B^i_{\mu\nu}
-\longrightarrow
-\Delta_{simp}
-\longrightarrow
-g_U
-\longrightarrow
-A_B
-\longrightarrow
-F(A_B).
-$$
-
-В `scripts/qubit_to_einstein_end_to_end.py` исходная гладкая метрика не передаётся в реконструктор. Downstream-геометрия восстанавливается через Pauli expectations, simplicity и Urbantke construction.
-
-Положительный $S^4$-control восстанавливает
+The project is deliberately scoped to one chain:
 
 ```text
-Lambda_rec = 2.9999998973
-Lambda_exact = 3
-relative error ≈ 3.42e-8
+frozen binary/qubit microstructure
+        ↓
+quantum-geometric carrier
+        ↓
+discrete metric / curvature / constraints
+        ↓
+coarse-graining + refinement
+        ↓
+Einstein / ADM / HDA continuum behaviour
 ```
 
-для **искусственно заданного Euclidean control dataset**. Это проверка composability математических стрелок, а не предсказание наблюдаемой космологической постоянной.
-
-Отдельный non-Einstein negative control проходит ранние metric-стрелки и затем проваливает Einstein-curvature test. Поэтому тест различает «получилась гладкая метрика» и «получилась Einstein geometry».
-
-Подробно: `QUBIT_TO_EINSTEIN_END_TO_END.md`.
+It is **not an experimentally established theory of nature**. Exact finite-dimensional theorems, numerical finite tests, conditional composition results and open physical transitions are kept separate in `theory_gates.json` and `THEORY_STATUS.md`.
 
 ---
 
-## 5. Дискретность и гладкость: правильная интерпретация масштаба
+## 1. Binary microscopic rule and scale
 
-Не расстояние до объекта физически делает пространство-время более гладким. Меняется **доступное разрешение наблюдателя**.
+The frozen route family uses q binary labels per local rewrite. In the declared train/held-out protocol, q=2 is selected from q∈{1,2,3} before the held-out generation.
 
-Аналогия со стеной полезна в таком виде: вблизи видна структура краски, издалека при конечном угловом разрешении множество микродеталей попадает в один разрешаемый элемент. Стена не изменилась — изменился coarse-graining.
-
-В модели это записывается как
-
-$$
-\mathcal G_{micro}
-\xrightarrow{\;\mathcal C_b\;}
-\mathcal G_{eff}(b),
-$$
-
-где $b$ — размер coarse block в единицах микроскопического cutoff.
-
-Для frozen binary-route rule семейства $R_q$ один spatial rewrite удваивает линейный масштаб, а число causal child links растёт как $2^{q+1}$. Поэтому асимптотически
-
-$$
-d_H=q+1.
-$$
-
-В объявленном train/held-out протоколе среди $q=1,2,3$ был выбран $q=2$, а held-out transition дал
+For the current q=2 finite protocol:
 
 ```text
-d_H        = 2.999229782
-z          = 0.998281156
-d_s(slice) = 3.004393867
+d_H          = 2.999229782
+d_s(slice)   = 3.004393867
+z            = 0.998281156
+d_s(history) ~ 4.004393867
 ```
 
-При добавлении одной causal-time scaling direction получается 4D-like history scaling.
-
-Для слабокоррелированных unbiased microscopic fluctuations стандартное self-averaging даёт
-
-$$
-\delta g_{RMS}\sim N(b)^{-1/2}.
-$$
-
-В текущем finite stochastic control измерены законы
+and the observer-smoothing control gives
 
 ```text
 metric fluctuation   ~ b^-2.001707
@@ -178,192 +41,288 @@ gradient fluctuation ~ b^-3.001458
 curvature proxy      ~ b^-4.000524
 ```
 
-Эти числа являются характеристиками конкретного вычислительного control, а не доказательством универсального закона природы.
+These are finite model results. Dimension and z entered the selection protocol, so they are not later counted as blind physical predictions.
 
-Подробно: `BIT_TO_SPACETIME_CENTRAL_EQUATION.md`, `OBSERVER_SCALE_SMOOTHING.md`.
-
----
-
-## 6. Локальная и глобальная геометрия
-
-Для frozen $q=2$ route states образуют $Q_2=C_4$. Добавление двух causal endpoints даёт suspension $\Sigma C_4$, то есть октаэдральную $S^2$-оболочку.
-
-`bcqg_global_manifold_gate.py` проверяет естественное минимальное PL-завершение — boundary 4D cross-polytope — и его barycentric refinements. Для выбранного completion проверяются vertex/edge/face links, orientability, $\partial^2=0$ и homology.
-
-Это доказывает **существование и стабильность выбранного PL completion**. Это не доказывает, что bare microscopic rewrite единственным образом динамически выбирает именно это глобальное склеивание.
+The microscopic cutoff is written \(\ell_*\). Identifying \(\ell_*\) with the Planck length is a physical hypothesis until a common scale-setting mechanism is derived.
 
 ---
 
-## 7. Regge → Einstein–Hilbert
+## 2. New exact bridge: q=2 route bits → tetrahedral flux → geometry qubit
 
-В дискретной геометрии curvature кодируется deficit angles на simplices/hinges. Проект содержит отдельные gates, проверяющие дискретный Regge/EH bridge и continuum scaling:
+The four frozen q=2 route labels are
 
-- `REGGE_EH_CUBIC_BRIDGE.md`
+\[
+G=\mathbb Z_2^2=\{00,01,10,11\}.
+\]
+
+Take the three nontrivial real Walsh characters of \(G\):
+
+\[
+\Phi(g)=\frac1{\sqrt3}
+(\chi_1(g),\chi_2(g),\chi_3(g)).
+\]
+
+Character orthogonality gives exactly
+
+\[
+\sum_g\Phi(g)=0,
+\qquad
+\Phi(g)\cdot\Phi(h)=
+\begin{cases}
+1,&g=h,\\
+-1/3,&g\ne h.
+\end{cases}
+\]
+
+So the four microscopic labels themselves form the four unit face normals of a regular tetrahedron. No target angle, random B-field or background metric is fitted to obtain this frame.
+
+Under the declared Pauli/Bloch lift
+
+\[
+\rho_f=\frac12(I+n_f^i\sigma_i),
+\]
+
+the exact four-spin Gauss-singlet projection gives
+
+```text
+flux closure norm                  = 0
+Gauss-singlet weight               = 2/9
+logical geometry Bloch             ≈ (0,+1,0)
+oriented-volume eigenvalue         = sqrt(3)/4
+reconstructed tetrahedron spread   = 0
+orientation reversal               ≈ (0,-1,0)
+```
+
+Machine gate: `scripts/micro_walsh_qgeom_gate.py`.
+
+Detailed result: `MICRO_WALSH_QGEOM_BRIDGE.md`.
+
+**Claim boundary:** this is an exact local carrier theorem inside the declared quantum lift. It does not by itself derive the complete noncommutative Peter-Weyl operator dynamics from classical character multiplication.
+
+---
+
+## 3. Exact global gluing on the selected q=2 PL completion
+
+The selected global completion is the boundary of the 4D cross-polytope:
+
+- 16 tetrahedral cells;
+- 32 triangular shared faces;
+- four canonical face colours per tetrahedron, given by the omitted coordinate axis;
+- those four colours map to q=2 labels `00,01,10,11`;
+- the dual graph is exactly \(Q_4\);
+- neighboring tetrahedra differ by one sign bit and have opposite parity orientation;
+- outward q=2 Walsh flux cancels pairwise on every shared face.
+
+Machine gate: `scripts/q2_global_face_qubit_gluing_gate.py`.
+
+This proves exact **kinematic compatibility** of the local carrier with the selected PL completion. It does not prove that the microscopic dynamics uniquely selects this global phase.
+
+---
+
+## 4. Qubit → B → metric → Einstein control
+
+The independent Euclidean reconstruction chain is
+
+\[
+\rho_f
+\to B^i
+\to \Delta_{simp}
+\to g_U
+\to A_B
+\to F(A_B).
+\]
+
+`scripts/qubit_to_einstein_end_to_end.py` reconstructs the declared S4 positive control and rejects a non-Einstein negative control after the metric stage.
+
+The internal S4 reconstruction yields \(\Lambda\simeq3\), but this is **not** a prediction of the physical cosmological constant: the S4 geometry is an oracle control.
+
+Related finite gates:
+
+- `scripts/plebanski_urbantke_gate.py`
+- `scripts/plebanski_connection_einstein_gate.py`
 - `scripts/regge_eh_cubic_bridge.py`
-- `scripts/verify_geometric_cell.py`
-- `scripts/verify_connection_ward.py`
-
-Критерий здесь принципиальный: при refinement дискретное действие и вариационные identities должны стремиться к соответствующим continuum quantities без перенастройки параметров после просмотра результата.
+- `regge_flat_lattice.py`
 
 ---
 
-## 8. HDA — главный тест ковариантной динамики
+## 5. Smoothness means coarse resolution, not a distance force
 
-В ADM/canonical GR ограничения удовлетворяют hypersurface-deformation algebra. Центральная скобка имеет структуру
+The useful wall analogy is purely about resolution: nearby microscopic structure can be resolved, while a coarse observer averages many microscopic degrees of freedom into one effective cell.
 
-$$
+Schematically
+
+\[
+\mathcal G_{micro}
+\xrightarrow{\mathcal C_b}
+\mathcal G_{eff}(b).
+\]
+
+The wall or spacetime does not become physically smoother because the observer moves away; the effective description becomes smoother because the accessible resolution is coarser.
+
+---
+
+## 6. HDA as the decisive dynamical test
+
+Classical canonical GR satisfies
+
+\[
 \{H[N],H[M]\}
-=
-D\!\left[q^{ab}(N\partial_bM-M\partial_bN)\right].
-$$
+=D\!\left[q^{ab}(N\partial_bM-M\partial_bN)\right].
+\]
 
-Квантовый целевой предел:
+The quantum target is the corresponding commutator on a common off-shell graph-changing domain.
 
-$$
-\frac{1}{i\hbar}
-[\hat H[N],\hat H[M]]
-\longrightarrow
-\hat D\!\left[q^{ab}(N\partial_bM-M\partial_bN)\right].
-$$
+The repository now has a hierarchy of increasingly strong controls:
 
-Репозиторий уже содержит несколько разных уровней этого теста:
+1. path-vector and rerouting diffeomorphism gates;
+2. route-normal principal-symbol HDA;
+3. exact no-go for a fully factorized geometry-only Hamiltonian;
+4. frozen two-node Peter-Weyl × route regression;
+5. **frozen three-node graph-changing Peter-Weyl × route regression**.
 
-- path-vector / rerouting diffeomorphism algebra;
-- route-normal principal-symbol HDA;
-- two-node Peter–Weyl × route finite regression;
-- fixed-cutoff Lorentzian composition bound;
-- graph-changing HDA target, где fixed-sector leakage не отождествляется автоматически с anomaly.
-
-Важно различать уровни доказательства. `bcqg_quantum_hda_killer.py` прямо возвращает
+The three-node gate retains j=0 cylindrical graph-reduction outputs rather than projecting them away. `core-regression #414` measured
 
 ```text
-full_quantum_HDA_closed = false
+pair supports                         = 510, 648, 648
+minimum graph-change norm² fraction  = 0.4440331635
+union reduced colored-graph orbits   = 31
+route exponent                        = 0.9999571195
+cross exponent                        = 1.0024037289
+pure-geometry exponent                = 2.0061524985
+joint exponent                        = 1.0064429344
+joint defect at epsilon=1/64          = 0.02522380790
 ```
 
-для полного microscopic operator problem, хотя route-sector principal-symbol gate проходит. Поэтому multi-node, graph-changing, regulator-independent off-shell closure остаётся центральной задачей, а не уже установленным фактом.
+Detailed result: `THREE_NODE_GRAPH_HDA_RESULT.md`.
+
+This justifies `HDA_3NODE = tested_finite`. It does **not** justify `HDA_MULTI = proved`: arbitrary graphs, held-out habitats and full Lorentzian amplitudes remain open.
 
 ---
 
-## 9. Что сейчас действительно проверено
+## 7. Joint epsilon / Peter-Weyl cutoff control
 
-Machine-readable статус хранится в `theory_gates.json`.
+For a finite word of fundamental holonomies, if a link begins at spin \(j_{in}\) and is hit at most r times, no amplitude can appear above
 
-Основные finite/exact компоненты:
+\[
+j_{in}+r/2.
+\]
 
-- frozen binary-route dimensional/smoothing test;
-- выбранное recursive PL 3-manifold completion;
-- finite Peter–Weyl/SU(2) geometry operators;
-- qubit → $B$ → Urbantke metric → Einstein curvature control;
-- Regge/EH continuum bridge controls;
-- route/diffeomorphism HDA controls;
-- preregistered two-node Euclidean Peter–Weyl × route scaling test;
-- fixed-cutoff Lorentzian support/composition result.
+Thus a truncation with
 
-Сильнейшие утверждения относятся к **конкретным конечным моделям, cutoff и объявленным scaling limits**. Они не автоматически переносятся на природу.
+\[
+J_{max}\ge j_{in}+r/2
+\]
 
----
+is exact for that word.
 
-## 10. Что остаётся открытым
-
-Ключевые незакрытые физические стрелки:
-
-1. вывести нужный geometric qubit/two-form sector из одной и той же microscopic binary dynamics, а не кодировать его oracle-control данными;
-2. доказать динамический выбор глобальной 3-manifold фазы;
-3. получить полноценную graph-changing off-shell quantum HDA на многоузловом habitat;
-4. контролировать совместный предел refinement/cutoff, а не только фиксированный безопасный cutoff;
-5. построить Lorentzian quantum measure и доказать физическую unitary/causal consistency;
-6. вывести $G$, $\Lambda$ и другие размерные физические масштабы из microscopic observables;
-7. зарегистрировать **слепые физические предсказания до сравнения с экспериментом**, затем проверить их на независимых данных.
-
-Пока пункт 7 не выполнен для конкретной наблюдаемой величины с заранее frozen protocol, совпадение внутреннего dimensionless control с известной константой нельзя называть предсказанием этой константы.
-
----
-
-## 11. Фальсифицируемость
-
-Архитектура должна считаться опровергнутой или требующей пересмотра, если хотя бы один обязательный bridge систематически не проходит при заранее фиксированном протоколе:
+For the frozen all-j=1/2 three-node Euclidean HH family:
 
 ```text
-binary rule
-  → wrong dimension/topology
-  → no stable geometric sector
-  → no Regge/EH continuum convergence
-  → wrong Einstein curvature test
-  → HDA anomaly / wrong structure function
-  → regulator dependence that does not vanish
-  → blind observable disagrees with experiment
+max hits/link = 4
+safe Jmax     = 5/2
+cutoff error  = exactly 0 above the wall
+joint HDA fit = epsilon^1.0064429344
 ```
 
-Особенно важны held-out/refinement tests: параметры фиксируются **до** запуска следующего масштаба или физической выборки.
+For the declared full Lorentzian HH support analysis, the conservative wall is `Jmax=13/2`.
+
+Detailed result: `JOINT_REGULATOR_LIMIT.md`.
+
+This establishes `JOINT_FIXED_INPUT = tested_finite` with an exact support theorem. The uniform refinement problem with growing graph/collective-spin size remains open.
 
 ---
 
-## 12. Воспроизведение ядра
+## 8. Current machine-readable status
+
+The most important new subgates are
+
+```text
+MICRO_WALSH_TETRA  = proved
+MICRO_GLOBAL_GLUE  = proved
+HDA_3NODE          = tested_finite
+JOINT_FIXED_INPUT  = tested_finite
+```
+
+The stronger frontiers remain
+
+```text
+MICRO_TO_QGEOM = open
+HDA_MULTI      = open
+JOINT_LIMIT    = open
+PHYS_PRED      = open
+```
+
+This is intentional. A finite PASS is not silently promoted into a theorem over arbitrary graph families or into an experimental claim.
+
+---
+
+## 9. Why PHYS_PRED is still open
+
+A valid first blind physical prediction must not reuse a target that already entered model selection or an oracle control.
+
+Therefore the following are explicitly excluded as the first blind prediction:
+
+- spatial dimension near 3;
+- z near 1;
+- 4D-like history scaling;
+- the S4 oracle value \(\Lambda=3\).
+
+Before opening an external target value, the repository must freeze:
+
+```text
+observable and units
+microscopic estimator
+one common physical scale map
+all model parameters
+allowed calibration data
+forbidden fitting operations
+uncertainty model
+accept/reject threshold
+held-out external dataset identity/hash
+```
+
+See `PHYSICAL_PREDICTION_FREEZE_CRITERIA.md`.
+
+---
+
+## 10. Reproduction
 
 ```bash
 python -m pip install -r requirements.txt
-
+python scripts/verify_theory_gates.py
 python bcqg_observer_smoothing_unified.py
 python bcqg_global_manifold_gate.py
+python scripts/micro_walsh_qgeom_gate.py
+python scripts/q2_global_face_qubit_gluing_gate.py
 python scripts/qubit_to_einstein_end_to_end.py
 python scripts/regge_eh_cubic_bridge.py
 python scripts/path_normal_hda_gate.py
 python scripts/peter_weyl_two_node_euclidean_joint_gate.py
+python scripts/peter_weyl_three_node_graph_hda_gate.py
 python bcqg_quantum_hda_killer.py
 python bcqg_bit_to_gravity_final.py --strict
 ```
 
-Полная machine-readable карта обязательств:
+`joint_regulator_limit_gate.py` consumes the machine-readable three-node output generated by CI.
 
-```bash
-python scripts/verify_theory_gates.py
-```
-
-GitHub Actions запускает тот же canonical regression subset.
+The single canonical GitHub workflow is `.github/workflows/core-regression.yml`.
 
 ---
 
-## 13. Карта ключевых файлов
+## 11. Key files
 
-| Задача | Файл |
+| Purpose | File |
 |---|---|
-| Центральная binary → continuum постановка | `BIT_TO_SPACETIME_CENTRAL_EQUATION.md` |
-| Observer coarse-graining | `OBSERVER_SCALE_SMOOTHING.md` |
-| Global PL completion | `GLOBAL_MANIFOLD_Q2_COMPLETION.md` |
-| Qubit → Einstein single-path control | `QUBIT_TO_EINSTEIN_END_TO_END.md` |
-| Regge → EH | `REGGE_EH_CUBIC_BRIDGE.md` |
-| Plebanski/Urbantke bridge | `PLEBANSKI_URBANTKE_BRIDGE.md` |
-| HDA structural target | `QUANTUM_HDA_KILLER_RESULT.md` |
-| Graph-changing HDA | `GRAPH_CHANGING_HDA_TARGET.md` |
-| Fixed-cutoff composition | `FIXED_CUTOFF_COMPOSITION_BOUND.md` |
-| Текущий статус | `THEORY_STATUS.md` |
-| Открытые задачи | `OPEN_PROBLEMS.md` |
+| Central binary → continuum formulation | `BIT_TO_SPACETIME_CENTRAL_EQUATION.md` |
+| Exact q=2 local/global geometry carrier | `MICRO_WALSH_QGEOM_BRIDGE.md` |
+| Qubit → Einstein control | `QUBIT_TO_EINSTEIN_END_TO_END.md` |
+| Regge → EH bridge | `REGGE_EH_CUBIC_BRIDGE.md` |
+| HDA structural target | `GRAPH_CHANGING_HDA_TARGET.md` |
+| Three-node graph-changing result | `THREE_NODE_GRAPH_HDA_RESULT.md` |
+| Fixed-input joint limit | `JOINT_REGULATOR_LIMIT.md` |
+| Blind-prediction rules | `PHYSICAL_PREDICTION_FREEZE_CRITERIA.md` |
+| Canonical human status | `THEORY_STATUS.md` |
+| Machine ledger | `theory_gates.json` |
+| Remaining tasks | `OPEN_PROBLEMS.md` |
 
----
-
-## 14. Научная дисциплина проекта
-
-Для каждого результата репозиторий должен явно указывать один из уровней:
-
-```text
-proved          — точное математическое утверждение в объявленной модели
-tested_finite   — воспроизводимый конечномерный/численный тест
-conditional     — следствие при явно записанной дополнительной гипотезе
-open            — обязательный переход ещё не закрыт
-```
-
-Никакой finite PASS сам по себе не повышается до «экспериментально подтверждённой квантовой гравитации».
-
-Цель проекта — не максимальная громкость формулировок, а одна проверяемая цепь:
-
-$$
-\boxed{
-\text{quantum binary microstructure}
-\to
-\text{discrete quantum geometry}
-\to
-\text{coarse-grained smooth geometry}
-\to
-\text{GR dynamics in the continuum limit}
-}
-$$
+The project’s standard is not maximum claim size. It is a single chain in which every arrow is either proved, reproducibly tested, explicitly conditional or still open.
