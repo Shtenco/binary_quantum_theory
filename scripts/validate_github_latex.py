@@ -4,6 +4,13 @@
 By default every repository Markdown file is scanned. Optional positional paths
 allow CI to enforce a strict public-surface gate while historical research notes
 are cleaned separately.
+
+The repository uses both dollar delimiters and the standard TeX bracket forms
+``\\[ ... \\]`` / ``\\( ... \\)``.  They carry the same mathematical intent for
+this static boundary validator, so bracket delimiters are normalized to dollar
+delimiters before scanning.  This keeps the actual brace/environment checks
+identical instead of falsely classifying TeX commands inside bracket math as
+plain Markdown text.
 """
 
 from __future__ import annotations
@@ -68,6 +75,20 @@ def validate_expression(source: str, path: Path, line: int) -> list[Problem]:
     return problems
 
 
+def normalize_math_delimiters(line: str) -> str:
+    """Normalize TeX bracket math delimiters for the existing dollar scanner.
+
+    This is intentionally delimiter-only.  It does not rewrite mathematical
+    content and therefore cannot turn a malformed expression into a valid one.
+    """
+    return (
+        line.replace(r"\[", "$$")
+        .replace(r"\]", "$$")
+        .replace(r"\(", "$")
+        .replace(r"\)", "$")
+    )
+
+
 def validate_markdown(path: Path) -> tuple[int, list[Problem]]:
     lines = path.read_text(encoding="utf-8").splitlines()
     problems: list[Problem] = []
@@ -76,13 +97,14 @@ def validate_markdown(path: Path) -> tuple[int, list[Problem]]:
     display_source: list[str] | None = None
     display_line = 0
 
-    for number, line in enumerate(lines, 1):
-        if re.match(r"^\s*(```|~~~)", line):
+    for number, raw_line in enumerate(lines, 1):
+        if re.match(r"^\s*(```|~~~)", raw_line):
             in_fence = not in_fence
             continue
         if in_fence:
             continue
 
+        line = normalize_math_delimiters(raw_line)
         outside: list[str] = []
         position = 0
         while position < len(line):
@@ -163,7 +185,7 @@ def resolve_paths(values: list[str]) -> tuple[list[Path], list[str]]:
             errors.append(f"Markdown file not found: {value}")
             continue
         if candidate.suffix.lower() != ".md":
-            errors.append(f"not a Markdown file: {value}")
+            errors.append(f"not a Markdown file: {value}"))
             continue
         paths.append(candidate)
     return sorted(set(paths)), errors
