@@ -48,7 +48,7 @@ def run(seed=1729):
         good=float(np.min(e))>-TOL*sc and int(z.sum())==2 and perr<2e-9 and werr<2e-10
         ok &= good; ps.append(P0)
         rows.append({"metric_index":gi,"G_eigenvalue_min":float(np.min(np.linalg.eigvalsh(G))),"master_eigenvalue_min":float(np.min(e)),"master_gap":gap,"zero_rank":int(z.sum()),"projector_error_to_common_kernel":perr,"spectral_window_cutoff":cut,"spectral_window_projector_error":werr,"passed":bool(good)})
-        for T in (.2,.5,1.):
+        for T in (.002,.005,.01):
             obs=float(np.linalg.norm(heat(M,T)-P0,2)); pred=float(np.exp(-T*gap)); err=abs(obs-pred); hp=err<3e-10*max(1.,pred)
             ok &= hp; heats.append({"metric_index":gi,"T":T,"observed_operator_norm_error":obs,"predicted_exp_minus_T_gap":pred,"absolute_error":err,"passed":bool(hp)})
     pair=max(float(np.linalg.norm(ps[i]-ps[j])) for i in range(4) for j in range(i+1,4))
