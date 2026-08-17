@@ -1,0 +1,55 @@
+name: physicalization-s4-tt-quartic
+
+on:
+  push:
+    branches:
+      - research/physicalization-scale-observable-prediction
+    paths:
+      - 'S4_TT_QUARTIC_COMPLETE_BASIS.md'
+      - 'scripts/s4_tt_quartic_complete_basis_gate.py'
+      - '.github/workflows/physicalization-s4-tt-quartic.yml'
+  pull_request:
+    paths:
+      - 'S4_TT_QUARTIC_COMPLETE_BASIS.md'
+      - 'scripts/s4_tt_quartic_complete_basis_gate.py'
+      - '.github/workflows/physicalization-s4-tt-quartic.yml'
+  workflow_dispatch:
+
+jobs:
+  exact-s4-tt-quartic-quotient:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact quotient and extractor
+        run: |
+          python scripts/s4_tt_quartic_complete_basis_gate.py \
+            --output verification_results/S4_TT_QUARTIC_COMPLETE_BASIS.json
+      - name: Scope guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/S4_TT_QUARTIC_COMPLETE_BASIS.json'))
+          assert d['passed'] is True
+          assert d['science_status']=='EXACT_S4_TT_QUARTIC_BASIS'
+          assert d['quotient']['TT_invariant_quotient_dimension']==6
+          assert d['extractor']['high_symmetry_rank']==5
+          assert d['extractor']['with_120_rank']==6
+          assert d['extractor']['det_A']=='1/699840000'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: s4-tt-quartic-complete-basis
+          path: verification_results/S4_TT_QUARTIC_COMPLETE_BASIS.json
+          if-no-files-found: error
