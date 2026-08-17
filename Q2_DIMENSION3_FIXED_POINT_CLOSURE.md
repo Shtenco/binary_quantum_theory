@@ -1,6 +1,6 @@
 # q=2 -> exact causal-volume dimension-three fixed point
 
-Status: **exact asymptotic scaling theorem for the frozen q=2 route rewrite, cross-checked independently by PL topology and spectral observables**.
+Status: **exact asymptotic scaling theorem for the frozen q=2 route rewrite, cross-checked independently by PL topology and diffusion/scaling observables**.
 
 This note closes the specific “dimension gradient” that had previously appeared only numerically as
 
@@ -8,7 +8,7 @@ This note closes the specific “dimension gradient” that had previously appea
 ... -> 2.9517 -> 2.99385 -> 2.999229782 -> ...
 ```
 
-The limit is not guessed from a fit.  Once `q=2` has been selected independently by the local binary homogeneity equation
+The limit is not guessed from a fit. Once `q=2` has been selected independently by the local binary homogeneity equation
 
 \[
 q+2=2^q,
@@ -44,7 +44,7 @@ This value is fixed before any dimension measurement below.
 
 ## 2. Exact recursive growth law
 
-In one generation every active causal edge produces `B` intermediate route vertices and two causal child edges per route.  Therefore
+In one generation every active causal edge produces `B` intermediate route vertices and two causal child edges per route. Therefore
 
 \[
 E_{g+1}^{\rm active}=2B\,E_g^{\rm active}.
@@ -131,10 +131,10 @@ Representative values are
 | 7 | 2.999987961279020 |
 | 8 | 2.999998495152814 |
 
-The previously frozen held-out value
+The previously frozen held-out causal-volume value
 
 \[
-\boxed{d_H=2.999229782}
+\boxed{d_H=2.999229782139151}
 \]
 
 is therefore not an isolated numerical coincidence: it is the `g=5` point of this exact monotone sequence.
@@ -206,13 +206,25 @@ and recursive barycentric refinement preserves all vertex/edge/face link conditi
 
 ### C. Dynamical/scaling observables
 
-The independently measured frozen values are
+The frozen route calculation separately gives
 
 \[
-\boxed{d_s^{\rm slice}=3.004393867},
+\boxed{d_H=2.999229782139151},
 \qquad
-\boxed{z=0.998281156}.
+\boxed{z=0.998281156\ \text{(rounded project value)}}.
 \]
+
+In the repository code, the quantity historically labelled `ds_slice_holdout` is already the ratio
+
+\[
+\boxed{
+d_{\rm eff}^{\rm slice}
+\equiv\frac{d_H}{z}
+\simeq3.004393867.
+}
+\]
+
+This notation matters: `3.004393867` has **already been divided by `z` once**. It must not be divided by `z` again.
 
 Together with the exact causal-volume limit,
 
@@ -222,7 +234,8 @@ D_{\rm topo}=3,
 \qquad
 d_{\rm causal-volume}\to3,
 \qquad
-d_s^{\rm slice}\simeq3.
+d_{\rm eff}^{\rm slice}\simeq3.00439,
+\qquad z\simeq1.
 }
 \]
 
@@ -232,26 +245,40 @@ These are not the same estimator repeated three times.
 
 ## 6. From three spatial dimensions to 3+1 scaling
 
-For anisotropic scaling
+The frozen route code defines the one-causal-time history exponent as
 
 \[
-K(\omega,k)\sim\omega^2+|k|^{2z},
+\boxed{
+d_{\rm eff}^{\rm history}
+=1+\frac{d_H}{z}
+=1+d_{\rm eff}^{\rm slice}.
+}
 \]
 
-the history spectral dimension obeys
+With the frozen held-out values,
 
 \[
-d_s^{\rm history}
-=1+\frac{d_s^{\rm slice}}{z}.
+\boxed{
+d_{\rm eff}^{\rm history}
+\simeq4.004393867.
+}
 \]
 
-With the frozen values,
+This is the internally consistent project convention.
+
+A separate continuum heat-kernel formula is sometimes written
 
 \[
-d_s^{\rm history}\simeq4.004393867
+d_s^{\rm history}=1+\frac{D}{z},
 \]
 
-in the project convention, while `z -> 1` is the relativistic target.
+where `D` denotes the spatial volume/Hausdorff dimension. If one calls `D/z` itself a spatial spectral exponent, then the equivalent formula is simply
+
+\[
+d_s^{\rm history}=1+d_s^{\rm slice}.
+\]
+
+The two forms are the same statement with different notation; applying `/z` to `d_H/z` a second time would double-count the dynamical exponent.
 
 Thus the strengthened dimension chain is
 
@@ -261,7 +288,7 @@ q=2
 \to S^2\ \text{local link}
 \to M^3\cong S^3\ \text{PL phase}
 \to d_{\rm causal-volume}=3\ \text{fixed point}
-\to d_s^{\rm slice}\simeq3
+\to d_H/z\simeq3.00439
 \to z\simeq1
 \to 3+1\ \text{IR scaling}.
 }
@@ -273,7 +300,7 @@ q=2
 
 The theorem proved here is the asymptotic **causal-volume exponent of the frozen q=2 route rewrite** relative to its causal depth scale.
 
-It does not by itself prove that every graph metric, every possible nonflag global gluing, or every interacting quantum ensemble has Hausdorff dimension three.  That is why the repository keeps the PL-link, spectral-dimension and Hodge/two-form gates independent.
+It does not by itself prove that every graph metric, every possible nonflag global gluing, or every interacting quantum ensemble has Hausdorff dimension three. That is why the repository keeps the PL-link, diffusion/scaling and Hodge/two-form gates independent.
 
 Likewise, the existence/stability of the canonical `S^3` PL completion is not a theorem that the bare causal graph uniquely forces that gluing.
 
