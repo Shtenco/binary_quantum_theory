@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Exact one-node shard of the full-E L1 coarse-metric depth-two response.
 
-For one coarse parent edge e construct the *same* normalized source used by the
-unsharded production worker,
+For one coarse parent edge e construct the normalized source
 
     u_e = (1/2) sum_{4 chambers c -> e} H_c |Omega>.
 
@@ -14,9 +13,12 @@ The exact block result is reconstructed linearly by the collector,
 
     v_e = sum_{w=0}^{23} v_{e,w} = H_B u_e.
 
-This is a computational factorization only: it changes neither the
-physical-sine Euclidean operator, the closed 384-node/768-link L1 habitat nor
-the exact second-hit wall Jmax=5/2.
+The production backend is ``LocalPLPeterWeylEuclidean``: an exact active-cone
+implementation of the same physical-sine operator.  It keeps full global
+spin-network keys and projects only nodes touched by the local operator.  The
+workflow runs ``pl_peter_weyl_local_backend_equivalence_gate.py`` before any
+shard, comparing the optimized backend with the reference global-projection
+engine.  No physical approximation is introduced.
 """
 from __future__ import annotations
 
@@ -33,7 +35,7 @@ import numpy as np
 
 import peter_weyl_zeroaware_volume_migration_experiment as ZVM
 from pl_dual_complex import DualComplex, seed_16cell_boundary
-from pl_peter_weyl_euclidean import PLPeterWeylEuclidean
+from pl_peter_weyl_euclidean_local import LocalPLPeterWeylEuclidean
 from collective_barycentric_E_boundary_support_gate import barycentric_with_parent
 
 JMAX2 = 5
@@ -41,6 +43,7 @@ TOL = 1e-10
 PERMS = list(itertools.permutations(range(4)))
 EDGES = list(itertools.combinations(range(4), 2))
 REPRESENTATIVES = (0, 1, 5)
+BACKEND = 'LocalPLPeterWeylEuclidean exact active-cone'
 
 
 def add(dst, src, scale=1.0):
@@ -97,7 +100,7 @@ def run(edge_index, node_index, parent_id=0):
     coarse = seed_16cell_boundary()
     fine, parent = barycentric_with_parent(coarse)
     D = DualComplex(fine)
-    G = PLPeterWeylEuclidean(D)
+    G = LocalPLPeterWeylEuclidean(D)
 
     inside = sorted(v for v, p in enumerate(parent) if p == parent_id)
     if len(inside) != 24:
@@ -146,6 +149,8 @@ def run(edge_index, node_index, parent_id=0):
         'status': 'exact one-node shard of L1 full-E coarse-edge depth-two response',
         'passed': bool(all(checks.values())),
         'science_status': 'L1_METRIC_EDGE_DEPTH2_FULL_E_SHARD',
+        'backend': BACKEND,
+        'backend_equivalence_gate': 'scripts/pl_peter_weyl_local_backend_equivalence_gate.py',
         'parent_coarse_tetra': parent_id,
         'edge_index': edge_index,
         'edge': list(edge),
@@ -162,7 +167,7 @@ def run(edge_index, node_index, parent_id=0):
         'second_wrong_seed_parity_outputs': wrong,
         'checks': checks,
         'definition': 'u_e=(1/2) sum_{4 chambers->e} H_c|Omega>; v_e,w=H_w u_e; collector sums w=0..23',
-        'scope_note': 'Exact computational sharding of full physical-sine Euclidean E. No q4/strict projection, Lorentzian term, energy denominator, TT projection or external datum.',
+        'scope_note': 'Exact computational sharding plus certified exact active-cone implementation of full physical-sine Euclidean E. No q4/strict projection, Lorentzian term, energy denominator, TT projection or external datum.',
     }
     return D, u, v, meta
 
@@ -185,6 +190,7 @@ def main():
             'status': 'full-E depth-two shard worker exception',
             'passed': False,
             'science_status': 'INFRASTRUCTURE_DIAGNOSTIC',
+            'backend': BACKEND,
             'edge_index': a.edge_index,
             'node_index': a.node_index,
             'error_type': type(exc).__name__,
