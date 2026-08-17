@@ -53,6 +53,12 @@ jobs:
       - name: Exact global q=2 face-qubit carrier gluing
         run: python scripts/q2_global_face_qubit_gluing_gate.py --output verification_results/Q2_GLOBAL_FACE_QUBIT_GLUING.json
 
+      - name: q=2 graph-link representation and no-link factorization
+        run: python scripts/q2_graphlink_peter_weyl_gate.py --output verification_results/Q2_GRAPHLINK_PETER_WEYL.json
+
+      - name: Symmetric q=2 block to Peter-Weyl representation growth
+        run: python scripts/q2_symmetric_block_peter_weyl_growth_gate.py --N 8 --output verification_results/Q2_PETER_WEYL_GROWTH.json
+
       - name: Qubit to Einstein end-to-end control
         run: python scripts/qubit_to_einstein_end_to_end.py --output verification_results/QUBIT_TO_EINSTEIN.json
 
