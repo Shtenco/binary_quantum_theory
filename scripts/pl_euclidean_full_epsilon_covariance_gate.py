@@ -1,237 +1,155 @@
 #!/usr/bin/env python3
-"""Experimental full-epsilon Euclidean regulator covariance gate.
+"""Exact negative result for the proposed 12 -> 24 PL epsilon correction.
 
-The production PL Euclidean engine currently uses 12 cyclic representatives of
-the local four-slot epsilon contraction.  That is equivalent to the full 24
-ordered permutations only when reversing the ordered curvature pair is already
-an exact minus operation at finite regulator.
+The missing anti-cyclic ordered triples are already exact duplicates of the
+historical cyclic terms after Levi-Civita parity is included.  Therefore the
+normalized full 24-term alternating sum is IDENTICALLY the current 12-term
+operator and cannot repair the measured finite pairing-stabilizer defect.
 
-This target-independent experiment constructs instead
-
-  E_full24 = (1/2) * sum_{p=(d,a,b,c) in S4} sgn(p) E_term(a,b,c)
-
-with the same tetrahedral charged-volume backend and physical-sine ordering.
-The factor 1/2 preserves the historical normalization when the missing 12 odd
-triple permutations are exactly redundant.
-
-The gate asks only:
-  * does the 24-term antisymmetrization restore exact pairing-stabilizer
-    pseudoscalar covariance on the 16-cell seed?
-  * how far is it from the currently frozen 12-term E column?
-
-No GR/HDA target or fitted coefficient enters this experiment.  A PASS here is
-not permission to replace production E; all normalization/HDA regressions must
-be rerun before promotion.
+This gate works at actual T_sequences operator-word level and avoids the heavy
+Peter-Weyl amplitude evaluation entirely.
 """
 from __future__ import annotations
 
 import argparse
 import itertools
 import json
-import math
 import sys
+from collections import Counter
 from pathlib import Path
-
-import numpy as np
 
 HERE = Path(__file__).resolve().parent
 if str(HERE) not in sys.path:
     sys.path.insert(0, str(HERE))
 
-import peter_weyl_zeroaware_volume_migration_experiment as ZVM
-from tetrahedral_volume_backend import install_tetrahedral_volume_backend
 from pl_dual_complex import DualComplex, seed_16cell_boundary
 from pl_peter_weyl_euclidean import PLPeterWeylEuclidean
-
-TOL = 1e-9
 
 
 def parity(p):
     return -1 if sum(p[i] > p[j] for i in range(len(p)) for j in range(i + 1, len(p))) % 2 else 1
 
 
-def pairing_stabilizer():
-    pairs = {frozenset((0, 1)), frozenset((2, 3))}
-    return tuple(
-        p
-        for p in itertools.permutations(range(4))
-        if {frozenset((p[0], p[1])), frozenset((p[2], p[3]))} == pairs
-    )
+def counter(rows):
+    """Exact multiset of sequences with integer external coefficients."""
+    c = Counter()
+    for coef, seq in rows:
+        c[repr(seq)] += int(coef)
+    return +c - (-c)
 
 
-def map_node(v, h):
-    bits = [(v >> (3 - i)) & 1 for i in range(4)]
-    nb = [0] * 4
-    for i in range(4):
-        nb[h[i]] = bits[i]
-    out = 0
-    for i, b in enumerate(nb):
-        out |= b << (3 - i)
-    return out
+def signed_counter(rows, scale=1):
+    c = Counter()
+    for coef, seq in rows:
+        c[repr(seq)] += int(scale) * int(coef)
+    return c
 
 
-def inverse_perm(h):
-    q = [0] * 4
-    for i, x in enumerate(h):
-        q[x] = i
-    return tuple(q)
+def exact_neg(a, b):
+    ca = signed_counter(a, +1)
+    cb = signed_counter(b, +1)
+    keys = set(ca) | set(cb)
+    return all(cb[k] == -ca[k] for k in keys)
 
 
-def mapped_spins(spins, edges, ei, h):
-    ns = [0] * len(edges)
-    for old, (a, b) in enumerate(edges):
-        e = tuple(sorted((map_node(a, h), map_node(b, h))))
-        ns[ei[e]] = spins[old]
-    return tuple(ns)
-
-
-def state_rel(a, b):
-    keys = set(a) | set(b)
-    num = math.sqrt(sum(abs(a.get(k, 0j) - b.get(k, 0j)) ** 2 for k in keys))
-    den = math.sqrt(sum(abs(z) ** 2 for z in b.values()))
-    return num / max(den, 1e-300)
-
-
-def inner(a, b):
-    return sum(np.conjugate(a.get(k, 0j)) * b.get(k, 0j) for k in set(a) | set(b))
-
-
-class HTransport:
-    def __init__(self, D, G):
-        self.D = D
-        self.G = G
-        self.edges = list(G.EDGES)
-        self.ei = {e: i for i, e in enumerate(self.edges)}
-        self.local_cache = {}
-        self.max_local_leak = 0.0
-        self.max_phase_mod = 0.0
-
-    def local_phase(self, v, spins, K, h, newspins):
-        key = (v, spins, K, h, newspins)
-        if key in self.local_cache:
-            return self.local_cache[key]
-        t = map_node(v, h)
-        oldls = self.G.local_spins(spins, v)
-        newls = self.G.local_spins(newspins, t)
-        expected = [None] * 4
-        for r in range(4):
-            expected[h[r]] = oldls[r]
-        if tuple(expected) != tuple(newls):
-            raise RuntimeError(("local spin permutation mismatch", v, h, oldls, newls, expected))
-        T = self.G.oriented_intertwiner(v, oldls, K)
-        Tp = np.transpose(T, axes=inverse_perm(h))
-        U = self.G.oriented_intertwiner(t, newls, K)
-        z = np.vdot(U, Tp)
-        leak = float(np.linalg.norm(Tp - z * U))
-        mod = float(abs(abs(z) - 1.0))
-        self.max_local_leak = max(self.max_local_leak, leak)
-        self.max_phase_mod = max(self.max_phase_mod, mod)
-        if leak > TOL or mod > TOL:
-            raise RuntimeError(("H failed to preserve K line", v, h, oldls, K, complex(z), leak, mod))
-        self.local_cache[key] = z
-        return z
-
-    def map_state(self, state, h):
-        out = {}
-        for (spins, Ks), amp in state.items():
-            ns = mapped_spins(spins, self.edges, self.ei, h)
-            nk = [None] * 16
-            phase = 1 + 0j
-            for v, K in enumerate(Ks):
-                t = map_node(v, h)
-                nk[t] = K
-                phase *= self.local_phase(v, spins, K, h, ns)
-            key = (ns, tuple(nk))
-            out[key] = out.get(key, 0j) + amp * phase
-        return {k: a for k, a in out.items() if abs(a) > 1e-11}
-
-
-def full24_E(G, D, key, v, Jmax2, tol=1e-10):
-    out = {}
-    # p=(d,a,b,c): d is the omitted slot.  parity(p) is exactly (-1)^d
-    # on the three cyclic representatives already used by oriented_specs().
-    # We include all 24 p and multiply the old per-term sine coefficient by 1/2.
-    for p in itertools.permutations(range(4)):
-        d, a, b, c = p
-        sign = D.orientation[v] * parity(p)
-        rr = dict(G.T_items(key, v, a, b, c, Jmax2, False))
-        aa = dict(G.T_items(key, v, a, b, c, Jmax2, True))
-        G.add(out, rr, -0.25j * sign)
-        G.add(out, aa, +0.25j * sign)
-    return {k: a for k, a in out.items() if abs(a) > tol}
+def exact_neg_adjoint(G, a, b):
+    ca = Counter()
+    cb = Counter()
+    for coef, seq in a:
+        ca[repr(G.adjoint_sequence(seq))] += int(coef)
+    for coef, seq in b:
+        cb[repr(G.adjoint_sequence(seq))] += int(coef)
+    keys = set(ca) | set(cb)
+    return all(cb[k] == -ca[k] for k in keys)
 
 
 def run():
-    ZVM.patch_and_clear()
     D = DualComplex(seed_16cell_boundary())
     G = PLPeterWeylEuclidean(D)
-    seed = ((1,) * len(G.EDGES), (0,) * D.n_tets)
 
-    with install_tetrahedral_volume_backend():
-        G.primitive_items.cache_clear()
-        old12 = G.H_sine_basis(seed, 0, 5, 1e-10)
-        full24 = full24_E(G, D, seed, 0, 5, 1e-10)
-    G.primitive_items.cache_clear()
+    swap_rows = []
+    forward_failures = []
+    adjoint_failures = []
 
-    transport = HTransport(D, G)
-    H = pairing_stabilizer()
-    rows = []
-    maxerr = 0.0
-    support = True
-    normdef = 0.0
-    n24 = G.norm(full24)
-    for h in H:
-        mapped = transport.map_state(full24, h)
-        target = {k: parity(h) * a for k, a in full24.items()}
-        err = float(state_rel(mapped, target))
-        support_equal = set(mapped) == set(target)
-        maxerr = max(maxerr, err)
-        support = bool(support and support_equal)
-        normdef = max(normdef, float(abs(G.norm(mapped) - n24)))
-        rows.append(
-            {
-                "permutation": list(h),
-                "parity": parity(h),
-                "support_identical": support_equal,
-                "relative_full24_covariance_error": err,
-                "mapped_norm": float(G.norm(mapped)),
-            }
-        )
+    for v in range(D.n_tets):
+        for a in range(4):
+            for b in range(4):
+                if b == a:
+                    continue
+                for c in range(4):
+                    if c in (a, b):
+                        continue
+                    lhs = G.T_sequences(v, a, b, c)
+                    rhs = G.T_sequences(v, b, a, c)
+                    fwd = exact_neg(lhs, rhs)
+                    adj = exact_neg_adjoint(G, lhs, rhs)
+                    if not fwd:
+                        forward_failures.append((v, a, b, c))
+                    if not adj:
+                        adjoint_failures.append((v, a, b, c))
+                    swap_rows.append(
+                        {
+                            "node": v,
+                            "a": a,
+                            "b": b,
+                            "c": c,
+                            "forward_exact_negative": fwd,
+                            "direct_adjoint_exact_negative": adj,
+                        }
+                    )
 
-    overlap = inner(old12, full24)
-    n12 = G.norm(old12)
-    rel = float(state_rel(full24, old12))
-    cos = float((overlap.real) / max(n12 * n24, 1e-300))
+    # Fixed-d parity pairing between 3 historical cyclic and 3 omitted
+    # anti-cyclic orders.  We construct the exact bijection anti = swap12(cyclic)
+    # rather than selecting it after inspection.
+    omitted_rows = []
+    parity_pairing_ok = True
+    for d in range(4):
+        tri = tuple(r for r in range(4) if r != d)
+        cyclic = [tri, (tri[1], tri[2], tri[0]), (tri[2], tri[0], tri[1])]
+        anti = [(p[1], p[0], p[2]) for p in cyclic]
+        row_pairs = []
+        for cyc, ant in zip(cyclic, anti):
+            sc = parity((d,) + cyc)
+            sa = parity((d,) + ant)
+            ok = sa == -sc
+            parity_pairing_ok = parity_pairing_ok and ok
+            row_pairs.append(
+                {
+                    "cyclic": list(cyc),
+                    "anti_cyclic": list(ant),
+                    "cyclic_parity": sc,
+                    "anti_cyclic_parity": sa,
+                    "opposite_parity": ok,
+                }
+            )
+        omitted_rows.append({"omitted_slot": d, "pairs": row_pairs})
+
+    # Formal coefficient identity: for each paired term,
+    # (1/2)[s*T + (-s)*(-T)] = s*T.
+    pair_identity_exact = parity_pairing_ok and not forward_failures and not adjoint_failures
 
     checks = {
-        "full24_nonzero": bool(n24 > 1e-10),
-        "full24_sparse_support_H_covariant": bool(support),
-        "full24_pseudoscalar_H_covariance": bool(maxerr < TOL),
-        "full24_norm_H_invariant": bool(normdef < TOL),
-        "local_K_line_transport_exact": bool(
-            transport.max_local_leak < TOL and transport.max_phase_mod < TOL
-        ),
+        "384_forward_swap_cases_exact": len(swap_rows) == 384 and len(forward_failures) == 0,
+        "384_direct_adjoint_swap_cases_exact": len(swap_rows) == 384 and len(adjoint_failures) == 0,
+        "cyclic_anticyclic_parities_opposite": bool(parity_pairing_ok),
+        "normalized_full24_equals_historical12_forward": bool(pair_identity_exact),
+        "normalized_full24_equals_historical12_direct_adjoint": bool(pair_identity_exact),
+        "normalized_full24_equals_historical12_physical_sine": bool(pair_identity_exact),
     }
 
     return {
-        "status": "experimental fully antisymmetrized 24-term PL Euclidean regulator covariance",
+        "status": "exact PL Euclidean 12-term / 24-term epsilon equivalence",
         "passed": bool(all(checks.values())),
-        "science_status": "TARGET_INDEPENDENT_REGULATOR_COVARIANCE_EXPERIMENT",
+        "science_status": "EXACT_NEGATIVE_OPERATOR_CORRECTION_RESULT",
         "checks": checks,
-        "definition": "E_full24=(1/2) sum_{(d,a,b,c) in S4} sgn(d,a,b,c) E_sine_term(a,b,c), with the tetrahedral charged-volume backend",
-        "old12_support": len(old12),
-        "old12_norm": float(n12),
-        "full24_support": len(full24),
-        "full24_norm": float(n24),
-        "full24_vs_old12_relative_state_error": rel,
-        "normalized_real_overlap_full24_old12": cos,
-        "full24_vs_old12_support_identical": bool(set(full24) == set(old12)),
-        "H_covariance_rows": rows,
-        "max_full24_H_relative_covariance_error": float(maxerr),
-        "max_full24_H_norm_defect": float(normdef),
-        "max_local_intertwiner_line_leakage": float(transport.max_local_leak),
-        "max_local_phase_modulus_defect": float(transport.max_phase_mod),
-        "promotion_guard": "Even if this gate passes, E_full24 is not production until Euclidean normalization, two-node HDA, route, Lorentzian and collective regressions are rerun under a separately frozen operator-correction addendum.",
+        "ordered_swap_cases_checked": len(swap_rows),
+        "forward_failures": [list(x) for x in forward_failures[:8]],
+        "direct_adjoint_failures": [list(x) for x in adjoint_failures[:8]],
+        "omitted_slot_pairing": omitted_rows,
+        "identity": "T(v;b,a,c)=-T(v;a,b,c) exactly; anti-cyclic epsilon parity also flips; therefore E_full24=(1/2)sum_S4 sgn(p)T_p equals E_historical12 exactly.",
+        "consequence": "The measured 0.1139945503942336 finite H-sign-irrep breaking power cannot be repaired by adding the omitted anti-cyclic half. The defect lies deeper in the distinguished third-slot/triad-leg regulator role or its refinement behavior.",
+        "documentation": "PL_EUCLIDEAN_12_24_EQUIVALENCE_THEOREM.md",
+        "supersedes_experiment": "A heavy full24 amplitude rerun is mathematically redundant for deciding the 12-vs-24 question.",
     }
 
 
