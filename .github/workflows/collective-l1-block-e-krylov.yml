@@ -7,14 +7,59 @@ on:
     paths:
       - 'scripts/collective_l1_metric_edge_depth2_shard_worker.py'
       - 'scripts/collective_l1_metric_edge_depth2_shard_collect.py'
+      - 'scripts/pl_peter_weyl_local_backend_equivalence_gate.py'
       - 'scripts/collective_barycentric_E_boundary_support_gate.py'
       - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_peter_weyl_euclidean_local.py'
       - 'scripts/pl_dual_complex.py'
       - '.github/workflows/collective-l1-block-e-krylov.yml'
   workflow_dispatch:
 
+concurrency:
+  group: collective-l1-block-e-krylov-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
+  backend-equivalence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Reference vs exact active-cone backend
+        run: |
+          mkdir -p verification_results
+          python scripts/pl_peter_weyl_local_backend_equivalence_gate.py \
+            --output verification_results/PL_PETER_WEYL_LOCAL_BACKEND_EQUIVALENCE.json
+      - name: Guard exact equivalence
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/PL_PETER_WEYL_LOCAL_BACKEND_EQUIVALENCE.json'))
+          assert d['passed'] is True
+          assert d['science_status']=='IMPLEMENTATION_EQUIVALENCE'
+          assert d['max_relative_l2_error'] < 3e-10
+          assert d['max_abs_amplitude_error'] < 3e-10
+          assert all(d['checks'].values())
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-peter-weyl-local-backend-equivalence
+          path: verification_results/PL_PETER_WEYL_LOCAL_BACKEND_EQUIVALENCE.json
+          if-no-files-found: error
+
   metric-orbit-shards:
+    needs: backend-equivalence
     strategy:
       fail-fast: false
       max-parallel: 24
