@@ -1,4 +1,4 @@
-# Logical route metric: mirror protection and ordering dependence
+# Logical route metric: orientation parity and ordering dependence
 
 Status: **exact logical flux-metric decomposition + tested finite ordering control; full operator-valued route HDA remains open**.
 
@@ -43,13 +43,13 @@ flux metric logical content = I, X, Z
 orientation coordinate       = Y.
 ```
 
-Therefore the route flux metric is exactly mirror even under
+Therefore the route flux metric is even under the logical orientation reflection
 
 ```text
 Y -> -Y.
 ```
 
-It cannot by itself distinguish `chi=+1` from `chi=-1` at the linear logical-operator level.
+It cannot by itself distinguish the two signs of the oriented-volume coordinate at the linear logical-operator level.
 
 ---
 
@@ -139,13 +139,13 @@ The difference is a genuine noncommutativity/ordering effect of the nonlinear sq
 
 ## 5. What is protected and what is not
 
-Both orderings agree on the exact mirror statement:
+Both orderings agree on the exact orientation-parity statement:
 
 ```text
 Y coefficient = 0.
 ```
 
-Thus the route metric respects mirror `Z2`.
+Thus the route flux metric is insensitive to the sign of the oriented-volume coordinate at this level.
 
 But full pseudospin `SU(2)` is not kinematically protected because the metric naturally lives in the `X/Z` shape plane.
 
@@ -155,7 +155,7 @@ Whether that shape information survives into the **quantized route constraint** 
 
 ## 6. Relation to the Peter-Weyl anisotropy result
 
-The Euclidean Peter-Weyl return kernel independently shows a strong environment-unbiased orientation-vs-shape split while preserving the same mirror selection rule.
+The Euclidean Peter-Weyl return kernel independently shows a strong environment-unbiased orientation-vs-shape split while suppressing the same `Y`-odd linear channels.
 
 The route result should therefore be read carefully:
 
@@ -175,7 +175,7 @@ Q_hat -> chosen positive sqrt / densitized alternative
 
 is fixed before the commutator test.
 
-The criterion is not merely spectral positivity. The chosen ordering must also retain the correct route-normal HDA limit and preserve the tested mirror selection rule.
+The criterion is not merely spectral positivity. The chosen ordering must also retain the correct route-normal HDA limit and preserve the tested orientation-parity selection rule.
 
 Until that is done, the operator-first `0.0400749185` shape norm is an ordering diagnostic, not a new term in the canonical Hamiltonian.
 
