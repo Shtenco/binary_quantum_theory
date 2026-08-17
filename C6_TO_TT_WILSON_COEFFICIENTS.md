@@ -1,238 +1,144 @@
-# C6 -> TT -> exact quartic Wilson-coefficient extraction
+# Restricted C6 -> TT -> eta2/zeta4 extractor
 
-Status: **exact symmetry/kinematic extraction map; final microscopic inputs from the full depth-two/Lorentzian C6 kernel remain pending**.
+Status: **exact extractor for the preregistered isotropic-plus-one-cubic-harmonic subfamily.  It is no longer claimed to span the complete generic nonzero-momentum S4 TT quartic sector.**
 
-This note closes the algebraic part of the current physicalization bottleneck:
+The complete general theorem is now `S4_TT_QUARTIC_COMPLETE_BASIS.md`, which proves that a parity-even generic directed-momentum TT quartic kernel has six independent physical Wilson structures after `tr(h)=0` and `h.k=0` are imposed.
 
-\[
-C_6(\omega,k)
-\longrightarrow
-K_{TT}(\omega,k)
-\longrightarrow
-\{\eta_2^{IR},\zeta_4^{IR}\}.
-\]
+This file remains important for two reasons:
 
-Once the microscopic six-edge kernel has been computed, no generic quartic tensor fit is needed.
+1. it is an exact positive-control extractor for the reduced bare propagator;
+2. it defines a **nested two-parameter hypothesis** that the future six-coefficient microscopic result can either pass or falsify.
 
 ---
 
-## 1. S4 reduces the six-edge kernel to three orbit functions
+## 1. Correct symmetry scope
 
-For the six unordered edges of a tetrahedron, any `S4`-invariant kernel has the form
+For an onsite `k=0` six-edge kernel,
+
+\[
+C_6^{(0)}=aI+bA_{adj}+cO_{opp}
+\]
+
+is exact and gives
+
+\[
+\lambda_E=a-2b+c,
+\qquad
+\lambda_{T_2}=a-c,
+\]
+
+\[
+\Delta_{ET}=2(c-b).
+\]
+
+For a generic nonzero vector momentum the exact law is instead
 
 \[
 \boxed{
-C_6(\omega,\mathbf k)
-=a(\omega,\mathbf k)I
-+b(\omega,\mathbf k)A_{adj}
-+c(\omega,\mathbf k)O_{opp}.
+C_6(g\mathbf k)=U_gC_6(\mathbf k)U_g^{-1}.
 }
 \]
 
-Its irreducible eigenvalues are
-
-\[
-\lambda_{A_1}=a+4b+c,
-\]
-
-\[
-\boxed{\lambda_E=a-2b+c},
-\]
-
-\[
-\boxed{\lambda_{T_2}=a-c}.
-\]
-
-Therefore the unique tetrahedral splitting of the five traceless metric components is
-
-\[
-\boxed{
-\Delta_{ET}=\lambda_E-\lambda_{T_2}=2(c-b).
-}
-\]
-
-The common spin-2 stiffness is conveniently
-
-\[
-\kappa_5=\frac{2\lambda_E+3\lambda_{T_2}}5.
-\]
-
-This step uses no continuum fit.
+Therefore a generic fixed direction need not commute with the full `S4` action.  The physical quartic TT quotient is six-dimensional, not two-dimensional.
 
 ---
 
-## 2. Exact shape-to-metric and TT projection
+## 2. Nested scalar cubic hypothesis
 
-Let `M` denote the already-derived local logical-shape-to-metric Jacobian and `Pi_TT(n)` the continuum TT projector for propagation direction `n`.
-
-The physical quadratic tensor kernel is obtained schematically as
+Suppose, **after the full six-coefficient extraction**, the polarization-averaged quartic pole is compatible with the restricted form
 
 \[
 \boxed{
-K_{TT}(\omega,k\mathbf n)
-=\Pi_{TT}(\mathbf n)
-M\,\Gamma_{shape}(\omega,k\mathbf n)M^T
-\Pi_{TT}(\mathbf n).
+\bar e_4(\hat n)
+=\eta_2^{iso}
++\zeta_4^{cub}Q_4^{cub}(\hat n),
 }
 \]
 
-Equivalently, when the six-edge metric kernel itself is the coarse variable, use the fixed six-edge-to-metric Jacobian before `Pi_TT`.
-
-In a parity-even non-birefringent sector the two physical TT eigenvalues agree in the IR.  If they do not, the polarization splitting must be reported as an additional observable rather than averaged away.
-
----
-
-## 3. Normalize the leading light cone first
-
-For each direction `n`, solve the TT pole
+where
 
 \[
-\det K_{TT}(\omega,k\mathbf n)=0
+Q_4^{cub}(\hat n)
+=\sum_i n_i^4-\frac35.
 \]
 
-for the positive-frequency branch and expand
+For the high-symmetry directions,
 
 \[
-\omega^2
-=c_T^2 k^2
-+c_T^2 a_*^2 k^4\,e_4(\mathbf n)
-+O(a_*^4k^6).
-\]
-
-The leading coefficient `c_T^2` is fixed from the common `k^2` term.  A direction-dependent `k^2` coefficient that survives the IR is a failure of rotational/Lorentz restoration and must not be hidden inside the quartic fit.
-
-The dimensionless directional quartic coefficient is
-
-\[
-\boxed{
-e_4(\mathbf n)
-=\lim_{k\to0}
-\frac{\omega^2-c_T^2k^2}
-{c_T^2a_*^2k^4}.
-}
-\]
-
----
-
-## 4. Unique isotropic + cubic decomposition
-
-In three spatial dimensions the zero-angular-mean cubic invariant is
-
-\[
-\boxed{
-Q_4^{cub}(\mathbf n)
-=\sum_{i=1}^3 n_i^4-\frac35.
-}
+Q_{100}=\frac25,
+\qquad
+Q_{110}=-\frac1{10},
+\qquad
+Q_{111}=-\frac4{15}.
 \]
 
 Hence
 
 \[
-\boxed{
-e_4(\mathbf n)
-=\eta_2^{iso}
-+\zeta_4^{cub}Q_4^{cub}(\mathbf n).
-}
+e_{100}=\eta_2+\frac25\zeta_4,
 \]
-
-For the three preregistered high-symmetry directions:
-
-### Axis `(100)`
 
 \[
-Q_{100}=1-\frac35=\frac25,
+e_{110}=\eta_2-\frac1{10}\zeta_4,
 \]
-
-so
-
-\[
-e_{100}=\eta_2+\frac25\zeta_4.
-\]
-
-### Face diagonal `(110)`
-
-For `n=(1,1,0)/sqrt(2)`,
-
-\[
-\sum_i n_i^4=\frac12,
-\qquad
-Q_{110}=-\frac1{10},
-\]
-
-hence
-
-\[
-e_{110}=\eta_2-\frac1{10}\zeta_4.
-\]
-
-### Body diagonal `(111)`
-
-For `n=(1,1,1)/sqrt(3)`,
-
-\[
-\sum_i n_i^4=\frac13,
-\qquad
-Q_{111}=-\frac4{15},
-\]
-
-hence
 
 \[
 e_{111}=\eta_2-\frac4{15}\zeta_4.
 \]
 
----
-
-## 5. Closed-form extraction: no free tensor fit
-
-The first two directions determine both Wilson coefficients exactly:
+The first two determine
 
 \[
 \boxed{
-\zeta_4
-=2\left(e_{100}-e_{110}\right),
+\zeta_4=2(e_{100}-e_{110}),
 }
 \]
 
 \[
 \boxed{
-\eta_2
-=\frac15e_{100}+\frac45e_{110}.
+\eta_2=\frac15e_{100}+\frac45e_{110}.
 }
 \]
 
-Independently, the second and third directions give
+The third is then a held-out identity:
 
 \[
 \boxed{
-\zeta_4
-=6\left(e_{110}-e_{111}\right).
+e_{100}-4e_{110}+3e_{111}=0.
 }
 \]
 
-Therefore the third direction is a held-out algebraic consistency test:
+Equivalently,
 
 \[
-\boxed{
-e_{100}-4e_{110}+3e_{111}=0
-}
+\zeta_4=6(e_{110}-e_{111}).
 \]
 
-for a pure isotropic-plus-cubic quartic tensor.
-
-A statistically significant violation means one of three things:
-
-1. higher angular invariants are already important in the fit window;
-2. finite-size/regulator contamination is not under control;
-3. the assumed `S4`/cubic effective description is incomplete.
-
-It must not be repaired by adding coefficients after opening the result without a new preregistration.
+These formulas are exact **inside this nested hypothesis**.
 
 ---
 
-## 6. Exact positive control: the already-known reduced bare propagator
+## 3. Why three directions are not a complete general extractor
 
-The reduced TT pole gives
+The complete TT quartic basis has dimension six.
+
+The full polarization-resolved information available at `(100),(110),(111)` spans only rank five of that six-dimensional space.  Therefore no algebraic manipulation of only those three directions can reconstruct the most general `S4` quartic response.
+
+`S4_TT_QUARTIC_COMPLETE_BASIS.md` adds the preregistered generic direction `(120)` and gives an exact rational six-observable matrix with
+
+\[
+\det A=\frac1{699840000}\ne0.
+\]
+
+The future production analysis must perform that full extraction first.
+
+Only then is it legitimate to ask whether the six-vector lies in the smaller `eta2/zeta4` subspace.
+
+---
+
+## 4. Exact positive control: reduced bare propagator
+
+The already-frozen reduced TT pole has
 
 \[
 e_{100}=-\frac1{18},
@@ -242,79 +148,102 @@ e_{110}=-\frac1{72},
 e_{111}=0.
 \]
 
-The closed formulas produce
-
-\[
-\zeta_{4,bare}
-=2\left(-\frac1{18}+\frac1{72}\right)
-=-\frac1{12},
-\]
-
-and
-
-\[
-\eta_{2,bare}
-=\frac15\left(-\frac1{18}\right)
-+\frac45\left(-\frac1{72}\right)
-=-\frac1{45}.
-\]
-
-The consistency identity is exact:
-
-\[
--\frac1{18}
--4\left(-\frac1{72}\right)
-+3(0)=0.
-\]
-
-Thus the extractor reproduces the frozen reduced-model result with no fit freedom.
-
----
-
-## 7. What remains genuinely dynamical
-
-The algebraic bridge is now closed:
+The nested extractor gives
 
 \[
 \boxed{
-C_6
-\to (a,b,c)
-\to (\lambda_E,\lambda_{T_2})
-\to K_{TT}
-\to (e_{100},e_{110},e_{111})
-\to (\eta_2,\zeta_4).
+\zeta_{4,bare}=-\frac1{12},
 }
 \]
 
-The remaining unknown is not the extraction formula.  It is the **renormalized microscopic kernel itself**:
-
 \[
-C_6^{RG}(\omega,k;b)
+\boxed{
+\eta_{2,bare}=-\frac1{45}.
+}
 \]
 
-and its regulator/scale convergence.
-
-The physical preregistration therefore asks whether
+and the held-out identity is exact:
 
 \[
-\eta_2(b)\to\eta_2^{IR},
-\qquad
-\zeta_4(b)\to\zeta_4^{IR}
+-\frac1{18}-4\left(-\frac1{72}\right)+3(0)=0.
 \]
 
-while the leading `k^2` `E/T2` splitting goes to zero.
+So the script `scripts/c6_tt_wilson_extractor.py` remains a correct regression/positive-control tool for this restricted model.
 
 ---
 
-## 8. Falsification conditions
+## 5. Nested single-Qtet polarization hypothesis
 
-The physical branch fails if any of the following occurs:
+A second restricted hypothesis is
 
-- a finite direction-dependent leading `k^2` cone survives in the IR;
-- TT poles become ghost/tachyonic;
-- `eta2` or `zeta4` do not converge under the frozen blocking prescription;
-- the three-direction identity remains violated in the scaling window;
-- the answer depends materially on a regulator choice that is not an irrelevant deformation;
-- the external observable requires post-hoc retuning of these coefficients.
+\[
+e_{4,\pm}(\hat n)=\eta_2+\gamma_4q_\pm(\hat n),
+\]
 
-This is the exact reason the project can now speak of a forthcoming **blind dimensionless gravitational prediction** rather than an unspecified future RG calculation.
+where `q_±` are the eigenvalues of the TT projection of
+
+\[
+Q_{tet}=\frac35P_E-\frac25P_{T_2}.
+\]
+
+`TETRAHEDRAL_TT_BIREFRINGENCE_THEOREM.md` proves
+
+\[
+\boxed{\zeta_4=\gamma_4/4}
+\]
+
+for the polarization average and
+
+\[
+\boxed{
+\Delta e_{100}:\Delta e_{110}:\Delta e_{111}=4:3:0
+}
+\]
+
+for the polarization splitting.
+
+Again: this is a parameter-free **consistency pattern** after the full six-Wilson result is known, not a reason to force the microscopic result into one splitter.
+
+---
+
+## 6. Scientific decision tree
+
+The correct post-production analysis is now:
+
+```text
+full interblock Peter-Weyl kernel
+ -> TT projection
+ -> extract six general quartic Wilson coefficients c1...c6
+ -> test full-rank internal consistency
+ -> test eta2 + zeta4 Q4 nested hypothesis
+ -> test single-Qtet 4:3:0 birefringence nested hypothesis
+ -> if passed: report eta2, zeta4 as compressed physical description
+ -> if failed: report the stronger full six-coefficient prediction
+```
+
+No additional tensor term may be added or removed after viewing an external posterior without a new preregistration.
+
+---
+
+## 7. Scope guard for the 8.43% precursor
+
+The measured first-refinement value
+
+\[
+\Delta_{ET}/\kappa_5=0.08430036026012608
+\]
+
+belongs to a local Euclidean tangent kernel.  It is not `zeta4`, not `gamma4`, and not any one of the six generic infrared Wilson coefficients until the interblock derivative expansion is performed.
+
+The bridge remains
+
+\[
+\boxed{
+\text{local }\Delta_{ET}
+\to\text{interblock }C_6(\omega,\mathbf k)
+\to K_{TT}
+\to(c_1,\ldots,c_6)
+\to\text{nested reductions if passed}
+\to\text{experiment}.
+}
+\]
