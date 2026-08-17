@@ -1,0 +1,39 @@
+{
+  "status": "CONDITIONAL_IR_UNIVERSALITY_THEOREM",
+  "passed": true,
+  "verification_environment": "local deterministic algebraic reproduction using frozen repository artifact values; GitHub Actions confirmation is separate",
+  "theorem_file": "BCQG_IR_UNIVERSALITY_CLOSURE_THEOREM.md",
+  "finite_prerequisites": {
+    "collective_metric_calibration_passed": true,
+    "collective_direct_gravitational_block_passed": true,
+    "first_block_metric_s_min": 0.4082482904638631,
+    "first_block_metric_s_max": 0.5773502691896258,
+    "first_block_metric_condition_number": 1.4142135623730951,
+    "direct_block_PCP_zero": true
+  },
+  "exact_reductions": {
+    "HDA_selects_c_DeWitt": 0.5,
+    "HDA_selects_AB": 1.0,
+    "leading_TT_z": 1.0,
+    "constraint_rank_tuple_used_for_Dirac_identity": [3, 3, 1, 0],
+    "r_secondclass_used_for_Dirac_identity": 0,
+    "N_phys_config": 2.0
+  },
+  "schur_feshbach_selftest": {
+    "D_min_abs_eigenvalue": 1.956763583922564,
+    "Q_equation_residual_norm": 4.518280359883027e-16,
+    "P_equation_match_norm": 0.0,
+    "passed": true
+  },
+  "irreducible_open_hypotheses": {
+    "H1_uniform_metric_regularity_under_refinement": "open",
+    "H2_local_two_derivative_leading_IR_scalar": "open",
+    "H3_collective_first_class_HDA_and_ranks": "open",
+    "H4_no_second_class_sector": "open",
+    "absolute_G_Lambda_scale_matching": "open",
+    "Lorentzian_quantum_measure_unitarity": "open",
+    "complete_chiral_matter_anomaly_cancellation": "open",
+    "experiment": "open"
+  },
+  "guard": "The historical collective GR universality preregistration remains active and its thresholds are not relaxed by this theorem."
+}
