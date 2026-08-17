@@ -1,0 +1,41 @@
+name: pl-euclidean-full-epsilon-theorem
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'PL_EUCLIDEAN_FULL_EPSILON_COVARIANCE_THEOREM.md'
+      - 'scripts/pl_euclidean_full_epsilon_theorem_gate.py'
+      - 'scripts/pl_dual_complex.py'
+      - '.github/workflows/pl-euclidean-full-epsilon-theorem.yml'
+  workflow_dispatch:
+
+jobs:
+  theorem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Exact combinatorial theorem
+        run: python scripts/pl_euclidean_full_epsilon_theorem_gate.py --output verification_results/PL_EUCLIDEAN_FULL_EPSILON_THEOREM.json
+      - name: Hard theorem guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/PL_EUCLIDEAN_FULL_EPSILON_THEOREM.json'))
+          assert d['passed']
+          assert d['S4_order']==24
+          assert d['reindex_cases_checked']==576
+          assert d['plaquette_cases_checked']==4608
+          assert all(d['checks'].values())
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-euclidean-full-epsilon-theorem
+          path: verification_results/PL_EUCLIDEAN_FULL_EPSILON_THEOREM.json
+          if-no-files-found: error
