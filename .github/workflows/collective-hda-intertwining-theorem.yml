@@ -1,0 +1,48 @@
+name: collective-hda-intertwining-theorem
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'COLLECTIVE_HDA_INTERTWINING_THEOREM.md'
+      - 'scripts/collective_hda_intertwining_gate.py'
+      - 'scripts/operator_route_sparse_fourier.py'
+      - 'verification_results/FULL_OPERATOR_FIRST_HDA_THEOREM.json'
+      - '.github/workflows/collective-hda-intertwining-theorem.yml'
+  workflow_dispatch:
+
+jobs:
+  theorem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/collective_hda_intertwining_gate.py scripts/operator_route_sparse_fourier.py
+      - name: Exact compression and noncommuting route controls
+        run: python scripts/collective_hda_intertwining_gate.py --output verification_results/COLLECTIVE_HDA_INTERTWINING_THEOREM.json
+      - name: Guard conditional theorem semantics
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_HDA_INTERTWINING_THEOREM.json'))
+          assert d['passed']
+          assert d['science_status']=='CONDITIONAL_COLLECTIVE_HDA_INTERTWINING_THEOREM'
+          assert d['checks']['compression_identity_machine_zero']
+          assert d['checks']['leakage_bound_holds']
+          assert d['checks']['route_Q_entries_genuinely_noncommuting']
+          assert d['checks']['spectral_sqrt_reconstructs_symbol']
+          assert len(d['production_quantities_still_required'])==5
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-hda-intertwining-theorem
+          path: verification_results/COLLECTIVE_HDA_INTERTWINING_THEOREM.json
+          if-no-files-found: error
