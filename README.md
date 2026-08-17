@@ -36,7 +36,7 @@ binary distinction
  -> S2 local link
  -> recursive S3 spatial phase
  -> exact causal-volume d*=3
- -> d_s(slice) ~ 3, z ~ 1
+ -> d_eff(slice)=d_H/z ~ 3, z ~ 1
  -> 3+1-like history
  -> SU(2) quantum geometry + Hopf U(1) phase
  -> traceless metric spin-2 sector E + T2
@@ -262,15 +262,19 @@ Executable gate: `scripts/q2_dimension3_fixed_point_gate.py`.
 
 1. **topology:** `S2` vertex link и canonical PL `M3`;
 2. **causal-volume scaling:** exact `d_* = 3`;
-3. **diffusion:**
+3. **diffusion/dynamics:** frozen `d_H` и `z` дают
    \[
-   \boxed{d_s^{slice}=3.004393867}.
+   \boxed{d_{eff}^{slice}\equiv d_H/z=3.004393867}.
    \]
 
-И ещё dynamical exponent
+Здесь важно не перепутать обозначения. В frozen code число `3.004393867` **уже содержит деление на `z`** и исторически называлось `ds_slice_holdout`.
+
+Отдельно
 
 \[
-\boxed{z=0.998281156}.
+\boxed{d_H=2.999229782139151},
+\qquad
+\boxed{z\simeq0.998281156}.
 \]
 
 Так что сильная формулировка теперь:
@@ -281,7 +285,7 @@ D_{topo}=3,
 \qquad
 d_{causal-volume}\to3,
 \qquad
-d_s^{slice}\simeq3,
+d_H/z\simeq3.00439,
 \qquad z\simeq1.
 }
 \]
@@ -300,26 +304,36 @@ d_s^{slice}\simeq3,
 K(\omega,k)\sim\omega^2+|k|^{2z}
 \]
 
-history spectral dimension связана с slice dimension как
+обычная continuum запись history exponent имеет вид
 
 \[
-d_s^{history}=1+\frac{d_s^{slice}}{z}.
+d_{eff}^{history}=1+\frac{D}{z},
 \]
 
-Frozen project result находится около
+где `D` — spatial volume/Hausdorff exponent.
+
+В frozen route code роль `D` играет `d_H`, поэтому
 
 \[
-\boxed{d_s^{history}\simeq4.004393867}.
+\boxed{
+d_{eff}^{history}
+=1+\frac{d_H}{z}
+=1+d_{eff}^{slice}
+\simeq4.004393867.
+}
 \]
+
+Иными словами, число `3.004393867` нельзя делить на `z` второй раз: это был бы двойной учёт dynamical exponent.
 
 Смысл не в том, что «мы добавили единицу потому что хотели 4».
 
 Смысл в независимом требовании:
 
 ```text
-spatial dimension -> 3
+spatial topology -> 3
+causal-volume fixed point -> 3
 z -> 1
-causal history -> relativistic 3+1 scaling.
+causal history -> 3+1-like scaling.
 ```
 
 В `HODGE_DIMENSION_SELECTOR.md` и `TWO_FORM_DIMENSION_PRINCIPLE.md` есть ещё два conditional structural explanations, почему `3+1` особенно естественно:
@@ -1348,9 +1362,10 @@ g_{T_2}^2=1.
 | local octahedral `S2` | **EXACT** |
 | canonical minimal flag `S3` PL completion | **EXACT/FINITE** in declared semantics |
 | causal-volume fixed point `d*=3` | **EXACT** for frozen q=2 rewrite |
-| `d_s(slice)=3.004393867` | **CI / numerical** |
+| held-out `d_H=2.999229782...` | **EXACT finite step of closed sequence** |
+| `d_eff(slice)=d_H/z=3.004393867` | **CI / derived from frozen scaling** |
 | `z=0.998281156` | **CI / frozen** |
-| 3+1-like history scaling | **derived / numerical** |
+| `d_eff(history)=1+d_H/z=4.004393867` | **derived / numerical** |
 | smoothing exponents | **CI** |
 | unique collective `j=2` | **EXACT** representation theory |
 | local shape→metric `M` | **EXACT** |
@@ -1489,8 +1504,8 @@ Octahedral S2 link                            |
 canonical PL S3
   |
   +--> exact causal-volume d* = log2(8) = 3
-  +--> spectral d_s(slice) ~ 3
-  +--> z ~ 1
+  +--> d_H/z ~ 3.00439 with z ~ 1
+  +--> history 1+d_H/z ~ 4.00439
   |
   v
 3+1-like smooth history
@@ -1699,7 +1714,7 @@ python scripts/physical_scale_prediction_bridge.py --help
 
 На сегодня самая сильная корректная формулировка такая:
 
-> **Binary Causal / Information-Graph Quantum Gravity — вычислительно проверяемая кандидатная архитектура, в которой локальная бинарная однородность выбирает q=2; q=2 создаёт octahedral S2 link и canonical recursive PL three-manifold; frozen route growth имеет точный causal-volume fixed point d=3, согласованный с независимым spectral d_s≈3 и z≈1; q=2 quantum carrier естественно несёт SU(2) geometry и Hopf U(1) phase; Peter–Weyl dynamics содержит nontrivial higher shells и measurable five-component traceless metric sector E⊕T2; первый refined shell имеет 8.43% tetrahedral metric anisotropy; HDA/Regge/Plebanski routes воспроизводят GR tensor structure в своём проверенном scope; explicit reduced TT propagator massless and has P_TT(k)~k^-1. Главный physical frontier теперь сведен к three-orbit kernel C6(omega,k)=aI+bA+cO, из которого без generic fitting извлекаются eta2_IR and zeta4_IR, после чего optical E/T2 phase ratio R_gamma даёт dimensionless blind experimental channel. Compact U(1) carrier выведен кинематически, но alpha требует microscopic gauge stiffness Z_A. Particle masses не выводятся из 8.43% напрямую; S4 symmetry запрещает такой shortcut и требует отдельного derived matter/Yukawa bridge.**
+> **Binary Causal / Information-Graph Quantum Gravity — вычислительно проверяемая кандидатная архитектура, в которой локальная бинарная однородность выбирает q=2; q=2 создаёт octahedral S2 link и canonical recursive PL three-manifold; frozen route growth имеет точный causal-volume fixed point d=3, а frozen dynamics даёт d_H/z≈3.00439 при z≈1 и историю 1+d_H/z≈4.00439; q=2 quantum carrier естественно несёт SU(2) geometry и Hopf U(1) phase; Peter–Weyl dynamics содержит nontrivial higher shells и measurable five-component traceless metric sector E⊕T2; первый refined shell имеет 8.43% tetrahedral metric anisotropy; HDA/Regge/Plebanski routes воспроизводят GR tensor structure в своём проверенном scope; explicit reduced TT propagator massless and has P_TT(k)~k^-1. Главный physical frontier теперь сведен к three-orbit kernel C6(omega,k)=aI+bA+cO, из которого без generic fitting извлекаются eta2_IR and zeta4_IR, после чего optical E/T2 phase ratio R_gamma даёт dimensionless blind experimental channel. Compact U(1) carrier выведен кинематически, но alpha требует microscopic gauge stiffness Z_A. Particle masses не выводятся из 8.43% напрямую; S4 symmetry запрещает такой shortcut и требует отдельного derived matter/Yukawa bridge.**
 
 Если последующие full-H_E / Lorentzian RG calculations покажут
 
