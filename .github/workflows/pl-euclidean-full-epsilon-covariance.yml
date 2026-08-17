@@ -5,17 +5,17 @@ on:
     branches:
       - research/bcqg-core-candidate-v1
     paths:
+      - 'PL_EUCLIDEAN_12_24_EQUIVALENCE_THEOREM.md'
       - 'scripts/pl_euclidean_full_epsilon_covariance_gate.py'
       - 'scripts/pl_peter_weyl_euclidean.py'
       - 'scripts/pl_dual_complex.py'
-      - 'scripts/tetrahedral_volume_backend.py'
       - '.github/workflows/pl-euclidean-full-epsilon-covariance.yml'
   workflow_dispatch:
 
 jobs:
-  experiment:
+  exact-equivalence:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -25,11 +25,23 @@ jobs:
       - run: python -m pip install -r requirements.txt
       - name: Syntax
         run: python -m py_compile scripts/pl_euclidean_full_epsilon_covariance_gate.py
-      - name: Full 24-term epsilon covariance experiment
-        run: python scripts/pl_euclidean_full_epsilon_covariance_gate.py --output verification_results/PL_EUCLIDEAN_FULL_EPSILON_COVARIANCE.json
+      - name: Exact operator-word 12/24 equivalence
+        run: python scripts/pl_euclidean_full_epsilon_covariance_gate.py --output verification_results/PL_EUCLIDEAN_12_24_EQUIVALENCE.json
+      - name: Hard negative-correction guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/PL_EUCLIDEAN_12_24_EQUIVALENCE.json'))
+          assert d['passed']
+          assert d['science_status']=='EXACT_NEGATIVE_OPERATOR_CORRECTION_RESULT'
+          assert d['ordered_swap_cases_checked']==384
+          assert d['checks']['normalized_full24_equals_historical12_forward']
+          assert d['checks']['normalized_full24_equals_historical12_direct_adjoint']
+          assert d['checks']['normalized_full24_equals_historical12_physical_sine']
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: pl-euclidean-full-epsilon-covariance
-          path: verification_results/PL_EUCLIDEAN_FULL_EPSILON_COVARIANCE.json
+          name: pl-euclidean-12-24-equivalence
+          path: verification_results/PL_EUCLIDEAN_12_24_EQUIVALENCE.json
           if-no-files-found: error
