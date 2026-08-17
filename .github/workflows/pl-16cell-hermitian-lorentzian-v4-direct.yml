@@ -1,0 +1,115 @@
+name: pl-16cell-hermitian-lorentzian-v4-direct
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'LORENTZIAN_DIRECT_HERMITIAN_COMMUTATOR_THEOREM.md'
+      - 'scripts/lorentzian_direct_hermitian_identity_gate.py'
+      - 'scripts/pl_lorentzian_physical_pair_worker_v4.py'
+      - 'scripts/pl_lorentzian_physical_pair_collect_v4.py'
+      - 'scripts/tetrahedral_volume_backend.py'
+      - 'scripts/pl_lorentzian_triple_worker.py'
+      - 'scripts/pl_lorentzian_group_worker.py'
+      - '.github/workflows/pl-16cell-hermitian-lorentzian-v4-direct.yml'
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax and exact operator identity
+        run: |
+          python -m py_compile scripts/lorentzian_direct_hermitian_identity_gate.py scripts/pl_lorentzian_physical_pair_worker_v4.py scripts/pl_lorentzian_physical_pair_collect_v4.py
+          python scripts/lorentzian_direct_hermitian_identity_gate.py --output verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json
+          python scripts/tetrahedral_charged_volume_audit_gate.py --output verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT.json
+      - name: Hard pre-result guards
+        run: |
+          python - <<'PY'
+          import json
+          a=json.load(open('verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json'))
+          b=json.load(open('verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT.json'))
+          assert a['passed'] and a['physical_old_new_relative_error']<1e-12 and a['raw_six_to_three_relative_error']<1e-12
+          assert b['passed'] and b['checks']['tetra_CV_slot_covariance_restored']
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-v4-preflight
+          path: |
+            verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json
+            verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT.json
+          if-no-files-found: error
+
+  pairs:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix:
+        omit: [0,1,2,3]
+        cycle: [0,1,2]
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: One exact physical Hermitian pair
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          python scripts/pl_lorentzian_physical_pair_worker_v4.py --omit ${{ matrix.omit }} --cycle ${{ matrix.cycle }} --source 0 --json-output out/pair_${{ matrix.omit }}_${{ matrix.cycle }}.json --state-output out/pair_${{ matrix.omit }}_${{ matrix.cycle }}.npz
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lorentzian-v4-pair-${{ matrix.omit }}-${{ matrix.cycle }}
+          path: out/
+          if-no-files-found: error
+
+  collect:
+    needs: pairs
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: lorentzian-v4-pair-*
+          path: out
+          merge-multiple: true
+      - name: Require 12 direct physical pairs
+        shell: pwsh
+        run: |
+          $j=(Get-ChildItem out -Filter 'pair_*.json').Count
+          $n=(Get-ChildItem out -Filter 'pair_*.npz').Count
+          if ($j -ne 12 -or $n -ne 12) { throw "Expected 12 V4 JSON/NPZ pairs; got $j/$n" }
+      - name: Exact direct-Hermitian collection
+        run: python scripts/pl_lorentzian_physical_pair_collect_v4.py --root out --json-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V4.json --state-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V4.npz
+      - name: Hard V4 science guards
+        shell: pwsh
+        run: |
+          python -c "import json; d=json.load(open('verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V4.json')); assert d['passed']; assert d['operator_version']=='direct-hermitian-commutator-v4'; assert d['pair_count']==12; assert d['primitive_orderings_covered']==48; assert d['max_primitive_physical_leakage']<1e-8; assert d['wrong_seed_parity_outputs']==0; assert d['S_max_spin']<=3.5+1e-12"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-16cell-hermitian-lorentzian-v4
+          path: |
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V4.json
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V4.npz
+          if-no-files-found: error
