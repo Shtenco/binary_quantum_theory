@@ -1,0 +1,43 @@
+name: collective-metric-regularity-locality
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'COLLECTIVE_METRIC_REGULARITY_LOCALITY_THEOREM.md'
+      - 'scripts/collective_metric_regularity_locality_gate.py'
+      - 'verification_results/COLLECTIVE_METRIC_CALIBRATION_IRREP.json'
+      - '.github/workflows/collective-metric-regularity-locality.yml'
+  workflow_dispatch:
+
+jobs:
+  theorem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact theorem controls
+        run: python scripts/collective_metric_regularity_locality_gate.py --output verification_results/COLLECTIVE_METRIC_REGULARITY_LOCALITY.json
+      - name: Hard guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_METRIC_REGULARITY_LOCALITY.json'))
+          assert d['passed']
+          assert d['science_status']=='CONDITIONAL_METRIC_REGULARITY_LOCALITY_THEOREM'
+          assert d['metric_control']['checks']['rank_six_preserved']
+          assert d['locality_control']['checks']['r_below_one']
+          assert d['locality_control']['checks']['all_resolvent_elements_below_distance_bound']
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-metric-regularity-locality
+          path: verification_results/COLLECTIVE_METRIC_REGULARITY_LOCALITY.json
+          if-no-files-found: error
