@@ -1,0 +1,40 @@
+name: bcqg-q-gap-quasilocality
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'BCQG_Q_GAP_QUASILOCALITY_THEOREM.md'
+      - 'scripts/bcqg_q_gap_quasilocality_gate.py'
+      - '.github/workflows/bcqg-q-gap-quasilocality.yml'
+  workflow_dispatch:
+
+jobs:
+  theorem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact Q-gap locality implication
+        run: python scripts/bcqg_q_gap_quasilocality_gate.py --output verification_results/BCQG_Q_GAP_QUASILOCALITY.json
+      - name: Hard theorem guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/BCQG_Q_GAP_QUASILOCALITY.json'))
+          assert d['passed']
+          assert d['science_status']=='CONDITIONAL_Q_GAP_LOCALITY_THEOREM'
+          assert all(d['checks'].values())
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bcqg-q-gap-quasilocality
+          path: verification_results/BCQG_Q_GAP_QUASILOCALITY.json
+          if-no-files-found: error
