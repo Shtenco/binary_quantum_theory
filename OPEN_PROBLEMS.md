@@ -1,222 +1,205 @@
 # Open problems — discrete quantum geometry → continuum GR
 
-This file lists only unresolved steps that are necessary for the central programme of the repository.
-
-The goal is not to add new sectors. The goal is to close, falsify or sharply delimit the chain
+This file lists only unresolved steps required by the central programme. Recent exact/finite passes deliberately **narrow** the open problems rather than erase them.
 
 ```text
-binary/qubit microphysics
- -> quantum geometry
- -> coarse-grained smooth geometry
- -> Einstein/ADM dynamics
- -> regulator-independent continuum physics.
+binary microphysics
+ -> local/global quantum-geometric carrier      [stronger now]
+ -> dynamical geometric phase                   [OPEN]
+ -> smooth GR controls                          [finite-tested]
+ -> arbitrary-graph Lorentzian HDA              [OPEN]
+ -> uniform refinement/cutoff limit             [OPEN]
+ -> physical scale + blind prediction           [OPEN]
 ```
 
 ---
 
-## 1. Derive the geometric qubit sector from the microscopic dynamics
+## 1. Dynamic completion of MICRO_TO_QGEOM
 
-The current end-to-end Euclidean control begins with prepared face-qubit density matrices and reconstructs
+The frozen q=2 labels now give an exact local Walsh-character tetrahedral flux frame, pure face qubits, nonzero Gauss-singlet support and a logical volume eigenstate. The same carrier also glues exactly on the selected 16-cell PL completion.
 
-$$
-\rho_f\to B^i\to g_U\to A_B\to F(A_B).
-$$
+What remains is stronger:
 
-This proves finite composability of those arrows, but the first physical arrow is still missing:
-
-$$
+\[
 \boxed{
-\text{frozen binary dynamics}
-\dashrightarrow
-\{\rho_f,U_e,K_e\}
-\text{ in the required geometric phase}
-}.
-$$
+\text{generic microscopic quantum state + graph-changing update}
+\longrightarrow
+\text{selected noncommutative Peter-Weyl geometric phase}
+}
+\]
 
-A successful derivation must not insert the target metric, tetrad, connection or Einstein curvature into the microscopic initial data or selection score.
+Required next tests:
+
+1. derive a microscopic update for the face/link quantum variables rather than only a kinematic carrier map;
+2. show attraction/measure concentration toward the geometric sector from more than one initial ensemble;
+3. derive the growth of the required SU(2)/Peter-Weyl representation content under blocking;
+4. recover simplicity/nondegeneracy/coarse B-field scaling without post-hoc projection;
+5. include negative controls where the same update fails to form a geometric phase.
+
+The exact Walsh result must not be overstated: commuting group characters do not by themselves derive the full noncommutative SU(2) operator algebra.
 
 ---
 
 ## 2. Dynamical global-manifold selection
 
-For $q=2$, the local route shell is an octahedral $S^2$, and the repository has a consistent recursive PL $S^3$ completion.
+The selected q=2 16-cell completion is a valid recursive PL 3-manifold, and the new face-carrier gluing is exact on it.
 
-Open question:
+Still open:
 
-$$
+\[
 \boxed{
-\text{Does the microscopic update rule itself select a global 3-manifold phase?}
+\text{Why does the microscopic dynamics select this manifold phase?}
 }
-$$
+\]
 
-Required tests should distinguish:
-
-- existence of one good completion;
-- uniqueness up to declared equivalence;
-- dynamical preference/measure concentration;
-- stability under local graph-changing updates.
+Distinguish existence from uniqueness, dynamical preference, measure concentration and stability under graph-changing updates.
 
 ---
 
-## 3. Full graph-changing multi-node quantum HDA
+## 3. Arbitrary-graph Lorentzian HDA (`HDA_MULTI`)
 
-The decisive algebraic target is
+The three-node frozen Euclidean gate now satisfies the preregistered finite hierarchy while retaining j=0 cylindrical graph-change outputs. This closes the old requirement “use more than two interacting nodes” only at **tested_finite** level.
 
-$$
-\frac{1}{i\hbar}
-[\hat H[N],\hat H[M]]
+The decisive remaining target is
+
+\[
+\frac1{i\hbar}[\hat H[N],\hat H[M]]
 \to
-\hat D\!\left[q^{ab}(N\partial_bM-M\partial_bN)\right].
-$$
+\hat D[q^{ab}(N\partial_bM-M\partial_bN)]
+\]
 
-Current finite work closes useful subproblems, but the complete off-shell statement is not yet proved.
+uniformly over a declared graph-changing off-shell domain.
 
-The next implementation should:
+Next falsifiers must add:
 
-1. use more than two interacting nodes;
-2. keep nonconstant lapse functions frozen before the run;
-3. work on a graph-changing/cylindrically equivalent state space;
-4. define the diffeomorphism target independently of the HH result;
-5. compare on several held-out states/habitat probes;
-6. report absolute and normalized residuals;
-7. forbid post-hoc channel normalization;
-8. repeat along a regulator/refinement sequence.
-
-A group-averaged zero alone is weaker than reproducing the correct off-shell structure function.
+- more graph sizes/topologies, not merely more nodes of one K5 scaffold;
+- multiple held-out geometry states and WKB/habitat probes;
+- the full Lorentzian geometry Hamiltonian amplitudes on the same domain;
+- one independently fixed D/structure-function target;
+- absolute and normalized residuals;
+- no post-hoc normalization;
+- scaling versus both regulator and graph/refinement size.
 
 ---
 
-## 4. Uniform regulator removal
+## 4. Uniform joint regulator/refinement theorem (`JOINT_LIMIT`)
 
-The fixed-cutoff composition result is not a theorem for arbitrary simultaneous limits.
+For the current finite input, the Peter-Weyl support wall is exact:
 
-Required target:
+\[
+J_{max}\ge j_{in}+r/2.
+\]
 
-$$
+For the three-node all-j=1/2 Euclidean HH family, \(r=4\) and \(J_{max}=5/2\) is already cutoff-exact. Together with the measured \(\epsilon^{1.00644}\) HDA scaling, this controls the fixed-input simultaneous limit.
+
+What remains is a uniform theorem for a refinement family in which graph size, collective spin or hit depth can grow:
+
+\[
 \boxed{
-\lim_{\epsilon\to0,\ J_{max}\to\infty}
-\Delta_{HDA}(\epsilon,J_{max})=0
+\sup_{\Gamma_b,\psi_b}
+\Delta_{HDA}(\epsilon,b,J_{max}(b))\to0.
 }
-$$
+\]
 
-with a declared admissible path or, ideally, a uniform bound on an explicit domain.
-
-The proof must control:
-
-- operator norms/support growth;
-- geometry-route cross terms;
-- pure geometry commutators;
-- truncation tails;
-- dependence on the chosen habitat/norm.
+Need explicit bounds on \(j_{in}(b)\), hit depth, support growth, cross terms, pure-geometry commutators and habitat norms.
 
 ---
 
-## 5. Continuum action and Ward identities beyond local controls
+## 5. Continuum action/Ward identities from the same microscopic ensemble
 
-The Regge/EH bridge is currently tested on controlled finite geometries.
+Regge/EH, Plebanski/Urbantke and connection controls are finite tests on controlled geometries.
 
-Open target:
+The stronger target is
 
-$$
-S_{discrete}[\Gamma_n]
+\[
+S_{micro}[\Psi_b]
 \longrightarrow
-S_{EH}[g]
-$$
+S_{EH}[g_{eff}]
+\]
 
-for a refinement family generated by the same microscopic theory, together with convergence of the corresponding variational/constraint identities.
-
-The continuum metric used for comparison must be reconstructed from microscopic observables rather than supplied independently to the final estimator.
+where \(g_{eff}\) is reconstructed from the same microscopic ensemble, not separately supplied to the final estimator.
 
 ---
 
-## 6. Lorentzian physical state space and dynamics
-
-A complete quantum-gravity model needs more than Euclidean finite gates.
+## 6. Lorentzian physical state space
 
 Still required:
 
-- a well-defined Lorentzian quantum measure or equivalent canonical physical inner product;
-- a controlled treatment of reality conditions where applicable;
-- physical-state construction after all first-class constraints;
-- causal/unitary consistency for relational observables;
+- physical inner product or Lorentzian quantum measure;
+- complete treatment of first-class constraints;
+- reality conditions where applicable;
+- relational causal/unitary observables;
 - stability of the semiclassical sector.
+
+Finite Euclidean HDA and a Lorentzian support/coefficient gate do not solve this problem.
 
 ---
 
 ## 7. Physical scale setting
 
-Most current tests are dimensionless or use internally fixed units.
+Current strongest results are primarily dimensionless. A theory of nature needs one reproducible map
 
-A theory of nature must derive or calibrate a map
-
-$$
-\text{microscopic dimensionless quantities}
+\[
+\text{dimensionless micro-observables}
 \to
-\{\ell_{phys},t_{phys},G,\Lambda,\ldots\}
-$$
+\{\ell_{phys},t_{phys},E_{phys},G,\ldots\}
+\]
 
-without fitting each observable independently.
+with no independent rescaling for each observable.
 
-The identification of the microscopic cutoff with the Planck scale is presently a model hypothesis. A valid scale-setting mechanism must be explicit and reproducible.
+Identifying the microscopic cutoff with the Planck length is still a hypothesis, not a derived result.
 
 ---
 
-## 8. Blind falsifiable predictions
+## 8. Blind external prediction (`PHYS_PRED`)
 
-Before any claim about a physical constant or observable, create a preregistration containing:
+Do not use dimension near 3, z near 1, 4D-like history scaling or the S4 oracle \(\Lambda=3\) as the first blind prediction: they are selection-tainted or oracle-tainted.
+
+A valid first prediction requires a committed preregistration containing:
 
 ```text
-observable definition
-parameter values
-allowed inputs
+observable and units
+microscopic estimator
+common scale-setting map
+all frozen parameters
+allowed calibration data
 forbidden fitting operations
-numerical solver/version
-uncertainty rule
+uncertainty model
 accept/reject threshold
-held-out experimental dataset
+held-out external dataset identity/hash
 ```
 
-Only after this file is committed should the experimental comparison be performed.
+See `PHYSICAL_PREDICTION_FREEZE_CRITERIA.md`.
 
-A prediction is particularly strong if:
-
-- no target physical value was used in model selection;
-- parameters are frozen across several independent observables;
-- the same scale-setting map is used for all observables;
-- uncertainty includes numerical and model-systematic errors;
-- an independent implementation reproduces the result.
-
-An internal control that reconstructs a value encoded in its input geometry is not a blind prediction.
+An internal held-out numerical extrapolation, even at sub-percent error, is not an external physical prediction.
 
 ---
 
-## 9. Universality tests
+## 9. Universality
 
-The present $q=2$ route family should be challenged, not protected.
+Challenge q=2 rather than protect it:
 
-Useful falsifiers:
+- alternative binary local rules with comparable parameter count;
+- alternative global completions/refinements;
+- multiple microscopic initial-state ensembles;
+- different coarse observables and blocking maps;
+- perturbations not used in selection;
+- larger held-out generations and graph families.
 
-- alternative local binary rules with the same parameter count;
-- different refinement schemes;
-- different initial-state ensembles;
-- different coarse observables;
-- larger held-out generations;
-- perturbations of local amplitudes that were not used in fitting.
-
-If the long-distance geometry is physical, key continuum observables should become insensitive to irrelevant microscopic details.
+Long-distance GR-like observables should become insensitive to irrelevant microscopic choices if the phase is genuinely universal.
 
 ---
 
-## 10. Numerical reproducibility and independent replication
+## 10. Independent replication
 
-Every claimed gate should eventually provide:
+The strongest remaining gates should eventually have:
 
-- deterministic seed or exact algebraic path;
+- deterministic seed or exact derivation;
 - machine-readable output;
-- declared tolerances;
+- preregistered tolerances;
 - negative controls;
 - runtime/memory metadata;
-- continuous integration where feasible;
-- an independently written implementation for the most important results.
+- CI;
+- an independently written implementation.
 
-The repository's strongest future result would not be a longer list of PASS labels, but a small number of difficult gates that survive independent attempts to falsify them.
+The goal is not more PASS labels. It is a smaller set of increasingly dangerous falsification tests that remain standing under independent implementations and genuinely held-out data.
