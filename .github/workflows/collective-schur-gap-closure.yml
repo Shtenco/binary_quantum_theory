@@ -1,0 +1,44 @@
+name: collective-schur-gap-closure
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'COLLECTIVE_SCHUR_GAP_PROTOCOL.md'
+      - 'scripts/collective_schur_gap_closure_gate.py'
+      - '.github/workflows/collective-schur-gap-closure.yml'
+  workflow_dispatch:
+
+jobs:
+  selftest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/collective_schur_gap_closure_gate.py
+      - name: Exact positive and negative controls
+        run: python scripts/collective_schur_gap_closure_gate.py --self-test --output verification_results/COLLECTIVE_SCHUR_GAP_SELFTEST.json
+      - name: Guard no-zero-mode-inversion semantics
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_SCHUR_GAP_SELFTEST.json'))
+          assert d['passed']
+          assert d['checks']['known_Schur_recovered']
+          assert d['checks']['known_S4_ratio_recovered']
+          assert d['coupled_zero_control_status']=='PROMOTE_LOW_ENERGY_MODES'
+          assert d['decoupled_zero_control_status']=='CLASSIFY_DECOUPLED_LOW_ENERGY_MODES'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-schur-gap-selftest
+          path: verification_results/COLLECTIVE_SCHUR_GAP_SELFTEST.json
+          if-no-files-found: error
