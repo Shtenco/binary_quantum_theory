@@ -61,6 +61,8 @@ jobs:
         run: python scripts/pl_galerkin_anisotropy_no_flow_gate.py --refinements 2 --output verification_results/PL_GALERKIN_ANISOTROPY_NO_FLOW.json
       - name: Canonical j=1 S4 coarse logical qubit
         run: python scripts/peter_weyl_j1_s4_block_gate.py --output verification_results/PETER_WEYL_J1_S4_BLOCK.json
+      - name: Exact logical shape-to-metric Jacobian
+        run: python scripts/logical_shape_metric_jacobian_gate.py --output verification_results/LOGICAL_SHAPE_METRIC_JACOBIAN.json
       - name: Held-out Regge TT residue regression
         run: python scripts/tt_regge_zt_l6_gate.py --output verification_results/TT_REGGE_ZT_L6.json
       - name: Orientation-odd HDA and healthy mirror force
