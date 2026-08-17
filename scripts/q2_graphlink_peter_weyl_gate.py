@@ -1,24 +1,32 @@
 #!/usr/bin/env python3
 """Exact representation bridge: q=2 active labels + graph absence -> j=1/2 link.
 
-A frozen q=2 cell has four route states.  Four states alone admit the existing
+A frozen q=2 cell has four route states. Four states alone admit the existing
 SO(5) spinor quantum-link algebra, but under SU(2)_L x SU(2)_R that spinor is
 (2,1) + (1,2), not the Peter-Weyl j=1/2 bi-doublet (2,2).
 
 The graph-changing Hilbert space already contains a natural additional state:
-an absent/cylindrically deleted j=0 link.  Adding this single no-link state to
+an absent/cylindrically deleted j=0 link. Adding this single no-link state to
 the four active q=2 states gives the existing five-state SO(5) vector quantum
 link, which decomposes exactly as
 
     5 = (2,2) + (1,1).
 
 The four-dimensional active projector therefore carries j_L=j_R=1/2 and the
-singlet is the no-link state.  Every fundamental transporter component toggles
+singlet is the no-link state. Every fundamental transporter component toggles
 between the active q=2 sector and the no-link singlet.
 
-This gate also records the strict four-state-only obstruction and checks that
-the q=2 Hamming adjacency already belongs to the compatible SO(5) spinor
-operator algebra.  No dynamical selection of the SO(5) completion is claimed.
+Moreover the transporter components provide exact matrix units through the
+no-link state,
+
+    P_g U_a P_0 U_b P_g = |a><b|,
+
+so the already-frozen q=2 Hamming adjacency factors exactly as a two-step
+graph-changing active -> no-link -> active operator. The Hamming edge set is
+not fitted here; it is the same microscopic adjacency used by the q=2 rule.
+
+No dynamical selection of the SO(5) completion or gravitational Hamiltonian is
+claimed.
 """
 from __future__ import annotations
 
@@ -44,14 +52,10 @@ def run() -> dict[str, object]:
     PL4 = projector_from_casimir(CL4)
     PR4 = projector_from_casimir(CR4)
 
-    # In the spinor4 representation the left/right doublet sectors are
-    # complementary: (2,1) + (1,2).  Therefore no state carries both endpoint
-    # spin-1/2 Casimirs simultaneously.
     spinor_overlap = float(np.linalg.norm(PL4 @ PR4))
     spinor_completeness = float(np.linalg.norm(PL4 + PR4 - np.eye(4)))
 
-    # The q=2 Hamming adjacency A_Q2 = X⊗I + I⊗X is nevertheless already inside
-    # the same SO(5) spinor operator algebra.
+    # Frozen q=2 Hamming adjacency in basis 00,01,10,11.
     A_q2 = np.kron(SPINOR.X, SPINOR.I) + np.kron(SPINOR.I, SPINOR.X)
     A_so5 = 2.0 * (SPINOR.Mab(1, 2) + SPINOR.Mab(3, 4))
     adjacency_embedding_error = float(np.linalg.norm(A_q2 - A_so5))
@@ -72,15 +76,10 @@ def run() -> dict[str, object]:
     active_right_casimir_error = float(np.linalg.norm(Pg @ CR5 @ Pg - 0.75 * Pg))
     singlet_casimir_error = float(np.linalg.norm(Ps @ CL5 @ Ps) + np.linalg.norm(Ps @ CR5 @ Ps))
 
-    # Standard vector5 basis: the first four directions span the active
-    # bi-doublet, the fifth direction is the gauge singlet/no-link state.
     basis = np.eye(5, dtype=complex)
     active_basis_errors = [float(np.linalg.norm(Pg @ basis[:, i] - basis[:, i])) for i in range(4)]
     no_link_error = float(np.linalg.norm(Ps @ basis[:, 4] - basis[:, 4]))
 
-    # Four transporter components U_alpha=M_{alpha,4}, alpha=0..3.  Acting on
-    # the no-link state produces four orthonormal active states and they have no
-    # active->active or singlet->singlet blocks.
     components = [VECTOR.M(a, 4) for a in range(4)]
     vacuum = basis[:, 4]
     created = np.column_stack([Pg @ u @ vacuum for u in components])
@@ -90,6 +89,28 @@ def run() -> dict[str, object]:
     singlet_singlet = max(float(np.linalg.norm(Ps @ u @ Ps)) for u in components)
     active_singlet_norms = [float(np.linalg.norm(Pg @ u @ Ps)) for u in components]
     singlet_active_norms = [float(np.linalg.norm(Ps @ u @ Pg)) for u in components]
+
+    # Exact matrix-unit theorem through the no-link state.
+    matrix_unit_error = 0.0
+    for a in range(4):
+        for b in range(4):
+            target = np.zeros((5, 5), complex)
+            target[a, b] = 1.0
+            matrix_unit_error = max(
+                matrix_unit_error,
+                float(np.linalg.norm(Pg @ components[a] @ Ps @ components[b] @ Pg - target)),
+            )
+
+    # Factor the frozen q=2 Hamming adjacency through graph absence. Each
+    # directed Hamming edge contributes its corresponding |a><b| matrix unit.
+    A_graph5 = np.zeros((5, 5), complex)
+    for a in range(4):
+        for b in range(4):
+            if abs(A_q2[a, b]) > 0.5:
+                A_graph5 += Pg @ components[a] @ Ps @ components[b] @ Pg
+    A_target5 = np.zeros((5, 5), complex)
+    A_target5[:4, :4] = A_q2
+    graph_change_adjacency_error = float(np.linalg.norm(A_graph5 - A_target5))
 
     checks = {
         "q2_hilbert_dimension_is_4": A_q2.shape == (4, 4),
@@ -106,6 +127,8 @@ def run() -> dict[str, object]:
         "transporter_creates_orthonormal_active_basis_from_no_link": creation_orthonormal_error < 1e-12,
         "transporter_has_no_diagonal_sector_blocks": active_active < 1e-12 and singlet_singlet < 1e-12,
         "transporter_toggles_both_directions_with_unit_norm": all(abs(x - 1.0) < 1e-12 for x in active_singlet_norms + singlet_active_norms),
+        "no_link_two_step_gives_exact_matrix_units": matrix_unit_error < 1e-12,
+        "frozen_q2_hamming_adjacency_factors_through_graph_change": graph_change_adjacency_error < 1e-12,
     }
 
     return {
@@ -126,13 +149,15 @@ def run() -> dict[str, object]:
         "no_link_casimir_error": singlet_casimir_error,
         "transporter_creation_gram": created_gram.real.tolist(),
         "transporter_creation_orthonormal_error": creation_orthonormal_error,
+        "matrix_unit_factorization_error": matrix_unit_error,
+        "graph_change_q2_adjacency_factorization_error": graph_change_adjacency_error,
         "checks": checks,
         "interpretation": (
             "The missing state needed to turn the four q=2 active labels into a Peter-Weyl j=1/2 bi-doublet is naturally supplied by the graph-changing no-link/j=0 state already present in the cylindrical Hilbert space. "
-            "This removes a finite-dimensional representation mismatch without adding a new fundamental local label."
+            "The same no-link sector exactly factors the frozen q=2 Hamming adjacency into two graph-changing transporter steps."
         ),
         "claim_boundary": (
-            "Exact kinematic representation theorem only. It does not derive the SO(5) transporter coefficients from the frozen rewrite Hamiltonian, prove dynamical attraction to the active geometric sector, or derive higher-j Peter-Weyl representation growth under blocking."
+            "Exact local representation/factorization theorem only. It does not derive the SO(5) transporter coefficients from a unique microscopic action, prove dynamical attraction to the active geometric sector, or derive the full higher-j coarse Peter-Weyl spectrum."
         ),
     }
 
