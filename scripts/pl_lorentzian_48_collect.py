@@ -38,11 +38,15 @@ def run(root):
         d=json.loads(p.read_text())
         if not d.get('passed'):raise RuntimeError(f'failed worker {p}: {d.get("error")}')
         mode=d['mode'];idx=int(d['index'])
-        npz=next(iter(p.parent.glob('*.npz')),None)
-        if npz is None:
-            # merged-artifact layout may put the state beside metadata under a different exact stem
+        # The state paired with this metadata must have the exact same stem.
+        # A previous implementation selected the first arbitrary *.npz in the
+        # parent directory, which is unsafe in merged/materialized layouts.
+        exact=p.with_suffix('.npz')
+        if exact.exists():
+            npz=exact
+        else:
             cand=list(Path(root).rglob(f'term_{mode}_{idx}.npz'))
-            if len(cand)!=1:raise RuntimeError(f'cannot resolve NPZ for {mode} {idx}')
+            if len(cand)!=1:raise RuntimeError(f'cannot uniquely resolve NPZ for {mode} {idx}: {cand[:8]}')
             npz=cand[0]
         metas.append((mode,idx,p,npz,d))
     if len(metas)!=48:raise RuntimeError(f'need 48 passed worker metadata files, got {len(metas)}')
@@ -85,8 +89,8 @@ def run(root):
       'max_spin_forward':max_spin(L),'max_spin_adjoint':max_spin(Ld),'max_spin_S':max_spin(S),
       'max_worker_physical_leakage':max_leak,'max_worker_nonscalar_rejected_norm':max_rej,
       'terms':rows,
-      'definition':'S=-i(L_raw-L_raw^dagger)/2 using independently computed 24-term forward and adjoint PL epsilon orbits',
-      'interpretation':'This is the first full physical Hermitian Lorentzian amplitude column on the independent 16-cell PL-S3 habitat. Nonzero magnitude is reported, not required for an infrastructure PASS.',
+      'definition':'S=-i(L_raw-L_raw^dagger)/2 using the complete 24-term forward and adjoint PL epsilon worker-index orbits',
+      'interpretation':'Physical Hermitian Lorentzian amplitude column on the independent 16-cell PL-S3 habitat. Nonzero magnitude is reported, not required for an infrastructure PASS.',
       'scope_note':'One source-node S column on the homogeneous seed. Collective W0 still requires the remaining source nodes, route action and target-independent depth-2 image/compression.'}
 
 def main():
