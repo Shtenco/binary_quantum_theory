@@ -16,7 +16,7 @@ It then compares:
 
 A. expectation-first route normal:
        omega_K(theta)=sqrt(<K|Q(p)|K>)
-   which mirrors the current finite gate's diagonal-metric expectation logic;
+   which reproduces the current finite gate's diagonal-metric expectation logic;
 
 B. operator-first route normal:
        Omega(theta)=sqrt_operator(Q(p))
@@ -149,7 +149,7 @@ def run(n_theta=8192):
         float(np.linalg.norm(S22 - 0.75 * PAULI["I"])),
     )
 
-    mirror_y_norm = math.sqrt(
+    orientation_y_norm = math.sqrt(
         abs(c02["Y"]) ** 2 + abs(clinear["Y"]) ** 2 + abs(csqrt["Y"]) ** 2
     )
     nonlinear_shape_norm = math.sqrt(abs(csqrt["X"]) ** 2 + abs(csqrt["Z"]) ** 2)
@@ -160,7 +160,7 @@ def run(n_theta=8192):
         exact_formula_error < 1e-12
         and casimir_error < 1e-12
         and min_q_eig > -1e-10
-        and mirror_y_norm < 1e-12
+        and orientation_y_norm < 1e-12
         and linear_shape_norm < 1e-12
         and expectation_difference < 1e-12
         and nonlinear_shape_norm > 1e-4
@@ -182,14 +182,14 @@ def run(n_theta=8192):
         "expectation_first_branch_difference": expectation_difference,
         "linear_shape_anisotropy_norm": float(linear_shape_norm),
         "nonlinear_operator_sqrt_shape_anisotropy_norm": float(nonlinear_shape_norm),
-        "mirror_Y_norm": float(mirror_y_norm),
+        "orientation_Y_norm": float(orientation_y_norm),
         "interpretation": (
-            "The flux metric is exactly mirror-even: its logical content lies in I/X/Z and contains no orientation Y. "
-            "Isotropic angular averaging makes the linear Q(p) contraction scalar. In the current expectation-first "
-            "ordering the angularly averaged route normal is also exactly equal on the K=0 and K=2 basis states in "
-            "this control. By contrast, the operator-first spectral square root retains a finite X/Z component. "
-            "Therefore route pseudospin anisotropy is ordering-dependent and is not established by the frozen "
-            "expectation-first route gate alone."
+            "The flux metric is exactly even under Y -> -Y: its logical content lies in I/X/Z and contains no "
+            "linear orientation-Y component. Isotropic angular averaging makes the linear Q(p) contraction scalar. "
+            "In the current expectation-first ordering the angularly averaged route normal is also exactly equal on "
+            "the K=0 and K=2 basis states in this control. By contrast, the operator-first spectral square root "
+            "retains a finite X/Z component. Therefore route pseudospin anisotropy is ordering-dependent and is not "
+            "established by the frozen expectation-first route gate alone."
         ),
         "scope": (
             "The operator-first square root is an ordering diagnostic, not yet the frozen route constraint. The "
