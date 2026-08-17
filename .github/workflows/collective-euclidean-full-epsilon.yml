@@ -1,0 +1,44 @@
+name: collective-euclidean-full-epsilon
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/collective_euclidean_full_epsilon_gate.py'
+      - 'scripts/pl_dual_complex.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/tetrahedral_volume_backend.py'
+      - '.github/workflows/collective-euclidean-full-epsilon.yml'
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact cyclic/full epsilon comparison
+        run: python scripts/collective_euclidean_full_epsilon_gate.py --output verification_results/COLLECTIVE_EUCLIDEAN_FULL_EPSILON.json
+      - name: Hard target-independent guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_EUCLIDEAN_FULL_EPSILON.json'))
+          assert d['passed']
+          assert d['checks']['elementary_first_two_antisymmetry']
+          assert d['checks']['cyclic_equals_full_antisymmetrized']
+          assert d['cyclic_vs_full_relative_error']<1e-9
+          assert d['max_elementary_antisymmetry_defect']<1e-9
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-euclidean-full-epsilon
+          path: verification_results/COLLECTIVE_EUCLIDEAN_FULL_EPSILON.json
+          if-no-files-found: error
