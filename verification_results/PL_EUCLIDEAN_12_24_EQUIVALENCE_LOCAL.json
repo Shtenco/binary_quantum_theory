@@ -1,0 +1,20 @@
+{
+  "status": "exact PL Euclidean 12-term / 24-term epsilon equivalence",
+  "passed": true,
+  "science_status": "EXACT_NEGATIVE_OPERATOR_CORRECTION_RESULT",
+  "verification_environment": "local execution from the successful research-source bundle overlaid with the current pl_dual_complex.py and pl_peter_weyl_euclidean.py; exact sequence tuples and integer coefficients only",
+  "ordered_swap_cases_checked": 384,
+  "forward_failures": 0,
+  "direct_adjoint_failures": 0,
+  "checks": {
+    "384_forward_swap_cases_exact": true,
+    "384_direct_adjoint_swap_cases_exact": true,
+    "cyclic_anticyclic_parities_opposite": true,
+    "normalized_full24_equals_historical12_forward": true,
+    "normalized_full24_equals_historical12_direct_adjoint": true,
+    "normalized_full24_equals_historical12_physical_sine": true
+  },
+  "identity": "T(v;b,a,c)=-T(v;a,b,c) exactly for all 16*4*3*2=384 distinct ordered cases. Each omitted anti-cyclic triple has opposite Levi-Civita parity and opposite operator word relative to its paired cyclic triple, so the two signs cancel and E_full24=(1/2)sum_S4 sgn(p)T_p equals E_historical12 exactly.",
+  "consequence": "The measured 0.1139945503942336 finite pairing-stabilizer sign-irrep breaking power cannot be repaired by adding the omitted anti-cyclic half. The asymmetry is deeper than the 12-versus-24 epsilon bookkeeping and must be localized in the distinguished third-slot/triad-leg regulator role or its refinement flow.",
+  "documentation": "PL_EUCLIDEAN_12_24_EQUIVALENCE_THEOREM.md"
+}
