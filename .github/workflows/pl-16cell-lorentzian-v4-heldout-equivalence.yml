@@ -1,0 +1,100 @@
+name: pl-16cell-lorentzian-v4-heldout-equivalence
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/pl_lorentzian_v4_heldout_pair_equivalence.py'
+      - 'scripts/pl_lorentzian_triple_worker_v2.py'
+      - 'scripts/pl_lorentzian_physical_pair_worker_v4.py'
+      - 'scripts/tetrahedral_volume_backend.py'
+      - '.github/workflows/pl-16cell-lorentzian-v4-heldout-equivalence.yml'
+  workflow_dispatch:
+
+jobs:
+  v2-direct:
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        mode: [forward, adjoint]
+        index: [0,2]
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Independent direct V2 primitive
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          python scripts/pl_lorentzian_triple_worker_v2.py --index ${{ matrix.index }} --mode "${{ matrix.mode }}" --source 0 --json-output out/term_${{ matrix.mode }}_${{ matrix.index }}.json --state-output out/term_${{ matrix.mode }}_${{ matrix.index }}.npz
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heldout-v2-${{ matrix.mode }}-${{ matrix.index }}
+          path: out/
+          if-no-files-found: error
+
+  v4-pair:
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Independent V4 physical pair
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          python scripts/pl_lorentzian_physical_pair_worker_v4.py --omit 0 --cycle 0 --source 0 --json-output out/pair_0_0.json --state-output out/pair_0_0.npz
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: heldout-v4-pair-0-0
+          path: out/
+          if-no-files-found: error
+
+  compare:
+    needs: [v2-direct,v4-pair]
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: heldout-*
+          path: out
+          merge-multiple: true
+      - name: Exact sparse held-out comparison
+        run: python scripts/pl_lorentzian_v4_heldout_pair_equivalence.py --root out --output verification_results/PL_16CELL_LORENTZIAN_V4_HELDOUT_EQUIVALENCE.json
+      - name: Hard implementation guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/PL_16CELL_LORENTZIAN_V4_HELDOUT_EQUIVALENCE.json'))
+          assert d['passed']
+          assert d['checks']['exact_sparse_support_match']
+          assert d['relative_amplitude_error']<1e-10
+          assert d['max_absolute_amplitude_error']<1e-10
+          assert d['max_direct_primitive_physical_leakage']<1e-8
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-16cell-lorentzian-v4-heldout-equivalence
+          path: verification_results/PL_16CELL_LORENTZIAN_V4_HELDOUT_EQUIVALENCE.json
+          if-no-files-found: error
