@@ -18,7 +18,7 @@ for all h in H.  Passing this gate is the amplitude-level prerequisite for the
 the corrected K-K-V word has been validated on held-out V2 terms.
 """
 from __future__ import annotations
-import argparse,itertools,json,math,sys
+import argparse,itertools,json,math,sys,traceback
 from functools import lru_cache
 from pathlib import Path
 import numpy as np
@@ -131,7 +131,12 @@ def run():
       'hard_guard':'This E gate alone does not certify the K-K-V V2 ordered word. At least one independently computed non-representative V2 term in every orbit and mode must agree with U_h transport before replacing the 48-term collector input.'}
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path);a=p.parse_args();o=run();t=json.dumps(o,indent=2);print(t)
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path);a=p.parse_args()
+    try:
+        o=run();code=0 if o['passed'] else 1
+    except Exception as exc:
+        o={'status':'pairing-stabilizer Peter-Weyl covariance exception','passed':False,'science_status':'INFRASTRUCTURE_DIAGNOSTIC','error_type':type(exc).__name__,'error':str(exc),'traceback':traceback.format_exc()};code=1
+    t=json.dumps(o,indent=2);print(t)
     if a.output:a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(t+'\n',encoding='utf-8')
-    return 0 if o['passed'] else 1
+    return code
 if __name__=='__main__':raise SystemExit(main())
