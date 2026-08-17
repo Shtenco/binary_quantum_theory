@@ -1,8 +1,8 @@
 # Peter-Weyl Lorentzian parity frontier
 
-Status: **exact operator-grading consequence of the declared Euclidean/Lorentzian construction; direct Lorentzian logical amplitude still separate**.
+Status: **exact operator-grading consequence of the declared Euclidean/Lorentzian construction; direct Lorentzian logical amplitude remains a separate calculation**.
 
-The Euclidean logical-return analysis established a doubled-spin grading
+The Euclidean logical-return analysis uses the doubled-spin grading
 
 ```text
 Pi |{s_e}> = (-1)^(sum_e s_e) |{s_e}>,   s_e=2j_e,
@@ -14,7 +14,7 @@ for which every primitive `H_E` sequence flips exactly three edge-spin parity bi
 {Pi,H_E}=0.
 ```
 
-The Lorentzian operator stack has a different grading and this changes the mirror-range frontier.
+The purpose of this note is only to classify which logical operator channels are permitted by that grading.
 
 ---
 
@@ -32,14 +32,14 @@ Hence
 K=[V,H_E] : odd.
 ```
 
-For any operator `O`, the covariant leg used by the existing Peter-Weyl code is
+For any operator `O`, the covariant leg used by the Peter-Weyl code is
 
 ```text
 C_e(O)=h_e[h_e^-1,O]
       =O-h_e O h_e^-1.
 ```
 
-Conjugation contains two fundamental representation hits, so it preserves doubled-spin parity. Therefore
+Conjugation contains two fundamental representation hits and therefore preserves doubled-spin parity:
 
 ```text
 C(V) : even
@@ -74,13 +74,13 @@ Let `P` project to the even all-`j=1/2` logical sector. Then
 P H_E P=0
 ```
 
-by grading, but
+by grading, whereas
 
 ```text
 P H_L P
 ```
 
-is **not** forbidden by grading.
+is **allowed** by grading.
 
 For
 
@@ -89,13 +89,13 @@ G=H_E+lambda H_L,
 lambda=1+beta^2,
 ```
 
-one gets immediately
+one obtains
 
 ```text
 P G P=lambda P H_L P.
 ```
 
-Therefore a direct logical term in the full constraint, if one exists, is Lorentzian at leading order.
+This does not imply that the matrix element is nonzero; it only says parity does not force it to vanish.
 
 ---
 
@@ -113,7 +113,7 @@ Hence
 P(H_E H_L+H_L H_E)P=0.
 ```
 
-So on the even logical sector
+Therefore on the even logical sector
 
 ```text
 P G^2 P
@@ -121,35 +121,33 @@ P G^2 P
  +lambda^2 P H_L^2 P.
 ```
 
-This cleanly separates the Euclidean and Lorentzian pieces at this grading level.
-
-The independently tested two-shell Euclidean master normalization makes the raw `H_E^2` return kernel approach the identity on the full-rank logical support. That makes the direct Lorentzian projection the next higher-priority full-theory test.
+This separates Euclidean and Lorentzian contributions at the level of the declared grading.
 
 ---
 
-## 4. New killer test
+## 4. Next amplitude test
 
-The next amplitude question is simply
+The next finite operator question is simply
 
 ```text
 P H_L P = 0 ?
 ```
 
-More precisely, the first executable gate evaluates the full 24-term epsilon-oriented raw sine-ordered K-K-V node sum at `Jmax=7/2`, projects its final `J=0` covariant state back to the all-`j=1/2` Gauss logical sector and asks whether any logical matrix element survives.
+A direct calculation must evaluate the epsilon-oriented Lorentzian node sum, project the result back to the all-`j=1/2` Gauss/logical sector and report the matrix elements without interpreting a nonzero coefficient as a new degree of freedom.
 
-Outcomes:
+Possible outcomes:
 
 ```text
 P H_L P = 0
-  -> leading Lorentzian logical mass is absent at this finite node test;
-     normalized Euclidean higher-shell Lambda becomes the next geometric source.
+  -> this direct logical Lorentzian channel vanishes at the tested cutoff.
 
 P H_L P != 0
-  -> support and genuine amplitudes permit a direct Lorentzian logical term;
-     next compute its Hermitian completion, mirror/S4 decomposition and unbiased environment trace.
+  -> parity and support permit a direct Lorentzian logical term;
+     its Hermitian completion, S4 decomposition and regulator dependence
+     must then be computed.
 ```
 
-Neither outcome by itself establishes a physical mirror force.
+Neither outcome by itself changes the physical particle content of the model.
 
 ---
 
@@ -159,16 +157,8 @@ Neither outcome by itself establishes a physical mirror force.
 python scripts/peter_weyl_lorentzian_parity_gate.py
 ```
 
-The direct amplitude test is separately implemented in
-
-```text
-scripts/peter_weyl_lorentzian_logical_projection_gate.py
-```
-
-on its research branch until the expensive calculation is complete.
-
 ---
 
 ## Scientific scope
 
-This is a selection-rule result inside a candidate quantum-gravity construction. It does not establish a physical mirror sector, antigravity, a fifth force or a mediator mass. In particular parity only says that `P H_L P` is allowed; it does not say the amplitude is nonzero.
+This is a selection-rule result inside a candidate quantum-gravity construction. It establishes only the `Z2` grading of the declared finite operators. It does not establish a nonzero Lorentzian logical amplitude, an additional particle, a mediator, a new long-range interaction, or a physical scale.

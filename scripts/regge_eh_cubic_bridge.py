@@ -2,7 +2,7 @@
 """Compare finite Regge action with direct continuum Einstein-Hilbert action.
 
 A deterministic generic three-wave symmetric metric field is placed on a flat
-4-torus.  For each lattice size L we evaluate
+4-torus. For each lattice size L we evaluate
 
   S_Regge = sum_h A_h delta_h
 
@@ -10,14 +10,14 @@ on the Freudenthal 4D Regge lattice and independently evaluate
 
   S_EH = integral sqrt(g) R d^4x
 
-with spectral derivatives on an auxiliary continuum grid.  Polynomial fits in
-the field amplitude extract quadratic and cubic coefficients.  Standard Regge
+with spectral derivatives on an auxiliary continuum grid. Polynomial fits in
+the field amplitude extract quadratic and cubic coefficients. Standard Regge
 normalization predicts S_Regge / S_EH -> 1/2 in the smooth limit, so both c2
 and c3 must independently approach that factor.
 
-This is a nonlinear finite-lattice bridge test.  It is not a proof of the full
-microscopic CIMFIG/BCQG RG flow, nonlinear gauge closure, Lorentzian unitarity,
-or emergence of four dimensions.
+This is a nonlinear finite-lattice bridge test. It is not a proof of the full
+microscopic RG flow, nonlinear gauge closure, Lorentzian unitarity, or emergence
+of four dimensions.
 """
 
 from __future__ import annotations
@@ -33,7 +33,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from bcqg_unified_verification import FlatRegge4D  # noqa: E402
+from regge_flat_lattice import FlatRegge4D  # noqa: E402
 
 
 def polarizations(seed: int = 260809) -> np.ndarray:
@@ -193,9 +193,9 @@ def report_markdown(payload: dict[str, object]) -> str:
         lines.append(f"- {k}: `{v}`")
     lines += [
         "",
-        "The conventional smooth Regge normalization is `S_Regge -> 0.5 S_EH`; therefore c2 and c3 are tested independently against 0.5.  The three-wave field contains a momentum-conserving triad, so its cubic coefficient is nonzero.",
+        "The conventional smooth Regge normalization is `S_Regge -> 0.5 S_EH`; therefore c2 and c3 are tested independently against 0.5. The three-wave field contains a momentum-conserving triad, so its cubic coefficient is nonzero.",
         "",
-        "Still open: cubic gauge Ward closure, blocked effective action and universality, Lorentzian measure/unitarity, 4D emergence without a 4D scaffold, matter, and experiment.",
+        "Still open: cubic gauge/Ward closure, blocked effective action and universality, Lorentzian measure/unitarity, dimensional emergence from the microscopic binary rule, and experiment.",
     ]
     return "\n".join(lines) + "\n"
 

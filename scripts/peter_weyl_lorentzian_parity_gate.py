@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Exact doubled-spin parity bookkeeping for the Euclidean/Lorentzian Peter-Weyl stack.
 
-Use the already verified grading
+Use the verified grading
 
     Pi |{s_e}> = (-1)^(sum_e s_e)|{s_e}>,  s_e=2j_e,
 
 for which every primitive H_E sequence flips exactly three edge parities and
 therefore H_E is Pi-odd.
 
-The remaining parity assignments follow directly from the declared operators:
+The remaining assignments follow directly from the declared operators:
 
     V                         even
     K=[V,H_E]                 odd
@@ -16,7 +16,7 @@ The remaining parity assignments follow directly from the declared operators:
       = O-h_e O h_e^-1       same parity as O,
 
 because conjugation by one fundamental h and one h^-1 contributes two parity
-flips.  Hence
+flips. Hence
 
     C(V) even,
     C(K) odd,
@@ -29,7 +29,7 @@ For P projecting to the even all-j=1/2 logical sector this gives
 
 while P H_L P is not forbidden by this grading.
 
-This is a selection-rule theorem only.  It does not claim P H_L P is nonzero;
+This is a selection-rule theorem only. It does not claim P H_L P is nonzero;
 that is a separate amplitude calculation.
 """
 from __future__ import annotations
@@ -45,13 +45,10 @@ def mul(*signs):
 
 
 def commutator_parity(a, b):
-    # AB and BA have the same Z2 grading product.
     return mul(a, b)
 
 
 def covariant_leg_parity(operator_parity):
-    # C(O)=O-h O h^-1.  Fundamental h is odd and h^-1 is odd, so
-    # parity(h O h^-1)=(-1)*p*(-1)=p.
     direct = operator_parity
     conjugated = mul(-1, operator_parity, -1)
     if direct != conjugated:
@@ -106,7 +103,8 @@ def run():
         },
         "scope": (
             "Exact Z2 operator bookkeeping within the declared Peter-Weyl construction. "
-            "It does not prove a nonzero Lorentzian logical matrix element, a physical mass, a mirror particle or a fifth force."
+            "It does not prove a nonzero Lorentzian logical matrix element, an additional particle, "
+            "a mediator, a new long-range interaction, or a physical mass scale."
         ),
     }
 

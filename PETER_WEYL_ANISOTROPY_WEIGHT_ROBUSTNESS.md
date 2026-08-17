@@ -2,9 +2,7 @@
 
 Status: **tested finite accounting certificate + representation/volume fingerprint; physical constrained resolvent remains open**.
 
-This document supersedes the earlier `spin-cost robustness` interpretation.
-
-The environment-unbiased pair return kernel is
+The environment-unbiased logical geometry-qubit return kernel is
 
 ```text
 K_ret=(1/8) Tr_env P(H_E,0+H_E,1)^2P.
@@ -16,13 +14,13 @@ The canonical S4-reduced structural anisotropy is
 Delta_aniso,ret=2.738458660882762.
 ```
 
-It is a return/leakage coefficient, not a proved static mass.
+It is a return/leakage coefficient, not a proved low-energy mass or interaction parameter.
 
 ---
 
 ## 1. Hard accounting certificate
 
-The replacement gate
+The canonical gate
 
 ```text
 scripts/peter_weyl_anisotropy_resolvent_audit_gate.py
@@ -34,7 +32,7 @@ constructs the direct 32-column kernel and the individual intermediate-state con
 ||sum_n K_n-K_direct|| < 1e-10.
 ```
 
-The green CI artifact gives
+The current finite result is
 
 ```text
 intermediate states             = 648
@@ -47,7 +45,7 @@ II direct                       = 9.04524203998966
 II reconstructed                = 9.045242039989661.
 ```
 
-Thus the state decomposition is certified at machine precision.
+Thus the state decomposition is certified at machine precision for this finite gate.
 
 ---
 
@@ -66,7 +64,7 @@ sum(delta_n<0) = -1.3143579349909067.
 
 Therefore the cone is mixed. There is no theorem that an arbitrary positive state-diagonal weighting preserves the sign of `Delta_aniso`.
 
-But this fact alone does **not** license arbitrary denominator tuning: the actual weighting must come from the constrained dynamics.
+This does not license arbitrary denominator tuning: the actual weighting must come from the constrained dynamics.
 
 ---
 
@@ -75,8 +73,8 @@ But this fact alone does **not** license arbitrary denominator tuning: the actua
 Every one of the 648 actual intermediate states has
 
 ```text
-spin_cost    = 3
-changed_edges= 3.
+spin_cost     = 3
+changed_edges = 3.
 ```
 
 Therefore for any weighting of the form
@@ -92,9 +90,7 @@ K_w=c K_ret,
 Delta_w=c Delta_ret.
 ```
 
-The old rational/exponential/inverse-shift `spin_cost` scans were therefore only overall rescalings, not independent robustness tests. They are retired.
-
-The old executable path is retained only as a compatibility wrapper to the audited gate so stale thresholds cannot reappear.
+Such a scan is only an overall rescaling, not an independent robustness test.
 
 ---
 
@@ -104,11 +100,6 @@ Starting from `j=1/2`, one Euclidean action changes exactly three edge spins. Ea
 
 ```text
 j=1/2 -> 0   (lower)
-```
-
-or
-
-```text
 j=1/2 -> 1   (raise).
 ```
 
@@ -121,13 +112,11 @@ Grouping the audited states by the number of raised and lowered edges gives
 | 2 | 1 | 216 | `-0.3715029773216430` | `1.5724624665804985` | `-0.2362555451829125` |
 | 3 | 0 | 288 | `+2.712214073786969` | `6.428692216813412` | `+0.4218920399849792` |
 
-Thus the only **net-negative representation channel** is
+The only net-negative one-hit representation channel is
 
 ```text
 2 raises + 1 lowering.
 ```
-
-This is much sharper than the retired spin-cost classification.
 
 For the SU(2) Casimir `j(j+1)`, the total one-hit Casimir shifts of these four channels are respectively
 
@@ -135,7 +124,7 @@ For the SU(2) Casimir `j(j+1)`, the total one-hit Casimir shifts of these four c
 -9/4, -1/4, +7/4, +15/4.
 ```
 
-These are kinematic labels only; they are not yet physical energy denominators.
+These are kinematic labels only; they are not physical energy denominators.
 
 ---
 
@@ -143,23 +132,12 @@ These are kinematic labels only; they are not yet physical energy denominators.
 
 The audited local-volume fingerprint shows strong overlap between positive and negative sectors.
 
-Positive sector:
-
 ```text
-count=392
-<V_total>=2.7747718761477116
-states with a zero-volume node=200.
+positive: count=392, <V_total>=2.7747718761477116
+negative: count=256, <V_total>=2.6299746617864215
 ```
 
-Negative sector:
-
-```text
-count=256
-<V_total>=2.6299746617864215
-states with a zero-volume node=160.
-```
-
-Both sectors occupy the same broad volume range and both contain zero-volume states.
+Both sectors occupy a broad overlapping volume range and both contain states with zero-volume nodes.
 
 Diagnostic weights such as
 
@@ -168,55 +146,32 @@ exp(-mu V_total)
 1/(1+mu V_total)
 ```
 
-remain positive in all tested controls; for example
+remain positive in the tested controls; for example
 
 ```text
 exp(-10 V_total): Delta=7.653856275172428e-7 > 0.
 ```
 
-This does not prove sign protection. It proves the narrower negative result:
-
-```text
-V_total alone does not isolate the negative channel in this finite habitat.
-```
+This establishes only the narrower result that `V_total` alone does not isolate the negative representation channel in this finite habitat.
 
 ---
 
 ## 6. Correct next question
 
-The actual problem is no longer
+The actual problem is to derive the constrained intermediate-state operator itself.
 
-```text
-choose a denominator.
-```
-
-It is
-
-```text
-derive the constrained intermediate-state operator itself.
-```
-
-The independent spin-parity/master analysis shows that the raw return kernel is `K=A^dagger A` and that its minimal two-shell positive master normalization tends to identity. The first denominator-free higher-shell quantity is therefore the normalized second-hit leakage
-
-```text
-Lambda
- = K^-1/2 (P H_E^4 P-K^2) K^-1/2.
-```
-
-That object, together with the full 32-dimensional logical master normalization, is the next Euclidean killer test.
+A physically meaningful effective kernel must follow from the same quantum constraint dynamics and then be tested through refinement/RG, rather than being chosen to preserve a desired sign.
 
 ---
 
 ## Reproduction
-
-Canonical audit:
 
 ```bash
 python scripts/peter_weyl_anisotropy_resolvent_audit_fast_gate.py \
   --output verification_results/PETER_WEYL_ANISOTROPY_RESOLVENT_AUDIT.json
 ```
 
-Legacy command (compatibility wrapper to the same audit):
+Compatibility entry point:
 
 ```bash
 python scripts/peter_weyl_anisotropy_weight_robustness_gate.py \
@@ -227,4 +182,4 @@ python scripts/peter_weyl_anisotropy_weight_robustness_gate.py \
 
 ## Scientific scope
 
-This is a finite calculation inside a candidate theory. It does not establish a physical mirror particle, antigravity, a fifth force, or a static mediator mass. The physical constrained resolvent, Lorentzian sector, route coupling, matter coupling and refinement/RG limit remain separate requirements.
+This is a finite calculation inside the candidate quantum-geometry model. It establishes an audited decomposition of a return kernel and its representation/volume fingerprints. It does not establish a new particle, force, matter sector, mediator scale or macroscopic interaction.

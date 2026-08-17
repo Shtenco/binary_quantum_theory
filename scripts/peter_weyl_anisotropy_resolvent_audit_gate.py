@@ -211,7 +211,6 @@ def run():
         and max(accounting["II_errors"].values()) < 1e-10
     )
 
-    # Only publish interpretation-level diagnostics if accounting is certified.
     geometry = None
     scans = None
     classes = None
@@ -252,7 +251,7 @@ def run():
         all_rows = rows
 
     return {
-        "status": "Peter-Weyl anisotropy constrained-resolvent audit gate",
+        "status": "Peter-Weyl geometry-qubit constrained-resolvent audit gate",
         "passed": bool(accounting_pass),
         "first_order_projection_max": first_projection_max,
         "intermediate_state_count": len(contribs),
@@ -272,7 +271,7 @@ def run():
         "scope": (
             "PASS certifies only the exact finite decomposition and geometric fingerprint. "
             "Volume-dependent diagnostic weights are not the physical constrained Feshbach/Dirac resolvent; "
-            "no static mirror mass, fifth force, or antigravity is inferred from them."
+            "no additional particle, mediator, force, matter sector, or macroscopic interaction is inferred."
         ),
     }
 

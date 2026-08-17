@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """Project Peter-Weyl Euclidean dynamics onto the logical geometry-qubit sector.
 
-The gate tests whether the already existing Euclidean geometry dynamics can gap
-the continuous Bell-gluing/Heisenberg mirror parent by generating logical
-pseudospin anisotropy.
+The gate tests whether the existing Euclidean geometry dynamics generates
+logical pseudospin anisotropy in the first nonzero return channel.
 
 Two levels are kept sharply separate.
 
@@ -36,7 +35,7 @@ Two levels are kept sharply separate.
 IMPORTANT: K_return is NOT a physical Schrieffer-Wolff Hamiltonian. A true
 second-order effective Hamiltonian needs a justified constrained-theory
 resolvent/energy denominator. This gate measures structural symmetry breaking
-in the first nonzero return channel.
+in the first nonzero return channel only.
 """
 from __future__ import annotations
 
@@ -158,9 +157,12 @@ def analyze_kernel(K):
     anis_rel = anis_abs / max(Jnorm, 1e-30)
     offdiag = J_real - np.diag(np.diag(J_real))
 
-    mirror_forbidden = ("IY", "YI", "XY", "YX", "YZ", "ZY")
-    mirror_forbidden_norm = math.sqrt(sum(abs(coeff[x]) ** 2 for x in mirror_forbidden))
-    allowed_norm = math.sqrt(sum(abs(v) ** 2 for k, v in coeff.items() if k not in mirror_forbidden))
+    # Channels with an odd number of Y factors are odd under complex
+    # conjugation in this logical basis. Their suppression is reported as a
+    # basis-parity diagnostic only; no extra physical sector is introduced.
+    y_odd_channels = ("IY", "YI", "XY", "YX", "YZ", "ZY")
+    y_odd_norm = math.sqrt(sum(abs(coeff[x]) ** 2 for x in y_odd_channels))
+    y_even_norm = math.sqrt(sum(abs(v) ** 2 for k, v in coeff.items() if k not in y_odd_channels))
 
     if Jnorm < 1e-14:
         classification = "no two-logical-qubit coupling resolved"
@@ -188,11 +190,11 @@ def analyze_kernel(K):
             "imaginary_norm": J_imag_norm,
             "classification": classification,
         },
-        "mirror_selection": {
-            "forbidden_coefficients": list(mirror_forbidden),
-            "forbidden_norm": mirror_forbidden_norm,
-            "allowed_norm": allowed_norm,
-            "relative_forbidden_norm": mirror_forbidden_norm / max(allowed_norm, 1e-30),
+        "y_parity_selection": {
+            "y_odd_coefficients": list(y_odd_channels),
+            "y_odd_norm": y_odd_norm,
+            "y_even_norm": y_even_norm,
+            "relative_y_odd_norm": y_odd_norm / max(y_even_norm, 1e-30),
         },
     }
 
@@ -251,12 +253,12 @@ def run():
     )
 
     return {
-        "status": "Peter-Weyl logical pseudospin anisotropy gate",
+        "status": "Peter-Weyl logical geometry-qubit anisotropy gate",
         "passed": bool(algebra_pass),
         "scope": (
             "PASS certifies the projection, environment trace and Pauli decomposition. K_return=P(H_E0+H_E1)^2P "
             "is a structural return kernel, not a physical Schrieffer-Wolff Hamiltonian because no constrained-theory "
-            "energy denominator/resolvent has been assumed."
+            "energy denominator/resolvent has been assumed. No additional particle, force or matter sector is inferred."
         ),
         "ordering": "physical structural H_E^sine=(T-T^dagger)/(2i)",
         "Jmax_one_hit": JMAX2 / 2,
@@ -280,12 +282,11 @@ def run():
         "comparison": {
             "fixed_anisotropy_relative": fixed["heisenberg_frame"]["anisotropy_relative"],
             "traced_anisotropy_relative": averaged["heisenberg_frame"]["anisotropy_relative"],
-            "traced_mirror_forbidden_relative_norm": averaged["mirror_selection"]["relative_forbidden_norm"],
+            "traced_y_odd_relative_norm": averaged["y_parity_selection"]["relative_y_odd_norm"],
         },
         "next_physics_gate": (
-            "If the maximally mixed environment remains anisotropic, construct a justified constrained resolvent or "
-            "RG/coarse-grained return kernel. If the trace restores isotropy, treat the K=0 result as environment-induced "
-            "rather than intrinsic pseudospin breaking."
+            "Construct the justified constrained resolvent or RG/coarse-grained return kernel and test whether "
+            "the finite orientation-vs-shape anisotropy survives the continuum/refinement limit."
         ),
     }
 

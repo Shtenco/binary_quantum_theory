@@ -23,52 +23,62 @@ jobs:
         with:
           python-version: '3.11'
           cache: pip
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-      - name: Syntax
-        run: |
-          python -m compileall -q scripts
-          python -m py_compile bcqg_observer_smoothing_unified.py bcqg_global_manifold_gate.py bcqg_quantum_hda_killer.py bcqg_bit_to_gravity_final.py
+
+      - name: Enforce GR-QM core scope
+        run: python scripts/audit_core_scope.py
+
+      - name: Compile all Python sources
+        run: python -m compileall -q .
+
       - name: Validate canonical proof ledger
         run: python scripts/verify_theory_gates.py
+
       - name: Validate public status surface
-        run: python scripts/validate_github_latex.py README.md THEORY_STATUS.md
-      - name: Frozen bit-to-spacetime gate
+        run: python scripts/validate_github_latex.py README.md THEORY_STATUS.md OPEN_PROBLEMS.md BIT_TO_SPACETIME_CENTRAL_EQUATION.md
+
+      - name: Frozen binary to smooth-spacetime gate
         run: python bcqg_observer_smoothing_unified.py --output verification_results/OBSERVER_SMOOTHING_RESULTS.json
-      - name: Recursive q=2 PL manifold
+
+      - name: Recursive q=2 PL manifold completion
         run: python bcqg_global_manifold_gate.py --output verification_results/GLOBAL_MANIFOLD_RESULTS.json
+
+      - name: Qubit to Einstein end-to-end control
+        run: python scripts/qubit_to_einstein_end_to_end.py --output verification_results/QUBIT_TO_EINSTEIN.json
+
+      - name: Regge to Einstein-Hilbert continuum bridge
+        run: python scripts/regge_eh_cubic_bridge.py --output verification_results/REGGE_EH_CUBIC.json
+
+      - name: Plebanski and Urbantke geometry reconstruction
+        run: |
+          python scripts/plebanski_urbantke_gate.py --output verification_results/PLEBANSKI_URBANTKE.json
+          python scripts/plebanski_connection_einstein_gate.py --output verification_results/PLEBANSKI_EINSTEIN.json
+
       - name: Route-normal HDA
         run: python scripts/path_normal_hda_gate.py --output verification_results/PATH_NORMAL_HDA_RESULTS.json
-      - name: Two-node Peter-Weyl x route Euclidean regression
+
+      - name: Two-node Peter-Weyl by route Euclidean regression
         run: python scripts/peter_weyl_two_node_euclidean_joint_gate.py --output verification_results/PETER_WEYL_TWO_NODE_EUCLIDEAN.json
+
       - name: HDA factorization no-go and route prerequisites
-        run: python bcqg_quantum_hda_killer.py --output verification_results/QUANTUM_HDA_KILLER_RESULTS.json
-      - name: Lorentzian fixed coefficient and safe support
+        run: python bcqg_quantum_hda_killer.py --output verification_results/QUANTUM_HDA_RESULTS.json
+
+      - name: Lorentzian fixed coefficient and support bound
         run: |
           python scripts/lorentzian_hit_depth_bound.py
           python scripts/lorentzian_beta_cancellation_gate.py
-      - name: Graviton helicity qubit and foam resonance bridge
-        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json
-      - name: Mirror chirality and antigravity falsifier
-        run: python scripts/mirror_chirality_gravity_gate.py --output verification_results/MIRROR_CHIRALITY_GRAVITY.json
-      - name: Microscopic 16-cell mirror order
-        run: python scripts/mirror_order_16cell_gate.py --output verification_results/MIRROR_ORDER_16CELL.json
-      - name: Recursive PL mirror-order persistence
-        run: python scripts/mirror_order_recursive_pl_gate.py --refinements 2 --output verification_results/MIRROR_ORDER_RECURSIVE_PL.json
-      - name: Orientation-odd HDA and healthy mirror force
-        run: python scripts/orientation_odd_hda_gate.py --output verification_results/ORIENTATION_ODD_HDA.json
-      - name: Mirror-force normalization and source selection
-        run: python scripts/mirror_force_normalization_gate.py --output verification_results/MIRROR_FORCE_NORMALIZATION.json
-      - name: Hodge-weighted mirror stiffness
-        run: python scripts/mirror_hodge_stiffness_gate.py --output verification_results/MIRROR_HODGE_STIFFNESS.json
-      - name: Canonical final architecture status
-        run: python bcqg_bit_to_gravity_final.py --strict --output verification_results/FINAL_CORE_ARCHITECTURE.json
+
+      - name: Fixed-cutoff integration status
+        run: python bcqg_bit_to_gravity_final.py --strict --output verification_results/FIXED_CUTOFF_BRIDGE.json
+
       - name: Upload canonical evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: core-architecture-certificate
+          name: quantum-geometry-gr-core
           path: verification_results/
           if-no-files-found: warn

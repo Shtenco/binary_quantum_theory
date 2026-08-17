@@ -4,7 +4,7 @@
 Using deterministic noncommuting geometry matrices for the four covariant K legs
 and V legs, evaluate exactly the same oriented 24-term sum used by the existing
 Lorentzian triple algebra gate, but with every possible ordering of the local
-four-neighbor frame.  With the physical edge operators held fixed, an odd frame
+four-neighbor frame. With the physical edge operators held fixed, an odd frame
 permutation must reverse the oriented epsilon sum:
 
     L_eps(frame_p)=sgn(p) L_eps(frame).
@@ -57,7 +57,7 @@ def run():
       'identity':'L_epsilon(frame_p)=sgn(p)L_epsilon(frame)',
       'rows':rows,
       'consequence':'The declared 24-term oriented assembler is an alternating/sign-character object under reversal of the local four-face frame. Combined with the logical S4 sign twirl, its symmetry-restored one-cell logical channel can only be proportional to Y.',
-      'scope':'Synthetic noncommuting operator algebra; this proves covariance of the assembler, not a nonzero Peter-Weyl amplitude or physical mirror force.'
+      'scope':'Synthetic noncommuting operator algebra only; this proves covariance of the assembler, not a nonzero Peter-Weyl amplitude, additional particle content, or a new interaction.'
     }
 if __name__=='__main__':
     o=run(); print(json.dumps(o,indent=2)); raise SystemExit(0 if o['passed'] else 1)

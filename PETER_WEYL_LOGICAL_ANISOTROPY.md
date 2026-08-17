@@ -1,15 +1,8 @@
-# Peter-Weyl logical anisotropy: canonical unbiased return result
+# Peter-Weyl logical geometry-qubit anisotropy
 
-Status: **exact first-order support no-go + tested finite 32-column return kernel + audited 648-state decomposition; physical constrained master/RG flow still open**.
+Status: **exact first-order support no-go + tested finite 32-column return kernel + audited 648-state decomposition; physical constrained/RG flow remains open**.
 
-The finite Euclidean result has a sharp symmetry split:
-
-```text
-mirror Z2        -> survives
-Bell-parent SU(2)-> broken in the raw first return kernel.
-```
-
-The raw return kernel is a structural/short-time object, **not** a proved static mass Hamiltonian.
+This note records a finite property of the logical geometry-qubit sector. It does not introduce an additional particle species, matter sector or force.
 
 ---
 
@@ -29,7 +22,7 @@ P H_E P=0
 
 with projected norm exactly `0.0`.
 
-Therefore `H_E` generates no first-order logical field and no first-order mirror splitting.
+Therefore `H_E` generates no first-order logical field inside this projected sector.
 
 ---
 
@@ -47,7 +40,7 @@ in the sine ordering. The first nonzero logical return object is
 K_ret=P H_01^2 P.
 ```
 
-To remove the earlier fixed-environment shape bias, the canonical pair kernel is
+To remove the fixed-environment shape bias, the canonical pair kernel is
 
 ```text
 Kbar_01
@@ -61,11 +54,13 @@ using all
 4 pair states x 8 environment states = 32 columns.
 ```
 
+`K_ret` is a structural return/leakage kernel. It is **not** by itself a low-energy Hamiltonian because no constrained resolvent or energy denominator has been derived.
+
 ---
 
 ## 3. Canonical Pauli coefficients
 
-Before the bipartite Heisenberg-frame rotation the main coefficients are
+Before the declared bipartite basis rotation the main coefficients are
 
 ```text
 II = 9.04524203998966
@@ -80,7 +75,7 @@ XZ = -0.17242879769840605
 ZX = -0.17242879769840608.
 ```
 
-The mirror-forbidden odd-`Y` channels
+The channels with an odd number of `Y` factors,
 
 ```text
 IY,YI,XY,YX,YZ,ZY
@@ -92,13 +87,13 @@ have relative norm
 2.7985693281119945e-33.
 ```
 
-Thus mirror `Z2` survives to numerical precision.
+This is reported as a `Y`-parity / basis-conjugation diagnostic only.
 
 ---
 
-## 4. Heisenberg frame and S4 reduction
+## 4. S4 reduction
 
-After the `pi` rotation around `Y` on the second logical qubit,
+After the declared `pi` rotation around `Y` on the second logical qubit,
 
 ```text
 J_ret ~=
@@ -134,7 +129,7 @@ J_orient
  =+2.18199564892363
 ```
 
-and the unique S4-allowed raw structural split is
+and the unique `S4`-allowed raw structural split is
 
 ```text
 Delta_aniso,ret
@@ -142,7 +137,7 @@ Delta_aniso,ret
  =2.738458660882762.
 ```
 
-Mirror symmetry permits this split; it does not imply full pseudospin `SU(2)`.
+The result says only that tetrahedral face-permutation symmetry does not force the two invariant bilinears to have equal coefficients.
 
 ---
 
@@ -162,7 +157,7 @@ P_leak(t|psi)
  =t^2 <psi|K_ret|psi>+O(t^3).
 ```
 
-Therefore the raw anisotropy is a genuine tested **short-time logical leakage anisotropy** even though it is not yet a static low-energy mass term.
+Therefore the measured anisotropy is a tested **short-time logical leakage anisotropy**. No static mass, mediator or macroscopic interaction follows from it.
 
 ---
 
@@ -193,12 +188,6 @@ sum negative Delta = -1.3143579349909067.
 
 Thus arbitrary positive state-diagonal weighting is **not** sign-protected.
 
-The previous documentation values `492/156` were stale and are retired.
-
----
-
-## 7. Spin-cost robustness is not a physical result
-
 Every one-hit intermediate state has
 
 ```text
@@ -206,9 +195,9 @@ spin_cost=3
 changed_edges=3.
 ```
 
-Therefore every weight depending only on `spin_cost` is a common scalar factor and cannot test robustness. The former spin-cost scans are retired.
+so weighting only by `spin_cost` is a common scalar rescaling and not a robustness test.
 
-The exact representation-channel decomposition is more informative. Starting from `j=1/2`, the three changed edges can be lowered to `j=0` or raised to `j=1`:
+The exact representation-channel decomposition is more informative:
 
 | raises | lowers | states | total Delta |
 |---:|---:|---:|---:|
@@ -217,59 +206,24 @@ The exact representation-channel decomposition is more informative. Starting fro
 | 2 | 1 | 216 | `-0.3715029773216430` |
 | 3 | 0 | 288 | `+2.712214073786969` |
 
-The only net-negative one-hit representation channel is therefore
-
-```text
-2 raises + 1 lowering.
-```
-
-This is a kinematic classification, not yet an energy denominator.
+This is a kinematic classification, not an energy spectrum.
 
 ---
 
-## 8. Volume does not isolate the sign
-
-The audited positive and negative sectors have strongly overlapping local-volume distributions. Zero-volume nodes occur in both sectors:
-
-```text
-positive: 200/392 states
-negative: 160/256 states.
-```
-
-Their mean total volumes are
-
-```text
-positive <V_total>=2.7747718761477116
-negative <V_total>=2.6299746617864215.
-```
-
-Simple total-volume diagnostic weights remain positive throughout the tested scan, including
-
-```text
-exp(-10 V_total): Delta=7.653856275172428e-7 > 0.
-```
-
-So `V_total` alone is not the missing physical selector.
-
----
-
-## 9. Correct frontier
+## 7. Correct frontier
 
 The finite result is
 
 ```text
 P H_E P=0                       exact first-order protection
-mirror-odd channels ~ 0        mirror Z2 survives
+Y-odd channels ~ 0             finite basis-parity diagnostic
 A_rel ~=0.964480                raw return kernel strongly anisotropic
 Delta_aniso,ret=2.73845866      unique S4 raw structural split
 648-state cone=mixed            arbitrary diagonal sign not protected
 spin_cost weights=trivial       retired as robustness evidence
-volume_total selector=negative  does not isolate the sign.
 ```
 
-Therefore the next problem is **not** to invent a denominator. It is to derive the constrained intermediate-state operator from the dynamics itself.
-
-The raw `K_ret` must not be identified with a physical mirror mass.
+The next task is to derive the constrained intermediate-state operator from the dynamics itself and then test the anisotropy along a refinement/RG sequence.
 
 ---
 
@@ -283,10 +237,4 @@ python scripts/peter_weyl_anisotropy_resolvent_audit_fast_gate.py \
   --output verification_results/PETER_WEYL_ANISOTROPY_RESOLVENT_AUDIT.json
 ```
 
-Legacy `peter_weyl_anisotropy_weight_robustness_gate.py` is now only a compatibility entry point to the same audited calculation.
-
----
-
-## Scientific scope
-
-These are finite properties of a candidate model. They do not establish a physical mirror particle, antigravity, a fifth force or a measured mediator mass. The constrained master operator, Lorentzian sector, route sector, matter matrix element and refinement/RG limit remain separate requirements.
+These are finite properties of the candidate geometry sector. They are not evidence for any additional particle or force.

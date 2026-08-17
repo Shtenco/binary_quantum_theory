@@ -9,16 +9,17 @@ This gate constructs all 24 permutations explicitly on the four spin-1/2 tensor
 legs, projects them onto the K=0/2 singlet basis, and computes the diagonal S4
 twirl on the 4x4 two-logical-qubit operator space.
 
-The invariant mirror-even two-cell pseudospin structure is shown to contain two
-independent bilinear channels:
+The invariant two-cell pseudospin structure contains two independent bilinear
+channels:
 
     X⊗X + Z⊗Z    (shape-plane scalar)
     Y⊗Y          (orientation-pseudoscalar product)
 
 plus I⊗I. Therefore tetrahedral face-permutation symmetry removes label-axis
-artifacts but does NOT force Heisenberg equality J_shape=J_orientation.
-The residual scalar anisotropy Delta=J_orientation-J_shape is symmetry allowed
-and is the correct coarse killer observable for the Goldstone mirror route.
+artifacts but does not force Heisenberg equality J_shape=J_orientation.
+The residual scalar anisotropy Delta=J_orientation-J_shape is a finite
+representation-theory observable whose continuum relevance must be established
+by the physical constrained dynamics/RG flow.
 """
 from __future__ import annotations
 
@@ -137,8 +138,9 @@ def run():
     evals = np.linalg.eigvals(S)
     invariant_dim = int(np.sum(np.abs(evals - 1.0) < 1e-9))
 
-    # A deliberately generic Hermitian mirror-even two-qubit operator. Its
-    # twirl should reduce to I, shape-dot and YY only.
+    # A deliberately generic Hermitian two-qubit operator built from terms that
+    # include invariant and label-dependent components. The twirl should reduce
+    # it to I, shape-dot and YY only.
     test = (
         0.7 * np.kron(PAULI["I"], PAULI["I"])
         + 0.3 * np.kron(PAULI["X"], PAULI["X"])
@@ -187,7 +189,7 @@ def run():
         "shape_bilinear_twirl_error": shape_error,
         "orientation_bilinear_twirl_error": orient_error,
         "shape_orientation_HS_overlap": bilinear_overlap,
-        "generic_mirror_even_twirl_pauli": {k: cjson(v) for k, v in c.items()},
+        "generic_twirl_pauli": {k: cjson(v) for k, v in c.items()},
         "generic_twirl_forbidden_norm": forbidden_norm,
         "generic_twirl_XX_minus_ZZ_abs": float(shape_split),
         "coarse_form": "K_sym=c0 II + J_shape(XX+ZZ) + J_orientation YY",
@@ -195,11 +197,15 @@ def run():
         "main_result": (
             "Full tetrahedral face-permutation symmetry removes one-cell logical fields and in-plane label artifacts, "
             "but it leaves two independent two-cell couplings: the X/Z shape-plane scalar and the Y/Y orientation "
-            "product. Therefore mirror and S4 symmetry do not protect Heisenberg equality."
+            "product. S4 symmetry alone therefore does not protect Heisenberg equality."
+        ),
+        "scope": (
+            "This is a finite representation-theory statement about the geometry-qubit operator algebra. "
+            "It does not introduce an additional particle, force, matter sector, or macroscopic interaction."
         ),
         "next_gate": (
             "Apply the same S4 twirl to the environment-traced Peter-Weyl return kernel and track "
-            "Delta_aniso=J_orientation-J_shape under a justified resolvent/RG/refinement flow."
+            "Delta_aniso=J_orientation-J_shape under a justified constrained-dynamics/RG/refinement flow."
         ),
     }
 
