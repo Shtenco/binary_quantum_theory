@@ -57,6 +57,12 @@ jobs:
         run: python scripts/mirror_order_16cell_gate.py --output verification_results/MIRROR_ORDER_16CELL.json
       - name: Recursive PL mirror-order persistence
         run: python scripts/mirror_order_recursive_pl_gate.py --refinements 2 --output verification_results/MIRROR_ORDER_RECURSIVE_PL.json
+      - name: PL Galerkin anisotropy no-flow control
+        run: python scripts/pl_galerkin_anisotropy_no_flow_gate.py --refinements 2 --output verification_results/PL_GALERKIN_ANISOTROPY_NO_FLOW.json
+      - name: Canonical j=1 S4 coarse logical qubit
+        run: python scripts/peter_weyl_j1_s4_block_gate.py --output verification_results/PETER_WEYL_J1_S4_BLOCK.json
+      - name: Held-out Regge TT residue regression
+        run: python scripts/tt_regge_zt_l6_gate.py --output verification_results/TT_REGGE_ZT_L6.json
       - name: Orientation-odd HDA and healthy mirror force
         run: python scripts/orientation_odd_hda_gate.py --output verification_results/ORIENTATION_ODD_HDA.json
       - name: Mirror-force normalization and source selection
