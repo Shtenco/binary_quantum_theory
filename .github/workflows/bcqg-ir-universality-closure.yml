@@ -1,0 +1,50 @@
+name: bcqg-ir-universality-closure
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'BCQG_IR_UNIVERSALITY_CLOSURE_THEOREM.md'
+      - 'scripts/bcqg_ir_universality_closure_gate.py'
+      - 'verification_results/COLLECTIVE_METRIC_CALIBRATION_IRREP.json'
+      - 'verification_results/COLLECTIVE_GRAVITATIONAL_DIRECT_BLOCK.json'
+      - '.github/workflows/bcqg-ir-universality-closure.yml'
+  workflow_dispatch:
+
+jobs:
+  theorem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Conditional IR universality theorem gate
+        run: python scripts/bcqg_ir_universality_closure_gate.py --output verification_results/BCQG_IR_UNIVERSALITY_CLOSURE.json
+      - name: Hard guards against false promotion
+        run: |
+          python - <<'PY'
+          import json
+          p='verification_results/BCQG_IR_UNIVERSALITY_CLOSURE.json'
+          d=json.load(open(p))
+          assert d['passed']
+          assert d['status']=='CONDITIONAL_IR_UNIVERSALITY_THEOREM'
+          o=d['irreducible_open_hypotheses']
+          assert o['H1_uniform_metric_regularity_under_refinement']=='open'
+          assert o['H2_local_two_derivative_leading_IR_scalar']=='open'
+          assert o['H3_collective_first_class_HDA_and_ranks']=='open'
+          assert o['H4_no_second_class_sector']=='open'
+          assert d['exact_reductions']['c_DeWitt']==0.5
+          assert d['exact_reductions']['AB']==1.0
+          assert d['exact_reductions']['N_phys_config']==2.0
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bcqg-ir-universality-closure
+          path: verification_results/BCQG_IR_UNIVERSALITY_CLOSURE.json
+          if-no-files-found: error
