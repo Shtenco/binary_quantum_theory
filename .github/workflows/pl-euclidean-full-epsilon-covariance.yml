@@ -1,0 +1,35 @@
+name: pl-euclidean-full-epsilon-covariance
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'scripts/pl_euclidean_full_epsilon_covariance_gate.py'
+      - 'scripts/pl_peter_weyl_euclidean.py'
+      - 'scripts/pl_dual_complex.py'
+      - 'scripts/tetrahedral_volume_backend.py'
+      - '.github/workflows/pl-euclidean-full-epsilon-covariance.yml'
+  workflow_dispatch:
+
+jobs:
+  experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/pl_euclidean_full_epsilon_covariance_gate.py
+      - name: Full 24-term epsilon covariance experiment
+        run: python scripts/pl_euclidean_full_epsilon_covariance_gate.py --output verification_results/PL_EUCLIDEAN_FULL_EPSILON_COVARIANCE.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-euclidean-full-epsilon-covariance
+          path: verification_results/PL_EUCLIDEAN_FULL_EPSILON_COVARIANCE.json
+          if-no-files-found: error
