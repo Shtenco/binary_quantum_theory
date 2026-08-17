@@ -1,0 +1,170 @@
+name: pl-16cell-hermitian-lorentzian-v3-orbit
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'PL_16CELL_HERMITIAN_LORENTZIAN_PREREGISTRATION_V3_ORBIT.md'
+      - 'scripts/tetrahedral_volume_backend.py'
+      - 'scripts/tetrahedral_charged_volume_audit_gate.py'
+      - 'scripts/lorentzian_pairing_stabilizer_orbit_gate.py'
+      - 'scripts/collective_16cell_pairing_stabilizer_covariance_gate.py'
+      - 'scripts/pl_lorentzian_triple_worker.py'
+      - 'scripts/pl_lorentzian_group_worker.py'
+      - 'scripts/pl_lorentzian_group_worker_v2.py'
+      - 'scripts/pl_lorentzian_orbit_reconstruct_v3.py'
+      - 'scripts/pl_lorentzian_48_collect.py'
+      - 'scripts/pl_lorentzian_48_collect_v2.py'
+      - 'scripts/pl_lorentzian_48_collect_v3.py'
+      - '.github/workflows/pl-16cell-hermitian-lorentzian-v3-orbit.yml'
+  workflow_dispatch:
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: |
+          python -m py_compile \
+            scripts/lorentzian_pairing_stabilizer_orbit_gate.py \
+            scripts/collective_16cell_pairing_stabilizer_covariance_gate.py \
+            scripts/pl_lorentzian_orbit_reconstruct_v3.py \
+            scripts/pl_lorentzian_48_collect_v3.py
+      - name: Tetrahedral charged-volume audit
+        run: python scripts/tetrahedral_charged_volume_audit_gate.py --output verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT_V3.json
+      - name: Pairing-stabilizer structural theorem
+        run: python scripts/lorentzian_pairing_stabilizer_orbit_gate.py --output verification_results/LORENTZIAN_PAIRING_STABILIZER_ORBITS_V3.json
+      - name: Exact 16-cell Peter-Weyl H covariance
+        run: python scripts/collective_16cell_pairing_stabilizer_covariance_gate.py --output verification_results/COLLECTIVE_16CELL_PAIRING_STABILIZER_COVARIANCE_V3.json
+      - name: Hard preregistration guards
+        run: |
+          python - <<'PY'
+          import json
+          a=json.load(open('verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT_V3.json'))
+          b=json.load(open('verification_results/LORENTZIAN_PAIRING_STABILIZER_ORBITS_V3.json'))
+          c=json.load(open('verification_results/COLLECTIVE_16CELL_PAIRING_STABILIZER_COVARIANCE_V3.json'))
+          assert a['passed']
+          assert a['checks']['charged_q123_preferred_leg_negative_control']
+          assert a['checks']['tetra_CV_slot_covariance_restored']
+          assert b['passed'] and b['worker_orbits']==[[0,1,6,7,16,17,22,23],[2,4,8,10,13,15,19,21],[3,5,9,11,12,14,18,20]]
+          assert c['passed'] and c['order']==8
+          assert c['checks']['global_K0_seed_invariant']
+          assert c['checks']['E_pseudoscalar_amplitude_covariance']
+          assert c['max_E_relative_covariance_error']<1e-9
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-lorentzian-v3-preflight
+          path: |
+            verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT_V3.json
+            verification_results/LORENTZIAN_PAIRING_STABILIZER_ORBITS_V3.json
+            verification_results/COLLECTIVE_16CELL_PAIRING_STABILIZER_COVARIANCE_V3.json
+          if-no-files-found: error
+
+  direct-shards:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - mode: forward
+            slot: 3
+          - mode: adjoint
+            slot: 1
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Six direct corrected-V2 terms with shared caches
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path out | Out-Null
+          python scripts/pl_lorentzian_group_worker_v2.py --mode "${{ matrix.mode }}" --first-slot ${{ matrix.slot }} --source 0 --out-dir out
+      - name: Require six direct terms
+        shell: pwsh
+        run: |
+          $j=(Get-ChildItem out -Filter 'term_*.json').Count
+          $n=(Get-ChildItem out -Filter 'term_*.npz').Count
+          if ($j -ne 6 -or $n -ne 6) { throw "Expected 6 direct JSON/NPZ terms; got $j/$n" }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-lorentzian-v3-direct-${{ matrix.mode }}
+          path: out/
+          if-no-files-found: error
+
+  reconstruct-and-collect:
+    needs: direct-shards
+    runs-on: windows-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pl-lorentzian-v3-direct-*
+          path: direct
+          merge-multiple: true
+      - name: Require exactly twelve direct V2 terms
+        shell: pwsh
+        run: |
+          $j=(Get-ChildItem direct -Filter 'term_*.json').Count
+          $n=(Get-ChildItem direct -Filter 'term_*.npz').Count
+          if ($j -ne 12 -or $n -ne 12) { throw "Expected 12 direct JSON/NPZ terms; got $j/$n" }
+      - name: Validate six held-out orbit pairs and materialize complete 48-term orbit
+        run: |
+          python scripts/pl_lorentzian_orbit_reconstruct_v3.py --root direct --out-dir materialized --certificate verification_results/PL_16CELL_LORENTZIAN_V3_ORBIT_RECONSTRUCTION.json --source 0
+      - name: Require complete materialized orbit
+        shell: pwsh
+        run: |
+          $j=(Get-ChildItem materialized -Filter 'term_*.json').Count
+          $n=(Get-ChildItem materialized -Filter 'term_*.npz').Count
+          if ($j -ne 48 -or $n -ne 48) { throw "Expected 48 materialized JSON/NPZ terms; got $j/$n" }
+      - name: Full physical Hermitian V3 collector
+        run: |
+          python scripts/pl_lorentzian_48_collect_v3.py --root materialized --orbit-certificate verification_results/PL_16CELL_LORENTZIAN_V3_ORBIT_RECONSTRUCTION.json --json-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V3.json --state-output verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V3.npz
+      - name: Final science guards
+        run: |
+          python - <<'PY'
+          import json
+          r=json.load(open('verification_results/PL_16CELL_LORENTZIAN_V3_ORBIT_RECONSTRUCTION.json'))
+          d=json.load(open('verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V3.json'))
+          assert r['passed'] and len(r['validation_pairs'])==6 and all(x['passed'] for x in r['validation_pairs'])
+          assert r['direct_term_count']==12 and r['reconstructed_term_count']==36
+          assert d['passed']
+          assert d['science_status']=='AMPLITUDE_PRECURSOR_S_NODE0_V3_ORBIT_EXACT'
+          assert d['operator_version']=='tetrahedral-charged-volume-v2'
+          assert d['direct_heavy_term_count']==12
+          assert d['symmetry_reconstructed_term_count']==36
+          assert d['max_worker_physical_leakage']<1e-8
+          assert d['wrong_seed_parity_outputs']==0
+          assert d['max_spin_S']<=3.5+1e-12
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pl-16cell-hermitian-lorentzian-v3-orbit
+          path: |
+            verification_results/PL_16CELL_LORENTZIAN_V3_ORBIT_RECONSTRUCTION.json
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V3.json
+            verification_results/PL_16CELL_HERMITIAN_LORENTZIAN_V3.npz
+          if-no-files-found: error
