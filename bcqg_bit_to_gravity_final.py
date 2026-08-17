@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Canonical binary quantum geometry -> continuum-GR bridge aggregator.
 
-This executable separates finite/exact bridge results from stronger open claims.
-A successful run means that the registered internal regression suite is
-self-consistent on its declared domains.  It does not promote finite three-node
-HDA, fixed-input cutoff control or exact kinematic q=2 carrier maps into an
-arbitrary-graph theory of nature.
+This executable separates exact/finite bridge results from stronger open
+claims. A successful run means that the registered internal regression suite is
+self-consistent on its declared domains. It does not promote finite HDA,
+conditional blocking or exact kinematic carrier maps into an experimentally
+confirmed arbitrary-graph theory of nature.
 """
 from __future__ import annotations
 
@@ -24,6 +24,8 @@ REQUIRED_FIXED_CUTOFF_GATES = {
     "MAN3": {"tested_finite", "proved"},
     "MICRO_WALSH_TETRA": {"proved"},
     "MICRO_GLOBAL_GLUE": {"proved"},
+    "Q2_GRAPHLINK_REP": {"proved"},
+    "PW_SYM_BLOCK_GROWTH": {"conditional", "tested_finite", "proved"},
     "Q2EIN": {"tested_finite", "proved"},
     "REGGEEH": {"tested_finite", "proved"},
     "PLEBANSKI": {"tested_finite", "proved"},
@@ -57,9 +59,7 @@ def run():
         ledger_required[gate_id] = {"status": status, "accepted": bool(status in accepted)}
 
     ledger_pass = all(item["accepted"] for item in ledger_required.values())
-    registered_bridge_passed = bool(
-        bits_pass and manifold_pass and hda_prereq_pass and route_hda_pass and ledger_pass
-    )
+    registered_bridge_passed = bool(bits_pass and manifold_pass and hda_prereq_pass and route_hda_pass and ledger_pass)
 
     open_frontiers = [
         {"id": g["id"], "claim": g["claim"]}
@@ -75,8 +75,11 @@ def run():
         "experimentally_confirmed_theory_of_nature": False,
         "local_q2_geometry_carrier_exact": gates.get("MICRO_WALSH_TETRA", {}).get("status") == "proved",
         "selected_PL_q2_global_carrier_gluing_exact": gates.get("MICRO_GLOBAL_GLUE", {}).get("status") == "proved",
+        "q2_active_plus_no_link_jhalf_representation_exact": gates.get("Q2_GRAPHLINK_REP", {}).get("status") == "proved",
+        "symmetric_block_Peter_Weyl_growth_conditional": gates.get("PW_SYM_BLOCK_GROWTH", {}).get("status") in {"conditional", "tested_finite", "proved"},
         "three_node_graph_changing_HDA_tested_finite": gates.get("HDA_3NODE", {}).get("status") in {"tested_finite", "proved"},
         "fixed_input_joint_cutoff_limit_controlled": gates.get("JOINT_FIXED_INPUT", {}).get("status") in {"tested_finite", "proved", "conditional"},
+        "full_dynamic_micro_to_Peter_Weyl_phase_derived": False,
         "full_graph_changing_multi_node_quantum_HDA_closed": False,
         "uniform_unbounded_refinement_joint_limit_theorem": False,
         "blind_external_physical_prediction_completed": False,
@@ -93,8 +96,8 @@ def run():
         "fixed_cutoff_composition_bound": "Delta_full <= Delta_route + C_cross*epsilon + C_GG*epsilon^2",
         "canonical_status": "THEORY_STATUS.md",
         "scope": (
-            "A passing result certifies the declared exact/finite bridge subresults only. "
-            "It does not prove dynamical microscopic selection of the full Peter-Weyl phase, arbitrary-graph Lorentzian HDA closure, "
+            "A passing result certifies the declared exact/finite/conditional bridge subresults only. "
+            "It does not prove dynamical selection of the SO(5)/Peter-Weyl phase, arbitrary-graph Lorentzian HDA closure, "
             "uniform refinement with growing collective spin, physical scale setting or experimental validity."
         ),
     }
