@@ -142,7 +142,6 @@ def two_shell_master_control():
     ev, U = np.linalg.eigh(K)
     sqrtK = (U * np.sqrt(ev)) @ U.conj().T
 
-    # Embed the four P singular channels into a larger Q space by an isometry.
     rng = np.random.default_rng(20260814)
     X = rng.normal(size=(7, 4)) + 1j * rng.normal(size=(7, 4))
     Qiso, _ = np.linalg.qr(X)
@@ -195,8 +194,6 @@ def higher_shell_block_identity():
     rng = np.random.default_rng(7331)
     p, q, r = 4, 7, 5
 
-    # Reuse a full-column-rank A and generic C, with the parity-compatible block form
-    # H = [[0,A^dag,0],[A,0,C^dag],[0,C,0]].
     K = canonical_K()
     ev, U = np.linalg.eigh(K)
     sqrtK = (U * np.sqrt(ev)) @ U.conj().T
@@ -250,13 +247,14 @@ def run():
         "two_shell_master_control": two,
         "higher_shell_identity": higher,
         "frontier": (
-            "Raw K=A^dagger A anisotropy is not yet the physical IR anisotropy. "
+            "Raw K=A^dagger A anisotropy is not yet a physical infrared anisotropy. "
             "Because H_E is spin-parity odd, the first nontrivial normalized Euclidean source is second-hit leakage "
             "C from the odd one-hit sector into nonlogical even states. Compute Lambda on the actual Peter-Weyl habitat next."
         ),
         "scientific_scope": (
-            "Finite candidate-model algebra only. This does not establish a mirror particle, antigravity, a fifth force, "
-            "or the full Lorentzian/route/matter master constraint."
+            "Finite candidate-model algebra only. This gate establishes support grading, a two-shell master normalization "
+            "identity and a higher-shell positive block identity. It does not establish extra particle content, a new "
+            "interaction, a physical mass scale, or the full Lorentzian/route/matter master constraint."
         ),
     }
 
