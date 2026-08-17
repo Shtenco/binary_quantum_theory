@@ -1,0 +1,43 @@
+name: collective-route-ground-sector
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'COLLECTIVE_ROUTE_GROUND_SECTOR_THEOREM.md'
+      - 'scripts/collective_route_ground_sector_gate.py'
+      - 'scripts/operator_route_sparse_fourier.py'
+      - '.github/workflows/collective-route-ground-sector.yml'
+  workflow_dispatch:
+
+jobs:
+  theorem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact route-sector separation
+        run: python scripts/collective_route_ground_sector_gate.py --output verification_results/COLLECTIVE_ROUTE_GROUND_SECTOR.json
+      - name: Hard guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_ROUTE_GROUND_SECTOR.json'))
+          assert d['passed']
+          assert d['checks']['omega_zero_mode_exact_zero']
+          assert d['checks']['constant_lapse_zero_mode_route_zero']
+          assert d['checks']['nonconstant_lapse_activates_route_from_zero_mode']
+          assert d['checks']['constant_lapse_nonzero_wkb_route_nonzero']
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-route-ground-sector
+          path: verification_results/COLLECTIVE_ROUTE_GROUND_SECTOR.json
+          if-no-files-found: error
