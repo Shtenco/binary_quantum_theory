@@ -1,0 +1,64 @@
+name: physicalization-l1-q4-s4-metric
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: physicalization-l1-q4-s4-metric-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Download certified 24 L1 q4 source columns
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: Shtenco/info_graph_theory
+          run-id: 31965359681
+          pattern: collective-l1-q4-*
+          path: verification_results/l1_q4_columns
+          merge-multiple: true
+
+      - name: Audit source set
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('verification_results/l1_q4_columns')
+          got=sorted(int(x.stem.split('_')[-1]) for x in p.glob('q4_*.json'))
+          print('source q4 columns:', got)
+          if got != list(range(24)):
+              raise SystemExit(f'expected exact columns 0..23, got {got}')
+          PY
+
+      - name: S4 regular-representation and canonical six-edge compression
+        run: |
+          python scripts/collective_l1_q4_s4_metric_compression.py \
+            --input-dir verification_results/l1_q4_columns \
+            --output verification_results/L1_Q4_S4_METRIC_COMPRESSION.json
+
+      - name: Upload metric-sector certificate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: l1-q4-s4-metric-compression
+          path: verification_results/L1_Q4_S4_METRIC_COMPRESSION.json
+          if-no-files-found: error
