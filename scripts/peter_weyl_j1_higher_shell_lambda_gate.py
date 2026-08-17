@@ -2,7 +2,7 @@
 """First nontrivial internal Peter-Weyl RG step: j=1 coarse S4 doublet.
 
 The geometry-only PL Galerkin control proves that spatial averaging by itself
-cannot move the normalized logical anisotropy.  The next parameter-free source
+cannot move the normalized logical anisotropy. The next parameter-free source
 of flow is representation growth.
 
 This script keeps the same 32-dimensional logical-qubit ordering as the frozen
@@ -13,14 +13,16 @@ qubit by the unique S4 [2,2] doublet inside the four-spin j=1 singlet space:
     |1>_c = (2 |K=0> - sqrt(5) |K=4>) / 3.
 
 That is exactly the symmetry intertwiner certified by
-``peter_weyl_j1_s4_block_gate.py``.  All ten K5 edge spins are set to j=1 and
-the same H_sine = H_E,0 + H_E,1 engine is used.  Column mode computes H|i>
+``peter_weyl_j1_s4_block_gate.py``. All ten K5 edge spins are set to j=1 and
+the same H_sine = H_E,0 + H_E,1 engine is used. Column mode computes H|i>
 and H^2|i>; assembly reuses the frozen denominator-free block-Lanczos
 construction and reports the first representation-RG change of R_aniso.
 
 Scope: this is an internal representation RG step, not yet the full 24-child
-barycentric spatial block.  It is nevertheless non-arbitrary: both the coarse
+barycentric spatial block. It is nevertheless non-arbitrary: both the coarse
 face irrep and logical doublet projector are fixed by SU(2) x S4 symmetry.
+No beta-function per log(b) is reported until the representation step is tied
+to a derived spatial blocking factor b.
 """
 from __future__ import annotations
 
@@ -71,7 +73,6 @@ def coarse_state(bits):
             amp *= c
         if abs(amp) > HS.TOL:
             out[(SPINS_J1, Ks)] = complex(amp)
-    # Each local vector is normalized; verify product normalization explicitly.
     norm2 = sum(abs(a) ** 2 for a in out.values())
     if abs(norm2 - 1.0) > 2e-12:
         raise RuntimeError(f"coarse logical state not normalized: {norm2}")
@@ -92,7 +93,7 @@ def compute_column(index: int):
 
     a = HS.apply_H_state(ket)
     # Spin parity is stronger than the coarse-P test here: any first-order state
-    # with all ten edges back at j=1 would be suspicious.  The exact sine action
+    # with all ten edges back at j=1 would be suspicious. The exact sine action
     # should have none.
     all_j1 = {k: v for k, v in a.items() if all(s == 2 for s in k[0])}
     first_proj = AN.sparse_norm(all_j1)
@@ -140,19 +141,21 @@ def assemble(directory: Path):
         "R_aniso_coarse_j1": r_coarse,
         "Delta_R": r_coarse - R_FINE,
         "ratio_R_coarse_over_fine": r_coarse / R_FINE,
-        "discrete_beta_log2": (r_coarse - R_FINE) / math.log(2.0),
+        "spatial_scale_factor_b": None,
+        "beta_per_log_b": None,
         "interpretation": (
-            "This is the first non-separable internal representation step after the geometry-only Galerkin no-flow control. "
-            "It is a candidate beta-function datum for the logical anisotropy, not yet the full spatial TT zeta4 coefficient."
+            "This is the first non-separable internal representation-RG datum after the geometry-only Galerkin no-flow control. "
+            "It must not be converted into beta=dR/dlog(b) until a common recursive spatial block identifies the corresponding b. "
+            "It is not yet the physical spatial TT zeta4 coefficient."
         ),
     }
     out["support"]["regulator_note"] = (
-        "Initial edges are j=1. Two Euclidean sine-H hits can reach at most j=2 per edge in the observed support; "
-        "the inherited Jmax=5/2 engine is therefore conservative. Assembly still checks the actual maximum spin."
+        "Initial edges are j=1. Two Euclidean sine-H hits can reach at most j=2 per edge in the expected support; "
+        "the inherited Jmax=5/2 engine is conservative. Assembly checks the actual maximum spin."
     )
     out["scientific_scope"] = (
         "Finite Euclidean H_E0+H_E1 calculation on the symmetry-selected j=1 coarse logical carrier. "
-        "No external data, energy denominator, fitted projector or fitted RG coefficient is used. "
+        "No external data, energy denominator, fitted projector, fitted RG coefficient or assumed spatial scale factor is used. "
         "A full physical TT RG still requires embedding this internal step into recursive spatial PL blocking and the Lorentzian/history kernel."
     )
     return out
