@@ -16,7 +16,7 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -47,6 +47,9 @@ jobs:
       - name: Recursive q=2 PL manifold completion
         run: python bcqg_global_manifold_gate.py --output verification_results/GLOBAL_MANIFOLD_RESULTS.json
 
+      - name: Frozen q=2 bits to geometry-qubit carrier
+        run: python scripts/micro_walsh_qgeom_gate.py --output verification_results/MICRO_WALSH_QGEOM.json
+
       - name: Qubit to Einstein end-to-end control
         run: python scripts/qubit_to_einstein_end_to_end.py --output verification_results/QUBIT_TO_EINSTEIN.json
 
@@ -63,6 +66,15 @@ jobs:
 
       - name: Two-node Peter-Weyl by route Euclidean regression
         run: python scripts/peter_weyl_two_node_euclidean_joint_gate.py --output verification_results/PETER_WEYL_TWO_NODE_EUCLIDEAN.json
+
+      - name: Three-node graph-changing Peter-Weyl by route HDA
+        run: python scripts/peter_weyl_three_node_graph_hda_gate.py --output verification_results/PETER_WEYL_THREE_NODE_GRAPH_HDA.json
+
+      - name: Joint epsilon and Peter-Weyl cutoff limit
+        run: |
+          python scripts/joint_regulator_limit_gate.py \
+            --multi-node-json verification_results/PETER_WEYL_THREE_NODE_GRAPH_HDA.json \
+            --output verification_results/JOINT_REGULATOR_LIMIT.json
 
       - name: HDA factorization no-go and route prerequisites
         run: python bcqg_quantum_hda_killer.py --output verification_results/QUANTUM_HDA_RESULTS.json
