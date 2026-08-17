@@ -2,7 +2,7 @@
 
 Status: **exact finite representation-theory gate on the four-spin singlet geometry qubit**.
 
-The logical geometry qubit is the two-dimensional singlet sector of four spin-`1/2` face qubits. Full tetrahedral face-permutation symmetry does **not** force the Bell-gluing pseudospin coupling to become Heisenberg isotropic.
+The logical geometry qubit is the two-dimensional singlet sector of four spin-`1/2` face qubits. Full tetrahedral face-permutation symmetry does **not** force the logical pseudospin coupling to become Heisenberg isotropic.
 
 The exact `S4` twirl reduces the allowed two-cell operator space to three invariants and leaves one independent orientation-vs-shape anisotropy.
 
@@ -54,7 +54,7 @@ XX+ZZ
 YY.
 ```
 
-Therefore every fully twirled two-cell mirror-even kernel has the form
+Therefore every fully twirled two-cell kernel has the form
 
 ```text
 K_sym
@@ -86,17 +86,17 @@ Delta_aniso
 
 All local fields, `XZ/ZX` label artifacts and other noninvariant Pauli components twirl away, but `Delta_aniso` can survive.
 
-Thus the coarse RG question becomes one-dimensional:
+Thus the coarse-graining question becomes one-dimensional:
 
 ```text
-Does Delta_aniso -> 0 under coarse graining?
+Does Delta_aniso -> 0 under the physical constrained dynamics / RG flow?
 ```
 
 ---
 
 ## 4. Application to the canonical unbiased Peter-Weyl return kernel
 
-The final environment-unbiased CI artifact gives, after the bipartite Heisenberg-frame rotation,
+The environment-unbiased finite return kernel gives, after the declared bipartite basis rotation,
 
 ```text
 J_X = -0.45691119919191336
@@ -129,37 +129,23 @@ Delta_aniso,ret
 
 This supersedes earlier provisional application numbers from a previous return-kernel revision.
 
-The exact `S4` theorem means that this orientation-vs-shape split cannot be dismissed as a face-label artifact. Its static low-energy relevance still requires the physically correct constrained resolvent/RG weighting.
+The exact `S4` theorem means that this orientation-vs-shape split cannot be dismissed as a face-label artifact. Its static or continuum relevance still requires the physically correct constrained resolvent/RG weighting.
 
 ---
 
-## 5. Mirror symmetry versus pseudospin symmetry
+## 5. What the `YY` channel means here
 
-Mirror conjugation acts as
+The `Y` operator is distinguished by its transformation under complex conjugation / orientation-sensitive basis conventions, while the product `YY` is an allowed scalar under the diagonal `S4` twirl.
 
-```text
-X -> +X
-Z -> +Z
-Y -> -Y.
-```
-
-Therefore `YY` is mirror even, just like `XX+ZZ`.
-
-Hence
-
-```text
-mirror Z2 permits Delta_aniso != 0.
-```
-
-Mirror `Z2` and pseudospin `SU(2)` must not be conflated.
+That algebraic fact is sufficient for the gate. No additional particle species, matter sector, long-range force or macroscopic interaction is inferred from the existence of the `YY` invariant.
 
 ---
 
-## 6. Weight-robustness refinement
+## 6. Intermediate-state audit
 
 The state-by-state decomposition of the same canonical return kernel contains 648 intermediate states and a **mixed** anisotropy cone. Therefore arbitrary positive diagonal weighting can in principle alter the sign of `Delta_aniso`.
 
-However every tested monotone spin-cost weighting family retains positive `Delta_aniso`.
+The correct next question is to derive the constrained intermediate-state operator from the dynamics rather than inventing a denominator or assigning physical meaning to the raw finite return coefficient.
 
 See `PETER_WEYL_ANISOTROPY_WEIGHT_ROBUSTNESS.md`.
 
