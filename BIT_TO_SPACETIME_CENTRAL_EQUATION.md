@@ -1,191 +1,237 @@
-# Центральное уравнение: binary Planck rule -> observer-accessible spacetime
+# Центральная цепь: binary quantum microstructure → smooth spacetime
 
-## 1. Не расстояние меняет геометрию — меняется разрешение
+## 1. Физическая постановка
 
-Основная effective-map формулировка:
+Репозиторий рассматривает гипотезу, что фундаментальные локальные степени свободы могут быть дискретными и в минимальной модели двухуровневыми, а гладкая геометрия возникает как эффективное описание большого числа таких квантовых степеней свободы.
+
+Обозначим микроскопический cutoff через
+
+$$
+\ell_*.
+$$
+
+Возможное отождествление $\ell_*\sim\ell_P$ с планковским масштабом является **гипотезой физической интерпретации**, а не установленным здесь фактом. Современная физика не требует, чтобы планковская длина была буквально доказанной минимальной длиной или чтобы один планковский объём был классическим битом.
+
+Минимальный quantum-bit объект записывается как
+
+$$
+|\psi_e\rangle
+=\alpha_e|0\rangle+\beta_e|1\rangle,
+\qquad
+|\alpha_e|^2+|\beta_e|^2=1,
+$$
+
+а многоузловое состояние — как состояние на тензорном произведении локальных пространств
+
+$$
+\mathcal H_\Gamma=\bigotimes_{e\in\Gamma}\mathcal H_e.
+$$
+
+Ключевая задача — не объявить граф пространством-временем, а вывести из квантового состояния геометрические наблюдаемые и показать их переход к ОТО.
+
+---
+
+## 2. Центральный мост
+
+На уровне архитектуры проверяется цепь
 
 $$
 \boxed{
-\mathcal G_{\rm Planck}^{\rm binary}
-\xrightarrow{\;\mathcal C_{b(r)}\;}
-\mathcal G_{\rm eff}(r)
+\rho_{micro}
+\xrightarrow{\text{quantum dynamics}}
+\rho_{\Gamma}
+\xrightarrow{\text{geometric observables}}
+\mathcal G_{discrete}
+\xrightarrow{\mathcal C_b}
+(g_{ab}^{(b)},K_{ab}^{(b)})
+\xrightarrow[b\to\infty]{\ell_*/L\to0}
+(g_{ab},K_{ab})
+\xrightarrow{\text{constraints}}
+\text{GR}
 }
 $$
 
-с
+где:
+
+- $\rho_{micro}$ — microscopic quantum state;
+- $\mathcal G_{discrete}$ — набор дискретных геометрических наблюдаемых;
+- $\mathcal C_b$ — coarse-graining map;
+- $g_{ab}^{(b)}$ и $K_{ab}^{(b)}$ — effective spatial metric и extrinsic-curvature data на масштабе блока $b$;
+- continuum limit должен удовлетворять Einstein/ADM dynamics и hypersurface-deformation algebra.
+
+Именно последние две стрелки отличают квантовую гравитацию от произвольной дискретной модели.
+
+---
+
+## 3. Квантовая динамика и гравитационные ограничения
+
+Для обычной квантовой системы
 
 $$
-\ell_{\rm obs}(r)=\sqrt{\ell_P^2+(\theta r)^2},
+i\hbar\partial_t|\Psi\rangle=\hat H|\Psi\rangle.
+$$
+
+В generally covariant канонической гравитации lapse и shift умножают ограничения. Поэтому целевой quantum-gravity объект имеет структуру
+
+$$
+\hat H[N]|\Psi_{phys}\rangle\approx0,
 \qquad
-b(r)=2^{\lfloor\log_2(\ell_{\rm obs}/\ell_P)\rfloor}.
+\hat D[\vec N]|\Psi_{phys}\rangle\approx0,
 $$
 
-Расстояние само по себе не изменяет microscopic spacetime. При фиксированном
-угловом/каузальном разрешении более далёкий объект соответствует большему
-physical coarse-graining block, поэтому отдельные планковские binary degrees of
-freedom становятся operationally unresolved.
+а их коммутаторы должны воспроизводить правильную деформационную алгебру в semiclassical/continuum режиме:
 
-## 2. Frozen binary-route rule family
+$$
+\boxed{
+\frac{1}{i\hbar}
+[\hat H[N],\hat H[M]]
+\longrightarrow
+\hat D\!\left[q^{ab}(N\partial_bM-M\partial_bN)\right].
+}
+$$
 
-Локальное правило $R_q$ не содержит координатной размерности:
+Поэтому в проекте HDA является более сильным тестом, чем простое совпадение спектра или размерности.
+
+---
+
+## 4. Не расстояние делает пространство-время гладким — coarse-graining делает микроструктуру неразрешимой
+
+Корректная версия аналогии со стеной:
+
+```text
+микроскопически: отдельные неровности / дискретные элементы
+макроскопически: один разрешаемый элемент содержит очень много микродеталей
+```
+
+Стена не становится физически гладкой от удаления наблюдателя. Аналогично microscopic spacetime не меняется от расстояния до наблюдателя. Меняется resolution scale.
+
+Вводим
+
+$$
+\ell_{obs}\gg\ell_*
+$$
+
+и coarse factor
+
+$$
+b\sim\frac{\ell_{obs}}{\ell_*}.
+$$
+
+Тогда effective geometry определяется не отдельными microscopic labels, а coarse observables:
+
+$$
+\boxed{
+\mathcal G_{eff}(b)=\mathcal C_b[\rho_\Gamma,\mathcal G_{micro}].
+}
+$$
+
+В infrared limit требуется, чтобы различия между соседними coarse descriptions стремились к нулю после физической нормировки:
+
+$$
+\|\mathcal G_{eff}(2b)-\mathcal G_{eff}(b)\|
+\to0.
+$$
+
+Это и есть математически проверяемая версия появления гладкости.
+
+---
+
+## 5. Frozen binary-route family и emergent spatial dimension
+
+В текущем toy family $R_q$:
 
 1. causal link заменяется всеми $2^q$ двухшаговыми маршрутами;
-2. каждый маршрут помечен $q$ binary bits;
-3. два route states соединяются intra-cell frame link тогда и только тогда,
-   когда их labels имеют Hamming distance one;
-4. рекурсивно переписываются только causal child links.
+2. маршрут имеет $q$ binary labels;
+3. route states соединяются intra-cell link при Hamming distance one;
+4. рекурсивно переписываются causal child links.
 
-Линейный масштаб при одном rewrite удваивается:
-
-$$
-\lambda_\ell=2.
-$$
-
-Число causal child links умножается на
+Один rewrite удваивает линейный масштаб:
 
 $$
-\lambda_V=2\,2^q=2^{q+1}.
+\lambda_\ell=2,
 $$
 
-Следовательно асимптотическая volume dimension этого rule family равна
+а число causal child links растёт как
+
+$$
+\lambda_V=2^{q+1}.
+$$
+
+Поэтому для этого конкретного family
 
 $$
 \boxed{
 d_H
-=
-\frac{\log\lambda_V}{\log\lambda_\ell}
-=
-q+1.
+=\frac{\log\lambda_V}{\log\lambda_\ell}
+=q+1.
 }
 $$
 
-Это следствие rule combinatorics, а не подстановка $D=3$.
+Это combinatorial result внутри объявленного family, а не универсальная теорема о природе.
 
-## 3. Независимый topology selector
-
-Route labels образуют Hamming graph $Q_q$. Два causal endpoints дают suspension
-этого графа как local route shell.
-
-Для связного hypercube graph
-
-$$
-V(Q_q)=2^q,
-\qquad
-E(Q_q)=q2^{q-1},
-$$
-
-поэтому при $q\ge2$
-
-$$
-\beta_1(Q_q)
-=E-V+1
-=2^{q-1}(q-2)+1.
-$$
-
-Suspension сдвигает reduced homology на одну степень, следовательно
-
-$$
-\boxed{
-\beta_2(\Sigma Q_q)
-=2^{q-1}(q-2)+1.
-}
-$$
-
-Для трёх заранее объявленных binary candidates:
-
-$$
-q=1:\quad \beta=(1,0,0),
-$$
-
-$$
-\boxed{q=2:\quad \beta=(1,0,1)},
-$$
-
-$$
-q=3:\quad \beta=(1,0,5).
-$$
-
-Таким образом $q=2$ одновременно даёт
-
-$$
-\boxed{d_H=3}
-$$
-
-и single homology-$S^2$ route shell, допускающую natural local 3-cell
-completion. Topology shell не использовалась в numerical rule-selection score.
-
-Это **локальный manifold precursor**. Он ещё не доказывает, что все links
-рекурсивно склеенного global complex имеют topology $S^2$.
-
-## 4. Frozen train -> held-out result
-
-Train generations $g=2,3,4$ использовали только proximity к
-$D_{slice}=3$ и $z=1$ и выбрали
-
-$$
-\boxed{q_*=2}
-$$
-
-до просмотра generation $g=5$.
-
-Held-out transition $4\to5$ дал
+Для frozen candidates $q=1,2,3$ train protocol выбрал $q=2$ до held-out generation. Held-out transition дал
 
 $$
 \boxed{d_H=2.999229782},
 \qquad
-\boxed{z=0.998281156}.
+\boxed{z=0.998281156},
 $$
 
-Из independent volume/gap scaling:
+и
 
 $$
-\boxed{d_s^{slice}=\frac{d_H}{z}=3.004393867},
+\boxed{d_s^{slice}=3.004393867}.
 $$
 
-а при одной ordinary causal-time direction
+При добавлении одной causal-time scaling direction получается 4D-like history scaling
 
 $$
-\boxed{d_s^{history}\approx4.004393867}.
+d_{history}\approx4.004393867.
 $$
 
-## 5. Почему появляется закон гладкости $b^{-2}$
+Это finite train/held-out result данной модели.
 
-Для frozen $q=2$ spatial rule один dyadic spatial coarse step содержит
-асимптотически
+---
 
-$$
-N_{space}(b)\sim b^{d_H}\approx b^3
-$$
+## 6. Локальный topology precursor
 
-microscopic events. Один causal-time window при $z\simeq1$ даёт ещё factor
-$b$, поэтому observer spacetime block содержит
+Route labels $q=2$ образуют
 
 $$
-N_{obs}(b)\sim b^{d_H+z}\approx b^4.
+Q_2=C_4.
 $$
 
-Для unbiased weakly correlated binary fluctuations central-limit scaling даёт
+Suspension двух causal endpoints над $C_4$ даёт octahedral $S^2$ local shell. Это согласуется с link structure локального трёхмерного PL-комплекса.
+
+Репозиторий отдельно проверяет выбранное глобальное completion через boundary 4D cross-polytope и barycentric refinements.
+
+Важно:
+
+```text
+local S2 link + one valid global S3 completion
+!=
+proof that microscopic dynamics uniquely selects that global topology.
+```
+
+Динамический выбор topology остаётся отдельной задачей.
+
+---
+
+## 7. Почему coarse fluctuations могут выглядеть гладкими
+
+Если coarse block содержит
 
 $$
-\delta g_{\rm rms}
-\sim N_{obs}^{-1/2}
-\sim b^{-(d_H+z)/2}
-\approx b^{-2}.
+N(b)\sim b^{d_H+z}\approx b^4
 $$
 
-Каждая physical derivative добавляет inverse coarse length:
+слабо коррелированных unbiased microscopic contributions, стандартное self-averaging даёт
 
 $$
-\boxed{
-\delta g\sim b^{-2},
-\qquad
-\nabla\delta g\sim b^{-3},
-\qquad
-\delta R\sim b^{-4}.
-}
+\delta g_{RMS}\sim N^{-1/2}\sim b^{-2}.
 $$
 
-В unified Python run измерено
+В текущем stochastic control измерено
 
 $$
 \delta g\sim b^{-2.001707},
@@ -196,98 +242,126 @@ $$
 $$
 
 $$
-\delta R\sim b^{-4.000524}.
+\delta R_{proxy}\sim b^{-4.000524}.
 $$
 
-То есть прежний smoothing law больше не требует заранее заданного 4D torus: он
-следует из discovered spatial scaling плюс одной causal-time direction.
+Эти показатели являются finite diagnostics конкретного control. Они не должны называться универсальными critical exponents без доказательства universality и контроля корреляций.
 
-## 6. Two-form metric sector
+---
 
-Те же observer-cell multiplicities, применённые к binary perturbations simple
-self-dual $B^i$, дают
+## 8. От qubit observables к метрике
 
-$$
-\boxed{
-\Delta_{simp}\sim b^{-1.994838},
-\qquad
-\Delta_{g_U}\sim b^{-2.019746}.
-}
-$$
-
-Это self-averaging вокруг simple metric sector. Оно не является dynamical proof
-того, что произвольная microscopic state сама войдёт в Plebański simplicity
-surface.
-
-## 7. Diffeomorphism kinematics
-
-У frozen rule ровно два route bits. В refined description они дают две local
-transverse rerouting coordinates. Независимый path-vector calculation даёт
+Отдельная end-to-end Euclidean ветка реализует
 
 $$
 \boxed{
-[D_\beta,D_\gamma]
+\rho_f
 \to
-D_{[\beta,\gamma]},
-\qquad
-\Delta_{Lie}\sim L^{-1.981810}.
+B^i_{\mu\nu}
+\to
+\Delta_{simp}
+\to
+g_U
+\to
+A_B
+\to
+F(A_B)
+\to
+\text{Einstein-curvature test}.
 }
 $$
 
-Это nontrivial continuum diffeomorphism kinematics, но ещё не полный
-Hamiltonian-constraint algebra.
+Здесь $g_U$ — Urbantke metric, реконструируемая из two-form data.
 
-## 8. Почему две graviton polarizations пока conditional
+Положительный искусственный $S^4$ control восстанавливает
 
-Если held-out $D_{slice}\simeq3$ и full constraints действительно становятся
-first class, HDA выбирает
+```text
+Lambda_rec = 2.9999998973
+Lambda_exact = 3
+relative error ≈ 3.42e-8
+```
 
-$$
-c_{DW}=\frac1{D-1}=\frac12,
-$$
+но этот результат **не является предсказанием физической космологической постоянной**: target curvature задан входным control geometry. Ценность теста в том, что downstream reconstruction не получает метрику напрямую и отдельный non-Einstein control проваливает финальный curvature gate.
 
-а Dirac counting даёт
-
-$$
-\boxed{N_{grav}=2}
-$$
-
-local metric configuration degrees of freedom.
-
-Но это следствие **условия first-class HDA**, а не доказательство того, что
-microscopic Hamiltonian уже его выполняет.
-
-## 9. Настоящий оставшийся killer gate
-
-Теперь переход больше не формулируется как `4D discrete -> 4D smooth`.
-Проверяемая цепь стала
+Главная открытая стрелка:
 
 $$
 \boxed{
-\text{binary route bits}
-\to q_*=2
-\to S^2\text{ local shell}
-\to d_s^{slice}\approx3
-\to z\approx1
-\to \mathcal C_{b(r)}
-\to \text{smooth IR candidate}.
+\text{same frozen microscopic binary dynamics}
+\dashrightarrow
+\text{required geometric qubit/two-form state}
 }
 $$
 
-Остаются две обязательные стрелки:
+без oracle encoding target geometry.
 
-1. global recursive complex должен сам пройти 3-manifold vertex-link gate;
-2. на том же graph-changing Hilbert space необходимо получить
+---
+
+## 9. Дискретная кривизна → гладкая ОТО
+
+Для геометрического continuum bridge проект использует Regge-type discrete curvature и независимые Plebanski/Urbantke controls.
+
+Целевой предел действия:
 
 $$
 \boxed{
-[\hat H[N],\hat H[M]]
+S_{discrete}[\Gamma_n]
 \longrightarrow
-i\hbar\hat D[\sharp(NdM-MdN)]
+S_{EH}[g]
+=\frac{c^3}{16\pi G}
+\int d^4x\sqrt{-g}(R-2\Lambda).
 }
 $$
 
-в regulator-safe collective limit.
+Недостаточно получить smooth metric. Нужно также получить правильную динамику:
 
-Только после этого finite `bit -> spacetime candidate` можно повышать до claims
-о microscopic quantum general relativity.
+$$
+G_{\mu\nu}+\Lambda g_{\mu\nu}
+=\frac{8\pi G}{c^4}T_{\mu\nu}
+$$
+
+или эквивалентную каноническую constraint structure в заявленном секторе.
+
+---
+
+## 10. Почему в классическом пределе у гравитации две локальные поляризации
+
+Если continuum limit действительно даёт 3+1-dimensional GR с first-class Hamiltonian и diffeomorphism constraints, стандартный Dirac degree counting оставляет две локальные конфигурационные степени свободы метрического гравитационного поля. В линейном vacuum limit они соответствуют двум helicities массового spin-2 гравитона.
+
+Это свойство **ОТО и её корректного квантового/семиклассического предела**. Оно не выводится из одного факта, что microscopic objects бинарны.
+
+---
+
+## 11. Текущий статус центральной цепи
+
+```text
+binary/qubit microscopic degrees        candidate ansatz
+q=2 finite dimension/smoothing gate     tested_finite
+selected PL completion                  tested_finite
+qubit -> B -> Urbantke -> Einstein      tested_finite oracle control
+Regge/EH finite bridge                  tested_finite
+route-normal HDA principal symbol       tested_finite
+two-node Peter-Weyl x route regression  tested_finite
+fixed-cutoff composition bound          proved under stated assumptions
+
+micro dynamics -> geometric qubit phase OPEN
+global topology dynamical selection     OPEN
+multi-node graph-changing off-shell HDA OPEN
+uniform regulator removal               OPEN
+physical scale setting                  OPEN
+blind external physical prediction      OPEN
+```
+
+Поэтому корректный итог сейчас:
+
+$$
+\boxed{
+\text{discrete quantum microstructure}
+\;
+\overset{\text{finite bridges}}{\Longrightarrow}
+\;
+\text{a coherent candidate route to smooth GR},
+}
+$$
+
+но не доказательство завершённой квантовой теории гравитации.
