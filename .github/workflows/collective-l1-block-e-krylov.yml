@@ -5,8 +5,8 @@ on:
     branches:
       - research/bcqg-core-candidate-v1
     paths:
-      - 'scripts/collective_l1_metric_edge_depth2_worker.py'
-      - 'scripts/collective_l1_metric_edge_depth2_collect.py'
+      - 'scripts/collective_l1_metric_edge_depth2_shard_worker.py'
+      - 'scripts/collective_l1_metric_edge_depth2_shard_collect.py'
       - 'scripts/collective_barycentric_E_boundary_support_gate.py'
       - 'scripts/pl_peter_weyl_euclidean.py'
       - 'scripts/pl_dual_complex.py'
@@ -14,14 +14,15 @@ on:
   workflow_dispatch:
 
 jobs:
-  metric-orbit-columns:
+  metric-orbit-shards:
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 24
       matrix:
-        edge_index: [0,1,5]
+        edge_index: [0, 1, 5]
+        node_index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 30
     env:
       OPENBLAS_NUM_THREADS: '1'
       OMP_NUM_THREADS: '1'
@@ -35,25 +36,31 @@ jobs:
           cache: pip
       - run: python -m pip install -r requirements.txt
       - name: Syntax
-        run: python -m py_compile scripts/collective_l1_metric_edge_depth2_worker.py
-      - name: Exact full-E coarse-edge source and block second hit
+        run: python -m py_compile scripts/collective_l1_metric_edge_depth2_shard_worker.py
+      - name: Exact one-node full-E depth-two shard
         run: |
           mkdir -p out
-          python scripts/collective_l1_metric_edge_depth2_worker.py \
+          python scripts/collective_l1_metric_edge_depth2_shard_worker.py \
             --edge-index ${{ matrix.edge_index }} \
+            --node-index ${{ matrix.node_index }} \
             --out-dir out
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: collective-l1-metric-depth2-${{ matrix.edge_index }}
+          name: collective-l1-metric-depth2-${{ matrix.edge_index }}-${{ matrix.node_index }}
           path: out/
           if-no-files-found: error
           compression-level: 6
 
   collect:
-    needs: metric-orbit-columns
+    needs: metric-orbit-shards
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 60
+    env:
+      OPENBLAS_NUM_THREADS: '1'
+      OMP_NUM_THREADS: '1'
+      MKL_NUM_THREADS: '1'
+      NUMEXPR_NUM_THREADS: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -64,12 +71,12 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           pattern: collective-l1-metric-depth2-*
-          path: columns
+          path: shards
           merge-multiple: true
-      - name: Exact three-orbit depth-two metric response
+      - name: Reconstruct exact three-orbit full-E depth-two metric response
         run: |
-          python scripts/collective_l1_metric_edge_depth2_collect.py \
-            --root columns \
+          python scripts/collective_l1_metric_edge_depth2_shard_collect.py \
+            --root shards \
             --output verification_results/L1_METRIC_EDGE_DEPTH2_KRYLOV.json
       - name: Guard scope
         run: |
@@ -78,8 +85,11 @@ jobs:
           d=json.load(open('verification_results/L1_METRIC_EDGE_DEPTH2_KRYLOV.json'))
           assert d['passed'] is True
           assert d['science_status']=='L1_METRIC_EDGE_DEPTH2_KRYLOV'
+          assert d['checks']['all_72_full_E_shards_present_and_passed']
+          assert d['checks']['independently_recomputed_sources_identical']
           assert d['checks']['S4_three_orbit_consistency']
           assert d['checks']['nonnegative_depth2_variance_with_tolerance']
+          assert 'hard_scope_guard' in d
           PY
       - uses: actions/upload-artifact@v4
         if: always()
