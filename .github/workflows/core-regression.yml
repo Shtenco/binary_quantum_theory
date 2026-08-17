@@ -29,6 +29,9 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
 
+      - name: Enforce GR-QM core scope
+        run: python scripts/audit_core_scope.py
+
       - name: Compile all Python sources
         run: python -m compileall -q .
 
@@ -36,7 +39,7 @@ jobs:
         run: python scripts/verify_theory_gates.py
 
       - name: Validate public status surface
-        run: python scripts/validate_github_latex.py README.md THEORY_STATUS.md OPEN_PROBLEMS.md
+        run: python scripts/validate_github_latex.py README.md THEORY_STATUS.md OPEN_PROBLEMS.md BIT_TO_SPACETIME_CENTRAL_EQUATION.md
 
       - name: Frozen binary to smooth-spacetime gate
         run: python bcqg_observer_smoothing_unified.py --output verification_results/OBSERVER_SMOOTHING_RESULTS.json
