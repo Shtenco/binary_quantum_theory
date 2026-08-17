@@ -6,156 +6,121 @@
       "id": "BITQ2",
       "status": "tested_finite",
       "claim": "Frozen q=2 binary-route train/held-out dimensional, topology-precursor and observer-smoothing controls pass in the declared finite protocol.",
-      "evidence": [
-        "BIT_TO_SPACETIME_CENTRAL_EQUATION.md",
-        "OBSERVER_SCALE_SMOOTHING.md",
-        "bcqg_observer_smoothing_unified.py"
-      ]
+      "evidence": ["BIT_TO_SPACETIME_CENTRAL_EQUATION.md", "OBSERVER_SCALE_SMOOTHING.md", "bcqg_observer_smoothing_unified.py"]
     },
     {
       "id": "MAN3",
       "status": "tested_finite",
       "claim": "The selected q=2 cross-polytope PL completion is a recursive orientable 3-manifold completion with the declared link and homology checks; dynamical uniqueness is not claimed.",
-      "evidence": [
-        "GLOBAL_MANIFOLD_Q2_COMPLETION.md",
-        "bcqg_global_manifold_gate.py"
-      ]
+      "evidence": ["GLOBAL_MANIFOLD_Q2_COMPLETION.md", "bcqg_global_manifold_gate.py"]
+    },
+    {
+      "id": "MICRO_WALSH_TETRA",
+      "status": "proved",
+      "claim": "The three nontrivial Walsh characters of the frozen q=2 route labels form an exact closed regular-tetrahedron flux frame; the declared Pauli/Bloch lift gives pure face qubits with exact nonzero Gauss-singlet support and a logical oriented-volume eigenstate.",
+      "evidence": ["MICRO_WALSH_QGEOM_BRIDGE.md", "scripts/micro_walsh_qgeom_gate.py"]
+    },
+    {
+      "id": "MICRO_GLOBAL_GLUE",
+      "status": "proved",
+      "claim": "On the selected 16-cell PL completion, the four q=2 face carriers admit an exact globally consistent face colouring: the dual graph is Q4, shared faces carry the same label, neighboring cell orientations alternate and outward Walsh fluxes cancel pairwise.",
+      "evidence": ["MICRO_WALSH_QGEOM_BRIDGE.md", "scripts/q2_global_face_qubit_gluing_gate.py"]
     },
     {
       "id": "Q2EIN",
       "status": "tested_finite",
       "claim": "A single-data-path Euclidean control reconstructs B, simplicity, Urbantke metric, compatible connection and an Einstein-curvature test from face-qubit density matrices, with an independent non-Einstein negative control.",
-      "evidence": [
-        "QUBIT_TO_EINSTEIN_END_TO_END.md",
-        "scripts/qubit_to_einstein_end_to_end.py"
-      ]
+      "evidence": ["QUBIT_TO_EINSTEIN_END_TO_END.md", "scripts/qubit_to_einstein_end_to_end.py"]
     },
     {
       "id": "REGGEEH",
       "status": "tested_finite",
       "claim": "The implemented discrete Regge/Einstein-Hilbert refinement controls reproduce the declared finite continuum-scaling relations on their test geometries.",
-      "evidence": [
-        "REGGE_EH_CUBIC_BRIDGE.md",
-        "scripts/regge_eh_cubic_bridge.py"
-      ]
+      "evidence": ["REGGE_EH_CUBIC_BRIDGE.md", "scripts/regge_eh_cubic_bridge.py"]
     },
     {
       "id": "PLEBANSKI",
       "status": "tested_finite",
       "claim": "The finite two-form simplicity/Urbantke/connection controls reconstruct the declared metric-sector quantities and separate Einstein from non-Einstein controls.",
-      "evidence": [
-        "PLEBANSKI_URBANTKE_BRIDGE.md",
-        "PLEBANSKI_CONNECTION_EINSTEIN_GATE.md",
-        "scripts/plebanski_urbantke_gate.py",
-        "scripts/plebanski_connection_einstein_gate.py"
-      ]
+      "evidence": ["PLEBANSKI_URBANTKE_BRIDGE.md", "PLEBANSKI_CONNECTION_EINSTEIN_GATE.md", "scripts/plebanski_urbantke_gate.py", "scripts/plebanski_connection_einstein_gate.py"]
     },
     {
       "id": "PWGEO",
       "status": "tested_finite",
       "claim": "Finite Peter-Weyl SU(2) geometry, Euclidean Hamiltonian, volume/extrinsic-curvature and covariant composition gates pass within the declared cutoff domains.",
-      "evidence": [
-        "PETER_WEYL_TRUNCATION_GATE.md",
-        "K5_PETER_WEYL_SAFE_HDA_FIRST_COLUMN.md",
-        "scripts/peter_weyl_lorentzian_K_block_gate.py",
-        "scripts/peter_weyl_covariant_composition_gate.py",
-        "scripts/peter_weyl_covariant_K_composition_gate.py"
-      ]
+      "evidence": ["PETER_WEYL_TRUNCATION_GATE.md", "K5_PETER_WEYL_SAFE_HDA_FIRST_COLUMN.md", "scripts/peter_weyl_lorentzian_K_block_gate.py", "scripts/peter_weyl_covariant_composition_gate.py", "scripts/peter_weyl_covariant_K_composition_gate.py"]
     },
     {
       "id": "ROUTE",
       "status": "tested_finite",
       "claim": "Independent dual-cell sharp, path-diffeomorphism and route-normal HDA principal-symbol gates pass on the declared finite probes.",
-      "evidence": [
-        "DUAL_CELL_SHARP_RT0.md",
-        "QUANTUM_HDA_KILLER_RESULT.md",
-        "scripts/path_normal_hda_gate.py",
-        "scripts/path_rerouting_diffeo_gate.py",
-        "scripts/path_vector_diffeo_gate.py"
-      ]
+      "evidence": ["DUAL_CELL_SHARP_RT0.md", "QUANTUM_HDA_KILLER_RESULT.md", "scripts/path_normal_hda_gate.py", "scripts/path_rerouting_diffeo_gate.py", "scripts/path_vector_diffeo_gate.py"]
     },
     {
       "id": "E2NODE",
       "status": "tested_finite",
       "claim": "The preregistered two-node Euclidean Peter-Weyl by route HDA regression exhibits the declared route, cross and pure-geometry scaling hierarchy without channel-dependent fitting.",
-      "evidence": [
-        "PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md",
-        "PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md",
-        "scripts/peter_weyl_two_node_euclidean_joint_gate.py"
-      ]
+      "evidence": ["PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md", "PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md", "scripts/peter_weyl_two_node_euclidean_joint_gate.py"]
+    },
+    {
+      "id": "HDA_3NODE",
+      "status": "tested_finite",
+      "claim": "A frozen three-node Euclidean Peter-Weyl by route off-shell regression retains j=0 cylindrical graph-change outputs and reproduces route~epsilon, cross~epsilon, pure-geometry~epsilon^2 and joint~epsilon scaling across all three node-pair commutators.",
+      "evidence": ["THREE_NODE_GRAPH_HDA_RESULT.md", "scripts/peter_weyl_three_node_graph_hda_gate.py"]
     },
     {
       "id": "LORENTZ",
       "status": "tested_finite",
       "claim": "The fixed real-beta Lorentzian coefficient control and finite Peter-Weyl support bound pass through the declared regulator-safe cutoff window.",
-      "evidence": [
-        "LORENTZIAN_BETA_CANCELLATION.md",
-        "scripts/lorentzian_beta_cancellation_gate.py",
-        "scripts/lorentzian_hit_depth_bound.py"
-      ]
+      "evidence": ["LORENTZIAN_BETA_CANCELLATION.md", "scripts/lorentzian_beta_cancellation_gate.py", "scripts/lorentzian_hit_depth_bound.py"]
     },
     {
       "id": "LHDA_COMP",
       "status": "proved",
       "claim": "For the explicitly stated fixed-cutoff habitat assumptions, the composition algebra gives cross/D = O(epsilon) and geometry-geometry/D = O(epsilon^2), reducing the full defect to the route defect in the epsilon-to-zero limit.",
-      "evidence": [
-        "FIXED_CUTOFF_COMPOSITION_BOUND.md"
-      ]
+      "evidence": ["FIXED_CUTOFF_COMPOSITION_BOUND.md"]
+    },
+    {
+      "id": "JOINT_FIXED_INPUT",
+      "status": "tested_finite",
+      "claim": "For the frozen all-j=1/2 finite-HH family, the exact hit-depth support theorem makes Peter-Weyl truncation identically zero above Jmax=5/2 in the Euclidean three-node calculation, while the measured joint HDA defect decreases as epsilon^1.00644; the conservative Lorentzian support wall is Jmax=13/2.",
+      "evidence": ["JOINT_REGULATOR_LIMIT.md", "scripts/joint_regulator_limit_gate.py", "scripts/lorentzian_hit_depth_bound.py"]
     },
     {
       "id": "DEWITT",
       "status": "proved",
       "claim": "Within the declared local two-derivative canonical ansatz, the documented HDA/DeWitt signature and degree-counting results identify the GR kinetic structure required by first-class closure.",
-      "evidence": [
-        "DEWITT_HDA_UNIQUENESS.md",
-        "FLUX_DEWITT_SIGNATURE_THEOREM.md",
-        "BF_GR_DIRAC_COUNT_DISCRIMINATOR.md"
-      ]
+      "evidence": ["DEWITT_HDA_UNIQUENESS.md", "FLUX_DEWITT_SIGNATURE_THEOREM.md", "BF_GR_DIRAC_COUNT_DISCRIMINATOR.md"]
     },
     {
       "id": "HDA_MULTI",
       "status": "open",
-      "claim": "Full graph-changing, multi-node, off-shell quantum HDA closure on a common habitat with independent structure-function target is not yet proved.",
-      "evidence": [
-        "GRAPH_CHANGING_HDA_TARGET.md",
-        "OFF_SHELL_HDA_HABITAT_TARGET.md"
-      ]
+      "claim": "The three-node graph-changing finite hierarchy now passes, but arbitrary-graph, Lorentzian, multi-habitat off-shell quantum HDA closure with an independently fixed structure-function target is not yet proved.",
+      "evidence": ["THREE_NODE_GRAPH_HDA_RESULT.md", "GRAPH_CHANGING_HDA_TARGET.md", "OFF_SHELL_HDA_HABITAT_TARGET.md"]
     },
     {
       "id": "JOINT_LIMIT",
       "status": "open",
-      "claim": "A uniform simultaneous regulator/refinement theorem controlling epsilon-to-zero together with increasing Peter-Weyl cutoff remains open.",
-      "evidence": [
-        "FIXED_CUTOFF_COMPOSITION_BOUND.md",
-        "OPEN_PROBLEMS.md"
-      ]
+      "claim": "The fixed-input simultaneous epsilon/Peter-Weyl limit is controlled, but a uniform regulator/refinement theorem for growing graph size and collective input spin remains open.",
+      "evidence": ["JOINT_REGULATOR_LIMIT.md", "FIXED_CUTOFF_COMPOSITION_BOUND.md", "OPEN_PROBLEMS.md"]
     },
     {
       "id": "MICRO_TO_QGEOM",
       "status": "open",
-      "claim": "The required face-qubit/two-form geometric sector has not yet been dynamically derived from the same frozen microscopic binary rewrite used in the geometrogenesis tests.",
-      "evidence": [
-        "QUBIT_TO_EINSTEIN_END_TO_END.md",
-        "OPEN_PROBLEMS.md"
-      ]
+      "claim": "The local q=2 route labels now generate and globally glue an exact tetrahedral face-qubit carrier on the selected PL completion, but dynamical generation/selection of the full noncommutative Peter-Weyl geometric phase and its semiclassical measure from generic microscopic states remains open.",
+      "evidence": ["MICRO_WALSH_QGEOM_BRIDGE.md", "FACE_QUBIT_BFIELD.md", "OPEN_PROBLEMS.md"]
     },
     {
       "id": "PHYS_PRED",
       "status": "open",
-      "claim": "A preregistered blind prediction of an external physical observable, including common scale setting and uncertainty accounting, remains open.",
-      "evidence": [
-        "OPEN_PROBLEMS.md",
-        "THEORY_STATUS.md"
-      ]
+      "claim": "A preregistered blind prediction of an external physical observable, including a common physical scale map and uncertainty accounting, remains open; selection-tainted dimension/z targets and oracle S4 Lambda are explicitly excluded.",
+      "evidence": ["PHYSICAL_PREDICTION_FREEZE_CRITERIA.md", "OPEN_PROBLEMS.md", "THEORY_STATUS.md"]
     },
     {
       "id": "CORECERT",
       "status": "conditional",
-      "claim": "The fixed-cutoff mathematical bridge is internally composable when the finite geometry, route-HDA and Lorentzian support gates are combined; this is not full quantum-GR closure or experimental confirmation.",
-      "evidence": [
-        "FIXED_CUTOFF_COMPOSITION_BOUND.md",
-        "THEORY_STATUS.md"
-      ]
+      "claim": "The fixed-cutoff mathematical bridge is internally composable when the finite geometry, route-HDA and Lorentzian support gates are combined; this is not arbitrary-graph quantum-GR closure or experimental confirmation.",
+      "evidence": ["FIXED_CUTOFF_COMPOSITION_BOUND.md", "THEORY_STATUS.md"]
     }
   ]
 }
