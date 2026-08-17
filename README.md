@@ -335,7 +335,7 @@ GitHub Actions запускает тот же canonical regression subset.
 | Plebanski/Urbantke bridge | `PLEBANSKI_URBANTKE_BRIDGE.md` |
 | HDA structural target | `QUANTUM_HDA_KILLER_RESULT.md` |
 | Graph-changing HDA | `GRAPH_CHANGING_HDA_TARGET.md` |
-| Fixed-cutoff composition | `FINAL_CORE_ARCHITECTURE_CERTIFICATE.md` |
+| Fixed-cutoff composition | `FIXED_CUTOFF_COMPOSITION_BOUND.md` |
 | Текущий статус | `THEORY_STATUS.md` |
 | Открытые задачи | `OPEN_PROBLEMS.md` |
 
