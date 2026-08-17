@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from bcqg_unified_verification import FlatRegge4D
+from regge_flat_lattice import FlatRegge4D
 
 SYM = [(i, j) for i in range(4) for j in range(i, 4)]
 

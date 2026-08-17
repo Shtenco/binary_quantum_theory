@@ -36,7 +36,7 @@ for p in (ROOT, SCRIPTS):
     if str(p) not in sys.path:
         sys.path.insert(0, str(p))
 
-from bcqg_unified_verification import FlatRegge4D  # noqa: E402
+from regge_flat_lattice import FlatRegge4D  # noqa: E402
 from regge_eh_cubic_bridge import polarizations, spectral_diff  # noqa: E402
 
 XI_VECTOR = np.array([0.7, -0.2, 0.4, 0.1], dtype=float)
@@ -53,7 +53,7 @@ def h_and_gauge(coords: np.ndarray, L: float, P: np.ndarray) -> tuple[np.ndarray
     ph3 = k * (x1 + x2)
 
     h = np.zeros(coords.shape[:-1] + (4, 4))
-    dh = np.zeros(coords.shape[:-1] + (4, 4, 4))  # derivative rho, mu, nu
+    dh = np.zeros(coords.shape[:-1] + (4, 4, 4))
     for tensor, phase, derivative_mask in zip(P, [ph1, ph2, ph3], [(1, 0), (0, 1), (1, 1)]):
         h += np.cos(phase)[..., None, None] * tensor
         if derivative_mask[0]:
@@ -61,9 +61,8 @@ def h_and_gauge(coords: np.ndarray, L: float, P: np.ndarray) -> tuple[np.ndarray
         if derivative_mask[1]:
             dh[..., 1, :, :] += (-k * np.sin(phase))[..., None, None] * tensor
 
-    # xi^rho = v^rho sin(k x1)
     xi = np.sin(ph1)[..., None] * XI_VECTOR
-    dxi = np.zeros(coords.shape[:-1] + (4, 4))  # derivative mu, vector rho
+    dxi = np.zeros(coords.shape[:-1] + (4, 4))
     dxi[..., 0, :] = (k * np.cos(ph1))[..., None] * XI_VECTOR
 
     delta0 = np.zeros_like(h)
@@ -86,7 +85,6 @@ def eh_action_from_metric(g: np.ndarray, L: float) -> float:
     if np.any(det <= 0):
         raise ValueError("metric lost positive definiteness")
     sqrtg = np.sqrt(det)
-
     dg = np.stack([spectral_diff(g, mu, L) for mu in range(4)], axis=-3)
     Gamma = np.zeros(g.shape[:-2] + (4, 4, 4))
     for rho in range(4):
@@ -95,12 +93,9 @@ def eh_action_from_metric(g: np.ndarray, L: float) -> float:
                 total = 0.0
                 for sig in range(4):
                     total += 0.5 * gi[..., rho, sig] * (
-                        dg[..., mu, nu, sig]
-                        + dg[..., nu, mu, sig]
-                        - dg[..., sig, mu, nu]
+                        dg[..., mu, nu, sig] + dg[..., nu, mu, sig] - dg[..., sig, mu, nu]
                     )
                 Gamma[..., rho, mu, nu] = total
-
     dGamma = np.stack([spectral_diff(Gamma, a, L) for a in range(4)], axis=-4)
     Ric = np.zeros(g.shape[:-2] + (4, 4))
     for mu in range(4):
@@ -109,10 +104,7 @@ def eh_action_from_metric(g: np.ndarray, L: float) -> float:
             for rho in range(4):
                 total += dGamma[..., rho, rho, mu, nu] - dGamma[..., nu, rho, mu, rho]
                 for sig in range(4):
-                    total += (
-                        Gamma[..., rho, mu, nu] * Gamma[..., sig, rho, sig]
-                        - Gamma[..., sig, mu, rho] * Gamma[..., rho, nu, sig]
-                    )
+                    total += Gamma[..., rho, mu, nu] * Gamma[..., sig, rho, sig] - Gamma[..., sig, mu, rho] * Gamma[..., rho, nu, sig]
             Ric[..., mu, nu] = total
     R = np.einsum("...ij,...ij->...", gi, Ric)
     dV = (L / g.shape[0]) ** 4
@@ -131,8 +123,7 @@ def continuum_ward(L: int, P: np.ndarray, grid: int, lam_max: float, nlam: int, 
     coords = np.stack(X, axis=-1)
     h, delta0, delta1 = h_and_gauge(coords, float(L), P)
     lam = np.linspace(-lam_max, lam_max, nlam)
-    D0: list[float] = []
-    D1: list[float] = []
+    D0, D1 = [], []
     eye = np.eye(4)
     for x in lam:
         g = eye + x * h
@@ -141,13 +132,7 @@ def continuum_ward(L: int, P: np.ndarray, grid: int, lam_max: float, nlam: int, 
     A, c0 = fit_lambda2(lam, D0)
     B, c1 = fit_lambda2(lam, D1)
     W = abs(A + B) / (abs(A) + abs(B) + 1e-30)
-    return {
-        "delta0_S3": A,
-        "delta1_S2": B,
-        "W3": float(W),
-        "D0_polynomial": c0.tolist(),
-        "D1_polynomial": c1.tolist(),
-    }
+    return {"delta0_S3": A, "delta1_S2": B, "W3": float(W), "D0_polynomial": c0.tolist(), "D1_polynomial": c1.tolist()}
 
 
 def regge_ward(L: int, P: np.ndarray, lam_max: float, nlam: int, alpha: float) -> dict[str, object]:
@@ -157,10 +142,8 @@ def regge_ward(L: int, P: np.ndarray, lam_max: float, nlam: int, alpha: float) -
     edge_h = np.einsum("ei,eij,ej->e", n, h, n)
     edge_d0 = np.einsum("ei,eij,ej->e", n, delta0, n)
     edge_d1 = np.einsum("ei,eij,ej->e", n, delta1, n)
-
     lam = np.linspace(-lam_max, lam_max, nlam)
-    D0: list[float] = []
-    D1: list[float] = []
+    D0, D1 = [], []
     for x in lam:
         q = model.background_q + x * edge_h
         D0.append((model.action(q + alpha * edge_d0) - model.action(q - alpha * edge_d0)) / (2.0 * alpha))
@@ -168,73 +151,35 @@ def regge_ward(L: int, P: np.ndarray, lam_max: float, nlam: int, alpha: float) -
     A, c0 = fit_lambda2(lam, D0)
     B, c1 = fit_lambda2(lam, D1)
     W = abs(A + B) / (abs(A) + abs(B) + 1e-30)
-    return {
-        "L": L,
-        "delta0_S3": A,
-        "delta1_S2": B,
-        "W3": float(W),
-        "D0_polynomial": c0.tolist(),
-        "D1_polynomial": c1.tolist(),
-    }
+    return {"L": L, "delta0_S3": A, "delta1_S2": B, "W3": float(W), "D0_polynomial": c0.tolist(), "D1_polynomial": c1.tolist()}
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--sizes", type=int, nargs="+", default=[3, 4, 5])
-    parser.add_argument("--grid", type=int, default=8, help="continuum control grid")
+    parser.add_argument("--grid", type=int, default=8)
     parser.add_argument("--lam-max", type=float, default=0.03)
     parser.add_argument("--nlam", type=int, default=9)
     parser.add_argument("--alpha", type=float, default=3e-5)
     parser.add_argument("--seed", type=int, default=260809)
     parser.add_argument("--output", type=Path, default=None)
     args = parser.parse_args()
-
-    if any(L < 3 for L in args.sizes):
-        parser.error("sizes must be >= 3")
-    if args.grid < 8:
-        parser.error("grid must be >= 8")
-    if args.nlam < 7 or args.nlam % 2 == 0:
-        parser.error("nlam must be odd and >= 7")
-    if args.lam_max <= 0 or args.alpha <= 0:
-        parser.error("lam-max and alpha must be positive")
-
+    if any(L < 3 for L in args.sizes): parser.error("sizes must be >= 3")
+    if args.grid < 8: parser.error("grid must be >= 8")
+    if args.nlam < 7 or args.nlam % 2 == 0: parser.error("nlam must be odd and >= 7")
+    if args.lam_max <= 0 or args.alpha <= 0: parser.error("lam-max and alpha must be positive")
     P = polarizations(args.seed)
     control_L = max(5, min(args.sizes))
     continuum = continuum_ward(control_L, P, args.grid, args.lam_max, args.nlam, args.alpha)
     rows = [regge_ward(L, P, args.lam_max, args.nlam, args.alpha) for L in args.sizes]
-
-    summary: dict[str, object] = {
-        "continuum_control_L": control_L,
-        "continuum_W3": continuum["W3"],
-    }
+    summary = {"continuum_control_L": control_L, "continuum_W3": continuum["W3"]}
     if len(rows) >= 3:
-        sizes = np.asarray(args.sizes, float)
-        W = np.asarray([r["W3"] for r in rows])
+        sizes = np.asarray(args.sizes, float); W = np.asarray([r["W3"] for r in rows])
         summary["all_sizes_W3_power_p_for_L^-p"] = float(-np.polyfit(np.log(sizes), np.log(W), 1)[0])
-        mask = sizes >= 5
-        if np.sum(mask) >= 3:
-            summary["L_ge_5_W3_power_p_for_L^-p"] = float(-np.polyfit(np.log(sizes[mask]), np.log(W[mask]), 1)[0])
-
-    payload = {
-        "status": "direct nonlinear Ward-restoration evidence on fixed 4D Regge scaffold",
-        "definition": "W3 = |delta0 S3 + delta1 S2|/(|delta0 S3|+|delta1 S2|)",
-        "parameters": {
-            "sizes": args.sizes,
-            "grid": args.grid,
-            "lam_max": args.lam_max,
-            "nlam": args.nlam,
-            "alpha": args.alpha,
-            "seed": args.seed,
-        },
-        "continuum_control": continuum,
-        "rows": rows,
-        "summary": summary,
-    }
-    text = json.dumps(payload, indent=2)
-    print(text)
+    payload = {"status": "direct nonlinear Ward-restoration evidence on fixed 4D Regge scaffold", "definition": "W3 = |delta0 S3 + delta1 S2|/(|delta0 S3|+|delta1 S2|)", "parameters": vars(args) | {"output": str(args.output) if args.output else None}, "continuum_control": continuum, "rows": rows, "summary": summary}
+    text = json.dumps(payload, indent=2); print(text)
     if args.output is not None:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(text + "\n", encoding="utf-8")
+        args.output.parent.mkdir(parents=True, exist_ok=True); args.output.write_text(text + "\n", encoding="utf-8")
     return 0
 
 

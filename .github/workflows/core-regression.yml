@@ -16,7 +16,7 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -47,6 +47,12 @@ jobs:
       - name: Recursive q=2 PL manifold completion
         run: python bcqg_global_manifold_gate.py --output verification_results/GLOBAL_MANIFOLD_RESULTS.json
 
+      - name: Frozen q=2 bits to geometry-qubit carrier
+        run: python scripts/micro_walsh_qgeom_gate.py --output verification_results/MICRO_WALSH_QGEOM.json
+
+      - name: Exact global q=2 face-qubit carrier gluing
+        run: python scripts/q2_global_face_qubit_gluing_gate.py --output verification_results/Q2_GLOBAL_FACE_QUBIT_GLUING.json
+
       - name: Qubit to Einstein end-to-end control
         run: python scripts/qubit_to_einstein_end_to_end.py --output verification_results/QUBIT_TO_EINSTEIN.json
 
@@ -64,6 +70,15 @@ jobs:
       - name: Two-node Peter-Weyl by route Euclidean regression
         run: python scripts/peter_weyl_two_node_euclidean_joint_gate.py --output verification_results/PETER_WEYL_TWO_NODE_EUCLIDEAN.json
 
+      - name: Three-node graph-changing Peter-Weyl by route HDA
+        run: python scripts/peter_weyl_three_node_graph_hda_gate.py --output verification_results/PETER_WEYL_THREE_NODE_GRAPH_HDA.json
+
+      - name: Joint epsilon and Peter-Weyl cutoff limit
+        run: |
+          python scripts/joint_regulator_limit_gate.py \
+            --multi-node-json verification_results/PETER_WEYL_THREE_NODE_GRAPH_HDA.json \
+            --output verification_results/JOINT_REGULATOR_LIMIT.json
+
       - name: HDA factorization no-go and route prerequisites
         run: python bcqg_quantum_hda_killer.py --output verification_results/QUANTUM_HDA_RESULTS.json
 
@@ -72,8 +87,8 @@ jobs:
           python scripts/lorentzian_hit_depth_bound.py
           python scripts/lorentzian_beta_cancellation_gate.py
 
-      - name: Fixed-cutoff integration status
-        run: python bcqg_bit_to_gravity_final.py --strict --output verification_results/FIXED_CUTOFF_BRIDGE.json
+      - name: Registered integration status
+        run: python bcqg_bit_to_gravity_final.py --strict --output verification_results/REGISTERED_BRIDGE.json
 
       - name: Upload canonical evidence
         if: always()
