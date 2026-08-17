@@ -80,14 +80,12 @@ def analyze(C,p_dim=6):
         return {**base,'passed':False,'science_status':status,
                 'reason':'residual Q contains stable low-energy modes; closure inversion is forbidden until they are retained/classified'}
 
-    # Residual Q sector is gapped at the loosest frozen threshold.
     inv=V@np.diag(1.0/evals)@V.conj().T
     Ceff=A-B@inv@B.conj().T
     ce_scale=max(float(np.linalg.norm(Ceff)),1e-300)
     ce_herm=relnorm(Ceff-Ceff.conj().T,ce_scale)
     Ceff=.5*(Ceff+Ceff.conj().T)
 
-    # Exact projected-equation residual for all retained basis vectors at once.
     Qsol=-inv@B.conj().T
     qres=D@Qsol+B.conj().T
     pres=A+B@Qsol-Ceff
@@ -114,13 +112,13 @@ def analyze(C,p_dim=6):
     target=np.array([-.5,1.,2.])
     shapeerr=None if ratio is None else float(np.linalg.norm(np.asarray(ratio)-target)/np.linalg.norm(target))
     checks={
-        'input_Hermitian':herm<=HERM_TOL,
-        'residual_Q_gapped':gap_ratio>THRESHOLDS[0],
-        'Schur_Q_equation':qres_rel<=SCHUR_TOL,
-        'Schur_P_equation':pres_rel<=SCHUR_TOL,
-        'Ceff_Hermitian':ce_herm<=HERM_TOL,
-        'metric_block_real_Hermitian':imagdef<=HERM_TOL,
-        'S4_covariance_metric_block':s4def<=S4_TOL,
+        'input_Hermitian':bool(herm<=HERM_TOL),
+        'residual_Q_gapped':bool(gap_ratio>THRESHOLDS[0]),
+        'Schur_Q_equation':bool(qres_rel<=SCHUR_TOL),
+        'Schur_P_equation':bool(pres_rel<=SCHUR_TOL),
+        'Ceff_Hermitian':bool(ce_herm<=HERM_TOL),
+        'metric_block_real_Hermitian':bool(imagdef<=HERM_TOL),
+        'S4_covariance_metric_block':bool(s4def<=S4_TOL),
     }
     return {**base,'passed':bool(all(checks.values())),'science_status':'SCHUR_GAP_STAGE_PASS' if all(checks.values()) else 'SCHUR_GAP_STAGE_FAIL',
             'checks':checks,'QCQ_min_abs_eigenvalue':gap_min,'QCQ_max_abs_eigenvalue':gap_max,
@@ -138,7 +136,6 @@ def analyze(C,p_dim=6):
 
 
 def synthetic(kind):
-    # Six metric P directions + six Q directions; choose a known S4 target.
     target=-.5*P1+1.0*PE+2.0*PT
     B=.4*np.eye(6)
     if kind=='gapped':
@@ -159,12 +156,16 @@ def selftest():
     recovery=float(np.linalg.norm(rec-T)) if rec is not None else math.inf
     c0,_=synthetic('coupled_zero');neg1=analyze(c0,6)
     d0,_=synthetic('decoupled_zero');neg2=analyze(d0,6)
+    ratio_ok=(
+        pos.get('blind_raw_ratio_normalized_to_E') is not None
+        and np.linalg.norm(np.asarray(pos['blind_raw_ratio_normalized_to_E'])-np.array([-.5,1,2]))<1e-12
+    )
     checks={
         'gapped_control_passes':bool(pos.get('passed')),
-        'known_Schur_recovered':recovery<1e-12,
-        'known_S4_ratio_recovered':pos.get('blind_raw_ratio_normalized_to_E') is not None and np.linalg.norm(np.asarray(pos['blind_raw_ratio_normalized_to_E'])-np.array([-.5,1,2]))<1e-12,
-        'coupled_zero_requests_promotion':neg1.get('science_status')=='PROMOTE_LOW_ENERGY_MODES',
-        'decoupled_zero_requires_classification':neg2.get('science_status')=='CLASSIFY_DECOUPLED_LOW_ENERGY_MODES',
+        'known_Schur_recovered':bool(recovery<1e-12),
+        'known_S4_ratio_recovered':bool(ratio_ok),
+        'coupled_zero_requests_promotion':bool(neg1.get('science_status')=='PROMOTE_LOW_ENERGY_MODES'),
+        'decoupled_zero_requires_classification':bool(neg2.get('science_status')=='CLASSIFY_DECOUPLED_LOW_ENERGY_MODES'),
     }
     return {'status':'collective Schur-gap closure engine self-test','passed':bool(all(checks.values())),'checks':checks,
             'known_Schur_recovery_norm':recovery,'positive_control':pos,
