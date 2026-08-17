@@ -6,9 +6,9 @@ allow CI to enforce a strict public-surface gate while historical research notes
 are cleaned separately.
 
 The repository uses both dollar delimiters and the standard TeX bracket forms
-``\\[ ... \\]`` / ``\\( ... \\)``.  They carry the same mathematical intent for
+``\\[ ... \\]`` / ``\\( ... \\)``. They carry the same mathematical intent for
 this static boundary validator, so bracket delimiters are normalized to dollar
-delimiters before scanning.  This keeps the actual brace/environment checks
+delimiters before scanning. This keeps the actual brace/environment checks
 identical instead of falsely classifying TeX commands inside bracket math as
 plain Markdown text.
 """
@@ -76,11 +76,7 @@ def validate_expression(source: str, path: Path, line: int) -> list[Problem]:
 
 
 def normalize_math_delimiters(line: str) -> str:
-    """Normalize TeX bracket math delimiters for the existing dollar scanner.
-
-    This is intentionally delimiter-only.  It does not rewrite mathematical
-    content and therefore cannot turn a malformed expression into a valid one.
-    """
+    """Normalize TeX bracket math delimiters for the existing dollar scanner."""
     return (
         line.replace(r"\[", "$$")
         .replace(r"\]", "$$")
@@ -185,7 +181,7 @@ def resolve_paths(values: list[str]) -> tuple[list[Path], list[str]]:
             errors.append(f"Markdown file not found: {value}")
             continue
         if candidate.suffix.lower() != ".md":
-            errors.append(f"not a Markdown file: {value}"))
+            errors.append(f"not a Markdown file: {value}")
             continue
         paths.append(candidate)
     return sorted(set(paths)), errors
