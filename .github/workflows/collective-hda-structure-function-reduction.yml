@@ -1,0 +1,41 @@
+name: collective-hda-structure-function-reduction
+
+on:
+  push:
+    branches:
+      - research/bcqg-core-candidate-v1
+    paths:
+      - 'COLLECTIVE_HDA_STRUCTURE_FUNCTION_REDUCTION_THEOREM.md'
+      - 'scripts/collective_hda_structure_function_reduction_gate.py'
+      - '.github/workflows/collective-hda-structure-function-reduction.yml'
+  workflow_dispatch:
+
+jobs:
+  theorem:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - run: python -m pip install -r requirements.txt
+      - name: Exact C3 structure-function bound control
+        run: python scripts/collective_hda_structure_function_reduction_gate.py --output verification_results/COLLECTIVE_HDA_STRUCTURE_FUNCTION_REDUCTION.json
+      - name: Hard theorem guards
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/COLLECTIVE_HDA_STRUCTURE_FUNCTION_REDUCTION.json'))
+          assert d['passed']
+          assert d['structure_shift_rank']==3
+          assert d['delta_str_direct']<=d['delta_str_reduced_bound']*(1+1e-12)+1e-12
+          assert d['HDA_direct_upper_control']<=d['HDA_reduced_upper_control']*(1+1e-12)+1e-12
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: collective-hda-structure-function-reduction
+          path: verification_results/COLLECTIVE_HDA_STRUCTURE_FUNCTION_REDUCTION.json
+          if-no-files-found: error
