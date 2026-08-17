@@ -37,7 +37,8 @@ def run():
     T=singlet_pair_tensor();H=[];rows=[]
     for p in itertools.permutations(range(4)):
         U=permuted(T,p);ov=np.vdot(T,U);leak=float(np.linalg.norm(U-ov*T))
-        exact=leak<1e-12 and abs(abs(ov)-1)<1e-12
+        # Cast explicitly: numpy comparisons return np.bool_, which is not JSON serializable.
+        exact=bool(leak<1e-12 and abs(abs(ov)-1)<1e-12)
         if exact:H.append(p)
         rows.append({'permutation':list(p),'parity':parity(p),'K0_line_overlap':[float(ov.real),float(ov.imag)],'orthogonal_leakage':leak,'preserves_K0_line':exact})
     specs=worker_specs();idx={x['full']:x['index'] for x in specs}
