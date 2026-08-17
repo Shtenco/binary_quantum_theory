@@ -1,0 +1,92 @@
+name: physicalization-l1-metric-depth2-pilot
+
+on:
+  push:
+    branches:
+      - research/physicalization-l1-depth2-metric
+    paths:
+      - 'scripts/collective_l1_metric_edge_depth2_worker.py'
+      - 'scripts/collective_l1_metric_edge_depth2_collect.py'
+      - '.github/workflows/physicalization-l1-metric-depth2-pilot.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+  MKL_NUM_THREADS: '1'
+  NUMEXPR_NUM_THREADS: '1'
+
+jobs:
+  representatives:
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        edge_index: [0, 1, 5]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Syntax
+        run: python -m py_compile scripts/collective_l1_metric_edge_depth2_worker.py
+      - name: Full-E edge source and parent-block second hit
+        run: |
+          mkdir -p out
+          python scripts/collective_l1_metric_edge_depth2_worker.py \
+            --edge-index ${{ matrix.edge_index }} \
+            --out-dir out
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: l1-metric-depth2-edge-${{ matrix.edge_index }}
+          path: out/
+          if-no-files-found: error
+          compression-level: 6
+
+  collect:
+    needs: representatives
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: python -m pip install -r requirements.txt
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: l1-metric-depth2-edge-*
+          path: columns
+          merge-multiple: true
+      - name: Collect S4 orbit response
+        run: |
+          python scripts/collective_l1_metric_edge_depth2_collect.py \
+            --root columns \
+            --output verification_results/L1_METRIC_EDGE_DEPTH2_KRYLOV.json
+      - name: Scope guard
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('verification_results/L1_METRIC_EDGE_DEPTH2_KRYLOV.json'))
+          assert d['passed'] is True
+          assert d['science_status']=='L1_METRIC_EDGE_DEPTH2_KRYLOV'
+          assert d['checks']['S4_three_orbit_consistency']
+          assert d['checks']['nonnegative_depth2_variance_with_tolerance']
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: l1-metric-edge-depth2-krylov
+          path: verification_results/L1_METRIC_EDGE_DEPTH2_KRYLOV.json
+          if-no-files-found: error
