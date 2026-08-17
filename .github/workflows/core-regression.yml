@@ -50,6 +50,9 @@ jobs:
       - name: Frozen q=2 bits to geometry-qubit carrier
         run: python scripts/micro_walsh_qgeom_gate.py --output verification_results/MICRO_WALSH_QGEOM.json
 
+      - name: Exact global q=2 face-qubit carrier gluing
+        run: python scripts/q2_global_face_qubit_gluing_gate.py --output verification_results/Q2_GLOBAL_FACE_QUBIT_GLUING.json
+
       - name: Qubit to Einstein end-to-end control
         run: python scripts/qubit_to_einstein_end_to_end.py --output verification_results/QUBIT_TO_EINSTEIN.json
 
@@ -84,8 +87,8 @@ jobs:
           python scripts/lorentzian_hit_depth_bound.py
           python scripts/lorentzian_beta_cancellation_gate.py
 
-      - name: Fixed-cutoff integration status
-        run: python bcqg_bit_to_gravity_final.py --strict --output verification_results/FIXED_CUTOFF_BRIDGE.json
+      - name: Registered integration status
+        run: python bcqg_bit_to_gravity_final.py --strict --output verification_results/REGISTERED_BRIDGE.json
 
       - name: Upload canonical evidence
         if: always()
