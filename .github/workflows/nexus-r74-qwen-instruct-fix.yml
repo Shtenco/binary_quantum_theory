@@ -1,0 +1,41 @@
+name: NEXUS R7.4 Qwen3 Instruct Compatibility Pass
+
+on:
+  pull_request:
+    paths:
+      - 'nexus_r74_qwen_instruct/**'
+      - '.github/workflows/nexus-r74-qwen-instruct-fix.yml'
+
+jobs:
+  qwen:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Ollama
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          nohup ollama serve > ollama.log 2>&1 &
+          for i in $(seq 1 60); do curl -fsS http://127.0.0.1:11434/api/tags >/dev/null && break; sleep 1; done
+      - name: Pull Qwen3 4B Instruct 2507 Q4
+        run: |
+          ollama pull 'qwen3:4b-instruct-2507-q4_K_M'
+          ollama list > model_list.txt
+          ollama show 'qwen3:4b-instruct-2507-q4_K_M' --modelfile > model_modelfile.txt
+      - name: Frozen matched benchmark
+        env:
+          MODEL: qwen3:4b-instruct-2507-q4_K_M
+          THINK: 'false'
+          OUT: teacher_result.json
+        run: python nexus_r74_multiteacher_lab/teacher_benchmark.py
+      - name: Upload trace
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-r74-qwen3-4b-instruct-2507
+          path: |
+            teacher_result.json
+            model_list.txt
+            model_modelfile.txt
+            ollama.log
+          retention-days: 30
