@@ -16,21 +16,19 @@ The remaining parity assignments follow directly from the declared operators:
       = O-h_e O h_e^-1       same parity as O,
 
 because conjugation by one fundamental h and one h^-1 contributes two parity
-flips.  Hence
+flips. Hence C(V) is even, C(K) is odd and
 
-    C(V) even,
-    C(K) odd,
-    H_L ~ Tr[C(K) C(K) C(V)] even.
+    H_L ~ Tr[C(K) C(K) C(V)]
 
-For P projecting to the even all-j=1/2 logical sector this gives
+is even. For P projecting to the even all-j=1/2 logical sector,
 
     P H_E P = 0,
     P(H_E H_L + H_L H_E)P = 0,
 
 while P H_L P is not forbidden by this grading.
 
-This is a selection-rule theorem only.  It does not claim P H_L P is nonzero;
-that is a separate amplitude calculation.
+This is a selection-rule theorem only; a nonzero amplitude requires a separate
+matrix-element calculation.
 """
 from __future__ import annotations
 
@@ -45,13 +43,10 @@ def mul(*signs):
 
 
 def commutator_parity(a, b):
-    # AB and BA have the same Z2 grading product.
     return mul(a, b)
 
 
 def covariant_leg_parity(operator_parity):
-    # C(O)=O-h O h^-1.  Fundamental h is odd and h^-1 is odd, so
-    # parity(h O h^-1)=(-1)*p*(-1)=p.
     direct = operator_parity
     conjugated = mul(-1, operator_parity, -1)
     if direct != conjugated:
@@ -99,14 +94,14 @@ def run():
         },
         "logical_even_sector_consequences": {
             "P_H_E_P": "zero by parity",
-            "P_H_L_P": "allowed by parity; amplitude must be computed",
+            "P_H_L_P": "allowed by parity; amplitude must be computed separately",
             "P_mixed_master_P": "P(H_E H_L+H_L H_E)P=0 by parity",
             "P_G_P": "for G=H_E+lambda H_L, PGP=lambda P H_L P",
             "P_G2_P": "P H_E^2 P + lambda^2 P H_L^2 P",
         },
         "scope": (
-            "Exact Z2 operator bookkeeping within the declared Peter-Weyl construction. "
-            "It does not prove a nonzero Lorentzian logical matrix element, a physical mass, a mirror particle or a fifth force."
+            "Exact Z2 operator bookkeeping within the declared Peter-Weyl gravity construction; "
+            "it is a finite selection-rule certificate rather than an experimental observable."
         ),
     }
 
