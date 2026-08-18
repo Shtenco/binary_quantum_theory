@@ -77,16 +77,13 @@ def gram(images):
 
 def pair_summary(K):
     A = AN.analyze_kernel(K)
-    # Keep compatibility with the historical analyzer without exposing retired
-    # interpretation vocabulary on the canonical public surface.
-    parity_key = "mi" + "rror_selection"
-    forbidden = A[parity_key]["relative_forbidden_norm"]
+    parity = A["y_parity_selection"]["relative_y_odd_norm"]
     return {
         "Delta_aniso": delta_from_pair_kernel(K),
         "II": float(np.trace(K).real / 4.0),
         "distance_to_identity": float(np.linalg.norm(K - np.eye(4))),
         "anisotropy_relative": A["heisenberg_frame"]["anisotropy_relative"],
-        "orientation_forbidden_relative_norm": forbidden,
+        "orientation_forbidden_relative_norm": parity,
         "eigenvalues": A["eigenvalues"],
         "matrix": A["matrix"],
     }
