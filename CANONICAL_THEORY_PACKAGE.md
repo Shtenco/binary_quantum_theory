@@ -225,17 +225,26 @@ Evidence:
 
 - `L1_Q4_S4_METRIC_COMPRESSION_RESULT.md`
 - `scripts/collective_l1_q4_s4_metric_compression.py`
-- certified 24-column source artifact set from workflow run 31965359681
+- certified 24-column source artifact set from workflow run `31965359681`
 
-Result:
+Fresh canonical reassembly gives:
 
 ```text
-lambda_E        = 1.1111917875584736
-lambda_T2       = 1.0220278507464782
-Delta_ET        = 0.08916393681199541
-kappa5          = 1.0576934254712764
-Delta_ET/kappa5 = 0.08430036026012608
+lambda_E                    = 1.1111917875584736
+lambda_T2                   = 1.0220278507464782
+Delta_ET                    = 0.08916393681199541
+relative_ET_split           = 0.08359564595312347
+S4 commutator relative max  = 6.893947764166024e-16
+S4 orbit residual           = 1.7916222470383044e-16
 ```
+
+Here
+
+```text
+relative_ET_split = Delta_ET / ((lambda_E+lambda_T2)/2),
+```
+
+so the canonical normalized split is about `8.36%`.
 
 ---
 
@@ -247,8 +256,11 @@ Evidence:
 - `scripts/regge_eh_cubic_bridge.py`
 - `REGGE_DIRECTIONAL_RESIDUE_RESULT.md`
 - `scripts/gravity_bridge_scaling.py`
+- `regge_flat_lattice.py`
 
 The cubic Regge/EH bridge reproduces the declared finite continuum-scaling relations. Directional Hessian controls test axial, diagonal-2 and diagonal-3 finite-lattice residues against the common continuum tensor structure.
+
+The canonical minimal Regge utility includes the exact periodic Freudenthal geometry plus the real 30-dimensional Fourier-mode map, central finite-difference Hessian and vertex-displacement gauge basis required by the directional calculation.
 
 ### F1. Held-out L=6 continuation
 
@@ -298,15 +310,15 @@ Evidence:
 
 The nonlinear master normalization is performed before environment tracing and the support-projector limit is checked on the complete 32D logical sector.
 
-### G3. Spin-parity / support structure
+### G3. Lorentzian parity / support structure
 
 Evidence:
 
-- `scripts/peter_weyl_spin_parity_master_gate.py`
 - `scripts/peter_weyl_lorentzian_parity_gate.py`
-- current Lorentzian support/beta gates
+- `scripts/lorentzian_hit_depth_bound.py`
+- `scripts/lorentzian_beta_cancellation_gate.py`
 
-The Euclidean and Lorentzian support/parity structure is used as an operator-selection and cutoff certificate.
+The Euclidean/Lorentzian doubled-spin grading, fixed coefficient and support bounds are used as operator-selection and cutoff certificates.
 
 ### G4. Completed higher-shell Lambda
 
@@ -314,9 +326,9 @@ Evidence:
 
 - `PETER_WEYL_HIGHER_SHELL_LAMBDA_RESULT.md`
 - `scripts/peter_weyl_higher_shell_lambda_gate.py`
-- certified sparse source columns from workflow run 31844567559
+- certified sparse source columns from workflow run `31844567559`
 
-Result:
+Historical certified result:
 
 ```text
 lambda_min = 10.635759878291307
@@ -325,7 +337,7 @@ relative distance from scalar identity = 0.09440461833276048
 block-Lanczos identities close at ~1e-13 residual scale
 ```
 
-Canonical regeneration reuses the certified exact source columns, independently recomputes the historically heavy column 28, then reassembles and rechecks the full matrix.
+Canonical regeneration reuses the 31 certified exact source columns, independently recomputes the historically heavy column 28, then reassembles and rechecks the full matrix.
 
 ### G5. j=1 S4 block
 
@@ -334,7 +346,7 @@ Evidence:
 - `PETER_WEYL_J1_S4_BLOCK_RESULT.md`
 - `scripts/peter_weyl_j1_s4_block_gate.py`
 
-The four-j=1 singlet space contains the multiplicity-one S4 [2,2] coarse doublet used as the representation-RG consistency carrier.
+The four-j=1 singlet space contains the multiplicity-one S4 `[2,2]` coarse doublet used as the representation-RG consistency carrier.
 
 ---
 
