@@ -1,0 +1,75 @@
+name: NEXUS R7.4 Public Multi-Teacher Lab
+
+on:
+  pull_request:
+    paths:
+      - 'nexus_r74_multiteacher_lab/**'
+      - '.github/workflows/nexus-r74-public-multiteacher.yml'
+  workflow_dispatch:
+
+jobs:
+  teacher:
+    name: ${{ matrix.id }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: qwen3-4b-thinking-2507
+            model: qwen3:4b-thinking-2507-q4_K_M
+            think: 'true'
+          - id: phi4-mini-reasoning
+            model: phi4-mini-reasoning:3.8b-q4_K_M
+            think: 'true'
+          - id: ministral3-3b
+            model: ministral-3:3b-instruct-2512-q4_K_M
+            think: 'false'
+          - id: smollm3-3b
+            model: pedrolucas/smollm3:3b-q4_k_m
+            think: 'false'
+          - id: gemma3-4b
+            model: gemma3:4b-it-q4_K_M
+            think: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Ollama
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          nohup ollama serve > ollama.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -fsS http://127.0.0.1:11434/api/tags >/dev/null && break
+            sleep 1
+          done
+          ollama --version
+      - name: Download real Q4 teacher
+        run: |
+          ollama pull '${{ matrix.model }}'
+          ollama list | tee model_list.txt
+          ollama show '${{ matrix.model }}' --modelfile > model_modelfile.txt || true
+      - name: Run frozen matched benchmark
+        env:
+          MODEL: ${{ matrix.model }}
+          THINK: ${{ matrix.think }}
+          OUT: teacher_result.json
+        run: python nexus_r74_multiteacher_lab/teacher_benchmark.py
+      - name: Record binary evidence
+        if: always()
+        run: |
+          sha256sum ~/.ollama/models/blobs/* > ollama_blob_sha256.txt 2>/dev/null || true
+          du -h ~/.ollama/models/blobs/* > ollama_blob_sizes.txt 2>/dev/null || true
+          cp ollama.log teacher_ollama.log || true
+      - name: Upload trace
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-r74-${{ matrix.id }}
+          path: |
+            teacher_result.json
+            model_list.txt
+            model_modelfile.txt
+            ollama_blob_sha256.txt
+            ollama_blob_sizes.txt
+            teacher_ollama.log
+          if-no-files-found: warn
+          retention-days: 30
