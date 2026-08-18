@@ -1,0 +1,42 @@
+name: post-hda-physicalization-smoke
+
+on:
+  push:
+    branches: [research/post-hda-physicalization-v2]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: post-hda-physicalization-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  physical-projector:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile post-HDA sources
+        run: |
+          python -m py_compile scripts/master_constraint_physical_projector_gate.py
+          python -m py_compile scripts/peter_weyl_master_projector_pilot.py
+      - name: Exact finite master-projector theorem
+        run: python scripts/master_constraint_physical_projector_gate.py --output verification_results/MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.json
+      - name: Actual Peter-Weyl master-projector pilot
+        run: python scripts/peter_weyl_master_projector_pilot.py --domain low --output verification_results/PETER_WEYL_MASTER_PROJECTOR_PILOT.json
+      - name: Upload post-HDA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: post-hda-physicalization
+          path: verification_results/
+          if-no-files-found: warn
