@@ -3,6 +3,8 @@ name: post-hda-physicalization-smoke
 on:
   push:
     branches: [research/post-hda-physicalization-v2]
+  pull_request:
+    branches: [main]
 
 permissions:
   contents: read
