@@ -2,7 +2,7 @@
 """Actual 32D higher-shell Peter-Weyl master observable.
 
 The calculation is exact but naturally embarrassingly parallel over the 32
-logical basis columns.  For each logical basis vector |i> compute
+logical basis columns. For each logical basis vector |i> compute
 
     a_i = H |i>,
     b_i = H^2 |i>,
@@ -23,7 +23,7 @@ hopping norm:
     B1^dag B1 = K,
     B2^dag B2 = Lambda.
 
-The column mode serializes the exact sparse states.  The assembly mode performs
+The column mode serializes the exact sparse states. The assembly mode performs
 only inner products and small 32x32 linear algebra; no approximation is added.
 """
 from __future__ import annotations
@@ -45,7 +45,7 @@ import peter_weyl_logical_anisotropy_gate as AN
 import peter_weyl_euclidean_sine_ordering_gate as SINE
 
 TOL = 1e-11
-JMAX2_SECOND_HIT_SAFE = 5  # doubled spin: Jmax=5/2
+JMAX2_SECOND_HIT_SAFE = 5
 NLOGICAL = 32
 
 
@@ -99,12 +99,10 @@ def compute_column(index: int):
     AN.ZVM.patch_and_clear()
     keys, labels = logical_basis()
     key = keys[index]
-
     a = apply_H_state({key: 1.0 + 0j})
     projected = {k: v for k, v in a.items() if AN.is_all_jhalf(k)}
     first_proj = AN.sparse_norm(projected)
     b = apply_H_state(a)
-
     return {
         "status": "exact Peter-Weyl higher-shell logical column",
         "column": index,
@@ -121,7 +119,6 @@ def compute_column(index: int):
 
 
 def sparse_inner(a, b):
-    # Iterate over the smaller support.
     if len(a) > len(b):
         a, b = b, a
         return np.conj(sparse_inner(a, b))
@@ -243,7 +240,6 @@ def assemble(directory: Path):
     mscale = max(float(np.max(np.abs(em))), 1.0)
     positivity_tol = 5e-8 * mscale
 
-    # Independent moment/Lanczos identity: B2^dag B2 must reconstruct Lambda.
     b1_err = float(np.linalg.norm(B1.conj().T @ B1 - K))
     b2_err = float(np.linalg.norm(B2.conj().T @ B2 - Lam))
     h4_reconstruction = float(np.linalg.norm(H4 - (K @ K + M)))
@@ -323,14 +319,12 @@ def assemble(directory: Path):
             "B2": matrix_json(B2),
         },
         "interpretation": (
-            "Lambda is the first actual denominator-free higher-shell logical observable and exactly "
-            "the squared second block-Lanczos hopping. A non-scalar Lambda is genuine next-shell "
-            "logical dynamics that survives two-shell K normalization. It is not yet the final TT "
-            "stiffness until recursive spatial modes and the Lorentzian/route/history sectors are included."
+            "Lambda is the denominator-free higher-shell logical observable and the squared second block-Lanczos hopping. "
+            "A non-scalar Lambda is genuine next-shell logical dynamics that survives two-shell K normalization."
         ),
         "scientific_scope": (
             "Finite Euclidean H_E0+H_E1 Peter-Weyl calculation at regulator-safe Jmax=5/2. "
-            "No arbitrary energy denominator, mirror-force fit or external data is used."
+            "No arbitrary energy denominator, external data or per-observable fit is used."
         ),
     }
 
