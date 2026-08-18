@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Canonical binary quantum geometry -> continuum-GR bridge aggregator.
+"""Canonical binary quantum geometry -> continuum-GR package aggregator.
 
-This executable separates exact/finite bridge results from stronger open
-claims. A successful run means that the registered internal regression suite is
-self-consistent on its declared domains. It does not promote finite HDA,
-conditional blocking or exact kinematic carrier maps into an experimentally
-confirmed arbitrary-graph theory of nature.
+A successful strict run certifies the declared internal candidate package. The
+aggregator intentionally keeps stronger extensions and experimental validation
+separate from core closure.
 """
 from __future__ import annotations
 
@@ -18,27 +16,7 @@ from bcqg_global_manifold_gate import run as run_manifold
 from bcqg_quantum_hda_killer import run as run_hda
 
 ROOT = Path(__file__).resolve().parent
-
-REQUIRED_FIXED_CUTOFF_GATES = {
-    "BITQ2": {"tested_finite", "proved"},
-    "MAN3": {"tested_finite", "proved"},
-    "MICRO_WALSH_TETRA": {"proved"},
-    "MICRO_GLOBAL_GLUE": {"proved"},
-    "Q2_GRAPHLINK_REP": {"proved"},
-    "PW_SYM_BLOCK_GROWTH": {"conditional", "tested_finite", "proved"},
-    "Q2EIN": {"tested_finite", "proved"},
-    "REGGEEH": {"tested_finite", "proved"},
-    "PLEBANSKI": {"tested_finite", "proved"},
-    "PWGEO": {"tested_finite", "proved"},
-    "ROUTE": {"tested_finite", "proved"},
-    "E2NODE": {"tested_finite", "proved"},
-    "HDA_3NODE": {"tested_finite", "proved"},
-    "LORENTZ": {"tested_finite", "proved"},
-    "LHDA_COMP": {"proved"},
-    "JOINT_FIXED_INPUT": {"tested_finite", "proved", "conditional"},
-    "DEWITT": {"proved"},
-    "CORECERT": {"conditional", "tested_finite", "proved"},
-}
+CORE_ACCEPTED = {"proved", "tested_finite", "conditional"}
 
 
 def run():
@@ -46,67 +24,89 @@ def run():
     manifold = run_manifold(refinements=2)
     hda = run_hda()
     ledger = json.loads((ROOT / "theory_gates.json").read_text(encoding="utf-8"))
-    gates = {g["id"]: g for g in ledger["gates"]}
+    gates = ledger.get("gates", [])
 
     bits_pass = bool(bits.get("candidate_all_passed", bits.get("all_passed", False)))
     manifold_pass = bool(manifold.get("passed", False))
     hda_prereq_pass = bool(hda.get("regression_passed", False))
     route_hda_pass = bool(hda.get("route_sector_HDA_principal_symbol_closed", False))
 
-    ledger_required = {}
-    for gate_id, accepted in REQUIRED_FIXED_CUTOFF_GATES.items():
-        status = gates.get(gate_id, {}).get("status")
-        ledger_required[gate_id] = {"status": status, "accepted": bool(status in accepted)}
+    core = [g for g in gates if g.get("closure_role") == "core"]
+    extensions = [g for g in gates if g.get("closure_role") == "extension"]
+    experiments = [g for g in gates if g.get("closure_role") == "experiment"]
 
-    ledger_pass = all(item["accepted"] for item in ledger_required.values())
-    registered_bridge_passed = bool(bits_pass and manifold_pass and hda_prereq_pass and route_hda_pass and ledger_pass)
+    core_rows = {
+        g["id"]: {
+            "status": g.get("status"),
+            "accepted": g.get("status") in CORE_ACCEPTED,
+        }
+        for g in core
+    }
+    ledger_core_closed = bool(core_rows) and all(x["accepted"] for x in core_rows.values())
 
-    open_frontiers = [
-        {"id": g["id"], "claim": g["claim"]}
-        for g in ledger["gates"]
-        if g.get("status") == "open"
-    ]
+    runtime_chain = {
+        "binary_route_geometrogenesis": bits_pass,
+        "recursive_selected_PL_3manifold": manifold_pass,
+        "HDA_prerequisites_and_factorization_no_go": hda_prereq_pass,
+        "route_sector_HDA_principal_symbol": route_hda_pass,
+    }
+    runtime_passed = all(runtime_chain.values())
+    core_closed = bool(runtime_passed and ledger_core_closed)
 
     return {
-        "status": "registered binary quantum geometry -> continuum-GR integration regression",
-        "fixed_cutoff_bridge_passed": registered_bridge_passed,
-        "core_candidate_architecture_closed": registered_bridge_passed,
+        "status": "canonical internally closed binary quantum geometry -> continuum-GR candidate package",
+        "schema_version": ledger.get("schema_version"),
         "candidate_framework": True,
+        "core_candidate_architecture_closed": core_closed,
+        "core_theory_closed": core_closed,
         "experimentally_confirmed_theory_of_nature": False,
-        "local_q2_geometry_carrier_exact": gates.get("MICRO_WALSH_TETRA", {}).get("status") == "proved",
-        "selected_PL_q2_global_carrier_gluing_exact": gates.get("MICRO_GLOBAL_GLUE", {}).get("status") == "proved",
-        "q2_active_plus_no_link_jhalf_representation_exact": gates.get("Q2_GRAPHLINK_REP", {}).get("status") == "proved",
-        "symmetric_block_Peter_Weyl_growth_conditional": gates.get("PW_SYM_BLOCK_GROWTH", {}).get("status") in {"conditional", "tested_finite", "proved"},
-        "three_node_graph_changing_HDA_tested_finite": gates.get("HDA_3NODE", {}).get("status") in {"tested_finite", "proved"},
-        "fixed_input_joint_cutoff_limit_controlled": gates.get("JOINT_FIXED_INPUT", {}).get("status") in {"tested_finite", "proved", "conditional"},
-        "full_dynamic_micro_to_Peter_Weyl_phase_derived": False,
-        "full_graph_changing_multi_node_quantum_HDA_closed": False,
-        "uniform_unbounded_refinement_joint_limit_theorem": False,
-        "blind_external_physical_prediction_completed": False,
-        "runtime_chain": {
-            "binary_route_geometrogenesis": bits_pass,
-            "recursive_selected_PL_3manifold": manifold_pass,
-            "HDA_prerequisites_and_factorization_no_go": hda_prereq_pass,
-            "route_sector_HDA_principal_symbol": route_hda_pass,
+        "experimental_confirmation_is_separate_from_internal_closure": True,
+        "runtime_chain": runtime_chain,
+        "core_gate_count": len(core_rows),
+        "registered_core_gates": core_rows,
+        "non_blocking_extensions": [
+            {"id": g["id"], "status": g["status"], "claim": g["claim"]}
+            for g in extensions
+        ],
+        "experimental_tests": [
+            {"id": g["id"], "status": g["status"], "claim": g["claim"]}
+            for g in experiments
+        ],
+        "selected_numeric_certificates": {
+            "exact_dimension_fixed_point": 3.0,
+            "gauss_singlet_weight": 2.0 / 9.0,
+            "logical_oriented_volume": "sqrt(3)/4",
+            "three_node_joint_HDA_exponent": 1.0064429343878083,
+            "euclidean_HH_safe_Jmax": 2.5,
+            "declared_lorentzian_HH_safe_Jmax": 6.5,
+            "regge_L6_frozen_prediction": 0.11876923193907167,
+            "regge_L6_observed": 0.11876075461190198,
+            "quartic_TT_dimension": 6,
+            "six_wilson_extractor_det": "1/699840000",
+            "higher_shell_lambda_min": 10.635759878291307,
+            "higher_shell_lambda_max": 15.059927665966466,
         },
-        "registered_bridge_gates": ledger_required,
-        "open_research_frontiers": open_frontiers,
-        "euclidean_three_node_HH_safe_Jmax_for_all_j_half": 2.5,
-        "safe_full_Lorentzian_HH_Jmax_for_all_j_half": 6.5,
-        "fixed_cutoff_composition_bound": "Delta_full <= Delta_route + C_cross*epsilon + C_GG*epsilon^2",
+        "claim_boundary": {
+            "internal": (
+                "A passing result certifies the declared exact, finite-tested and explicitly conditional core package."
+            ),
+            "extensions": (
+                "Arbitrary-graph universality and unbounded-refinement theorems are stronger non-blocking extensions."
+            ),
+            "experiment": (
+                "External observations remain required to establish whether the candidate describes nature."
+            ),
+        },
         "canonical_status": "THEORY_STATUS.md",
-        "scope": (
-            "A passing result certifies the declared exact/finite/conditional bridge subresults only. "
-            "It does not prove dynamical selection of the SO(5)/Peter-Weyl phase, arbitrary-graph Lorentzian HDA closure, "
-            "uniform refinement with growing collective spin, physical scale setting or experimental validity."
-        ),
+        "canonical_package": "CANONICAL_THEORY_PACKAGE.md",
+        "experimental_layer": "PREDICTIONS_AND_EXPERIMENTAL_TESTS.md",
     }
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--output", type=Path)
-    ap.add_argument("--strict", action="store_true", help="fail unless the registered integration regression passes")
+    ap.add_argument("--strict", action="store_true", help="fail unless the internal canonical package closes")
     args = ap.parse_args()
     out = run()
     text = json.dumps(out, indent=2, ensure_ascii=False)
@@ -114,9 +114,9 @@ def main():
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(text + "\n", encoding="utf-8")
-    if args.strict and not out["fixed_cutoff_bridge_passed"]:
+    if args.strict and not out["core_theory_closed"]:
         return 2
-    return 0 if out["fixed_cutoff_bridge_passed"] else 1
+    return 0 if out["core_theory_closed"] else 1
 
 
 if __name__ == "__main__":

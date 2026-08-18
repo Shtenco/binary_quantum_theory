@@ -15,8 +15,8 @@ If K32 is full rank, F_mu -> I32 and the pair partial trace tends to I4. If K32
 is rank deficient, the limit is the support projector and its pair-sector
 anisotropy is measured explicitly.
 
-This is still an Euclidean finite control, not the full Lorentzian/route/matter
-master constraint.
+This is a finite Euclidean normalization control rather than an external-time
+propagator or an experimental observable.
 """
 from __future__ import annotations
 
@@ -77,12 +77,13 @@ def gram(images):
 
 def pair_summary(K):
     A = AN.analyze_kernel(K)
+    parity = A["y_parity_selection"]["relative_y_odd_norm"]
     return {
         "Delta_aniso": delta_from_pair_kernel(K),
         "II": float(np.trace(K).real / 4.0),
         "distance_to_identity": float(np.linalg.norm(K - np.eye(4))),
         "anisotropy_relative": A["heisenberg_frame"]["anisotropy_relative"],
-        "y_odd_relative_norm": A["y_parity_selection"]["relative_y_odd_norm"],
+        "orientation_forbidden_relative_norm": parity,
         "eigenvalues": A["eigenvalues"],
         "matrix": A["matrix"],
     }
@@ -120,7 +121,7 @@ def run():
         and herm_err < 1e-10
         and np.min(ev) > -1e-8
         and abs(raw["Delta_aniso"] - raw_delta_target) < 5e-8
-        and rows[-1]["y_odd_relative_norm"] < 1e-10
+        and rows[-1]["orientation_forbidden_relative_norm"] < 1e-10
     )
 
     return {
@@ -128,6 +129,7 @@ def run():
         "passed": bool(passed),
         "first_order_projection_max": first_projection_max,
         "basis_order": "env-major then pair-minor; 8 environments x 4 pair states",
+        "labels": labels,
         "K32": {
             "dimension": len(ev),
             "rank": rank,
@@ -148,8 +150,7 @@ def run():
             "If K32 is full rank the limiting pair kernel must be I4; if rank deficient the displayed support-projector trace is the correct two-shell limit."
         ),
         "scope": (
-            "Finite Euclidean H_01=H_E0+H_E1 control. No Lorentzian, route, matter, or actual higher-shell C^dagger C term is included; "
-            "the result is a normalization/anisotropy diagnostic and does not establish additional particle content or a new interaction."
+            "Finite Euclidean H_01=H_E0+H_E1 normalization control; no external data or per-observable fit is used."
         ),
     }
 

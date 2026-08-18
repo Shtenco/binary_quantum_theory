@@ -8,98 +8,279 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: core-regression-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  verify:
+  canonical-core:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 70
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
           cache: pip
-
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-
       - name: Enforce GR-QM core scope
         run: python scripts/audit_core_scope.py
-
       - name: Compile all Python sources
         run: python -m compileall -q .
-
-      - name: Validate canonical proof ledger
+      - name: Validate canonical v2 truth ledger
         run: python scripts/verify_theory_gates.py
-
       - name: Validate public status surface
-        run: python scripts/validate_github_latex.py README.md THEORY_STATUS.md OPEN_PROBLEMS.md BIT_TO_SPACETIME_CENTRAL_EQUATION.md
-
+        run: |
+          python scripts/validate_github_latex.py \
+            README.md THEORY_STATUS.md OPEN_PROBLEMS.md \
+            CANONICAL_THEORY_PACKAGE.md PREDICTIONS_AND_EXPERIMENTAL_TESTS.md \
+            BIT_TO_SPACETIME_CENTRAL_EQUATION.md
       - name: Frozen binary to smooth-spacetime gate
         run: python bcqg_observer_smoothing_unified.py --output verification_results/OBSERVER_SMOOTHING_RESULTS.json
-
+      - name: Exact q=2 dimension-three fixed point
+        run: python scripts/q2_dimension3_fixed_point_gate.py --max-generation 10 --output verification_results/Q2_DIMENSION3_FIXED_POINT.json
       - name: Recursive q=2 PL manifold completion
         run: python bcqg_global_manifold_gate.py --output verification_results/GLOBAL_MANIFOLD_RESULTS.json
-
       - name: Frozen q=2 bits to geometry-qubit carrier
         run: python scripts/micro_walsh_qgeom_gate.py --output verification_results/MICRO_WALSH_QGEOM.json
-
       - name: Exact global q=2 face-qubit carrier gluing
         run: python scripts/q2_global_face_qubit_gluing_gate.py --output verification_results/Q2_GLOBAL_FACE_QUBIT_GLUING.json
-
       - name: q=2 graph-link representation and no-link factorization
         run: python scripts/q2_graphlink_peter_weyl_gate.py --output verification_results/Q2_GRAPHLINK_PETER_WEYL.json
-
       - name: Symmetric q=2 block to Peter-Weyl representation growth
         run: python scripts/q2_symmetric_block_peter_weyl_growth_gate.py --N 8 --output verification_results/Q2_PETER_WEYL_GROWTH.json
-
       - name: Qubit to Einstein end-to-end control
         run: python scripts/qubit_to_einstein_end_to_end.py --output verification_results/QUBIT_TO_EINSTEIN.json
-
+      - name: Exact logical shape to metric Jacobian
+        run: python scripts/logical_shape_metric_jacobian_gate.py --output verification_results/LOGICAL_SHAPE_METRIC_JACOBIAN.json
       - name: Regge to Einstein-Hilbert continuum bridge
         run: python scripts/regge_eh_cubic_bridge.py --output verification_results/REGGE_EH_CUBIC.json
-
       - name: Plebanski and Urbantke geometry reconstruction
         run: |
           python scripts/plebanski_urbantke_gate.py --output verification_results/PLEBANSKI_URBANTKE.json
           python scripts/plebanski_connection_einstein_gate.py --output verification_results/PLEBANSKI_EINSTEIN.json
-
+      - name: Full 32D Peter-Weyl master normalization
+        run: python scripts/peter_weyl_master_32_gate.py --output verification_results/PETER_WEYL_MASTER_32.json
+      - name: Peter-Weyl Lorentzian parity certificate
+        run: python scripts/peter_weyl_lorentzian_parity_gate.py
+      - name: Peter-Weyl j=1 S4 coarse carrier
+        run: python scripts/peter_weyl_j1_s4_block_gate.py --output verification_results/PETER_WEYL_J1_S4_BLOCK.json
       - name: Route-normal HDA
         run: python scripts/path_normal_hda_gate.py --output verification_results/PATH_NORMAL_HDA_RESULTS.json
-
       - name: Two-node Peter-Weyl by route Euclidean regression
         run: python scripts/peter_weyl_two_node_euclidean_joint_gate.py --output verification_results/PETER_WEYL_TWO_NODE_EUCLIDEAN.json
-
       - name: Three-node graph-changing Peter-Weyl by route HDA
         run: python scripts/peter_weyl_three_node_graph_hda_gate.py --output verification_results/PETER_WEYL_THREE_NODE_GRAPH_HDA.json
-
       - name: Joint epsilon and Peter-Weyl cutoff limit
         run: |
           python scripts/joint_regulator_limit_gate.py \
             --multi-node-json verification_results/PETER_WEYL_THREE_NODE_GRAPH_HDA.json \
             --output verification_results/JOINT_REGULATOR_LIMIT.json
-
       - name: HDA factorization no-go and route prerequisites
         run: python bcqg_quantum_hda_killer.py --output verification_results/QUANTUM_HDA_RESULTS.json
-
       - name: Lorentzian fixed coefficient and support bound
         run: |
           python scripts/lorentzian_hit_depth_bound.py
           python scripts/lorentzian_beta_cancellation_gate.py
-
-      - name: Registered integration status
+      - name: Held-out Regge L6 prediction audit
+        run: python scripts/tt_regge_zt_l6_gate.py --output verification_results/TT_REGGE_ZT_L6.json
+      - name: Reduced TT propagator positive control
+        run: python scripts/tt_propagator_first_pass.py --output verification_results/TT_PROPAGATOR_FIRST_PASS.json
+      - name: TT Gaussian vacuum two-point control
+        run: python scripts/tt_vacuum_two_point_gate.py --output verification_results/TT_VACUUM_TWO_POINT.json
+      - name: Complete S4 quartic TT quotient and six-observable extractor
+        run: python scripts/s4_tt_quartic_complete_basis_gate.py --output verification_results/S4_TT_QUARTIC_COMPLETE_BASIS.json
+      - name: Nested three-direction Wilson consistency control
+        run: |
+          python scripts/c6_tt_wilson_extractor.py \
+            --e100 1.0 --e110 0.5 --e111 0.3333333333333333333333333333 \
+            --output verification_results/C6_NESTED_CONSISTENCY.json
+      - name: Nearest-block S3 transfer and tetrahedral moments
+        run: python scripts/nearest_block_s3_transfer_gate.py --output verification_results/NEAREST_BLOCK_S3.json
+      - name: Exact Feshbach and block-Krylov identity regression
+        run: python scripts/feshbach_block_krylov_identity_gate.py --output verification_results/FESHBACH_BLOCK_KRYLOV.json
+      - name: Tetrahedral TT birefringence nested theorem
+        run: python scripts/tetrahedral_tt_birefringence_gate.py --output verification_results/TETRAHEDRAL_TT_BIREFRINGENCE.json
+      - name: Complete six-Wilson sky predictor selftest
+        run: python scripts/s4_tt_six_wilson_predictor.py --selftest --output verification_results/SIX_WILSON_PREDICTOR_SELFTEST.json
+      - name: Common-scale physical-units translator algebraic check
+        run: |
+          python scripts/physical_scale_prediction_bridge.py \
+            --lambda-r-eff 1.0 --eta2 -0.022222222222222222 \
+            --frequency-hz 100 --distance-mpc 1000 \
+            --output verification_results/PHYSICAL_SCALE_TRANSLATOR_CHECK.json
+      - name: Registered canonical integration status
         run: python bcqg_bit_to_gravity_final.py --strict --output verification_results/REGISTERED_BRIDGE.json
-
-      - name: Upload canonical evidence
+      - name: Upload fast canonical evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: quantum-geometry-gr-core
+          name: canonical-theory-fast-evidence
           path: verification_results/
           if-no-files-found: warn
+
+  directional-regge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Recompute directional Regge Hessian controls L=3,4,5
+        run: |
+          python scripts/gravity_bridge_scaling.py \
+            --sizes 3 4 5 \
+            --orientations axial diagonal2 diagonal3 \
+            --output verification_results/REGGE_DIRECTIONAL_SCALING.json
+      - name: Guard documented continuum trends
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/REGGE_DIRECTIONAL_SCALING.json'))
+          s=p['summary']
+          assert s['axial']['continuum_ratio_relative_error'] < 1.0e-3
+          assert s['diagonal2']['gauge_leakage_power_p_for_L^-p'] > 1.5
+          assert s['diagonal3']['gauge_leakage_power_p_for_L^-p'] > 1.5
+          print('directional Regge guards: PASS')
+          PY
+      - name: Upload directional Regge evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-regge-directional
+          path: verification_results/
+          if-no-files-found: error
+
+  l1-q4-metric:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Download certified 24 L1 q4 source columns
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: Shtenco/info_graph_theory
+          run-id: 31965359681
+          pattern: collective-l1-q4-*
+          path: verification_results/l1_q4_columns
+          merge-multiple: true
+      - name: Audit exact 24-column source set
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('verification_results/l1_q4_columns')
+          got=sorted(int(x.stem.split('_')[-1]) for x in p.glob('q4_*.json'))
+          print('source q4 columns:', got)
+          assert got == list(range(24)), got
+          PY
+      - name: Recompute S4 six-edge metric compression
+        run: |
+          python scripts/collective_l1_q4_s4_metric_compression.py \
+            --input-dir verification_results/l1_q4_columns \
+            --output verification_results/L1_Q4_S4_METRIC_COMPRESSION.json
+      - name: Guard canonical L1 metric values
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/L1_Q4_S4_METRIC_COMPRESSION.json'))
+          assert p['passed'] is True
+          assert p['columns'] == 24
+          assert p['left_regular_S4_commutator_relative_max'] < 1e-12
+          q=p['S4_orbit_fit']
+          assert abs(q['lambda_E']-1.1111917875584736) < 2e-12
+          assert abs(q['lambda_T2']-1.0220278507464782) < 2e-12
+          assert abs(q['Delta_ET']-0.08916393681199541) < 2e-12
+          assert abs(q['relative_ET_split']-0.08359564595312347) < 2e-12
+          assert q['relative_residual'] < 1e-12
+          print('L1 q4 metric guards: PASS')
+          PY
+      - name: Upload L1 metric evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-l1-q4-metric
+          path: verification_results/L1_Q4_S4_METRIC_COMPRESSION.json
+          if-no-files-found: error
+
+  higher-shell:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Download 31 certified exact higher-shell columns
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: Shtenco/info_graph_theory
+          run-id: 31844567559
+          pattern: lambda-column-*
+          path: verification_results/columns
+          merge-multiple: true
+      - name: Audit inherited higher-shell set
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('verification_results/columns')
+          got=sorted(int(x.stem.split('_')[-1]) for x in p.glob('column_*.json'))
+          missing=[i for i in range(32) if i not in got]
+          print('inherited columns:', got)
+          assert missing in ([28], []), missing
+          PY
+      - name: Fresh independent recomputation of heavy column 28
+        run: |
+          python scripts/peter_weyl_higher_shell_lambda_gate.py \
+            --column 28 \
+            --output verification_results/columns/column_28.json
+      - name: Reassemble exact 32D Lambda and block-Lanczos matrices
+        run: |
+          python scripts/peter_weyl_higher_shell_lambda_gate.py \
+            --assemble-dir verification_results/columns \
+            --output verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json
+      - name: Guard canonical higher-shell spectrum
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json'))
+          assert p['passed'] is True
+          q=p['Lambda']
+          assert abs(q['eigenvalue_min']-10.635759878291307) < 2e-9
+          assert abs(q['eigenvalue_max']-15.059927665966466) < 2e-9
+          assert abs(q['distance_to_scalar_identity_relative']-0.09440461833276048) < 2e-9
+          assert p['block_lanczos']['B1_reconstruction_error'] < 1e-8
+          assert p['block_lanczos']['B2_reconstruction_error'] < 1e-7
+          print('higher-shell spectrum guards: PASS')
+          PY
+      - name: Upload reconstructed higher-shell evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: canonical-peter-weyl-higher-shell
+          path: |
+            verification_results/columns/column_28.json
+            verification_results/PETER_WEYL_HIGHER_SHELL_LAMBDA.json
+          if-no-files-found: error
