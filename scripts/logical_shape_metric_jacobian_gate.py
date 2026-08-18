@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
 """Exact local logical-shape -> tetrahedral metric Jacobian.
 
-For the j=1/2 logical singlet qubit, fixed face-spin norm J_i^2=3/4 and
-closure determine all six pairwise face-flux dot products from the two
-mirror-even Bloch coordinates X,Z.  Around the regular oriented tetrahedron
+For the j=1/2 logical singlet qubit, fixed face-spin norm J_i^2=3/4 and closure
+determine all six pairwise face-flux dot products from the two intrinsic-shape
+Bloch coordinates X,Z. Around the two regular oriented tetrahedron branches
 (X,Z,Y)=(0,0,+/-1), reconstruct the edge Gram metric from face fluxes and
 compute the exact two-dimensional metric tangent carried by X,Z.
-
-The result closes the local M map required by
-
-    K_TT = Pi_TT M Gamma_shape M^T Pi_TT.
-
-No spatial TT projector or momentum dependence is inserted here; those remain
-global/refinement questions.
 """
 from __future__ import annotations
 
@@ -25,22 +18,14 @@ import numpy as np
 
 
 def face_gram(x: float, z: float) -> np.ndarray:
-    """Gram of E1,E2,E3 in units with each face-spin norm^2=3/4."""
     r2 = 3.0 / 4.0
-    a = -1.0 / 4.0 - z / 2.0                    # E1.E2 = E3.E4
-    b = -1.0 / 4.0 + z / 4.0 - math.sqrt(3) * x / 4.0  # E1.E3 = E2.E4
-    c = -1.0 / 4.0 + z / 4.0 + math.sqrt(3) * x / 4.0  # E1.E4 = E2.E3
+    a = -1.0 / 4.0 - z / 2.0
+    b = -1.0 / 4.0 + z / 4.0 - math.sqrt(3) * x / 4.0
+    c = -1.0 / 4.0 + z / 4.0 + math.sqrt(3) * x / 4.0
     return np.array([[r2, a, b], [a, r2, c], [b, c, r2]], dtype=float)
 
 
 def edge_metric(x: float, z: float) -> np.ndarray:
-    """Reconstruct A^T A directly from the three-face Gram matrix.
-
-    With C=(2E1,2E2,2E3), C^T C=4G and
-    A=sqrt(|det C|) C^{-T}, hence
-
-        g=A^T A=2 sqrt(det G) G^{-1}.
-    """
     G = face_gram(x, z)
     det = float(np.linalg.det(G))
     if det <= 0:
@@ -74,15 +59,12 @@ def run(step: float = 1e-6):
         [np.trace(gi @ Mz_exact @ gi @ Mx_exact), np.trace(gi @ Mz_exact @ gi @ Mz_exact)],
     ], dtype=float)
 
-    # Six independent symmetric metric components; rank must be exactly two.
     def vec6(M):
         return np.array([M[0,0], M[1,1], M[2,2], M[0,1], M[0,2], M[1,2]])
+
     J6 = np.column_stack([vec6(Mx_exact), vec6(Mz_exact)])
     rank = int(np.linalg.matrix_rank(J6, tol=1e-12))
 
-    # Intrinsic metric depends on X,Z but not on orientation sign Y.  For pure
-    # logical states near the regular branches Y=+/-sqrt(1-X^2-Z^2), dY is
-    # second order, so the two mirror branches share the same linear metric map.
     det0 = float(np.linalg.det(g0_exact))
     det_dx = float((np.linalg.det(edge_metric(step, 0)) - np.linalg.det(edge_metric(-step, 0))) / (2*step))
     det_dz = float((np.linalg.det(edge_metric(0, step)) - np.linalg.det(edge_metric(0, -step))) / (2*step))
@@ -126,11 +108,10 @@ def run(step: float = 1e-6):
         "orientation_linear_metric_derivative": 0.0,
         "errors": errors,
         "conclusion": (
-            "The mirror-even logical shape doublet (X,Z) maps with rank two to an orthogonal, equal-norm, trace-free tangent of the reconstructed tetrahedral metric. "
-            "The two regular orientation branches Y=+/-1 have the same intrinsic metric Jacobian. "
-            "This fixes the local shape-to-metric map M without fitting; only spatial gluing/momentum dependence and the TT projection remain to build the physical propagator."
+            "The intrinsic logical shape doublet (X,Z) maps with rank two to an orthogonal, equal-norm, trace-free tangent of the reconstructed tetrahedral metric. "
+            "The two regular orientation branches Y=+/-1 have the same intrinsic metric Jacobian."
         ),
-        "scope": "Local tetrahedral geometry at fixed face-spin norm; no global TT transversality, Lorentzian pole or IR coefficient is claimed.",
+        "scope": "Local tetrahedral geometry at fixed face-spin norm; no external experimental observable is inferred.",
     }
 
 
