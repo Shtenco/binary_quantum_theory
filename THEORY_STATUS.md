@@ -105,13 +105,16 @@ and distinguish Einstein from non-Einstein controls.
 
 The logical X/Z shape doublet has an exact rank-two trace-free metric Jacobian.
 
-The L1 q4 S4 metric compression reports
+The L1 q4 S4 metric compression, freshly reassembled from all 24 certified source columns, reports
 
 ```text
-lambda_E        = 1.1111917875584736
-lambda_T2       = 1.0220278507464782
-Delta_ET/kappa5 = 0.08430036026012608
+lambda_E          = 1.1111917875584736
+lambda_T2         = 1.0220278507464782
+Delta_ET          = 0.08916393681199541
+relative_ET_split = 0.08359564595312347
 ```
+
+so the canonical normalized first-refinement Euclidean tangent split is approximately **8.36%**.
 
 The unit-S4 Lambda≈3 result remains an oracle reconstruction control only.
 
