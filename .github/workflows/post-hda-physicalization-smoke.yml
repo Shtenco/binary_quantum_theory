@@ -33,12 +33,12 @@ jobs:
           python -m py_compile scripts/peter_weyl_master_projector_pilot.py
       - name: Exact finite master-projector theorem
         run: python scripts/master_constraint_physical_projector_gate.py --output verification_results/MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.json
-      - name: Actual Peter-Weyl master-projector pilot
-        run: python scripts/peter_weyl_master_projector_pilot.py --domain low --output verification_results/PETER_WEYL_MASTER_PROJECTOR_PILOT.json
+      - name: Full 32D Peter-Weyl master-projector pilot
+        run: python scripts/peter_weyl_master_projector_pilot.py --domain full --output verification_results/PETER_WEYL_MASTER_PROJECTOR_FULL32.json
       - name: Upload post-HDA evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: post-hda-physicalization
+          name: post-hda-physicalization-full32
           path: verification_results/
           if-no-files-found: warn
