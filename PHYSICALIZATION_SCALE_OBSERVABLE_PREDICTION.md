@@ -1,395 +1,130 @@
-# Physicalization frontier: scale -> observable -> blind prediction
+# Physical scale and observable map
 
-Status: **new canonical research priority beyond the fixed-cutoff mathematical core**.
+Status: **canonical scale/units bridge for the closed candidate package; external data validation remains separate.**
 
-The project remains a **candidate theory**.  Internal finite gates are not a substitute for physical scale setting or experiment.
+The internal theory produces dimensionless geometric and TT quantities. A physical comparison additionally needs one common normalization that converts the microscopic length/time units into SI or particle-physics units. That normalization is not allowed to vary independently by observable.
 
-This certificate changes the project-wide priority.  Mirror-sector quantities such as a local logical Lorentzian return remain useful internal consistency tests, but they are not the main bottleneck for turning the architecture into physics.
+## 1. Regge normalization
 
-The physicalization chain is
-
-```text
-frozen microscopic rule
- -> absolute dimensionless action/phase normalization
- -> one scale-setting observable
- -> physical length/time normalization
- -> Lorentzian TT propagator
- -> coefficient not used in calibration
- -> preregistered prediction
- -> comparison with external data.
-```
-
----
-
-## 1. Repository-wide diagnosis
-
-The repository already contains strong structural evidence:
-
-- q=2 gives the frozen 3D/4D-like scaling chain;
-- the Regge quadratic metric kernel approaches Fierz--Pauli;
-- the tested Regge cubic coefficient approaches the Einstein--Hilbert cubic functional;
-- held-out L=9,10 Regge defects follow the preregistered approximately `O(a^2)` law;
-- the canonical Peter--Weyl/route architecture has a fixed-cutoff HDA composition certificate.
-
-None of those facts fixes meters, seconds or joules by itself.
-
-The current microscopic Hamiltonian is specified only up to an overall coefficient in `CANONICAL_MICRO_ARCHITECTURE_V1.md`, and the executable finite Thiemann gate intentionally omits `G`, `hbar`, `c` and the final absolute prefactor.  `CIMFIG_V18_CANDIDATE_THEORY.md` likewise leaves the microscopic history weights/phases to be derived.
-
-The growth-axiom calculation is important here: composition fixes the primitive phase to be **linear**, but the null space is one-dimensional.  Therefore it fixes the functional dependence, not the overall phase slope.  That remaining scalar is precisely an absolute normalization freedom.
-
-This is the first physical bottleneck.
-
----
-
-## 2. Why `c_eff != 1` is not the bottleneck
-
-`NORMALIZATION.md` and `FIELD_NORM.md` preserve an older wording in which `c_eff != 1` was treated as a failed absolute continuum match.
-
-`RESOLUTION.md` correctly retracts that target.  The overall coefficient of a correctly shaped Fierz--Pauli kernel is the gravitational wave-function/Newton normalization.  The true structural tests are the tensor ratios, gauge null directions, sign and low-momentum scaling.
-
-Therefore
+With the Einstein-Hilbert convention
 
 ```text
-c_eff != 1
+S_EH = c^3/(16*pi*G) int d^4x sqrt(-g) R
 ```
 
-is not by itself a contradiction.
-
-But this does **not** mean that Newton's constant has already been predicted.  The microscopic overall phase/coupling is still not fixed.  Once it is fixed, the TT residue can be used for scale matching or an independent consistency test.
-
----
-
-## 3. Minimal exact scale map
-
-Use coordinates with dimensions of length.  The Einstein--Hilbert action is
-
-\[
-S_{EH}=\frac{c^3}{16\pi G}\int d^4x\sqrt{-g}\,R.
-\]
-
-The standard smooth Regge relation is
-
-\[
-\int d^4x\sqrt{|g|}\,R
-\longleftrightarrow
-2\sum_h A_h\,\delta_h.
-\]
-
-Hence
-
-\[
-\frac{S_R}{\hbar}
-=\frac{1}{8\pi\ell_P^2}\sum_h A_h\delta_h,
-\qquad
-\ell_P^2=\frac{\hbar G}{c^3}.
-\]
-
-Let the physical lattice length be `a_*`, write
-
-\[
-A_h=a_*^2\widetilde A_h,
-\]
-
-and define **without convention ambiguity**
-
-\[
-\lambda_R^{eff}
-\equiv
-\text{the renormalized dimensionless coefficient multiplying }
-\sum_h\widetilde A_h\delta_h
-\text{ in }S_{eff}/\hbar.
-\]
-
-Then matching gives
-
-\[
-\boxed{
-\lambda_R^{eff}=\frac{a_*^2}{8\pi\ell_P^2}
-}
-\]
-
-or equivalently
-
-\[
-\boxed{
-\frac{a_*}{\ell_P}=\sqrt{8\pi\lambda_R^{eff}}.
-}
-\]
-
-This is the correct scale-setting equation for the declared Regge convention.
-
-It is **not yet a numerical prediction**, because the current microscopic rule has not produced a unique `lambda_R^eff`.
-
-A value inserted by hand in an old toy finite-RG script is not admissible evidence for this purpose.
-
----
-
-## 4. Time scale and the speed of the massless spin-2 mode
-
-Let `tau_*` be one microscopic physical time unit and let the dimensionless low-momentum TT dispersion be
-
-\[
-\widetilde\omega(\widetilde k)
-=v_0|\widetilde k|+O(|\widetilde k|^3).
-\]
-
-With
-
-\[
-k=\widetilde k/a_*,
-\qquad
-\omega=\widetilde\omega/\tau_*,
-\]
-
-the physical limiting speed is
-
-\[
-\boxed{
-c_{TT}=v_0\frac{a_*}{\tau_*}.}
-\]
-
-The existing result `z approximately 1` establishes compatible scaling of space and time.  It does not by itself fix the conversion factor `a_*/tau_*` in SI units.
-
-After one physical scale calibration, matching the observed luminal tensor speed fixes the remaining time-unit conversion unless the microscopic theory predicts it independently.
-
----
-
-## 5. The first clean observable must be the Lorentzian TT propagator
-
-The next project-wide calculation is not another local mirror matrix element.  It is
-
-\[
-\boxed{
-G^{TT}_{AB}(\omega,\mathbf k)
-=\langle h_A^{TT}h_B^{TT}\rangle_{\omega,\mathbf k}
-}
-\]
-
-from the **same frozen microscopic Hamiltonian/history measure** used for the scale map.
-
-At low momentum it must be fitted before looking at external constraints to
-
-\[
-[G^{TT}]^{-1}
-=Z_T\left[
-\omega^2-c_{TT}^2k^2
--\eta_2 c_{TT}^2a_*^2k^4
-+O(a_*^4k^6)
-\right].
-\]
-
-This single object supplies three physically distinct quantities:
-
-1. pole residue `Z_T` -- Newton/wave-function normalization;
-2. pole slope `c_TT` -- physical tensor propagation speed;
-3. `eta_2` -- the leading dispersive correction not removable by an overall field normalization.
-
-The first two may participate in calibration.  **`eta_2` must not.**  It is the natural first blind prediction coefficient.
-
----
-
-## 6. Direct map to an existing gravitational-wave observable
-
-Write the predicted dispersion as
-
-\[
-E^2=p^2c^2\left[1+\eta_2(k a_*)^2+O((ka_*)^4)\right],
-\qquad k=p/\hbar.
-\]
-
-Then
-
-\[
-E^2=p^2c^2
-+\frac{\eta_2a_*^2}{\hbar^2c^2}\,p^4c^4+\cdots.
-\]
-
-The LIGO--Virgo--KAGRA modified-dispersion convention
-
-\[
-E^2=p^2c^2+A_\alpha p^\alpha c^\alpha
-\]
-
-therefore gives the exact identification for the leading lattice-type correction
-
-\[
-\boxed{
-\alpha=4,
-\qquad
-A_4=\frac{\eta_2a_*^2}{(\hbar c)^2}.
-}
-\]
-
-Combining with the scale equation,
-
-\[
-\boxed{
-A_4
-=\frac{8\pi\eta_2\lambda_R^{eff}}{E_P^2},
-\qquad
-E_P=\frac{\hbar c}{\ell_P}.
-}
-\]
-
-Thus a frozen pair
+and the smooth Regge correspondence
 
 ```text
-(lambda_R_eff, eta_2)
+int sqrt(|g|) R d^4x  <->  2 sum_h A_h delta_h,
 ```
 
-becomes a completely numerical modified-dispersion prediction after one scale calibration.
-
-No new fit to gravitational-wave data is allowed after these coefficients are frozen.
-
-For flat propagation the low-energy expansion also gives
-
-\[
-\frac{v_g-c}{c}
-=\frac32\eta_2(ka_*)^2+O((ka_*)^4),
-\]
-
-and at fixed observed angular frequency, ignoring cosmological redshift only for this local formula,
-
-\[
-\Delta\phi(D,\omega)
-\simeq
--\frac{\eta_2}{2}
-\frac{D\,\omega^3a_*^2}{c^3}.
-\]
-
-A real catalog comparison must use the cosmological propagation integral employed in the LVK modified-dispersion analysis rather than this flat-space approximation.
-
----
-
-## 7. Detectability warning
-
-If `lambda_R_eff` and `eta_2` are both order unity, then `a_*` is of order the Planck length and
-
-\[
-A_4\sim\frac{8\pi}{E_P^2}\sim1.7\times10^{-55}\;\mathrm{eV}^{-2}.
-\]
-
-This estimate is an **illustration**, not the theory prediction, because neither coefficient has yet been derived.
-
-It also teaches an important strategic lesson: an ordinary `O(a_*^2 k^4)` Planck-scale dispersion correction is likely far too small for current ground-based GW observations.  The modified-dispersion channel is still a clean falsifier, but may not be the most sensitive first experiment.
-
-Therefore a second observable branch should be pursued in parallel: a dimensionless or IR-enhanced prediction whose leading signature is not suppressed by `(k ell_P)^2`.
-
----
-
-## 8. Best second observable: true quantum metric two-point spectrum
-
-The existing smoothing law
-
-\[
-\delta g\sim b^{-2.001707}
-\]
-
-was obtained for a coarse-graining defect.  Interpreting it as a vacuum RMS fluctuation gives the conditional exponent
-
-\[
-P_{\delta g}(k)\sim k^{1.003414}.
-\]
-
-That interpretation is **not yet licensed**.
-
-The correct next vacuum calculation is to construct the physical ground/history state and measure
-
-\[
-C_{AB}(x-y)
-=\langle0|h_A^{TT}(x)h_B^{TT}(y)|0\rangle
-\]
-
-or its spectral density directly.  Only if that independent calculation yields the same exponent may the number
-
-\[
-\boxed{n_{foam}=1.003414}
-\]
-
-be promoted from a conditional inference to a physical prediction.
-
-This route is especially valuable because a spectral exponent is dimensionless.  Its shape can be falsifiable even before an absolute amplitude is measured, while the amplitude can later be fixed by the same `Z_T/G` normalization.
-
----
-
-## 9. Why the mirror and infoton branches are not first
-
-### Mirror force
-
-The current mirror-force normalization still depends on independent microscopic quantities such as
+write
 
 ```text
-beta_m,
-g_*,
-j_sigma,
-delta_sigma
+A_h = a_*^2 Atilde_h
 ```
 
-and on whether a light one-particle pole survives the full constrained/RG dynamics.  It is therefore not yet a parameter-free first prediction.
-
-### GW-driven information-mode resonance
-
-The resonance location is a clean conditional signature, but its physical rate requires the microscopic TT coupling `xi`, which is not yet derived.
-
-Both branches remain useful **after** the common gravitational scale/propagator is fixed.
-
----
-
-## 10. Preregistered physical falsification protocol
-
-The repository already demonstrated the right anti-overfitting method in the held-out L=9,10 Regge test: freeze formula and acceptance interval first, then compute held-out values.
-
-Use exactly the same discipline for external physics.
-
-### Calibration set
-
-May determine only quantities explicitly designated as scale setters, for example:
+and define `lambda_R_eff` as the dimensionless coefficient multiplying
+`sum_h Atilde_h delta_h` in `S_eff/hbar`. Then
 
 ```text
-one Newton/Planck normalization datum
-and, if necessary, the unit conversion of the causal time step.
+lambda_R_eff = a_*^2/(8*pi*l_P^2)
 ```
 
-### Frozen prediction file
-
-Before reading the selected experimental posterior, commit:
+so
 
 ```text
-microscopic commit SHA
-operator ordering
-regulator sequence
-lambda_R_eff
-Z_T
-c_TT
-eta_2
-uncertainty from finite-size/RG extrapolation
-predicted external parameter A_4
-PASS/TENSION/FAIL rule.
+a_*/l_P = sqrt(8*pi*lambda_R_eff).
 ```
 
-### External test
+This is an exact unit-conversion relation in the declared convention. If `lambda_R_eff` is not independently derived, exactly one declared calibration datum may set the common scale.
 
-Then compare against a dataset not used anywhere in calibration.
+## 2. Time normalization
 
-For gravitational-wave propagation the natural present target is the LVK modified-dispersion posterior, in particular its `alpha=4` sector.
-
-No coefficient may be retuned after opening that posterior.
-
----
-
-# New project-wide frontier
-
-The project-wide priority is now
+For a dimensionless low-momentum tensor dispersion
 
 ```text
-P0  freeze absolute microscopic phase/coupling and quantum measure
-P1  derive lambda_R_eff and a_*/ell_P
-P2  derive the Lorentzian TT propagator from the same frozen rule
-P3  extract eta_2 and the true vacuum two-point spectrum
-P4  preregister one external prediction before opening the comparison dataset
-P5  test against real observations
+omega_tilde = v0 |k_tilde| + ...
 ```
 
-Internal mirror, Lorentzian-return and matter gates continue as supporting branches, not as the definition of project completion.
+and microscopic units `a_*`, `tau_*`,
 
-The candidate becomes a physical theory only when this chain produces at least one quantitative observable that survives an external blind comparison without post-hoc retuning.
+```text
+c_TT = v0 a_*/tau_*.
+```
+
+The internal result `z approximately 1` establishes compatible space/time scaling but is not itself an SI conversion factor.
+
+## 3. Complete TT observable input
+
+The generic quartic parity-even S4 TT response is six-dimensional:
+
+```text
+c_IR = (c1,c2,c3,c4,c5,c6).
+```
+
+For direction `n`, `scripts/s4_tt_six_wilson_predictor.py` constructs the real symmetric 2x2 quartic TT matrix and its two eigenvalues
+
+```text
+e4_1(n), e4_2(n).
+```
+
+A frozen branch may be written as
+
+```text
+omega_sigma^2 = c^2 k^2 [1 + a_*^2 k^2 e4_sigma(n) + ...].
+```
+
+## 4. Modified-dispersion units
+
+In the standard alpha=4 convention
+
+```text
+E^2 = (pc)^2 + A4 (pc)^4 + ...,
+```
+
+the algebraic map is
+
+```text
+A4_sigma(n) = a_*^2 e4_sigma(n)/(hbar*c)^2
+            = 8*pi*lambda_R_eff*e4_sigma(n)/E_P^2.
+```
+
+The same frozen eigenvalues determine the leading group-velocity and accumulated-phase corrections. A real cosmological catalog comparison must use the appropriate redshift/proper-distance propagation integral rather than a flat-space distance shortcut.
+
+## 5. No-fit rule
+
+Allowed:
+
+```text
+freeze dimensionless six-vector
+freeze conventions
+set or derive one common scale
+predict all remaining directions/polarizations/observables
+open held-out external data
+```
+
+Forbidden:
+
+```text
+separate scale per observable
+separate scale per sky direction
+retuning the six-vector after holdout inspection
+promoting construction selectors or oracle controls to blind predictions
+```
+
+## 6. External validation
+
+This document closes the algebraic scale/units dictionary. It does not claim that any external dataset has confirmed the candidate. The preregistered observational protocol is in `PREDICTIONS_AND_EXPERIMENTAL_TESTS.md`.
+
+Reproduction of the pure unit translator:
+
+```bash
+python scripts/physical_scale_prediction_bridge.py \
+  --lambda-r-eff 1.0 \
+  --eta2 -0.022222222222222222 \
+  --frequency-hz 100 \
+  --distance-mpc 1000
+```
+
+The translator performs no fitting.
