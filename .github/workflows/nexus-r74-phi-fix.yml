@@ -1,0 +1,41 @@
+name: NEXUS R7.4 Phi Compatibility Rerun
+
+on:
+  pull_request:
+    paths:
+      - 'nexus_r74_phi_fix/**'
+      - '.github/workflows/nexus-r74-phi-fix.yml'
+
+jobs:
+  phi:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Ollama
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          nohup ollama serve > ollama.log 2>&1 &
+          for i in $(seq 1 60); do curl -fsS http://127.0.0.1:11434/api/tags >/dev/null && break; sleep 1; done
+      - name: Pull Phi Q4
+        run: |
+          ollama pull 'phi4-mini-reasoning:3.8b-q4_K_M'
+          ollama list > model_list.txt
+          ollama show 'phi4-mini-reasoning:3.8b-q4_K_M' --modelfile > model_modelfile.txt
+      - name: Benchmark without unsupported think flag
+        env:
+          MODEL: phi4-mini-reasoning:3.8b-q4_K_M
+          THINK: 'false'
+          OUT: teacher_result.json
+        run: python nexus_r74_multiteacher_lab/teacher_benchmark.py
+      - name: Upload trace
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nexus-r74-phi4-fixed
+          path: |
+            teacher_result.json
+            model_list.txt
+            model_modelfile.txt
+            ollama.log
+          retention-days: 30
