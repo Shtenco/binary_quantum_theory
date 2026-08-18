@@ -125,17 +125,16 @@ face qubits
 
 The repository also contains the exact local logical-shape -> metric Jacobian. The logical X/Z shape doublet maps with rank two to orthogonal equal-norm trace-free metric tangents, while the two orientation branches give the same intrinsic metric Jacobian.
 
-The L1 q4 six-edge compression yields the measured metric-sector precursor
+The freshly reassembled L1 q4 six-edge compression from all 24 certified source columns gives
 
 ```text
-lambda_E             = 1.1111917875584736
-lambda_T2            = 1.0220278507464782
-Delta_ET             = 0.08916393681199541
-kappa5               = 1.0576934254712764
-Delta_ET/kappa5      = 0.08430036026012608
+lambda_E            = 1.1111917875584736
+lambda_T2           = 1.0220278507464782
+Delta_ET            = 0.08916393681199541
+relative_ET_split   = 0.08359564595312347
 ```
 
-This 8.43% quantity is a finite local tetrahedral spin-2 anisotropy precursor. It is not by itself a particle mass ratio or an externally measured Wilson coefficient.
+where `relative_ET_split = Delta_ET / ((lambda_E+lambda_T2)/2)`. Thus the canonical first-refinement Euclidean tangent split is about **8.36%**. This quantity is a finite local tetrahedral spin-2 anisotropy precursor; it is not by itself a particle mass ratio or an externally measured Wilson coefficient.
 
 The S4 Einstein oracle reconstruction produces Lambda≈3 in its unit-radius control geometry. That number is a reconstruction check of the supplied oracle geometry, not a prediction of the physical cosmological constant.
 
