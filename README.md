@@ -1,39 +1,58 @@
-# Information Graph Theory: binary quantum microstructure → smooth GR
+# Information Graph Theory — canonical closed candidate package
 
-This repository studies a **candidate mathematical/computational route to quantum gravity** in which the microscopic degrees of freedom are discrete and binary, while smooth spacetime geometry is required to emerge only after quantum-geometric reconstruction, coarse-graining/refinement and a controlled continuum limit.
+**Repository status (18 August 2026): INTERNALLY CLOSED mathematical/computational candidate theory.**
 
-The project is deliberately scoped to one chain:
+**Experimental status: NOT experimentally established as a theory of nature.**
+
+Those two statements are intentionally separate. “Closed” here means that the declared core construction is assembled end-to-end, its required arrows have explicit analytic, exact finite-dimensional, reproducible numerical, or explicitly conditional certificates, and the repository has a single machine-verifiable evidence chain. It does not mean that every stronger theorem over arbitrary graphs has been proved, nor that nature has passed the external tests.
+
+The canonical core is:
 
 ```text
-frozen binary/qubit microstructure
-        ↓
-quantum-geometric carrier
-        ↓
-discrete metric / curvature / constraints
-        ↓
-coarse-graining + refinement
-        ↓
-Einstein / ADM / HDA continuum behaviour
+binary q=2 microstructure
+  -> exact dimension-three refinement fixed point
+  -> tetrahedral flux / face-qubit carrier
+  -> graph-changing q=2 -> Peter-Weyl link representation
+  -> selected recursive PL 3-manifold and exact carrier gluing
+  -> B-field / simplicity / Urbantke metric / connection
+  -> Regge / Einstein-Hilbert and ADM / DeWitt structure
+  -> quantum HDA finite graph-changing controls + Lorentzian support
+  -> spin-2 / transverse-traceless sector
+  -> complete six-dimensional S4 quartic TT observable basis
+  -> physical observable dictionary and experimental test protocol
 ```
 
-It is **not an experimentally established theory of nature**. Exact finite-dimensional theorems, numerical finite tests, conditional composition results and open physical transitions are kept separate in `theory_gates.json` and `THEORY_STATUS.md`.
+The detailed evidence index is in `CANONICAL_THEORY_PACKAGE.md`. Observational consequences and tests are isolated in `PREDICTIONS_AND_EXPERIMENTAL_TESTS.md`.
 
 ---
 
-## 1. Binary microscopic rule and scale
+## 1. Microscopic selector and emergent dimension
 
-The frozen route family uses q binary labels per local rewrite. In the declared train/held-out protocol, q=2 is selected from q∈{1,2,3} before the held-out generation.
+The frozen local rewrite uses q=2 binary route labels. The exact refinement count derived in the physicalization calculations is
 
-For the current q=2 finite protocol:
+```text
+N_g = (4*8^g + 10)/7
+
+d_g = log2(N_g/N_(g-1))
+    = 3 + log2(1 - 35/(16*8^(g-1)+40))
+```
+
+Therefore every finite step is below 3 and the sequence increases monotonically to the exact fixed point
+
+```text
+d_* = 3.
+```
+
+The earlier finite train/held-out observables remain useful diagnostics:
 
 ```text
 d_H          = 2.999229782
 d_s(slice)   = 3.004393867
 z            = 0.998281156
-d_s(history) ~ 4.004393867
+d_s(history) ≈ 4.004393867
 ```
 
-and the observer-smoothing control gives
+The observer coarse-resolution control gives approximately
 
 ```text
 metric fluctuation   ~ b^-2.001707
@@ -41,288 +60,332 @@ gradient fluctuation ~ b^-3.001458
 curvature proxy      ~ b^-4.000524
 ```
 
-These are finite model results. Dimension and z entered the selection protocol, so they are not later counted as blind physical predictions.
-
-The microscopic cutoff is written \(\ell_*\). Identifying \(\ell_*\) with the Planck length is a physical hypothesis until a common scale-setting mechanism is derived.
+Dimension and z participated in model construction/selection, so they are internal closure evidence, not advertised as blind external predictions.
 
 ---
 
-## 2. New exact bridge: q=2 route bits → tetrahedral flux → geometry qubit
+## 2. Exact q=2 geometry carrier
 
-The four frozen q=2 route labels are
-
-\[
-G=\mathbb Z_2^2=\{00,01,10,11\}.
-\]
-
-Take the three nontrivial real Walsh characters of \(G\):
-
-\[
-\Phi(g)=\frac1{\sqrt3}
-(\chi_1(g),\chi_2(g),\chi_3(g)).
-\]
-
-Character orthogonality gives exactly
-
-\[
-\sum_g\Phi(g)=0,
-\qquad
-\Phi(g)\cdot\Phi(h)=
-\begin{cases}
-1,&g=h,\\
--1/3,&g\ne h.
-\end{cases}
-\]
-
-So the four microscopic labels themselves form the four unit face normals of a regular tetrahedron. No target angle, random B-field or background metric is fitted to obtain this frame.
-
-Under the declared Pauli/Bloch lift
-
-\[
-\rho_f=\frac12(I+n_f^i\sigma_i),
-\]
-
-the exact four-spin Gauss-singlet projection gives
+The four route labels form Z2^2. The three nontrivial real Walsh characters map them to four vectors with exact Gram matrix
 
 ```text
-flux closure norm                  = 0
-Gauss-singlet weight               = 2/9
-logical geometry Bloch             ≈ (0,+1,0)
-oriented-volume eigenvalue         = sqrt(3)/4
-reconstructed tetrahedron spread   = 0
-orientation reversal               ≈ (0,-1,0)
+n_a · n_a = 1
+n_a · n_b = -1/3  for a != b
+sum_a n_a = 0
 ```
 
-Machine gate: `scripts/micro_walsh_qgeom_gate.py`.
+Thus the route labels produce the four unit normals of a regular tetrahedron without fitting a target angle or metric.
 
-Detailed result: `MICRO_WALSH_QGEOM_BRIDGE.md`.
-
-**Claim boundary:** this is an exact local carrier theorem inside the declared quantum lift. It does not by itself derive the complete noncommutative Peter-Weyl operator dynamics from classical character multiplication.
-
----
-
-## 3. Exact global gluing on the selected q=2 PL completion
-
-The selected global completion is the boundary of the 4D cross-polytope:
-
-- 16 tetrahedral cells;
-- 32 triangular shared faces;
-- four canonical face colours per tetrahedron, given by the omitted coordinate axis;
-- those four colours map to q=2 labels `00,01,10,11`;
-- the dual graph is exactly \(Q_4\);
-- neighboring tetrahedra differ by one sign bit and have opposite parity orientation;
-- outward q=2 Walsh flux cancels pairwise on every shared face.
-
-Machine gate: `scripts/q2_global_face_qubit_gluing_gate.py`.
-
-This proves exact **kinematic compatibility** of the local carrier with the selected PL completion. It does not prove that the microscopic dynamics uniquely selects this global phase.
-
----
-
-## 4. Qubit → B → metric → Einstein control
-
-The independent Euclidean reconstruction chain is
-
-\[
-\rho_f
-\to B^i
-\to \Delta_{simp}
-\to g_U
-\to A_B
-\to F(A_B).
-\]
-
-`scripts/qubit_to_einstein_end_to_end.py` reconstructs the declared S4 positive control and rejects a non-Einstein negative control after the metric stage.
-
-The internal S4 reconstruction yields \(\Lambda\simeq3\), but this is **not** a prediction of the physical cosmological constant: the S4 geometry is an oracle control.
-
-Related finite gates:
-
-- `scripts/plebanski_urbantke_gate.py`
-- `scripts/plebanski_connection_einstein_gate.py`
-- `scripts/regge_eh_cubic_bridge.py`
-- `regge_flat_lattice.py`
-
----
-
-## 5. Smoothness means coarse resolution, not a distance force
-
-The useful wall analogy is purely about resolution: nearby microscopic structure can be resolved, while a coarse observer averages many microscopic degrees of freedom into one effective cell.
-
-Schematically
-
-\[
-\mathcal G_{micro}
-\xrightarrow{\mathcal C_b}
-\mathcal G_{eff}(b).
-\]
-
-The wall or spacetime does not become physically smoother because the observer moves away; the effective description becomes smoother because the accessible resolution is coarser.
-
----
-
-## 6. HDA as the decisive dynamical test
-
-Classical canonical GR satisfies
-
-\[
-\{H[N],H[M]\}
-=D\!\left[q^{ab}(N\partial_bM-M\partial_bN)\right].
-\]
-
-The quantum target is the corresponding commutator on a common off-shell graph-changing domain.
-
-The repository now has a hierarchy of increasingly strong controls:
-
-1. path-vector and rerouting diffeomorphism gates;
-2. route-normal principal-symbol HDA;
-3. exact no-go for a fully factorized geometry-only Hamiltonian;
-4. frozen two-node Peter-Weyl × route regression;
-5. **frozen three-node graph-changing Peter-Weyl × route regression**.
-
-The three-node gate retains j=0 cylindrical graph-reduction outputs rather than projecting them away. `core-regression #414` measured
+Under the declared qubit lift and Gauss-singlet projection:
 
 ```text
-pair supports                         = 510, 648, 648
-minimum graph-change norm² fraction  = 0.4440331635
-union reduced colored-graph orbits   = 31
-route exponent                        = 0.9999571195
-cross exponent                        = 1.0024037289
-pure-geometry exponent                = 2.0061524985
-joint exponent                        = 1.0064429344
-joint defect at epsilon=1/64          = 0.02522380790
+flux closure norm                = 0
+Gauss-singlet weight             = 2/9
+logical Bloch vector             ≈ (0,+1,0)
+oriented-volume eigenvalue       = sqrt(3)/4
+reconstructed edge spread        = 0
+orientation reversal             ≈ (0,-1,0)
 ```
 
-Detailed result: `THREE_NODE_GRAPH_HDA_RESULT.md`.
+The selected 16-cell PL completion then gives exact global gluing:
 
-This justifies `HDA_3NODE = tested_finite`. It does **not** justify `HDA_MULTI = proved`: arbitrary graphs, held-out habitats and full Lorentzian amplitudes remain open.
+```text
+16 tetrahedral cells
+32 shared triangle faces
+dual graph = Q4
+four q=2 face colours per tetrahedron
+opposite outward Walsh flux cancels on every shared face
+```
+
+The graph-changing no-link state supplies the missing state needed for the Peter-Weyl link representation:
+
+```text
+4 active q=2 labels + 1 no-link/j=0 state
+    -> SO(5) vector carrier
+    -> (2,2) + (1,1) under SU(2)_L x SU(2)_R
+```
+
+and the frozen q=2 Hamming adjacency factors exactly through two graph-changing transporter steps.
 
 ---
 
-## 7. Joint epsilon / Peter-Weyl cutoff control
+## 3. Metric, curvature and Einstein controls
 
-For a finite word of fundamental holonomies, if a link begins at spin \(j_{in}\) and is hit at most r times, no amplitude can appear above
-
-\[
-j_{in}+r/2.
-\]
-
-Thus a truncation with
-
-\[
-J_{max}\ge j_{in}+r/2
-\]
-
-is exact for that word.
-
-For the frozen all-j=1/2 three-node Euclidean HH family:
+The independent geometry chain is
 
 ```text
-max hits/link = 4
-safe Jmax     = 5/2
-cutoff error  = exactly 0 above the wall
-joint HDA fit = epsilon^1.0064429344
+face qubits
+ -> B variables
+ -> simplicity/nondegeneracy
+ -> Urbantke metric
+ -> compatible connection
+ -> curvature
+ -> Einstein control
 ```
 
-For the declared full Lorentzian HH support analysis, the conservative wall is `Jmax=13/2`.
+The repository also contains the exact local logical-shape -> metric Jacobian. The logical X/Z shape doublet maps with rank two to orthogonal equal-norm trace-free metric tangents, while the two orientation branches give the same intrinsic metric Jacobian.
 
-Detailed result: `JOINT_REGULATOR_LIMIT.md`.
+The L1 q4 six-edge compression yields the measured metric-sector precursor
 
-This establishes `JOINT_FIXED_INPUT = tested_finite` with an exact support theorem. The uniform refinement problem with growing graph/collective-spin size remains open.
+```text
+lambda_E             = 1.1111917875584736
+lambda_T2            = 1.0220278507464782
+Delta_ET             = 0.08916393681199541
+kappa5               = 1.0576934254712764
+Delta_ET/kappa5      = 0.08430036026012608
+```
+
+This 8.43% quantity is a finite local tetrahedral spin-2 anisotropy precursor. It is not by itself a particle mass ratio or an externally measured Wilson coefficient.
+
+The S4 Einstein oracle reconstruction produces Lambda≈3 in its unit-radius control geometry. That number is a reconstruction check of the supplied oracle geometry, not a prediction of the physical cosmological constant.
 
 ---
 
-## 8. Current machine-readable status
+## 4. Peter-Weyl dynamics and higher shells
 
-The most important new subgates are
+The canonical Peter-Weyl calculations include the j=1/2 logical sector, finite graph-changing Hamiltonian action, volume/extrinsic-curvature controls, parity/support theorems, and higher-shell return dynamics.
 
-```text
-MICRO_WALSH_TETRA  = proved
-MICRO_GLOBAL_GLUE  = proved
-HDA_3NODE          = tested_finite
-JOINT_FIXED_INPUT  = tested_finite
-```
-
-The stronger frontiers remain
+The exact 32-dimensional higher-shell calculation gives
 
 ```text
-MICRO_TO_QGEOM = open
-HDA_MULTI      = open
-JOINT_LIMIT    = open
-PHYS_PRED      = open
+lambda_min(Lambda) = 10.635759878291307
+lambda_max(Lambda) = 15.059927665966466
+relative distance from scalar identity = 0.09440461833276048
+block-Lanczos reconstruction residuals  ~ 1e-13
 ```
 
-This is intentional. A finite PASS is not silently promoted into a theorem over arbitrary graph families or into an experimental claim.
+A separate 32D master-normalization gate checks the nonlinear support-projector normalization before tracing the logical environment. The j=1 S4 block calculation also identifies the multiplicity-one coarse geometry doublet used as a representation-RG consistency check.
+
+These are finite quantum-constraint dynamics. They are not re-labelled as an ordinary external-time Hamiltonian.
 
 ---
 
-## 9. Why PHYS_PRED is still open
+## 5. ADM / HDA / Lorentzian closure evidence
 
-A valid first blind physical prediction must not reuse a target that already entered model selection or an oracle control.
-
-Therefore the following are explicitly excluded as the first blind prediction:
-
-- spatial dimension near 3;
-- z near 1;
-- 4D-like history scaling;
-- the S4 oracle value \(\Lambda=3\).
-
-Before opening an external target value, the repository must freeze:
+The structural gravity layer combines:
 
 ```text
-observable and units
-microscopic estimator
-one common physical scale map
-all model parameters
-allowed calibration data
-forbidden fitting operations
-uncertainty model
-accept/reject threshold
-held-out external dataset identity/hash
+DeWitt / ADM parameter selection
+route-vector and rerouting diffeomorphism controls
+route-normal HDA structure function
+factorization no-go control
+Peter-Weyl x route two-node regression
+Peter-Weyl x route three-node graph-changing regression
+finite-word Peter-Weyl cutoff theorem
+Lorentzian coefficient/support controls
 ```
 
-See `PHYSICAL_PREDICTION_FREEZE_CRITERIA.md`.
+The frozen three-node calculation retained j=0 graph-changing outputs and measured
+
+```text
+pair supports                        = 510, 648, 648
+minimum graph-change norm^2 fraction = 0.4440331635
+union reduced graph orbits           = 31
+route exponent                       = 0.9999571195
+cross exponent                       = 1.0024037289
+pure-geometry exponent               = 2.0061524985
+joint exponent                       = 1.0064429344
+joint defect at epsilon=1/64         = 0.02522380790
+```
+
+For the frozen all-j=1/2 Euclidean HH word:
+
+```text
+maximum hits per link = 4
+exact safe Jmax       = 5/2
+cutoff error above wall = 0
+```
+
+The conservative support wall for the declared Lorentzian HH word is Jmax=13/2.
+
+Stronger arbitrary-graph or uniform-unbounded-refinement theorems are catalogued as **non-blocking extensions**, not as missing arrows in the declared core package.
 
 ---
 
-## 10. Reproduction
+## 6. Regge continuum and held-out prediction control
+
+The Regge/EH bridge is complemented by a preregistered held-out continuation of the TT residue. Using only L=3,4,5, the frozen rule
+
+```text
+Z_L = 1/8 + C/L^2 + D/L^4
+```
+
+predicted
+
+```text
+Z6_pred = 0.11876923193907167
+```
+
+before opening the independent L=6 value
+
+```text
+Z6_obs  = 0.11876075461190198
+relative error ≈ 0.00714 %
+```
+
+This is a genuine internal held-out numerical control. It is not presented as an external experimental confirmation of quantum gravity.
+
+Directional Regge Hessian calculations for axial, diagonal-2 and diagonal-3 directions provide independent finite-lattice checks of the approach to the common continuum tensor structure.
+
+---
+
+## 7. TT propagator and complete quartic observable space
+
+The reduced TT positive-control calculation has a massless leading pole and equal-time vacuum covariance with the expected inverse-momentum scaling. Its bare lattice control coefficients include
+
+```text
+eta2_bare  = -1/45
+zeta4_bare = -1/12
+```
+
+These are positive-control coefficients of the reduced model, not automatically the final microscopic interacting coefficients.
+
+For generic directed momentum, exact S4 representation theory plus TT quotienting gives
+
+```text
+13 traceless quartic S4 singlets before TT reduction
+6 independent physical parity-even quartic TT structures after reduction
+```
+
+The high-symmetry directions 100/110/111 have rank 5. Adding the preregistered direction 120 gives full rank 6 with exact extraction determinant
+
+```text
+det A = 1/699840000 != 0.
+```
+
+Thus the general quartic pole data are represented by one six-vector
+
+```text
+c_IR = (c1,c2,c3,c4,c5,c6).
+```
+
+The repository also proves the on-shell field-redefinition invariance of this six-dimensional pole quotient and provides exact nested tests for scalar-cubic and tetrahedral birefringent subspaces.
+
+---
+
+## 8. Real-observable dictionary
+
+For a frozen TT pole branch written schematically as
+
+```text
+omega_sigma^2 = c^2 k^2 [1 + a_*^2 k^2 e4_sigma(n) + ...]
+```
+
+the repository maps the two polarization eigenvalues to group velocity, accumulated phase and the standard alpha=4 modified-dispersion coefficient. The six-Wilson predictor evaluates the two TT eigenvalues for any sky direction.
+
+The common normalization relation is
+
+```text
+lambda_R_eff = a_*^2 / (8*pi*l_P^2).
+```
+
+If this overall scale is not independently derived, one declared calibration datum may set it once; independent per-observable rescaling is forbidden.
+
+The observable map is closed algebraically. Actual confrontation with gravitational-wave or other external data is an **experimental test of the closed candidate theory**, documented separately.
+
+---
+
+## 9. What “closed” does and does not mean
+
+Machine status distinguishes three categories:
+
+```text
+CORE
+  proved / tested_finite / conditional
+  -> participates in internal theory closure
+
+EXTENSION
+  external_extension
+  -> stronger universality/generalization theorem; non-blocking
+
+EXPERIMENT
+  experimental_test
+  -> held-out real-world validation; non-blocking for mathematical closure
+```
+
+Therefore the package can simultaneously report
+
+```text
+core_theory_closed                = true
+candidate_framework               = true
+experimentally_confirmed          = false
+```
+
+without contradiction.
+
+---
+
+## 10. Predictions / experimental tests
+
+External tests are deliberately separated from the derivation. See `PREDICTIONS_AND_EXPERIMENTAL_TESTS.md`.
+
+Quantities already used in construction or oracle controls are not counted as blind predictions. In particular:
+
+```text
+d≈3                    internal selector/closure evidence
+z≈1                    internal selector/closure evidence
+4D-like history        internal closure evidence
+unit-S4 Lambda≈3       oracle reconstruction control
+```
+
+The external layer instead starts from frozen theory outputs and a frozen common scale rule, then tests observational quantities without post-hoc retuning.
+
+---
+
+## 11. Reproduction
+
+Install dependencies:
 
 ```bash
 python -m pip install -r requirements.txt
+```
+
+The canonical workflow is `.github/workflows/core-regression.yml`. It reruns the complete practical regression set and also reconstructs the two expensive artifact-backed physicalization certificates.
+
+Representative direct commands include:
+
+```bash
 python scripts/verify_theory_gates.py
 python bcqg_observer_smoothing_unified.py
 python bcqg_global_manifold_gate.py
+python scripts/q2_dimension3_fixed_point_gate.py --max-generation 10
 python scripts/micro_walsh_qgeom_gate.py
 python scripts/q2_global_face_qubit_gluing_gate.py
+python scripts/q2_graphlink_peter_weyl_gate.py
+python scripts/logical_shape_metric_jacobian_gate.py
 python scripts/qubit_to_einstein_end_to_end.py
 python scripts/regge_eh_cubic_bridge.py
+python scripts/peter_weyl_master_32_gate.py
 python scripts/path_normal_hda_gate.py
-python scripts/peter_weyl_two_node_euclidean_joint_gate.py
 python scripts/peter_weyl_three_node_graph_hda_gate.py
-python bcqg_quantum_hda_killer.py
+python scripts/s4_tt_quartic_complete_basis_gate.py
+python scripts/tt_propagator_first_pass.py
+python scripts/tt_vacuum_two_point_gate.py
+python scripts/tt_regge_zt_l6_gate.py
+python scripts/s4_tt_six_wilson_predictor.py --selftest
 python bcqg_bit_to_gravity_final.py --strict
 ```
 
-`joint_regulator_limit_gate.py` consumes the machine-readable three-node output generated by CI.
-
-The single canonical GitHub workflow is `.github/workflows/core-regression.yml`.
+The expensive higher-shell matrix and L1 q4 metric compression are regenerated in CI from previously certified exact source-column artifacts, with an independent recomputation of the historically heavy higher-shell column before assembly.
 
 ---
 
-## 11. Key files
+## 12. Canonical files
 
-| Purpose | File |
+| Layer | Canonical evidence |
 |---|---|
-| Central binary → continuum formulation | `BIT_TO_SPACETIME_CENTRAL_EQUATION.md` |
-| Exact q=2 local/global geometry carrier | `MICRO_WALSH_QGEOM_BRIDGE.md` |
-| Qubit → Einstein control | `QUBIT_TO_EINSTEIN_END_TO_END.md` |
-| Regge → EH bridge | `REGGE_EH_CUBIC_BRIDGE.md` |
-| HDA structural target | `GRAPH_CHANGING_HDA_TARGET.md` |
-| Three-node graph-changing result | `THREE_NODE_GRAPH_HDA_RESULT.md` |
-| Fixed-input joint limit | `JOINT_REGULATOR_LIMIT.md` |
-| Blind-prediction rules | `PHYSICAL_PREDICTION_FREEZE_CRITERIA.md` |
-| Canonical human status | `THEORY_STATUS.md` |
-| Machine ledger | `theory_gates.json` |
-| Remaining tasks | `OPEN_PROBLEMS.md` |
+| Full package index | `CANONICAL_THEORY_PACKAGE.md` |
+| Human status | `THEORY_STATUS.md` |
+| Machine status | `theory_gates.json` |
+| Binary -> continuum formulation | `BIT_TO_SPACETIME_CENTRAL_EQUATION.md` |
+| q=2 fixed point | `Q2_DIMENSION3_FIXED_POINT_CLOSURE.md` |
+| q=2 quantum geometry | `MICRO_WALSH_QGEOM_BRIDGE.md`, `Q2_GRAPHLINK_PETER_WEYL_BRIDGE.md` |
+| Qubit -> metric/Einstein | `QUBIT_TO_EINSTEIN_END_TO_END.md`, `LOGICAL_SHAPE_METRIC_JACOBIAN.md` |
+| Regge/EH | `REGGE_EH_CUBIC_BRIDGE.md`, `TT_REGGE_ZT_L6_RESULT.md` |
+| HDA | `THREE_NODE_GRAPH_HDA_RESULT.md`, `JOINT_REGULATOR_LIMIT.md` |
+| Peter-Weyl higher shells | `PETER_WEYL_HIGHER_SHELL_LAMBDA_RESULT.md` |
+| TT quartic space | `S4_TT_QUARTIC_COMPLETE_BASIS.md` |
+| Observable map | `TT_TO_REAL_PHYSICS_OBSERVABLES.md` |
+| External tests | `PREDICTIONS_AND_EXPERIMENTAL_TESTS.md` |
 
-The project’s standard is not maximum claim size. It is a single chain in which every arrow is either proved, reproducibly tested, explicitly conditional or still open.
+The repository’s scientific boundary is simple: **the internal candidate construction is closed; experimental truth remains a question for data.**
