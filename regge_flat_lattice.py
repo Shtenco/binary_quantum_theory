@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Minimal deterministic 4D Freudenthal Regge lattice utility.
+"""Deterministic 4D Freudenthal Regge lattice utility.
 
-This module contains only the geometric data required by the retained
-Regge-to-Einstein-Hilbert continuum bridge.  It is intentionally independent of
-the deleted monolithic BCQG verifier and makes no claim beyond finite Euclidean
-Regge geometry on a periodic four-dimensional lattice.
+This module contains the geometric and mode-space operations required by the
+canonical Regge/EH and directional Fierz-Pauli verification gates.  It is
+independent of the retired monolithic verifier and makes no claim beyond finite
+Euclidean Regge geometry on a periodic four-dimensional lattice.
 """
 from __future__ import annotations
 
@@ -105,6 +105,18 @@ class FlatRegge4D:
         self.triangle_edges = np.asarray(triangle_edges)
         self.background_q = np.sum(self.directions**2, axis=1)
 
+        # The periodic Freudenthal lattice has fifteen nonzero positive binary
+        # direction types.  The real Fourier mode has cosine and sine amplitudes
+        # for each type, giving the canonical 30-dimensional mode space.
+        self.direction_types = sorted({tuple(x.astype(int)) for x in self.directions})
+        self.type_index = {x: i for i, x in enumerate(self.direction_types)}
+        self.edge_type = np.array(
+            [self.type_index[tuple(x.astype(int))] for x in self.directions],
+            dtype=int,
+        )
+        if len(self.direction_types) != 15:
+            raise RuntimeError(f"expected 15 edge direction types, got {len(self.direction_types)}")
+
     def deficits(self, q) -> np.ndarray:
         q = np.asarray(q, float)
         lq = q[self.simplex_edges]
@@ -155,3 +167,77 @@ class FlatRegge4D:
     def action(self, q) -> float:
         """Return the unnormalised Euclidean Regge sum sum_h A_h delta_h."""
         return float(np.sum(self.areas(q) * self.deficits(q)))
+
+    def q_from_mode(self, coeff, k) -> np.ndarray:
+        """Map 15 cosine + 15 sine edge-type coefficients to squared lengths."""
+        coeff = np.asarray(coeff, float)
+        if coeff.shape != (30,):
+            raise ValueError("mode coefficient vector must have length 30")
+        k = np.asarray(k, float)
+        phase = self.midpoints @ k
+        return (
+            self.background_q
+            + coeff[:15][self.edge_type] * np.cos(phase)
+            + coeff[15:][self.edge_type] * np.sin(phase)
+        )
+
+    def hessian(self, k, step: float = 2e-4) -> np.ndarray:
+        """Central finite-difference Hessian of the Regge action in mode space.
+
+        This is the mode-space method used by the previously successful
+        directional Regge calculation.  It was lost when the monolithic verifier
+        was split; keeping it here restores the same finite calculation without
+        restoring the retired monolith.
+        """
+        if not np.isfinite(step) or step <= 0:
+            raise ValueError("step must be finite and positive")
+        n = 30
+        z = np.zeros(n)
+        f0 = self.action(self.q_from_mode(z, k))
+        H = np.zeros((n, n))
+        cache: dict[tuple[float, ...], float] = {}
+
+        def f(x):
+            key = tuple(np.round(x, 12))
+            if key not in cache:
+                cache[key] = self.action(self.q_from_mode(x, k))
+            return cache[key]
+
+        for i in range(n):
+            ei = np.zeros(n)
+            ei[i] = step
+            H[i, i] = (f(ei) - 2.0 * f0 + f(-ei)) / step**2
+        for i in range(n):
+            ei = np.zeros(n)
+            ei[i] = step
+            for j in range(i + 1, n):
+                ej = np.zeros(n)
+                ej[j] = step
+                H[i, j] = H[j, i] = (
+                    f(ei + ej)
+                    - f(ei - ej)
+                    - f(-ei + ej)
+                    + f(-ei - ej)
+                ) / (4.0 * step**2)
+        return 0.5 * (H + H.T)
+
+    def gauge_basis(self, k) -> np.ndarray:
+        """Orthonormal real Fourier basis of vertex-displacement gauge modes."""
+        k = np.asarray(k, float)
+        vecs = []
+        for mu in range(4):
+            vc = np.zeros(30)
+            vs = np.zeros(30)
+            for a, nt in enumerate(self.direction_types):
+                n = np.asarray(nt, float)
+                factor = 4.0 * n[mu] * np.sin(0.5 * float(k @ n))
+                vc[15 + a] = -factor
+                vs[a] = factor
+            vecs.extend([vc, vs])
+        G = np.column_stack(vecs)
+        # SVD handles any accidental degeneracy at special lattice momenta and
+        # returns only the actual gauge subspace rather than eight assumed modes.
+        U, s, _ = np.linalg.svd(G, full_matrices=False)
+        tol = 1e-12 * max(float(s[0]) if len(s) else 0.0, 1.0)
+        rank = int(np.sum(s > tol))
+        return U[:, :rank]
