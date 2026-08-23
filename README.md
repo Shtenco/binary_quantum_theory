@@ -1,754 +1,919 @@
-# От бита пространства-времени к геометрии, гравитации, свету и реальному эксперименту
+# От бита пространства-времени к геометрии, гравитации, свету и эксперименту
 
-## Большая научная сказка-путешествие — от дискретной микроструктуры к гладкому миру наблюдателя
+## Большая научная сказка для детей-учёных — всё по шагам, на пальцах, но без обмана
 
-> **Канонический статус: 21 августа 2026. Candidate theory.**
+> **Канонический статус: 23 августа 2026. Candidate theory.**
 >
-> Этот репозиторий не объявляет «теорию всего» доказанной. Он строит длинную вычислимую цепочку, в которой исходный объект не является заранее заданным пространством, метрикой или четырёхмерной решёткой. Стартовая гипотеза намного беднее: существуют локальные бинарные различия и причинные маршруты. Дальше геометрия, размерность, гладкость, spin-2, constraint algebra, physical projector, свет и наблюдаемые должны появиться как последовательно проверяемые уровни описания.
->
-> Главный принцип проекта: **красивое совпадение не становится физическим предсказанием, пока между объектами не построен явный мост.** Поэтому здесь сохраняются positive results, negative controls, no-go theorems, исправления прежних интерпретаций и открытые bottlenecks.
+> Это не объявление «теории всего». Это исследовательская программа, которая пытается пройти очень длинный путь: от минимальных бинарных различий до пространства, времени, гравитации, света и реальных наблюдаемых. Там, где мост уже доказан, мы так и пишем. Там, где есть только finite calculation или дополнительная гипотеза, мы тоже говорим об этом прямо.
 
 ---
 
-## Как читать репозиторий
+## Самая короткая версия всей истории
 
-- **README.md** — главная научная книга-путешествие: максимально человеческое объяснение, но с формулами и строгими границами claims.
-- **CANONICAL_THEORY_PACKAGE.md** — сухой evidence index без литературной части.
-- **BIT_TO_SPACETIME_CENTRAL_EQUATION.md** — центральная техническая цепь `binary microstructure -> smooth spacetime`.
-- **OBSERVER_SCALE_SMOOTHING.md** — finite observer/coarse-graining gate.
-- **GLOBAL_MANIFOLD_Q2_COMPLETION.md** — локальная `S2` и глобальная PL `S3` completion.
-- **MICRO_WALSH_QGEOM_BRIDGE.md** — exact bridge `Z2^2 route labels -> tetrahedral flux frame -> face qubits`.
-- **LOGICAL_SHAPE_METRIC_JACOBIAN.md** — exact shape-to-metric Jacobian.
-- **THEORY_STATUS.md** — human-readable status ledger.
-- **theory_gates.json** и physicalization ledgers — machine-readable truth surface.
-- **PREDICTIONS_AND_EXPERIMENTAL_TESTS.md** — внешний слой проверок.
+Представь, что мы не имеем права начать с готового пространства.
 
-Исторические README не потеряны:
-
-- [подробный урок 14 августа 2026](docs/archive/README_LESSON_2026-08-14.md);
-- [исходная научная сказка 17 августа 2026](docs/archive/README_STORY_2026-08-17.md);
-- [42-главная physicalization-версия 21 августа](docs/archive/README_STORY_2026-08-21_v42.md).
-
-Нынешний README объединяет их сильнейшие объяснения и сохраняет более поздние научные коррекции.
-
-### Ярлыки доказательности
-
-- **EXACT** — алгебраический или комбинаторный результат в явно заявленных предпосылках.
-- **CI / FINITE PASS** — воспроизводимый конечномерный computation.
-- **HELD-OUT** — prediction была frozen до открытия проверочного результата.
-- **CONDITIONAL** — вывод зависит от явно записанной дополнительной физической гипотезы.
-- **OPEN PHYSICAL** — математический объект определён, но physical bridge или microscopic number ещё не получен.
-- **NO-GO** — доказано, что привлекательный shortcut не работает.
-
----
-
-# Пролог. Вселенная, у которой сначала нет ни координат, ни гладкой стены
-
-Представьте, что нам запрещено начинать с `x,y,z`.
-
-Нет метров.
-
-Нет линейки.
-
-Нет гладкой координатной сетки.
-
-Нет заранее выбранной размерности.
-
-Нет готовой метрики `g_mu_nu`.
-
-Нет света.
-
-Нет частиц.
-
-Нет даже обещания, что понятие «расстояние» на самом глубоком уровне уже существует в привычном смысле.
-
-Есть только **различимость**: локальное событие может различать несколько альтернатив, а причинный переход может иметь несколько маршрутов.
-
-Самая маленькая такая различимость бинарна:
+Нам нельзя заранее сказать:
 
 ```text
-0  или  1
+вот ось X
+вот ось Y
+вот ось Z
+вот время T
 ```
 
-Но это очень важно понимать правильно.
+Нельзя заранее нарисовать решётку.
 
-В этой программе «бит пространства-времени» — **не маленький классический кубик пространства**, который уже лежит где-то внутри готовой трёхмерной коробки. Если бы мы начали с таких кубиков, пространство было бы вставлено в модель заранее.
+Нельзя заранее положить на стол метрическую линейку.
 
-Бит здесь — минимальная локальная степень различимости. Только после того как множество таких различий образует устойчивые отношения, появляются объекты, которые можно интерпретировать как направления, площади, объёмы, соседство, метрику и пространство.
-
-Поэтому главная дорога проекта выглядит так:
+Можно начать только с очень простой идеи:
 
 ```text
-binary distinction
- -> local route algebra
- -> q = 2
- -> octahedral S2 link
- -> Z2^2 Walsh characters
- -> regular tetrahedral flux frame
- -> face qubits / geometry qubit
- -> globally glued PL S3
- -> exact causal-volume d* = 3
- -> z ~ 1
- -> 3+1-like history
- -> observer coarse graining
- -> discrete rough microgeometry becomes smooth IR geometry
- -> quantum geometric tensor
-      Re Q -> distinguishability / geometry
-      Im Q -> Berry / Hopf phase
- -> SU(2) quantum geometry + compact U(1) phase
- -> spin-2 carrier
- -> logical shape -> metric
- -> Peter-Weyl constraint dynamics
- -> Lorentzian completion + HDA/ADM
- -> physical projector
- -> relational / boundary time
- -> physical history generating functional
- -> 1PI effective action Gamma[g,A,...]
- -> graviton and photon physical kernels
- -> S4 -> SO(3) -> Lorentz universality
- -> G, Lambda, Z_A
- -> pole observables + connected fluctuations
- -> blind experiment
+есть различие
+0 или 1
 ```
 
-У этой истории есть важная особенность: несколько раз она сама запрещает нам слишком лёгкий финал. Именно это делает её научной.
+И задать вопрос:
+
+> Может ли огромное количество таких бинарных различий, если они связаны одним и тем же локальным правилом, коллективно начать выглядеть как пространство-время?
+
+В нашей кандидатной конструкции путь выглядит так:
+
+```text
+бинарное различие
+→ q = 2
+→ четыре route-состояния
+→ локальная сфера S²
+→ тетраэдральная геометрия
+→ квантовые грани
+→ geometry qubit
+→ склейка клеток
+→ глобальное S³
+→ размерность стремится к 3
+→ z ≈ 1
+→ 3+1-like history
+→ coarse-graining наблюдателя
+→ дискретная микрогеометрия выглядит гладкой
+→ SU(2)/Peter–Weyl quantum geometry
+→ spin-2 сектор
+→ метрика
+→ Hamiltonian constraints
+→ physical projector
+→ физическое время
+→ 1PI effective action
+→ гравитон и свет
+→ эксперимент
+```
+
+Теперь разберём каждую стрелку медленно.
 
 ---
 
-# Часть I. Как бинарное различие начинает становиться геометрией
+# Как читать этот README
 
-# Глава 1. Один бит ещё ничего не знает о пространстве
+У каждой важной главы будет три уровня.
 
-Один бит различает два состояния. Он не знает, что такое «слева», «справа», «рядом», «далеко», «угол» или «объём».
+### На пальцах
 
-Поэтому первый вопрос проекта не «какова метрика?», а гораздо более фундаментальный:
+Что происходит простыми словами.
 
-> сколько независимых бинарных различий должен содержать локальный причинный переход, чтобы все его route states могли быть локально однородными?
+### Чуть строже
 
-Пусть таких независимых binary labels `q`.
+Минимальная математика, которая не даёт нам превратить красивую историю в фантазию.
 
-Тогда число маршрутов
+### Что здесь реально доказано
 
-$$
-2^q.
-$$
+Один из статусов:
 
-Пока это чистая комбинаторика. Геометрии ещё нет.
+- **EXACT** — точное алгебраическое или комбинаторное утверждение в заявленных предпосылках;
+- **FINITE PASS** — воспроизводимый конечный расчёт;
+- **HELD-OUT PASS** — проверка на заранее отложенных данных;
+- **CONDITIONAL** — верно, если выполняется явно указанная дополнительная гипотеза;
+- **OPEN** — мост пока не закрыт;
+- **NO-GO** — показано, что красивый короткий путь не работает.
+
+Главные строгие документы лежат отдельно:
+
+- [`CANONICAL_THEORY_PACKAGE.md`](CANONICAL_THEORY_PACKAGE.md) — сухой evidence index;
+- [`BIT_TO_SPACETIME_CENTRAL_EQUATION.md`](BIT_TO_SPACETIME_CENTRAL_EQUATION.md) — техническая цепь «binary microstructure → smooth spacetime»;
+- [`OBSERVER_SCALE_SMOOTHING.md`](OBSERVER_SCALE_SMOOTHING.md) — observer/coarse-graining;
+- [`GLOBAL_MANIFOLD_Q2_COMPLETION.md`](GLOBAL_MANIFOLD_Q2_COMPLETION.md) — локальная S² и глобальная S³ completion;
+- [`MICRO_WALSH_QGEOM_BRIDGE.md`](MICRO_WALSH_QGEOM_BRIDGE.md) — binary labels → tetrahedral geometry;
+- [`LOGICAL_SHAPE_METRIC_JACOBIAN.md`](LOGICAL_SHAPE_METRIC_JACOBIAN.md) — shape → metric;
+- [`THEORY_STATUS.md`](THEORY_STATUS.md) — текущий human-readable status;
+- [`theory_gates.json`](theory_gates.json) — machine-readable gates.
+
+Исторические версии тоже сохранены:
+
+- [`README_LESSON_2026-08-14.md`](docs/archive/README_LESSON_2026-08-14.md);
+- [`README_STORY_2026-08-17.md`](docs/archive/README_STORY_2026-08-17.md);
+- [`README_STORY_2026-08-21_v42.md`](docs/archive/README_STORY_2026-08-21_v42.md);
+- [`README_STORY_2026-08-23_PRE_CHILDREN.md`](docs/archive/README_STORY_2026-08-23_PRE_CHILDREN.md).
 
 ---
 
-# Глава 2. Почему локальная однородность сама выбирает q = 2
+# Часть I. Что такое «бит пространства-времени»
 
-**[EXACT]**
+## Глава 1. Бит — это не маленький кубик
 
-Каждый route state отличается ровно одним битом от `q` Hamming-neighbours и связан ещё с двумя causal poles. Его degree равен
+### На пальцах
 
-$$
-q+2.
-$$
+Очень легко представить фундаментальное пространство так:
 
-Каждый causal pole связан со всеми route states, то есть имеет degree
+```text
+[0][1][1][0][1]
+```
 
-$$
+будто Вселенная состоит из крошечных клеточек-пикселей.
+
+Но это было бы ловушкой.
+
+Если мы уже нарисовали клеточки в ряд или в кубе, то мы **заранее вставили пространство**.
+
+Поэтому здесь слово «бит» означает не маленький кусочек готового пространства.
+
+Бит означает минимальную **различимость**:
+
+```text
+вариант A
+или
+вариант B
+```
+
+То есть на самом глубоком уровне мы начинаем не с длины, а с ответа на вопрос:
+
+> Можно ли отличить одно состояние от другого?
+
+### Чуть строже
+
+Минимальный classical label:
+
+```text
+0 или 1
+```
+
+Минимальный quantum carrier:
+
+```text
+|ψ> = α|0> + β|1>
+```
+
+при условии
+
+```text
+|α|² + |β|² = 1.
+```
+
+Но даже qubit сам по себе ещё не является пространством.
+
+Нужно вывести геометрические отношения между большим количеством таких объектов.
+
+### Что здесь реально доказано
+
+**STARTING ANSATZ.** Бинарная локальная степень различимости — выбранная минимальная гипотеза модели, а не экспериментально установленный «атом пространства».
+
+---
+
+## Глава 2. Почему одного бита недостаточно
+
+Один бинарный выбор знает только две альтернативы.
+
+Он не знает:
+
+```text
+лево / право
+вверх / вниз
+угол
+площадь
+объём
+соседство
+```
+
+Поэтому вводим число `q` — сколько независимых бинарных различий участвуют в одном локальном causal событии.
+
+Если независимых битов `q`, то различных binary route labels существует
+
+```text
 2^q.
-$$
+```
 
-Если потребовать минимальную локальную однородность — одинаковую valence у этих двух типов вершин — получаем
+Например:
 
-$$
-q+2=2^q.
-$$
+```text
+q = 1 → 0, 1
+q = 2 → 00, 01, 10, 11
+q = 3 → 000 ... 111
+```
 
-Для целых `q>=1` единственное решение
+Пока это просто набор состояний.
 
-$$
-q=2.
-$$
+Следующий вопрос:
 
-Проверка почти школьная:
+> Какое q позволяет локальной структуре быть максимально однородной без ручной подгонки?
+
+---
+
+## Глава 3. Простое уравнение выбирает q = 2
+
+### На пальцах
+
+Представь локальный причинный «ромб».
+
+Есть два специальных конца:
+
+```text
+вход
+выход
+```
+
+и между ними есть `2^q` возможных route states.
+
+Каждый route state:
+
+- связан с двумя causal концами;
+- отличается одним битом от `q` соседних route states.
+
+Поэтому у него
+
+```text
+q + 2
+```
+
+связей.
+
+А каждый causal конец связан со всеми
+
+```text
+2^q
+```
+
+маршрутами.
+
+Если хотим, чтобы эти два типа вершин имели одинаковую valence, получаем
+
+```text
+q + 2 = 2^q.
+```
+
+Проверяем:
 
 ```text
 q=1: 3 != 2
 q=2: 4  = 4
 q=3: 5 != 8
 q=4: 6 != 16
-...
 ```
 
-После `q=2` экспонента `2^q` растёт быстрее линейной части, поэтому новых пересечений нет.
-
-Это первая точка, где число появляется **не как fitted parameter**, а как следствие локального правила.
-
-Получаются четыре route labels:
+Единственный целый ответ:
 
 ```text
-00  01  10  11
+q = 2.
 ```
 
-и их Hamming graph
+### Что это значит
 
-```text
-Q2 = C4.
-```
+Модель не говорит «возьмём два бита, потому что так удобно».
+
+Два бита появляются как решение локального условия однородности.
+
+### Что здесь реально доказано
+
+**EXACT:** в объявленном binary-route family уравнение `q+2=2^q` имеет единственное целое решение `q=2` для `q>=1`.
 
 ---
 
-# Глава 3. Четыре бинарных маршрута строят сферу вокруг точки
+# Часть II. Как из четырёх бинарных маршрутов рождается локальная геометрия
 
-**[EXACT]**
+## Глава 4. Четыре состояния образуют квадрат
 
-Добавим к `C4` два causal endpoints. Получается suspension
-
-$$
-Sigma(C4),
-$$
-
-то есть combinatorial graph октаэдра.
-
-Его simplicial surface имеет
+При `q=2` есть четыре labels:
 
 ```text
-V = 6
-E = 12
-F = 8
-chi = 2
+00
+01
+10
+11
 ```
 
-и является
+Соединяем два labels, если они отличаются ровно одним битом.
 
-$$
-S^2.
-$$
+Получаем цикл:
 
-Почему это важнее, чем просто красивый многогранник?
+```text
+00 —— 01
+|       |
+10 —— 11
+```
 
-В обычном трёхмерном PL-manifold маленькая link-sphere вокруг внутренней точки должна быть двумерной сферой:
+Топологически это квадрат `C4`.
 
-$$
-Link(v) = S^2.
-$$
+Сам по себе квадрат всё ещё не трёхмерное пространство.
 
-То есть локальный binary route object приобретает **ровно тот topology precursor, который нужен внутренней точке трёхмерного пространства**.
-
-Это ещё не доказательство глобального пространства. Но это уже не произвольный граф.
-
-Есть и полезная combinatorial связь: octahedral graph является line graph тетраэдра `K4`. Его шесть вершин можно читать как шесть рёбер tetrahedron. Поэтому route shell и minimal tetrahedral geometry встречаются уже на уровне одной и той же шестисостоянийной структуры.
+Но теперь добавим два causal полюса.
 
 ---
 
-# Глава 4. Биты получают направления: exact Walsh bridge
+## Глава 5. Квадрат плюс два полюса превращается в октаэдр
 
-**[EXACT]**
+Каждый из двух causal poles соединяем со всеми четырьмя route states.
 
-Вот одна из самых важных стрелок, которая в коротких README раньше почти исчезла.
+Получается граф октаэдра.
 
-Четыре route labels при `q=2` — это элементы группы
-
-$$
-G=Z_2^2={00,01,10,11}.
-$$
-
-У `Z2^2` есть ровно три нетривиальных real Walsh characters. Используем их как координаты:
-
-$$
-Phi(g) = (chi_01(g), chi_10(g), chi_11(g))/sqrt(3).
-$$
-
-Character orthogonality даёт точно
-
-$$
-sum_g Phi(g)=0,
-$$
-
-а для разных labels
-
-$$
-Phi(g) dot Phi(h)=-1/3.
-$$
-
-У каждого вектора norm равна единице.
-
-Но четыре единичных вектора в `R3`, сумма которых равна нулю и все взаимные скалярные произведения равны `-1/3`, — это именно четыре нормали правильного тетраэдра.
-
-Итак:
+Его поверхность имеет:
 
 ```text
-00,01,10,11
- -> three nontrivial Walsh characters
- -> four vectors in R3
- -> exact regular tetrahedral frame
+6 вершин
+12 рёбер
+8 треугольных граней
 ```
 
-Никакого target angle `arccos(-1/3)` мы не подгоняем. Он получается из character orthogonality.
+и Euler characteristic
 
-Это сильнее фразы «qubit имеет три Pauli components». Здесь конкретные binary route labels сами дают конкретную regular tetrahedral geometry carrier.
+```text
+χ = 6 - 12 + 8 = 2.
+```
 
-Подробнее: `MICRO_WALSH_QGEOM_BRIDGE.md`.
+Это поверхность двумерной сферы:
+
+```text
+S².
+```
+
+### Почему это важно
+
+Если мы стоим внутри обычного трёхмерного пространства и возьмём очень маленькую сферу вокруг обычной точки, её поверхность будет S².
+
+В combinatorial 3-manifold говорят:
+
+```text
+link внутренней вершины = S².
+```
+
+То есть наш binary object получил именно тот тип локальной оболочки, который нужен обычной точке трёхмерного пространства.
+
+### Что здесь реально доказано
+
+**EXACT:** при q=2 suspension Hamming-cycle `C4` даёт octahedral simplicial S².
+
+Это ещё не доказывает глобальное трёхмерное пространство.
 
 ---
 
-# Глава 5. Когда направление становится квантовым face flux
+## Глава 6. Второй сюрприз: те же четыре labels сами строят тетраэдр
 
-Для каждого derived unit normal `n_f` вводится pure face-qubit state
+Вот одна из самых красивых частей модели.
 
-$$
-rho_f = (I + n_f^i sigma_i)/2.
-$$
-
-Bloch vector теперь не выбирается из continuum вручную: он уже пришёл из `Z2^2` Walsh map.
-
-Четыре face fluxes regular tetrahedron удовлетворяют closure:
-
-$$
-sum_f E_f = 0.
-$$
-
-В finite gate получено:
+Четыре labels
 
 ```text
-flux closure norm                  = 0
-regular tetrahedron Gram error     < 1e-14
-Gauss-singlet weight               = 2/9
-logical oriented volume            = sqrt(3)/4
-reconstructed edge relative spread = 0
+00, 01, 10, 11
 ```
 
-Это и есть точка, где фраза «бит пространства» начинает приобретать буквальный geometric content:
+можно рассматривать как элементы группы
+
+```text
+Z₂².
+```
+
+У неё есть три нетривиальных real Walsh characters.
+
+Из этих трёх функций строим трёхкомпонентный вектор для каждого label.
+
+Получаются четыре unit vectors с очень специальным свойством:
+
+```text
+каждый имеет длину 1
+сумма всех четырёх = 0
+скалярное произведение любых разных = -1/3
+```
+
+### На пальцах
+
+Положи четыре одинаковые стрелки из центра правильного тетраэдра к центрам его четырёх граней.
+
+Именно так они и расположены:
+
+```text
+каждая стрелка одинаковой длины
+между любой парой одинаковый угол
+все четыре вместе взаимно уравновешиваются
+```
+
+То есть binary labels сами дают **нормали правильного тетраэдра**.
+
+### Почему это важно
+
+Мы не нарисовали тетраэдр руками после того, как увидели q=2.
+
+Тетраэдральный frame получается из character algebra самих binary labels.
+
+### Что здесь реально доказано
+
+**EXACT:** `Z₂²` через три nontrivial Walsh characters отображается в четыре вершины regular simplex в R³, то есть в tetrahedral frame. Подробности: [`MICRO_WALSH_QGEOM_BRIDGE.md`](MICRO_WALSH_QGEOM_BRIDGE.md).
+
+---
+
+## Глава 7. Что такое face qubit
+
+Теперь у нас есть четыре derived направления `n_f` — по одному на каждую грань будущего тетраэдра.
+
+Каждому направлению можно сопоставить qubit state, у которого Bloch vector указывает вдоль `n_f`.
+
+На пальцах:
 
 ```text
 binary label
- -> direction
- -> face flux
- -> quantum face state
- -> closed tetrahedral quantum geometry
+→ направление
+→ квантовая стрелка-нормаль к грани
 ```
 
-Но всё ещё нельзя говорить, что один qubit сам по себе «является метром пространства». Геометрия возникает из **отношений между несколькими carriers**.
+То есть qubit начинает нести геометрический смысл.
+
+Но четыре независимые стрелки ещё могут не образовывать замкнутую клетку.
+
+Нужно условие closure.
 
 ---
 
-# Глава 6. Четыре face qubits дают один gauge-invariant geometry qubit
+## Глава 8. Почему сумма четырёх face fluxes должна быть нулём
 
-**[EXACT FINITE REPRESENTATION THEORY]**
+У замкнутого тетраэдра outward face normals, взвешенные площадями, уравновешиваются.
 
-Четыре spin-1/2 раскладываются как
+На пальцах это похоже на четыре силы, которые тянут замкнутую клетку наружу, но в сумме не уносят её никуда.
 
-$$
-(1/2)^4 = 2 x j=0 + 3 x j=1 + 1 x j=2.
-$$
+Для regular tetrahedral frame:
 
-Gauss-invariant singlet sector имеет dimension two.
+```text
+E₁ + E₂ + E₃ + E₄ = 0.
+```
 
-То есть
+В gauge language это Gauss closure.
+
+Finite gate для binary-derived tetrahedral state даёт closure norm, равную нулю в точной конструкции.
+
+### Что здесь реально доказано
+
+**EXACT/FINITE:** derived q=2 frame имеет exact flux closure и nonzero support в gauge-invariant singlet sector.
+
+---
+
+## Глава 9. Четыре face qubits превращаются в один geometry qubit
+
+Четыре spin-1/2 объекта вместе содержат несколько collective spin sectors.
+
+Разложение:
+
+```text
+(1/2)^4 = 2×j=0 + 3×j=1 + 1×j=2.
+```
+
+Нас сейчас интересует gauge-invariant `j=0` sector.
+
+У него dimension 2.
+
+А двухмерное quantum space — это снова qubit.
+
+Поэтому:
 
 ```text
 4 face qubits
- -> impose total SU(2) Gauss closure
- -> 2D invariant Hilbert space
- -> one logical geometry qubit
+→ Gauss-invariant sector
+→ 1 logical geometry qubit.
 ```
 
-Это другой объект, чем unique collective `j=2` sector, который позже будет использоваться как spin-2 carrier. Важно не смешивать их:
+### Что хранит geometry qubit
 
-- `j=0` multiplicity-two sector кодирует intrinsic tetrahedral geometry;
-- unique `j=2` sector — отдельный collective spin-2 representation channel.
+Не «0 или 1 в пространстве».
 
-В natural singlet basis logical Pauli operators имеют geometric meaning. Например,
+Его logical coordinates кодируют свойства формы тетраэдра:
 
 ```text
-Z_L, X_L -> independent shape/dihedral observables
-Y_L      -> oriented volume pseudoscalar
+X_L → одна shape-комбинация
+Z_L → другая shape-комбинация
+Y_L → orientation / oriented volume
 ```
 
-и exact oriented-volume eigenvalues равны
+Oriented-volume eigenvalues в выбранной нормировке:
 
-$$
-+sqrt(3)/4, -sqrt(3)/4.
-$$
+```text
++sqrt(3)/4
+-sqrt(3)/4.
+```
 
-Таким образом «geometry qubit» — не поэтическое название. Его Bloch sphere параметризует конкретные gauge-invariant shape/orientation observables.
+То есть два состояния могут различать левую и правую orientation клетки.
+
+### Важное предупреждение
+
+Этот `j=0` geometry qubit не надо путать с unique collective `j=2` sector, который позже будет кандидатом на spin-2 carrier.
 
 ---
 
-# Глава 7. Из face fluxes можно восстановить настоящий тетраэдр
+## Глава 10. Из face fluxes можно восстановить обычную геометрию тетраэдра
 
-Пусть `a,b,c` — три edge vectors из одной вершины тетраэдра, а oriented face-area vectors
-
-$$
-E_1=(b x c)/2,
-$$
-
-$$
-E_2=(c x a)/2,
-$$
-
-$$
-E_3=(a x b)/2.
-$$
-
-Соберём
-
-$$
-C=(2E_1,2E_2,2E_3).
-$$
-
-Тогда
-
-$$
-C = det(A) A^{-T},
-$$
-
-где `A=(a,b,c)`, и поэтому
-
-$$
-A = sqrt(|det C|) C^{-T}.
-$$
-
-Finite control реконструирует non-degenerate tetrahedra до machine precision.
-
-Это даёт прямой смысл цепочке
+Пусть из одной вершины тетраэдра выходят три edge vectors:
 
 ```text
-quantum flux expectations
- -> face normals / areas
- -> edge geometry
- -> intrinsic metric data
+a, b, c.
 ```
 
-и одновременно даёт falsifier: если closure или shape matching не сходятся при blocking, набор quantum polyhedra нельзя называть одним smooth space.
+Три face-area vectors можно записать как
+
+```text
+E1 = (b × c)/2
+E2 = (c × a)/2
+E3 = (a × b)/2.
+```
+
+И наоборот, если мы знаем эти fluxes, можно восстановить edge geometry.
+
+Это очень важно.
+
+Мы получили не просто абстрактные qubit labels, а quantities, из которых можно вернуться к обычным длинам, углам и shape.
+
+### Что здесь реально доказано
+
+**EXACT/FINITE:** для non-degenerate tetrahedron flux reconstruction работает до machine precision в соответствующем gate.
 
 ---
 
-# Глава 8. Почему склеивание клеток важнее самих клеток
+# Часть III. Почему один тетраэдр ещё не пространство
 
-Один идеальный тетраэдр — ещё не пространство.
+## Глава 11. Пространство начинается со склейки
 
-Нужно, чтобы соседние cells согласовали общую грань. Площадь и normal недостаточны: два triangles могут иметь одинаковую площадь и нормаль, но разную intrinsic shape. Это известная опасность twisted geometry.
+Один идеальный LEGO-кирпич — не дом.
 
-Поэтому проект отслеживает минимум два дефекта:
+Один тетраэдр — не пространство.
+
+Нужно соединить много клеток так, чтобы общая грань для двух соседей действительно была **одной и той же геометрической гранью**.
+
+Только совпадения площади недостаточно.
+
+Два треугольника могут иметь:
 
 ```text
-closure defect -> 0
-shape mismatch -> 0
+одинаковую площадь
+одинаковую нормаль
 ```
 
-Старый independent Bell-gluing control показал, что для двух logical geometry qubits состояние `Phi+` имеет корреляции
+но разную внутреннюю форму.
+
+Это один из вариантов twisted geometry.
+
+Поэтому нужны как минимум два условия:
 
 ```text
-<X X> = +1
-<Z Z> = +1
-<Y Y> = -1
+closure defect → 0
+shape mismatch → 0.
 ```
 
-то есть intrinsic shape совпадает, а orientation/normal разворачивается на общей face, как и должно быть у outward normals соседних cells.
-
-В современной canonical q=2 global gluing ветке используется ещё более жёсткая combinatorial проверка: обе incident tetrahedra получают один и тот же q=2 face label, соседние cells отличаются одним sign bit, а outward Walsh fluxes сокращаются на каждой shared face.
+Если shape mismatch не исчезает, мы имеем набор хороших клеток, но ещё не одну гладкую геометрию.
 
 ---
 
-# Часть II. Как локальные геометрии становятся пространством
+## Глава 12. Почему соседние orientation должны быть противоположны
 
-# Глава 9. Локальная S2 ещё не глобальная Вселенная
+Если два тетраэдра имеют общую грань, outward normal первого смотрит через грань в сторону второго.
 
-Чтобы говорить о spatial manifold, надо склеить local cells без края и singular seams.
+А outward normal второго смотрит в обратную сторону.
 
-Canonical minimal+flag globalization q=2 shell — boundary четырёхмерного cross-polytope, то есть 16-cell:
+Поэтому правильная склейка требует:
 
 ```text
-(V,E,F,T) = (8,24,32,16)
-Betti     = (1,0,0,1)
+intrinsic face shape совпадает
+outward orientation меняет знак.
 ```
+
+Старый Bell-gluing control именно это и проверял на logical geometry qubits:
+
+```text
+shape correlations совпадают
+orientation correlation имеет противоположный знак.
+```
+
+В современной q=2 global gluing ветке outward Walsh fluxes сокращаются на shared faces.
+
+---
+
+## Глава 13. Локальные S² можно сложить в глобальное S³
+
+Canonical minimal completion использует boundary четырёхмерного cross-polytope — 16-cell.
+
+У seed complex:
+
+```text
+V = 8
+E = 24
+F = 32
+T = 16 tetrahedra
+```
+
+Betti numbers:
+
+```text
+(1,0,0,1)
+```
+
+как у S³.
 
 У него:
 
 ```text
-vertex links   = S2
-edge links     = S1
-triangle links = S0
+vertex link   = S²
+edge link     = S¹
+triangle link = S⁰.
 ```
 
-каждый triangle two-sided, complex orientable и `boundary^2=0`.
+Каждый triangle принадлежит ровно двум tetrahedra.
 
-Следовательно в canonical completion
+Complex orientable.
 
-$$
-M^3 = S^3.
-$$
+Boundary-of-boundary равна нулю.
 
-Это глобальный closed spatial manifold, а не просто набор несвязанных tetrahedra.
+### На пальцах
+
+Мы проверяем не только «красивая ли картинка».
+
+Мы проверяем, нет ли:
+
+```text
+дырявого шва
+висячей грани
+неправильной окрестности точки
+перевёрнутой ориентации
+```
+
+### Что здесь реально доказано
+
+**EXACT/FINITE:** natural canonical PL completion совместима с closed orientable S³ и сохраняет manifold properties на проверенных refinements.
+
+Не доказано, что любой imaginable bare-causal gluing обязан быть именно этим S³.
 
 ---
 
-# Глава 10. Почему minimal+flag completion ведёт именно к 16-cell
+## Глава 14. Почему появляется именно 16-cell
 
-В старой подробной версии README был красивый короткий argument, который стоит сохранить.
-
-Предположим declared semantics:
+При дополнительной declared semantics:
 
 ```text
-minimal 8 vertices
-+ every vertex link is octahedral S2
-+ flag/clique closure
+минимум 8 вершин
+каждая vertex link = octahedral S²
+flag/clique closure
 ```
 
-У каждой вершины среди остальных семи должно быть ровно шесть neighbours, потому что octahedral vertex link имеет шесть vertices.
+у каждой вершины есть 6 соседей среди остальных 7.
 
-Значит у каждой вершины есть ровно один antipode, с которым edge отсутствует.
+Значит есть ровно один antipode, с которым edge отсутствует.
 
-Граф missing edges — четыре disjoint pairs:
+Восемь вершин разбиваются на четыре antipodal pairs.
+
+Чтобы построить tetrahedron, берём по одной вершине из каждой пары.
+
+Выборов:
 
 ```text
-4 antipodal pairs.
+2×2×2×2 = 16.
 ```
 
-Следовательно 1-skeleton
+Отсюда 16 tetrahedra.
 
-```text
-K8 minus 4 antipodal edges.
-```
+Это и есть boundary 16-cell.
 
-Flag tetrahedron выбирает ровно по одной вершине из каждой antipodal pair. Таких choices
+### Статус
 
-$$
-2^4=16.
-$$
-
-Получается exactly boundary 16-cell.
-
-**Scope:** это uniqueness в minimal eight-vertex flag semantics. Это не доказательство уникальности любого nonflag global causal gluing.
+**EXACT в minimal+flag semantics.** Не uniqueness theorem для любого nonflag microscopic rule.
 
 ---
 
-# Глава 11. Пространство выдерживает refinement
+## Глава 15. Пространство не ломается при увеличении детализации
 
-Barycentric refinement даёт
+Barycentric refinement:
 
 ```text
-g=0: 16 tetrahedra
-g=1: 384 tetrahedra
-g=2: 9216 tetrahedra
+16 tetrahedra
+→ 384
+→ 9216
 ```
-
-и executable gate заново проверяет simplex links, хотя PL topology already guarantees homeomorphism.
 
 На проверенных уровнях:
 
 ```text
 bad vertex links = 0
-bad edge links   = 0
-bad face links   = 0
-boundary^2       = 0
-orientable       = true
-all faces        = two-sided
+bad edge links = 0
+bad face links = 0
+orientable = yes
+all faces two-sided = yes
 ```
 
-То есть пространство не «рассыпается» при subdivision.
-
-Это важная разница между красивой seed картинкой и recursive spatial phase.
+То есть при subdivision пространственная фаза сохраняет topology.
 
 ---
 
-# Глава 12. Геометрия и топология — не одно и то же
+# Часть IV. Почему это пространство оказывается трёхмерным
 
-Topology отвечает на вопрос «как всё склеено».
+## Глава 16. Топология и размерность — разные вопросы
 
-Metric geometry отвечает на вопросы «какие длины, углы, площади и объёмы».
+S³ уже говорит нам о topological type выбранной spatial completion.
 
-Dimension отвечает на вопрос «как растёт число доступных состояний с масштабом».
+Но ещё хочется независимо увидеть, как растёт количество доступных состояний с масштабом.
 
-Dynamics отвечает на вопрос «как spatial state меняется и как появляется causal time».
-
-Поэтому в проекте специально не используется аргумент вида
+Для обычного трёхмерного пространства volume растёт примерно как
 
 ```text
-S3 topology -> therefore physical 3+1 GR.
+R³.
 ```
 
-Нужны независимые dimension и dynamics gates.
+Поэтому ищем exponent, который стремится к 3.
 
 ---
 
-# Часть III. Почему пространство оказывается трёхмерным, а история — 3+1-like
+## Глава 17. Exact causal-volume sequence идёт к 3
 
-# Глава 13. Exact causal-volume fixed point равен трём
+Для q=2 каждый active causal edge порождает восемь child edges, а линейный causal scale удваивается.
 
-При `q=2` число route midpoints `B=2^q=4`. Каждый active causal edge при следующем rewrite создаёт восемь active child edges, а causal linear scale удваивается.
-
-Exact vertex count после `g` generations:
-
-$$
-N_g=(4*8^g+10)/7.
-$$
-
-One-step causal-volume exponent
-
-$$
-d_g=log_2(N_g/N_{g-1})
-$$
-
-имеет closed form
-
-$$
-d_g=3+log_2(1-35/(16*8^(g-1)+40)).
-$$
-
-Отсюда exactly:
+Exact count:
 
 ```text
-d_g < 3
-d_{g+1} > d_g
-d_g -> 3
+N_g = (4*8^g + 10)/7.
 ```
 
-и потому
+One-step exponent:
 
-$$
-d_* = 3.
-$$
+```text
+d_g = log2(N_g/N_{g-1}).
+```
 
 Последовательность:
 
 ```text
-g=2  2.6629650127
-g=3  2.9517448314
-g=4  2.9938530157
-g=5  2.9992297821
-g=6  2.9999036938
-g=7  2.9999879613
-g=8  2.9999984952
+g=2 → 2.662965...
+g=3 → 2.951744...
+g=4 → 2.993853...
+g=5 → 2.999229...
+g=6 → 2.999903...
+g=7 → 2.999987...
+g=8 → 2.999998...
 ```
 
-Исторический `d_H=2.999229782...` оказался просто `g=5` point exact monotone sequence.
+Она:
+
+```text
+всегда ниже 3
+монотонно растёт
+стремится к 3.
+```
+
+Поэтому fixed point:
+
+```text
+d* = 3.
+```
+
+### Что это значит
+
+Старая цифра `2.999229...` оказалась не случайным «почти три».
+
+Это просто g=5 point exact sequence, которая аналитически идёт к тройке.
+
+### Статус
+
+**EXACT** для объявленного recursive q=2 causal-volume family.
 
 ---
 
-# Глава 14. Почему одного «почти 3» было бы недостаточно
+## Глава 18. Почему одного числа 3 всё равно мало
 
-Есть несколько независимых witnesses:
+Хорошая теория не должна зависеть от одного удачного индикатора.
+
+Поэтому здесь есть несколько свидетелей:
 
 ```text
-local topology:           S2 vertex link -> 3-manifold precursor
-canonical global phase:   S3
-causal-volume fixed point d* = 3
-dynamical scaling:        z ~ 1
+local vertex link = S²
+canonical global phase = S³
+causal-volume exponent → 3
+held-out d_H ≈ 2.99923
 ```
 
-Frozen dynamics даёт
-
-$$
-d_H=2.999229782139151,
-$$
-
-$$
-z approximately 0.998281156.
-$$
-
-Важная notation correction: число `3.004393867`, исторически называвшееся `ds_slice_holdout`, уже включает division by `z`:
-
-$$
-d_eff(slice)=d_H/z=3.004393867.
-$$
-
-Нельзя делить его на `z` второй раз.
+А dynamics даёт ещё один важный exponent `z`.
 
 ---
 
-# Глава 15. Откуда в истории появляется четвёртое направление
+# Часть V. Откуда появляется время
 
-Spatial topology и volume scaling дают three-dimensional slice.
+## Глава 19. Пространство должно не только существовать, но и меняться
 
-Dynamics имеет characteristic scaling
+Представь фильм.
 
-$$
-tau -> lambda^z tau.
-$$
+Один кадр — spatial slice.
 
-Для relativistic scaling требуется
+История — последовательность кадров.
 
-$$
-z -> 1.
-$$
-
-Frozen result близок к единице, поэтому one-causal-time history имеет effective scaling
-
-$$
-d_eff(history)=1+d_H/z approximately 4.004393867.
-$$
-
-Правильная формулировка:
+Если spatial scale увеличился в `λ` раз, characteristic time scale может измениться как
 
 ```text
-spatial topology -> 3
-causal-volume fixed point -> 3
-z -> 1
-history -> 3+1-like scaling
+τ → λ^z τ.
 ```
 
-Это ещё не statement, что finite constraint eigenvalue является physical time frequency. Намного позже physical time потребует projector/history conditioning.
+Для relativistic scaling нам нужен
+
+```text
+z → 1.
+```
+
+Frozen finite result:
+
+```text
+z ≈ 0.998281.
+```
+
+То есть пространственный и causal-time масштабы растут почти одинаково.
 
 ---
 
-# Часть IV. Наблюдатель, расстояние и рождение гладкого пространства
+## Глава 20. Почему получается 3+1-like history
 
-# Глава 16. Главное различие: пространство не становится гладким — микроструктура становится неразрешимой
-
-Это один из центральных смыслов проекта.
-
-Представьте кирпичную или оштукатуренную стену.
-
-Вплотную вы видите:
+Историческое effective slice value:
 
 ```text
+d_eff(slice) = d_H / z ≈ 3.004393867.
+```
+
+К нему добавляем одно causal/history направление:
+
+```text
+d_eff(history) = 1 + d_H/z ≈ 4.004393867.
+```
+
+Поэтому candidate scaling выглядит как
+
+```text
+3 spatial-like directions
++ 1 causal-time direction.
+```
+
+### Очень важное предупреждение
+
+Это ещё **не** означает, что любой eigenvalue Hamiltonian constraint уже является физической частотой ω.
+
+К этой проблеме мы вернёмся позже.
+
+---
+
+# Часть VI. Почему дискретное пространство может казаться гладким
+
+## Глава 21. Самая важная аналогия: штукатурная стена
+
+Подойди очень близко к стене.
+
+Ты увидишь:
+
+```text
+песчинки
 поры
 царапины
-песчинки
+микротрещины
 шероховатости
-края кристаллов
 ```
 
-Отойдите на несколько метров — и глаз уже видит гладкую плоскость.
+Теперь отойди на десять метров.
 
-Но стена **физически не перестроилась** из шероховатой в гладкую, когда вы сделали шаг назад.
+Стена выглядит гладкой.
 
-Изменилось отношение
+Но произошло ли чудо?
 
-```text
-размер микродетали / размер разрешаемого элемента наблюдения.
-```
+Нет.
 
-То же различие принципиально для нашей spacetime picture.
+Стена не перестроилась.
 
-Microscopic state остаётся дискретным. Но наблюдатель с конечным resolution не может разрешить отдельные binary cells и видит их coarse collective observables.
+Ты просто перестал разрешать отдельные микронеровности.
 
-Поэтому фраза
+### То же самое в нашей spacetime picture
 
-> «с удалением наблюдателя пространство-время становится гладким»
+Microscopic geometry может оставаться дискретной.
 
-в строгой форме означает
+Но один observable pixel макроскопического наблюдателя содержит огромное количество microscopic degrees of freedom.
 
-> **с увеличением physical resolution scale один observable pixel содержит всё больше microscopic spacetime degrees of freedom, и их unresolved fluctuations self-average.**
+Он видит не каждый отдельный bit, а их collective average.
+
+Поэтому корректная фраза:
+
+> не «пространство физически становится гладким, когда мы отходим», а «при более грубом разрешении его дискретная микроструктура становится неразрешимой и coarse observables выглядят гладкими».
 
 ---
 
-# Глава 17. Математическая версия аналогии со стеной
+## Глава 22. Что именно меняется при удалении наблюдателя
 
-Пусть fundamental microscopic cutoff
+Пусть microscopic cutoff равен `ell_*`.
 
-$$
-ell_*.
-$$
+Мы **не обязаны** сразу называть его Planck length.
 
-Его possible identification с Planck length `ell_P` является physical hypothesis, а не уже доказанной частью construction.
+Это отдельный scale-setting вопрос.
 
-Для наблюдателя с characteristic angular/causal resolution `theta` на separation `r` вводится effective resolved length
+Для наблюдателя с characteristic angular/causal resolution `theta` и separation `r` можно использовать resolution map:
 
-$$
-ell_obs(r)=sqrt(ell_*^2+(theta*r)^2).
-$$
+```text
+ell_obs(r) = sqrt(ell_*² + (theta*r)²).
+```
 
-Это expression имеет два естественных режима.
-
-### Очень близко к микроскопике
+### Очень близко
 
 Если
 
@@ -758,13 +923,13 @@ theta*r << ell_*
 
 то
 
-$$
-ell_obs approximately ell_*.
-$$
+```text
+ell_obs ≈ ell_*.
+```
 
-Наблюдатель может различать отдельные microscopic structures.
+Можно различать microscopic structure.
 
-### Макроскопический режим
+### Далеко
 
 Если
 
@@ -774,1580 +939,1203 @@ theta*r >> ell_*
 
 то
 
-$$
-ell_obs approximately theta*r.
-$$
+```text
+ell_obs ≈ theta*r.
+```
 
-Один resolution element покрывает уже множество microscopic cells.
-
-Для dyadic coarse graining используем
-
-$$
-b(r)=2^{floor(log_2(ell_obs/ell_*))}.
-$$
-
-`b=1` означает microscopic resolution. Большой `b` означает, что один observable cell является collective block большого числа microscopic degrees of freedom.
+Один pixel уже покрывает много microscopic cells.
 
 ---
 
-# Глава 18. Почему в четырёхмерной history шероховатость падает как b^-2
+## Глава 23. Что такое block size b
 
-Предположим на данном coarse regime, что один history block содержит примерно
-
-$$
-N(b) proportional to b^4
-$$
-
-weakly correlated zero-mean microscopic contributions.
-
-Тогда центральное self-averaging даёт
-
-$$
-delta g_RMS proportional to 1/sqrt(N) proportional to b^-2.
-$$
-
-Это ключ к «стене».
-
-Если один pixel усредняет не одну неровность, а `N` примерно независимых микронеровностей, случайная часть уменьшается как `1/sqrt(N)`.
-
-Derivative добавляет inverse length:
+Вводим coarse factor:
 
 ```text
-metric roughness      ~ b^-2
-one derivative        ~ b^-3
-two derivatives       ~ b^-4
+b ≈ ell_obs / ell_*.
 ```
 
-Именно поэтому curvature-like defect убывает быстрее самой metric roughness.
+В dyadic implementation берутся powers of two:
 
-Важно: это self-averaging reasoning требует контроля correlations. Если microscopic contributions long-range correlated, exponent может измениться. Поэтому measured scaling — finite diagnostic, не универсальный theorem без RG correlation proof.
+```text
+b = 1, 2, 4, 8, ...
+```
+
+`b=1` — почти microscopic view.
+
+Большое `b` — один observable cell включает много microcells.
 
 ---
 
-# Глава 19. Что реально измерил observer-smoothing gate
+## Глава 24. Почему шум падает как 1/sqrt(N)
 
-На frozen q=2 route family получено
+Представь тысячу монет.
 
-$$
-delta g approximately b^-2.001707,
-$$
-
-$$
-grad(delta g) approximately b^-3.001458,
-$$
-
-$$
-delta R_proxy approximately b^-4.000524.
-$$
-
-В two-form / reconstructed metric sector:
-
-$$
-Delta_simp approximately b^-1.994838,
-$$
-
-$$
-Delta_gU approximately b^-2.019746.
-$$
-
-То есть несколько независимых measures roughness показывают одну и ту же картину:
+Одна монета даёт очень грубый результат:
 
 ```text
-microscopic binary/discrete detail
- -> block averaging
- -> rapidly decreasing geometric defects
- -> smooth observer-accessible IR description
+0 или 1.
 ```
 
-Это не команда `make_smooth()`. Smoothness появляется как property coarse observables.
+Если усреднить тысячи независимых бросков, относительная случайная ошибка становится намного меньше.
+
+Для `N` weakly correlated contributions typical fluctuation:
+
+```text
+noise_RMS ~ 1/sqrt(N).
+```
+
+Если history block effectively содержит
+
+```text
+N ~ b^4
+```
+
+microscopic contributions, тогда
+
+```text
+noise_RMS ~ 1/sqrt(b^4) = b^-2.
+```
+
+Вот математическая версия нашей стены.
 
 ---
 
-# Глава 20. Почему gradient и curvature выглядят ещё гладче
+## Глава 25. Почему slope и curvature становятся гладкими ещё быстрее
 
-Пусть coarse metric fluctuation amplitude
+Если metric roughness
 
-$$
-delta g(b) ~ b^-2.
-$$
+```text
+delta g ~ b^-2,
+```
 
-Physical derivative на block scale приносит ещё factor `1/b`, поэтому
+то spatial derivative добавляет ещё один inverse length:
 
-$$
-partial(delta g) ~ b^-3.
-$$
+```text
+grad(delta g) ~ b^-3.
+```
 
-Linearized curvature содержит roughly two derivatives:
+А curvature roughly содержит две derivatives:
 
-$$
-delta R ~ partial^2(delta g) ~ b^-4.
-$$
+```text
+delta R ~ b^-4.
+```
 
-Это означает, что macroscopic observer может видеть не только visually smooth metric, но и ещё более быстро стабилизирующуюся curvature description.
+То есть по мере coarse-graining:
 
-Аналогия со стеной становится сильнее:
-
-- средняя высота стены стабилизируется;
-- её local slope fluctuations уменьшаются ещё быстрее;
-- curvature of visible surface ещё менее чувствительна к отдельным песчинкам.
+```text
+сама поверхность сглаживается
+её slope fluctuations сглаживаются быстрее
+curvature fluctuations — ещё быстрее.
+```
 
 ---
 
-# Глава 21. Очень важный negative control: coarse-graining само по себе не создаёт 3+1 измерения
+## Глава 26. Что реально показал finite observer gate
 
-Старая fixed-4D smoothing ветвь имела independent dimension-blind binary diamond control.
-
-Он оставался около spectral dimension
+В q=2 control измерено примерно:
 
 ```text
-~2.07,
+delta g       ~ b^-2.001707
+grad(delta g) ~ b^-3.001458
+delta R       ~ b^-4.000524
 ```
 
-а не magically превращался в четыре dimensions после averaging.
-
-Это критично.
-
-Нельзя рассуждать так:
+А в two-form / reconstructed-metric sector:
 
 ```text
-много битов усреднились
- -> поэтому обязательно возникли 3+1 dimensions.
+simplicity defect ~ b^-1.994838
+metric error      ~ b^-2.019746.
 ```
 
-Нет.
-
-У проекта две разные стрелки:
+То есть несколько разных measures рассказывают одну и ту же историю:
 
 ```text
-binary combinatorics / topology / growth -> dimension
-observer coarse graining                -> smoothness
+микроскопическая шероховатость
+→ blocking
+→ rapidly falling reconstruction defects
+→ smooth IR description.
 ```
 
-Dimension выбирается structural dynamics q=2 family. Smoothness объясняет, почему уже возникшая effective geometry может выглядеть continuous.
+### Статус
+
+**FINITE PASS / CONDITIONAL INTERPRETATION.** Это сильный continuumisation control, но universal exponent theorem потребовал бы полноценного RG и контроля correlations.
 
 ---
 
-# Глава 22. Дискретность и непрерывность не противоречат друг другу
+## Глава 27. Очень важный отрицательный контроль: averaging не создаёт измерения
 
-В этой картине microscopic и macroscopic statements могут одновременно быть истинны:
-
-```text
-UV: discrete quantum degrees of freedom
-IR: smooth differentiable effective metric
-```
-
-Это обычная логика emergence.
-
-Кристалл состоит из discrete atoms, но elastic medium описывается continuous displacement field.
-
-Вода состоит из molecules, но hydrodynamics использует smooth density and velocity fields.
-
-Изображение состоит из pixels, но после достаточного resolution scale воспринимается continuous.
-
-Здесь гипотеза аналогична:
+Можно было бы обмануть себя так:
 
 ```text
-spacetime microstructure: binary / quantum / combinatorial
-spacetime IR: smooth metric / connection / curvature
+много битов усредняются
+→ значит автоматически получается 4D.
 ```
 
-Разница в том, что для spacetime сама geometry должна быть reconstructed из microstate, поэтому требования намного строже, чем для жидкости на уже заданном пространстве.
+Это неверно.
+
+Старый dimension-blind binary-diamond control после coarse-graining оставался около spectral dimension
+
+```text
+2.07,
+```
+
+а не превращался магически в 4.
+
+Значит есть две разные задачи:
+
+```text
+binary rule / topology / growth → dimension
+coarse-graining → smoothness.
+```
+
+Нельзя заменять одну другой.
 
 ---
 
-# Глава 23. Квантовая пена — это не обязательный макроскопический хаос
+## Глава 28. Гладкая средняя геометрия не означает отсутствие квантовой пены
 
-Smooth mean geometry не требует zero microscopic variance.
-
-Можно иметь
+Можно иметь одновременно:
 
 ```text
-<delta g> = 0
-<delta g^2> > 0.
+средняя fluctuation = 0
+variance fluctuation > 0.
 ```
+
+На пальцах:
+
+поверхность озера может иметь средний уровень воды, но при этом на ней есть волны.
+
+Так же smooth mean geometry может сосуществовать с microscopic quantum fluctuations.
+
+Это позже важно для interferometric tests: даже если средняя propagation law полностью Lorentz-invariant, connected phase noise может оставаться ненулевым.
+
+---
+
+# Часть VII. Qubit открывает две двери: геометрию и фазу
+
+## Глава 29. Bloch sphere — это уже геометрический объект
+
+Normalized qubit имеет состояние
+
+```text
+|ψ> = cos(theta/2)|0> + exp(i phi) sin(theta/2)|1>.
+```
+
+После удаления общей phase физические ray states образуют sphere S².
+
+Но важнее другое: один и тот же quantum geometric tensor содержит две части.
+
+### Real part
+
+Измеряет distinguishability соседних states — information geometry.
+
+### Imaginary part
+
+Даёт Berry curvature — phase geometry.
+
+То есть один qubit ray одновременно несёт:
+
+```text
+геометрическую distinguishability
+и
+U(1)-подобную phase structure.
+```
+
+Это будущие две ветви:
+
+```text
+Re Q → geometry
+Im Q → compact phase / light candidate.
+```
+
+### Статус
+
+**EXACT KINEMATIC.** Динамика, превращающая phase carrier в реальный photon, ещё отдельный шаг.
+
+---
+
+# Часть VIII. Как появляется spin-2 и метрическая гравитация
+
+## Глава 30. Где прячется collective spin-2
+
+Вернёмся к четырём spin-1/2.
+
+Их decomposition содержит unique `j=2` representation.
+
+Это важно потому, что massless graviton в 3+1D имеет helicity ±2.
+
+Но надо быть аккуратными.
+
+Фраза
+
+```text
+«четыре qubits = graviton»
+```
+
+неверна.
+
+Правильнее:
+
+```text
+четыре spin-1/2
+→ содержат unique collective spin-2 carrier
+→ carrier ещё должен получить правильную metric meaning
+→ dynamics
+→ constraints
+→ physical pole.
+```
+
+### Статус
+
+**EXACT REPRESENTATION-THEORY EXISTENCE**, не derivation physical graviton.
+
+---
+
+## Глава 31. Shape qubit действительно двигает метрику
+
+В logical geometry sector два coordinates отвечают intrinsic shape deformations.
+
+Exact Jacobian показывает, что они отображаются в два independent trace-free tangent directions metric space.
+
+На пальцах:
+
+```text
+повернули logical shape coordinate
+→ изменились dihedral relations
+→ изменились edge scalar products
+→ изменилась metric.
+```
+
+То есть между «qubit shape» и `g_ij` построен явный differential bridge.
+
+### Статус
+
+**EXACT** в declared tetrahedral geometry sector.
+
+---
+
+## Глава 32. Почему metric modes распадаются как 1 + 2 + 3
+
+У symmetric 3×3 metric perturbation шесть components.
+
+Tetrahedral/cubic symmetry S4 разлагает их как:
+
+```text
+A1  → 1 trace-like mode
+E   → 2 modes
+T2  → 3 modes.
+```
+
+Trace-free sector имеет 5 modes:
+
+```text
+E + T2.
+```
+
+Первый refined q4 finite kernel дал разные eigenvalues для E и T2.
+
+Normalized split:
+
+```text
+примерно 8.430036%.
+```
+
+### Очень важное предупреждение
+
+Это не означает:
+
+```text
+скорость гравитона отличается на 8.43%
+или
+массы частиц связаны как 8.43%.
+```
+
+Это локальный Euclidean spin-2 anisotropy precursor.
+
+---
+
+## Глава 33. Почему 8.43% нельзя превращать в массы электронов и мюонов
+
+Это хороший пример того, как theory сама запрещает красивую numerology.
+
+Если три generation-like states образуют irreducible T2 representation, любой S4-invariant mass operator на этом triplet пропорционален identity:
+
+```text
+M = m I₃.
+```
+
+То есть сам по себе tetrahedral splitting не может создать hierarchy
+
+```text
+electron
+muon
+tau.
+```
+
+Нужны отдельно выведенные:
+
+```text
+matter representations
+flavor symmetry
+symmetry-breaking spurion
+Yukawa map.
+```
+
+### Статус
+
+**NO-GO:** shortcut `8.43% → particle mass hierarchy` отвергнут.
+
+---
+
+# Часть IX. Peter–Weyl: клетка начинает жить квантовой динамикой
+
+## Глава 34. Что такое Peter–Weyl здесь
+
+SU(2) holonomies можно разложить по irreducible spins `j`.
+
+Это похоже на разложение музыкального звука по гармоникам.
+
+Вместо одной ноты мы имеем набор representation channels.
+
+Hamiltonian действует между ними, меняет intermediate spins и создаёт nontrivial recoupling.
+
+Именно здесь появляется настоящее quantum geometry dynamics, которой не было в одной static tetrahedral picture.
+
+---
+
+## Глава 35. Почему higher-shell spectrum ещё не физические частоты
+
+Finite Peter–Weyl calculation даёт nontrivial 32D constraint spectral data.
+
+Это полезно: оно показывает, что Hamiltonian не сводится к trivial scalar operator.
+
+Но очень важно не сделать незаконный скачок:
+
+```text
+constraint eigenvalue
+!=
+physical frequency omega.
+```
+
+К этому мы скоро вернёмся.
+
+### Статус
+
+**FINITE PASS:** nontrivial constraint spectral structure есть.
+
+**OPEN:** physical propagator ещё требует projector/history bridge.
+
+---
+
+## Глава 36. Почему простое геометрическое subdivision не создаёт нужный RG flow
+
+Для separable geometry-only kernel blocking даёт общий scale factor всем internal modes.
+
+Поэтому normalized anisotropy сама по себе не течёт.
+
+На пальцах:
+
+если увеличить фотографию одинаково по всем каналам, отношение красного к синему не изменится.
+
+Чтобы internal anisotropy реально renormalize, нужна nonseparable dynamics:
+
+```text
+Peter–Weyl recoupling
+interblock transfer
+history dynamics.
+```
+
+### Статус
+
+**NO-FLOW CONTROL** для geometry-only separable blocking.
+
+---
+
+# Часть X. От квантовой геометрии к общей относительности
+
+## Глава 37. Почему Euclidean Hamiltonian недостаточен
+
+Canonical real-SU(2) gravity использует connection
+
+```text
+A = Gamma + beta K.
+```
+
+Здесь `Gamma` — intrinsic spin connection, а `K` связан с extrinsic curvature.
+
+Euclidean и Lorentzian pieces по отдельности зависят от Immirzi parameter beta.
+
+В классическом kinetic combination beta dependence сокращается нужным образом.
+
+### Статус
+
+**EXACT CLASSICAL CONSISTENCY CONTROL.** Это не доказательство полной quantum beta-independence.
+
+---
+
+## Глава 38. Что такое HDA на пальцах
+
+Общая относительность должна позволять по-разному нарезать spacetime на spatial slices и при этом описывать одну и ту же физику.
+
+Hamiltonian constraint говорит примерно:
+
+> сдвинь slice немного «в нормальном направлении».
+
+Diffeomorphism constraint говорит:
+
+> перетащи точки вдоль самого slice.
+
+Если сначала сделать один normal deformation, потом другой и вычесть обратный порядок, должен получиться tangential shift.
+
+Символически:
+
+```text
+[H[N], H[M]]
+→ D[q^{-1}(N dM - M dN)].
+```
+
+Это один из главных тестов, отличающих настоящую gravity-like dynamics от красивого spin system.
+
+---
+
+## Глава 39. Почему старый factorized Hamiltonian был недостаточен
+
+Если Hamiltonian действует на geometry, но совсем не умеет работать с path/rerouting sector, commutator не может породить нужную spatial diffeomorphism action.
+
+Это был полезный negative result.
+
+После него был построен route-normal generator, у которого principal symbol reproduces нужную HDA structure function в заявленном semiclassical scope.
+
+### Статус
+
+**STRUCTURAL/FINITE PASS** в declared route-normal sector; full physical history still requires projector/refinement completion.
+
+---
+
+## Глава 40. Plebanski и Regge — два независимых моста к Einstein geometry
+
+Проект использует два разных downstream контроля.
+
+### Ветка 1
+
+```text
+B-fields
+→ simplicity
+→ Urbantke metric
+→ connection
+→ curvature.
+```
+
+### Ветка 2
+
+```text
+metric simplices
+→ Regge action
+→ Hessian
+→ Fierz–Pauli / Einstein-Hilbert behaviour.
+```
+
+Когда две независимые дороги приходят к совместимой IR structure, это сильнее одной удачной формулы.
+
+### Но
+
+Это всё ещё не означает, что microscopic binary dynamics уже полностью вывела continuum GR measure.
+
+---
+
+# Часть XI. Graviton propagator и почему всё оказалось сложнее
+
+## Глава 41. Reduced TT model имеет правильный massless pole
+
+В reduced positive-control model TT propagator имеет lattice sine form.
+
+При малых momenta:
+
+```text
+sin(x/2) ≈ x/2,
+```
+
+поэтому leading dispersion становится relativistic:
+
+```text
+omega² ≈ c² k².
+```
+
+И equal-time TT vacuum power в этом reduced control ведёт себя как
+
+```text
+P_TT(k) ~ k^-1.
+```
+
+### Статус
+
+**EXACT REDUCED CONTROL**, но не final interacting physical prediction.
+
+---
+
+## Глава 42. Почему generic quartic correction имеет не два, а шесть coefficients
+
+Раньше было очень соблазнительно описать всё двумя числами:
+
+```text
+isotropic eta₂
+cubic zeta₄.
+```
+
+Но generic momentum сам трансформируется под S4.
+
+После точного TT quotient оказывается:
+
+```text
+physical parity-even quartic pole space dimension = 6.
+```
+
+То есть в общем случае нужны шесть Wilson coefficients.
+
+### Зачем это важно
+
+Если бы мы заранее оставили только два удобных параметра, мы могли бы получить красивый fit просто потому, что выбрали слишком узкую модель.
+
+Теперь extractor заморожен до microscopic data.
+
+### Статус
+
+**EXACT:** six-dimensional quartic TT on-shell observable space в declared S4 setting.
+
+---
+
+## Глава 43. Шесть специальных измерений позволяют восстановить все шесть coefficients
+
+Три красивые high-symmetry directions `100`, `110`, `111` дают только rank 5.
+
+Поэтому заранее добавлена generic direction `120`.
+
+И selected six observables дают invertible extraction matrix.
 
 То есть:
 
 ```text
-smooth mean geometry
-+ quantum fluctuations
-= microscopic quantum foam
+6 измеряемых directional/polarization numbers
+↔
+6 Wilson coefficients.
 ```
 
-Но здесь есть важная коррекция старой версии README.
+Нельзя после просмотра результата поменять basis на более удобный.
 
-Smoothing law `delta g ~ b^-2` сам по себе **не является quantum vacuum power spectrum**. Старый shortcut, превращавший его в `P(k) ~ k^+1`, был отвергнут.
+### Статус
 
-Прямой reduced TT Gaussian calculation позже дал
-
-$$
-P_TT(k) proportional to k^-1.
-$$
-
-Поэтому observer smoothing и physical quantum two-point function — разные observables.
+**EXACT / PREREGISTERED EXTRACTOR.**
 
 ---
 
-# Часть V. Как квантовая геометрия получает внутреннюю структуру
+# Часть XII. Большая поправка: constraint spectrum — это ещё не физическое время
 
-# Глава 24. Qubit одновременно содержит distinguishability geometry и phase
+## Глава 44. Почему нельзя просто назвать z частотой omega
 
-Нормированный two-component state живёт на `S3` внутри `C2`. Physical ray quotient даёт
+В обычной quantum mechanics Hamiltonian генерирует physical time evolution.
 
-```text
-CP1 ~ S2
-```
+В generally covariant gravity Hamiltonian в canonical form в значительной степени является **constraint**.
 
-и Hopf fibration
-
-$$
-U(1) -> S^3 -> S^2.
-$$
-
-Обе структуры объединяет quantum geometric tensor
-
-$$
-Q_ab=<partial_a psi | (1-|psi><psi|) | partial_b psi>.
-$$
-
-Для Bloch spinor его real part даёт Fubini-Study metric
-
-$$
-ds_FS^2=(dtheta^2+sin^2(theta)dphi^2)/4,
-$$
-
-а imaginary part — Berry curvature
-
-$$
-F=(sin(theta)/2) dtheta wedge dphi.
-$$
-
-Схематически:
+Поэтому объект
 
 ```text
-Re Q -> quantum distinguishability / geometry
-Im Q -> phase curvature / U(1)
+(z - H)^-1
 ```
 
-Поэтому light-phase branch и geometry branch не надо вставлять как два совершенно чужих объекта: они имеют общий q=2 ray origin. Но превращение phase carrier в physical photon остаётся dynamical question.
-
----
-
-# Глава 25. Один q=2 carrier открывает SU(2) и compact U(1)
-
-Bloch/flux branch естественно несёт canonical spatial `SU(2)` geometry.
-
-Pancharatnam link
-
-$$
-U_vw=<psi_v|psi_w>/|<psi_v|psi_w>|
-$$
-
-transformируется как compact lattice `U(1)` connection.
-
-Closed product даёт Berry/Pancharatnam holonomy.
-
-Kinematically:
-
-```text
-q=2 -> SU(2) geometry carrier
-q=2 -> compact U(1) phase carrier
-```
-
-Но:
-
-```text
-U(1) phase carrier != proven Maxwell photon
-SU(2) spatial geometry != automatically electroweak SU(2)
-```
-
-Эти ограничения сохраняются во всём репозитории.
-
----
-
-# Глава 26. Unique collective spin-2 существует отдельно от geometry qubit
-
-**[EXACT REPRESENTATION THEORY]**
-
-Снова используем
-
-$$
-(1/2)^4=2 x j=0 + 3 x j=1 + 1 x j=2.
-$$
-
-В decomposition есть ровно один `j=2` irrep.
-
-Это означает existence unique collective spin-2 carrier внутри four-qubit Hilbert space.
-
-Но это ещё не физический graviton. Чтобы стать graviton sector, carrier должен пройти:
-
-```text
-geometric identification
- -> correct kinetic structure
- -> constraints
- -> TT physical quotient
- -> physical history pole
-```
-
-Massless TT reduction в соответствующем continuum sector оставляет две helicities.
-
----
-
-# Глава 27. Logical shape превращается в metric
-
-**[EXACT LOCAL BRIDGE]**
-
-В singlet geometry-qubit sector:
-
-```text
-X, Z -> intrinsic shape
-Y    -> orientation pseudoscalar
-```
-
-Для regular tetrahedron background
-
-```text
-g0 = [[2,1,1],
-      [1,2,1],
-      [1,1,2]]
-```
-
-Exact Jacobian tangents `M_X,M_Z` trace-free и имеют Gram
-
-$$
-Tr(g0^-1 M_A g0^-1 M_B)=(3/2) delta_AB.
-$$
-
-То есть две logical shape directions map’ятся в orthogonal equal-norm metric tangents.
-
-Старая стрелка
-
-```text
-logical qubit -> ??? -> metric
-```
-
-закрыта конкретным operator map.
-
----
-
-# Глава 28. Пять traceless metric modes и первый 8.43% precursor
-
-**[FINITE PASS + EXACT S4 REDUCTION]**
-
-Six-edge carrier decomposition:
-
-$$
-6=A1 + E + T2.
-$$
-
-Trace part `A1` отделяется, а physical local traceless metric space имеет dimension five:
-
-$$
-5=E+T2.
-$$
-
-First refined q4 metric compression дала
-
-```text
-lambda_E  = 1.1111917875584736
-lambda_T2 = 1.0220278507464782
-Delta_ET  = 0.08916393681199541
-kappa_5   = 1.0576934254712764
-```
-
-и relative split
-
-$$
-Delta_ET/kappa_5=0.08430036026012608.
-$$
-
-То есть `8.43%` — настоящий local Euclidean tetrahedral spin-2 anisotropy precursor.
-
-Но он **не** равен автоматически:
-
-```text
-physical zeta4
-speed anisotropy
-particle mass ratio
-observable Lorentz violation
-```
-
----
-
-# Глава 29. Почему 8.43% нельзя превратить в массы частиц
-
-**[EXACT NO-GO]**
-
-На traceless space
-
-$$
-5=E+T2.
-$$
-
-Для normalized tetrahedral splitter
-
-$$
-Q_tet=(3/5)P_E-(2/5)P_T2
-$$
-
-внутри `T2`
-
-$$
-Q_tet|T2=-(2/5)I_3.
-$$
-
-Если три generations образуют irreducible `T2`, любой `S4`-invariant mass operator по Schur lemma пропорционален identity:
-
-$$
-M=m I_3.
-$$
-
-Поэтому
-
-```text
-8.43% -> electron/muon/tau hierarchy
-```
-
-невозможно без independently derived flavor representation, symmetry-breaking spurion и Yukawa map.
-
----
-
-# Часть VI. Constraint dynamics и дорога к GR
-
-# Глава 30. Peter-Weyl идёт на следующий shell
-
-**[FINITE PASS]**
-
-Spin parity даёт
-
-```text
-P H_E P = 0.
-```
-
-Определим
-
-$$
-K=P H_E^2 P
-$$
-
-и normalized second-shell constraint object
-
-$$
-Lambda=K^-1/2 (P H_E^4 P-K^2) K^-1/2.
-$$
-
-Exact 32D finite result:
-
-```text
-rank(K)=32
-lambda_min=10.635759878291307
-lambda_max=15.059927665966466
-mean=12.860443113390883
-distance from scalar identity=0.09440461833276048
-```
-
-Это nontrivial finite **constraint spectral data**. Это не physical frequencies и не particle masses.
-
----
-
-# Глава 31. Geometry-only blocking не создаёт нужный RG flow
-
-**[EXACT CONTROL]**
-
-Для recursive PL geometry
-
-$$
-P^T L_(g+1) P=(1/4)L_g.
-$$
-
-Если geometry и internal kernel factorize, все internal couplings получают один и тот же scale factor, поэтому normalized anisotropy не течёт.
-
-Следовательно genuine flow обязан приходить из
-
-```text
-Peter-Weyl recoupling
-nonseparable quantum blocking
-interblock transport
-history dynamics
-```
-
-а не из скрытого geometric rescaling.
-
----
-
-# Глава 32. Euclidean Hamiltonian получает Lorentzian половину
-
-Для real Ashtekar-Barbero variables
-
-$$
-A=Gamma+beta K.
-$$
-
-Derivative-free kinetic controls дают
-
-$$
-H_E^kin=-beta^2 Q_DW,
-$$
-
-$$
-H_L^corr=(1+beta^2)Q_DW,
-$$
-
-и потому
-
-$$
-H_E^kin+H_L^corr=Q_DW.
-$$
-
-Это exact classical consistency control DeWitt kinetic structure.
-
-Он не является доказательством quantum beta-independence.
-
----
-
-# Глава 33. Hamiltonian constraints должны научиться двигать пространство
-
-Главная structural gravity equation:
-
-$$
-[H[N],H[M]] -> i*hbar*D[sharp(N dM-M dN)].
-$$
-
-RHS строится независимо через cochain/Hodge/flux map и route rerouting.
-
-Fixed-cutoff scaling:
-
-```text
-C_cross / D = O(epsilon)
-C_GG    / D = O(epsilon^2)
-```
-
-с conservative simultaneous family
-
-$$
-Jmax=o(epsilon^(-2/13)).
-$$
-
-В declared ADM family closure выбирает
-
-```text
-c = 1/2
-A*B = 1
-```
-
-но HDA не выводит numeric Newton constant, а cosmological term cancels из bracket.
-
----
-
-# Глава 34. Plebanski и Regge независимо сходятся к Einstein structure
-
-Две downstream дороги:
-
-```text
-B-field -> simplicity -> Urbantke metric -> connection -> curvature -> Einstein control
-```
-
-и
-
-```text
-metric -> Regge Hessian -> Fierz-Pauli -> Einstein-Hilbert / Ward controls
-```
-
-работают как independent cross-checks.
-
-Held-out Regge finite-size rule
-
-$$
-Z_L=1/8+C/L^2+D/L^4
-$$
-
-предсказал
-
-```text
-Z6_pred = 0.11876923193907167
-Z6_obs  = 0.11876075461190198
-relative error ~ 0.00714%
-```
-
-Это internal held-out numerical control, не experimental confirmation quantum gravity.
-
----
-
-# Глава 35. Первый reduced TT propagator
-
-**[EXACT REDUCED CONTROL]**
-
-Reduced kernel:
-
-$$
-G_TT(omega,k)=I_TT / { Z_T [4 sin^2(omega/2) - (1/3) sum_i 4 sin^2(k_i/2) + i0] }.
-$$
-
-Он имеет massless pole в reduced model.
-
-Bare lattice controls:
-
-```text
-eta2_bare  = -1/45
-zeta4_bare = -1/12
-```
-
-Equal-time Gaussian covariance:
-
-$$
-P_TT(k) proportional to k^-1.
-$$
-
-Это regulator positive control, не final interacting physical prediction.
-
----
-
-# Глава 36. Почему R_aniso -> zeta4 было неправильной стрелкой
-
-Logical higher-shell ratio
-
-```text
-R_aniso ~ 0.08975326618
-```
-
-— internal Peter-Weyl RG diagnostic.
-
-Он не physical cubic-dispersion coefficient.
-
-Легальная chain:
-
-```text
-shape dynamics
- -> exact shape-to-metric map
- -> metric effective kernel
- -> TT physical kernel
- -> physical pole coefficients
-```
-
----
-
-# Часть VII. Momentum, Wilson space и физические observables
-
-# Глава 37. Onsite kernel сжимается до трёх numbers — только onsite
-
-**[EXACT S4 AT k=0]**
-
-Для одного tetrahedral coarse block
-
-$$
-C6^(0)=a0 I+b0 A_adj+c0 O_opp.
-$$
-
-Irrep eigenvalues:
-
-```text
-lambda_A1 = a0 + 4 b0 + c0
-lambda_E  = a0 - 2 b0 + c0
-lambda_T2 = a0 - c0
-```
-
-Это правильная onsite symmetry compression. Generic directed momentum несёт собственную representation и требует большего space.
-
----
-
-# Глава 38. Momentum сам трансформируется
-
-Correct covariance law:
-
-$$
-C6(omega,g*k)=U_g C6(omega,k) U_g^-1.
-$$
-
-До TT constraints representation count даёт 13 quartic S4 singlets.
-
-После
-
-```text
-tr(h)=0
-h_ij k_j=0
-```
-
-exact polynomial quotient имеет dimension
-
-$$
-dim W_TT,S4^(4)=6.
-$$
-
-Это полный parity-even quartic physical pole space в declared symmetry class.
-
----
-
-# Глава 39. Шесть Wilson coefficients и frozen extractor
-
-Один complete Reynolds basis содержит шесть structures `W1...W6`, поэтому
-
-$$
-delta K_TT^(4)=Z_T c_T^2 a_*^2 sum_(r=1)^6 c_r W_r.
-$$
-
-Настоящая generic dimensionless prediction — six-vector
-
-```text
-c_IR = (c1,c2,c3,c4,c5,c6).
-```
-
-High-symmetry `100/110/111` дают rank five. Добавление preregistered generic direction `120` закрывает rank six.
-
-Exact extraction determinant:
-
-$$
-det(A)=1/699840000 != 0.
-$$
-
-`A^-1` frozen до открытия microscopic coefficients.
-
----
-
-# Глава 40. Momentum рождается из interblock transport
-
-Onsite return не знает, куда распространяется волна.
-
-Для face-sharing tetrahedra shared-face stabilizer — `S3`.
-
-Six-edge carrier decomposes under it как
-
-```text
-6=(A1+E)_apex + (A1+E)_face.
-```
-
-Reciprocal nearest-neighbour transfer задаётся двумя symmetric `2x2` multiplicity matrices — всего шестью real transfer functions.
-
-Regular tetrahedral moments:
-
-$$
-sum_a n_a^i n_a^j=(4/3)delta_ij,
-$$
-
-$$
-sum_a (k dot n_a)^4=(4/5)(k^2)^2-(8/9)Q4_cub(k).
-$$
-
-Поэтому leading `k^2` может стать isotropic, тогда как tetrahedral memory впервые появляется at quartic order.
-
----
-
-# Глава 41. eta2 и zeta4 теперь только nested hypothesis
-
-Старый compact ansatz
-
-$$
-e4(n)=eta2+zeta4 Q4_cub(n)
-$$
-
-не выброшен, но является только двумерной subspace внутри general six-dimensional answer.
-
-Если frozen result сам туда попадает:
-
-```text
-zeta4 = 2(e100-e110)
-eta2  = (e100+4e110)/5
-```
-
-и held-out relation
-
-$$
-e100-4e110+3e111=0
-$$
-
-должна выполниться без tuning.
-
----
-
-# Глава 42. Tetrahedral polarization fingerprint
-
-Для single-Q_tet nested model exact TT projection даёт spectra
-
-```text
-100: { 3/5,  -2/5 }
-110: { 7/20, -2/5 }
-111: {-1/15, -1/15}
-```
-
-и parameter-free splitting ratio
-
-$$
-Delta e_100 : Delta e_110 : Delta e_111 = 4:3:0.
-$$
-
-Это strong blind fingerprint только если full six-vector сначала independently выбирает эту nested submodel.
-
----
-
-# Глава 43. On-shell Wilson space переживает local field redefinitions
-
-Leading Einstein TT kernel
-
-$$
-K0=Z_T(-omega^2+c_T^2 k^2)I_TT.
-$$
-
-Local field redefinition добавляет quartic terms, пропорциональные `K0`. На leading massless pole `K0=0`, поэтому эти pieces vanish.
-
-Следовательно six-dimensional quotient является space genuine quartic **pole** observables, хотя off-shell action может иметь больше basis-dependent coefficients.
-
----
-
-# Часть VIII. Constraint spectrum ещё не физическая частота
-
-# Глава 44. Самая важная концептуальная коррекция: constraint z != physical omega
-
-Peter-Weyl `H[N]` — Hamiltonian constraint.
-
-Поэтому spectral resolvent
-
-```text
-(z-H)^-1
-```
-
-нельзя автоматически назвать physical propagator
+не имеет права автоматически называться
 
 ```text
 G(omega,k).
 ```
 
-Constraint spectral parameter `z` — не physical frequency `omega`.
+Это была важная conceptual correction проекта.
 
-Легальная chain:
+Правильная дорога:
 
 ```text
-constraints H[N]
- -> physical projector / rigging map
- -> history or boundary amplitude
- -> Z[J]
- -> W[J]
- -> 1PI Gamma
- -> physical quadratic kernel
- -> poles in physical omega,k
+constraints
+→ physical projector
+→ physical history amplitude
+→ generating functional
+→ effective action Gamma
+→ quadratic metric kernel
+→ physical poles.
 ```
 
-Finite Peter-Weyl `K/A/B/Lambda` остаются ценными constraint-dynamics data, но не переименовываются в graviton self-energy.
-
 ---
 
-# Глава 45. Physical projector перестал быть словом
+## Глава 45. Что такое physical projector на пальцах
 
-**[EXACT FINITE + CI PASS]**
+Представь большую quantum Hilbert space комнату.
 
-Для constraints `C_A` и positive metric `G^AB` define master constraint
+Не все states в ней физически допустимы.
 
-$$
-M_G=C_A^dagger G^AB C_B.
-$$
-
-Тогда exactly
-
-$$
-ker(M_G)=intersection_A ker(C_A).
-$$
-
-Finite physical projector
-
-$$
-P0=chi_{0}(M_G).
-$$
-
-CI control:
+Constraints говорят:
 
 ```text
-max ||C_A P0||                 ~ 1.35e-15
-max ||P0(G_i)-P0(G_j)||        ~ 2.82e-15
+вот эти направления являются gauge / unphysical
+вот kernel, где constraints выполнены.
 ```
 
-и heat-kernel convergence совпадает с spectral prediction на machine precision.
+Physical projector — это оператор, который оставляет только допустимую часть state.
 
-Открыт theory-specific refinement/rigging limit
-
-$$
-delta_P(g)=||P_(g+1) I_g-I_g P_g|| / ||I_g P_g|| -> 0.
-$$
-
----
-
-# Глава 46. Время появляется после physical conditioning
-
-Minimal parametrized-system positive control показывает
-
-$$
-2 <T_out|P_phys|T_in> = exp[-i H_s (T_out-T_in)].
-$$
-
-То есть обычная unitary time evolution восстанавливается **после** projection и conditioning на relational clock states.
-
-Для gravity candidate natural clock — не искусственный внешний параметр, а physical boundary proper separation `tau`, задаваемый semiclassical geometry/extrinsic-curvature data. Тогда physical `omega` — Fourier conjugate именно к `tau`.
-
----
-
-# Глава 47. Настоящая физика живёт в 1PI effective action
-
-После physical projector/history measure нужны generating functional
-
-$$
-Z[J_g,J_A,...]
-$$
-
-и 1PI effective action
-
-$$
-Gamma[g,A,...].
-$$
-
-Physical quadratic kernels:
-
-$$
-K_g=delta^2 Gamma / delta h_TT^2,
-$$
-
-$$
-K_A=delta^2 Gamma / delta A_T^2.
-$$
-
-Только здесь разрешено говорить о physical poles, residues, propagation, group velocity и phase.
-
-Это нынешний главный conceptual physical bottleneck.
-
----
-
-# Часть IX. Теория может предсказать не dispersion, а её отсутствие
-
-# Глава 48. Шесть coefficients могут законно сжаться в один, а потом в ноль
-
-Для isotropic coefficient vector
+Finite master-constraint construction использует positive operator
 
 ```text
-v_iso=(6,24,6,36,-9,18)^T
+M = sum constraints²
 ```
 
-frozen extractor даёт exactly
+с positive metric в constraint space.
 
-```text
-A v_iso=(1,1,1,1,1,1)^T.
-```
+Kernel `M` совпадает с общим kernel constraints.
 
-Поэтому observable symmetry ladder:
+Finite CI checks дали residuals порядка `10^-15`.
 
-```text
-S4:      six independent observables
-SO(3):   y1=y2=...=y6
-Lorentz metric-only massless vacuum: y1=...=y6=0
-```
+### Статус
 
-Или короче:
+**EXACT FINITE + CI PASS.**
 
-$$
-6 -> 1 -> 0.
-$$
-
-Пять contrasts проверяют restoration spatial isotropy. Шестая common amplitude проверяет, остаётся ли preferred-foliation quartic pole shift.
+Открыт настоящий refinement/rigging limit между масштабами.
 
 ---
 
-# Глава 49. Почему Lorentz-invariant metric-only vacuum защищает massless cone
+## Глава 46. Как после projector появляется физическое время
 
-Если IR vacuum Lorentz invariant, diffeomorphism unbroken и low-energy helicity-2 field — обычный metric graviton, inverse propagator имеет form
+Есть простой constrained toy model, где после projection и conditioning на clock states получается обычный unitary propagator.
 
-$$
-K_TT(s)=P_TT s F(a_*^2 s),
-$$
-
-где
-
-$$
-s=-omega^2+c^2 k^2.
-$$
-
-Massless root
-
-$$
-s=0
-$$
-
-не сдвигается local analytic higher derivatives. Они могут менять off-shell form factor или добавлять heavy roots `F=0`, но не обязаны давать vacuum `k^4,k^6,...` shift исходному massless graviton.
-
-Значит Planck-suppressed vacuum dispersion **не является обязательной сигнатурой quantum gravity**.
-
----
-
-# Глава 50. Если tetrahedral anisotropy физична, у неё должен быть physical order tensor
-
-Regular tetrahedron normals define quartic tensor
-
-$$
-S_ijkl=sum_a n_ai n_aj n_ak n_al.
-$$
-
-Trace-free tetrahedral order parameter
-
-$$
-T4_ijkl=S_ijkl-(4/5)delta_(ij delta_kl).
-$$
-
-Он удовлетворяет
+На пальцах:
 
 ```text
-T4_iikl = 0
-||T4||^2 = 128/135
+сначала выбираем physical states
+потом спрашиваем амплитуду между двумя показаниями relational clock
+только тогда появляется физическое время между ними.
 ```
 
-и contraction даёт cubic harmonic
+Для gravity естественный кандидат — boundary geometry, где proper separation задаётся самой semiclassical metric/extrinsic-curvature data.
 
-$$
-T4_ijkl k_i k_j k_k k_l=-(8/9)Q4_cub(k).
-$$
+Тогда физическая `omega` conjugate не к arbitrary label, а к physical separation.
 
-Если anisotropic physical pole выживает, тот же order parameter должен существовать в state/history/EFT. Иначе direction likely принадлежит regulator frame.
+### Статус
+
+**EXACT POSITIVE CONTROL** для constrained toy model.
+
+**OPEN PHYSICAL** для full microscopic gravity history.
 
 ---
 
-# Часть X. Световая ветвь
+## Глава 47. Настоящая физика живёт в effective action Gamma
 
-# Глава 51. Compact U(1) получает canonical Maxwell-like dynamics
+После physical history construction вводим generating functional `Z[J]`.
 
-На seed S3 complex:
+Из него effective action `Gamma`.
+
+И уже из second derivatives `Gamma` получаем physical kernels:
 
 ```text
-V=8, E=24, F=32, T=16
+K_gravity
+K_photon
+```
+
+Только здесь можно честно говорить о:
+
+```text
+physical pole
+speed
+residue
+dispersion
+phase shift.
+```
+
+Это сейчас один из главных открытых microscopic bridges.
+
+---
+
+# Часть XIII. Шесть коэффициентов могут исчезнуть — и это нормально
+
+## Глава 48. Лестница 6 → 1 → 0
+
+Generic tetrahedral S4 environment разрешает шесть quartic TT observables.
+
+Если при RG восстанавливается full spatial isotropy SO(3), все six observable values должны схлопнуться на одну common line:
+
+```text
+y1 = y2 = ... = y6.
+```
+
+А если дополнительно vacuum Lorentz-invariant, diffeomorphism unbroken и low-energy field — обычный metric graviton, massless branch может остаться exactly на
+
+```text
+s = -omega² + c²k² = 0.
+```
+
+Тогда common quartic pole shift тоже исчезает.
+
+Получаем hierarchy:
+
+```text
+S4       → 6 numbers
+SO(3)    → 1 number
+Lorentz  → 0 vacuum massless-pole shift.
+```
+
+### Почему это красиво
+
+Theory заранее допускает результат «ничего не нашли в vacuum dispersion».
+
+Это не провал.
+
+Это может быть правильным universality outcome.
+
+---
+
+## Глава 49. Если anisotropy остаётся, она обязана иметь физический источник
+
+Нельзя позволить regulator grid незаметно превратиться в «new physics».
+
+Если directional quartic pole реально survives, должен существовать physical order parameter, который тоже выбирает эти направления.
+
+Например tetrahedral rank-4 tensor order.
+
+Если tensor order under refinement исчезает, а pole anisotropy почему-то остаётся, это сильный признак regulator contamination.
+
+---
+
+# Часть XIV. Как из phase branch может появиться свет
+
+## Глава 50. Откуда берётся compact U(1)
+
+Normalized qubit живёт на S³ в C².
+
+Но physical ray не зависит от общей phase.
+
+Получается Hopf fibration:
+
+```text
+U(1) → S³ → S².
+```
+
+Phase between neighboring states даёт link variable.
+
+Closed loop даёт Berry/Pancharatnam holonomy.
+
+То есть q=2 quantum carrier естественно содержит compact phase structure.
+
+### Статус
+
+**EXACT KINEMATIC.** Это ещё не доказанный photon.
+
+---
+
+## Глава 51. Что нужно, чтобы phase стала Maxwell field
+
+Нужна dynamics.
+
+Если blocked phase sector получает positive local quadratic action, variation по temporal component автоматически даёт discrete Gauss law.
+
+Transverse sector then obeys Maxwell-like wave equation.
+
+На seed S³ complex:
+
+```text
+V=8
+E=24
+F=32
 rank d0=7
 rank d1=17
-d1 d0=0
-b1=0
+b1=0.
 ```
 
-Если blocked Pancharatnam phase sector даёт positive local quadratic action
+Нулевые modes соответствуют gauge image, без лишнего flat physical mode в unit-Hodge control.
 
-$$
-L_A=(Z_A/2)(dot(theta)-d0 A0)^T M1 (dot(theta)-d0 A0)
-    -(Z_A/2)(d1 theta)^T M2(d1 theta),
-$$
+### Статус
 
-то canonical momentum
+**CONDITIONAL THEOREM:** если microscopic phase-history генерирует нужный positive local quadratic action, canonical Maxwell structure следует.
 
-$$
-p=Z_A M1(dot(theta)-d0 A0)
-$$
-
-и variation по `A0` автоматически даёт Gauss law
-
-$$
-d0^T p=0.
-$$
-
-Transverse dynamics:
-
-$$
-ddot(theta)=-M1^-1 d1^T M2 d1 theta.
-$$
-
-Важно: `Z_A` cancels from linear dispersion. Он задаёт normalization/coupling, но не light speed.
+Deconfinement и actual stiffness ещё надо вывести динамически.
 
 ---
 
-# Глава 52. Почему Hopf topology не может одна выдать 137
+## Глава 52. Почему число 137 нельзя достать из красивой топологии
 
-Compactness фиксирует phase period и integer charge lattice.
-
-Но family
-
-$$
-Gamma_A[Z_A]=-(Z_A/4) integral F^2
-$$
-
-имеет ту же gauge symmetry, compactness, Chern class и massless cone для любого positive `Z_A`.
-
-Поэтому
+Compact U(1) фиксирует:
 
 ```text
-Hopf topology + gauge symmetry + Maxwell form
-  does NOT determine alpha.
+phase periodicity
+integer charge lattice.
 ```
 
-В unit-charge convention
-
-$$
-alpha=1/(4*pi*Z_A).
-$$
-
-Значит `alpha` требует microscopic phase-history/RG calculation `Z_A`. Случайный Peter-Weyl eigenvalue нельзя переименовывать в `137`.
-
----
-
-# Глава 53. Почему 3+1 особенно важно для compact U(1)
-
-Независимые branches дают
+Но Maxwell action может иметь любой positive stiffness `Z_A`:
 
 ```text
-q=2 -> d_space=3
-q=2 -> compact U(1) phase carrier
+Gamma_A ~ -(Z_A/4) F².
 ```
 
-вместе — `3+1-dimensional compact U(1)`.
+Одна и та же topology допускает разные `Z_A`.
 
-Эта dimensionality допускает deconfined/Coulomb phase. Это compatibility result, а не proof того, что microscopic `Z_A` нашей модели уже лежит в deconfined basin.
+Следовательно topology сама не фиксирует fine-structure constant.
 
-Deconfinement остаётся dynamic question.
-
----
-
-# Глава 54. Гравитация и свет могут иметь один principal cone
-
-Если physical IR action приходит к одной emergent metric,
-
-$$
-Gamma_IR[g,A]=integral sqrt(-g)[(R-2 Lambda)/(16 pi G) -(Z_A/4)F^2]+...
-$$
-
-то principal scalar
-
-$$
-s=g^munu k_mu k_nu
-$$
-
-общий.
-
-В Lorentz-invariant vacuum
+В standard unit-charge convention:
 
 ```text
-K_g     = s F_g(s)
-K_gamma = s F_gamma(s)
+alpha = 1/(4*pi*Z_A).
 ```
 
-и исходные massless photon и graviton имеют один cone
+Чтобы получить реальное число, надо вычислить `Z_A` из microscopic dynamics.
 
-$$
-s=0.
-$$
+### Статус
 
-`G`, `Z_A` и `alpha` не используются как ручки для tuning скорости.
-
-Conditional massless-spin-2 consistency дополнительно ведёт к universal gravitational coupling, тогда как U(1) требует charge conservation/quantization, но не одинакового charge у всех species.
+**NO-GO:** `Hopf topology → 1/137` без dynamics запрещено.
 
 ---
 
-# Часть XI. Три фундаментальных constants — три разных microscopic questions
+## Глава 53. Почему 3+1 dimensions помогают compact U(1)
 
-# Глава 55. Newton constant
+Это не derivation photon, но важная compatibility story.
 
-После geometric normalization metric physical 1PI action должна иметь
+В pure compact gauge theories dimensionality сильно влияет на confinement physics.
 
-$$
-Gamma[g] contains C_R integral sqrt(-g) R.
-$$
+Наша независимая spatial branch даёт three-dimensional slice, а causal branch — one time-like history direction.
 
-Только тогда
+Поэтому compact U(1) живёт именно в 3+1-like setting, где Coulomb/deconfined phase вообще может существовать.
 
-$$
-G=1/(16*pi*C_R).
-$$
+### Статус
 
-В internal units первым вычисляется dimensionless `G/a_*^2`.
-
-Graviton residue без фиксированной geometric field normalization нельзя автоматически называть Newton constant.
+**CONDITIONAL COMPATIBILITY**, не proof того, что microscopic phase находится в deconfined basin.
 
 ---
 
-# Глава 56. Cosmological constant
+# Часть XV. Почему свет и гравитация могут видеть одну и ту же геометрию
 
-`Lambda` не выводится HDA bracket.
+## Глава 54. Один metric cone
 
-Она должна определяться background saddle physical effective action:
-
-$$
-delta Gamma/delta g |_(g_bar)=0.
-$$
-
-Curvature этого vacuum solution определяет effective cosmological constant.
-
-Поэтому unit-radius S4 control `Lambda approximately 3` — reconstruction test supplied geometry, а не prediction observed dark energy.
-
----
-
-# Глава 57. Fine-structure constant
-
-После microscopic calculation Maxwell stiffness
-
-$$
-Z_A
-$$
-
-получаем в chosen unit-charge convention
-
-$$
-alpha=1/(4*pi*Z_A).
-$$
-
-Итак:
+Если physical IR action имеет одну emergent metric `g`, и к ней минимально подключены gravity и Maxwell sectors, их principal propagation condition использует один и тот же scalar:
 
 ```text
-C_R   -> G
-vacuum saddle -> Lambda
-Z_A   -> alpha
+s = g^{mu nu} k_mu k_nu.
 ```
 
-Это три different microscopic estimators.
-
----
-
-# Глава 58. Zero dispersion не означает zero quantum geometry
-
-Даже если physical six-vector
+Massless photon и graviton тогда имеют common leading cone:
 
 ```text
-c1=...=c6=0,
+s = 0.
 ```
 
-connected metric covariance
+Важно: ни Newton constant `G`, ни electromagnetic stiffness `Z_A` не являются ручками для настройки скорости.
 
-$$
-C_h(x,y)=<h(x)h(y)>_connected
-$$
+Они задают strengths, а не causal cone.
 
-может быть nonzero.
+---
 
-Optical phase map
+## Глава 55. Почему gravity universal, а electric charge может быть разным
 
-$$
-delta phi=(k ell/2) J h
-$$
+Massless spin-2 consistency в Lorentz-invariant IR требует universal coupling к conserved energy-momentum.
 
-даёт
+А U(1) gauge consistency требует conservation charge, но не одинакового charge у всех species.
 
-$$
-C_phi=(k ell/2)^2 J C_h J^T.
-$$
-
-Поэтому experimental programme разделяется:
+На пальцах:
 
 ```text
-1. pole / dispersion test
-2. connected fluctuation / interference test
+gravity спрашивает: сколько у тебя энергии и импульса?
+photon спрашивает: какой у тебя U(1) charge?
 ```
 
-и zero Lorentz violation не означает, что quantum geometry observationally empty.
+Первый coupling universal.
+
+Второй может быть species-dependent.
+
+### Статус
+
+**CONDITIONAL IR THEOREM** при assumptions обычного massless spin-2 Lorentz-invariant sector.
 
 ---
 
-# Часть XII. Matter и cosmology: что topology уже разрешает, но dynamics ещё не вывела
+# Часть XVI. Где живут G, Lambda и alpha
 
-# Глава 59. S3 не запрещает fermions
+## Глава 56. Почему нельзя вытащить все константы из одного красивого eigenvalue
 
-`S3` parallelizable, поэтому
+Это ещё одна защита от numerology.
 
-$$
-w2(S3)=0.
-$$
+Три numbers возникают из трёх разных physical questions.
 
-Кроме того
+### Newton constant G
 
-$$
-H1(S3,Z2)=0.
-$$
+Нужен coefficient перед curvature term в properly normalized physical effective action.
 
-Следовательно на S3 существует ровно одна spin structure.
+### Cosmological constant Lambda
 
-Seed 16-cell over Z2 даёт
+Нужно найти physical vacuum/background saddle `Gamma` и его curvature.
+
+### Fine-structure constant alpha
+
+Нужен phase stiffness `Z_A`.
+
+То есть:
 
 ```text
-(b0,b1,b2,b3)=(1,0,0,1).
+G      ← gravitational kinetic normalization
+Lambda ← vacuum/background saddle
+alpha  ← U(1) stiffness.
 ```
 
-Это topological prerequisite для spin-1/2 fields.
-
-Но это не derivation Standard Model, chirality, generations или Yukawa sector. Geometric `Spin(3)~SU(2)` нельзя автоматически переименовывать в electroweak `SU(2)`.
+Один Peter–Weyl spectral number не имеет права одновременно быть всеми тремя.
 
 ---
 
-# Глава 60. Global S3 имеет cosmological falsifiers
+# Часть XVII. Даже если vacuum dispersion нулевая, quantum geometry может быть видна
 
-Если physical continuum сохраняет closed S3 spatial slices, FRW curvature sign
+## Глава 57. Нулевой systematic shift не означает нулевые fluctuations
 
-$$
-k=+1.
-$$
+Представь идеально ровную среднюю поверхность воды.
 
-Это не требует, чтобы observable curvature сегодня была большой.
+Средний наклон может быть нулём.
 
-Scalar harmonics на S3 radius `a` имеют discrete spectrum
+Но waves всё равно существуют.
 
-$$
--nabla^2 Y_n=[n(n+2)/a^2]Y_n,
-$$
-
-с degeneracy `(n+1)^2`.
-
-Это conditional global-topology test: physical history dynamics ещё должна показать, что microscopic canonical S3 survives в cosmological continuum.
-
----
-
-# Часть XIII. Где тяжёлая микрофизика упирается сейчас
-
-# Глава 61. j=1 representation RG
-
-Canonical `j=1 S4[2,2]` carrier и finite master-projector preflight прошли gates.
-
-Exact ordered Peter-Weyl paths реально вычислялись, но часть paths превысила hosted-runner wall, поэтому full
+Так же можно иметь:
 
 ```text
-Lambda(j=1)
-R_aniso(j=1)
+physical massless pole exactly Lorentz-invariant
+но
+connected metric fluctuations nonzero.
 ```
 
-ещё не frozen.
+Тогда light interferometer может видеть phase correlations/noise, даже если average time-of-flight dispersion отсутствует.
 
-Следующая exact computational factorization:
-
-$$
-H_s H_r=sum_(alpha,beta) H_(s,beta) H_(r,alpha).
-$$
-
-Это sharding identity, не physics approximation.
+Это важная вторая experimental branch.
 
 ---
 
-# Глава 62. full-H_E L1 block
+## Глава 58. Как metric fluctuation превращается в optical phase
 
-Active-cone backend — representation optimization, которая должна быть exactly equivalent reference implementation.
+Если небольшая metric perturbation меняет optical path, phase shift примерно linear in metric perturbation:
 
-Reference-vs-local certificate упёрся в CI time wall до numerical guard, поэтому 72 L1 production shards нельзя объявлять завершёнными.
+```text
+delta_phi ~ (k*ell/2) J h.
+```
 
-Правильный следующий шаг — shard’ить сам equivalence certificate, не ослабляя support/amplitude tolerances.
+Тогда phase covariance связана с metric covariance:
 
-То есть bottleneck сейчас computational granularity, а не найденный physical contradiction.
+```text
+C_phi ~ (k*ell/2)^2 J C_h J^T.
+```
+
+То есть quantum geometry можно искать не только как systematic speed anomaly, но и как structured correlated phase fluctuations.
 
 ---
 
-# Глава 63. Truth table на сегодня
+# Часть XVIII. Может ли в таком пространстве жить материя?
 
-| Arrow / observable | Status |
+## Глава 59. S³ допускает spin-1/2 fields
+
+Chosen global spatial topology S³ parallelizable.
+
+У неё существует spin structure.
+
+Более того, поскольку
+
+```text
+H¹(S³,Z₂)=0,
+```
+
+spin structure единственна.
+
+### Что это значит
+
+Topology выбранного spatial manifold не запрещает fermions и не создаёт много inequivalent spin sectors.
+
+### Что это НЕ значит
+
+Мы пока не вывели:
+
+```text
+Standard Model
+chirality
+SU(3)
+electroweak SU(2)
+3 generations
+Yukawa couplings
+particle masses.
+```
+
+Geometric `Spin(3) ~ SU(2)` нельзя автоматически объявлять electroweak SU(2).
+
+---
+
+# Часть XIX. Может ли глобальное S³ когда-нибудь проверяться космологически?
+
+## Глава 60. Если S³ survives в continuum cosmology
+
+Тогда spatial FRW curvature sign соответствует closed slicing:
+
+```text
+k = +1.
+```
+
+Но это не означает, что curvature обязана быть большой сегодня.
+
+Большой curvature radius может сделать observable `Omega_k` очень маленьким.
+
+На S³ также discrete global harmonic spectrum.
+
+То есть global topology потенциально даёт low-k cosmological signatures.
+
+### Статус
+
+**CONDITIONAL:** microscopic/history dynamics ещё должна показать survival global S³ в realistic cosmological state.
+
+---
+
+# Часть XX. Что сегодня уже закрыто, а что ещё нет
+
+## Глава 61. Лестница доказательств
+
+| Вопрос | Статус |
 |---|---|
-| binary local alternatives | **MODEL STARTING ASSUMPTION** |
-| `q+2=2^q -> q=2` | **EXACT** |
-| q=2 Hamming `C4` | **EXACT** |
-| octahedral local `S2` link | **EXACT** |
-| `Z2^2 -> Walsh tetrahedral normals` | **EXACT** |
-| face-qubit flux closure | **EXACT / FINITE** |
-| four-face singlet geometry qubit | **EXACT REPRESENTATION** |
-| canonical PL `S3` completion | **EXACT / FINITE STABILITY** |
-| minimal 8-vertex flag uniqueness | **EXACT IN DECLARED SEMANTICS** |
-| causal-volume fixed point `d*=3` | **EXACT** |
-| `d_H/z~3.00439`, history `~4.00439` | **FROZEN / DERIVED** |
-| observer resolution map | **DECLARED COARSE-GRAINING MAP** |
-| `delta g~b^-2`, gradient `~b^-3`, curvature `~b^-4` | **FINITE PASS** |
-| smoothing alone derives 4D | **NO — NEGATIVE CONTROL** |
-| smoothing exponent = TT vacuum spectrum | **REJECTED SHORTCUT** |
-| quantum geometric tensor `ReQ/ImQ` | **EXACT KINEMATIC** |
-| logical shape -> metric | **EXACT** |
-| L1 `E/T2` split 8.43% | **FINITE PASS** |
-| `8.43% -> particle masses` | **NO-GO** |
-| 32D higher-shell constraint Lambda | **FINITE PASS** |
-| geometry-only anisotropy flow | **NO-FLOW CONTROL** |
-| HDA/ADM declared closure | **STRUCTURAL PASS** |
-| Regge held-out Z6 | **HELD-OUT PASS** |
-| reduced massless TT propagator | **EXACT REDUCED CONTROL** |
-| generic quartic TT S4 dimension = 6 | **EXACT** |
-| six-observable extractor | **EXACT** |
-| on-shell field-redefinition invariance | **EXACT** |
-| finite master projector | **EXACT + CI PASS** |
-| constraint spectral z = physical omega | **REJECTED SHORTCUT** |
-| `6 -> 1 -> 0` ladder | **EXACT / CONDITIONAL IR** |
-| compact Hopf U(1) carrier | **EXACT KINEMATIC** |
-| Maxwell form from positive phase action | **CONDITIONAL THEOREM** |
-| `Hopf topology -> alpha` | **NO-GO** |
-| unique spin structure on S3 | **EXACT TOPOLOGICAL** |
-| physical projector continuum/rigging limit | **OPEN PHYSICAL** |
-| microscopic physical Gamma[g,A] | **OPEN PHYSICAL** |
-| frozen physical six-vector | **OPEN PHYSICAL** |
-| microscopic G, Lambda, Z_A | **OPEN PHYSICAL** |
-| realistic gauge/chiral/Yukawa matter | **OPEN** |
-| experimental confirmation | **OPEN / DATA** |
+| Почему q=2? | **EXACT** |
+| Возникает ли local S² shell? | **EXACT** |
+| Дают ли q=2 labels tetrahedral frame? | **EXACT** |
+| Можно ли получить face qubits и geometry qubit? | **EXACT / FINITE** |
+| Есть ли natural global S³ completion? | **EXACT / FINITE STABILITY** |
+| Идёт ли causal-volume exponent к 3? | **EXACT** |
+| Есть ли z≈1 finite branch? | **FINITE / FROZEN** |
+| Получается ли 3+1-like scaling? | **DERIVED IN DECLARED MODEL** |
+| Сглаживается ли coarse geometry как b^-2/-3/-4? | **FINITE PASS** |
+| Создаёт ли coarse-graining сам по себе 4D? | **NO — NEGATIVE CONTROL** |
+| Есть ли exact shape→metric bridge? | **EXACT** |
+| Есть ли local E/T2 split ~8.43%? | **FINITE PASS** |
+| Можно ли из 8.43% вывести particle masses? | **NO-GO** |
+| Есть ли nontrivial Peter–Weyl higher-shell data? | **FINITE PASS** |
+| Closed ли HDA structure в declared control sectors? | **STRUCTURAL/FINITE PASS** |
+| Есть ли reduced massless TT positive control? | **EXACT REDUCED** |
+| Сколько generic quartic S4 TT observables? | **6 — EXACT** |
+| Frozen ли six-observable extractor? | **YES — EXACT** |
+| Constraint eigenvalue = physical omega? | **NO — REJECTED SHORTCUT** |
+| Есть ли finite master projector? | **EXACT + CI PASS** |
+| Есть ли full refinement/rigging projector limit? | **OPEN** |
+| Есть ли microscopic physical Gamma[g,A]? | **OPEN** |
+| Frozen ли interacting physical six-vector? | **OPEN** |
+| Есть ли compact U(1) phase carrier? | **EXACT KINEMATIC** |
+| Доказан ли physical Maxwell photon? | **CONDITIONAL / OPEN DYNAMICS** |
+| Выведена ли alpha? | **NO** |
+| Выведены ли G и Lambda? | **NO** |
+| Выведена ли realistic matter sector? | **NO** |
+| Есть ли external experimental confirmation? | **NO** |
 
 ---
 
-# Пять драконов, которых нельзя обмануть
+## Глава 62. Четыре дракона, которых нельзя обмануть
 
-### Dragon I — наблюдатель не является новой динамикой
+### Дракон 1. «Красивое число»
 
-Расстояние до объекта не перестраивает microscopic spacetime. Меняется resolution/coarse-graining map. Аналогия со стеной допустима только в этом смысле.
+Нельзя взять число из одного sector и назвать его mass, alpha или cosmological constant только потому, что оно похоже.
 
-### Dragon II — constraint is not time
+### Дракон 2. «Regulator — это природа»
 
-Нельзя переименовать spectral variable constraint в physical frequency. Сначала projector/history, затем Gamma, затем pole.
+Нельзя принять orientation lattice/tetrahedron за physical preferred direction без independent order parameter и refinement stability.
 
-### Dragon III — regulator is not nature
+### Дракон 3. «Constraint — это время»
 
-Если tetrahedral anisotropy не сопровождается physical order parameter или не stabilizes under refinement, она regulator memory.
+Нельзя назвать constraint spectral variable физической omega без projector/history construction.
 
-### Dragon IV — common scale is common
+### Дракон 4. «Подгоним после данных»
 
-Нельзя отдельно калибровать directions, polarizations, events и sectors. Один derived scale или один заранее объявленный calibration datum.
+Нельзя менять basis, directions, calibration или submodel после того, как увидели experimental result.
 
-### Dragon V — blind data
-
-После freeze нельзя менять basis, удалять неудобный coefficient или выбирать nested submodel потому, что posterior красивее.
-
-У природы всегда должно оставаться право сказать `FAIL`.
-
----
-
-# Воспроизводимые gates
-
-```bash
-python scripts/verify_theory_gates.py
-python bcqg_bit_to_gravity_final.py --strict
-python bcqg_observer_smoothing_unified.py
-python bcqg_global_manifold_gate.py
-python scripts/q2_dimension3_fixed_point_gate.py --max-generation 10
-python scripts/micro_walsh_qgeom_gate.py
-python scripts/q2_global_face_qubit_gluing_gate.py
-python scripts/logical_shape_metric_jacobian_gate.py
-python scripts/peter_weyl_j1_s4_block_gate.py
-python scripts/tt_propagator_first_pass.py
-python scripts/tt_vacuum_two_point_gate.py
-python scripts/s4_tt_quartic_complete_basis_gate.py
-python scripts/s4_tt_six_wilson_predictor.py --selftest
-python scripts/nearest_block_s3_transfer_gate.py
-python scripts/c6_tt_wilson_extractor.py
-python scripts/tetrahedral_tt_birefringence_gate.py
-```
-
----
-
-# Канонические входы
-
-| Layer | Entry point |
-|---|---|
-| Full evidence index | `CANONICAL_THEORY_PACKAGE.md` |
-| Human status | `THEORY_STATUS.md` |
-| Machine ledger | `theory_gates.json` |
-| Binary -> smooth spacetime | `BIT_TO_SPACETIME_CENTRAL_EQUATION.md` |
-| Observer-scale smoothing | `OBSERVER_SCALE_SMOOTHING.md` |
-| Global q=2 manifold | `GLOBAL_MANIFOLD_Q2_COMPLETION.md` |
-| q=2 fixed point | `Q2_DIMENSION3_FIXED_POINT_CLOSURE.md` |
-| q=2 Walsh geometry | `MICRO_WALSH_QGEOM_BRIDGE.md` |
-| Shape -> metric | `LOGICAL_SHAPE_METRIC_JACOBIAN.md` |
-| Mass no-go | `S4_MASS_SPLITTING_NO_GO.md` |
-| Higher shell | `PETER_WEYL_HIGHER_SHELL_LAMBDA_RESULT.md` |
-| HDA | `THREE_NODE_GRAPH_HDA_RESULT.md`, `JOINT_REGULATOR_LIMIT.md` |
-| Regge control | `TT_REGGE_ZT_L6_RESULT.md` |
-| Quartic TT space | `S4_TT_QUARTIC_COMPLETE_BASIS.md` |
-| Observable dictionary | `TT_TO_REAL_PHYSICS_OBSERVABLES.md` |
-| External tests | `PREDICTIONS_AND_EXPERIMENTAL_TESTS.md` |
-| Detailed 14 Aug lesson archive | `docs/archive/README_LESSON_2026-08-14.md` |
-| Original 17 Aug story | `docs/archive/README_STORY_2026-08-17.md` |
-| Previous 21 Aug v42 story | `docs/archive/README_STORY_2026-08-21_v42.md` |
-
----
-
-# Эпилог. Что именно мы теперь имеем в виду под «битами пространства-времени»
-
-Мы начали не с lattice spacing и не с metric tensor.
-
-Мы начали с binary distinction.
-
-Локальная однородность выбрала
-
-$$
-q=2.
-$$
-
-Четыре route labels образовали `C4`.
-
-Два causal poles превратили его в octahedral `S2` link.
-
-Три Walsh characters превратили те же binary labels в четыре exact tetrahedral normals.
-
-Face qubits получили flux closure.
-
-Gauss projection создал gauge-invariant geometry qubit.
-
-Global gluing дал canonical `S3` spatial phase.
-
-Recursive causal growth дал exact volume fixed point
-
-$$
-d_*=3.
-$$
-
-Dynamical exponent пришёл к
-
-$$
-z approximately 1,
-$$
-
-и history стала 3+1-like.
-
-Но microscopic world всё ещё discrete.
-
-И вот здесь появляется наблюдатель.
-
-Не потому, что его взгляд «магически меняет физику», а потому, что любой observable имеет finite resolution.
-
-Вблизи стены видна песчинка.
-
-Издалека одна visual cell содержит тысячи песчинок.
-
-Вблизи microscopic spacetime наблюдатель различал бы отдельные binary quantum-geometric degrees of freedom.
-
-На macroscopic scale один effective cell содержит огромное число этих degrees of freedom.
-
-Если unresolved contributions self-average,
+У природы должно оставаться право сказать:
 
 ```text
-metric roughness ~ b^-2
-slope roughness  ~ b^-3
-curvature noise  ~ b^-4.
+FAIL.
 ```
 
-Поэтому **дискретность может быть fundamental, а гладкость — emergent и observer-resolution dependent**, не противореча друг другу.
+---
 
-Это и есть самая точная версия метафоры «шероховатая стена становится гладкой, когда мы отходим»:
+# Часть XXI. Что сейчас считается главным следующим шагом
 
-> стена не меняется; меняется масштаб, на котором её можно различить.
+## Глава 63. Самая важная незакрытая стрелка
 
-Так же и здесь:
+У нас уже есть много structural bridges.
 
-> microscopic spacetime не обязано становиться continuous. Continuous metric может быть эффективным языком, которым coarse observer описывает огромное число unresolved quantum bits.
-
-Но на этом сказка не заканчивается.
-
-Smooth geometry ещё должна obey correct gravity constraints.
-
-Constraint spectrum ещё не physical time.
-
-Physical projector ещё должен иметь continuum limit.
-
-Physical history должна породить `Gamma[g,A,...]`.
-
-Из неё должны независимо выйти graviton kernel, Maxwell kernel, Newton constant, cosmological background и electromagnetic stiffness.
-
-И уже после этого — blind experiment.
-
-Современная конечная машина поэтому выглядит так:
+Но настоящая physical prediction требует пройти:
 
 ```text
-binary distinction
- -> route combinatorics
- -> local topology
- -> tetrahedral quantum geometry
- -> global spatial phase
- -> dimension
- -> causal/history scaling
- -> observer coarse graining
- -> smooth effective metric
- -> quantum constraints
- -> physical projector
- -> history / boundary amplitudes
- -> 1PI effective action
- -> physical graviton + photon kernels
- -> constants and correlations
- -> blind data
+microscopic constraints
+→ physical projector / refinement limit
+→ physical history or relational boundary amplitude
+→ Gamma[g,A,...]
+→ physical TT / Maxwell kernels
+→ freeze observables
+→ one common scale setting
+→ blind experiment.
 ```
 
-Если microscopic history calculation проходит эти gates, candidate theory получает настоящую physical prediction.
+Именно здесь theory должна либо действительно стать physics, либо честно провалить gate.
 
-Если нет — соответствующая ветка должна быть отвергнута.
+---
 
-Так и должна заканчиваться научная сказка для взрослых: **не обещанием, что герой обязательно победит, а экспериментом, которому позволено решить финал.**
+# Эпилог. Стена, пиксели и Вселенная
+
+Вернёмся к стене.
+
+Вблизи она шероховатая.
+
+Издалека — гладкая.
+
+Но неровности не исчезли.
+
+Они просто стали меньше одного observable pixel.
+
+Кандидатная идея этого проекта устроена похожим образом.
+
+На самом глубоком уровне может не существовать привычной гладкой координатной ткани.
+
+Есть бинарные distinctions и quantum relations.
+
+Из их combinatorics появляется local S².
+
+Из character algebra появляется tetrahedral geometry.
+
+Из many cells появляется global S³ phase.
+
+Из recursive growth появляется dimension 3.
+
+Из dynamics — z≈1 и 3+1-like history.
+
+Из coarse-graining огромное количество microscopic distinctions перестаёт быть разрешимым по отдельности.
+
+И effective geometry становится гладкой примерно так же, как становится гладкой далёкая штукатурная стена.
+
+Но история на этом не заканчивается.
+
+Smooth geometry ещё должна научиться obey Einstein constraints.
+
+Constraint states ещё должны стать physical histories.
+
+Physical histories ещё должны породить effective action.
+
+Из него ещё должны появиться реальные photon/graviton kernels и measurable numbers.
+
+Поэтому самая честная формула всего проекта сегодня такая:
+
+```text
+BIT
+→ RELATION
+→ LOCAL GEOMETRY
+→ SPACE
+→ DIMENSION
+→ HISTORY
+→ COARSE SMOOTHNESS
+→ QUANTUM GEOMETRY
+→ CONSTRAINTS
+→ PHYSICAL PROJECTOR
+→ PHYSICAL TIME
+→ EFFECTIVE ACTION
+→ OBSERVABLES
+→ EXPERIMENT.
+```
+
+Именно поэтому это научная сказка, а не миф.
+
+В мифе герой обязан победить.
+
+В науке последнюю главу пишет эксперимент.
