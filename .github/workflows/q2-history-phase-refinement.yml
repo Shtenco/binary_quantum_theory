@@ -1,0 +1,74 @@
+name: q2-history-phase-refinement
+
+on:
+  push:
+    branches:
+      - research/q2-history-phase-refinement-winding
+    paths:
+      - 'Q2_HISTORY_PHASE_REFINEMENT_AND_WINDING.md'
+      - 'Q2_MINIMAL_REVERSIBLE_HISTORY_DILATION.md'
+      - 'scripts/q2_history_phase_refinement_winding_gate.py'
+      - 'scripts/q2_minimal_reversible_history_dilation_gate.py'
+      - '.github/workflows/q2-history-phase-refinement.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-history-gates:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Recompute exact q=2 graph-link factorization input
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_graphlink_peter_weyl_gate.py \
+            --output verification_results/Q2_GRAPHLINK_PETER_WEYL.json
+      - name: Recompute exact q=2 recursive causal length input
+        run: |
+          python scripts/q2_dimension3_fixed_point_gate.py \
+            --max-generation 10 \
+            --output verification_results/Q2_DIMENSION3_FIXED_POINT.json
+      - name: Prove minimal reversible q=2 history dilation
+        run: |
+          python scripts/q2_minimal_reversible_history_dilation_gate.py \
+            --output verification_results/Q2_MINIMAL_REVERSIBLE_HISTORY_DILATION.json
+      - name: Run history phase-refinement / winding frontier gate
+        run: |
+          python scripts/q2_history_phase_refinement_winding_gate.py \
+            --graphlink-json verification_results/Q2_GRAPHLINK_PETER_WEYL.json \
+            --dimension-json verification_results/Q2_DIMENSION3_FIXED_POINT.json \
+            --max-generation 10 \
+            --output verification_results/Q2_HISTORY_PHASE_REFINEMENT_WINDING.json
+      - name: Enforce claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_HISTORY_PHASE_REFINEMENT_WINDING.json'))
+          assert p['passed'] is True
+          assert p['physical_frontier']['history_to_winding'].startswith('EXACT')
+          assert p['physical_frontier']['C4_to_C8_history_graph'].startswith('EXACT')
+          assert p['physical_frontier']['instantaneous_5_state_Hilbert_to_C8'].startswith('NEGATIVE')
+          assert p['physical_frontier']['C8_to_C16_to_U1'].startswith('CONDITIONAL')
+          assert p['physical_frontier']['phase_causal_locking'] == 'OPEN_PHYSICAL'
+          q=json.load(open('verification_results/Q2_MINIMAL_REVERSIBLE_HISTORY_DILATION.json'))
+          assert q['passed'] is True
+          assert q['forced_minimum_history_channel_dimension'] == 4
+          assert q['minimal_reversible_history_dimension'] == 8
+          assert q['history_unitary_order'] == 8
+          print('claim-boundary guards: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-history-phase-refinement-evidence
+          path: verification_results/*.json
