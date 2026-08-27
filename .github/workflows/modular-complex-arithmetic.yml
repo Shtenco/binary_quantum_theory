@@ -6,7 +6,9 @@ on:
       - research/modular-complex-arithmetic-bridge
     paths:
       - 'MODULAR_COMPLEX_TO_ORDINARY_ARITHMETIC.md'
+      - 'FINITE_PHASE_TO_INTEGER_RATIONAL_LIFT.md'
       - 'scripts/modular_complex_arithmetic_bridge_gate.py'
+      - 'scripts/finite_phase_integer_rational_lift_gate.py'
       - '.github/workflows/modular-complex-arithmetic.yml'
   workflow_dispatch:
 
@@ -14,7 +16,7 @@ permissions:
   contents: read
 
 jobs:
-  exact-gate:
+  exact-gates:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -27,7 +29,13 @@ jobs:
           mkdir -p verification_results
           python scripts/modular_complex_arithmetic_bridge_gate.py \
             --json verification_results/modular_complex_arithmetic_bridge_gate.json
+      - name: Run finite-phase integer/rational lift gate
+        run: |
+          python scripts/finite_phase_integer_rational_lift_gate.py \
+            --json verification_results/finite_phase_integer_rational_lift_gate.json
       - uses: actions/upload-artifact@v4
         with:
-          name: modular-complex-arithmetic-gate
-          path: verification_results/modular_complex_arithmetic_bridge_gate.json
+          name: modular-complex-arithmetic-gates
+          path: |
+            verification_results/modular_complex_arithmetic_bridge_gate.json
+            verification_results/finite_phase_integer_rational_lift_gate.json
