@@ -10,11 +10,13 @@ on:
       - 'Q2_C4_RATIONAL_PHASE_DENSITY_TO_U1.md'
       - 'Q2_WINDING_DUALITY_AND_PHASE_CHARACTERS.md'
       - 'Q2_HISTORY_CHARACTER_PROJECTOR_AUDIT.md'
+      - 'Q2_GEOMETRY_HISTORY_ORIENTATION_LOCKING.md'
       - 'scripts/q2_history_phase_refinement_winding_gate.py'
       - 'scripts/q2_minimal_reversible_history_dilation_gate.py'
       - 'scripts/q2_rational_phase_dense_u1_gate.py'
       - 'scripts/q2_winding_phase_character_gate.py'
       - 'scripts/q2_history_character_projector_audit_gate.py'
+      - 'scripts/q2_geometry_history_orientation_lock_gate.py'
       - '.github/workflows/q2-history-phase-refinement.yml'
   workflow_dispatch:
 
@@ -69,6 +71,10 @@ jobs:
         run: |
           python scripts/q2_history_character_projector_audit_gate.py \
             --output verification_results/Q2_HISTORY_CHARACTER_PROJECTOR_AUDIT.json
+      - name: Test geometry-history orientation locking channel
+        run: |
+          python scripts/q2_geometry_history_orientation_lock_gate.py \
+            --output verification_results/Q2_GEOMETRY_HISTORY_ORIENTATION_LOCK.json
       - name: Enforce claim boundary
         run: |
           python - <<'PY'
@@ -99,6 +105,12 @@ jobs:
           assert a['checks']['untwisted_group_average_kills_all_nontrivial_characters'] is True
           assert a['checks']['universal_cover_character_window_norm_diverges'] is True
           assert 'pure gauge' in a['exact_no_go']
+          o=json.load(open('verification_results/Q2_GEOMETRY_HISTORY_ORIENTATION_LOCK.json'))
+          assert o['passed'] is True
+          assert o['checks']['orientation_lock_is_combined_reflection_even'] is True
+          assert o['checks']['orientation_even_history_kernel_keeps_conjugate_degeneracy'] is True
+          assert o['checks']['ordinary_group_average_kills_orientation_lock'] is True
+          assert 'does not derive its coefficient' in o['microscopic_frontier']
           print('claim-boundary guards: PASS')
           PY
       - uses: actions/upload-artifact@v4
