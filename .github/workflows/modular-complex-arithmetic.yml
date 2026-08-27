@@ -10,11 +10,13 @@ on:
       - 'ARCHIMEDEAN_COMPLETION_AND_COMPLEX_EMERGENCE.md'
       - 'Q2_ORIENTATION_TO_COMPLEX_CONJUGATION.md'
       - 'PHASE_INVARIANT_QUADRATIC_WEIGHT.md'
+      - 'REALIFICATION_OF_QUANTUM_DYNAMICS.md'
       - 'scripts/modular_complex_arithmetic_bridge_gate.py'
       - 'scripts/finite_phase_integer_rational_lift_gate.py'
       - 'scripts/archimedean_completion_complex_emergence_gate.py'
       - 'scripts/q2_orientation_complex_conjugation_gate.py'
       - 'scripts/phase_invariant_quadratic_weight_gate.py'
+      - 'scripts/realification_quantum_dynamics_gate.py'
       - '.github/workflows/modular-complex-arithmetic.yml'
   workflow_dispatch:
 
@@ -51,6 +53,10 @@ jobs:
         run: |
           python scripts/phase_invariant_quadratic_weight_gate.py \
             --json verification_results/phase_invariant_quadratic_weight_gate.json
+      - name: Run realification of Hermitian quantum dynamics gate
+        run: |
+          python scripts/realification_quantum_dynamics_gate.py \
+            --json verification_results/realification_quantum_dynamics_gate.json
       - uses: actions/upload-artifact@v4
         with:
           name: modular-complex-arithmetic-gates
