@@ -8,9 +8,11 @@ on:
       - 'Q2_HISTORY_PHASE_REFINEMENT_AND_WINDING.md'
       - 'Q2_MINIMAL_REVERSIBLE_HISTORY_DILATION.md'
       - 'Q2_C4_RATIONAL_PHASE_DENSITY_TO_U1.md'
+      - 'Q2_WINDING_DUALITY_AND_PHASE_CHARACTERS.md'
       - 'scripts/q2_history_phase_refinement_winding_gate.py'
       - 'scripts/q2_minimal_reversible_history_dilation_gate.py'
       - 'scripts/q2_rational_phase_dense_u1_gate.py'
+      - 'scripts/q2_winding_phase_character_gate.py'
       - '.github/workflows/q2-history-phase-refinement.yml'
   workflow_dispatch:
 
@@ -56,6 +58,11 @@ jobs:
         run: |
           python scripts/q2_rational_phase_dense_u1_gate.py \
             --output verification_results/Q2_RATIONAL_PHASE_DENSE_U1.json
+      - name: Run winding composition to phase-character gate
+        run: |
+          python scripts/q2_winding_phase_character_gate.py \
+            --history-json verification_results/Q2_HISTORY_PHASE_REFINEMENT_WINDING.json \
+            --output verification_results/Q2_WINDING_PHASE_CHARACTER.json
       - name: Enforce claim boundary
         run: |
           python - <<'PY'
@@ -75,6 +82,11 @@ jobs:
           r=json.load(open('verification_results/Q2_RATIONAL_PHASE_DENSE_U1.json'))
           assert r['passed'] is True
           assert 'not necessary' in r['senior_correction']
+          c=json.load(open('verification_results/Q2_WINDING_PHASE_CHARACTER.json'))
+          assert c['passed'] is True
+          assert c['checks']['Z_character_composition_law'] is True
+          assert c['checks']['orientation_reversal_is_inverse_transpose_conjugation'] is True
+          assert c['gaussian_integer_unit_circle'] == [[-1,0],[0,-1],[0,1],[1,0]]
           print('claim-boundary guards: PASS')
           PY
       - uses: actions/upload-artifact@v4
