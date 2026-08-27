@@ -7,8 +7,10 @@ on:
     paths:
       - 'Q2_HISTORY_PHASE_REFINEMENT_AND_WINDING.md'
       - 'Q2_MINIMAL_REVERSIBLE_HISTORY_DILATION.md'
+      - 'Q2_C4_RATIONAL_PHASE_DENSITY_TO_U1.md'
       - 'scripts/q2_history_phase_refinement_winding_gate.py'
       - 'scripts/q2_minimal_reversible_history_dilation_gate.py'
+      - 'scripts/q2_rational_phase_dense_u1_gate.py'
       - '.github/workflows/q2-history-phase-refinement.yml'
   workflow_dispatch:
 
@@ -50,6 +52,10 @@ jobs:
             --dimension-json verification_results/Q2_DIMENSION3_FIXED_POINT.json \
             --max-generation 10 \
             --output verification_results/Q2_HISTORY_PHASE_REFINEMENT_WINDING.json
+      - name: Run direct rational phase density to U1 gate
+        run: |
+          python scripts/q2_rational_phase_dense_u1_gate.py \
+            --output verification_results/Q2_RATIONAL_PHASE_DENSE_U1.json
       - name: Enforce claim boundary
         run: |
           python - <<'PY'
@@ -66,6 +72,9 @@ jobs:
           assert q['forced_minimum_history_channel_dimension'] == 4
           assert q['minimal_reversible_history_dimension'] == 8
           assert q['history_unitary_order'] == 8
+          r=json.load(open('verification_results/Q2_RATIONAL_PHASE_DENSE_U1.json'))
+          assert r['passed'] is True
+          assert 'not necessary' in r['senior_correction']
           print('claim-boundary guards: PASS')
           PY
       - uses: actions/upload-artifact@v4
