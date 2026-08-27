@@ -7,8 +7,10 @@ on:
     paths:
       - 'MODULAR_COMPLEX_TO_ORDINARY_ARITHMETIC.md'
       - 'FINITE_PHASE_TO_INTEGER_RATIONAL_LIFT.md'
+      - 'ARCHIMEDEAN_COMPLETION_AND_COMPLEX_EMERGENCE.md'
       - 'scripts/modular_complex_arithmetic_bridge_gate.py'
       - 'scripts/finite_phase_integer_rational_lift_gate.py'
+      - 'scripts/archimedean_completion_complex_emergence_gate.py'
       - '.github/workflows/modular-complex-arithmetic.yml'
   workflow_dispatch:
 
@@ -33,9 +35,11 @@ jobs:
         run: |
           python scripts/finite_phase_integer_rational_lift_gate.py \
             --json verification_results/finite_phase_integer_rational_lift_gate.json
+      - name: Run Archimedean completion / complex emergence gate
+        run: |
+          python scripts/archimedean_completion_complex_emergence_gate.py \
+            --json verification_results/archimedean_completion_complex_emergence_gate.json
       - uses: actions/upload-artifact@v4
         with:
           name: modular-complex-arithmetic-gates
-          path: |
-            verification_results/modular_complex_arithmetic_bridge_gate.json
-            verification_results/finite_phase_integer_rational_lift_gate.json
+          path: verification_results/*.json
