@@ -17,11 +17,11 @@ branches separately:
     B_+ |psi> = sum_s sign_s T_s |psi>,
     B_- |psi> = sum_s sign_s T_s^dagger |psi>.
 
-The history label is not identified with physical time.  It is only the exact
+The history label is not identified with physical time. It is only the exact
 ordered primitive-history direction already present in the constraint
 regularization.
 
-Two active-sector observables are then formed without fitting:
+Two active-sector observables are formed without fitting:
 
     D_rate  = B_+^dagger B_+ - B_-^dagger B_-,
 
@@ -35,22 +35,29 @@ forward and reverse norms are equal.
 At the source tetrahedron the exact oriented-volume pseudoscalar is
 proportional to the logical Pauli Y,
 
-    Q = sqrt(3)/4 Y_L,
+    Q = sqrt(3)/4 Y_L.
 
-so the pre-registered microscopic locking coefficients are
+Two levels of locking are therefore measured and kept separate.
 
-    g_YC_rate  = Tr(Y_0 D_rate)  / Tr(Y_0^2),
-    g_YC_phase = Tr(Y_0 D_phase) / Tr(Y_0^2).
+1. Intrinsic/environment-unbiased coefficient: trace the other four logical
+   qubits with the identity and project the resulting source operator on Y.
+2. Environment-conditioned coefficients: hold each of the 16 configurations
+   of the other four logical qubits fixed and project the corresponding 2x2
+   source block on Y.
+
+This prevents a false no-go when opposite environment sectors cancel in the
+maximally mixed trace.
 
 A nonzero coefficient is evidence for a first-history-shell correlation
-between geometric orientation and ordered graph-changing history.  A zero is
-a genuine no-go for this particular first-shell channel.  Neither outcome by
-itself constructs the physical rigging-map/history measure or a physical
-frequency propagator.
+between geometric orientation and ordered graph-changing history. A zero in
+all 16 environment sectors is a genuine no-go only for this particular
+first-shell channel. Neither outcome by itself constructs the physical
+rigging-map/history measure or a physical frequency propagator.
 """
 from __future__ import annotations
 
 import argparse
+import itertools
 import json
 import math
 import sys
@@ -77,10 +84,6 @@ def add(dst, src, scale=1.0, tol=TOL):
             dst[k] = z
         elif k in dst:
             del dst[k]
-
-
-def scale_state(src, c):
-    return {k: c * a for k, a in src.items() if abs(c * a) > TOL}
 
 
 def combine(*terms):
@@ -163,6 +166,55 @@ def hermitian_defect(A):
     return float(np.linalg.norm(A - A.conj().T) / max(np.linalg.norm(A), 1e-30))
 
 
+def source_environment_blocks(O, G_total, keys, source_v):
+    """Return all 16 fixed-environment 2x2 source-qubit Y projections.
+
+    The environment is the tuple of K labels on the four nodes other than the
+    source.  No basis preference is introduced beyond the already-frozen
+    logical K=(0,2) basis used to define Y_L.
+    """
+    others = tuple(v for v in PW.VERT if v != source_v)
+    idx = {key[1]: i for i, key in enumerate(keys)}
+    Y = np.array([[0, -1j], [1j, 0]], complex)
+    rows = []
+    for env in itertools.product((0, 2), repeat=len(others)):
+        inds = []
+        for ks_source in (0, 2):
+            ks = [0] * len(PW.VERT)
+            ks[source_v] = ks_source
+            for v, kval in zip(others, env):
+                ks[v] = kval
+            inds.append(idx[tuple(ks)])
+        block = O[np.ix_(inds, inds)]
+        gblock = G_total[np.ix_(inds, inds)]
+        gy = np.trace(Y.conj().T @ block) / np.trace(Y.conj().T @ Y)
+        intensity = float(np.trace(gblock).real / 2.0)
+        rows.append({
+            "environment_nodes": list(others),
+            "environment_K": list(env),
+            "source_indices_K0_K2": inds,
+            "g_Y": [float(gy.real), float(gy.imag)],
+            "mean_history_intensity": intensity,
+            "g_Y_relative_to_history_intensity": float(gy.real / max(intensity, 1e-30)),
+            "block": [[[float(block[i, j].real), float(block[i, j].imag)] for j in range(2)] for i in range(2)],
+        })
+    return rows
+
+
+def classify_locking(g_intrinsic, env_rows, global_scale):
+    intrinsic_tol = 1e-10 * max(global_scale, 1e-30)
+    max_env_scale = max((r["mean_history_intensity"] for r in env_rows), default=global_scale)
+    env_tol = 1e-10 * max(max_env_scale, 1e-30)
+    max_env = max((abs(r["g_Y"][0]) for r in env_rows), default=0.0)
+    if abs(g_intrinsic.real) > intrinsic_tol:
+        status = "INTRINSIC_NONZERO_FIRST_SHELL"
+    elif max_env > env_tol:
+        status = "ENVIRONMENT_CONDITIONED_FIRST_SHELL_ONLY"
+    else:
+        status = "ZERO_ALL_ENVIRONMENTS_FIRST_SHELL_WITHIN_TOL"
+    return status, max_env, intrinsic_tol, env_tol
+
+
 def run(source_v=0):
     # Match the zero-aware absolute-volume convention used by the corrected
     # production sine-ordering audit.
@@ -205,7 +257,12 @@ def run(source_v=0):
     g_phase = np.trace(Y0.conj().T @ D_phase) / yden
     avg_history_intensity = float(np.trace(G_total).real / len(keys))
 
-    # Reflection representative on the logical source qubit.  Z Y Z = -Y.
+    rate_env = source_environment_blocks(D_rate, G_total, keys, source_v)
+    phase_env = source_environment_blocks(D_phase, G_total, keys, source_v)
+    rate_status, max_rate_env, rate_intr_tol, rate_env_tol = classify_locking(g_rate, rate_env, avg_history_intensity)
+    phase_status, max_phase_env, phase_intr_tol, phase_env_tol = classify_locking(g_phase, phase_env, avg_history_intensity)
+
+    # Reflection representative on the logical source qubit. Z Y Z = -Y.
     # This is only a local sign-covariance check, not a derivation that this Z
     # equals every microscopic face reflection used by the PL regulator.
     Z0 = paulis["Z"]
@@ -216,8 +273,6 @@ def run(source_v=0):
     sine_gram = gram(sine, sine)
     sine_nonzero = float(np.trace(sine_gram).real) > 1e-14
 
-    # Report both absolute coefficients and dimensionless values relative to
-    # the mean total one-shell history intensity.
     rel_rate = float(g_rate.real / max(avg_history_intensity, 1e-30))
     rel_phase = float(g_phase.real / max(avg_history_intensity, 1e-30))
 
@@ -231,12 +286,9 @@ def run(source_v=0):
         "sine_constraint_channel_nonzero": sine_nonzero,
         "g_rate_is_real": abs(g_rate.imag) < 1e-9,
         "g_phase_is_real": abs(g_phase.imag) < 1e-9,
+        "all_environment_rate_gY_real": max((abs(r["g_Y"][1]) for r in rate_env), default=0.0) < 1e-9,
+        "all_environment_phase_gY_real": max((abs(r["g_Y"][1]) for r in phase_env), default=0.0) < 1e-9,
     }
-
-    scale = max(avg_history_intensity, 1e-30)
-    numerical_zero = 1e-10 * scale
-    rate_status = "NONZERO_FIRST_SHELL" if abs(g_rate.real) > numerical_zero else "ZERO_FIRST_SHELL_WITHIN_TOL"
-    phase_status = "NONZERO_FIRST_SHELL" if abs(g_phase.real) > numerical_zero else "ZERO_FIRST_SHELL_WITHIN_TOL"
 
     return {
         "status": "microscopic Peter-Weyl geometry/history orientation-current measurement",
@@ -249,14 +301,28 @@ def run(source_v=0):
         "mean_total_one_shell_history_intensity": avg_history_intensity,
         "D_rate_hermiticity_relative_defect": hermitian_defect(D_rate),
         "D_phase_hermiticity_relative_defect": hermitian_defect(D_phase),
-        "g_YC_rate": [float(g_rate.real), float(g_rate.imag)],
-        "g_YC_phase": [float(g_phase.real), float(g_phase.imag)],
-        "g_YC_rate_relative_to_mean_history_intensity": rel_rate,
-        "g_YC_phase_relative_to_mean_history_intensity": rel_phase,
-        "rate_locking_status": rate_status,
-        "phase_locking_status": phase_status,
-        "local_pauli_projection_D_rate": pauli_projection(D_rate, paulis),
-        "local_pauli_projection_D_phase": pauli_projection(D_phase, paulis),
+        "intrinsic_environment_unbiased": {
+            "definition": "normalized trace over all four non-source logical qubits, equivalent to maximally mixed environment",
+            "g_YC_rate": [float(g_rate.real), float(g_rate.imag)],
+            "g_YC_phase": [float(g_phase.real), float(g_phase.imag)],
+            "g_YC_rate_relative_to_mean_history_intensity": rel_rate,
+            "g_YC_phase_relative_to_mean_history_intensity": rel_phase,
+            "rate_locking_status": rate_status,
+            "phase_locking_status": phase_status,
+            "rate_intrinsic_zero_tolerance": rate_intr_tol,
+            "phase_intrinsic_zero_tolerance": phase_intr_tol,
+        },
+        "environment_conditioned": {
+            "environment_count": len(rate_env),
+            "max_abs_rate_gY": max_rate_env,
+            "max_abs_phase_gY": max_phase_env,
+            "rate_environment_zero_tolerance": rate_env_tol,
+            "phase_environment_zero_tolerance": phase_env_tol,
+            "rate_rows": rate_env,
+            "phase_rows": phase_env,
+        },
+        "local_pauli_projection_D_rate_after_environment_trace": pauli_projection(D_rate, paulis),
+        "local_pauli_projection_D_phase_after_environment_trace": pauli_projection(D_phase, paulis),
         "checks": checks,
         "definitions": {
             "B_plus": "sum_s sign_s T_s on the complete all-j=1/2 Gauss carrier",
@@ -266,9 +332,10 @@ def run(source_v=0):
             "Y_geometry": "logical Pauli Y at source tetrahedron, with Q=sqrt(3)/4 Y_L",
         },
         "claim_boundary": (
-            "This is an exact finite first-history-shell constraint-dynamics diagnostic on the canonical K5 Peter-Weyl regulator. "
-            "A nonzero coefficient would establish microscopic orientation/history correlation in this declared carrier, not a physical-time Hamiltonian, physical projector, continuum U(1) coupling, or experimental observable. "
-            "A zero coefficient rules out only this pre-registered first-shell channel; higher-history loops or the Lorentzian constraint may still differ."
+            "This is an exact finite first-history-shell constraint-dynamics diagnostic on the canonical K5 Peter-Weyl regulator, not a physical-time Hamiltonian. "
+            "A nonzero intrinsic coefficient establishes environment-unbiased microscopic orientation/history correlation in this carrier; environment-conditioned-only means the maximally mixed trace cancels correlations that exist in fixed logical surroundings. "
+            "Only ZERO_ALL_ENVIRONMENTS_FIRST_SHELL_WITHIN_TOL is a first-shell no-go, and even that does not exclude higher-history loops or the Lorentzian constraint. "
+            "No physical projector, continuum U(1) coupling, or experimental observable is claimed."
         ),
     }
 
