@@ -1,0 +1,54 @@
+name: q2-history-fourier-complex-structure
+
+on:
+  push:
+    branches:
+      - research/q2-history-fourier-complex-structure
+    paths:
+      - 'Q2_HISTORY_FOURIER_REAL_COMPLEX_STRUCTURE.md'
+      - 'scripts/q2_history_fourier_real_complex_structure_gate.py'
+      - '.github/workflows/q2-history-fourier-complex-structure.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-fourier-complex-structure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Prove history Fourier / real complex-structure identity
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_history_fourier_real_complex_structure_gate.py \
+            --output verification_results/Q2_HISTORY_FOURIER_REAL_COMPLEX_STRUCTURE.json
+      - name: Enforce claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_HISTORY_FOURIER_REAL_COMPLEX_STRUCTURE.json'))
+          assert p['passed'] is True
+          assert p['checks']['J_is_real'] is True
+          assert p['checks']['J_squared_is_minus_I'] is True
+          assert p['checks']['all_C8_character_blocks_are_real_rotations'] is True
+          assert p['checks']['continuous_rotation_group_law'] is True
+          assert p['checks']['orientation_unresolved_small_angle_starts_quadratic'] is True
+          assert 'not asserted to be physical frequency' in p['claim_boundary']
+          assert 'no matter Dirac equation' in p['claim_boundary']
+          print('history-Fourier claim boundary: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-history-fourier-real-complex-structure
+          path: verification_results/Q2_HISTORY_FOURIER_REAL_COMPLEX_STRUCTURE.json
+          if-no-files-found: error
