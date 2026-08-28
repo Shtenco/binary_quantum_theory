@@ -1,0 +1,55 @@
+name: q2-history-directed-laplacian-factorization
+
+on:
+  push:
+    branches:
+      - research/q2-history-directed-laplacian-factorization
+    paths:
+      - 'Q2_HISTORY_DIRECTED_LAPLACIAN_FACTORIZATION.md'
+      - 'scripts/q2_history_directed_laplacian_factorization_gate.py'
+      - '.github/workflows/q2-history-directed-laplacian-factorization.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-directed-factorization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Prove directed history Laplacian factorization
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_history_directed_laplacian_factorization_gate.py \
+            --output verification_results/Q2_HISTORY_DIRECTED_LAPLACIAN_FACTORIZATION.json
+      - name: Enforce claim boundary and exact spectrum
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_HISTORY_DIRECTED_LAPLACIAN_FACTORIZATION.json'))
+          assert p['passed'] is True
+          c=p['checks']
+          assert c['forward_difference_left_square_is_graph_laplacian'] is True
+          assert c['forward_difference_right_square_is_graph_laplacian'] is True
+          assert c['odd_current_square_has_exact_lattice_correction'] is True
+          assert p['forward_difference_zero_modes_m'] == [0]
+          assert p['odd_current_zero_modes_m'] == [0,4]
+          assert 'not identified with physical time' in p['claim_boundary']
+          assert 'not claimed to be the physical Dirac operator' in p['claim_boundary']
+          print('directed factorization claim guards: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-history-directed-laplacian-factorization
+          path: verification_results/Q2_HISTORY_DIRECTED_LAPLACIAN_FACTORIZATION.json
+          if-no-files-found: error
