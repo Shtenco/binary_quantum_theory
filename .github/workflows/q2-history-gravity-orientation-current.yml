@@ -47,14 +47,24 @@ jobs:
           assert p['checks']['sine_history_reconstruction'] is True
           assert p['checks']['D_rate_hermitian'] is True
           assert p['checks']['D_phase_hermitian'] is True
-          assert p['rate_locking_status'] in ('NONZERO_FIRST_SHELL','ZERO_FIRST_SHELL_WITHIN_TOL')
-          assert p['phase_locking_status'] in ('NONZERO_FIRST_SHELL','ZERO_FIRST_SHELL_WITHIN_TOL')
+          intrinsic=p['intrinsic_environment_unbiased']
+          env=p['environment_conditioned']
+          allowed=(
+            'INTRINSIC_NONZERO_FIRST_SHELL',
+            'ENVIRONMENT_CONDITIONED_FIRST_SHELL_ONLY',
+            'ZERO_ALL_ENVIRONMENTS_FIRST_SHELL_WITHIN_TOL',
+          )
+          assert intrinsic['rate_locking_status'] in allowed
+          assert intrinsic['phase_locking_status'] in allowed
+          assert env['environment_count'] == 16
           assert 'not a physical-time Hamiltonian' in p['claim_boundary']
           print('claim-boundary guards: PASS')
-          print('g_YC_rate =',p['g_YC_rate'])
-          print('g_YC_phase =',p['g_YC_phase'])
-          print('rate status =',p['rate_locking_status'])
-          print('phase status =',p['phase_locking_status'])
+          print('g_YC_rate intrinsic =',intrinsic['g_YC_rate'])
+          print('g_YC_phase intrinsic =',intrinsic['g_YC_phase'])
+          print('max |g_YC_rate| fixed env =',env['max_abs_rate_gY'])
+          print('max |g_YC_phase| fixed env =',env['max_abs_phase_gY'])
+          print('rate status =',intrinsic['rate_locking_status'])
+          print('phase status =',intrinsic['phase_locking_status'])
           PY
       - uses: actions/upload-artifact@v4
         with:
