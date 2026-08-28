@@ -1,0 +1,60 @@
+name: q2-orientation-intrinsic-metric-nogo
+
+on:
+  push:
+    branches:
+      - research/q2-orientation-intrinsic-metric-nogo
+    paths:
+      - 'Q2_ORIENTATION_INTRINSIC_METRIC_NO_GO.md'
+      - 'scripts/q2_orientation_intrinsic_metric_nogo_gate.py'
+      - '.github/workflows/q2-orientation-intrinsic-metric-nogo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-orientation-metric-nogo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Recompute frozen shape-to-metric prerequisite
+        run: |
+          mkdir -p verification_results
+          python scripts/logical_shape_metric_jacobian_gate.py \
+            --output verification_results/LOGICAL_SHAPE_METRIC_JACOBIAN.json
+      - name: Prove orientation intrinsic-metric no-go
+        run: |
+          python scripts/q2_orientation_intrinsic_metric_nogo_gate.py \
+            --output verification_results/Q2_ORIENTATION_INTRINSIC_METRIC_NOGO.json
+      - name: Enforce no-go scope
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_ORIENTATION_INTRINSIC_METRIC_NOGO.json'))
+          assert p['passed'] is True
+          c=p['checks']
+          assert c['intrinsic_metric_is_symbolically_independent_of_Y'] is True
+          assert c['regular_Y_plus_minus_branches_have_identical_metric'] is True
+          assert c['pure_Y_source_maps_to_zero_intrinsic_metric'] is True
+          assert c['full_XYZ_metric_jacobian_rank_is_2'] is True
+          assert c['full_Frobenius_logical_metric_gram_is_diag_9over2_0_9over2'] is True
+          assert c['DeWitt_logical_metric_gram_is_diag_3over2_0_3over2'] is True
+          assert 'cannot be identified with a linear intrinsic-metric Gamma^(2) coefficient' in p['consequence_for_g_YC']
+          assert 'does not determine g_YC^gravity' in p['claim_boundary']
+          print('orientation intrinsic metric no-go guards: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-orientation-intrinsic-metric-nogo
+          path: verification_results/*.json
+          if-no-files-found: error
