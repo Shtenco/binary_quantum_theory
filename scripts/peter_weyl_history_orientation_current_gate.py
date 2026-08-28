@@ -11,8 +11,7 @@ already-corrected sine ordering
     H_E^sine = sum_s sign_s (T_s - T_s^dagger)/(2 i).
 
 On the complete all-j=1/2 Gauss carrier (32 states = two intertwiners on each
-of five tetrahedra), retain the forward and reverse microscopic history
-branches separately:
+of five tetrahedra), retain forward and reverse microscopic history branches:
 
     B_+ |psi> = sum_s sign_s T_s |psi>,
     B_- |psi> = sum_s sign_s T_s^dagger |psi>.
@@ -25,7 +24,7 @@ Two active-sector observables are formed without fitting:
 
     D_rate  = B_+^dagger B_+ - B_-^dagger B_-,
 
-which detects a forward/reverse history-weight asymmetry, and
+which detects forward/reverse history-weight asymmetry, and
 
     D_phase = (B_+^dagger B_- - B_-^dagger B_+) / (2 i),
 
@@ -33,26 +32,28 @@ which detects coherent orientation-sensitive phase interference even when the
 forward and reverse norms are equal.
 
 At the source tetrahedron the exact oriented-volume pseudoscalar is
-proportional to the logical Pauli Y,
+proportional to logical Pauli Y,
 
     Q = sqrt(3)/4 Y_L.
 
-Two levels of locking are therefore measured and kept separate.
+The gate exhausts three increasingly general levels.
 
-1. Intrinsic/environment-unbiased coefficient: trace the other four logical
-   qubits with the identity and project the resulting source operator on Y.
-2. Environment-conditioned coefficients: hold each of the 16 configurations
-   of the other four logical qubits fixed and project the corresponding 2x2
-   source block on Y.
+1. Intrinsic/environment-unbiased: source Y tensor identity on the four other
+   logical qubits.
+2. Fixed-K environment conditioned: each of the 16 diagonal environment
+   blocks in the frozen K=(0,2) basis.
+3. Complete source-Y Pauli sector: all 4^4=256 strings
 
-This prevents a false no-go when opposite environment sectors cancel in the
-maximally mixed trace.
+       Y_source tensor P_1 tensor P_2 tensor P_3 tensor P_4,
+       P_i in {I,X,Y,Z}.
 
-A nonzero coefficient is evidence for a first-history-shell correlation
-between geometric orientation and ordered graph-changing history. A zero in
-all 16 environment sectors is a genuine no-go only for this particular
-first-shell channel. Neither outcome by itself constructs the physical
-rigging-map/history measure or a physical frequency propagator.
+The third level prevents a false no-go when locking exists only for coherent
+environment superpositions such as Y tensor X or Y tensor YZ.
+
+Only if every source-Y Pauli coefficient vanishes within the preregistered
+relative tolerance is a complete first-shell no-go claimed on this 32D active
+carrier. Neither outcome constructs a physical rigging-map/history measure or
+physical frequency propagator.
 """
 from __future__ import annotations
 
@@ -75,6 +76,12 @@ import peter_weyl_zeroaware_volume_migration_experiment as ZVM
 
 TOL = 1e-10
 JMAX2 = 3  # exact for one K5 H_E history shell from j=1/2; max reached is j=3/2.
+PAULI2 = {
+    "I": np.eye(2, dtype=complex),
+    "X": np.array([[0, 1], [1, 0]], complex),
+    "Y": np.array([[0, -1j], [1j, 0]], complex),
+    "Z": np.array([[1, 0], [0, -1]], complex),
+}
 
 
 def add(dst, src, scale=1.0, tol=TOL):
@@ -129,31 +136,26 @@ def gram(states_a, states_b):
     return out
 
 
-def logical_local_pauli(keys, source_v, which):
-    P = {
-        "I": np.eye(2, dtype=complex),
-        "X": np.array([[0, 1], [1, 0]], complex),
-        "Y": np.array([[0, -1j], [1j, 0]], complex),
-        "Z": np.array([[1, 0], [0, -1]], complex),
-    }[which]
+def logical_local_pauli(keys, node, which):
+    P = PAULI2[which]
     kval = (0, 2)
     idx = {key[1]: i for i, key in enumerate(keys)}
     M = np.zeros((len(keys), len(keys)), complex)
     for col, key in enumerate(keys):
         ks = list(key[1])
-        b = kval.index(ks[source_v])
+        b = kval.index(ks[node])
         for a in range(2):
             c = P[a, b]
             if abs(c) == 0:
                 continue
             ko = list(ks)
-            ko[source_v] = kval[a]
+            ko[node] = kval[a]
             row = idx[tuple(ko)]
             M[row, col] += c
     return M
 
 
-def pauli_projection(O, paulis):
+def local_pauli_projection(O, paulis):
     out = {}
     for name, P in paulis.items():
         den = np.trace(P.conj().T @ P)
@@ -167,15 +169,10 @@ def hermitian_defect(A):
 
 
 def source_environment_blocks(O, G_total, keys, source_v):
-    """Return all 16 fixed-environment 2x2 source-qubit Y projections.
-
-    The environment is the tuple of K labels on the four nodes other than the
-    source.  No basis preference is introduced beyond the already-frozen
-    logical K=(0,2) basis used to define Y_L.
-    """
+    """Return all 16 fixed-environment 2x2 source-qubit Y projections."""
     others = tuple(v for v in PW.VERT if v != source_v)
     idx = {key[1]: i for i, key in enumerate(keys)}
-    Y = np.array([[0, -1j], [1j, 0]], complex)
+    Y = PAULI2["Y"]
     rows = []
     for env in itertools.product((0, 2), repeat=len(others)):
         inds = []
@@ -201,23 +198,65 @@ def source_environment_blocks(O, G_total, keys, source_v):
     return rows
 
 
-def classify_locking(g_intrinsic, env_rows, global_scale):
-    intrinsic_tol = 1e-10 * max(global_scale, 1e-30)
-    max_env_scale = max((r["mean_history_intensity"] for r in env_rows), default=global_scale)
-    env_tol = 1e-10 * max(max_env_scale, 1e-30)
-    max_env = max((abs(r["g_Y"][0]) for r in env_rows), default=0.0)
-    if abs(g_intrinsic.real) > intrinsic_tol:
-        status = "INTRINSIC_NONZERO_FIRST_SHELL"
-    elif max_env > env_tol:
-        status = "ENVIRONMENT_CONDITIONED_FIRST_SHELL_ONLY"
-    else:
-        status = "ZERO_ALL_ENVIRONMENTS_FIRST_SHELL_WITHIN_TOL"
-    return status, max_env, intrinsic_tol, env_tol
+def complete_source_y_pauli_audit(O, keys, source_v, coefficient_tol):
+    """Exhaust all 256 Pauli strings with Y on the source logical qubit."""
+    local = {
+        v: {p: logical_local_pauli(keys, v, p) for p in "IXYZ"}
+        for v in PW.VERT
+    }
+    dim = len(keys)
+    rows = []
+    others = tuple(v for v in PW.VERT if v != source_v)
+    for env_word in itertools.product("IXYZ", repeat=len(others)):
+        word = [None] * len(PW.VERT)
+        word[source_v] = "Y"
+        for v, p in zip(others, env_word):
+            word[v] = p
+        P = np.eye(dim, dtype=complex)
+        for v, p in enumerate(word):
+            P = P @ local[v][p]
+        c = np.trace(P.conj().T @ O) / dim
+        rows.append({
+            "word": "".join(word),
+            "coefficient": [float(c.real), float(c.imag)],
+            "abs_coefficient": float(abs(c)),
+            "environment_is_K_diagonal": all(p in ("I", "Z") for p in env_word),
+        })
+    rows.sort(key=lambda r: r["abs_coefficient"], reverse=True)
+    all_vals = [r["abs_coefficient"] for r in rows]
+    diag_vals = [r["abs_coefficient"] for r in rows if r["environment_is_K_diagonal"]]
+    intrinsic_word = "".join("Y" if v == source_v else "I" for v in PW.VERT)
+    intrinsic = next(r for r in rows if r["word"] == intrinsic_word)
+    coeff_norm = math.sqrt(sum(x * x for x in all_vals))
+    nonzero = [r for r in rows if r["abs_coefficient"] > coefficient_tol]
+    return {
+        "source_Y_string_count": len(rows),
+        "intrinsic_word": intrinsic_word,
+        "intrinsic_coefficient": intrinsic["coefficient"],
+        "max_abs_source_Y_coefficient": max(all_vals, default=0.0),
+        "max_abs_K_diagonal_environment_source_Y_coefficient": max(diag_vals, default=0.0),
+        "source_Y_coefficient_l2_norm": coeff_norm,
+        "coefficient_zero_tolerance": coefficient_tol,
+        "nonzero_source_Y_string_count": len(nonzero),
+        "top_source_Y_terms": rows[:24],
+    }
+
+
+def classify_complete_locking(audit):
+    tol = audit["coefficient_zero_tolerance"]
+    intrinsic = abs(complex(*audit["intrinsic_coefficient"])) if False else abs(audit["intrinsic_coefficient"][0] + 1j * audit["intrinsic_coefficient"][1])
+    max_diag = audit["max_abs_K_diagonal_environment_source_Y_coefficient"]
+    max_all = audit["max_abs_source_Y_coefficient"]
+    if intrinsic > tol:
+        return "INTRINSIC_NONZERO_FIRST_SHELL"
+    if max_diag > tol:
+        return "K_BASIS_ENVIRONMENT_CONDITIONED_FIRST_SHELL"
+    if max_all > tol:
+        return "COHERENT_ENVIRONMENT_CONDITIONED_FIRST_SHELL"
+    return "ZERO_ALL_SOURCE_Y_PAULI_CHANNELS_FIRST_SHELL_WITHIN_TOL"
 
 
 def run(source_v=0):
-    # Match the zero-aware absolute-volume convention used by the corrected
-    # production sine-ordering audit.
     ZVM.patch_and_clear()
 
     keys = PW.basis_full_jhalf()
@@ -250,8 +289,8 @@ def run(source_v=0):
     D_phase = (Gfr - Gfr.conj().T) / (2j)
     G_total = Gff + Grr
 
-    paulis = {p: logical_local_pauli(keys, source_v, p) for p in ("I", "X", "Y", "Z")}
-    Y0 = paulis["Y"]
+    paulis_source = {p: logical_local_pauli(keys, source_v, p) for p in "IXYZ"}
+    Y0 = paulis_source["Y"]
     yden = float(np.trace(Y0.conj().T @ Y0).real)
     g_rate = np.trace(Y0.conj().T @ D_rate) / yden
     g_phase = np.trace(Y0.conj().T @ D_phase) / yden
@@ -259,17 +298,16 @@ def run(source_v=0):
 
     rate_env = source_environment_blocks(D_rate, G_total, keys, source_v)
     phase_env = source_environment_blocks(D_phase, G_total, keys, source_v)
-    rate_status, max_rate_env, rate_intr_tol, rate_env_tol = classify_locking(g_rate, rate_env, avg_history_intensity)
-    phase_status, max_phase_env, phase_intr_tol, phase_env_tol = classify_locking(g_phase, phase_env, avg_history_intensity)
 
-    # Reflection representative on the logical source qubit. Z Y Z = -Y.
-    # This is only a local sign-covariance check, not a derivation that this Z
-    # equals every microscopic face reflection used by the PL regulator.
-    Z0 = paulis["Z"]
+    coefficient_tol = 1e-10 * max(avg_history_intensity, 1e-30)
+    rate_pauli = complete_source_y_pauli_audit(D_rate, keys, source_v, coefficient_tol)
+    phase_pauli = complete_source_y_pauli_audit(D_phase, keys, source_v, coefficient_tol)
+    rate_status = classify_complete_locking(rate_pauli)
+    phase_status = classify_complete_locking(phase_pauli)
+
+    Z0 = paulis_source["Z"]
     y_reflection_error = float(np.linalg.norm(Z0 @ Y0 @ Z0 + Y0))
 
-    # The physical sine combination should be exactly reconstructed from the
-    # history-resolved T/T^dagger branches.
     sine_gram = gram(sine, sine)
     sine_nonzero = float(np.trace(sine_gram).real) > 1e-14
 
@@ -288,6 +326,8 @@ def run(source_v=0):
         "g_phase_is_real": abs(g_phase.imag) < 1e-9,
         "all_environment_rate_gY_real": max((abs(r["g_Y"][1]) for r in rate_env), default=0.0) < 1e-9,
         "all_environment_phase_gY_real": max((abs(r["g_Y"][1]) for r in phase_env), default=0.0) < 1e-9,
+        "complete_rate_source_Y_pauli_count_256": rate_pauli["source_Y_string_count"] == 256,
+        "complete_phase_source_Y_pauli_count_256": phase_pauli["source_Y_string_count"] == 256,
     }
 
     return {
@@ -302,27 +342,27 @@ def run(source_v=0):
         "D_rate_hermiticity_relative_defect": hermitian_defect(D_rate),
         "D_phase_hermiticity_relative_defect": hermitian_defect(D_phase),
         "intrinsic_environment_unbiased": {
-            "definition": "normalized trace over all four non-source logical qubits, equivalent to maximally mixed environment",
+            "definition": "source Y tensor identity on all four non-source logical qubits",
             "g_YC_rate": [float(g_rate.real), float(g_rate.imag)],
             "g_YC_phase": [float(g_phase.real), float(g_phase.imag)],
             "g_YC_rate_relative_to_mean_history_intensity": rel_rate,
             "g_YC_phase_relative_to_mean_history_intensity": rel_phase,
-            "rate_locking_status": rate_status,
-            "phase_locking_status": phase_status,
-            "rate_intrinsic_zero_tolerance": rate_intr_tol,
-            "phase_intrinsic_zero_tolerance": phase_intr_tol,
         },
-        "environment_conditioned": {
+        "fixed_K_environment_conditioned": {
             "environment_count": len(rate_env),
-            "max_abs_rate_gY": max_rate_env,
-            "max_abs_phase_gY": max_phase_env,
-            "rate_environment_zero_tolerance": rate_env_tol,
-            "phase_environment_zero_tolerance": phase_env_tol,
+            "max_abs_rate_gY": max((abs(r["g_Y"][0]) for r in rate_env), default=0.0),
+            "max_abs_phase_gY": max((abs(r["g_Y"][0]) for r in phase_env), default=0.0),
             "rate_rows": rate_env,
             "phase_rows": phase_env,
         },
-        "local_pauli_projection_D_rate_after_environment_trace": pauli_projection(D_rate, paulis),
-        "local_pauli_projection_D_phase_after_environment_trace": pauli_projection(D_phase, paulis),
+        "complete_source_Y_pauli_sector": {
+            "rate": rate_pauli,
+            "phase": phase_pauli,
+            "rate_locking_status": rate_status,
+            "phase_locking_status": phase_status,
+        },
+        "local_pauli_projection_D_rate_after_full_environment_trace": local_pauli_projection(D_rate, paulis_source),
+        "local_pauli_projection_D_phase_after_full_environment_trace": local_pauli_projection(D_phase, paulis_source),
         "checks": checks,
         "definitions": {
             "B_plus": "sum_s sign_s T_s on the complete all-j=1/2 Gauss carrier",
@@ -333,9 +373,8 @@ def run(source_v=0):
         },
         "claim_boundary": (
             "This is an exact finite first-history-shell constraint-dynamics diagnostic on the canonical K5 Peter-Weyl regulator, not a physical-time Hamiltonian. "
-            "A nonzero intrinsic coefficient establishes environment-unbiased microscopic orientation/history correlation in this carrier; environment-conditioned-only means the maximally mixed trace cancels correlations that exist in fixed logical surroundings. "
-            "Only ZERO_ALL_ENVIRONMENTS_FIRST_SHELL_WITHIN_TOL is a first-shell no-go, and even that does not exclude higher-history loops or the Lorentzian constraint. "
-            "No physical projector, continuum U(1) coupling, or experimental observable is claimed."
+            "The complete 256-string source-Y Pauli audit exhausts every operator component containing the source oriented-geometry pseudoscalar inside the declared 32D all-j=1/2 active carrier. "
+            "Only ZERO_ALL_SOURCE_Y_PAULI_CHANNELS_FIRST_SHELL_WITHIN_TOL is therefore a complete source-Y first-shell no-go in this carrier; it still does not exclude higher-history shells, the Lorentzian constraint, a physical projector, continuum U(1) coupling, or experimental effects."
         ),
     }
 
