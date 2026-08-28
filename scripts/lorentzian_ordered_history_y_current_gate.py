@@ -92,24 +92,24 @@ def run(orbit_path: Path, herm_path: Path, sign_path: Path):
     cov_err = float(orbit["T132_covariance_relative_error"])
     leakage = float(orbit["max_physical_basis_volume_leakage"])
 
-    even_ratio = abs(y_even) / max(abs(y_odd), 1e-30)
-    real_leak_ratio = max(abs(y123.real), abs(y132.real)) / max(abs(y_odd), 1e-30)
+    even_ratio = float(abs(y_even) / max(abs(y_odd), 1e-30))
+    real_leak_ratio = float(max(abs(y123.real), abs(y132.real)) / max(abs(y_odd), 1e-30))
 
     checks = {
         "orbit_source_passed": bool(orbit.get("passed")),
         "hermitian_completion_passed": bool(herm.get("passed")),
         "repo_sign_passed": bool(sign.get("passed")),
-        "ordered_pair_Y_is_nonzero": abs(y_odd) > 1e-6,
-        "ordered_pair_Y_even_cancels": even_ratio < 1e-12,
-        "ordered_pair_Y_is_raw_antihermitian": real_leak_ratio < 1e-12,
-        "T132_S4_covariance": cov_err < 1e-12,
-        "volume_leakage_control": leakage < 1e-12,
-        "full_orbit_Y_is_nonzero": abs(full_raw_y) > 1e-3,
-        "full_orbit_Y_is_raw_antihermitian": abs(full_raw_y.real) < 1e-12 * abs(full_raw_y.imag),
-        "minimal_Hermitian_completion_consistent": abs(full_completed_y - expected_full_completed) < 1e-12,
-        "signed_full_normalization_consistent": abs(full_signed_corr - expected_full_signed) < 1e-12,
-        "signed_bare_normalization_consistent": abs(full_signed_bare - expected_bare_signed) < 1e-12,
-        "no_fit_used": sign.get("fitting_used") is False,
+        "ordered_pair_Y_is_nonzero": bool(abs(y_odd) > 1e-6),
+        "ordered_pair_Y_even_cancels": bool(even_ratio < 1e-12),
+        "ordered_pair_Y_is_raw_antihermitian": bool(real_leak_ratio < 1e-12),
+        "T132_S4_covariance": bool(cov_err < 1e-12),
+        "volume_leakage_control": bool(leakage < 1e-12),
+        "full_orbit_Y_is_nonzero": bool(abs(full_raw_y) > 1e-3),
+        "full_orbit_Y_is_raw_antihermitian": bool(abs(full_raw_y.real) < 1e-12 * abs(full_raw_y.imag)),
+        "minimal_Hermitian_completion_consistent": bool(abs(full_completed_y - expected_full_completed) < 1e-12),
+        "signed_full_normalization_consistent": bool(abs(full_signed_corr - expected_full_signed) < 1e-12),
+        "signed_bare_normalization_consistent": bool(abs(full_signed_bare - expected_bare_signed) < 1e-12),
+        "no_fit_used": bool(sign.get("fitting_used") is False),
     }
 
     return {
@@ -125,8 +125,8 @@ def run(orbit_path: Path, herm_path: Path, sign_path: Path):
             "cY_even_raw": cpair(y_even),
             "cY_odd_raw": cpair(y_odd),
             "odd_over_even_inverse_ratio": float(abs(y_odd) / max(abs(y_even), 1e-30)),
-            "even_over_odd_ratio": float(even_ratio),
-            "real_leak_over_odd_ratio": float(real_leak_ratio),
+            "even_over_odd_ratio": even_ratio,
+            "real_leak_over_odd_ratio": real_leak_ratio,
             "minimal_Hermitian_completed_pair_Y": completed_pair_y,
         },
         "full_24term_environment_unbiased": {
