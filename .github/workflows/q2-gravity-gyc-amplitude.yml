@@ -1,0 +1,121 @@
+name: q2-gravity-gyc-amplitude
+
+on:
+  push:
+    branches:
+      - research/q2-gravity-gyc-amplitude
+    paths:
+      - 'Q2_GYC_GENUINE_PETER_WEYL_REVERSAL_TEST.md'
+      - 'scripts/peter_weyl_lorentzian_sine_triple_state_worker.py'
+      - 'scripts/peter_weyl_lorentzian_reversal_pair_collector.py'
+      - '.github/workflows/q2-gravity-gyc-amplitude.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: q2-gravity-gyc-amplitude-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  triple:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: abc
+            a: 1
+            b: 2
+            c: 3
+          - label: bac
+            a: 2
+            b: 1
+            c: 3
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile reversal worker
+        run: python -m py_compile scripts/peter_weyl_lorentzian_sine_triple_state_worker.py
+      - name: Compute genuine sine-ordered triple
+        run: |
+          mkdir -p verification_results
+          python scripts/peter_weyl_lorentzian_sine_triple_state_worker.py \
+            --v 0 \
+            --a ${{ matrix.a }} --b ${{ matrix.b }} --c ${{ matrix.c }} \
+            --label ${{ matrix.label }} \
+            --output verification_results/${{ matrix.label }}.json
+      - name: Guard worker claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/${{ matrix.label }}.json'))
+          assert p['passed'] is True
+          assert p['Jmax'] == 3.5
+          assert p['captured_support'] == p['reported_support']
+          assert p['captured_support'] > 0
+          assert 'not the full epsilon-oriented' in p['claim_boundary']
+          print('worker guard: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gyc-triple-${{ matrix.label }}
+          path: verification_results/${{ matrix.label }}.json
+          if-no-files-found: error
+
+  reversal-collector:
+    needs: triple
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: gyc-triple-*
+          path: verification_results/triples
+          merge-multiple: true
+      - name: Audit exact worker pair
+        run: |
+          ls -lh verification_results/triples
+          test -f verification_results/triples/abc.json
+          test -f verification_results/triples/bac.json
+      - name: Compare genuine reversal pair
+        run: |
+          python scripts/peter_weyl_lorentzian_reversal_pair_collector.py \
+            --abc verification_results/triples/abc.json \
+            --bac verification_results/triples/bac.json \
+            --output verification_results/Q2_GYC_GENUINE_REVERSAL.json
+      - name: Enforce scientific claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_GYC_GENUINE_REVERSAL.json'))
+          assert p['passed'] is True
+          assert p['classification'] in (
+              'ZERO_WITHIN_PREREGISTERED_TOLERANCE',
+              'NONZERO_GENUINE_ORIENTATION_ODD_AMPLITUDE',
+          )
+          assert p['physical_g_YC'] == 'OPEN_PHYSICAL'
+          assert 'not the full epsilon-oriented' in p['claim_boundary']
+          print('classification:',p['classification'])
+          print('relative reversal difference:',p['relative_reversal_difference'])
+          print('claim-boundary guard: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-gyc-genuine-reversal-evidence
+          path: verification_results/Q2_GYC_GENUINE_REVERSAL.json
+          if-no-files-found: error
