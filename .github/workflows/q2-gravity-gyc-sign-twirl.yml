@@ -1,0 +1,54 @@
+name: q2-gravity-gyc-sign-twirl
+
+on:
+  push:
+    branches:
+      - research/q2-gravity-gyc-sign-twirl
+    paths:
+      - 'Q2_LORENTZIAN_EPSILON_SIGN_TWIRL_REDUCTION.md'
+      - 'scripts/q2_lorentzian_epsilon_sign_twirl_reduction_gate.py'
+      - '.github/workflows/q2-gravity-gyc-sign-twirl.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-sign-orbit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Prove 24-term epsilon sign-orbit reduction
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_lorentzian_epsilon_sign_twirl_reduction_gate.py \
+            --output verification_results/Q2_LORENTZIAN_EPSILON_SIGN_TWIRL.json
+      - name: Enforce claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_LORENTZIAN_EPSILON_SIGN_TWIRL.json'))
+          assert p['passed'] is True
+          assert p['ordered_term_count'] == 24
+          assert p['unique_ordered_triple_count'] == 24
+          assert p['coefficient_identity_passed'] is True
+          assert p['full_24_orbit_reduction_error'] < 1e-11
+          assert p['compact_Y_formula_error'] < 1e-11
+          assert 'does not prove' in p['claim_boundary']
+          assert 'g_YC^gravity' in p['claim_boundary']
+          print('sign-orbit claim boundary: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-lorentzian-epsilon-sign-twirl
+          path: verification_results/Q2_LORENTZIAN_EPSILON_SIGN_TWIRL.json
+          if-no-files-found: error
