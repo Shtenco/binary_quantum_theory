@@ -1,0 +1,55 @@
+name: q2-oriented-flux-history-observable
+
+on:
+  push:
+    branches:
+      - research/q2-oriented-flux-history-observable
+    paths:
+      - 'Q2_ORIENTED_FLUX_HISTORY_OBSERVABLE.md'
+      - 'scripts/q2_oriented_flux_history_observable_gate.py'
+      - '.github/workflows/q2-oriented-flux-history-observable.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-oriented-flux-history:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Prove oriented-flux realization of logical Y
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_oriented_flux_history_observable_gate.py \
+            --output verification_results/Q2_ORIENTED_FLUX_HISTORY_OBSERVABLE.json
+      - name: Enforce microscopic orientation claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_ORIENTED_FLUX_HISTORY_OBSERVABLE.json'))
+          assert p['passed'] is True
+          c=p['checks']
+          assert c['logical_oriented_flux_equals_sqrt3_over4_Y'] is True
+          assert c['Q_or_commutes_with_total_SU2'] is True
+          assert c['odd_face_swap_flips_Q_or'] is True
+          assert c['minimal_history_odd_part_equals_4_over_sqrt3_Q_tensor_Ch'] is True
+          assert c['Y_and_Q_Lorentzian_sign_twirl_extractors_are_identical'] is True
+          assert p['Q_Hilbert_Schmidt_norm_squared'] == '3/8'
+          assert 'does not determine g_YC^gravity' in p['claim_boundary']
+          print('oriented flux/history observable guards: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-oriented-flux-history-observable
+          path: verification_results/Q2_ORIENTED_FLUX_HISTORY_OBSERVABLE.json
+          if-no-files-found: error
