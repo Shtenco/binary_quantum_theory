@@ -1,0 +1,64 @@
+name: q2-unified-complex-structure
+
+on:
+  push:
+    branches:
+      - research/q2-unified-complex-structure
+    paths:
+      - 'Q2_UNIFIED_COMPLEX_STRUCTURE_COMPATIBILITY.md'
+      - 'scripts/q2_unified_complex_structure_compatibility_gate.py'
+      - '.github/workflows/q2-unified-complex-structure.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unified-J:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Recompute inherited exact J layers
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_history_fourier_real_complex_structure_gate.py \
+            --output verification_results/Q2_HISTORY_FOURIER_REAL_COMPLEX_STRUCTURE.json
+          python scripts/phase_invariant_quadratic_weight_gate.py \
+            --json verification_results/PHASE_INVARIANT_QUADRATIC_WEIGHT.json
+          python scripts/realification_quantum_dynamics_gate.py \
+            --json verification_results/REALIFICATION_QUANTUM_DYNAMICS.json
+      - name: Run cross-layer complex-structure audit
+        run: |
+          python scripts/q2_unified_complex_structure_compatibility_gate.py \
+            --output verification_results/Q2_UNIFIED_COMPLEX_STRUCTURE.json
+      - name: Enforce sign convention and claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_UNIFIED_COMPLEX_STRUCTURE.json'))
+          assert p['passed'] is True
+          c=p['checks']
+          assert c['history_J_matches_canonical_exactly'] is True
+          assert c['realification_J_matches_canonical_exactly'] is True
+          assert c['same_J_forces_quadratic_form_A_lambda_I'] is True
+          assert c['current_history_forward_is_conjugate_phase_exp_minus_itheta'] is True
+          assert c['history_reversal_restores_plus_phase_convention'] is True
+          assert c['directed_minus_difference_square_is_scalar_laplacian'] is True
+          assert c['directed_plus_difference_square_is_same_scalar_laplacian'] is True
+          assert 'does not derive the physical Born rule' in p['claim_boundary']
+          print('unified q2 J compatibility guards: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-unified-complex-structure
+          path: verification_results/*.json
+          if-no-files-found: error
