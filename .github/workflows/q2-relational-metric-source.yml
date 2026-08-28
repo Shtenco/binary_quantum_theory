@@ -1,0 +1,63 @@
+name: q2-relational-metric-source
+
+on:
+  push:
+    branches:
+      - research/q2-relational-metric-source
+    paths:
+      - 'Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md'
+      - 'scripts/q2_relational_metric_source_gate.py'
+      - '.github/workflows/q2-relational-metric-source.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-relational-metric-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Recompute relational projector prerequisite
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_relational_history_projector_gate.py \
+            --output verification_results/Q2_RELATIONAL_HISTORY_PROJECTOR.json
+      - name: Build projected metric-source generating functional
+        run: |
+          python scripts/q2_relational_metric_source_gate.py \
+            --output verification_results/Q2_RELATIONAL_METRIC_SOURCE.json
+      - name: Enforce projector-before-source and physical claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_RELATIONAL_METRIC_SOURCE.json'))
+          assert p['passed'] is True
+          c=p['checks']
+          assert c['VVdagger_equals_combined_group_projector'] is True
+          assert c['Xrel_commutes_with_constraint'] is True
+          assert c['Zrel_commutes_with_constraint'] is True
+          assert c['source_operator_intertwines_exactly'] is True
+          assert c['metric_connected_response_rank_is_2'] is True
+          assert c['metric_covariance_pseudoinverse_CCpC'] is True
+          assert c['metric_covariance_pseudoinverse_CpCCp'] is True
+          assert p['shape_to_metric']['nonzero_metric_connected_response_eigenvalue'] == '9/2'
+          assert p['shape_to_metric']['tangent_Gamma2_pseudoinverse_eigenvalue'] == '2/9'
+          assert 'not the physical spacetime 1PI graviton kernel' in p['claim_boundary']
+          assert 'does not identify the history label with physical time or omega' in p['claim_boundary']
+          print('relational metric-source guards: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-relational-metric-source
+          path: verification_results/*.json
+          if-no-files-found: error
