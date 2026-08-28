@@ -48,23 +48,31 @@ jobs:
           assert p['checks']['D_rate_hermitian'] is True
           assert p['checks']['D_phase_hermitian'] is True
           intrinsic=p['intrinsic_environment_unbiased']
-          env=p['environment_conditioned']
+          env=p['fixed_K_environment_conditioned']
+          complete=p['complete_source_Y_pauli_sector']
           allowed=(
             'INTRINSIC_NONZERO_FIRST_SHELL',
-            'ENVIRONMENT_CONDITIONED_FIRST_SHELL_ONLY',
-            'ZERO_ALL_ENVIRONMENTS_FIRST_SHELL_WITHIN_TOL',
+            'K_BASIS_ENVIRONMENT_CONDITIONED_FIRST_SHELL',
+            'COHERENT_ENVIRONMENT_CONDITIONED_FIRST_SHELL',
+            'ZERO_ALL_SOURCE_Y_PAULI_CHANNELS_FIRST_SHELL_WITHIN_TOL',
           )
-          assert intrinsic['rate_locking_status'] in allowed
-          assert intrinsic['phase_locking_status'] in allowed
+          assert complete['rate_locking_status'] in allowed
+          assert complete['phase_locking_status'] in allowed
           assert env['environment_count'] == 16
+          assert complete['rate']['source_Y_string_count'] == 256
+          assert complete['phase']['source_Y_string_count'] == 256
+          assert p['checks']['complete_rate_source_Y_pauli_count_256'] is True
+          assert p['checks']['complete_phase_source_Y_pauli_count_256'] is True
           assert 'not a physical-time Hamiltonian' in p['claim_boundary']
           print('claim-boundary guards: PASS')
           print('g_YC_rate intrinsic =',intrinsic['g_YC_rate'])
           print('g_YC_phase intrinsic =',intrinsic['g_YC_phase'])
-          print('max |g_YC_rate| fixed env =',env['max_abs_rate_gY'])
-          print('max |g_YC_phase| fixed env =',env['max_abs_phase_gY'])
-          print('rate status =',intrinsic['rate_locking_status'])
-          print('phase status =',intrinsic['phase_locking_status'])
+          print('max |g_YC_rate| fixed K env =',env['max_abs_rate_gY'])
+          print('max |g_YC_phase| fixed K env =',env['max_abs_phase_gY'])
+          print('max |rate source-Y Pauli| =',complete['rate']['max_abs_source_Y_coefficient'])
+          print('max |phase source-Y Pauli| =',complete['phase']['max_abs_source_Y_coefficient'])
+          print('rate status =',complete['rate_locking_status'])
+          print('phase status =',complete['phase_locking_status'])
           PY
       - uses: actions/upload-artifact@v4
         with:
