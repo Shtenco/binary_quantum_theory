@@ -1,0 +1,46 @@
+name: q2-oriented-history-dihedral
+
+on:
+  push:
+    branches:
+      - research/q2-history-gravity-orientation-current
+    paths:
+      - 'scripts/q2_oriented_history_dihedral_bridge_gate.py'
+      - '.github/workflows/q2-oriented-history-dihedral.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-dihedral-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numpy
+        run: python -m pip install 'numpy>=1.24'
+      - name: Run exact oriented-history dihedral gate
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_oriented_history_dihedral_bridge_gate.py \
+            --output verification_results/Q2_ORIENTED_HISTORY_DIHEDRAL_BRIDGE.json
+      - name: Enforce claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_ORIENTED_HISTORY_DIHEDRAL_BRIDGE.json'))
+          assert p['passed'] is True
+          assert p['max_exact_gate_error'] < 1e-12
+          assert 'D_infinity' in p['universal_cover_relation']
+          assert 'U(1)' in p['pontryagin_dual_statement']
+          assert 'does not prove a nonzero microscopic coupling' in p['claim_boundary']
+          print('dihedral claim boundary: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-oriented-history-dihedral-bridge
+          path: verification_results/Q2_ORIENTED_HISTORY_DIHEDRAL_BRIDGE.json
