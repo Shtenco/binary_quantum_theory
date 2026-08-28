@@ -11,12 +11,14 @@ on:
       - 'Q2_WINDING_DUALITY_AND_PHASE_CHARACTERS.md'
       - 'Q2_HISTORY_CHARACTER_PROJECTOR_AUDIT.md'
       - 'Q2_GEOMETRY_HISTORY_ORIENTATION_LOCKING.md'
+      - 'Q2_ORIENTATION_RESOLVED_HISTORY_LIFT.md'
       - 'scripts/q2_history_phase_refinement_winding_gate.py'
       - 'scripts/q2_minimal_reversible_history_dilation_gate.py'
       - 'scripts/q2_rational_phase_dense_u1_gate.py'
       - 'scripts/q2_winding_phase_character_gate.py'
       - 'scripts/q2_history_character_projector_audit_gate.py'
       - 'scripts/q2_geometry_history_orientation_lock_gate.py'
+      - 'scripts/q2_orientation_resolved_history_lift_gate.py'
       - '.github/workflows/q2-history-phase-refinement.yml'
   workflow_dispatch:
 
@@ -75,6 +77,10 @@ jobs:
         run: |
           python scripts/q2_geometry_history_orientation_lock_gate.py \
             --output verification_results/Q2_GEOMETRY_HISTORY_ORIENTATION_LOCK.json
+      - name: Prove minimal orientation-resolved reversible history lift
+        run: |
+          python scripts/q2_orientation_resolved_history_lift_gate.py \
+            --output verification_results/Q2_ORIENTATION_RESOLVED_HISTORY_LIFT.json
       - name: Enforce claim boundary
         run: |
           python - <<'PY'
@@ -111,6 +117,15 @@ jobs:
           assert o['checks']['orientation_even_history_kernel_keeps_conjugate_degeneracy'] is True
           assert o['checks']['ordinary_group_average_kills_orientation_lock'] is True
           assert 'does not derive its coefficient' in o['microscopic_frontier']
+          m=json.load(open('verification_results/Q2_ORIENTATION_RESOLVED_HISTORY_LIFT.json'))
+          assert m['passed'] is True
+          assert m['valid_deterministic_direction_pairs_splus_sminus'] == [[1,-1],[-1,1]]
+          assert m['checks']['sine_part_is_exact_geometry_history_lock'] is True
+          assert m['checks']['gray_to_binary_kernel_is_frozen_q2_Hamming_adjacency'] is True
+          assert m['exact_coefficients']['g_YC_Hamming_orientation_unresolved'] == '0'
+          assert m['exact_coefficients']['g_YC_minimal_one_tick_sine_normalization'] == '1'
+          assert m['exact_coefficients']['g_YC_gravity'] == 'OPEN_PHYSICAL'
+          assert 'NOT' in m['senior_boundary'] or 'open' in m['senior_boundary'].lower()
           print('claim-boundary guards: PASS')
           PY
       - uses: actions/upload-artifact@v4
