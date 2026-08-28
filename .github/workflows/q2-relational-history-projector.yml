@@ -1,0 +1,58 @@
+name: q2-relational-history-projector
+
+on:
+  push:
+    branches:
+      - research/q2-relational-history-projector
+    paths:
+      - 'Q2_RELATIONAL_HISTORY_PROJECTOR.md'
+      - 'scripts/q2_relational_history_projector_gate.py'
+      - '.github/workflows/q2-relational-history-projector.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-relational-projector:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install repository dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Prove finite-C8 relational projector positive control
+        run: |
+          mkdir -p verification_results
+          python scripts/q2_relational_history_projector_gate.py \
+            --output verification_results/Q2_RELATIONAL_HISTORY_PROJECTOR.json
+      - name: Enforce relational/gauge claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_RELATIONAL_HISTORY_PROJECTOR.json'))
+          assert p['passed'] is True
+          c=p['checks']
+          assert c['relational_history_is_G_invariant'] is True
+          assert c['combined_group_average_is_projector'] is True
+          assert c['combined_projector_generates_history_from_seed'] is True
+          assert c['clock_only_average_kills_nontrivial_relational_history'] is True
+          assert c['conditioning_recovers_R_power_system_history'] is True
+          assert c['combined_projector_equals_matched_character_sum'] is True
+          assert c['only_constraint_matched_character_pairs_survive'] is True
+          assert p['nonzero_character_pairs_clock_m_system_r_weight'] == [[2,6,'1/2'],[6,2,'1/2']]
+          assert 'not been derived' in p['claim_boundary']
+          assert 'not claimed to be the physical gravitational evolution operator' in p['claim_boundary']
+          print('relational history projector guards: PASS')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: q2-relational-history-projector
+          path: verification_results/Q2_RELATIONAL_HISTORY_PROJECTOR.json
+          if-no-files-found: error
