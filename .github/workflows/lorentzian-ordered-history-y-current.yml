@@ -1,0 +1,54 @@
+name: lorentzian-ordered-history-y-current
+
+on:
+  push:
+    branches:
+      - research/q2-history-gravity-orientation-current
+    paths:
+      - 'scripts/lorentzian_ordered_history_y_current_gate.py'
+      - '.github/workflows/lorentzian-ordered-history-y-current.yml'
+      - 'verification_results/PETER_WEYL_LORENTZIAN_ENVTRACE_ORBIT.json'
+      - 'verification_results/LORENTZIAN_HERMITIAN_COMPLETION.json'
+      - 'verification_results/LORENTZIAN_REPO_SIGN.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ordered-history-y-current:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numpy
+        run: python -m pip install 'numpy>=1.24'
+      - name: Extract Lorentzian ordered-history Y current
+        run: |
+          mkdir -p verification_results
+          python scripts/lorentzian_ordered_history_y_current_gate.py \
+            --output verification_results/LORENTZIAN_ORDERED_HISTORY_Y_CURRENT.json
+      - name: Enforce claim boundary
+        run: |
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/LORENTZIAN_ORDERED_HISTORY_Y_CURRENT.json'))
+          assert p['passed'] is True
+          assert p['decision'] == 'NONZERO_LORENTZIAN_ORDERED_TRIPLE_REFLECTION_ODD_Y_CURRENT'
+          assert abs(p['Y_pair']['cY_odd_raw'][1]) > 1e-6
+          assert p['Y_pair']['even_over_odd_ratio'] < 1e-12
+          assert p['checks']['minimal_Hermitian_completion_consistent'] is True
+          assert p['checks']['signed_full_normalization_consistent'] is True
+          assert 'not yet a universal-cover winding-character' in p['claim_boundary']
+          print('ordered-history Y-current claim boundary: PASS')
+          print('cY odd raw =',p['Y_pair']['cY_odd_raw'])
+          print('completed pair Y =',p['Y_pair']['minimal_Hermitian_completed_pair_Y'])
+          print('full signed Y =',p['full_24term_environment_unbiased']['signed_full_beta1_hbar1_Y'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lorentzian-ordered-history-y-current
+          path: verification_results/LORENTZIAN_ORDERED_HISTORY_Y_CURRENT.json
