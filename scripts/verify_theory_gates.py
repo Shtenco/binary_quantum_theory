@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Validate the canonical v2 theory ledger and compute core closure.
+"""Validate the canonical v2 *structural-candidate* theory ledger.
 
-The ledger deliberately separates three scopes:
+The ledger deliberately separates three structural-package scopes:
 
 - core: exact / finite-tested / explicitly conditional arrows that define the
-  present candidate theory package;
-- extension: stronger universality/generalization results that are scientifically
-  useful but do not reopen the declared core;
+  present structural candidate package;
+- extension: stronger universality/generalization results that are useful but
+  do not reopen that declared structural package;
 - experiment: external validation or independent replication.
 
-This validator checks wiring and status semantics. It does not replace running
-any evidence script; the canonical GitHub workflow executes those calculations.
+Physical projector/history, interacting TT-kernel and scale-calibration status
+are tracked separately in ``physicalization_gates.json``.  This validator
+therefore certifies structural closure only; it does not promote that result to
+physical or experimental completion.
 """
 from __future__ import annotations
 
@@ -129,35 +131,43 @@ def main() -> int:
             core_rows.append({
                 "id": gate_id,
                 "status": status,
-                "accepted_for_core_closure": status in ROLE_STATUSES["core"],
+                "accepted_for_structural_closure": status in ROLE_STATUSES["core"],
             })
 
     if len(ids) != len(set(ids)):
         duplicates = sorted({x for x in ids if ids.count(x) > 1})
         errors.append(f"gate identifiers must be unique; duplicates={duplicates}")
 
-    core_theory_closed = bool(core_rows) and all(
-        row["accepted_for_core_closure"] for row in core_rows
+    structural_candidate_closed = bool(core_rows) and all(
+        row["accepted_for_structural_closure"] for row in core_rows
     )
     declared = data.get("core_theory_closed_declared")
     if declared is not True:
-        errors.append("core_theory_closed_declared must be true for the canonical package")
-    if declared is True and not core_theory_closed:
-        errors.append("declared core closure is inconsistent with core gate statuses")
+        errors.append(
+            "legacy core_theory_closed_declared must remain true for the registered structural package"
+        )
+    if declared is True and not structural_candidate_closed:
+        errors.append("declared structural closure is inconsistent with core gate statuses")
 
     experimentally_confirmed = data.get("experimentally_confirmed")
     if experimentally_confirmed is not False:
         errors.append("experimentally_confirmed must remain false unless external evidence policy changes")
 
+    closed_and_valid = bool(structural_candidate_closed and not errors)
     result = {
         "schema_version": data.get("schema_version"),
         "gate_count": len(gates),
         "counts_by_role": counts_by_role,
         "counts_by_status": counts_by_status,
         "core_gate_count": len(core_rows),
-        "core_theory_closed": bool(core_theory_closed and not errors),
-        "complete": bool(core_theory_closed and not errors),
+        "structural_candidate_closed": closed_and_valid,
+        "complete_structural_package": closed_and_valid,
+        # Backward-compatible output for historical consumers.  The scope is
+        # explicit so it cannot legitimately be read as physical completion.
+        "core_theory_closed": closed_and_valid,
+        "core_theory_closed_scope": "legacy alias: structural internal candidate only",
         "candidate_framework": True,
+        "physicalization_status_source": "physicalization_gates.json",
         "experimentally_confirmed": False,
         "core_gates": core_rows,
         "errors": errors,
