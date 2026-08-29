@@ -1,24 +1,39 @@
-# Theory status — canonical package
+# Theory status — structural candidate versus physicalization frontier
 
-**Canonical status date: 2026-08-18**
+**Canonical status update: 2026-08-30**
+
+The repository now records two different scientific propositions separately.
 
 ```text
-core_theory_closed               = true
-candidate_mathematical_framework = true
-experimentally_confirmed          = false
+STRUCTURAL / INTERNAL CANDIDATE
+structural_candidate_closed              = true
+candidate_mathematical_framework         = true
+
+PHYSICALIZATION / OBSERVATION
+physical_projector_history_closed        = false
+connected_interblock_history_closed      = false
+physical_TT_kernel_frozen                = false
+IR_six_wilson_vector_frozen              = false
+common_physical_scale_calibrated         = false
+experimentally_confirmed                 = false
 ```
 
-These statements use different scopes and are not contradictory.
+These statements are deliberately not collapsed into one `theory closed` Boolean.
 
-`core_theory_closed=true` means that the declared internal candidate construction has an end-to-end evidence chain and no missing core arrow in the repository’s present scope. Evidence may be exact analytic, exact finite-dimensional, reproducible numerical, or conditional on an explicitly named blocking/normalization assumption.
+`structural_candidate_closed=true` means that the **declared structural candidate construction**, in its registered exact / finite-tested / explicitly conditional scopes, has an end-to-end internal evidence chain.  It does not mean that the theory-specific physical Hilbert space, continuum rigging map, interacting graviton 1PI kernel or experimental truth has been derived.
 
-`experimentally_confirmed=false` means that external observations have not established this candidate as the correct theory of nature.
+Machine-readable sources are:
 
-Machine-readable status is `theory_gates.json`; the full evidence index is `CANONICAL_THEORY_PACKAGE.md`.
+- `theory_gates.json` — structural candidate ledger;
+- `physicalization_gates.json` — fail-closed physicalization ledger;
+- `CANONICAL_THEORY_PACKAGE.md` — structural evidence index;
+- `OPEN_PROBLEMS.md` — open physicalization, stronger extensions and experiments.
 
 ---
 
-## 1. Canonical closed chain
+## 1. Structural chain currently reproduced
+
+The registered structural candidate is
 
 ```text
 q=2 binary microstructure
@@ -29,20 +44,20 @@ q=2 binary microstructure
  -> selected recursive PL 3-manifold + exact carrier gluing
  -> B / simplicity / Urbantke metric / compatible connection
  -> Regge / Einstein-Hilbert controls
- -> ADM / DeWitt / HDA structure
- -> Lorentzian coefficient and support controls
- -> spin-2 / TT sector
+ -> ADM / DeWitt / finite HDA structure
+ -> Lorentzian finite coefficient/support controls
+ -> spin-2 / TT reference sector
  -> complete six-dimensional quartic S4 TT quotient
- -> algebraic map to physical observables
+ -> algebraic map from a future frozen six-vector to observables.
 ```
 
-The core is therefore a closed **candidate mathematical/computational theory package in its declared domain**.
+This chain is a **candidate mathematical/computational architecture**.  The physicalization chain in Section 10 is stronger and is not closed.
 
 ---
 
-## 2. Binary and dimensional closure
+## 2. Binary and dimensional structure
 
-The exact q=2 refinement sequence is
+For the frozen q=2 refinement route,
 
 ```text
 N_g = (4*8^g + 10)/7
@@ -50,62 +65,70 @@ N_g = (4*8^g + 10)/7
 d_g = 3 + log2(1 - 35/(16*8^(g-1)+40))
 ```
 
-and approaches 3 monotonically from below. The exact fixed point is
+and
 
 ```text
-d_* = 3.
+d_g < 3,
+d_(g+1) > d_g,
+d_g -> 3.
 ```
 
-Finite diagnostics from the frozen train/held-out protocol remain
+Finite registered diagnostics include approximately
 
 ```text
 d_H          = 2.999229782
 d_s(slice)   = 3.004393867
 z            = 0.998281156
-d_s(history) ≈ 4.004393867
+d_s(history) = 4.004393867
 ```
 
-These are internal construction results, not blind external predictions.
+These are internal construction diagnostics.  They are not blind external predictions.
 
 ---
 
-## 3. Quantum-geometric carrier
+## 3. q=2 quantum-geometric carrier
 
-The q=2 Walsh map gives four exact regular-tetrahedron normals:
-
-```text
-sum n_a = 0
-n_a.n_a = 1
-n_a.n_b = -1/3  (a != b)
-```
-
-The declared qubit lift gives
+The three nontrivial real Walsh characters of `Z2^2` give four exact regular-tetrahedron normals:
 
 ```text
-Gauss-singlet weight       = 2/9
-logical orientation volume = sqrt(3)/4
-edge spread                = 0
+sum_a n_a = 0
+n_a.n_a   = 1
+n_a.n_b   = -1/3   for a != b.
 ```
 
-On the selected 16-cell PL completion the same four carriers glue exactly across all 32 shared faces and the dual graph is Q4.
+The four face spin-1/2 carriers contain a two-dimensional Gauss-singlet geometry sector.  The logical shape directions are represented by `X,Z`; logical `Y` is the orientation pseudoscalar.
 
-The active four-state q=2 sector plus the graph-changing no-link state realizes the exact `(2,2)+(1,1)` endpoint representation; the frozen q=2 Hamming adjacency factors through active -> no-link -> active transitions. Symmetric blocking then supplies the Peter-Weyl j tower as an explicit conditional representation-growth theorem.
+On the selected 16-cell PL completion the same carriers glue across all 32 shared faces with the registered orientation/flux cancellation checks.
+
+A representation-theoretic distinction is essential:
+
+```text
+four active q=2 states alone:       (2,1) + (1,2)
+active states + no-link singlet:    (2,2) + (1,1)
+```
+
+under the registered endpoint structure.  The no-link state is therefore not cosmetic; it supplies the exact graph-changing completion used by the q=2 graph-link factorization.
 
 ---
 
-## 4. Metric and Einstein sector
+## 4. Metric and Einstein reference sector
 
-Independent gates reconstruct
+Independent finite/exact gates implement
 
 ```text
-face qubits -> B -> simplicity -> Urbantke metric -> connection -> curvature
+face qubits
+ -> B field
+ -> simplicity
+ -> Urbantke metric
+ -> compatible connection
+ -> curvature
 ```
 
-and distinguish Einstein from non-Einstein controls.
+and include a non-Einstein negative control.
 
-The logical X/Z shape doublet has an exact rank-two trace-free metric Jacobian.
+The logical `X/Z` shape doublet has an exact rank-two trace-free metric Jacobian.
 
-The L1 q4 S4 metric compression, freshly reassembled from all 24 certified source columns, reports
+The L1 q4 S4 metric compression gives
 
 ```text
 lambda_E          = 1.1111917875584736
@@ -114,34 +137,42 @@ Delta_ET          = 0.08916393681199541
 relative_ET_split = 0.08359564595312347
 ```
 
-so the canonical normalized first-refinement Euclidean tangent split is approximately **8.36%**.
-
-The unit-S4 Lambda≈3 result remains an oracle reconstruction control only.
+The ~8.36% quantity is a finite Euclidean tangent-sector split under the declared normalization.  It is not automatically a physical Lorentz-violation coefficient, particle mass ratio or measured observable.
 
 ---
 
-## 5. Peter-Weyl dynamics
+## 5. Peter-Weyl constraint dynamics
 
-The finite quantum-geometry stack includes graph-changing Hamiltonian action, volume/extrinsic-curvature controls, parity/support identities, 32D master normalization, j=1 S4 blocking and the completed 32D higher-shell matrix.
+The finite quantum-geometry stack contains graph/spin-changing Euclidean Hamiltonian action, volume/extrinsic-curvature controls, parity/support identities, full 32D master normalization, j=1 S4 blocking and the completed 32D higher-shell matrix.
 
-Higher-shell spectrum:
+Registered higher-shell values include
 
 ```text
-lambda_min = 10.635759878291307
-lambda_max = 15.059927665966466
-relative non-scalarity = 0.09440461833276048
-block-Lanczos residuals ~ 1e-13
+lambda_min(Lambda) = 10.635759878291307
+lambda_max(Lambda) = 15.059927665966466
+relative distance from scalar I = 0.09440461833276048
+block-Lanczos residuals ~ 1e-13.
 ```
 
-These are finite constraint-dynamics results. They are not misidentified as an ordinary external-time spectrum.
+These are finite **constraint-dynamics** spectral/Krylov data.
+
+They are not particle masses and they are not a physical-frequency graviton spectrum.
+
+In particular, for the exact Feshbach object
+
+```text
+G_c(z) = Q0^dagger (z-H_constraint)^(-1) Q0
+```
+
+`z` is a constraint spectral parameter.  It must not be renamed physical `omega` without an independently derived physical-history construction.
 
 ---
 
-## 6. ADM / HDA / Lorentzian sector
+## 6. ADM / HDA / Lorentzian finite structure
 
-The declared core uses the completed hierarchy of DeWitt/ADM selection, route/diffeomorphism controls, route-normal structure function, Peter-Weyl two-node and three-node graph-changing HDA scaling, exact finite-word cutoff support, and Lorentzian coefficient/support controls.
+The structural package includes DeWitt/ADM selection, route/diffeomorphism controls, route-normal structure function, two-node and three-node graph-changing Peter-Weyl HDA scaling, exact finite-word cutoff support, and Lorentzian coefficient/support controls.
 
-Three-node measured hierarchy:
+The frozen three-node diagnostic reports approximately
 
 ```text
 route exponent          = 0.9999571195
@@ -149,16 +180,16 @@ cross exponent          = 1.0024037289
 pure-geometry exponent  = 2.0061524985
 joint exponent          = 1.0064429344
 joint defect @ 1/64     = 0.02522380790
-minimum graph-change fraction = 0.4440331635
+minimum graph-change fraction = 0.4440331635.
 ```
 
-For the frozen Euclidean HH word, Jmax=5/2 is exactly support-safe; the conservative declared Lorentzian HH wall is Jmax=13/2.
+This is meaningful finite off-shell evidence, but it is not a theorem uniform over arbitrary graph families, arbitrary habitats, all refinement levels and the complete Lorentzian continuum domain.
 
-An arbitrary-graph theorem over every possible graph/habitat is a stronger extension, not a missing core calculation.
+HDA consistency is also not a substitute for choosing the physical inner product or history measure.
 
 ---
 
-## 7. Regge and held-out continuum control
+## 7. Regge held-out control
 
 The preregistered continuation
 
@@ -166,86 +197,206 @@ The preregistered continuation
 Z_L = 1/8 + C/L^2 + D/L^4
 ```
 
-was fitted only on L=3,4,5 and predicted
+was fitted on `L=3,4,5` and predicted
 
 ```text
 Z6_pred = 0.11876923193907167
 ```
 
-before comparison to
+before comparison with
 
 ```text
 Z6_obs = 0.11876075461190198
-relative error ≈ 0.00714 %.
+relative error ~ 0.00714%.
 ```
 
-This is an internal held-out numerical validation, not an external observation of nature.
+This is a genuine internal held-out numerical control.  It remains internal: it is not a held-out observation of nature.
 
 ---
 
-## 8. TT and quartic observable closure
+## 8. TT and quartic observable dictionary
 
-The reduced TT positive control is massless and has the expected inverse-momentum equal-time covariance. The generic parity-even S4 quartic TT quotient has exactly six independent physical structures.
+The reduced TT reference kernel is massless and has the registered positive residue / inverse-momentum equal-time covariance controls.
 
-The exact extraction system has
+This reduced kernel is a **positive control**, not the final interacting theory-specific 1PI graviton kernel.
+
+The generic parity-even S4 quartic TT quotient has exactly six independent physical structures.  The frozen six-observable extraction system has
 
 ```text
 rank(100,110,111) = 5
 rank(+120)        = 6
-det A             = 1/699840000
+det A             = 1/699840000.
 ```
 
-The on-shell six-dimensional pole quotient is invariant under local field redefinitions proportional to the leading TT equation of motion.
-
-The theory therefore has a complete algebraic observable dictionary from a frozen six-vector to the two TT polarization eigenvalues and onward to modified-dispersion, velocity and phase observables.
-
----
-
-## 9. Status categories
-
-The v2 machine ledger has no generic `open` status. Instead it separates:
+Thus the algebraic dictionary
 
 ```text
-CORE:
-  proved
-  tested_finite
-  conditional
-
-NON-BLOCKING EXTENSION:
-  external_extension
-
-EXPERIMENTAL LAYER:
-  experimental_test
+frozen physical six-vector
+ -> TT polarization eigenvalues
+ -> modified-dispersion coefficient
+ -> group velocity
+ -> accumulated phase / birefringence observables
 ```
 
-Examples of non-blocking extensions are a theorem uniform over arbitrary graph families or an unbounded refinement family. Those can strengthen universality but do not reopen the declared core.
+is executable.
 
-Experimental tests are similarly separate. Failure of an external test would falsify or constrain the candidate; absence of such a test does not make the internal mathematical package unfinished.
+The crucial qualifier is `frozen physical six-vector`: the interacting microscopic values `(c1,...,c6)_IR` have not yet been derived from a theory-specific physical TT pole.
 
 ---
 
-## 10. Experimental boundary
+## 9. Finite projector and relational positive controls
 
-The repository does **not** claim:
+Three additional results now make the legal physicalization route executable as mathematics without pretending it has already been completed for gravity.
+
+### 9.1 Finite master-constraint theorem
+
+For finite regulated constraints `C_A` and every positive-definite label metric `G`, define
+
+```text
+M_G = C_A^dagger G^AB C_B.
+```
+
+Then exactly
+
+```text
+M_G >= 0
+ker(M_G) = intersection_A ker(C_A).
+```
+
+When zero is isolated,
+
+```text
+P_phys^(epsilon) = 1_{0}(M_G)
+```
+
+is an exact finite orthogonal projector.  Heat-kernel convergence is controlled by the first positive master gap.
+
+What is not proved by this theorem is existence/convergence of the candidate-theory continuum/refinement rigging map.
+
+### 9.2 Relational-history positive control
+
+A finite C8 Page-Wootters/rigging-map model shows that
+
+```text
+global combined-constraint invariance
+```
+
+can coexist with
+
+```text
+nontrivial conditional system evolution.
+```
+
+It uses an externally declared finite clock and `R=J` as a q=2 system positive control.  Neither is claimed to be the physical gravity history generator.
+
+### 9.3 Metric-source positive control
+
+On that finite physical-history toy sector the legal order
+
+```text
+P_rel
+ -> gauge-invariant O_rel
+ -> Z[J]
+ -> W[J]
+ -> connected metric response
+ -> tangent Gamma^(2) pseudoinverse
+```
+
+is exact.
+
+Again, this finite `Gamma^(2)` is not the spacetime 1PI graviton kernel.
+
+---
+
+## 10. The physicalization chain that remains open
+
+The no-shortcut physical route is
+
+```text
+actual regulated graph-changing constraints {C_A^(epsilon)}
+ -> positive master constraint M_epsilon
+ -> finite zero-sector projector
+ -> controlled refinement / rigging-map or boundary-history limit
+ -> frozen physical boundary/semi-classical state prescription
+ -> metric-source Z[J_g]
+ -> connected W[J_g]
+ -> Gamma[g]
+ -> physical Gamma^(2)_metric(omega,k)
+ -> TT projection
+ -> physical K_TT(omega,k)
+ -> frozen (c1,...,c6)_IR
+ -> one common physical scale
+ -> preregistered blind external comparison.
+```
+
+Current machine truth is
+
+```text
+PHYSICAL_PROJECTOR_HISTORY   = open_physical
+CONNECTED_INTERBLOCK_HISTORY = open_physical
+PHYSICAL_TT_KERNEL           = open_physical
+IR_SIX_VECTOR                = open_physical
+COMMON_SCALE_CALIBRATION     = open_physical.
+```
+
+These are real physicalization gates, not cosmetic extensions.
+
+---
+
+## 11. Stronger extensions versus physical blockers
+
+An arbitrary-graph HDA theorem, unbounded refinement theorem, broad microscopic universality theorem or unique blocking-measure derivation would strengthen generality.
+
+They are different from the physical blockers in Section 10.
+
+A finite structural candidate may be internally assembled while its theory-specific physical projector/history remains open.  Conversely, proving arbitrary-graph universality would still not automatically produce a physical `omega`-dependent 1PI kernel.
+
+---
+
+## 12. Experimental boundary
+
+The repository does **not** claim
 
 ```text
 experimental confirmation of quantum gravity
+an observed physical graviton dispersion correction
 physical cosmological constant Lambda=3
-blind prediction of d≈3 or z≈1
-Standard-Model mass derivation from the current gravity-only package
+particle masses from the current gravity-only package
+Standard-Model matter closure
+a Born-rule derivation from the present finite positive controls.
 ```
 
-The external programme is specified in `PREDICTIONS_AND_EXPERIMENTAL_TESTS.md` and must use frozen outputs, one common scale rule and no post-hoc retuning.
+External tests must use frozen outputs, one common scale rule and no post-hoc retuning.
 
 ---
 
-## 11. Canonical verification
+## 13. What GREEN means
 
-The single workflow `.github/workflows/core-regression.yml` is the canonical machine certificate. It verifies the present core, the restored physicalization gates, the held-out Regge regression, the complete TT quartic basis and the artifact-backed higher-shell/L1 metric certificates.
-
-A green workflow means:
+The canonical structural workflow `.github/workflows/core-regression.yml` answers:
 
 ```text
-internal declared theory package reproduced = yes
-experimental truth established              = no
+did the registered structural candidate reproduce its exact/finite/conditional certificates?
 ```
+
+The independent `.github/workflows/physicalization-truth.yml` answers:
+
+```text
+do the solved finite projector/relational controls pass,
+AND does the repository still truthfully expose the stronger physical gates as open?
+```
+
+Therefore the correct interpretation is
+
+```text
+core-regression GREEN
+    = structural internal candidate reproduced
+
+physicalization-truth GREEN
+    = projector/relational reference controls reproduced
+      + open physical frontier represented truthfully
+
+both GREEN
+    != experimental truth established.
+```
+
+This distinction is part of the scientific result, not merely repository bookkeeping.
