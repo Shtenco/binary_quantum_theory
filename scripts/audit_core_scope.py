@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
-"""Fail CI when retired side sectors leak back into the GR/QM core.
+"""Fail CI when retired side sectors leak back into the active GR/QM core.
 
 The repository has one canonical programme: discrete quantum microstructure ->
 quantum geometry -> coarse-grained smooth geometry -> GR/HDA continuum limit.
-This audit keeps retired vocabulary and deleted Python modules out of source,
-documentation, ledgers and workflows.
+
+Historical archives and the explicit repository-audit ledger are evidence about
+past branches, so they are allowed to mention retired vocabulary. They are not
+active theory surfaces and must not make the canonical scope gate fail merely
+for preserving scientific history.
 """
 from __future__ import annotations
 
@@ -14,6 +17,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SELF = Path(__file__).resolve()
 TEXT_SUFFIXES = {".py", ".md", ".yml", ".yaml", ".json"}
+
+# Historical/evidentiary surfaces are quarantined from the active-claim scan.
+# They remain version controlled and readable, but are not canonical theory.
+EXCLUDED_FILES = {
+    Path("REPOSITORY_AUDIT_2026-08-29.md"),
+}
+EXCLUDED_PREFIXES = {
+    ("docs", "archive"),
+}
 
 # Construct retired vocabulary without embedding the retired tokens literally in
 # this audit source, so repository-wide textual searches remain meaningful.
@@ -26,9 +38,9 @@ RETIRED_TERMS = {
     "fifth" + " force",
 }
 
-# Every module removed by the scope reset is pinned here.  AST parsing of every
-# Python file then prevents stale imports from surviving even if the retired
-# concept is not mentioned in prose.
+# Every module removed by the scope reset is pinned here. AST parsing of every
+# active Python file then prevents stale imports from surviving even if the
+# retired concept is not mentioned in prose.
 RETIRED_MODULES = {
     "bcqg_unified_verification",
     "bcqg_critical_phase_demo",
@@ -52,11 +64,21 @@ RETIRED_MODULES = {
 }
 
 
+def is_excluded(rel: Path) -> bool:
+    if rel in EXCLUDED_FILES:
+        return True
+    parts = rel.parts
+    return any(parts[: len(prefix)] == prefix for prefix in EXCLUDED_PREFIXES)
+
+
 def candidate_files():
     for path in ROOT.rglob("*"):
         if not path.is_file() or path == SELF or path.suffix.lower() not in TEXT_SUFFIXES:
             continue
         if ".git" in path.parts or "verification_results" in path.parts:
+            continue
+        rel = path.relative_to(ROOT)
+        if is_excluded(rel):
             continue
         yield path
 
@@ -106,8 +128,8 @@ def main() -> int:
 
     print(
         "CORE SCOPE AUDIT: PASS "
-        f"({scanned} text/code files; {python_files} Python files; "
-        "no retired vocabulary or retired-module imports)"
+        f"({scanned} active text/code files; {python_files} active Python files; "
+        "historical archive quarantined; no retired vocabulary or retired-module imports)"
     )
     return 0
 
