@@ -178,7 +178,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: Shtenco/info_graph_theory
+          repository: Shtenco/binary_quantum_theory
           run-id: 31965359681
           pattern: collective-l1-q4-*
           path: verification_results/l1_q4_columns
@@ -237,7 +237,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: Shtenco/info_graph_theory
+          repository: Shtenco/binary_quantum_theory
           run-id: 31844567559
           pattern: lambda-column-*
           path: verification_results/columns
