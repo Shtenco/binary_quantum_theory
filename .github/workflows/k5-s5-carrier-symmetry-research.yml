@@ -1,0 +1,63 @@
+name: k5-s5-carrier-symmetry-research
+
+on:
+  push:
+    branches:
+      - 'audit/k5-s5-carrier-symmetry'
+    paths:
+      - 'K5_S5_CARRIER_SYMMETRY_PREREGISTRATION.md'
+      - 'scripts/k5_s5_full_active_carrier_gate.py'
+      - 'scripts/five_tetrahedron_vertex_gate.py'
+      - '.github/workflows/k5-s5-carrier-symmetry-research.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: k5-s5-carrier-symmetry-research-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  s5-carrier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile S5 carrier gate
+        run: python -m py_compile scripts/k5_s5_full_active_carrier_gate.py
+      - name: Run preregistered exact S5 carrier theorem
+        run: |
+          python scripts/k5_s5_full_active_carrier_gate.py \
+            --output verification_results/K5_S5_FULL_ACTIVE_CARRIER.json
+      - name: Guard interpretation boundary
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          x=json.loads(Path('verification_results/K5_S5_FULL_ACTIVE_CARRIER.json').read_text())
+          assert x['passed'] is True
+          assert x['trivial_multiplicity'] == 2.0
+          assert x['alternating_multiplicity'] == 2.0
+          assert x['checks']['five_tetrahedron_vertex_transforms_as_orientation_sign'] is True
+          assert x['checks']['second_independent_alternating_direction_exists'] is True
+          assert 'does not establish graph-changing Hamiltonian covariance' in x['claim_boundary']
+          print('K5 S5 carrier scope guard: PASS')
+          print('science_status:',x['science_status'])
+          print('V5 defect:',x['V5_max_alternating_transformation_defect'])
+          PY
+      - name: Upload S5 carrier evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: k5-s5-carrier-symmetry-evidence
+          path: verification_results/K5_S5_FULL_ACTIVE_CARRIER.json
+          if-no-files-found: error
