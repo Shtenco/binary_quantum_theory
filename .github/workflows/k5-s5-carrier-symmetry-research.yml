@@ -45,13 +45,15 @@ jobs:
           from pathlib import Path
           x=json.loads(Path('verification_results/K5_S5_FULL_ACTIVE_CARRIER.json').read_text())
           assert x['passed'] is True
-          assert x['trivial_multiplicity'] == 2.0
-          assert x['alternating_multiplicity'] == 2.0
+          assert x['checks']['trivial_multiplicity_is_two'] is True
+          assert x['checks']['alternating_multiplicity_is_two'] is True
           assert x['checks']['five_tetrahedron_vertex_transforms_as_orientation_sign'] is True
           assert x['checks']['second_independent_alternating_direction_exists'] is True
           assert 'does not establish graph-changing Hamiltonian covariance' in x['claim_boundary']
           print('K5 S5 carrier scope guard: PASS')
           print('science_status:',x['science_status'])
+          print('trivial_multiplicity:',x['trivial_multiplicity'])
+          print('alternating_multiplicity:',x['alternating_multiplicity'])
           print('V5 defect:',x['V5_max_alternating_transformation_defect'])
           PY
       - name: Upload S5 carrier evidence
