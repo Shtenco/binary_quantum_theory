@@ -1,0 +1,121 @@
+name: physicalization-truth
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'physicalization_gates.json'
+      - 'theory_gates.json'
+      - 'MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md'
+      - 'Q2_RELATIONAL_HISTORY_PROJECTOR.md'
+      - 'Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md'
+      - 'THEORY_STATUS.md'
+      - 'OPEN_PROBLEMS.md'
+      - 'scripts/master_constraint_physical_projector_gate.py'
+      - 'scripts/q2_relational_history_projector_gate.py'
+      - 'scripts/q2_relational_metric_source_gate.py'
+      - 'scripts/verify_physicalization_gates.py'
+      - '.github/workflows/physicalization-truth.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'physicalization_gates.json'
+      - 'theory_gates.json'
+      - 'MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md'
+      - 'Q2_RELATIONAL_HISTORY_PROJECTOR.md'
+      - 'Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md'
+      - 'THEORY_STATUS.md'
+      - 'OPEN_PROBLEMS.md'
+      - 'scripts/master_constraint_physical_projector_gate.py'
+      - 'scripts/q2_relational_history_projector_gate.py'
+      - 'scripts/q2_relational_metric_source_gate.py'
+      - 'scripts/verify_physicalization_gates.py'
+      - '.github/workflows/physicalization-truth.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: physicalization-truth-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  physicalization-truth:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile physicalization controls
+        run: |
+          python -m py_compile \
+            scripts/master_constraint_physical_projector_gate.py \
+            scripts/q2_relational_history_projector_gate.py \
+            scripts/q2_relational_metric_source_gate.py \
+            scripts/verify_physicalization_gates.py
+      - name: Validate fail-closed physicalization ledger
+        run: |
+          python scripts/verify_physicalization_gates.py \
+            --output verification_results/PHYSICALIZATION_TRUTH_STATUS.json
+      - name: Finite master-constraint projector theorem
+        run: |
+          python scripts/master_constraint_physical_projector_gate.py \
+            --output verification_results/MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.json
+      - name: Exact relational-history positive control
+        run: |
+          python scripts/q2_relational_history_projector_gate.py \
+            --output verification_results/Q2_RELATIONAL_HISTORY_PROJECTOR.json
+      - name: Exact relational metric-source positive control
+        run: |
+          python scripts/q2_relational_metric_source_gate.py \
+            --output verification_results/Q2_RELATIONAL_METRIC_SOURCE.json
+      - name: Cross-guard solved references versus open physical frontier
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          def load(name):
+              return json.loads(Path('verification_results', name).read_text())
+
+          status = load('PHYSICALIZATION_TRUTH_STATUS.json')
+          master = load('MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.json')
+          history = load('Q2_RELATIONAL_HISTORY_PROJECTOR.json')
+          source = load('Q2_RELATIONAL_METRIC_SOURCE.json')
+
+          assert status['valid'] is True
+          assert status['structural_candidate_closed'] is True
+          assert status['physical_projector_history_closed'] is False
+          assert status['physical_tt_kernel_frozen'] is False
+          assert status['ir_six_wilson_vector_frozen'] is False
+          assert status['common_physical_scale_calibrated'] is False
+          assert status['physicalization_complete'] is False
+          assert status['experimentally_confirmed'] is False
+
+          assert master['passed'] is True
+          assert history['passed'] is True
+          assert source['passed'] is True
+
+          # Critical scientific non-equivalence: passing finite reference controls
+          # MUST NOT silently close a stronger physical gate.
+          assert status['required_physical_gate_statuses']['PHYSICAL_PROJECTOR_HISTORY'] == 'open_physical'
+          assert status['required_physical_gate_statuses']['CONNECTED_INTERBLOCK_HISTORY'] == 'open_physical'
+          assert status['required_physical_gate_statuses']['PHYSICAL_TT_KERNEL'] == 'open_physical'
+          assert status['required_physical_gate_statuses']['IR_SIX_VECTOR'] == 'open_physical'
+          assert status['required_physical_gate_statuses']['COMMON_SCALE_CALIBRATION'] == 'open_physical'
+          print('physicalization truth cross-guard: PASS')
+          PY
+      - name: Upload physicalization truth evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: physicalization-truth-evidence
+          path: verification_results/
+          if-no-files-found: error
