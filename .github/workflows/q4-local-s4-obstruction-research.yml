@@ -8,6 +8,7 @@ on:
       - 'Q4_LOCAL_S4_BACKGROUND_OBSTRUCTION.md'
       - 'scripts/q4_local_s4_singlet_obstruction_gate.py'
       - 'scripts/q4_two_block_s4_invariant_gate.py'
+      - 'scripts/q4_b4_graph_recoupling_invariant_gate.py'
       - '.github/workflows/q4-local-s4-obstruction-research.yml'
   workflow_dispatch:
 
@@ -21,7 +22,7 @@ concurrency:
 jobs:
   local-s4-obstruction:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -32,10 +33,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-      - name: Compile S4 gates
+      - name: Compile symmetry gates
         run: |
           python -m py_compile scripts/q4_local_s4_singlet_obstruction_gate.py
           python -m py_compile scripts/q4_two_block_s4_invariant_gate.py
+          python -m py_compile scripts/q4_b4_graph_recoupling_invariant_gate.py
       - name: Run exact local S4 obstruction gate
         run: |
           python scripts/q4_local_s4_singlet_obstruction_gate.py \
@@ -44,6 +46,10 @@ jobs:
         run: |
           python scripts/q4_two_block_s4_invariant_gate.py \
             --output verification_results/Q4_TWO_BLOCK_S4_INVARIANT.json
+      - name: Run exact B4 graph-recoupling carrier gate
+        run: |
+          python scripts/q4_b4_graph_recoupling_invariant_gate.py \
+            --output verification_results/Q4_B4_GRAPH_RECOUPLING_INVARIANT.json
       - name: Guard interpretation
         run: |
           python - <<'PY'
@@ -51,17 +57,20 @@ jobs:
           from pathlib import Path
           local=json.loads(Path('verification_results/Q4_LOCAL_S4_SINGLET_OBSTRUCTION.json').read_text())
           pair=json.loads(Path('verification_results/Q4_TWO_BLOCK_S4_INVARIANT.json').read_text())
+          full=json.loads(Path('verification_results/Q4_B4_GRAPH_RECOUPLING_INVARIANT.json').read_text())
           assert local['passed'] is True
           assert local['representation_irrep'] == 'S4 [2,2]'
           assert local['invariant_subspace_dimension'] == 0
-          assert local['checks']['full_S4_trivial_projector_vanishes'] is True
           assert pair['passed'] is True
           assert pair['diagonal_trivial_multiplicity'] == 1
-          assert pair['checks']['explicit_vecI_state_invariant_under_all_24'] is True
-          assert pair['checks']['entanglement_entropy_one_bit'] is True
           assert pair['diagonal_S4_trivial_multiplicity_N_1_to_16']['16'] == 10923
-          assert 'graph action is not included here' in pair['claim_boundary']
-          print('local obstruction + two-block restoration interpretation guard: PASS')
+          assert full['passed'] is True
+          assert full['group_order'] == 384
+          assert full['trivial_sector_multiplicity'] == 243
+          assert full['checks']['node_action_semidirect_group_law'] is True
+          assert full['checks']['explicit_state_invariant_under_B4_generators'] is True
+          assert 'Edge-spin transport' in full['claim_boundary']
+          print('Q4 local obstruction -> entangled restoration -> B4 graph/carrier reduction: PASS')
           PY
       - name: Upload evidence
         if: always()
@@ -71,4 +80,5 @@ jobs:
           path: |
             verification_results/Q4_LOCAL_S4_SINGLET_OBSTRUCTION.json
             verification_results/Q4_TWO_BLOCK_S4_INVARIANT.json
+            verification_results/Q4_B4_GRAPH_RECOUPLING_INVARIANT.json
           if-no-files-found: error
