@@ -1,0 +1,83 @@
+name: q2-bell-reference
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/bell_chsh_qubit_gate.py'
+      - 'scripts/su2_quantum_link_two_qubit_gate.py'
+      - '.github/workflows/q2-bell-reference.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/bell_chsh_qubit_gate.py'
+      - 'scripts/su2_quantum_link_two_qubit_gate.py'
+      - '.github/workflows/q2-bell-reference.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: q2-bell-reference-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bell-reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile q=2 SU(2) and Bell controls
+        run: |
+          python -m py_compile \
+            scripts/su2_quantum_link_two_qubit_gate.py \
+            scripts/bell_chsh_qubit_gate.py
+      - name: Exact two-qubit SU(2) link algebra reference
+        run: |
+          python scripts/su2_quantum_link_two_qubit_gate.py \
+            --output verification_results/SU2_LINK_TWO_QUBIT.json
+      - name: Bell CHSH Tsirelson reference control
+        run: |
+          python scripts/bell_chsh_qubit_gate.py \
+            --random-trials 128 \
+            --rotation-trials 64 \
+            --output verification_results/BELL_CHSH_QUBIT.json
+      - name: Cross-guard reference evidence
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          su2 = json.loads(Path('verification_results/SU2_LINK_TWO_QUBIT.json').read_text())
+          bell = json.loads(Path('verification_results/BELL_CHSH_QUBIT.json').read_text())
+
+          assert su2['passed'] is True
+          assert bell['passed'] is True
+          assert bell['science_status'] == 'STANDARD_QM_REFERENCE_CONTROL'
+          assert bell['Pauli_commutator_error'] < 2e-12
+          assert bell['Pauli_anticommutator_error'] < 2e-12
+          assert bell['singlet_correlation_tensor_error'] < 2e-12
+          assert bell['singlet_total_spin_annihilation_error'] < 2e-12
+          assert bell['common_SU2_rotation_max_error'] < 2e-12
+          assert abs(bell['CHSH_absolute_value'] - bell['Tsirelson_bound']) < 2e-12
+          assert bell['CHSH_operator_norm'] <= bell['Tsirelson_bound'] + 2e-12
+          assert bell['random_Tsirelson_excess_max'] <= 2e-12
+          assert abs(bell['Horodecki_max_CHSH'] - bell['Tsirelson_bound']) < 2e-12
+          assert bell['Tsirelson_square_identity_error'] < 2e-12
+          print('q=2 SU(2) + Bell reference cross-guard: PASS')
+          PY
+      - name: Upload q=2 Bell reference evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: q2-bell-reference-evidence
+          path: verification_results/
+          if-no-files-found: error
