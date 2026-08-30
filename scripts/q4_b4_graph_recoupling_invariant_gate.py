@@ -2,23 +2,27 @@
 """Exact B4=(Z2)^4 semidirect S4 graph+recoupling invariant-sector gate.
 
 This extends the local S4 [2,2] recoupling representation to the sixteen Q4
-bit-labelled dual nodes.  A signed coordinate permutation g=(m,p) acts by
+bit-labelled dual nodes. A signed coordinate permutation g=(m,p) acts by
 
     v -> m XOR p.v
 
 on the 16 node labels and by the same local [2,2] matrix R_p on each local
-recoupling carrier.  The resulting carrier Hilbert space has dimension 2^16.
+recoupling carrier. The resulting carrier Hilbert space has dimension 2^16.
 
 Without constructing a 65536 x 65536 dense matrix, the trace of the combined
-permutation-tensor action is evaluated exactly through cycle factorization:
+permutation-tensor action is evaluated through cycle factorization:
 
     Tr U_(m,p) = product_{cycles c of f_(m,p)} Tr(R_p^|c|).
 
-The group-average character gives the multiplicity of the trivial B4 sector.
+The [2,2] S4 character is integer-valued, so the primary multiplicity count is
+performed with exact integer class arithmetic. Floating recoupling matrices are
+retained as an independent scale-aware consistency check rather than being
+rounded with an absolute tolerance at characters as large as 2^16.
+
 The gate also constructs an explicit nonzero full-B4 invariant pure vector by
 averaging |i0>^tensor16 and verifies invariance under a generating set.
 
-Claim boundary: this is the graph-node + local recoupling carrier only.  It does
+Claim boundary: this is the graph-node + local recoupling carrier only. It does
 not yet transform Peter-Weyl edge spins, orientation-dependent Hamiltonian
 outputs, or the full physical constraint habitat.
 """
@@ -76,7 +80,7 @@ def group_product(
     return m ^ p_mask(p, n), compose_p(p, q)
 
 
-def cycles(mapping: list[int]) -> list[int]:
+def cycles(mapping: list[int] | tuple[int, ...]) -> list[int]:
     seen: set[int] = set()
     out: list[int] = []
     for start in range(len(mapping)):
@@ -90,6 +94,29 @@ def cycles(mapping: list[int]) -> list[int]:
             j = mapping[j]
         out.append(length)
     return sorted(out, reverse=True)
+
+
+def permutation_power(p: tuple[int, ...], power: int) -> tuple[int, ...]:
+    """Return p**power for the index-map convention i -> p[i]."""
+    out = tuple(range(len(p)))
+    for _ in range(power):
+        out = tuple(p[out[i]] for i in range(len(p)))
+    return out
+
+
+def s4_22_character(p: tuple[int, ...]) -> int:
+    """Exact character of the S4 irrep [2,2], keyed only by cycle type."""
+    c = tuple(cycles(p))
+    table = {
+        (1, 1, 1, 1): 2,
+        (2, 1, 1): 0,
+        (2, 2): 2,
+        (3, 1): -1,
+        (4,): 0,
+    }
+    if c not in table:
+        raise AssertionError(f"unexpected S4 cycle type {c} for permutation {p}")
+    return table[c]
 
 
 def kron_power_vec(v: np.ndarray, n: int) -> np.ndarray:
@@ -110,7 +137,7 @@ def site_axis_order(mask: int, p: tuple[int, ...]) -> tuple[int, ...]:
 
 def apply_same_local_matrix(state: np.ndarray, R: np.ndarray) -> np.ndarray:
     T = np.asarray(state, complex).reshape((2,) * 16)
-    # Applying R to every tensor factor.  Move the contracted output axis back
+    # Applying R to every tensor factor. Move the contracted output axis back
     # to its original position after each tensordot.
     for axis in range(16):
         T = np.tensordot(R, T, axes=(1, axis))
@@ -154,32 +181,47 @@ def run() -> dict[str, object]:
                 float(np.linalg.norm(reps[p] @ reps[q] - reps[gh[1]], 2)),
             )
 
+    # Exact character arithmetic gives the theorem-level multiplicity. The
+    # floating matrices provide a separate numerical consistency diagnostic.
     character_rows = []
-    char_sum = 0.0 + 0j
-    char_round_error = 0.0
+    exact_char_sum = 0
+    numerical_char_sum = 0.0 + 0j
+    max_numeric_character_scaled_error = 0.0
+    max_numeric_character_absolute_error = 0.0
     cycle_counter: dict[str, int] = {}
     for mask, p in elements:
         mapping = [node_map(mask, p, v) for v in range(16)]
         cyc = cycles(mapping)
         R = reps[p]
-        ch = 1.0 + 0j
+
+        exact_ch = 1
+        numeric_ch = 1.0 + 0j
         for L in cyc:
-            ch *= np.trace(np.linalg.matrix_power(R, L))
-        char_sum += ch
-        nearest = round(float(ch.real))
-        char_round_error = max(char_round_error, abs(ch.imag), abs(float(ch.real) - nearest))
+            exact_ch *= s4_22_character(permutation_power(p, L))
+            numeric_ch *= np.trace(np.linalg.matrix_power(R, L))
+
+        exact_char_sum += exact_ch
+        numerical_char_sum += numeric_ch
+        abs_err = float(abs(numeric_ch - exact_ch))
+        scaled_err = abs_err / max(1.0, abs(float(exact_ch)))
+        max_numeric_character_absolute_error = max(max_numeric_character_absolute_error, abs_err)
+        max_numeric_character_scaled_error = max(max_numeric_character_scaled_error, scaled_err)
+
         key = str(tuple(cyc))
         cycle_counter[key] = cycle_counter.get(key, 0) + 1
         character_rows.append({
             "mask": mask,
             "permutation": list(p),
             "node_cycle_lengths": cyc,
-            "character": [float(ch.real), float(ch.imag)],
+            "exact_character": exact_ch,
+            "numerical_character": [float(numeric_ch.real), float(numeric_ch.imag)],
+            "numerical_scaled_error": scaled_err,
         })
 
-    multiplicity_complex = char_sum / len(elements)
-    multiplicity = int(round(float(multiplicity_complex.real)))
-    multiplicity_integrality_error = float(abs(multiplicity_complex - multiplicity))
+    multiplicity_divisible = exact_char_sum % len(elements) == 0
+    multiplicity = exact_char_sum // len(elements) if multiplicity_divisible else -1
+    numerical_multiplicity = numerical_char_sum / len(elements)
+    numerical_multiplicity_error = float(abs(numerical_multiplicity - multiplicity))
 
     # Full group average of the uniform |i0>^16 seed. XOR node permutations do
     # nothing to every term in this uniform orbit, so the 384-element average
@@ -218,7 +260,7 @@ def run() -> dict[str, object]:
     ev_rho = np.linalg.eigvalsh(0.5 * (rho0 + rho0.conj().T))
     entropy = float(-sum(x * math.log2(x) for x in ev_rho if x > 1e-15))
 
-    # The uniform-seed projector norm has a closed rational value m_16/2^15.
+    # Independent closed-form norm for this particular uniform seed orbit.
     expected_uniform_norm2 = 10923.0 / 32768.0
     norm2_error = abs(avg_norm2 - expected_uniform_norm2)
 
@@ -226,8 +268,9 @@ def run() -> dict[str, object]:
         "group_has_384_elements": len(elements) == 384,
         "node_action_semidirect_group_law": max_node_group_error == 0,
         "local_recoupling_group_law_compatible": max_local_group_error < TOL,
-        "characters_numerically_integer": char_round_error < TOL,
-        "trivial_multiplicity_is_integer": multiplicity_integrality_error < TOL,
+        "exact_character_sum_divisible_by_group_order": multiplicity_divisible,
+        "numerical_characters_match_exact_scale_aware": max_numeric_character_scaled_error < TOL,
+        "numerical_character_average_matches_exact_multiplicity": numerical_multiplicity_error < TOL,
         "full_graph_recoupling_trivial_multiplicity_is_243": multiplicity == 243,
         "uniform_seed_group_average_nonzero": avg_norm2 > 1e-8,
         "uniform_seed_projector_norm_matches_closed_value": norm2_error < TOL,
@@ -246,10 +289,12 @@ def run() -> dict[str, object]:
         "carrier_hilbert_dimension": 2 ** 16,
         "local_recoupling_irrep": "S4 [2,2]",
         "trivial_sector_multiplicity": multiplicity,
-        "trivial_sector_fraction": multiplicity / float(2 ** 16),
-        "character_average": [float(multiplicity_complex.real), float(multiplicity_complex.imag)],
-        "character_integrality_error": multiplicity_integrality_error,
-        "max_character_rounding_error": char_round_error,
+        "trivial_sector_fraction": multiplicity / float(2 ** 16) if multiplicity >= 0 else None,
+        "exact_character_sum": exact_char_sum,
+        "numerical_character_average": [float(numerical_multiplicity.real), float(numerical_multiplicity.imag)],
+        "numerical_character_average_error": numerical_multiplicity_error,
+        "max_numeric_character_absolute_error": max_numeric_character_absolute_error,
+        "max_numeric_character_scaled_error": max_numeric_character_scaled_error,
         "max_local_group_law_error": max_local_group_error,
         "node_group_law_error_flag": max_node_group_error,
         "node_cycle_structure_counts": cycle_counter,
