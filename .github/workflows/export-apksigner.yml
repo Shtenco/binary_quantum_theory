@@ -1,0 +1,30 @@
+name: Export Android apksigner
+on:
+  push:
+    branches: [ci-sinergy-messenger-v030]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install build tools
+        run: |
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMANAGER" --licenses >/dev/null || true
+          "$SDKMANAGER" "build-tools;36.0.0"
+          mkdir -p /tmp/apksigner-tool/lib
+          cp "$ANDROID_HOME/build-tools/36.0.0/apksigner" /tmp/apksigner-tool/
+          cp "$ANDROID_HOME/build-tools/36.0.0/lib/apksigner.jar" /tmp/apksigner-tool/lib/
+          chmod +x /tmp/apksigner-tool/apksigner
+          sha256sum /tmp/apksigner-tool/apksigner /tmp/apksigner-tool/lib/apksigner.jar > /tmp/apksigner-tool/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-apksigner-36.0.0
+          path: /tmp/apksigner-tool
+          retention-days: 1
