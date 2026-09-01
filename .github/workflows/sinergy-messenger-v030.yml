@@ -1,4 +1,4 @@
-name: SINERGY Messenger v0.3.2 Keyboard Fix
+name: SINERGY Messenger v0.3.3 Full E2E
 on:
   push:
     branches: [ci-sinergy-messenger-v030]
@@ -8,87 +8,150 @@ permissions:
 jobs:
   android:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
-      - name: Restore source and apply keyboard fix
+      - name: Restore v0.3.2 and apply full CSP-safe UI fix
         run: |
           set -euo pipefail
-          mkdir -p ci/sinergy-messenger-v032
+          mkdir -p ci/sinergy-messenger-v033
           head -c 6000 ci/v030/part00.b64 > /tmp/v030.b64
           cat ci/v030/part01.b64 ci/v030/part02.b64 ci/v030/part03.b64 ci/v030/part04.b64 ci/v030/part05.b64 ci/v030/part06.b64 >> /tmp/v030.b64
           base64 -d /tmp/v030.b64 > /tmp/v030.zip
           test "$(sha256sum /tmp/v030.zip | cut -d' ' -f1)" = "4a4125854b711eb83e4aeeb43c2d3d4e4d744d4f89d470fc781fba264bdf108a"
-          unzip -q /tmp/v030.zip -d ci/sinergy-messenger-v032
+          unzip -q /tmp/v030.zip -d ci/sinergy-messenger-v033
           cat ci/v031/patch00.b64 ci/v031/patch01.b64 ci/v031/patch02.b64 ci/v031/patch03.b64 ci/v031/patch04.b64 ci/v031/patch05.b64 ci/v031/patch06.b64 > /tmp/v031.b64
           base64 -d /tmp/v031.b64 > /tmp/v031-patch.zip
           test "$(sha256sum /tmp/v031-patch.zip | cut -d' ' -f1)" = "596b82eed0c17a1014ef65ef0a8d52b36e195c2e2b4f009f3d93d8b533166635"
-          unzip -qo /tmp/v031-patch.zip -d ci/sinergy-messenger-v032
-          mkdir -p ci/sinergy-messenger-v032/app/src/main/res/drawable
-          cp ci/sinergy-messenger-v032/app/src/main/assets/www/sinergy-logo.png ci/sinergy-messenger-v032/app/src/main/res/drawable/sinergy_logo.png
-          sed -i 's/version "9.4.0"/version "9.0.0"/' ci/sinergy-messenger-v032/build.gradle.kts
-          sed -i 's/applicationId = "ai.sinergy.messenger.secure"/applicationId = "ai.sinergy.messenger.quantum"/' ci/sinergy-messenger-v032/app/build.gradle.kts
-          sed -i 's/versionCode = 301/versionCode = 303/' ci/sinergy-messenger-v032/app/build.gradle.kts
-          sed -i 's/versionName = "0.3.1"/versionName = "0.3.2"/' ci/sinergy-messenger-v032/app/build.gradle.kts
+          unzip -qo /tmp/v031-patch.zip -d ci/sinergy-messenger-v033
+          mkdir -p ci/sinergy-messenger-v033/app/src/main/res/drawable
+          cp ci/sinergy-messenger-v033/app/src/main/assets/www/sinergy-logo.png ci/sinergy-messenger-v033/app/src/main/res/drawable/sinergy_logo.png
+          sed -i 's/version "9.4.0"/version "9.0.0"/' ci/sinergy-messenger-v033/build.gradle.kts
+          sed -i 's/applicationId = "ai.sinergy.messenger.secure"/applicationId = "ai.sinergy.messenger.quantum"/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          sed -i 's/versionCode = 301/versionCode = 304/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          sed -i 's/versionName = "0.3.1"/versionName = "0.3.3"/' ci/sinergy-messenger-v033/app/build.gradle.kts
           python3 - <<'PY'
           from pathlib import Path
-          p=Path('ci/sinergy-messenger-v032/app/src/main/assets/www/app.js')
+          root=Path('ci/sinergy-messenger-v033')
+          p=root/'app/src/main/assets/www/app.js'
           s=p.read_text()
           old="async function boot(){setNav();refreshStatus();if(status?.registered)loadLocal();render();setInterval(()=>{refreshStatus(false);if(tab==='home'||tab==='security')render()},1000)}"
-          new="async function boot(){setNav();refreshStatus();if(status?.registered)loadLocal();render();setInterval(()=>{refreshStatus(false)},1000)}"
-          if old not in s: raise SystemExit('old boot loop not found')
-          p.write_text(s.replace(old,new))
-          m=Path('ci/sinergy-messenger-v032/app/src/main/AndroidManifest.xml')
-          x=m.read_text()
-          if 'android:windowSoftInputMode=' not in x:
-              x=x.replace('android:exported="true"','android:exported="true" android:windowSoftInputMode="adjustResize"')
+          s=s.replace(old,"async function boot(){setNav();refreshStatus();if(status?.registered)loadLocal();render();setInterval(()=>{refreshStatus(false)},1000)}")
+          oldnav="function setNav(){const h=nav.map(([id,ic,label])=>`<button class=\"navBtn ${tab===id?'active':''}\" data-tab=\"${id}\"><span class=\"navIcon\">${ic}</span>${label}</button>`).join('');$('#sideNav').innerHTML=h;$('#bottomNav').innerHTML=h;document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>go(b.dataset.tab))}"
+          newnav="function setNav(){const h=nav.map(([id,ic,label])=>`<button class=\"navBtn ${tab===id?'active':''}\" data-action=\"go\" data-target=\"${id}\"><span class=\"navIcon\">${ic}</span>${label}</button>`).join('');$('#sideNav').innerHTML=h;$('#bottomNav').innerHTML=h}"
+          if oldnav not in s: raise SystemExit('old nav not found')
+          s=s.replace(oldnav,newnav)
+          repl={
+          'onclick="go(\'chats\')"':'data-action="go" data-target="chats"','onclick="go(\'security\')"':'data-action="go" data-target="security"',
+          'onclick="registerUser()"':'data-action="registerUser"','onclick="rotateKey()"':'data-action="rotateKey"','onclick="sendMsg()"':'data-action="sendMsg"',
+          'onclick="copyText(lastEnvelope)"':'data-action="copyLastEnvelope"','onclick="showMyCode()"':'data-action="showMyCode"','onclick="savePeer()"':'data-action="savePeer"',
+          'onclick="openIncoming()"':'data-action="openIncoming"','onclick="askNexus()"':'data-action="askNexus"','onclick="makeOffer()"':'data-action="makeOffer"',
+          'onclick="acceptOffer()"':'data-action="acceptOffer"','onclick="acceptAnswer()"':'data-action="acceptAnswer"',
+          'onclick="copyText($(\'#meshCode\').value)"':'data-action="copyMeshCode"',
+          'onkeydown="if(event.key===\'Enter\')sendMsg()"':'data-enter-action="sendMsg"','onkeydown="if(event.key===\'Enter\')askNexus()"':'data-enter-action="askNexus"'}
+          for a,b in repl.items(): s=s.replace(a,b)
+          s=s.replace('class="stack" style="max-width:440px"','class="stack regStack"').replace('class="muted" style="font-size:10px;margin-top:4px"','class="muted verifyLine"')
+          s=s.replace('class="primary wide" style="margin-top:12px"','class="primary wide mt12"').replace('class="notice" style="margin-top:10px"','class="notice mt10"')
+          s=s.replace('class="row" style="margin-top:12px"','class="row mt12"').replace('class="notice warnbox" style="margin-top:12px"','class="notice warnbox mt12"')
+          s=s.replace('style="font-size:34px;margin:8px 0 10px"','class="techSectionTitle"')
+          s=s.replace("lastEnvelope=JSON.stringify(r.data);navigator.clipboard?.writeText(lastEnvelope);toast('Ваш код скопирован');chats()","lastEnvelope=JSON.stringify(r.data);window.copyText(lastEnvelope,'Ваш код скопирован');chats()")
+          s=s.replace("window.copyText=function(t){navigator.clipboard?.writeText(t);toast('Скопировано')}","window.copyText=async function(t,label='Скопировано'){t=String(t??'');if(!t)return toast('Нечего копировать');try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(t);toast(label);return}}catch{}const r=call('copyText',t);if(r.ok)toast(label);else toast(r.error||'Не удалось скопировать')}")
+          marker="async function boot(){setNav();refreshStatus();if(status?.registered)loadLocal();render();setInterval(()=>{refreshStatus(false)},1000)}"
+          dispatcher='''const ACTIONS={\n go:(el)=>go(el.dataset.target),\n registerUser:()=>window.registerUser(),\n rotateKey:()=>window.rotateKey(),\n sendMsg:()=>window.sendMsg(),\n copyLastEnvelope:()=>window.copyText(lastEnvelope),\n showMyCode:()=>window.showMyCode(),\n savePeer:()=>window.savePeer(),\n openIncoming:()=>window.openIncoming(),\n askNexus:()=>window.askNexus(),\n makeOffer:()=>window.makeOffer(),\n acceptOffer:()=>window.acceptOffer(),\n acceptAnswer:()=>window.acceptAnswer(),\n copyMeshCode:()=>window.copyText($('#meshCode')?.value||'')\n};\nfunction installUiEvents(){\n document.addEventListener('click',e=>{const el=e.target.closest?.('[data-action]');if(!el||el.disabled)return;const fn=ACTIONS[el.dataset.action];if(!fn){toast('Действие недоступно');return}e.preventDefault();fn(el)});\n document.addEventListener('keydown',e=>{if(e.key!=='Enter'||e.isComposing)return;const name=e.target?.dataset?.enterAction;if(!name)return;const fn=ACTIONS[name];if(!fn)return;e.preventDefault();fn(e.target)});\n const pill=$('#safePill');if(pill){pill.dataset.action='go';pill.dataset.target='security'}\n document.querySelectorAll('.brand,.mobileBrand').forEach(el=>{el.dataset.action='go';el.dataset.target='home';el.setAttribute('role','button');el.setAttribute('tabindex','0')});\n}\n'''
+          if marker not in s: raise SystemExit('boot marker missing')
+          s=s.replace(marker,dispatcher+"async function boot(){installUiEvents();setNav();refreshStatus();if(status?.registered)loadLocal();render();setInterval(()=>{refreshStatus(false)},1000)}")
+          p.write_text(s)
+          css=root/'app/src/main/assets/www/app.css'; css.write_text(css.read_text()+"\n.regStack{max-width:440px}.verifyLine{font-size:10px;margin-top:4px}.mt10{margin-top:10px}.mt12{margin-top:12px}.techSectionTitle{font-size:34px;margin:8px 0 10px}.brand,.mobileBrand,#safePill,[data-action]{cursor:pointer;touch-action:manipulation}\n")
+          idx=root/'app/src/main/assets/www/index.html'; idx.write_text(idx.read_text().replace('v0.3.1 · POST-QUANTUM SECURE','v0.3.3 · POST-QUANTUM SECURE'))
+          m=root/'app/src/main/AndroidManifest.xml'; x=m.read_text();
+          if 'android:windowSoftInputMode=' not in x: x=x.replace('android:exported="true"','android:exported="true" android:windowSoftInputMode="adjustResize"')
           m.write_text(x)
+          bg=root/'app/build.gradle.kts'; g=bg.read_text().replace('targetSdk = 36\n        versionCode','targetSdk = 36\n        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"\n        versionCode')
+          g=g.replace('testImplementation("junit:junit:4.13.2")','testImplementation("junit:junit:4.13.2")\n    androidTestImplementation("androidx.test:core:1.6.1")\n    androidTestImplementation("androidx.test:runner:1.6.2")\n    androidTestImplementation("androidx.test.ext:junit:1.2.1")')
+          bg.write_text(g)
+          j=root/'app/src/main/java/ai/sinergy/messenger/secure/PqSessionBridge.java'; q=j.read_text().replace('import android.content.Context;','import android.content.Context;\nimport android.content.ClipData;\nimport android.content.ClipboardManager;')
+          anchor='    @JavascriptInterface public String explain() {'
+          clip='''    @JavascriptInterface public String copyText(String text) {\n        try { ClipboardManager cm=(ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE); if(cm==null)throw new IllegalStateException("Clipboard недоступен"); cm.setPrimaryClip(ClipData.newPlainText("SINERGY",text==null?"":text)); JSONObject o=new JSONObject();o.put("copied",true);return ok(o); } catch(Throwable t){return err(t);}\n    }\n\n'''
+          q=q.replace(anchor,clip+anchor); j.write_text(q)
           PY
-          grep -F 'applicationId = "ai.sinergy.messenger.quantum"' ci/sinergy-messenger-v032/app/build.gradle.kts
-          grep -F 'versionCode = 303' ci/sinergy-messenger-v032/app/build.gradle.kts
-          grep -F 'versionName = "0.3.2"' ci/sinergy-messenger-v032/app/build.gradle.kts
-          grep -F 'setInterval(()=>{refreshStatus(false)},1000)' ci/sinergy-messenger-v032/app/src/main/assets/www/app.js
-          ! grep -F "if(tab==='home'||tab==='security')render()" ci/sinergy-messenger-v032/app/src/main/assets/www/app.js
-          grep -F 'android:windowSoftInputMode="adjustResize"' ci/sinergy-messenger-v032/app/src/main/AndroidManifest.xml
-          node --check ci/sinergy-messenger-v032/app/src/main/assets/www/app.js
+          mkdir -p ci/sinergy-messenger-v033/app/src/androidTest/java/ai/sinergy/messenger/secure
+          cat > ci/sinergy-messenger-v033/app/src/androidTest/java/ai/sinergy/messenger/secure/FullUiE2ETest.java <<'JAVA'
+          package ai.sinergy.messenger.secure;
+          import static org.junit.Assert.*;
+          import android.app.Instrumentation; import android.view.*; import android.webkit.WebView;
+          import androidx.test.core.app.ActivityScenario; import androidx.test.ext.junit.runners.AndroidJUnit4; import androidx.test.platform.app.InstrumentationRegistry;
+          import org.json.JSONArray; import org.junit.*; import org.junit.runner.RunWith;
+          import java.util.concurrent.*; import java.util.concurrent.atomic.AtomicReference;
+          @RunWith(AndroidJUnit4.class) public class FullUiE2ETest {
+            private final Instrumentation ins=InstrumentationRegistry.getInstrumentation(); private ActivityScenario<SecureMainActivity> scenario; private WebView web;
+            @Before public void setUp() throws Exception { scenario=ActivityScenario.launch(SecureMainActivity.class); AtomicReference<WebView> r=new AtomicReference<>(); scenario.onActivity(a->r.set(find(a.findViewById(android.R.id.content)))); web=r.get(); assertNotNull(web); assertTrue(waitJs("document.readyState==='complete'&&!!document.querySelector('[data-action]')",20)); }
+            @After public void close(){if(scenario!=null)scenario.close();}
+            @Test public void allPrimaryFlows() throws Exception {
+              click("[data-action='go'][data-target='nexus']"); assertEquals("NEXUS",text("routeTitle")); click("[data-action='go'][data-target='mesh']"); assertEquals("Сеть",text("routeTitle")); click("[data-action='go'][data-target='security']"); assertEquals("Защита",text("routeTitle")); click("[data-action='go'][data-target='home']");
+              eval("document.getElementById('regName').value='SINERGY E2E';document.querySelector('[data-action=\"registerUser\"]').click();'ok'"); assertTrue(waitJs("status&&status.registered===true&&document.body.innerText.includes('PQ ACTIVE')",60));
+              click("#safePill"); assertEquals("Защита",text("routeTitle")); String old=value("status.session.sessionId"); click("[data-action='rotateKey']"); assertTrue(waitJs("status.session.sessionId!=="+jsString(old),60));
+              click("[data-action='go'][data-target='chats']"); click("[data-action='showMyCode']"); assertTrue(bool("lastEnvelope.length>100")); eval("document.getElementById('peerCode').value=lastEnvelope;document.querySelector('[data-action=\"savePeer\"]').click();'ok'"); assertTrue(waitJs("peer&&peer.fingerprint",30));
+              eval("document.getElementById('msg').value='PQ E2E MESSAGE';document.querySelector('[data-action=\"sendMsg\"]').click();'ok'"); assertTrue(waitJs("chat.length>=1&&chat[chat.length-1].me===true",30)); eval("document.getElementById('incoming').value=lastEnvelope;document.querySelector('[data-action=\"openIncoming\"]').click();'ok'"); assertTrue(waitJs("chat.length>=2&&chat[chat.length-1].me===false&&chat[chat.length-1].text==='PQ E2E MESSAGE'",30));
+              click("[data-action='go'][data-target='nexus']"); eval("document.getElementById('nq').value='что такое временный ключ';document.querySelector('[data-action=\"askNexus\"]').click();'ok'"); assertTrue(waitJs("nexusHist.length>=2",15)); eval("document.getElementById('nq').value='что такое Mesh';document.getElementById('nq').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));'ok'"); assertTrue(waitJs("nexusHist.length>=4",15));
+              click("[data-action='go'][data-target='mesh']"); click("[data-action='makeOffer']"); assertTrue(waitJs("document.getElementById('meshCode').value.length>40",15)); assertFalse(bool("!!document.querySelector('[onclick]')")); assertFalse(bool("!!document.querySelector('[onkeydown]')"));
+            }
+            private void click(String s)throws Exception{assertEquals("CLICKED",value("(()=>{const e=document.querySelector("+jsString(s)+");if(!e)return'MISSING';e.click();return'CLICKED'})()"));}
+            private String text(String id)throws Exception{return value("document.getElementById("+jsString(id)+").textContent");} private boolean bool(String e)throws Exception{return"true".equals(eval(e));}
+            private boolean waitJs(String e,int sec)throws Exception{long end=System.currentTimeMillis()+sec*1000L;while(System.currentTimeMillis()<end){if(bool(e))return true;Thread.sleep(250);}return false;}
+            private String value(String e)throws Exception{return decode(eval(e));} private String eval(String js)throws Exception{CountDownLatch l=new CountDownLatch(1);AtomicReference<String>o=new AtomicReference<>();ins.runOnMainSync(()->web.evaluateJavascript(js,v->{o.set(v);l.countDown();}));if(!l.await(90,TimeUnit.SECONDS))fail("JS timeout");return o.get();}
+            private static String decode(String r)throws Exception{if(r==null||"null".equals(r))return null;if(r.startsWith("\"")||r.startsWith("["))return new JSONArray("["+r+"]").getString(0);return r;} private static String jsString(String s){return"\""+s.replace("\\","\\\\").replace("\"","\\\"")+"\"";}
+            private static WebView find(View v){if(v instanceof WebView)return(WebView)v;if(v instanceof ViewGroup){ViewGroup g=(ViewGroup)v;for(int i=0;i<g.getChildCount();i++){WebView w=find(g.getChildAt(i));if(w!=null)return w;}}return null;}
+          }
+          JAVA
+          node --check ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+          ! grep -Eq 'onclick="|onkeydown="|style="' ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+          grep -F 'versionCode = 304' ci/sinergy-messenger-v033/app/build.gradle.kts
+          grep -F 'versionName = "0.3.3"' ci/sinergy-messenger-v033/app/build.gradle.kts
       - uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: '17'
+        with: {distribution: temurin, java-version: '17'}
       - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '9.6.0'
+        with: {gradle-version: '9.6.0'}
       - name: Android SDK
-        working-directory: ci/sinergy-messenger-v032
+        working-directory: ci/sinergy-messenger-v033
         run: |
-          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
-          test -x "$SDKMANAGER"
-          yes | "$SDKMANAGER" --licenses >/dev/null || true
-          "$SDKMANAGER" "platforms;android-36" "build-tools;36.0.0"
-      - name: PQ tests
-        working-directory: ci/sinergy-messenger-v032
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+      - name: PQ unit tests
+        working-directory: ci/sinergy-messenger-v033
         run: gradle :app:testDebugUnitTest --stacktrace
-      - name: Build APK
-        working-directory: ci/sinergy-messenger-v032
-        run: gradle :app:assembleRelease --stacktrace
-      - name: Verify keyboard fix and APK
-        working-directory: ci/sinergy-messenger-v032
+      - name: Build release and test APKs
+        working-directory: ci/sinergy-messenger-v033
+        run: gradle :app:assembleRelease :app:assembleDebug :app:assembleDebugAndroidTest --stacktrace
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - name: Real Android WebView E2E
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: cd ci/sinergy-messenger-v033 && gradle :app:connectedDebugAndroidTest --stacktrace
+      - name: Verify release APK
+        working-directory: ci/sinergy-messenger-v033
         run: |
           set -euo pipefail
           APK=app/build/outputs/apk/release/app-release-unsigned.apk
-          test -f "$APK"
           unzip -t "$APK" >/dev/null
           "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | tee /tmp/badging.txt
-          grep -F "package: name='ai.sinergy.messenger.quantum' versionCode='303' versionName='0.3.2'" /tmp/badging.txt
-          unzip -p "$APK" assets/www/app.js | grep -F 'setInterval(()=>{refreshStatus(false)},1000)'
-          ! unzip -p "$APK" assets/www/app.js | grep -F "if(tab==='home'||tab==='security')render()"
-          unzip -l "$APK" | grep -F 'assets/www/sinergy-logo.png'
+          grep -F "package: name='ai.sinergy.messenger.quantum' versionCode='304' versionName='0.3.3'" /tmp/badging.txt
+          ! unzip -p "$APK" assets/www/app.js | grep -Eq 'onclick="|onkeydown="|style="'
+          unzip -p "$APK" assets/www/app.js | grep -F 'const ACTIONS='
           sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: sinergy-messenger-v0.3.2-keyboardfix-unsigned
+          name: sinergy-messenger-v0.3.3-e2e-unsigned
           path: |
-            ci/sinergy-messenger-v032/app/build/outputs/apk/release/app-release-unsigned.apk
-            ci/sinergy-messenger-v032/app/build/outputs/apk/release/SHA256SUMS.txt
+            ci/sinergy-messenger-v033/app/build/outputs/apk/release/app-release-unsigned.apk
+            ci/sinergy-messenger-v033/app/build/outputs/apk/release/SHA256SUMS.txt
+            ci/sinergy-messenger-v033/app/build/reports/androidTests/connected/
           if-no-files-found: error
           retention-days: 7
