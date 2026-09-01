@@ -1,4 +1,4 @@
-name: SINERGY Messenger v0.3.3 Full Android E2E final
+name: SINERGY Messenger v0.3.3 STABLE Full Android E2E
 on:
   push:
     branches: [ci-sinergy-messenger-v030]
@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 55
     steps:
       - uses: actions/checkout@v4
-      - name: Reconstruct and fix E2E truthiness
+      - name: Reconstruct v0.3.3 and set stable package
         run: |
           set -euo pipefail
           python3 - <<'PY'
@@ -27,7 +27,12 @@ jobs:
           PY
           bash /tmp/reconstruct.sh
           sed -i 's/android.useAndroidX=false/android.useAndroidX=true/' ci/sinergy-messenger-v033/gradle.properties
+          sed -i 's/applicationId = "ai.sinergy.messenger.quantum"/applicationId = "ai.sinergy.messenger.stable"/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          sed -i 's/versionCode = 304/versionCode = 305/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          sed -i 's/versionName = "0.3.3"/versionName = "0.3.3-stable"/' ci/sinergy-messenger-v033/app/build.gradle.kts
           sed -i 's/waitJs("peer&&peer.fingerprint",30)/waitJs("!!(peer\&\&peer.fingerprint)",30)/' ci/sinergy-messenger-v033/app/src/androidTest/java/ai/sinergy/messenger/secure/FullUiE2ETest.java
+          grep -F 'applicationId = "ai.sinergy.messenger.stable"' ci/sinergy-messenger-v033/app/build.gradle.kts
+          grep -F 'versionCode = 305' ci/sinergy-messenger-v033/app/build.gradle.kts
           grep -F 'waitJs("!!(peer&&peer.fingerprint)",30)' ci/sinergy-messenger-v033/app/src/androidTest/java/ai/sinergy/messenger/secure/FullUiE2ETest.java
       - uses: actions/setup-java@v5
         with:
@@ -67,18 +72,15 @@ jobs:
           unzip -t "$APK" >/dev/null
           unzip -p "$APK" assets/www/app.js | grep -F 'installUiEvents()'
           ! unzip -p "$APK" assets/www/app.js | grep -Eq 'onclick="|onkeydown="'
-          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "package: name='ai.sinergy.messenger.quantum' versionCode='304' versionName='0.3.3'"
-          sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS-v033.txt
-      - name: Dump test report
-        if: always()
-        run: find ci/sinergy-messenger-v033/app/build/outputs/androidTest-results -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null || true
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | grep -F "package: name='ai.sinergy.messenger.stable' versionCode='305' versionName='0.3.3-stable'"
+          sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS-v033-stable.txt
       - uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: sinergy-messenger-v0.3.3-e2e-green-unsigned
+          name: sinergy-messenger-v0.3.3-stable-e2e-green-unsigned
           path: |
             ci/sinergy-messenger-v033/app/build/outputs/apk/release/app-release-unsigned.apk
-            ci/sinergy-messenger-v033/app/build/outputs/apk/release/SHA256SUMS-v033.txt
+            ci/sinergy-messenger-v033/app/build/outputs/apk/release/SHA256SUMS-v033-stable.txt
             ci/sinergy-messenger-v033/app/build/outputs/androidTest-results/
             ci/sinergy-messenger-v033/app/build/reports/androidTests/connected/
           if-no-files-found: error
