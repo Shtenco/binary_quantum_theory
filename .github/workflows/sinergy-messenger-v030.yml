@@ -1,0 +1,55 @@
+name: SINERGY Messenger v0.3 Native
+on:
+  push:
+    branches: [ci-sinergy-messenger-v030]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore Messenger source
+        run: |
+          mkdir -p ci/sinergy-messenger-v030
+          cat ci/v030/part*.b64 > /tmp/v030.b64
+          base64 -d /tmp/v030.b64 > /tmp/v030.zip
+          unzip -q /tmp/v030.zip -d ci/sinergy-messenger-v030
+          test "$(sha256sum /tmp/v030.zip | cut -d' ' -f1)" = "4a4125854b711eb83e4aeeb43c2d3d4e4d744d4f89d470fc781fba264bdf108a"
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.0'
+      - name: Android SDK
+        working-directory: ci/sinergy-messenger-v030
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+      - name: Real PQ primitive tests
+        working-directory: ci/sinergy-messenger-v030
+        run: gradle :app:testReleaseUnitTest --stacktrace
+      - name: Build unsigned APK
+        working-directory: ci/sinergy-messenger-v030
+        run: gradle :app:assembleRelease --stacktrace
+      - name: Verify physical native APK
+        working-directory: ci/sinergy-messenger-v030
+        run: |
+          APK=app/build/outputs/apk/release/app-release-unsigned.apk
+          test -f "$APK"
+          unzip -l "$APK" | grep -F 'assets/www/index.html'
+          unzip -l "$APK" | grep -E 'classes[0-9]*\.dex'
+          unzip -p "$APK" classes.dex | strings | grep -F 'ML-KEM-1024' >/dev/null
+          sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sinergy-messenger-v0.3.0-unsigned
+          path: |
+            ci/sinergy-messenger-v030/app/build/outputs/apk/release/app-release-unsigned.apk
+            ci/sinergy-messenger-v030/app/build/outputs/apk/release/SHA256SUMS.txt
+          if-no-files-found: error
+          retention-days: 7
