@@ -1,0 +1,160 @@
+name: SINERGY Messenger v0.3.3 staged Android E2E
+on:
+  push:
+    branches: [ci-sinergy-messenger-v033-diagnostic]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct canonical v0.3.3
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          y=Path('.github/workflows/sinergy-messenger-v030.yml').read_text().splitlines()
+          start=next(i for i,line in enumerate(y) if '- name: Restore v0.3.2 and apply full CSP-safe UI fix' in line)
+          run=next(i+1 for i in range(start+1,len(y)) if y[i].strip()=='run: |')
+          body=[]
+          for line in y[run:]:
+              if line.startswith('      - ') or line.startswith('      - uses:'): break
+              body.append(line[10:] if line.startswith('          ') else line)
+          Path('/tmp/reconstruct-v033.sh').write_text('\n'.join(body)+'\n')
+          PY
+          bash /tmp/reconstruct-v033.sh
+          sed -i 's/android.useAndroidX=false/android.useAndroidX=true/' ci/sinergy-messenger-v033/gradle.properties
+          node --check ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+          ! grep -Eq 'onclick="|onkeydown="|style="' ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+      - name: Install staged Android test
+        run: |
+          cat > ci/sinergy-messenger-v033/app/src/androidTest/java/ai/sinergy/messenger/secure/FullUiE2ETest.java <<'JAVA'
+          package ai.sinergy.messenger.secure;
+          import static org.junit.Assert.*;
+          import android.app.Instrumentation;
+          import android.view.View;
+          import android.view.ViewGroup;
+          import android.webkit.WebView;
+          import androidx.test.core.app.ActivityScenario;
+          import androidx.test.ext.junit.runners.AndroidJUnit4;
+          import androidx.test.platform.app.InstrumentationRegistry;
+          import org.json.JSONArray;
+          import org.junit.*;
+          import org.junit.runner.RunWith;
+          import java.util.concurrent.*;
+          import java.util.concurrent.atomic.AtomicReference;
+
+          @RunWith(AndroidJUnit4.class)
+          public class FullUiE2ETest {
+            private final Instrumentation ins=InstrumentationRegistry.getInstrumentation();
+            private ActivityScenario<SecureMainActivity> scenario;
+            private WebView web;
+            @Before public void setUp() throws Exception {
+              scenario=ActivityScenario.launch(SecureMainActivity.class);
+              AtomicReference<WebView> r=new AtomicReference<>();
+              scenario.onActivity(a->r.set(find(a.findViewById(android.R.id.content))));
+              web=r.get();
+              assertNotNull("STAGE 00: WebView missing",web);
+              assertStage("01_BOOT",waitJs("document.readyState==='complete'&&!!document.querySelector('[data-action]')",25));
+            }
+            @After public void close(){if(scenario!=null)scenario.close();}
+            @Test public void allPrimaryFlows() throws Exception {
+              stage("02_NAV_NEXUS"); click("[data-action='go'][data-target='nexus']"); assertEquals("NEXUS",text("routeTitle"));
+              stage("03_NAV_MESH"); click("[data-action='go'][data-target='mesh']"); assertEquals("Сеть",text("routeTitle"));
+              stage("04_NAV_SECURITY"); click("[data-action='go'][data-target='security']"); assertEquals("Защита",text("routeTitle"));
+              stage("05_NAV_HOME"); click("[data-action='go'][data-target='home']"); assertEquals("Главная",text("routeTitle"));
+
+              stage("06_REGISTER");
+              eval("document.getElementById('regName').value='SINERGY E2E';document.querySelector('[data-action=\"registerUser\"]').click();'ok'");
+              assertStage("06_REGISTER",waitJs("status&&status.registered===true&&document.body.innerText.includes('PQ ACTIVE')",90));
+
+              stage("07_SAFE_PILL"); click("#safePill"); assertEquals("Защита",text("routeTitle"));
+              stage("08_ROTATE"); String old=value("status.session.sessionId"); click("[data-action='rotateKey']"); assertStage("08_ROTATE",waitJs("status.session.sessionId!=="+jsString(old),90));
+
+              stage("09_CHATS"); click("[data-action='go'][data-target='chats']"); assertEquals("Чаты",text("routeTitle"));
+              stage("10_MY_CODE"); click("[data-action='showMyCode']"); assertStage("10_MY_CODE",bool("lastEnvelope.length>100"));
+              String inspect=value("JSON.stringify(call('inspectPeer',lastEnvelope))");
+              System.out.println("SINERGY_STAGE_11_INSPECT="+inspect);
+              assertStage("11_NATIVE_INSPECT "+inspect, inspect.contains("\"ok\":true"));
+              stage("12_SAVE_PEER");
+              eval("document.getElementById('peerCode').value=lastEnvelope;document.querySelector('[data-action=\"savePeer\"]').click();'ok'");
+              assertStage("12_SAVE_PEER",waitJs("!!(peer&&peer.fingerprint)",45));
+
+              stage("13_SEND_BUTTON");
+              eval("document.getElementById('msg').value='PQ E2E MESSAGE';document.querySelector('[data-action=\"sendMsg\"]').click();'ok'");
+              assertStage("13_SEND_BUTTON",waitJs("chat.length>=1&&chat[chat.length-1].me===true",60));
+              stage("14_OPEN_INCOMING");
+              eval("document.getElementById('incoming').value=lastEnvelope;document.querySelector('[data-action=\"openIncoming\"]').click();'ok'");
+              assertStage("14_OPEN_INCOMING",waitJs("chat.length>=2&&chat[chat.length-1].me===false&&chat[chat.length-1].text==='PQ E2E MESSAGE'",60));
+
+              stage("15_NEXUS_BUTTON"); click("[data-action='go'][data-target='nexus']");
+              eval("document.getElementById('nq').value='что такое временный ключ';document.querySelector('[data-action=\"askNexus\"]').click();'ok'");
+              assertStage("15_NEXUS_BUTTON",waitJs("nexusHist.length>=2",20));
+              stage("16_NEXUS_ENTER");
+              eval("document.getElementById('nq').value='что такое Mesh';document.getElementById('nq').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));'ok'");
+              assertStage("16_NEXUS_ENTER",waitJs("nexusHist.length>=4",20));
+
+              stage("17_MESH_OFFER"); click("[data-action='go'][data-target='mesh']"); click("[data-action='makeOffer']");
+              assertStage("17_MESH_OFFER",waitJs("document.getElementById('meshCode').value.length>40",20));
+              assertStage("18_NO_INLINE_CLICK",!bool("!!document.querySelector('[onclick]')"));
+              assertStage("19_NO_INLINE_KEYDOWN",!bool("!!document.querySelector('[onkeydown]')"));
+              System.out.println("SINERGY_E2E_ALL_PRIMARY_FLOWS_PASS");
+            }
+            private void stage(String s)throws Exception{System.out.println("SINERGY_STAGE="+s+" STATE="+value("JSON.stringify({tab,status,peer:peer&&peer.fingerprint,chat:chat.length,nexus:nexusHist.length,last:lastEnvelope.length,toast:document.getElementById('toast')?.textContent||''})"));}
+            private void assertStage(String s,boolean ok)throws Exception{if(!ok)fail(s+" STATE="+value("JSON.stringify({tab,status,peer,chat,nexusHist,lastEnvelopeLength:lastEnvelope.length,body:document.body.innerText.slice(0,1200),toast:document.getElementById('toast')?.textContent||''})"));}
+            private void click(String s)throws Exception{String v=value("(()=>{const e=document.querySelector("+jsString(s)+");if(!e)return'MISSING';e.click();return'CLICKED'})()");assertEquals("CLICK "+s,"CLICKED",v);}
+            private String text(String id)throws Exception{return value("document.getElementById("+jsString(id)+")?.textContent||''");}
+            private boolean bool(String e)throws Exception{return "true".equals(eval(e));}
+            private boolean waitJs(String e,int sec)throws Exception{long end=System.currentTimeMillis()+sec*1000L;while(System.currentTimeMillis()<end){if(bool(e))return true;Thread.sleep(250);}return false;}
+            private String value(String e)throws Exception{return decode(eval(e));}
+            private String eval(String js)throws Exception{CountDownLatch l=new CountDownLatch(1);AtomicReference<String> r=new AtomicReference<>();ins.runOnMainSync(()->web.evaluateJavascript(js,v->{r.set(v);l.countDown();}));if(!l.await(20,TimeUnit.SECONDS))throw new TimeoutException(js);return r.get();}
+            private static String decode(String s)throws Exception{if(s==null||"null".equals(s))return "";if(s.startsWith("\"")&&s.endsWith("\""))return new JSONArray("["+s+"]").getString(0);return s;}
+            private static String jsString(String s){return new org.json.JSONArray().put(s).toString().substring(1,new org.json.JSONArray().put(s).toString().length()-1);}
+            private static WebView find(View v){if(v instanceof WebView)return(WebView)v;if(v instanceof ViewGroup){ViewGroup g=(ViewGroup)v;for(int i=0;i<g.getChildCount();i++){WebView w=find(g.getChildAt(i));if(w!=null)return w;}}return null;}
+          }
+          JAVA
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.0'
+      - name: Android SDK
+        working-directory: ci/sinergy-messenger-v033
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+      - name: PQ unit tests and APKs
+        working-directory: ci/sinergy-messenger-v033
+        run: gradle :app:testDebugUnitTest :app:assembleRelease :app:assembleDebug :app:assembleDebugAndroidTest --stacktrace
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Real staged Android WebView E2E
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: cd ci/sinergy-messenger-v033 && gradle :app:connectedDebugAndroidTest --stacktrace
+      - name: Dump diagnostics
+        if: always()
+        run: |
+          find ci/sinergy-messenger-v033/app/build/outputs/androidTest-results -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v033-staged-e2e
+          path: |
+            ci/sinergy-messenger-v033/app/build/outputs/apk/release/app-release-unsigned.apk
+            ci/sinergy-messenger-v033/app/build/outputs/androidTest-results/
+          if-no-files-found: warn
+          retention-days: 7
