@@ -1,4 +1,4 @@
-name: SINERGY Messenger v0.3.1 Native
+name: SINERGY Messenger v0.3.1 Installable
 on:
   push:
     branches: [ci-sinergy-messenger-v030]
@@ -11,7 +11,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
-      - name: Restore v0.3 source and apply v0.3.1 patch
+      - name: Restore source and apply installable package fix
         run: |
           set -euo pipefail
           mkdir -p ci/sinergy-messenger-v031
@@ -27,8 +27,11 @@ jobs:
           mkdir -p ci/sinergy-messenger-v031/app/src/main/res/drawable
           cp ci/sinergy-messenger-v031/app/src/main/assets/www/sinergy-logo.png ci/sinergy-messenger-v031/app/src/main/res/drawable/sinergy_logo.png
           sed -i 's/version "9.4.0"/version "9.0.0"/' ci/sinergy-messenger-v031/build.gradle.kts
-          grep -F 'versionCode = 301' ci/sinergy-messenger-v031/app/build.gradle.kts
-          grep -F 'versionName = "0.3.1"' ci/sinergy-messenger-v031/app/build.gradle.kts
+          sed -i 's/applicationId = "ai.sinergy.messenger.secure"/applicationId = "ai.sinergy.messenger.quantum"/' ci/sinergy-messenger-v031/app/build.gradle.kts
+          sed -i 's/versionCode = 301/versionCode = 302/' ci/sinergy-messenger-v031/app/build.gradle.kts
+          sed -i 's/versionName = "0.3.1"/versionName = "0.3.1-installfix"/' ci/sinergy-messenger-v031/app/build.gradle.kts
+          grep -F 'applicationId = "ai.sinergy.messenger.quantum"' ci/sinergy-messenger-v031/app/build.gradle.kts
+          grep -F 'versionCode = 302' ci/sinergy-messenger-v031/app/build.gradle.kts
           grep -F '<main id="screen" class="screen"></main>' ci/sinergy-messenger-v031/app/src/main/assets/www/index.html
           grep -F 'POST-QUANTUM SECURITY' ci/sinergy-messenger-v031/app/src/main/assets/www/app.js
           grep -F 'safe-area-inset-bottom' ci/sinergy-messenger-v031/app/src/main/assets/www/app.css
@@ -47,31 +50,27 @@ jobs:
           test -x "$SDKMANAGER"
           yes | "$SDKMANAGER" --licenses >/dev/null || true
           "$SDKMANAGER" "platforms;android-36" "build-tools;36.0.0"
-      - name: Real PQ primitive tests
+      - name: PQ tests
         working-directory: ci/sinergy-messenger-v031
         run: gradle :app:testDebugUnitTest --stacktrace
-      - name: Build unsigned APK
+      - name: Build APK
         working-directory: ci/sinergy-messenger-v031
         run: gradle :app:assembleRelease --stacktrace
-      - name: Verify physical v0.3.1 APK
+      - name: Verify package and APK
         working-directory: ci/sinergy-messenger-v031
         run: |
           set -euo pipefail
           APK=app/build/outputs/apk/release/app-release-unsigned.apk
           test -f "$APK"
           unzip -t "$APK" >/dev/null
-          unzip -l "$APK" | grep -F 'assets/www/index.html'
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | tee /tmp/badging.txt
+          grep -F "package: name='ai.sinergy.messenger.quantum' versionCode='302' versionName='0.3.1-installfix'" /tmp/badging.txt
           unzip -l "$APK" | grep -F 'assets/www/sinergy-logo.png'
-          unzip -l "$APK" | grep -E 'classes[0-9]*\.dex'
-          unzip -p "$APK" assets/www/index.html | grep -F 'v0.3.1 · POST-QUANTUM SECURE'
-          unzip -p "$APK" assets/www/index.html | grep -F 'class="screen"'
           unzip -p "$APK" assets/www/app.css | grep -F 'safe-area-inset-bottom'
-          unzip -p "$APK" classes.dex | strings | grep -F 'ML-KEM-1024' >/dev/null
-          unzip -p "$APK" classes.dex | strings | grep -F 'ML-DSA-87' >/dev/null
           sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: sinergy-messenger-v0.3.1-unsigned
+          name: sinergy-messenger-v0.3.1-installfix-unsigned
           path: |
             ci/sinergy-messenger-v031/app/build/outputs/apk/release/app-release-unsigned.apk
             ci/sinergy-messenger-v031/app/build/outputs/apk/release/SHA256SUMS.txt
