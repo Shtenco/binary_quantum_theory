@@ -1,4 +1,4 @@
-name: SINERGY Messenger v0.3.3 Android E2E retry
+name: SINERGY Messenger v0.3.3 Android E2E diagnostic
 on:
   push:
     branches: [ci-sinergy-messenger-v030]
@@ -36,6 +36,15 @@ jobs:
           PY
           bash /tmp/reconstruct-v033.sh
           sed -i 's/android.useAndroidX=false/android.useAndroidX=true/' ci/sinergy-messenger-v033/gradle.properties
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('ci/sinergy-messenger-v033/app/src/androidTest/java/ai/sinergy/messenger/secure/FullUiE2ETest.java')
+          s=p.read_text()
+          old='''              click("[data-action='go'][data-target='chats']"); click("[data-action='showMyCode']"); assertTrue(bool("lastEnvelope.length>100")); eval("document.getElementById('peerCode').value=lastEnvelope;document.querySelector('[data-action=\\"savePeer\\"]').click();'ok'"); assertTrue(waitJs("peer&&peer.fingerprint",30));'''
+          new='''              click("[data-action='go'][data-target='chats']");\n              click("[data-action='showMyCode']");\n              assertTrue("myCode failed len="+value("lastEnvelope.length")+" toast="+text("toast"), bool("lastEnvelope.length>100"));\n              String inspect=value("JSON.stringify(call('inspectPeer',lastEnvelope))");\n              assertTrue("inspectPeer failed: "+inspect, inspect.contains("\\\"ok\\\":true"));\n              eval("document.getElementById('peerCode').value=lastEnvelope;document.querySelector('[data-action=\\"savePeer\\"]').click();'ok'");\n              assertTrue("savePeer failed inspect="+inspect+" toast="+text("toast"),waitJs("peer&&peer.fingerprint",10));'''
+          if old not in s: raise SystemExit('peer test block not found')
+          p.write_text(s.replace(old,new))
+          PY
           grep -F 'android.useAndroidX=true' ci/sinergy-messenger-v033/gradle.properties
           node --check ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
           ! grep -Eq 'onclick="|onkeydown="|style="' ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
@@ -74,29 +83,13 @@ jobs:
       - name: Dump E2E XML diagnostics
         if: always()
         run: |
-          echo '===== INSTRUMENTATION XML ====='
           find ci/sinergy-messenger-v033/app/build/outputs/androidTest-results -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null || true
-          echo '===== CONNECTED REPORT FILES ====='
-          find ci/sinergy-messenger-v033/app/build/reports/androidTests/connected -type f -maxdepth 8 -print 2>/dev/null || true
-      - name: Verify release APK
-        if: success()
-        working-directory: ci/sinergy-messenger-v033
-        run: |
-          set -euo pipefail
-          APK=app/build/outputs/apk/release/app-release-unsigned.apk
-          unzip -t "$APK" >/dev/null
-          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | tee /tmp/badging.txt
-          grep -F "package: name='ai.sinergy.messenger.quantum' versionCode='304' versionName='0.3.3'" /tmp/badging.txt
-          ! unzip -p "$APK" assets/www/app.js | grep -Eq 'onclick="|onkeydown="|style="'
-          unzip -p "$APK" assets/www/app.js | grep -F 'const ACTIONS='
-          sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: sinergy-messenger-v0.3.3-e2e-diagnostics
+          name: sinergy-messenger-v0.3.3-e2e-diagnostic2
           path: |
             ci/sinergy-messenger-v033/app/build/outputs/apk/release/app-release-unsigned.apk
-            ci/sinergy-messenger-v033/app/build/outputs/apk/release/SHA256SUMS.txt
             ci/sinergy-messenger-v033/app/build/reports/androidTests/connected/
             ci/sinergy-messenger-v033/app/build/outputs/androidTest-results/
           if-no-files-found: warn
