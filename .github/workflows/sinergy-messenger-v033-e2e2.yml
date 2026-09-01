@@ -70,8 +70,16 @@ jobs:
           arch: x86_64
           profile: pixel_2
           disable-animations: true
-          script: cd ci/sinergy-messenger-v033 && gradle :app:connectedDebugAndroidTest --stacktrace
+          script: cd ci/sinergy-messenger-v033 && gradle :app:connectedDebugAndroidTest --stacktrace --info
+      - name: Dump E2E XML diagnostics
+        if: always()
+        run: |
+          echo '===== INSTRUMENTATION XML ====='
+          find ci/sinergy-messenger-v033/app/build/outputs/androidTest-results -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null || true
+          echo '===== CONNECTED REPORT FILES ====='
+          find ci/sinergy-messenger-v033/app/build/reports/androidTests/connected -type f -maxdepth 8 -print 2>/dev/null || true
       - name: Verify release APK
+        if: success()
         working-directory: ci/sinergy-messenger-v033
         run: |
           set -euo pipefail
@@ -83,11 +91,13 @@ jobs:
           unzip -p "$APK" assets/www/app.js | grep -F 'const ACTIONS='
           sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: sinergy-messenger-v0.3.3-e2e-green-unsigned
+          name: sinergy-messenger-v0.3.3-e2e-diagnostics
           path: |
             ci/sinergy-messenger-v033/app/build/outputs/apk/release/app-release-unsigned.apk
             ci/sinergy-messenger-v033/app/build/outputs/apk/release/SHA256SUMS.txt
             ci/sinergy-messenger-v033/app/build/reports/androidTests/connected/
-          if-no-files-found: error
+            ci/sinergy-messenger-v033/app/build/outputs/androidTest-results/
+          if-no-files-found: warn
           retention-days: 7
