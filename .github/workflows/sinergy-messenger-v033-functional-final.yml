@@ -1,0 +1,90 @@
+name: SINERGY Messenger v0.3.3 Functional Final E2E
+on:
+  push:
+    branches: [ci-sinergy-messenger-v033-functional-final]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct tested v0.3.3 and set final lineage
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          def extract(step_name,out):
+              y=Path('.github/workflows/sinergy-messenger-v033-diagnostic.yml').read_text().splitlines()
+              start=next(i for i,line in enumerate(y) if f'- name: {step_name}' in line)
+              run=next(i+1 for i in range(start+1,len(y)) if y[i].strip()=='run: |')
+              body=[]
+              for line in y[run:]:
+                  if line.startswith('      - ') or line.startswith('      - uses:'): break
+                  body.append(line[10:] if line.startswith('          ') else line)
+              Path(out).write_text('\n'.join(body)+'\n')
+          extract('Reconstruct canonical v0.3.3','/tmp/reconstruct.sh')
+          extract('Install staged Android test','/tmp/install-test.sh')
+          PY
+          bash /tmp/reconstruct.sh
+          sed -i 's/android.useAndroidX=false/android.useAndroidX=true/' ci/sinergy-messenger-v033/gradle.properties
+          sed -i 's/applicationId = "ai.sinergy.messenger.quantum"/applicationId = "ai.sinergy.messenger.functional"/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          sed -i 's/versionCode = 304/versionCode = 305/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          sed -i 's/versionName = "0.3.3"/versionName = "0.3.3-functional"/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          bash /tmp/install-test.sh
+          grep -F 'applicationId = "ai.sinergy.messenger.functional"' ci/sinergy-messenger-v033/app/build.gradle.kts
+          grep -F 'versionCode = 305' ci/sinergy-messenger-v033/app/build.gradle.kts
+          grep -F 'versionName = "0.3.3-functional"' ci/sinergy-messenger-v033/app/build.gradle.kts
+          node --check ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+          ! grep -Eq 'onclick="|onkeydown="|style="' ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.0'
+      - name: Android SDK
+        working-directory: ci/sinergy-messenger-v033
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+      - name: PQ unit tests and build
+        working-directory: ci/sinergy-messenger-v033
+        run: gradle :app:testDebugUnitTest :app:assembleRelease :app:assembleDebug :app:assembleDebugAndroidTest --stacktrace
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Real Android full functional E2E
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: cd ci/sinergy-messenger-v033 && gradle :app:connectedDebugAndroidTest --stacktrace
+      - name: Verify final unsigned APK
+        working-directory: ci/sinergy-messenger-v033
+        run: |
+          set -euo pipefail
+          APK=app/build/outputs/apk/release/app-release-unsigned.apk
+          unzip -t "$APK" >/dev/null
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | tee /tmp/badging.txt
+          grep -F "package: name='ai.sinergy.messenger.functional' versionCode='305' versionName='0.3.3-functional'" /tmp/badging.txt
+          unzip -p "$APK" assets/www/app.js | grep -F 'const ACTIONS='
+          ! unzip -p "$APK" assets/www/app.js | grep -Eq 'onclick="|onkeydown="|style="'
+          sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sinergy-messenger-v0.3.3-functional-final-unsigned
+          path: |
+            ci/sinergy-messenger-v033/app/build/outputs/apk/release/app-release-unsigned.apk
+            ci/sinergy-messenger-v033/app/build/outputs/apk/release/SHA256SUMS.txt
+            ci/sinergy-messenger-v033/app/build/outputs/androidTest-results/
+          if-no-files-found: error
+          retention-days: 7
