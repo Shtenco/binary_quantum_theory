@@ -1,0 +1,79 @@
+name: SINERGY Messenger v0.3.3 Peer Diagnostic
+on:
+  push:
+    branches: [ci-sinergy-messenger-v030]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct and instrument peer flow
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          y=Path('.github/workflows/sinergy-messenger-v030.yml').read_text().splitlines()
+          start=next(i for i,l in enumerate(y) if '- name: Restore v0.3.2 and apply full CSP-safe UI fix' in l)
+          run=next(i+1 for i in range(start+1,len(y)) if y[i].strip()=='run: |')
+          body=[]
+          for line in y[run:]:
+              if line.startswith('      - '): break
+              body.append(line[10:] if line.startswith('          ') else line)
+          Path('/tmp/reconstruct.sh').write_text('\n'.join(body)+'\n')
+          PY
+          bash /tmp/reconstruct.sh
+          sed -i 's/android.useAndroidX=false/android.useAndroidX=true/' ci/sinergy-messenger-v033/gradle.properties
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('ci/sinergy-messenger-v033/app/src/androidTest/java/ai/sinergy/messenger/secure/FullUiE2ETest.java')
+          lines=p.read_text().splitlines()
+          hit=[i for i,l in enumerate(lines) if 'lastEnvelope.length>100' in l]
+          if len(hit)!=1: raise SystemExit(f'peer line matches={len(hit)}')
+          i=hit[0]
+          lines[i:i+1]=[
+          '              click("[data-action=\'go\'][data-target=\'chats\']");',
+          '              click("[data-action=\'showMyCode\']");',
+          '              assertTrue("myCode len="+value("lastEnvelope.length")+" toast="+text("toast"),bool("lastEnvelope.length>100"));',
+          '              String inspect=value("JSON.stringify(call(\'inspectPeer\',lastEnvelope))");',
+          '              assertTrue("inspectPeer="+inspect,inspect.contains("\\\"ok\\\":true"));',
+          '              eval("document.getElementById(\'peerCode\').value=lastEnvelope;document.querySelector(\'[data-action=\\\"savePeer\\\"]\').click();\'ok\'");',
+          '              assertTrue("savePeer inspect="+inspect+" toast="+text("toast"),waitJs("peer&&peer.fingerprint",10));'
+          ]
+          p.write_text('\n'.join(lines)+'\n')
+          PY
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.0'
+      - name: Android SDK
+        working-directory: ci/sinergy-messenger-v033
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+      - name: Build instrumentation
+        working-directory: ci/sinergy-messenger-v033
+        run: gradle :app:assembleDebug :app:assembleDebugAndroidTest --stacktrace
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Android peer diagnostic
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: cd ci/sinergy-messenger-v033 && gradle :app:connectedDebugAndroidTest --stacktrace --info
+      - name: Dump result
+        if: always()
+        run: find ci/sinergy-messenger-v033/app/build/outputs/androidTest-results -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null || true
