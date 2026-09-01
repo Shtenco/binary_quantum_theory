@@ -1,0 +1,129 @@
+name: SINERGY Messenger v0.3.3 FINAL V2 Android E2E
+on:
+  push:
+    branches: [ci-sinergy-messenger-v030]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  final-v2:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct final v0.3.3 V2 package
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          y=Path('.github/workflows/sinergy-messenger-v030.yml').read_text().splitlines()
+          start=next(i for i,l in enumerate(y) if '- name: Restore v0.3.2 and apply full CSP-safe UI fix' in l)
+          run=next(i+1 for i in range(start+1,len(y)) if y[i].strip()=='run: |')
+          body=[]
+          for line in y[run:]:
+              if line.startswith('      - '): break
+              body.append(line[10:] if line.startswith('          ') else line)
+          Path('/tmp/reconstruct.sh').write_text('\n'.join(body)+'\n')
+          PY
+          bash /tmp/reconstruct.sh
+          sed -i 's/android.useAndroidX=false/android.useAndroidX=true/' ci/sinergy-messenger-v033/gradle.properties
+          sed -i 's/applicationId = "ai.sinergy.messenger.quantum"/applicationId = "ai.sinergy.messenger.quantum.v2"/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          grep -F 'applicationId = "ai.sinergy.messenger.quantum.v2"' ci/sinergy-messenger-v033/app/build.gradle.kts
+          cat > ci/sinergy-messenger-v033/app/src/androidTest/java/ai/sinergy/messenger/secure/FullUiE2ETest.java <<'JAVA'
+          package ai.sinergy.messenger.secure;
+          import static org.junit.Assert.*;
+          import android.app.Instrumentation; import android.view.*; import android.webkit.WebView;
+          import androidx.test.core.app.ActivityScenario; import androidx.test.ext.junit.runners.AndroidJUnit4; import androidx.test.platform.app.InstrumentationRegistry;
+          import org.json.JSONArray; import org.junit.*; import org.junit.runner.RunWith;
+          import java.util.concurrent.*; import java.util.concurrent.atomic.AtomicReference;
+          @RunWith(AndroidJUnit4.class) public class FullUiE2ETest {
+            private final Instrumentation ins=InstrumentationRegistry.getInstrumentation(); private ActivityScenario<SecureMainActivity> scenario; private WebView web;
+            @Before public void setUp() throws Exception { scenario=ActivityScenario.launch(SecureMainActivity.class); AtomicReference<WebView> r=new AtomicReference<>(); scenario.onActivity(a->r.set(find(a.findViewById(android.R.id.content)))); web=r.get(); assertNotNull(web); assertTrue(waitJs("document.readyState==='complete'&&!!document.querySelector('[data-action]')",20)); }
+            @After public void close(){if(scenario!=null)scenario.close();}
+            @Test public void finalPrimaryFlows() throws Exception {
+              click("[data-action='go'][data-target='nexus']"); assertEquals("NEXUS",text("routeTitle"));
+              click("[data-action='go'][data-target='mesh']"); assertEquals("Сеть",text("routeTitle"));
+              click("[data-action='go'][data-target='security']"); assertEquals("Защита",text("routeTitle"));
+              click("[data-action='go'][data-target='home']"); assertEquals("Главная",text("routeTitle"));
+              eval("document.getElementById('regName').focus();'ok'"); Thread.sleep(2200); assertTrue("registration focus was lost",bool("document.activeElement&&document.activeElement.id==='regName'"));
+              eval("document.getElementById('regName').value='SINERGY FINAL E2E';document.querySelector('[data-action=\"registerUser\"]').click();'ok'");
+              assertTrue("registration failed",waitJs("status&&status.registered===true&&document.body.innerText.includes('PQ ACTIVE')",60));
+              click("#safePill"); assertEquals("Защита",text("routeTitle")); String old=value("status.session.sessionId"); click("[data-action='rotateKey']"); assertTrue("rotate failed",waitJs("status.session.sessionId!=="+jsString(old),60));
+              click("[data-action='go'][data-target='chats']"); click("[data-action='showMyCode']"); assertTrue("my code failed",bool("lastEnvelope.length>100"));
+              click("[data-action='copyLastEnvelope']");
+              eval("document.getElementById('peerCode').value=lastEnvelope;document.querySelector('[data-action=\"savePeer\"]').click();'ok'"); assertTrue("peer save failed",waitJs("!!(peer&&peer.fingerprint)",30));
+              eval("document.getElementById('msg').value='PQ E2E MESSAGE CLICK';document.querySelector('[data-action=\"sendMsg\"]').click();'ok'"); assertTrue("send click failed",waitJs("chat.length>=1&&chat[chat.length-1].me===true",30));
+              eval("document.getElementById('incoming').value=lastEnvelope;document.querySelector('[data-action=\"openIncoming\"]').click();'ok'"); assertTrue("decrypt failed",waitJs("chat.length>=2&&chat[chat.length-1].me===false&&chat[chat.length-1].text==='PQ E2E MESSAGE CLICK'",30));
+              int before=Integer.parseInt(value("String(chat.length)"));
+              eval("document.getElementById('msg').value='PQ E2E MESSAGE ENTER';document.getElementById('msg').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));'ok'"); assertTrue("send Enter failed",waitJs("chat.length>"+before+"&&chat[chat.length-1].me===true",30));
+              click("[data-action='go'][data-target='nexus']"); eval("document.getElementById('nq').value='что такое временный ключ';document.querySelector('[data-action=\"askNexus\"]').click();'ok'"); assertTrue("NEXUS click failed",waitJs("nexusHist.length>=2",15));
+              eval("document.getElementById('nq').value='что такое Mesh';document.getElementById('nq').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));'ok'"); assertTrue("NEXUS Enter failed",waitJs("nexusHist.length>=4",15));
+              click("[data-action='go'][data-target='mesh']"); click("[data-action='makeOffer']"); assertTrue("mesh offer failed",waitJs("document.getElementById('meshCode').value.length>40",15)); click("[data-action='copyMeshCode']");
+              eval("document.getElementById('meshIn').value='invalid-test-code';document.querySelector('[data-action=\"acceptOffer\"]').click();'ok'"); Thread.sleep(400); assertTrue("acceptOffer action did not respond",bool("document.getElementById('toast').classList.contains('show')"));
+              eval("document.querySelector('[data-action=\"acceptAnswer\"]').click();'ok'"); Thread.sleep(400); assertTrue("acceptAnswer action did not respond",bool("document.getElementById('toast').classList.contains('show')"));
+              assertFalse("inline onclick remains",bool("!!document.querySelector('[onclick]')")); assertFalse("inline onkeydown remains",bool("!!document.querySelector('[onkeydown]')"));
+            }
+            private void click(String s)throws Exception{assertEquals("CLICKED",value("(()=>{const e=document.querySelector("+jsString(s)+");if(!e)return'MISSING';e.click();return'CLICKED'})()"));}
+            private String text(String id)throws Exception{return value("document.getElementById("+jsString(id)+").textContent");} private boolean bool(String e)throws Exception{return"true".equals(eval(e));}
+            private boolean waitJs(String e,int sec)throws Exception{long end=System.currentTimeMillis()+sec*1000L;while(System.currentTimeMillis()<end){if(bool(e))return true;Thread.sleep(250);}return false;}
+            private String value(String e)throws Exception{return decode(eval(e));} private String eval(String js)throws Exception{CountDownLatch l=new CountDownLatch(1);AtomicReference<String>o=new AtomicReference<>();ins.runOnMainSync(()->web.evaluateJavascript(js,v->{o.set(v);l.countDown();}));if(!l.await(90,TimeUnit.SECONDS))fail("JS timeout");return o.get();}
+            private static String decode(String r)throws Exception{if(r==null||"null".equals(r))return null;if(r.startsWith("\"")||r.startsWith("["))return new JSONArray("["+r+"]").getString(0);return r;} private static String jsString(String s){return"\""+s.replace("\\","\\\\").replace("\"","\\\"")+"\"";}
+            private static WebView find(View v){if(v instanceof WebView)return(WebView)v;if(v instanceof ViewGroup){ViewGroup g=(ViewGroup)v;for(int i=0;i<g.getChildCount();i++){WebView w=find(g.getChildAt(i));if(w!=null)return w;}}return null;}
+          }
+          JAVA
+          node --check ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+          ! grep -Eq 'onclick="|onkeydown="|style="' ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.6.0'
+      - name: Android SDK
+        working-directory: ci/sinergy-messenger-v033
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+      - name: PQ tests and all APKs
+        working-directory: ci/sinergy-messenger-v033
+        run: gradle :app:testDebugUnitTest :app:assembleRelease :app:assembleDebug :app:assembleDebugAndroidTest --stacktrace
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Final V2 real Android E2E
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_2
+          disable-animations: true
+          script: cd ci/sinergy-messenger-v033 && gradle :app:connectedDebugAndroidTest --stacktrace --info
+      - name: Verify final unsigned release
+        working-directory: ci/sinergy-messenger-v033
+        run: |
+          set -euo pipefail
+          APK=app/build/outputs/apk/release/app-release-unsigned.apk
+          test -f "$APK" && unzip -t "$APK" >/dev/null
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging "$APK" | tee /tmp/badging-v2.txt
+          grep -F "package: name='ai.sinergy.messenger.quantum.v2' versionCode='304' versionName='0.3.3'" /tmp/badging-v2.txt
+          unzip -p "$APK" assets/www/app.js | grep -F 'installUiEvents()'
+          ! unzip -p "$APK" assets/www/app.js | grep -Eq 'onclick="|onkeydown="'
+          sha256sum "$APK" | tee app/build/outputs/apk/release/SHA256SUMS-v033-v2.txt
+      - name: Dump final E2E report
+        if: always()
+        run: find ci/sinergy-messenger-v033/app/build/outputs/androidTest-results -type f -name '*.xml' -print -exec cat {} \; 2>/dev/null || true
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: sinergy-messenger-v0.3.3-final-v2-unsigned
+          path: |
+            ci/sinergy-messenger-v033/app/build/outputs/apk/release/app-release-unsigned.apk
+            ci/sinergy-messenger-v033/app/build/outputs/apk/release/SHA256SUMS-v033-v2.txt
+            ci/sinergy-messenger-v033/app/build/outputs/androidTest-results/
+            ci/sinergy-messenger-v033/app/build/reports/androidTests/connected/
+          if-no-files-found: error
+          retention-days: 7
