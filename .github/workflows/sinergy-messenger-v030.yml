@@ -19,6 +19,8 @@ jobs:
           base64 -d /tmp/v030.b64 > /tmp/v030.zip
           test "$(sha256sum /tmp/v030.zip | cut -d' ' -f1)" = "4a4125854b711eb83e4aeeb43c2d3d4e4d744d4f89d470fc781fba264bdf108a"
           unzip -q /tmp/v030.zip -d ci/sinergy-messenger-v030
+          sed -i 's/version "9.4.0"/version "9.0.0"/' ci/sinergy-messenger-v030/build.gradle.kts
+          grep -F 'com.android.application") version "9.0.0"' ci/sinergy-messenger-v030/build.gradle.kts
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
