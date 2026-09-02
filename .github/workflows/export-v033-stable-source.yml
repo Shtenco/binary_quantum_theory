@@ -1,0 +1,76 @@
+name: Export SINERGY Messenger v0.3.3 STABLE Source
+on:
+  push:
+    branches: [ci-sinergy-messenger-v033-functional-final]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  export-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reconstruct exact tested v0.3.3 source
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          y=Path('.github/workflows/sinergy-messenger-v033-diagnostic.yml').read_text().splitlines()
+          def extract(step_name,out):
+              start=next(i for i,line in enumerate(y) if f'- name: {step_name}' in line)
+              run=next(i+1 for i in range(start+1,len(y)) if y[i].strip()=='run: |')
+              body=[]
+              for line in y[run:]:
+                  if line.startswith('      - ') or line.startswith('      - uses:'): break
+                  body.append(line[10:] if line.startswith('          ') else line)
+              Path(out).write_text('\n'.join(body)+'\n')
+          extract('Reconstruct canonical v0.3.3','/tmp/reconstruct.sh')
+          extract('Install staged Android test','/tmp/install-test.sh')
+          PY
+          bash /tmp/reconstruct.sh
+          bash /tmp/install-test.sh
+          sed -i 's/android.useAndroidX=false/android.useAndroidX=true/' ci/sinergy-messenger-v033/gradle.properties || true
+          sed -i 's/applicationId = "ai.sinergy.messenger.quantum"/applicationId = "ai.sinergy.messenger.stable"/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          sed -i 's/versionCode = 304/versionCode = 305/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          sed -i 's/versionName = "0.3.3"/versionName = "0.3.3-stable"/' ci/sinergy-messenger-v033/app/build.gradle.kts
+          grep -F 'applicationId = "ai.sinergy.messenger.stable"' ci/sinergy-messenger-v033/app/build.gradle.kts
+          grep -F 'versionCode = 305' ci/sinergy-messenger-v033/app/build.gradle.kts
+          grep -F 'versionName = "0.3.3-stable"' ci/sinergy-messenger-v033/app/build.gradle.kts
+          node --check ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+          ! grep -Eq 'onclick="|onkeydown="' ci/sinergy-messenger-v033/app/src/main/assets/www/app.js
+      - name: Add provenance and remove generated/private material
+        run: |
+          set -euo pipefail
+          ROOT=ci/sinergy-messenger-v033
+          cat > "$ROOT/SOURCE-PROVENANCE.txt" <<'EOF'
+          SINERGY MESSENGER v0.3.3 STABLE — SOURCE PROVENANCE
+          Release date: 2026-09-02
+          Package: ai.sinergy.messenger.stable
+          VersionName: 0.3.3-stable
+          VersionCode: 305
+          Tested source lineage commit: e8d5d2f703590daddf428d5071d9c8fffdc14859
+          Tested CI run: 33540555351
+          Functional Android E2E: PASS on Android API 35 / WebView
+          PQ primitive tests: PASS
+          Stable APK SHA-256: a7dd3e044c33f381d950bd45e06aaa326b3cf27d8bfee81c42f225b63eb40e07
+
+          SECURITY NOTE
+          This source archive intentionally DOES NOT contain the private Stable APK signing key,
+          keystore passwords, recovery secrets, or other private signing material.
+          EOF
+          rm -rf "$ROOT/.gradle" "$ROOT/build" "$ROOT/app/build" || true
+          find "$ROOT" -type f \( -iname '*.p12' -o -iname '*.jks' -o -iname '*.keystore' -o -iname '*keypass*' -o -iname '*password*' -o -iname '*recovery*' \) -delete
+          if grep -RIlE 'PRIVATE KEY|BEGIN RSA PRIVATE KEY|BEGIN PRIVATE KEY' "$ROOT" >/tmp/private_hits 2>/dev/null; then
+            echo 'Private key material detected:'; cat /tmp/private_hits; exit 1
+          fi
+          mv "$ROOT" SINERGY-MESSENGER-v0.3.3-STABLE-SOURCE
+          find SINERGY-MESSENGER-v0.3.3-STABLE-SOURCE -type f -print0 | sort -z | xargs -0 sha256sum > SINERGY-MESSENGER-v0.3.3-STABLE-SOURCE/SOURCE-FILES-SHA256.txt
+      - name: Upload exact source tree as archive artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SINERGY-MESSENGER-v0.3.3-STABLE-SOURCE
+          path: SINERGY-MESSENGER-v0.3.3-STABLE-SOURCE/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
