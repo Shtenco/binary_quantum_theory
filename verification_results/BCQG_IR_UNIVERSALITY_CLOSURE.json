@@ -1,0 +1,62 @@
+{
+  "exact_reductions": {
+    "AB": 1.0,
+    "N_phys_config": 2.0,
+    "c_DeWitt": 0.5,
+    "checks": {
+      "Dirac_count_two_modes": true,
+      "HDA_selects_AB_one": true,
+      "HDA_selects_c_half": true,
+      "TT_z_one_from_AB": true
+    },
+    "constraint_ranks_assumed_for_count": [
+      3,
+      3,
+      1,
+      0
+    ],
+    "r_secondclass_assumed_for_count": 0,
+    "z_leading_IR": 1.0
+  },
+  "finite_prerequisites": {
+    "direct_gravitational_block": {
+      "Wg_dag_G_Wg_zero": true,
+      "Wg_dag_HE_Wg_zero": true,
+      "Wg_dag_S_Wg_zero": true,
+      "source_passed": true
+    },
+    "first_block_metric_bounds": {
+      "condition_number": 1.4142135623730951,
+      "s_max": 0.5773502691896258,
+      "s_min": 0.4082482904638631
+    },
+    "metric_calibration": {
+      "first_block_condition_sqrt2": true,
+      "first_block_smax_finite": true,
+      "first_block_smin_positive": true,
+      "source_passed": true,
+      "stored_condition_sqrt2": true
+    }
+  },
+  "irreducible_open_hypotheses": {
+    "H1_uniform_metric_regularity_under_refinement": "open",
+    "H2_local_two_derivative_leading_IR_scalar": "open",
+    "H3_collective_first_class_HDA_and_ranks": "open",
+    "H4_no_second_class_sector": "open",
+    "Lorentzian_quantum_measure_unitarity": "open",
+    "absolute_G_Lambda_scale_matching": "open",
+    "complete_chiral_matter_anomaly_cancellation": "open",
+    "experiment": "open"
+  },
+  "non_relaxation_guard": "COLLECTIVE_GR_UNIVERSALITY_PREREGISTRATION.md remains an independent stronger numerical AND-gate; its frozen thresholds are not modified.",
+  "passed": true,
+  "schur_feshbach_zero_energy_selftest": {
+    "D_min_abs_eigenvalue": 1.956763583922564,
+    "P_equation_match_norm": 0.0,
+    "Q_equation_residual_norm": 4.518280359883027e-16,
+    "passed": true
+  },
+  "scope": "Verifies exact reductions and frozen finite prerequisites only; does not claim direct collective H1-H4 science PASS.",
+  "status": "CONDITIONAL_IR_UNIVERSALITY_THEOREM",
+  "theorem_file": "BCQG_IR_UNIVERSALITY_CLOSURE_THEOREM.md"
+}
