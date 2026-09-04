@@ -42,7 +42,7 @@ jobs:
         run: python scripts/tetrahedral_charged_volume_audit_gate.py --output verification_results/TETRAHEDRAL_CHARGED_VOLUME_AUDIT_V3.json
       - name: Pairing-stabilizer structural theorem
         run: python scripts/lorentzian_pairing_stabilizer_orbit_gate.py --output verification_results/LORENTZIAN_PAIRING_STABILIZER_ORBITS_V3.json
-      - name: Exact 16-cell Peter-Weyl H covariance
+      - name: Exact 16-cell Peter-Weyl H transport representation
         run: python scripts/collective_16cell_pairing_stabilizer_covariance_gate.py --output verification_results/COLLECTIVE_16CELL_PAIRING_STABILIZER_COVARIANCE_V3.json
       - name: Hard preregistration guards
         run: |
@@ -57,8 +57,15 @@ jobs:
           assert b['passed'] and b['worker_orbits']==[[0,1,6,7,16,17,22,23],[2,4,8,10,13,15,19,21],[3,5,9,11,12,14,18,20]]
           assert c['passed'] and c['order']==8
           assert c['checks']['global_K0_seed_invariant']
-          assert c['checks']['E_pseudoscalar_amplitude_covariance']
-          assert c['max_E_relative_covariance_error']<1e-9
+          assert c['checks']['local_K_line_recoupling_exact']
+          assert c['checks']['E_sparse_support_transport_exact']
+          assert c['checks']['E_norm_preserved']
+          assert c['checks']['U_group_law_on_E_orbit']
+          assert c['checks']['U_inverse_roundtrip_on_E_orbit']
+          assert c['max_U_group_law_error'] < 1e-9
+          assert c['max_U_inverse_roundtrip_error'] < 1e-9
+          # The historical one-dimensional E pseudoscalar character is diagnostic only.
+          assert c['old_pseudoscalar_diagnostic']['hard_requirement'] is False
           PY
       - uses: actions/upload-artifact@v4
         if: always()
