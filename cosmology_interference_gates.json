@@ -1,0 +1,110 @@
+{
+  "schema_version": 1,
+  "status_policy": {
+    "reference": ["tested_finite"],
+    "physical": ["open_physical", "frozen"],
+    "experiment": ["experimental_test"]
+  },
+  "physical_outputs_frozen": false,
+  "experimentally_confirmed": false,
+  "gates": [
+    {
+      "id": "HISTORY_INTERFERENCE_REFERENCE",
+      "status": "tested_finite",
+      "closure_role": "reference",
+      "claim": "Linear coherent alternatives, environment-overlap decoherence and zero Sorkin I3 under a quadratic Born rule are reproduced as finite reference identities.",
+      "evidence": [
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md",
+        "scripts/binary_history_interference_lensing_gate.py"
+      ],
+      "hard_scope": "Reference measurement dictionary only; no BQG Born-rule or photon-state derivation is claimed."
+    },
+    {
+      "id": "GRAVITATIONAL_WAVE_OPTICS_REFERENCE",
+      "status": "tested_finite",
+      "closure_role": "reference",
+      "claim": "A point-lens control uses one Fermat potential for both geometric stationary images and relative wave-optics phase, while an independently rescaled phase potential fails the shared-stationarity test.",
+      "evidence": [
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md",
+        "scripts/binary_history_interference_lensing_gate.py"
+      ],
+      "hard_scope": "Standard gravitational wave-optics reference only; the theory-specific BQG Weyl potential is not yet derived."
+    },
+    {
+      "id": "BACKGROUND_FLUID_INFERENCE_REFERENCE",
+      "status": "tested_finite",
+      "closure_role": "reference",
+      "claim": "The conservation map rho(a) -> w(a) reproduces pressureless, vacuum and radiation reference limits and an evolving synthetic control.",
+      "evidence": [
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md",
+        "scripts/physical_cosmology_background_scalar_gate.py"
+      ],
+      "hard_scope": "The reference map does not supply BQG rho_hist(a); a physical density must be derived before w(a) is inferred."
+    },
+    {
+      "id": "SCALAR_LENSING_CONSISTENCY_REFERENCE",
+      "status": "tested_finite",
+      "closure_role": "reference",
+      "claim": "The scalar mu/Sigma/slip dictionary enforces a shared relation between nonrelativistic dynamics and Weyl-potential lensing, with a split-response negative control.",
+      "evidence": [
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md",
+        "scripts/physical_cosmology_background_scalar_gate.py"
+      ],
+      "hard_scope": "Phenomenological consistency dictionary only; mu and Sigma are not fit parameters licensed for the final BQG theory."
+    },
+    {
+      "id": "DYNAMICAL_MAXWELL_KERNEL",
+      "status": "open_physical",
+      "closure_role": "physical",
+      "claim": "Derive the theory-specific physical transverse photon kernel Gamma_AA^(2), Maxwell stiffness Z_A, massless deconfined pole and IR causal cone from the same physical history generating functional.",
+      "evidence": [
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md",
+        "COSMOLOGY_INTERFERENCE_PREREGISTRATION.md"
+      ],
+      "hard_scope": "Compact U(1) topology/phase kinematics and the finite interference reference do not close this physical gate."
+    },
+    {
+      "id": "PHYSICAL_BACKGROUND_COSMOLOGY",
+      "status": "open_physical",
+      "closure_role": "physical",
+      "claim": "Derive Gamma_FLRW and the corresponding rho_hist(a), p_hist(a), H(a) and w_hist(a) from the theory-specific connected physical history without selecting a target equation of state.",
+      "evidence": [
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md",
+        "COSMOLOGY_INTERFERENCE_PREREGISTRATION.md"
+      ],
+      "hard_scope": "The rho-to-w reference map is solved, but no BQG background dark component is currently derived."
+    },
+    {
+      "id": "PHYSICAL_SCALAR_COSMOLOGY",
+      "status": "open_physical",
+      "closure_role": "physical",
+      "claim": "Derive the physical scalar metric kernel and its stable Phi/Psi, growth, sound-speed and anisotropic-stress response from the same theory-specific physical effective action.",
+      "evidence": [
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md",
+        "COSMOLOGY_INTERFERENCE_PREREGISTRATION.md"
+      ],
+      "hard_scope": "No current TT, higher-shell or E/T2 finite coefficient is promoted to a dark-matter scalar response."
+    },
+    {
+      "id": "LENSING_DYNAMICS_CLOSURE",
+      "status": "open_physical",
+      "closure_role": "physical",
+      "claim": "Show that the same derived Phi/Psi response predicts massive-body dynamics, weak/strong lensing and the Weyl/Fermat optical phase, with no independent lensing or interference potential.",
+      "evidence": [
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md",
+        "COSMOLOGY_INTERFERENCE_PREREGISTRATION.md"
+      ],
+      "hard_scope": "Reference point-lens and mu/Sigma identities are prerequisites only; observed BQG lensing closure remains uncomputed."
+    },
+    {
+      "id": "BLIND_COSMOLOGY_LENSING_COMPARISON",
+      "status": "experimental_test",
+      "closure_role": "experiment",
+      "claim": "After all physical kernels and the one-scale rule are frozen, compare jointly with expansion, growth, weak/strong/CMB lensing and other preregistered dark-sector observables without post-hoc retuning.",
+      "evidence": [
+        "COSMOLOGY_INTERFERENCE_PREREGISTRATION.md"
+      ],
+      "hard_scope": "Current DESI, lensing or dark-matter observations are not inputs allowed to choose the microscopic BQG output."
+    }
+  ]
+}
