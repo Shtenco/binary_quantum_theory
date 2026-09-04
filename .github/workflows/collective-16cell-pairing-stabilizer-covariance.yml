@@ -12,6 +12,10 @@ on:
       - '.github/workflows/collective-16cell-pairing-stabilizer-covariance.yml'
   workflow_dispatch:
 
+# 2026-09-04: rerun the corrected transport-representation formulation on the
+# current branch.  The historical failures were JSON serialization failures,
+# not physics failures.
+
 jobs:
   theorem:
     runs-on: ubuntu-latest
