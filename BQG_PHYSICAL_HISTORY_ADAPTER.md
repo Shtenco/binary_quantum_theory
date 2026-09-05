@@ -12,39 +12,66 @@ The repository already contains:
 4. an executable `P -> O_rel -> Z[J] -> W[J] -> Gamma^(2)` finite source bridge;
 5. a geometric-boundary-time protocol for physical `omega`;
 6. TT, six-Wilson and real-observable dictionaries;
-7. Regge/TT normalization controls and a reduced connected TT propagator positive control.
+7. Regge/TT normalization controls and a reduced connected TT propagator positive control;
+8. tested-finite background `rho -> w`, scalar `mu/Sigma/slip`, and lensing/Fermat/interference reference maps.
 
 Therefore none of these objects is to be re-invented for scalar cosmology or dark-sector work.
 
 ## 2. The only microscopic adapter that remains
 
-The production input must be one common regulated habitat carrying the actual constraint family
+On one common regulated habitat define the actual total node constraints
 
 \[
 \boxed{
-\mathcal C_{BQG}^{(\epsilon)}
-=\{H^E_v,\ H^L_v,\ D_I\}
+H_v^{\rm BQG}=H_v^E+\lambda_L H_v^L
 }
 \]
 
-unless a stated subset has already been exactly reduced or proved redundant on that same habitat.
-
-From it construct
+with the Lorentzian ordering, epsilon convention and relative coefficient frozen before looking at the physical spectrum. The exact master is
 
 \[
 \boxed{
-\mathbb M_{BQG}
-=\sum_A C_A^\dagger C_A
+\mathbb M_H=\sum_v (H_v^{\rm BQG})^\dagger H_v^{\rm BQG}.
 }
 \]
 
-(or the preregistered positive label metric generalization), followed by the exact or controlled near-zero physical sector
+### Exact-zero sector and the diffeomorphism generator
+
+If the tangential/diffeomorphism action is the HDA generator derived from the same node constraints, then for an exact common zero state
+
+\[
+H_v|\psi\rangle=0\quad\forall v
+\]
+
+one has identically
+
+\[
+[H_v,H_w]|\psi\rangle=0\quad\forall v,w.
+\]
+
+Hence a commutator-derived `D` block cannot further shrink the exact common kernel. In the exact-zero case `D` is therefore an **HDA/anomaly validation**, not a second copy of the same kernel filter.
+
+This does **not** license dropping the diffeomorphism test in a near-zero/refinement construction. If only
+
+\[
+\lambda_{low}(\mathbb M_H)\to0,
+\]
+
+then direct convergence such as
+
+\[
+\boxed{\|D\,P_{low}\|\to0}
+\]
+
+(or an equivalent uniform operator-norm theorem) is additionally required. `scripts/hda_kernel_redundancy_gate.py` contains both an exact positive control and a near-zero counterexample where the Hamiltonian master residual vanishes but a commutator residual stays finite.
+
+The exact or controlled near-zero physical sector is then
 
 \[
 \boxed{P_{BQG}}.
 \]
 
-No observable parameter is used in constructing this projector.
+No dark-sector, lensing or cosmological parameter is used in constructing this projector.
 
 ## 3. Reuse the existing history/source stack unchanged
 
@@ -60,17 +87,17 @@ P_{BQG}
 }
 \]
 
-The new executable `scripts/bqg_physical_history_adapter_gate.py` regression-tests this interface on the existing C8 relational control by reconstructing its physical projector from the constraint `C=I-G` alone. The reconstructed projector must agree with the analytic `P_rel`, and the resulting source and metric Hessians must reproduce the existing exact q=2 source gate.
+`scripts/bqg_physical_history_adapter_gate.py` regression-tests this interface on the existing C8 relational control by reconstructing its physical projector from the constraint `C=I-G` alone. The reconstructed projector agrees with the analytic `P_rel` to machine precision, and the resulting source and metric Hessians reproduce the existing exact q=2 source gate.
 
-This makes the eventual replacement
+The production replacement is therefore
 
 ```text
 C8 combined constraint
         ->
-actual {H_E,H_L,D}
+actual common-habitat BQG H_v = H_E,v + lambda_L H_L,v
 ```
 
-a change of input, not a change of physicalization formalism.
+as a change of microscopic input, not a change of physicalization formalism.
 
 ## 4. Three sectors of one generating functional
 
@@ -92,6 +119,8 @@ classifies the result as:
 
 Only the last case can be discussed as an extra physical scalar degree of freedom. A modified Poisson response can mimic dark-matter phenomenology without a new particle, but must also pass the universal conserved-source and lensing tests.
 
+The existing `physical_cosmology_background_scalar_gate.py` is reused only as the downstream conservation and `mu/Sigma/slip` dictionary; it does not supply the BQG scalar kernel.
+
 ### TT sector
 
 \[
@@ -108,11 +137,17 @@ feeds the already closed six-Wilson and real-observable map. No new TT observabl
 
 must come from absolute physical history amplitude ratios with one fixed normalization convention. Background-by-background normalization is forbidden because it can erase a genuine volume/vacuum term.
 
-From the same functional one may derive
+From the same functional one derives
 
 \[
 \rho_{hist}(a),\quad p_{hist}(a),\quad w_{hist}(a).
 \]
+
+The existing background gate is intentionally one-way: `rho_hist(a) -> p_hist(a), w_hist(a)`. A desired `w(a)` is never used to choose `rho_hist`.
+
+### Lensing / interference consistency
+
+The existing `binary_history_interference_lensing_gate.py` freezes the rule that the **same** Weyl/Fermat potential must control deflection, stationary images, time delay and coherent phase. Its split-potential example is a negative control. It is not a theory-specific BQG lensing result.
 
 ## 5. Production bundle contract
 
@@ -122,12 +157,12 @@ Every actual BQG constraint-history bundle must freeze before diagonalization:
 - common habitat/basis identity;
 - `H_E` ordering and normalization;
 - `H_L` ordering, epsilon convention and relative coefficient convention;
-- diffeomorphism/route constraint convention or explicit proof of prior reduction;
+- HDA/diffeomorphism validation convention;
 - boundary embedding and refinement map;
 - source-operator definitions;
 - hashes of all input matrices/operators.
 
-The adapter must fail closed if any required operator is missing or acts on a different habitat.
+The adapter must fail closed if a required microscopic component is missing or acts on a different habitat.
 
 ## 6. Forbidden shortcuts
 
@@ -139,24 +174,27 @@ constraint resolvent z -> rename z as omega
 K1 Gram eigenvalue -> call it physical mass/gap
 j=1 volume eigenvalue -> call it dark energy
 observer smoothing b^-2 -> call it 1/k^2 propagator
-missing H_L or D -> fit a phenomenological correction
+missing H_L -> fit a phenomenological correction
+near-zero Hamiltonian mode -> assume D/HDA residual is also zero
 normalize Z[a;0]=1 separately for every background -> infer Lambda=0
+fit a separate optical/lensing potential after seeing dynamics
 ```
 
 ## 7. Current actual BQG input status
 
-The regulator-safe Euclidean calculations already show that the bare 32D q=2 boundary carrier has no common five-node Euclidean zero direction and that its first outgoing layer has full rank 160. These are input diagnostics, not physical observables.
+The regulator-safe Euclidean calculations show that the bare 32D q=2 boundary carrier has no common five-node Euclidean zero direction and that its first outgoing layer has full rank 160. These are input diagnostics, not physical observables.
 
-The sharded full 24-term Lorentzian epsilon calculation was cancelled by the CI runner during its heavy amplitude step; no physical zero/nonzero conclusion follows from that cancellation.
+The first 8-shard full 24-term Lorentzian epsilon run hit its 90-minute runner limit. The scientific protocol is unchanged and has been rescheduled as 24 one-term shards with the same 24 signed ordered terms and the same `Jmax=7/2`.
 
-The Euclidean `K1` Ritz second-action calculation is running independently. Its result is a dressing diagnostic, not yet `P_BQG` because the common-habitat full `H_L + D` family is still required.
+The Euclidean `K1` Ritz second-action calculation is running independently. Its result is a representation-dressing diagnostic, not yet `P_BQG` because the common-habitat total Lorentzian node constraints remain required.
 
 ## 8. Shortest legal programme
 
 \[
 \boxed{
-\{H_E,H_L,D\}
-\to P_{BQG}
+\{H_v^E+\lambda_L H_v^L\}
+\xrightarrow[\text{HDA validation}]{\text{exact/controlled kernel}}
+P_{BQG}
 \to \text{existing relational/history stack}
 \to \text{existing }Z/W/\Gamma
 \to
@@ -165,7 +203,7 @@ The Euclidean `K1` Ritz second-action calculation is running independently. Its 
 \Gamma^{(2)}_{TT}(\omega,k),\\
 \Gamma_{FLRW}[a,N]
 \end{cases}
-\to \text{existing observable dictionaries}.
+\to \text{existing cosmology/lensing/TT/real-observable dictionaries}.
 }
 \]
 
