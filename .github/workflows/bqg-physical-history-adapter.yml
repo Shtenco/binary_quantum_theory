@@ -8,6 +8,7 @@ on:
       - 'scripts/bqg_physical_history_adapter_gate.py'
       - 'scripts/bqg_constraint_master_assembler_gate.py'
       - 'scripts/dtarget_hda_certificate_gate.py'
+      - 'scripts/quantum_hda_habitat_residual_gate.py'
       - 'scripts/flux_habitat_diffeo_gate.py'
       - 'scripts/peter_weyl_euclidean_constraint_column.py'
       - 'scripts/k5_logical_source_stabilizer_s4_gate.py'
@@ -16,6 +17,7 @@ on:
       - 'scripts/master_constraint_physical_projector_gate.py'
       - 'scripts/physical_cosmology_background_scalar_gate.py'
       - 'scripts/binary_history_interference_lensing_gate.py'
+      - 'QUANTUM_HDA_HABITAT_RESIDUAL_PREREGISTRATION.md'
       - 'FLUX_HABITAT_DIFFEO_BRIDGE.md'
       - 'GRAPH_CHANGING_HDA_TARGET.md'
       - 'UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md'
@@ -43,8 +45,10 @@ jobs:
         run: python scripts/q2_relational_metric_source_gate.py --output verification_results/Q2_RELATIONAL_METRIC_SOURCE.json
       - name: Verify exact HDA-kernel redundancy and near-zero warning
         run: python scripts/hda_kernel_redundancy_gate.py --output verification_results/HDA_KERNEL_REDUNDANCY.json
-      - name: Freeze current Dtarget/HDA truth certificate
-        run: python scripts/dtarget_hda_certificate_gate.py --output verification_results/DTARGET_HDA_CERTIFICATE.json
+      - name: Freeze target-side Dtarget certificate (not quantum HDA authorization)
+        run: python scripts/dtarget_hda_certificate_gate.py --output verification_results/DTARGET_HDA_TARGET_SIDE_CERTIFICATE.json
+      - name: Regression-test actual quantum HH-Dtarget residual contract
+        run: python scripts/quantum_hda_habitat_residual_gate.py --self-test
       - name: Regression-test E/L/Dtarget outgoing-column master assembler
         run: python scripts/bqg_constraint_master_assembler_gate.py --output verification_results/BQG_CONSTRAINT_MASTER_ASSEMBLER.json
       - name: Export one real Euclidean Peter-Weyl column in production schema
