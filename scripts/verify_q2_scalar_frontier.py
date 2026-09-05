@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Validate the fail-closed q=2 scalar-effective-action frontier.
 
-A green result means the repository correctly distinguishes the exact local
-shape/collective-volume positive controls from the still-open physical scalar
-history, gauge reduction, conserved matter-source response, background
-cosmology and lensing problem. It is deliberately not a claim that dark
-matter or dark energy has been derived.
+A green result means the repository correctly distinguishes:
+- exact local shape / collective-volume positive controls;
+- the frozen universal conserved external TEST-PROBE convention;
+- still-open theory-specific volume-history, lapse/shift response, connected
+  scalar history, physical scalar kernel, background cosmology and lensing.
+
+GREEN is deliberately not a claim that dark matter, dark energy, a realistic
+matter sector or Gamma_scalar^(2)(omega,k) has been derived.
 """
 from __future__ import annotations
 
@@ -22,14 +25,15 @@ ALLOWED={
     "physical":{"open_physical","frozen"},
 }
 REQUIRED_LOCAL={"Q2_LOCAL_SHAPE_1PI","Q2_COLLECTIVE_CONFORMAL_VOLUME_CARRIER"}
-REQUIRED_PHYSICAL={
+FROZEN_PHYSICAL={"PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING"}
+OPEN_PHYSICAL={
     "PHYSICAL_VOLUME_HISTORY_SOURCE",
     "PHYSICAL_LAPSE_RESPONSE_SOURCE",
     "PHYSICAL_SCALAR_GAUGE_REDUCTION",
-    "PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING",
     "CONNECTED_SCALAR_INTERBLOCK_HISTORY",
     "PHYSICAL_BQG_SCALAR_KERNEL",
 }
+REQUIRED_PHYSICAL=OPEN_PHYSICAL|FROZEN_PHYSICAL
 PARENT_MUST_REMAIN_OPEN={
     "CONNECTED_INTERBLOCK_HISTORY",
     "PHYSICAL_BACKGROUND_COSMOLOGY",
@@ -83,29 +87,46 @@ def main()->int:
     for gid in REQUIRED_LOCAL & set(rows):
         if rows[gid].get("status") != "tested_finite" or rows[gid].get("closure_role") != "positive_control":
             errors.append(f"{gid}: local result must remain tested_finite positive_control")
-    for gid in REQUIRED_PHYSICAL & set(rows):
+    for gid in OPEN_PHYSICAL & set(rows):
         if rows[gid].get("status") != "open_physical" or rows[gid].get("closure_role") != "physical":
-            errors.append(f"{gid}: physical scalar frontier must remain open_physical")
+            errors.append(f"{gid}: unresolved scalar physical gate must remain open_physical")
+    for gid in FROZEN_PHYSICAL & set(rows):
+        if rows[gid].get("status") != "frozen" or rows[gid].get("closure_role") != "physical":
+            errors.append(f"{gid}: conserved external probe interface must be frozen physical")
 
     outputs=data.get("current_outputs",{})
     expected_open=("rho_hist_a","Phi_a_k","Psi_a_k","mu_BQG_a_k","Sigma_BQG_a_k")
     for key in expected_open:
         if outputs.get(key) != "OPEN_PHYSICAL": errors.append(f"{key}: must remain OPEN_PHYSICAL")
+    if outputs.get("conserved_external_probe_interface") != "FROZEN_UNIVERSAL_CONVENTION":
+        errors.append("conserved_external_probe_interface must equal FROZEN_UNIVERSAL_CONVENTION")
+    if outputs.get("scalar_ADM_log_volume_seed_K_zetaV_zetaV") != "18_EXACT_KINEMATIC_POSITIVE_CONTROL":
+        errors.append("exact scalar ADM zeta_V seed must remain recorded as 18 kinematic positive control")
 
     pgates=parent.get("gates",[]) if isinstance(parent.get("gates",[]),list) else []
     prows={g.get("id"):g for g in pgates if isinstance(g,dict) and isinstance(g.get("id"),str)}
     for gid in PARENT_MUST_REMAIN_OPEN:
         if prows.get(gid,{}).get("status") != "open_physical": errors.append(f"parent {gid} must remain open_physical")
 
+    source_gate=rows.get("PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING",{})
+    evidence=set(source_gate.get("evidence",[])) if isinstance(source_gate.get("evidence",[]),list) else set()
+    required_source_evidence={"CONSERVED_SCALAR_PROBE_CONVENTION.md","scripts/conserved_scalar_probe_convention_gate.py"}
+    if not required_source_evidence <= evidence:
+        errors.append("frozen conserved probe gate missing dedicated evidence")
+    if "realistic matter sector" not in source_gate.get("hard_scope",""):
+        errors.append("frozen probe hard_scope must explicitly keep realistic matter sector un-derived")
+
     result={
         "schema_version":data.get("schema_version"),
         "valid":not errors,
         "gate_count":len(gates),
         "local_positive_controls":{gid:rows.get(gid,{}).get("status") for gid in sorted(REQUIRED_LOCAL)},
+        "frozen_scalar_interfaces":{gid:rows.get(gid,{}).get("status") for gid in sorted(FROZEN_PHYSICAL)},
+        "open_scalar_physical_gates":{gid:rows.get(gid,{}).get("status") for gid in sorted(OPEN_PHYSICAL)},
         "required_scalar_physical_gates":{gid:rows.get(gid,{}).get("status") for gid in sorted(REQUIRED_PHYSICAL)},
         "parent_open_guards":{gid:prows.get(gid,{}).get("status") for gid in sorted(PARENT_MUST_REMAIN_OPEN)},
         "cosmology_outputs":{key:outputs.get(key) for key in expected_open},
-        "scientific_interpretation":"GREEN means the exact local q=2 shape 1PI and collective volume carrier are recorded without promoting them to physical cosmology. The physical volume-history, lapse-response, scalar gauge reduction, conserved matter-source coupling, connected interblock scalar history, BQG scalar kernel, background cosmology and lensing closure remain open.",
+        "scientific_interpretation":"GREEN means the local q=2 shape/volume controls, exact ADM reduction machinery and universal conserved external test-probe convention are recorded without promoting them to physical scalar cosmology. The theory-specific volume-history, lapse/shift response, connected scalar history, physical Gamma_scalar, background cosmology and lensing closure remain open.",
         "errors":errors,
     }
     txt=json.dumps(result,indent=2); print(txt)
