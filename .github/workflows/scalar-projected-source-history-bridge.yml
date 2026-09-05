@@ -1,0 +1,74 @@
+name: scalar-projected-source-history-bridge
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/scalar-adm-physical-response
+    paths:
+      - 'scripts/boundary_projector_source_dressing_gate.py'
+      - 'scripts/bqg_physical_history_adapter_gate.py'
+      - 'scripts/near_zero_rigging_limit_gate.py'
+      - 'scripts/projected_source_history_bridge_gate.py'
+      - 'scripts/scalar_physical_history_cumulant_gate.py'
+      - '.github/workflows/scalar-projected-source-history-bridge.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  projected-source-history-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile projected-source history seam
+        run: |
+          python -m py_compile \
+            scripts/boundary_projector_source_dressing_gate.py \
+            scripts/bqg_physical_history_adapter_gate.py \
+            scripts/near_zero_rigging_limit_gate.py \
+            scripts/scalar_physical_history_cumulant_gate.py \
+            scripts/projected_source_history_bridge_gate.py
+      - name: Reproduce enlarged-projector source-dressing control
+        run: |
+          python scripts/boundary_projector_source_dressing_gate.py \
+            --output verification_results/BOUNDARY_PROJECTOR_SOURCE_DRESSING.json
+      - name: Reproduce constraint-to-history adapter control
+        run: |
+          python scripts/bqg_physical_history_adapter_gate.py \
+            --output verification_results/BQG_PHYSICAL_HISTORY_ADAPTER.json
+      - name: Reproduce asymptotic rigging-limit controls
+        run: |
+          python scripts/near_zero_rigging_limit_gate.py \
+            --output verification_results/NEAR_ZERO_RIGGING_LIMIT.json
+      - name: Certify fail-closed projected-source to W-history seam
+        run: |
+          python scripts/projected_source_history_bridge_gate.py \
+            --output verification_results/PROJECTED_SOURCE_HISTORY_BRIDGE.json
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/PROJECTED_SOURCE_HISTORY_BRIDGE.json'))
+          assert p['passed'] is True
+          assert p['science_status']=='PROJECTED_SOURCE_TO_PHYSICAL_HISTORY_INTERFACE_FROZEN'
+          assert p['tests']['master_heat_depth_never_becomes_physical_time'] is True
+          assert p['tests']['static_control_reports_missing_physical_history_flags'] is True
+          assert p['nonphysical_static_seam_result']['physical_interpretation_allowed'] is False
+          assert p['synthetic_physical_seam_result']['physical_interpretation_allowed'] is True
+          print('PASS projected source dressing -> physical W-history seam remains fail-closed')
+          PY
+      - name: Upload projected-source history bridge evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scalar-projected-source-history-bridge-evidence
+          path: verification_results/
+          if-no-files-found: error
