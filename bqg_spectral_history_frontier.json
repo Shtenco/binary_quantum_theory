@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "date": "2026-09-06",
+  "name": "BQG spectral-history graph frontier",
+  "reference_gate": {
+    "id": "MASTER_SPECTRAL_HISTORY_GRAPH_REFERENCE",
+    "status": "tested_finite",
+    "claim": "For a finite Hermitian positive master operator and seed block, a zero next Krylov residual certifies an invariant cyclic subspace whose compressed operator exactly reproduces seed-sector matrix functions.",
+    "evidence": [
+      "BQG_SPECTRAL_HISTORY_GRAPH.md",
+      "scripts/bqg_spectral_history_graph_gate.py",
+      ".github/workflows/bqg-spectral-history-graph.yml"
+    ],
+    "physical_scope": "finite constraint spectral theorem/reference only"
+  },
+  "production_gate": {
+    "id": "BQG_MASTER_SPECTRAL_HISTORY_PRODUCTION",
+    "status": "open_real_data",
+    "required_inputs": [
+      "full declared finite regulated graph-changing constraint family C_A",
+      "positive constraint metric G",
+      "assembled master operator M_G = C^dag G C",
+      "frozen physicalization seed/carrier V",
+      "regulator/refinement metadata"
+    ],
+    "closure_condition": "next Krylov residual R_(r+1)=0 within preregistered tolerance, followed by refinement stability",
+    "current_evidence": [],
+    "hard_scope": "Passing the deterministic reference self-test must never close PHYSICAL_PROJECTOR_HISTORY."
+  },
+  "forbidden_promotions": [
+    "constraint spectral z -> physical omega",
+    "constraint spectral dimension -> spacetime dimension",
+    "finite master zero projector -> continuum rigging map without refinement limit",
+    "spectral numerical coincidence -> fundamental constant derivation",
+    "deterministic self-test -> actual BQG production closure"
+  ]
+}
