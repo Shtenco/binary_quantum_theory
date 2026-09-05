@@ -4,6 +4,12 @@
 Input column artifacts contain exact sparse states a_i=H|i>, b_i=H^2|i>.
 Column mode applies the same frozen H once more: c_i=H^3|i>.
 Assembly reconstructs K, Lambda, B1, B2 and derives B3^dag B3.
+
+The B3 residual is computed twice:
+  1. from the moment identity H6-C1^dag C1;
+  2. directly in sparse state space after reconstructing Q1 and subtracting Q1 C1.
+A closure claim is legal only if those two routes agree and every provenance,
+positivity and regulator guard passes.
 """
 from __future__ import annotations
 
@@ -45,6 +51,22 @@ def sqrt_psd(M, negative_tol=2e-8):
         raise RuntimeError(f"matrix is not PSD: min={float(np.min(ev))}, scale={scale}")
     S = (U * np.sqrt(np.clip(ev, 0.0, None))) @ U.conj().T
     return herm(S), ev
+
+
+def sparse_linear_combo(columns, coeffs):
+    out = {}
+    for col, c in zip(columns, coeffs):
+        if abs(c) > 1e-14:
+            HS.AN.sparse_add(out, col, complex(c))
+    return out
+
+
+def sparse_subtract_combo(state, basis, coeffs):
+    out = dict(state)
+    for col, c in zip(basis, coeffs):
+        if abs(c) > 1e-14:
+            HS.AN.sparse_add(out, col, -complex(c))
+    return out
 
 
 def extend_column(source: Path):
@@ -107,20 +129,39 @@ def assemble(directory: Path, reference: Path | None = None):
     if krank != N:
         raise RuntimeError(f"K lost full rank: {krank}")
 
-    Kmh = np.linalg.solve(B1, np.eye(N))
+    B1inv = np.linalg.solve(B1, np.eye(N))
     M2 = herm(H4 - K @ K)
-    Lambda = herm(Kmh @ M2 @ Kmh)
+    Lambda = herm(B1inv @ M2 @ B1inv)
     B2, el = sqrt_psd(Lambda, negative_tol=2e-7)
     lscale = max(float(np.max(np.abs(el))), 1.0)
     lrank = int(np.sum(el > 1e-10 * lscale))
     if lrank != N:
         raise RuntimeError(f"Lambda lost full rank: {lrank}")
 
-    C1 = np.linalg.solve(B1, H4)
+    # Q1 is reconstructed directly from the exact first-shell sparse states:
+    # H Q0 = Q1 B1  =>  Q1 = (H Q0) B1^-1.
+    q1 = [sparse_linear_combo(first, B1inv[:, a]) for a in range(N)]
+    q1_gram = HS.gram(q1)
+    q1_orth_error = float(np.linalg.norm(q1_gram - np.eye(N)))
+
+    # C1 = Q1^dag H^3 Q0.  The moment route and recurrence route must agree.
+    C1 = B1inv @ H4
     C1_recurrence = B1 @ K + Lambda @ B1
     c1_identity_error = float(np.linalg.norm(C1 - C1_recurrence))
 
-    R3gram = herm(H6 - C1.conj().T @ C1)
+    # Moment residual.
+    R3gram_moment = herm(H6 - C1.conj().T @ C1)
+
+    # Independent direct sparse residual: r_j = H^3|j> - Q1 C1[:,j].
+    r3_direct = [sparse_subtract_combo(third[j], q1, C1[:, j]) for j in range(N)]
+    R3gram_direct = HS.gram(r3_direct)
+    r3_direct_norms = [HS.AN.sparse_norm(r) for r in r3_direct]
+    r3_direct_supports = [len(r) for r in r3_direct]
+    r3_cross_error = float(
+        np.linalg.norm(R3gram_direct - R3gram_moment)
+        / max(np.linalg.norm(R3gram_direct), 1.0)
+    )
+    R3gram = herm((R3gram_direct + R3gram_moment) / 2)
     er = np.linalg.eigvalsh(R3gram).real
     rscale = max(float(np.max(np.abs(er))), 1.0)
 
@@ -150,42 +191,102 @@ def assemble(directory: Path, reference: Path | None = None):
     psd_ok = float(np.min(er)) > -5e-7*rscale and float(np.min(e3)) > -5e-7*e3scale
     reference_ok = (not ref_errors) or max(ref_errors.values()) < 2e-9
     regulator_safe = third_max_spin <= 2.0 + 1e-12
-    identities_ok = c1_identity_error < 2e-8 * max(float(np.linalg.norm(C1)), 1.0)
-    passed = bool(first_proj_max < 1e-12 and psd_ok and reference_ok and regulator_safe
-                  and identities_ok and b3_reconstruction_error < 2e-8)
+    identities_ok = (
+        q1_orth_error < 2e-8
+        and c1_identity_error < 2e-8 * max(float(np.linalg.norm(C1)), 1.0)
+        and r3_cross_error < 5e-8
+    )
+    passed = bool(
+        first_proj_max < 1e-12
+        and psd_ok
+        and reference_ok
+        and regulator_safe
+        and identities_ok
+        and b3_reconstruction_error < 2e-8
+    )
+
+    closure_certified = bool(passed and rank3 == 0)
+    if not passed:
+        science_status = "INVALID_B3_EVIDENCE"
+        closure_statement = (
+            "B3 evidence failed at least one algebra/provenance/regulator guard; "
+            "no closure or non-closure claim is certified."
+        )
+    elif rank3 == 0:
+        science_status = "FINITE_EUCLIDEAN_HISTORY_CLOSED_DEPTH_2"
+        closure_statement = (
+            "B3=0 within the frozen rank resolution and all independent guards pass: "
+            "the finite Euclidean parity Krylov history closes at depth 2."
+        )
+    else:
+        science_status = "FINITE_EUCLIDEAN_HISTORY_OPEN_AFTER_B3"
+        closure_statement = (
+            "B3 has nonzero resolved rank with all guards passing: the finite Euclidean "
+            "parity Krylov history is not closed at depth 2; the next exact shell is required."
+        )
 
     return {
         "status":"actual Peter-Weyl parity block-Lanczos spectral-history B3 gate",
         "passed":passed,
-        "science_status":"FINITE_EUCLIDEAN_HISTORY_CLOSED_DEPTH_2" if rank3==0 else "FINITE_EUCLIDEAN_HISTORY_OPEN_AFTER_B3",
+        "science_status":science_status,
         "operator":"H=H_E,0+H_E,1",
         "seed_dimension":N,
         "column_count":len(ordered),
-        "provenance":{"source_column_sha256":{str(d["column"]):d["source_sha256"] for d in ordered},
-                      "reference_matrix_relative_errors":ref_errors},
-        "regulator":{"Jmax_used":HS.JMAX2_SECOND_HIT_SAFE/2,
-                     "first_order_projection_max":first_proj_max,
-                     "third_max_spin":third_max_spin,
-                     "third_support_min":third_support_min,
-                     "third_support_max":third_support_max,
-                     "third_hit_inside_cutoff":regulator_safe},
-        "moments":{"K_equals_PH2P_eigen_min":float(np.min(ek)),
-                   "K_equals_PH2P_eigen_max":float(np.max(ek)),
-                   "H4_frobenius_norm":float(np.linalg.norm(H4)),
-                   "H6_frobenius_norm":float(np.linalg.norm(H6)),
-                   "H6_hermiticity_error":float(np.linalg.norm(H6-H6.conj().T))},
-        "B2":{"Lambda_eigen_min":float(np.min(el)),"Lambda_eigen_max":float(np.max(el)),
-              "C1_equals_B1inv_H4_recurrence_error":c1_identity_error},
-        "B3":{"R3gram_min_eigenvalue":float(np.min(er)),"R3gram_max_eigenvalue":float(np.max(er)),
-              "B3dagB3_min_eigenvalue":float(np.min(e3)),"B3dagB3_max_eigenvalue":float(np.max(e3)),
-              "rank_tolerance":float(rank_tol),"rank":rank3,"reconstruction_error":b3_reconstruction_error,
-              "closure_certified":bool(rank3==0)},
-        "closure_statement":("B3=0 within the frozen rank tolerance: the finite Euclidean parity Krylov history closes at depth 2."
-                             if rank3==0 else "B3 has nonzero resolved rank: the finite Euclidean parity Krylov history is not closed at depth 2; the next exact shell must be computed."),
-        "matrices_common_logical_basis":{"basis_order":"environment K234 major, pair K01 minor",
-                                         "B3dagB3":matrix_json(B3gram),"B3":matrix_json(B3)},
-        "claim_boundary":("This is an exact/finite Euclidean constraint spectral-history result for H_E0+H_E1. "
-                          "It is not the global Lorentzian physical projector/history, physical omega, connected W[J], or graviton 1PI kernel.")}
+        "provenance":{
+            "source_column_sha256":{str(d["column"]):d["source_sha256"] for d in ordered},
+            "reference_matrix_relative_errors":ref_errors,
+        },
+        "regulator":{
+            "Jmax_used":HS.JMAX2_SECOND_HIT_SAFE/2,
+            "first_order_projection_max":first_proj_max,
+            "third_max_spin":third_max_spin,
+            "third_support_min":third_support_min,
+            "third_support_max":third_support_max,
+            "third_hit_inside_cutoff":regulator_safe,
+        },
+        "moments":{
+            "K_equals_PH2P_eigen_min":float(np.min(ek)),
+            "K_equals_PH2P_eigen_max":float(np.max(ek)),
+            "H4_frobenius_norm":float(np.linalg.norm(H4)),
+            "H6_frobenius_norm":float(np.linalg.norm(H6)),
+            "H6_hermiticity_error":float(np.linalg.norm(H6-H6.conj().T)),
+        },
+        "independent_sparse_audit":{
+            "Q1_orthogonality_error":q1_orth_error,
+            "R3_direct_vs_moment_relative_error":r3_cross_error,
+            "R3_direct_norm_min":min(r3_direct_norms, default=0.0),
+            "R3_direct_norm_max":max(r3_direct_norms, default=0.0),
+            "R3_direct_support_min":min(r3_direct_supports, default=0),
+            "R3_direct_support_max":max(r3_direct_supports, default=0),
+        },
+        "B2":{
+            "Lambda_eigen_min":float(np.min(el)),
+            "Lambda_eigen_max":float(np.max(el)),
+            "C1_equals_B1inv_H4_recurrence_error":c1_identity_error,
+        },
+        "B3":{
+            "R3gram_min_eigenvalue":float(np.min(er)),
+            "R3gram_max_eigenvalue":float(np.max(er)),
+            "B3dagB3_min_eigenvalue":float(np.min(e3)),
+            "B3dagB3_max_eigenvalue":float(np.max(e3)),
+            "B3dagB3_frobenius_norm":float(np.linalg.norm(B3gram)),
+            "rank_tolerance":float(rank_tol),
+            "rank":rank3,
+            "reconstruction_error":b3_reconstruction_error,
+            "closure_certified":closure_certified,
+        },
+        "closure_statement":closure_statement,
+        "matrices_common_logical_basis":{
+            "basis_order":"environment K234 major, pair K01 minor",
+            "B3dagB3":matrix_json(B3gram),
+            "B3":matrix_json(B3),
+        },
+        "claim_boundary":(
+            "This is an exact/finite Euclidean constraint spectral-history result for H_E0+H_E1. "
+            "It is not the global Lorentzian physical projector/history, physical omega, connected W[J], "
+            "or graviton 1PI kernel."
+        ),
+    }
 
 
 def write(path: Path, data):
