@@ -1,0 +1,71 @@
+name: flrw-history-effective-action-response
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/scalar-adm-physical-response
+    paths:
+      - 'scripts/flrw_history_effective_action_gate.py'
+      - 'scripts/physical_cosmology_background_scalar_gate.py'
+      - 'FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE.md'
+      - '.github/workflows/flrw-history-effective-action-response.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  flrw-response:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile FLRW consumer
+        run: |
+          python -m py_compile scripts/flrw_history_effective_action_gate.py
+      - name: Exact FLRW variational controls
+        run: |
+          python scripts/flrw_history_effective_action_gate.py \
+            --output verification_results/FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE.json
+      - name: Existing background bookkeeping regression
+        run: |
+          python scripts/physical_cosmology_background_scalar_gate.py \
+            --output verification_results/PHYSICAL_COSMOLOGY_BACKGROUND_SCALAR.json
+      - name: Certify Gamma FLRW to rho p w consumer closure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('verification_results/FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE.json').read_text())
+          assert p['passed'] is True
+          t=p['selftest']['tests']
+          for key in [
+              'vacuum_rho','vacuum_p_minus_rho','vacuum_w_minus_one','vacuum_continuity',
+              'dust_rho_a_minus3','dust_pressure_zero','dust_w_zero','dust_continuity',
+              'radiation_rho_a_minus4','radiation_p_rho_over3','radiation_w_one_third','radiation_continuity',
+              'constant_w_control','constant_w_continuity',
+              'Euler_N_derivative_control','Euler_a_derivative_control',
+              'complete_synthetic_Gamma_allows_physical_consumer',
+              'normalized_zero_source_shortcut_fails_closed'
+          ]:
+              assert t[key] is True, key
+          bg=json.loads(Path('verification_results/PHYSICAL_COSMOLOGY_BACKGROUND_SCALAR.json').read_text())
+          assert bg['passed'] is True
+          print('PASS Gamma_FLRW -> rho_hist,p_hist,w_hist exact variational consumer')
+          print('OPEN physical input only: theory-specific BQG Gamma_FLRW with absolute background normalization')
+          PY
+      - name: Upload FLRW response evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flrw-history-effective-action-response-evidence
+          path: verification_results/
+          if-no-files-found: error
