@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 """Fail-closed truth verifier for the q=2 scalar/background frontier.
 
-GREEN means every deterministic downstream measurement/consumer layer is
-closed while the actual theory-specific physical inputs remain open:
-  W_phys[J_Q,J_zeta;tau,r]
-  Gamma_FLRW[a,N]
+GREEN means the projected-source/history seam and every deterministic downstream
+measurement/consumer layer are closed while the actual theory-specific physical
+inputs remain open:
+  physical projector/history,
+  W_phys[J_Q,J_zeta;tau,r],
+  Gamma_FLRW[a,N].
 It never means DM, DE, Phi/Psi, mu/Sigma or the BQG scalar kernel were derived.
 """
 from __future__ import annotations
@@ -24,6 +26,7 @@ ALLOWED={
 REQUIRED_LOCAL={'Q2_LOCAL_SHAPE_1PI','Q2_COLLECTIVE_CONFORMAL_VOLUME_CARRIER'}
 FROZEN_PHYSICAL={
     'PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING',
+    'SCALAR_PROJECTED_SOURCE_HISTORY_BRIDGE',
     'SCALAR_PHYSICAL_W_HISTORY_MEASUREMENT_PIPELINE',
     'SCALAR_CONNECTED_HISTORY_TO_RESPONSE_PIPELINE',
     'FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE_PIPELINE',
@@ -37,6 +40,7 @@ OPEN_PHYSICAL={
 }
 REQUIRED_PHYSICAL=OPEN_PHYSICAL|FROZEN_PHYSICAL
 PARENT_MUST_REMAIN_OPEN={
+    'PHYSICAL_PROJECTOR_HISTORY',
     'CONNECTED_INTERBLOCK_HISTORY',
     'PHYSICAL_BACKGROUND_COSMOLOGY',
     'PHYSICAL_SCALAR_COSMOLOGY',
@@ -113,6 +117,7 @@ def main()->int:
         if outputs.get(key)!='OPEN_PHYSICAL': errors.append(f'{key}: must remain OPEN_PHYSICAL')
     expected_frozen={
         'conserved_external_probe_interface':'FROZEN_UNIVERSAL_CONVENTION',
+        'scalar_projected_source_history_bridge':'FROZEN_PROJECTED_SOURCE_TO_W_HISTORY_SEAM',
         'scalar_physical_W_history_measurement_pipeline':'FROZEN_W_TO_GCONN',
         'scalar_connected_history_consumer_pipeline':'FROZEN_GCONN_TO_RESPONSE',
         'flrw_history_effective_action_response_pipeline':'FROZEN_GAMMA_FLRW_TO_RHO_P_W',
@@ -122,6 +127,8 @@ def main()->int:
     expected_cumulants=['G_QQ(omega,k)','G_Qzeta(omega,k)','G_zetazeta(omega,k)']
     if outputs.get('remaining_scalar_microscopic_inputs')!=expected_cumulants:
         errors.append('remaining scalar microscopic outputs must be exactly the three connected Ward cumulants')
+    if outputs.get('upstream_projector_history_input')!='OPEN_PHYSICAL_PROJECTOR_HISTORY':
+        errors.append('upstream projector/history input must remain OPEN_PHYSICAL_PROJECTOR_HISTORY')
     if outputs.get('upstream_scalar_history_input')!='OPEN_PHYSICAL_W_phys[J_Q,J_zeta;tau,r]':
         errors.append('upstream scalar input must remain source-dressed W_phys')
     if outputs.get('upstream_background_input')!='OPEN_PHYSICAL_Gamma_FLRW[a,N]':
@@ -141,6 +148,17 @@ def main()->int:
     if not {'CONSERVED_SCALAR_PROBE_CONVENTION.md','scripts/conserved_scalar_probe_convention_gate.py'}<=evidence_set(source):
         errors.append('frozen conserved probe missing dedicated evidence')
     require_phrases(source.get('hard_scope',''),['does not derive','matter sector','common physical scale'],'conserved probe hard_scope',errors)
+
+    bridge=rows.get('SCALAR_PROJECTED_SOURCE_HISTORY_BRIDGE',{})
+    if not {
+        'PROJECTED_SOURCE_PHYSICAL_HISTORY_BRIDGE.md',
+        'scripts/boundary_projector_source_dressing_gate.py',
+        'scripts/bqg_physical_history_adapter_gate.py',
+        'scripts/near_zero_rigging_limit_gate.py',
+        'scripts/projected_source_history_bridge_gate.py',
+        '.github/workflows/scalar-projected-source-history-bridge.yml',
+    }<=evidence_set(bridge): errors.append('frozen projected-source history bridge missing dedicated evidence')
+    require_phrases(bridge.get('hard_scope',''),['does not generate','physical projector/history','heat tau','physical omega','static equal-history covariance'],'projected-source history bridge hard_scope',errors)
 
     gauge=rows.get('PHYSICAL_SCALAR_GAUGE_REDUCTION',{})
     if not {'SCALAR_ADM_DIRAC_REDUCTION.md','scripts/scalar_adm_dirac_response_gate.py','SCALAR_ADM_WARD_QUOTIENT.md','scripts/scalar_adm_ward_basis_gate.py'}<=evidence_set(gauge):
@@ -182,17 +200,17 @@ def main()->int:
     closed={
         'flat_Ward_parameter_count':outputs.get('flat_scalar_Ward_parameter_count'),
         'log_volume_seed':outputs.get('scalar_ADM_log_volume_seed_K_zetaV_zetaV'),
+        'projected_source_history_bridge':outputs.get('scalar_projected_source_history_bridge'),
         'W_history_measurement':outputs.get('scalar_physical_W_history_measurement_pipeline'),
         'connected_history_consumer':outputs.get('scalar_connected_history_consumer_pipeline'),
         'FLRW_response_consumer':outputs.get('flrw_history_effective_action_response_pipeline'),
     }
     remaining={
+        'projector_history':outputs.get('upstream_projector_history_input'),
         'scalar':outputs.get('upstream_scalar_history_input'),
         'background':outputs.get('upstream_background_input'),
         'scalar_connected_outputs':outputs.get('remaining_scalar_microscopic_inputs'),
     }
-    # Backward-compatible alias consumed by the branch CI while the richer
-    # truth schema is propagated into main/PR workflows.
     exact_alias={
         'flat_Ward_parameter_count':outputs.get('flat_scalar_Ward_parameter_count'),
         'connected_history_consumer_pipeline':outputs.get('scalar_connected_history_consumer_pipeline'),
@@ -211,7 +229,7 @@ def main()->int:
         'required_scalar_physical_gates':{gid:rows.get(gid,{}).get('status') for gid in sorted(REQUIRED_PHYSICAL)},
         'parent_open_guards':{gid:prows.get(gid,{}).get('status') for gid in sorted(PARENT_MUST_REMAIN_OPEN)},
         'cosmology_outputs':{key:outputs.get(key) for key in expected_open},
-        'scientific_interpretation':'GREEN means all deterministic downstream scalar/background machinery is closed. Only actual BQG W_phys and Gamma_FLRW remain missing; all dark-sector outputs stay open.',
+        'scientific_interpretation':'GREEN means the projected-source/history seam and all deterministic downstream scalar/background machinery are closed. The actual BQG physical projector/history, W_phys and Gamma_FLRW remain missing; all dark-sector outputs stay open.',
         'errors':errors,
     }
     txt=json.dumps(result,indent=2); print(txt)
