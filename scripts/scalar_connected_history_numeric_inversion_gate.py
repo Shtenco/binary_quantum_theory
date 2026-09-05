@@ -24,6 +24,7 @@ import math
 from pathlib import Path
 from typing import Any
 import numpy as np
+import sympy as sp
 
 REQ_FLAGS=(
     'theory_specific_connected_history',
@@ -45,13 +46,10 @@ def cval(x:Any)->complex:
     if isinstance(x,list) and len(x)==2: return complex(float(x[0]),float(x[1]))
     if isinstance(x,dict) and 're' in x and 'im' in x: return complex(float(x['re']),float(x['im']))
     if isinstance(x,str):
-        s=x.replace('I','j').replace(' ','').replace('*j','j')
-        try: return complex(s)
-        except ValueError:
-            # Pure decimal/rational strings are common in exact-compatible packets.
-            if '/' in s and 'j' not in s:
-                a,b=s.split('/',1); return complex(float(a)/float(b),0)
-            raise
+        # SymPy safely covers decimal, rational and the repository's '(a)+(b)*I'
+        # Fourier serialization without inventing a second parser convention.
+        z=sp.N(sp.sympify(x,locals={'I':sp.I}),30)
+        return complex(float(sp.re(z)),float(sp.im(z)))
     raise TypeError(f'unsupported scalar {x!r}')
 
 
@@ -134,15 +132,18 @@ def selftest()->dict[str,Any]:
     n=analyze(near,rcond_min=1e-12)
     incomplete=dict(good); incomplete['provenance']={}
     inc=analyze(incomplete)
+    complex_control={'schema':'BQG_CONNECTED_SCALAR_HISTORY_V1','G_QQ':'2+(0.1)*I','G_Qzeta':'0.5-(0.02)*I','G_zetazeta':'3+(0.2)*I','physical_flags':flags,'provenance':prov}
+    cx=analyze(complex_control)
     tests={
         'floating_connected_hessian_inverts':g['ordinary_inverse_emitted'] is True,
         'floating_inverse_matches_exact_control':bool(np.max(np.abs(H-target))<1e-12),
-        'floating_inverse_residual_small':g.get('inverse_residual',1)>1e-16 and g.get('inverse_residual',1)<1e-10,
+        'floating_inverse_residual_small':bool(np.isfinite(g.get('inverse_residual',math.inf)) and g.get('inverse_residual',math.inf)<1e-10),
         'complete_numeric_sample_allows_physical_kernel_sample':g['physical_interpretation_allowed'] is True,
         'near_singular_fails_closed':n['ordinary_inverse_emitted'] is False and n['pseudoinverse_used'] is False,
         'missing_provenance_blocks_physical_promotion':inc['ordinary_inverse_emitted'] is True and inc['physical_interpretation_allowed'] is False,
+        'complex_fourier_serialization_supported':cx['ordinary_inverse_emitted'] is True and cx['inverse_residual_ok'] is True,
     }
-    return {'passed':all(tests.values()),'tests':tests,'controls':{'good':g,'near_singular':n,'incomplete':inc}}
+    return {'passed':all(tests.values()),'tests':tests,'controls':{'good':g,'near_singular':n,'incomplete':inc,'complex':cx}}
 
 
 def main()->int:
