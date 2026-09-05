@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - research/physical-scalar-kernel-dynamics
+      - recovery/bqg-physical-spectral-history-2026-09-06
     paths:
       - PETER_WEYL_EUCLIDEAN_PROJECTED_HEAT_MU2_PREREGISTRATION.md
       - scripts/peter_weyl_euclidean_master_image_column.py
