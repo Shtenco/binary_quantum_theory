@@ -9,6 +9,8 @@ on:
       - 'BQG_SCALAR_RESPONSE_TO_MATTER.md'
       - 'CONSERVED_SCALAR_PROBE_CONVENTION.md'
       - 'SCALAR_ADM_DIRAC_REDUCTION.md'
+      - 'SCALAR_ADM_WARD_QUOTIENT.md'
+      - 'SCALAR_WARD_KERNEL_RESPONSE.md'
       - 'HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md'
       - 'q2_scalar_frontier.json'
       - 'physicalization_gates.json'
@@ -16,6 +18,8 @@ on:
       - 'scripts/q2_collective_scalar_carrier_gate.py'
       - 'scripts/q2_scalar_adm_seed_gate.py'
       - 'scripts/scalar_adm_dirac_response_gate.py'
+      - 'scripts/scalar_adm_ward_basis_gate.py'
+      - 'scripts/scalar_ward_kernel_response_gate.py'
       - 'scripts/conserved_scalar_probe_convention_gate.py'
       - 'scripts/verify_q2_scalar_frontier.py'
       - 'scripts/collective_volume_rg_gate.py'
@@ -30,6 +34,8 @@ on:
       - 'BQG_SCALAR_RESPONSE_TO_MATTER.md'
       - 'CONSERVED_SCALAR_PROBE_CONVENTION.md'
       - 'SCALAR_ADM_DIRAC_REDUCTION.md'
+      - 'SCALAR_ADM_WARD_QUOTIENT.md'
+      - 'SCALAR_WARD_KERNEL_RESPONSE.md'
       - 'HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md'
       - 'q2_scalar_frontier.json'
       - 'physicalization_gates.json'
@@ -37,6 +43,8 @@ on:
       - 'scripts/q2_collective_scalar_carrier_gate.py'
       - 'scripts/q2_scalar_adm_seed_gate.py'
       - 'scripts/scalar_adm_dirac_response_gate.py'
+      - 'scripts/scalar_adm_ward_basis_gate.py'
+      - 'scripts/scalar_ward_kernel_response_gate.py'
       - 'scripts/conserved_scalar_probe_convention_gate.py'
       - 'scripts/verify_q2_scalar_frontier.py'
       - 'scripts/collective_volume_rg_gate.py'
@@ -72,6 +80,8 @@ jobs:
             scripts/q2_collective_scalar_carrier_gate.py \
             scripts/q2_scalar_adm_seed_gate.py \
             scripts/scalar_adm_dirac_response_gate.py \
+            scripts/scalar_adm_ward_basis_gate.py \
+            scripts/scalar_ward_kernel_response_gate.py \
             scripts/conserved_scalar_probe_convention_gate.py \
             scripts/verify_q2_scalar_frontier.py
       - name: Exact q2 local 1PI shape action and cosmology obstruction
@@ -82,12 +92,16 @@ jobs:
         run: |
           python scripts/q2_collective_scalar_carrier_gate.py \
             --output verification_results/Q2_COLLECTIVE_SCALAR_CARRIER.json
-      - name: Exact local scalar ADM seed and reduction engine
+      - name: Exact local scalar ADM seed Ward quotient and reduction engine
         run: |
           python scripts/q2_scalar_adm_seed_gate.py \
             --output verification_results/Q2_SCALAR_ADM_SEED.json
+          python scripts/scalar_adm_ward_basis_gate.py \
+            --output verification_results/SCALAR_ADM_WARD_BASIS.json
           python scripts/scalar_adm_dirac_response_gate.py \
             --output verification_results/SCALAR_ADM_DIRAC_ENGINE.json
+          python scripts/scalar_ward_kernel_response_gate.py \
+            --output verification_results/SCALAR_WARD_KERNEL_RESPONSE.json
       - name: Frozen universal conserved external probe convention
         run: |
           python scripts/conserved_scalar_probe_convention_gate.py \
@@ -108,19 +122,27 @@ jobs:
           shape=load('Q2_FIRST_SCALAR_EFFECTIVE_ACTION.json')
           carrier=load('Q2_COLLECTIVE_SCALAR_CARRIER.json')
           seed=load('Q2_SCALAR_ADM_SEED.json')
+          ward=load('SCALAR_ADM_WARD_BASIS.json')
           reduction=load('SCALAR_ADM_DIRAC_ENGINE.json')
+          response=load('SCALAR_WARD_KERNEL_RESPONSE.json')
           probe=load('CONSERVED_SCALAR_PROBE_CONVENTION.json')
           truth=load('Q2_SCALAR_FRONTIER_STATUS.json')
 
           assert shape['passed'] is True
           assert carrier['passed'] is True
           assert seed['passed'] is True
+          assert ward['passed'] is True
           assert reduction['passed'] is True
+          assert response['passed'] is True
           assert probe['passed'] is True
           assert truth['valid'] is True
 
           assert seed['local_log_volume_1PI']['Gamma_second_at_0'] == '18'
+          assert ward['ward_parameter_count'] == 3
           assert reduction['selftest']['pure_gravity_scalar_control']['physical_dimension'] == 0
+          assert response['selftest']['tests']['gr_like_static_has_no_omega2_pole'] is True
+          assert response['selftest']['tests']['healthy_positive_residue'] is True
+          assert response['selftest']['tests']['ghost_negative_residue_detected'] is True
           assert probe['science_status'] == 'FROZEN_EXTERNAL_CONSERVED_PROBE_CONVENTION'
 
           assert shape['cosmology_outputs']['mu_BQG_a_k'] == 'NOT_DERIVABLE'
@@ -131,6 +153,7 @@ jobs:
           assert carrier['cosmology_outputs']['mu_BQG_a_k'] == 'OPEN_PHYSICAL'
           assert carrier['cosmology_outputs']['Sigma_BQG_a_k'] == 'OPEN_PHYSICAL'
 
+          assert truth['exact_scalar_algebra']['flat_Ward_parameter_count'] == 3
           assert truth['frozen_scalar_interfaces']['PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING'] == 'frozen'
           for status in truth['open_scalar_physical_gates'].values():
               assert status == 'open_physical'
