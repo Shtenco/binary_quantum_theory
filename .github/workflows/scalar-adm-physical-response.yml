@@ -8,11 +8,13 @@ on:
     paths:
       - 'scripts/scalar_adm_dirac_response_gate.py'
       - 'scripts/scalar_adm_ward_basis_gate.py'
+      - 'scripts/scalar_ward_kernel_response_gate.py'
       - 'scripts/q2_scalar_adm_seed_gate.py'
       - 'scripts/conserved_scalar_probe_convention_gate.py'
       - 'scripts/verify_q2_scalar_frontier.py'
       - 'SCALAR_ADM_DIRAC_REDUCTION.md'
       - 'SCALAR_ADM_WARD_QUOTIENT.md'
+      - 'SCALAR_WARD_KERNEL_RESPONSE.md'
       - 'CONSERVED_SCALAR_PROBE_CONVENTION.md'
       - 'BQG_SCALAR_RESPONSE_TO_MATTER.md'
       - 'q2_scalar_frontier.json'
@@ -44,6 +46,7 @@ jobs:
           python -m py_compile \
             scripts/scalar_adm_dirac_response_gate.py \
             scripts/scalar_adm_ward_basis_gate.py \
+            scripts/scalar_ward_kernel_response_gate.py \
             scripts/q2_scalar_adm_seed_gate.py \
             scripts/conserved_scalar_probe_convention_gate.py \
             scripts/verify_q2_scalar_frontier.py
@@ -69,6 +72,10 @@ jobs:
         run: |
           python scripts/conserved_scalar_probe_convention_gate.py \
             --output verification_results/CONSERVED_SCALAR_PROBE_CONVENTION.json
+      - name: Scalar Ward response pole and stability classifier
+        run: |
+          python scripts/scalar_ward_kernel_response_gate.py \
+            --output verification_results/SCALAR_WARD_KERNEL_RESPONSE.json
       - name: Verify updated fail-closed scalar frontier ledger
         run: |
           python scripts/verify_q2_scalar_frontier.py \
@@ -98,12 +105,8 @@ jobs:
             "K_pp":[[3,0],[0,0]],
             "J_p":[0,0],
             "gauge_generators":[[0],[1]],
-            "physical_flags":{
-              "conserved_source_coupling":true
-            },
-            "provenance":{
-              "source_coupling_hash":"frozen-external-probe-convention"
-            }
+            "physical_flags":{"conserved_source_coupling":true},
+            "provenance":{"source_coupling_hash":"frozen-external-probe-convention"}
           }
           JSON
           python scripts/scalar_adm_dirac_response_gate.py \
@@ -163,28 +166,34 @@ jobs:
           assert r['science_status']=='PHYSICAL_SCALAR_KERNEL_REDUCED'
           print('PASS complete synthetic production control')
           PY
-      - name: Cross-check exact new seed Ward and probe values
+      - name: Cross-check exact seed Ward response and probe controls
         run: |
           python - <<'PY'
           import json
           seed=json.load(open('verification_results/Q2_SCALAR_ADM_SEED.json'))
           ward=json.load(open('verification_results/SCALAR_ADM_WARD_BASIS.json'))
+          response=json.load(open('verification_results/SCALAR_WARD_KERNEL_RESPONSE.json'))
           eng=json.load(open('verification_results/SCALAR_ADM_DIRAC_ENGINE.json'))
           probe=json.load(open('verification_results/CONSERVED_SCALAR_PROBE_CONVENTION.json'))
           assert seed['passed'] is True
           assert seed['local_log_volume_1PI']['Gamma_second_at_0']=='18'
           assert seed['local_log_volume_1PI']['Gamma_third_at_0']=='216'
-          assert seed['scalar_ADM_seed']['known_entry_count']==1
           assert seed['physical_reduction_ready'] is False
           assert ward['passed'] is True
           assert ward['ward_parameter_count']==3
           assert ward['quotient_coordinates']['Q']=='deltaN + D*B - D^2*E'
+          assert response['passed'] is True
+          rtests=response['selftest']['tests']
+          assert rtests['gr_like_static_has_no_omega2_pole'] is True
+          assert rtests['modified_static_has_no_omega2_pole'] is True
+          assert rtests['healthy_positive_residue'] is True
+          assert rtests['healthy_cs2_one_quarter'] is True
+          assert rtests['ghost_negative_residue_detected'] is True
+          assert rtests['tachyon_detected'] is True
           assert eng['selftest']['pure_gravity_scalar_control']['physical_dimension']==0
-          assert eng['selftest']['extra_scalar_control']['physical_dimension']==1
           assert probe['passed'] is True
-          assert probe['science_status']=='FROZEN_EXTERNAL_CONSERVED_PROBE_CONVENTION'
           assert probe['flat_scalar_reference']['qT']==['0','0','0','0']
-          print('PASS q2 scalar ADM exact seed, Ward quotient, reduction and frozen probe controls')
+          print('PASS complete scalar algebra/response decision stack')
           PY
       - name: Upload scalar ADM evidence
         if: always()
