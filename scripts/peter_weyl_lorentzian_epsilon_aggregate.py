@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
-"""Deterministically aggregate execution shards of the preregistered H_L witness."""
+"""Deterministically aggregate execution shards of the preregistered H_L witness.
+
+In addition to the scientific logical-return diagnostics, the aggregate now
+preserves the complete final scalar Gauss-basis outgoing state.  This is not a
+new observable: it prevents loss of the expensive Peter-Weyl column so that the
+same calculation can feed the preregistered Lorentzian Gram/master assembly
+without recomputation.
+"""
 from __future__ import annotations
 
 import argparse
@@ -24,6 +31,18 @@ def decode_state(rows):
         amp = complex(float(row["amp"][0]), float(row["amp"][1]))
         out[key] = out.get(key, 0j) + amp
     return out
+
+
+def encode_gauss_state(state):
+    rows = []
+    for key, amp in sorted(state.items(), key=lambda kv: repr(kv[0])):
+        spins, Ks = key
+        rows.append({
+            "spins": [int(x) for x in spins],
+            "K_labels": [int(x) for x in Ks],
+            "amp": [float(complex(amp).real), float(complex(amp).imag)],
+        })
+    return rows
 
 
 def run(input_dir: Path, shards=8, source_v=0, input_index=0):
@@ -70,6 +89,7 @@ def run(input_dir: Path, shards=8, source_v=0, input_index=0):
     logical = FULL.logical_projection(gauss)
     logical_norm = math.sqrt(FULL.norm2(logical))
     full_norm = math.sqrt(FULL.norm2(total))
+    gauss_norm = math.sqrt(FULL.norm2(gauss))
     logical_nonzero = logical_norm > FULL.NONZERO_TOL
 
     basis = FULL.RAW.PW.basis_full_jhalf()
@@ -113,6 +133,7 @@ def run(input_dir: Path, shards=8, source_v=0, input_index=0):
             and reverse["mapping_collisions"] == 0
             and reverse["mapped_covariant_J0_basis_states"] == reverse["distinct_gauss_basis_states"]
         ),
+        "scalar_covariant_norm_equals_gauss_norm": bool(abs(full_norm - gauss_norm) < 1e-8 * max(1.0, full_norm)),
     }
     passed = bool(all(hard.values()))
 
@@ -158,6 +179,13 @@ def run(input_dir: Path, shards=8, source_v=0, input_index=0):
             "hard_acceptance": False,
         },
         "reverse_projection": reverse,
+        "complete_gauss_outgoing_column": {
+            "support": len(gauss),
+            "norm": gauss_norm,
+            "basis": "Peter-Weyl Gauss basis (spins,K_labels)",
+            "state": encode_gauss_state(gauss),
+            "reuse": "direct input to Lorentzian Gram/master assembly; no logical projection required",
+        },
         "logical_projection": {
             "support": len(logical),
             "norm": logical_norm,
@@ -187,7 +215,7 @@ def main():
     args = ap.parse_args()
     out = run(args.input_dir, args.shards, args.source_node, args.input_index)
     text = json.dumps(out, indent=2)
-    print(text)
+    print(json.dumps({k: v for k, v in out.items() if k != "complete_gauss_outgoing_column"}, indent=2))
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(text + "\n", encoding="utf-8")
     return 0 if out["passed"] else 1
