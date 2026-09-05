@@ -8,6 +8,7 @@ on:
       - 'scripts/bqg_physical_history_adapter_gate.py'
       - 'scripts/bqg_constraint_master_assembler_gate.py'
       - 'scripts/peter_weyl_euclidean_constraint_column.py'
+      - 'scripts/k5_logical_source_stabilizer_s4_gate.py'
       - 'scripts/hda_kernel_redundancy_gate.py'
       - 'scripts/q2_relational_metric_source_gate.py'
       - 'scripts/master_constraint_physical_projector_gate.py'
@@ -42,6 +43,8 @@ jobs:
         run: python scripts/bqg_constraint_master_assembler_gate.py --output verification_results/BQG_CONSTRAINT_MASTER_ASSEMBLER.json
       - name: Export one real Euclidean Peter-Weyl column in production schema
         run: python scripts/peter_weyl_euclidean_constraint_column.py --node 0 --input-index 0 --output verification_results/EUCLIDEAN_COLUMN_NODE0_INPUT0.json
+      - name: Compute exact 32D K5 source-stabilizer S4 representation
+        run: python scripts/k5_logical_source_stabilizer_s4_gate.py --output verification_results/K5_LOGICAL_SOURCE_STABILIZER_S4.json
       - name: Run unified constraint-to-history adapter regression
         run: python scripts/bqg_physical_history_adapter_gate.py --output verification_results/BQG_PHYSICAL_HISTORY_ADAPTER.json
       - name: Re-run existing background and scalar-cosmology reference map
