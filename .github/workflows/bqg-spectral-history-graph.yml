@@ -1,0 +1,90 @@
+name: BQG spectral history graph
+
+on:
+  push:
+    paths:
+      - "BQG_SPECTRAL_HISTORY_GRAPH.md"
+      - "bqg_spectral_history_frontier.json"
+      - "scripts/bqg_spectral_history_graph_gate.py"
+      - ".github/workflows/bqg-spectral-history-graph.yml"
+  pull_request:
+    paths:
+      - "BQG_SPECTRAL_HISTORY_GRAPH.md"
+      - "bqg_spectral_history_frontier.json"
+      - "scripts/bqg_spectral_history_graph_gate.py"
+      - ".github/workflows/bqg-spectral-history-graph.yml"
+  workflow_dispatch:
+
+jobs:
+  finite-spectral-reference:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install numerical dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Positive control — exact cyclic closure
+        run: |
+          python scripts/bqg_spectral_history_graph_gate.py \
+            --output verification_results/BQG_SPECTRAL_HISTORY_GRAPH_REFERENCE.json
+
+      - name: Assert fail-closed physical scope
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path("verification_results/BQG_SPECTRAL_HISTORY_GRAPH_REFERENCE.json")
+          d = json.loads(p.read_text())
+          assert d["passed"] is True
+          assert d["science_status"] == "ALGEBRAIC_REFERENCE_CLOSURE_PASS"
+          assert d["krylov_graph"]["closed"] is True
+          assert d["physical_scope"]["finite_constraint_spectral_history_closed"] is True
+          assert d["physical_scope"]["continuum_rigging_map_closed"] is False
+          assert d["physical_scope"]["physical_projector_history_closed"] is False
+          assert d["physical_scope"]["physical_time_identified"] is False
+          assert d["physical_scope"]["physical_spacetime_dimension_derived"] is False
+          assert d["physical_scope"]["physical_graviton_kernel_derived"] is False
+
+          frontier = json.loads(Path("bqg_spectral_history_frontier.json").read_text())
+          assert frontier["production_gate"]["status"] == "open_real_data"
+          print("fail-closed scope assertions passed")
+          PY
+
+      - name: Negative control — insufficient Krylov depth must not close
+        shell: bash
+        run: |
+          set +e
+          python scripts/bqg_spectral_history_graph_gate.py \
+            --max-depth 0 \
+            --output verification_results/BQG_SPECTRAL_HISTORY_GRAPH_EXPECTED_OPEN.json
+          rc=$?
+          set -e
+          if [ "$rc" -eq 0 ]; then
+            echo "ERROR: truncated Krylov run incorrectly claimed closure"
+            exit 1
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path("verification_results/BQG_SPECTRAL_HISTORY_GRAPH_EXPECTED_OPEN.json").read_text())
+          assert d["passed"] is False
+          assert d["krylov_graph"]["closed"] is False
+          assert d["physical_scope"]["physical_projector_history_closed"] is False
+          print("negative closure control passed")
+          PY
+
+      - name: Upload spectral gate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-spectral-history-evidence
+          path: verification_results/BQG_SPECTRAL_HISTORY_GRAPH_*.json
