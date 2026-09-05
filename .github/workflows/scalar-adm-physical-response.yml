@@ -7,11 +7,14 @@ on:
       - research/scalar-adm-physical-response
     paths:
       - 'scripts/scalar_adm_dirac_response_gate.py'
+      - 'scripts/scalar_adm_ward_basis_gate.py'
       - 'scripts/q2_scalar_adm_seed_gate.py'
       - 'scripts/conserved_scalar_probe_convention_gate.py'
       - 'scripts/verify_q2_scalar_frontier.py'
       - 'SCALAR_ADM_DIRAC_REDUCTION.md'
+      - 'SCALAR_ADM_WARD_QUOTIENT.md'
       - 'CONSERVED_SCALAR_PROBE_CONVENTION.md'
+      - 'BQG_SCALAR_RESPONSE_TO_MATTER.md'
       - 'q2_scalar_frontier.json'
       - '.github/workflows/scalar-adm-physical-response.yml'
       - 'scripts/q2_first_scalar_effective_action_gate.py'
@@ -40,6 +43,7 @@ jobs:
         run: |
           python -m py_compile \
             scripts/scalar_adm_dirac_response_gate.py \
+            scripts/scalar_adm_ward_basis_gate.py \
             scripts/q2_scalar_adm_seed_gate.py \
             scripts/conserved_scalar_probe_convention_gate.py \
             scripts/verify_q2_scalar_frontier.py
@@ -53,6 +57,10 @@ jobs:
         run: |
           python scripts/q2_scalar_adm_seed_gate.py \
             --output verification_results/Q2_SCALAR_ADM_SEED.json
+      - name: Exact flat scalar Ward quotient
+        run: |
+          python scripts/scalar_adm_ward_basis_gate.py \
+            --output verification_results/SCALAR_ADM_WARD_BASIS.json
       - name: Exact Dirac Schur reduction and conserved-source controls
         run: |
           python scripts/scalar_adm_dirac_response_gate.py \
@@ -69,13 +77,14 @@ jobs:
           import json
           p=json.load(open('verification_results/Q2_SCALAR_FRONTIER_STATUS.json'))
           assert p['valid'] is True
+          assert p['exact_scalar_algebra']['flat_Ward_parameter_count']==3
           assert p['frozen_scalar_interfaces']['PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING']=='frozen'
           assert p['open_scalar_physical_gates']['PHYSICAL_LAPSE_RESPONSE_SOURCE']=='open_physical'
           assert p['open_scalar_physical_gates']['CONNECTED_SCALAR_INTERBLOCK_HISTORY']=='open_physical'
           assert p['open_scalar_physical_gates']['PHYSICAL_BQG_SCALAR_KERNEL']=='open_physical'
           for v in p['cosmology_outputs'].values():
               assert v=='OPEN_PHYSICAL'
-          print('PASS frozen probe + fail-closed scalar frontier truth')
+          print('PASS Ward quotient + frozen probe + fail-closed scalar frontier truth')
           PY
       - name: Fail-closed incomplete production packet
         run: |
@@ -154,11 +163,12 @@ jobs:
           assert r['science_status']=='PHYSICAL_SCALAR_KERNEL_REDUCED'
           print('PASS complete synthetic production control')
           PY
-      - name: Cross-check exact new seed and probe values
+      - name: Cross-check exact new seed Ward and probe values
         run: |
           python - <<'PY'
           import json
           seed=json.load(open('verification_results/Q2_SCALAR_ADM_SEED.json'))
+          ward=json.load(open('verification_results/SCALAR_ADM_WARD_BASIS.json'))
           eng=json.load(open('verification_results/SCALAR_ADM_DIRAC_ENGINE.json'))
           probe=json.load(open('verification_results/CONSERVED_SCALAR_PROBE_CONVENTION.json'))
           assert seed['passed'] is True
@@ -166,12 +176,15 @@ jobs:
           assert seed['local_log_volume_1PI']['Gamma_third_at_0']=='216'
           assert seed['scalar_ADM_seed']['known_entry_count']==1
           assert seed['physical_reduction_ready'] is False
+          assert ward['passed'] is True
+          assert ward['ward_parameter_count']==3
+          assert ward['quotient_coordinates']['Q']=='deltaN + D*B - D^2*E'
           assert eng['selftest']['pure_gravity_scalar_control']['physical_dimension']==0
           assert eng['selftest']['extra_scalar_control']['physical_dimension']==1
           assert probe['passed'] is True
           assert probe['science_status']=='FROZEN_EXTERNAL_CONSERVED_PROBE_CONVENTION'
           assert probe['flat_scalar_reference']['qT']==['0','0','0','0']
-          print('PASS q2 scalar ADM exact seed, reduction and frozen probe controls')
+          print('PASS q2 scalar ADM exact seed, Ward quotient, reduction and frozen probe controls')
           PY
       - name: Upload scalar ADM evidence
         if: always()
