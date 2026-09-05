@@ -20,9 +20,18 @@ import argparse
 import json
 from pathlib import Path
 from typing import Any
+import sympy as sp
 
 from scalar_connected_history_extractor_gate import extract
 from scalar_ward_kernel_response_gate import analyze
+
+W2,K2=sp.symbols('w2 k2', real=True)
+
+
+def algebraically_equal(text: str, target: str) -> bool:
+    a=sp.sympify(text,locals={'w2':W2,'k2':K2})
+    b=sp.sympify(target,locals={'w2':W2,'k2':K2})
+    return sp.simplify(a-b)==0
 
 
 def run_pipeline(packet: dict[str, Any]) -> dict[str, Any]:
@@ -89,8 +98,6 @@ def packet_for_kernel(A: str, B: str, C: str, *, physical: bool) -> dict[str, An
     This helper is used only for synthetic selftests so the expected 1PI
     kernel is known before the extractor is called.
     """
-    # For the selftests below B=0.  Keep construction explicit/frozen rather
-    # than introducing a generic symbolic inversion helper into production.
     if B != '0':
         raise ValueError('selftest packet_for_kernel currently freezes B=0 controls')
     tag = 'synthetic-e2e' if physical else None
@@ -113,24 +120,19 @@ def packet_for_kernel(A: str, B: str, C: str, *, physical: bool) -> dict[str, An
 def selftest() -> dict[str, Any]:
     tests: dict[str, bool] = {}
 
-    # Static GR-like control: exact inverse recovers A=k2, B=0, C=2*k2,
-    # and the response layer must find no omega^2 pole.
     static = run_pipeline(packet_for_kernel('k2', '0', '2*k2', physical=False))
     ek = static['extractor']['ward_kernel_packet']
-    tests['static_exact_A'] = ek['A'] == 'k2'
-    tests['static_exact_B'] = ek['B'] == '0'
-    tests['static_exact_C'] = ek['C'] == '2*k2'
+    tests['static_exact_A'] = algebraically_equal(ek['A'],'k2')
+    tests['static_exact_B'] = algebraically_equal(ek['B'],'0')
+    tests['static_exact_C'] = algebraically_equal(ek['C'],'2*k2')
     tests['static_no_omega2_pole'] = static['response']['omega2_pole_count'] == 0
     tests['static_fail_closed_without_physical_history'] = static['physical_interpretation_allowed'] is False
 
-    # Healthy extra-scalar control.  The connected Hessian is chosen as the
-    # exact inverse of diag(k2, w2-k2/4-2).  The full chain must reconstruct
-    # the registered healthy pole diagnostics.
     healthy = run_pipeline(packet_for_kernel('k2', '0', 'w2-k2/4-2', physical=True))
     hk = healthy['extractor']['ward_kernel_packet']
-    tests['healthy_exact_A'] = hk['A'] == 'k2'
-    tests['healthy_exact_B'] = hk['B'] == '0'
-    tests['healthy_exact_C'] = hk['C'] in {'-(k2 - 4*w2 + 8)/4', 'w2 - k2/4 - 2'}
+    tests['healthy_exact_A'] = algebraically_equal(hk['A'],'k2')
+    tests['healthy_exact_B'] = algebraically_equal(hk['B'],'0')
+    tests['healthy_exact_C'] = algebraically_equal(hk['C'],'w2-k2/4-2')
     tests['healthy_physical_chain_allowed'] = healthy['physical_interpretation_allowed'] is True
     tests['healthy_one_omega2_pole'] = healthy['response']['omega2_pole_count'] == 1
     pole = healthy['response']['omega2_poles'][0]
@@ -139,7 +141,6 @@ def selftest() -> dict[str, Any]:
     tests['healthy_mass2_two'] = pole['mass2'] == '2'
     tests['healthy_cs2_one_quarter'] = pole['cs2'] == '1/4'
 
-    # Singular connected source Hessian must stop before response analysis.
     singular_packet = {
         'schema': 'BQG_CONNECTED_SCALAR_HISTORY_V1',
         'G_QQ': 1,
