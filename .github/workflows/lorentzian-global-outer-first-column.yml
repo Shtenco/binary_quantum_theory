@@ -77,33 +77,35 @@ jobs:
           pattern: lorentzian-global-outer-a-*
           path: outer_results
           merge-multiple: true
-      - name: Reconstruct compatible full raw first H_L column
+      - name: Reconstruct fail-closed candidate first H_L column
         run: |
           mkdir -p final_results
           python scripts/peter_weyl_lorentzian_global_outer_aggregate.py \
             --packet-glob 'outer_results/outer_a_*.json' \
-            --output final_results/LORENTZIAN_FULL_COLUMN_INPUT00.json
-      - name: Verify strict claim boundary
+            --output final_results/LORENTZIAN_GLOBAL_FIRST_COLUMN_CANDIDATE_INPUT00.json
+      - name: Verify strict fail-closed claim boundary
         run: |
           python - <<'PY'
           import json
-          p=json.load(open('final_results/LORENTZIAN_FULL_COLUMN_INPUT00.json'))
+          p=json.load(open('final_results/LORENTZIAN_GLOBAL_FIRST_COLUMN_CANDIDATE_INPUT00.json'))
           assert p['passed'] is True
-          assert p['schema']=='BQG_LORENTZIAN_FULL_COLUMN_DAG_V1'
+          assert p['schema']=='BQG_LORENTZIAN_GLOBAL_FIRST_COLUMN_CANDIDATE_V1'
           assert p['input_logical_basis_index']==0
           assert p['outer_CK_call_count']<=16
           assert len(p['live_ordered_triples'])==12
           assert len(p['zero_before_outer_ordered_triples'])==12
+          assert p['production_equivalence_certified'] is False
+          assert p['physical_projector_eligible'] is False
           assert p['science_status'] in {
-              'FULL_RAW_HL_COLUMN_ZERO',
-              'FULL_RAW_HL_COLUMN_NONZERO_WITH_LOGICAL_RETURN',
-              'FULL_RAW_HL_COLUMN_NONZERO_LOGICAL_RETURN_ZERO',
+              'GLOBAL_GROUPED_RAW_HL_COLUMN_ZERO',
+              'GLOBAL_GROUPED_RAW_HL_COLUMN_NONZERO_WITH_LOGICAL_RETURN',
+              'GLOBAL_GROUPED_RAW_HL_COLUMN_NONZERO_LOGICAL_RETURN_ZERO',
           }
-          print('PASS complete first-column execution without global H_L/P_phys claim',p['science_status'])
+          print('PASS candidate first-column packet is fail-closed for production',p['science_status'])
           PY
-      - name: Upload complete first raw Lorentzian column
+      - name: Upload candidate first raw Lorentzian column
         uses: actions/upload-artifact@v4
         with:
-          name: lorentzian-full-column-input00-global-grouped
-          path: final_results/LORENTZIAN_FULL_COLUMN_INPUT00.json
+          name: lorentzian-global-first-column-candidate-input00
+          path: final_results/LORENTZIAN_GLOBAL_FIRST_COLUMN_CANDIDATE_INPUT00.json
           if-no-files-found: error

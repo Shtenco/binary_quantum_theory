@@ -1,13 +1,18 @@
 #!/usr/bin/env python3
-"""Aggregate four exact global outer-edge packets into one raw H_L column.
+"""Aggregate four globally grouped outer-edge packets into one candidate raw H_L column.
 
 The four packets partition all 24 frozen epsilon ordered triples by outer edge.
-Each packet already absorbs the epsilon signs before its final C_a(K) actions.
-This aggregate therefore performs only an exact sparse sum, then the existing
-J=0 -> Gauss reverse map and logical-return diagnostics.
+Each packet absorbs the epsilon signs before its final C_a(K) actions.  This
+aggregate performs only a sparse sum, then the existing J=0 -> Gauss reverse
+map and logical-return diagnostics.
 
-The emitted schema is BQG_LORENTZIAN_FULL_COLUMN_DAG_V1 so the existing 32-column
-Lorentzian Gram gate can consume this optimized execution mode unchanged.
+Important fail-closed boundary: global pre-outer regrouping is algebraically
+linear, but the sparse implementation contains finite numerical pruning inside
+low-level operator routines.  Therefore this accelerated execution is NOT
+emitted under the production BQG_LORENTZIAN_FULL_COLUMN_DAG_V1 schema until an
+independent frozen-reference sparse-equivalence certificate passes.  The
+candidate microscopic result is still recorded in full, but cannot flow into
+the 32-column Gram/master/projector producer yet.
 """
 from __future__ import annotations
 
@@ -78,12 +83,18 @@ def run(paths):
         'J0_reverse_projection_has_no_collisions':int(mapdiag.get('mapping_collisions',0))==0,
         'covariant_to_gauss_norm_isometry':cov_gauss_rel<2e-10,
     }
-    if not total: science='FULL_RAW_HL_COLUMN_ZERO'
-    elif logical_norm>FULL.NONZERO_TOL: science='FULL_RAW_HL_COLUMN_NONZERO_WITH_LOGICAL_RETURN'
-    else: science='FULL_RAW_HL_COLUMN_NONZERO_LOGICAL_RETURN_ZERO'
+    if not total: science='GLOBAL_GROUPED_RAW_HL_COLUMN_ZERO'
+    elif logical_norm>FULL.NONZERO_TOL: science='GLOBAL_GROUPED_RAW_HL_COLUMN_NONZERO_WITH_LOGICAL_RETURN'
+    else: science='GLOBAL_GROUPED_RAW_HL_COLUMN_NONZERO_LOGICAL_RETURN_ZERO'
     return {
-        'schema':'BQG_LORENTZIAN_FULL_COLUMN_DAG_V1','passed':bool(all(hard.values())),'science_status':science,
+        'schema':'BQG_LORENTZIAN_GLOBAL_FIRST_COLUMN_CANDIDATE_V1',
+        'passed':bool(all(hard.values())),
+        'science_status':science,
         'execution_mode':'certified_all_middle_global_outer_a_linearity_v2',
+        'production_equivalence_certified':False,
+        'physical_projector_eligible':False,
+        'reference_schema_after_equivalence':'BQG_LORENTZIAN_FULL_COLUMN_DAG_V1',
+        'promotion_requirement':'Independent full-state sparse-equivalence against the frozen reference evaluator at the same source/input/Jmax/habitat/domain/convention hashes.',
         'source_node':source,'input_logical_basis_index':input_index,'input_K_labels':list(initial[1]),'Jmax':FULL.JMAX2/2,
         'zero_prefix_indices':[2,5,8,9,10,11],'nonzero_prefix_indices':[0,1,3,4,6,7],'zero_prefix_count':6,'nonzero_prefix_count':6,
         'unique_CV_state_count':16,'middle_CK_call_count':72,'outer_CK_call_count':calls,
@@ -97,7 +108,7 @@ def run(paths):
         'habitat_descriptor':packets[0]['habitat_descriptor'],'habitat_hash':packets[0]['habitat_hash'],
         'boundary_domain_hash':packets[0]['boundary_domain_hash'],'convention_descriptor':packets[0]['convention_descriptor'],'convention_hash':packets[0]['convention_hash'],
         'state':PLAN.encode_state(total),
-        'claim_boundary':'Complete raw first Lorentzian boundary column reconstructed by exact global linear regrouping of a certified all-middle packet. It is still one input at one source, not a 32-column Gram, Hermitian physical H_L convention, HH-safe HDA certificate, enlarged P_phys or cosmology.'
+        'claim_boundary':'Complete candidate first raw Lorentzian boundary column from global linear regrouping of the certified all-middle packet. Microscopic integrity is audited, but numerical equivalence to the frozen reference execution is not yet certified; therefore this packet cannot enter the 32-column Gram, HDA master, P_phys or cosmology producer.'
     }
 
 
