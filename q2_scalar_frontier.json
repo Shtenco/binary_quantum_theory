@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "parent_physicalization_ledger": "physicalization_gates.json",
-  "scientific_status": "scalar algebraic consumer pipeline closed from three connected physical cumulants through Ward kernel and response classification; theory-specific connected history and cosmology remain open",
+  "scientific_status": "all scalar/background downstream measurement and response machinery is closed from supplied theory-specific physical W/Gamma inputs; the actual source-dressed BQG W_phys and BQG Gamma_FLRW remain open physical outputs",
   "gates": [
     {
       "id": "Q2_LOCAL_SHAPE_1PI",
@@ -33,31 +33,34 @@
       "id": "PHYSICAL_VOLUME_HISTORY_SOURCE",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "Derive the common-flux-scale/volume source insertion and its weights inside the actual graph-changing physical projector or history amplitude.",
+      "claim": "Derive the common-flux-scale/volume source insertion and its weights inside the actual theory-specific source-dressed physical history amplitude.",
       "evidence": [
         "Q2_COLLECTIVE_SCALAR_CARRIER.md",
         "MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md",
-        "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md"
+        "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
+        "PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md"
       ],
-      "hard_scope": "The existence of a nontrivial j=1 volume spectrum and a normalized kinematic source does not determine physical history weights or a cosmological scale factor."
+      "hard_scope": "The existence of a nontrivial j=1 volume spectrum and a normalized kinematic source does not determine its physical history insertion, weight or cosmological normalization."
     },
     {
       "id": "PHYSICAL_LAPSE_RESPONSE_SOURCE",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "Promote the existing lapse-smearing/cochain structure to a source-dressed physical response variable whose connected history derivatives enter the scalar metric effective action.",
+      "claim": "Derive the lapse/energy-constraint response insertion inside the same source-dressed physical history so that the certified Ward source Q is a theory-specific physical response variable rather than only a formal local quotient coordinate.",
       "evidence": [
         "Q2_COLLECTIVE_SCALAR_CARRIER.md",
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
+        "SCALAR_ADM_WARD_QUOTIENT.md",
+        "PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md",
         "scripts/dual_k5_lapse_cochain_gate.py"
       ],
-      "hard_scope": "A lapse cochain or HDA smearing label is not by itself the Bardeen/Newtonian lapse potential Psi or a physical susceptibility."
+      "hard_scope": "A lapse cochain or HDA smearing label is not by itself the physical Newtonian/Bardeen lapse response. The actual source insertion in W_phys remains a theory-specific history output."
     },
     {
       "id": "PHYSICAL_SCALAR_GAUGE_REDUCTION",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "The exact finite Dirac/Schur reduction engine and the exact flat/local scalar Ward quotient are closed algebraically. The theory-specific background-dependent scalar constraint/gauge block must still be derived; on a flat local background the symmetric Ward-compatible 4x4 ADM kernel is completely parameterized by only three functions A,B,C on the gauge-invariant basis (Q,zeta).",
+      "claim": "The exact finite Dirac/Schur reduction engine and exact flat/local scalar Ward quotient are closed algebraically. The theory-specific background-dependent scalar constraint/gauge block remains to be supplied by the physical history; on a flat local background the symmetric Ward-compatible 4x4 ADM kernel is completely parameterized by only three functions A,B,C on the gauge-invariant basis (Q,zeta).",
       "evidence": [
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "SCALAR_ADM_DIRAC_REDUCTION.md",
@@ -67,7 +70,7 @@
         "FLUX_DEWITT_SIGNATURE_THEOREM.md",
         "scripts/dual_k5_lapse_cochain_gate.py"
       ],
-      "hard_scope": "Flat/local Ward reduction is exact and reduces ten symmetric ADM entries to three functions, but FLRW/background-dependent gauge reduction and the theory-specific physical connected history remain uncomputed. No unreduced lapse/shift/conformal mode may be called a dark mode or ghost."
+      "hard_scope": "Flat/local Ward reduction is exact and reduces ten symmetric ADM entries to three functions, but FLRW/background-dependent gauge reduction and the theory-specific physical history remain uncomputed. No unreduced lapse/shift/conformal mode may be called a dark mode or ghost."
     },
     {
       "id": "PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING",
@@ -84,18 +87,33 @@
       "hard_scope": "This freezes only the external gravitational-response probe interface allowed by option 2; it does not derive a realistic microscopic matter sector, does not calibrate the common physical scale, and does not make mu or Sigma physical until the theory-specific reduced metric kernel exists. Independent dynamics/lensing source renormalizations remain forbidden."
     },
     {
+      "id": "SCALAR_PHYSICAL_W_HISTORY_MEASUREMENT_PIPELINE",
+      "status": "frozen",
+      "closure_role": "physical",
+      "claim": "Freeze the fail-closed measurement contract W_phys[J_Q,J_zeta;tau,r] -> connected source Hessian in physical separations -> G_QQ,G_Qzeta,G_zetazeta in physical (omega,k), including direct connected-Hessian input, centered source differences with mandatory source-step convergence certification, explicit quadrature weights, exact symbolic handoff controls and conditioned ordinary numerical inversion for floating/complex sampled modes.",
+      "evidence": [
+        "PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md",
+        "scripts/scalar_physical_history_cumulant_gate.py",
+        "scripts/scalar_connected_history_numeric_inversion_gate.py",
+        "scripts/scalar_connected_history_extractor_gate.py",
+        ".github/workflows/scalar-physical-history-measurement.yml"
+      ],
+      "hard_scope": "This freezes only the measurement and numerical/symbolic handoff machinery. It does not generate the theory-specific BQG W_phys, does not substitute raw Z or constraint/Feshbach z for connected W and physical omega, does not use a pseudoinverse, and does not infer a physical pole from one sampled mode."
+    },
+    {
       "id": "CONNECTED_SCALAR_INTERBLOCK_HISTORY",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "Compute exactly the three nonfactorizing connected physical cumulants G_QQ(omega,k), G_Qzeta(omega,k), G_zetazeta(omega,k) on the Ward source quotient from one theory-specific physical history after vacuum-disconnected pieces are removed and physical omega is certified.",
+      "claim": "Compute the actual theory-specific source-dressed connected physical W_phys[J_Q,J_zeta;tau,r] with the certified Ward source insertions, physical boundary/history time, spatial separations, common history normalization and vacuum-disconnected pieces removed. The frozen measurement pipeline then produces G_QQ(omega,k), G_Qzeta(omega,k), G_zetazeta(omega,k).",
       "evidence": [
+        "PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md",
         "CONNECTED_SCALAR_HISTORY_EXTRACTION.md",
         "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "NEAREST_BLOCK_S3_TRANSFER_CLOSURE.md",
         "FESHBACH_INTERBLOCK_EFFECTIVE_KERNEL.md"
       ],
-      "hard_scope": "The unresolved microscopic scalar input is exactly the three physical connected cumulants. Constraint-resolvent transfer data, local normalized traces and z-spectral kernels are not substitutes for them."
+      "hard_scope": "The unresolved scalar physics is the actual theory-specific source-dressed W_phys and therefore its three connected Ward cumulants. Constraint-resolvent transfer data, local normalized traces, raw Z and z-spectral kernels are not substitutes."
     },
     {
       "id": "SCALAR_CONNECTED_HISTORY_TO_RESPONSE_PIPELINE",
@@ -103,6 +121,7 @@
       "closure_role": "physical",
       "claim": "Freeze the exact fail-closed consumer map from a nonsingular physical connected Ward-source Hessian G_conn={G_QQ,G_Qzeta,G_zetazeta} through Gamma^(2)=G_conn^{-1}, the three Ward functions A,B,C, determinant AC-B^2, one conserved source response, Phi/Psi and omega^2 pole/residue/stability classification.",
       "evidence": [
+        "SCALAR_ALGEBRAIC_PIPELINE_CLOSURE.md",
         "CONNECTED_SCALAR_HISTORY_EXTRACTION.md",
         "SCALAR_WARD_KERNEL_RESPONSE.md",
         "scripts/scalar_connected_history_extractor_gate.py",
@@ -116,8 +135,10 @@
       "id": "PHYSICAL_BQG_SCALAR_KERNEL",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "Once the three theory-specific connected physical cumulants are computed on the certified Ward source quotient, the frozen connected-history consumer pipeline deterministically produces Gamma_scalar^(2)(omega,k), Phi, Psi and pole/stability diagnostics; mu_BQG and Sigma_BQG then follow from the same frozen conserved source convention without phenomenological fitting.",
+      "claim": "Once the actual theory-specific source-dressed W_phys is computed, the frozen W-history measurement and connected-history consumer pipelines deterministically produce Gamma_scalar^(2)(omega,k), Phi, Psi and pole/stability diagnostics; mu_BQG and Sigma_BQG then follow from the same frozen conserved source convention without phenomenological fitting.",
       "evidence": [
+        "PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md",
+        "SCALAR_ALGEBRAIC_PIPELINE_CLOSURE.md",
         "CONNECTED_SCALAR_HISTORY_EXTRACTION.md",
         "SCALAR_WARD_KERNEL_RESPONSE.md",
         "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
@@ -129,7 +150,20 @@
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md"
       ],
-      "hard_scope": "The map from physical G_conn to the scalar kernel is closed, but the BQG kernel itself remains open until G_QQ, G_Qzeta and G_zetazeta are actually computed from the theory-specific physical history. No local shape Hessian, j=1 volume Hessian, TT coefficient, constraint eigenvalue, unreduced gauge kernel, vacuum scalar kernel or freely chosen mu/Sigma parametrization closes this gate."
+      "hard_scope": "The complete map from a physical source-dressed W history to the scalar kernel and response is closed, but the BQG kernel itself remains open until that W_phys is actually computed. No local shape Hessian, j=1 volume Hessian, TT coefficient, constraint eigenvalue, unreduced gauge kernel, raw Z, Feshbach resolvent or freely chosen mu/Sigma parametrization closes this gate."
+    },
+    {
+      "id": "FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE_PIPELINE",
+      "status": "frozen",
+      "closure_role": "physical",
+      "claim": "Freeze the exact minisuperspace variational consumer Gamma_FLRW[a,N] -> rho_hist,p_hist,w_hist using Euler-Lagrange derivatives with the declared covariant-metric variation convention, including vacuum, dust, radiation, constant-w and derivative-dependent controls.",
+      "evidence": [
+        "FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE.md",
+        "scripts/flrw_history_effective_action_gate.py",
+        "scripts/physical_cosmology_background_scalar_gate.py",
+        ".github/workflows/flrw-history-effective-action-response.yml"
+      ],
+      "hard_scope": "This freezes only the deterministic variation of a supplied theory-specific Gamma_FLRW. It does not generate Gamma_FLRW, does not remove or set its absolute gravitational background term by normalized W(0)=0, and does not claim dark energy until the same BQG physical history produces the actual homogeneous effective action."
     }
   ],
   "current_outputs": {
@@ -139,12 +173,16 @@
     "flat_scalar_Ward_quotient": "EXACT_TWO_GAUGE_INVARIANTS_THREE_KERNEL_FUNCTIONS",
     "flat_scalar_Ward_parameter_count": 3,
     "conserved_external_probe_interface": "FROZEN_UNIVERSAL_CONVENTION",
+    "scalar_physical_W_history_measurement_pipeline": "FROZEN_W_TO_GCONN",
     "scalar_connected_history_consumer_pipeline": "FROZEN_GCONN_TO_RESPONSE",
+    "flrw_history_effective_action_response_pipeline": "FROZEN_GAMMA_FLRW_TO_RHO_P_W",
+    "upstream_scalar_history_input": "OPEN_PHYSICAL_W_phys[J_Q,J_zeta;tau,r]",
     "remaining_scalar_microscopic_inputs": [
       "G_QQ(omega,k)",
       "G_Qzeta(omega,k)",
       "G_zetazeta(omega,k)"
     ],
+    "upstream_background_input": "OPEN_PHYSICAL_Gamma_FLRW[a,N]",
     "rho_hist_a": "OPEN_PHYSICAL",
     "Phi_a_k": "OPEN_PHYSICAL",
     "Psi_a_k": "OPEN_PHYSICAL",
@@ -157,13 +195,16 @@
     "Do not identify the kinematic zeta_V log-volume coordinate with physical FLRW/Bardeen zeta before history normalization is derived.",
     "Do not identify a lapse smearing label with physical Psi.",
     "Do not interpret an unreduced lapse/shift/conformal gauge mode as a physical dark mode or ghost.",
-    "Do not use a pseudoinverse of a strict multiplier block or singular connected source Hessian to manufacture a scalar pole.",
+    "Do not use a pseudoinverse of a strict multiplier block or singular/ill-conditioned connected source Hessian to manufacture a scalar pole.",
     "Do not use the flat Ward quotient as a substitute for the FLRW/background-dependent Bardeen or relational gauge reduction.",
     "Do not define mu or Sigma from a vacuum kernel; the conserved probe interface is frozen but the physical reduced kernel is still required.",
     "Do not independently renormalize the source for dynamics and lensing.",
     "Do not identify the constraint spectral parameter z with physical omega.",
+    "Do not replace connected W derivatives by raw Z derivatives or Feshbach/constraint moments.",
     "Do not fit independent mu and Sigma functions to close lensing and dynamics.",
     "Do not call synthetic end-to-end controls BQG predictions.",
-    "Do not close physical scalar cosmology until the parent physicalization gates remain scientifically consistent."
+    "Do not infer a physical pole from a single sampled numerical mode without a certified functional kernel or preregistered reconstruction.",
+    "Do not infer dark energy from normalized W(0)=0 or from the FLRW response consumer without an actual theory-specific Gamma_FLRW.",
+    "Do not close physical scalar/background cosmology until the parent physicalization gates remain scientifically consistent."
   ]
 }
