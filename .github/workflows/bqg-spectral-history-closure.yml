@@ -2,10 +2,11 @@ name: bqg-spectral-history-closure
 
 on:
   push:
-    branches: [main, spectral-history-closure]
+    branches: [main]
     paths:
       - 'BQG_SPECTRAL_HISTORY_GRAPH.md'
       - 'scripts/bqg_spectral_history_graph_gate.py'
+      - 'scripts/bqg_euclidean_master_first_edge_sharded.py'
       - 'scripts/feshbach_block_krylov_identity_gate.py'
       - 'scripts/master_constraint_physical_projector_gate.py'
       - 'scripts/peter_weyl_euclidean_sine_ordering_gate.py'
@@ -15,6 +16,7 @@ on:
     paths:
       - 'BQG_SPECTRAL_HISTORY_GRAPH.md'
       - 'scripts/bqg_spectral_history_graph_gate.py'
+      - 'scripts/bqg_euclidean_master_first_edge_sharded.py'
       - 'scripts/feshbach_block_krylov_identity_gate.py'
       - 'scripts/master_constraint_physical_projector_gate.py'
       - 'scripts/peter_weyl_euclidean_sine_ordering_gate.py'
@@ -25,7 +27,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: bqg-spectral-history-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
@@ -42,8 +44,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-      - name: Compile spectral-history gate
-        run: python -m py_compile scripts/bqg_spectral_history_graph_gate.py
+      - name: Compile spectral-history sources
+        run: |
+          python -m py_compile \
+            scripts/bqg_spectral_history_graph_gate.py \
+            scripts/bqg_euclidean_master_first_edge_sharded.py
       - name: Existing Feshbach/Krylov identity control
         run: python scripts/feshbach_block_krylov_identity_gate.py --output verification_results/FESHBACH_BLOCK_KRYLOV_IDENTITY.json
       - name: Existing master-projector theorem control
@@ -58,9 +63,15 @@ jobs:
           path: verification_results/
           if-no-files-found: error
 
-  actual-euclidean-first-edge:
+  euclidean-master-columns:
+    needs: algebraic-regression
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 16
+      matrix:
+        column: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -71,16 +82,48 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-      - name: Actual K5 Euclidean master spectral edge
+      - name: Compute one exact M_E logical column
         run: |
-          python scripts/bqg_spectral_history_graph_gate.py \
-            --mode peter-weyl-euclidean-first-edge \
-            --jmax2 5 \
+          python scripts/bqg_euclidean_master_first_edge_sharded.py \
+            --column ${{ matrix.column }} \
+            --output verification_results/master/master_column_${{ matrix.column }}.json
+      - name: Upload exact master column
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-master-column-${{ matrix.column }}
+          path: verification_results/master/master_column_${{ matrix.column }}.json
+          if-no-files-found: error
+          compression-level: 6
+
+  assemble-euclidean-master-first-edge:
+    needs: euclidean-master-columns
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Download all exact master columns
+        uses: actions/download-artifact@v4
+        with:
+          pattern: bqg-master-column-*
+          path: verification_results/master
+          merge-multiple: true
+      - name: Assemble actual K5 Euclidean master first edge
+        run: |
+          python scripts/bqg_euclidean_master_first_edge_sharded.py \
+            --assemble-dir verification_results/master \
             --output verification_results/BQG_EUCLIDEAN_MASTER_FIRST_SPECTRAL_EDGE.json
       - name: Upload actual spectral evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: bqg-euclidean-master-first-spectral-edge
-          path: verification_results/
+          path: verification_results/BQG_EUCLIDEAN_MASTER_FIRST_SPECTRAL_EDGE.json
           if-no-files-found: error
