@@ -113,8 +113,11 @@ def main()->int:
     required_source_evidence={"CONSERVED_SCALAR_PROBE_CONVENTION.md","scripts/conserved_scalar_probe_convention_gate.py"}
     if not required_source_evidence <= evidence:
         errors.append("frozen conserved probe gate missing dedicated evidence")
-    if "realistic matter sector" not in source_gate.get("hard_scope",""):
-        errors.append("frozen probe hard_scope must explicitly keep realistic matter sector un-derived")
+    scope=source_gate.get("hard_scope","").lower()
+    if "does not derive" not in scope or "matter sector" not in scope:
+        errors.append("frozen probe hard_scope must explicitly say it does not derive a matter sector")
+    if "common physical scale" not in scope:
+        errors.append("frozen probe hard_scope must keep common physical scale calibration separate")
 
     result={
         "schema_version":data.get("schema_version"),
