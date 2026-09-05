@@ -11,11 +11,17 @@ on:
       - 'scripts/scalar_ward_kernel_response_gate.py'
       - 'scripts/q2_scalar_adm_seed_gate.py'
       - 'scripts/conserved_scalar_probe_convention_gate.py'
+      - 'scripts/boundary_projector_source_dressing_gate.py'
+      - 'scripts/bqg_physical_history_adapter_gate.py'
+      - 'scripts/near_zero_rigging_limit_gate.py'
+      - 'scripts/projected_source_history_bridge_gate.py'
+      - 'scripts/scalar_physical_history_cumulant_gate.py'
       - 'scripts/verify_q2_scalar_frontier.py'
       - 'SCALAR_ADM_DIRAC_REDUCTION.md'
       - 'SCALAR_ADM_WARD_QUOTIENT.md'
       - 'SCALAR_WARD_KERNEL_RESPONSE.md'
       - 'CONSERVED_SCALAR_PROBE_CONVENTION.md'
+      - 'PROJECTED_SOURCE_PHYSICAL_HISTORY_BRIDGE.md'
       - 'BQG_SCALAR_RESPONSE_TO_MATTER.md'
       - 'q2_scalar_frontier.json'
       - '.github/workflows/scalar-adm-physical-response.yml'
@@ -41,7 +47,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-      - name: Compile new scalar ADM gates
+      - name: Compile scalar ADM and projected-history gates
         run: |
           python -m py_compile \
             scripts/scalar_adm_dirac_response_gate.py \
@@ -49,6 +55,11 @@ jobs:
             scripts/scalar_ward_kernel_response_gate.py \
             scripts/q2_scalar_adm_seed_gate.py \
             scripts/conserved_scalar_probe_convention_gate.py \
+            scripts/boundary_projector_source_dressing_gate.py \
+            scripts/bqg_physical_history_adapter_gate.py \
+            scripts/near_zero_rigging_limit_gate.py \
+            scripts/scalar_physical_history_cumulant_gate.py \
+            scripts/projected_source_history_bridge_gate.py \
             scripts/verify_q2_scalar_frontier.py
       - name: Reproduce upstream exact local scalar carriers
         run: |
@@ -72,6 +83,19 @@ jobs:
         run: |
           python scripts/conserved_scalar_probe_convention_gate.py \
             --output verification_results/CONSERVED_SCALAR_PROBE_CONVENTION.json
+      - name: Frozen projected-source to physical-history seam
+        run: |
+          python scripts/projected_source_history_bridge_gate.py \
+            --output verification_results/PROJECTED_SOURCE_HISTORY_BRIDGE.json
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/PROJECTED_SOURCE_HISTORY_BRIDGE.json'))
+          assert p['passed'] is True
+          assert p['science_status']=='PROJECTED_SOURCE_TO_PHYSICAL_HISTORY_INTERFACE_FROZEN'
+          assert p['tests']['master_heat_depth_never_becomes_physical_time'] is True
+          assert p['nonphysical_static_seam_result']['physical_interpretation_allowed'] is False
+          print('PASS frozen projected-source/history seam; heat tau remains nonphysical')
+          PY
       - name: Scalar Ward response pole and stability classifier
         run: |
           python scripts/scalar_ward_kernel_response_gate.py \
@@ -86,12 +110,15 @@ jobs:
           assert p['valid'] is True
           assert p['exact_scalar_algebra']['flat_Ward_parameter_count']==3
           assert p['frozen_scalar_interfaces']['PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING']=='frozen'
+          assert p['frozen_scalar_interfaces']['SCALAR_PROJECTED_SOURCE_HISTORY_BRIDGE']=='frozen'
+          assert p['parent_open_guards']['PHYSICAL_PROJECTOR_HISTORY']=='open_physical'
+          assert p['parent_open_guards']['CONNECTED_INTERBLOCK_HISTORY']=='open_physical'
           assert p['open_scalar_physical_gates']['PHYSICAL_LAPSE_RESPONSE_SOURCE']=='open_physical'
           assert p['open_scalar_physical_gates']['CONNECTED_SCALAR_INTERBLOCK_HISTORY']=='open_physical'
           assert p['open_scalar_physical_gates']['PHYSICAL_BQG_SCALAR_KERNEL']=='open_physical'
           for v in p['cosmology_outputs'].values():
               assert v=='OPEN_PHYSICAL'
-          print('PASS Ward quotient + frozen probe + fail-closed scalar frontier truth')
+          print('PASS frozen seam + open physical projector/history + fail-closed scalar truth')
           PY
       - name: Fail-closed incomplete production packet
         run: |
@@ -175,6 +202,7 @@ jobs:
           response=json.load(open('verification_results/SCALAR_WARD_KERNEL_RESPONSE.json'))
           eng=json.load(open('verification_results/SCALAR_ADM_DIRAC_ENGINE.json'))
           probe=json.load(open('verification_results/CONSERVED_SCALAR_PROBE_CONVENTION.json'))
+          bridge=json.load(open('verification_results/PROJECTED_SOURCE_HISTORY_BRIDGE.json'))
           assert seed['passed'] is True
           assert seed['local_log_volume_1PI']['Gamma_second_at_0']=='18'
           assert seed['local_log_volume_1PI']['Gamma_third_at_0']=='216'
@@ -193,7 +221,8 @@ jobs:
           assert eng['selftest']['pure_gravity_scalar_control']['physical_dimension']==0
           assert probe['passed'] is True
           assert probe['flat_scalar_reference']['qT']==['0','0','0','0']
-          print('PASS complete scalar algebra/response decision stack')
+          assert bridge['passed'] is True
+          print('PASS complete scalar algebra/response/projected-history integration stack')
           PY
       - name: Upload scalar ADM evidence
         if: always()
