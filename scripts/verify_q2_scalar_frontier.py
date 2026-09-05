@@ -3,9 +3,9 @@
 
 A green result means the repository correctly distinguishes the exact local
 shape/collective-volume positive controls from the still-open physical scalar
-history, conserved matter-source response, background cosmology and lensing
-problem. It is deliberately not a claim that dark matter or dark energy has
-been derived.
+history, gauge reduction, conserved matter-source response, background
+cosmology and lensing problem. It is deliberately not a claim that dark
+matter or dark energy has been derived.
 """
 from __future__ import annotations
 
@@ -25,6 +25,7 @@ REQUIRED_LOCAL={"Q2_LOCAL_SHAPE_1PI","Q2_COLLECTIVE_CONFORMAL_VOLUME_CARRIER"}
 REQUIRED_PHYSICAL={
     "PHYSICAL_VOLUME_HISTORY_SOURCE",
     "PHYSICAL_LAPSE_RESPONSE_SOURCE",
+    "PHYSICAL_SCALAR_GAUGE_REDUCTION",
     "PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING",
     "CONNECTED_SCALAR_INTERBLOCK_HISTORY",
     "PHYSICAL_BQG_SCALAR_KERNEL",
@@ -104,7 +105,7 @@ def main()->int:
         "required_scalar_physical_gates":{gid:rows.get(gid,{}).get("status") for gid in sorted(REQUIRED_PHYSICAL)},
         "parent_open_guards":{gid:prows.get(gid,{}).get("status") for gid in sorted(PARENT_MUST_REMAIN_OPEN)},
         "cosmology_outputs":{key:outputs.get(key) for key in expected_open},
-        "scientific_interpretation":"GREEN means the exact local q=2 shape 1PI and collective volume carrier are recorded without promoting them to physical cosmology. The physical volume-history, lapse-response, conserved matter-source coupling, connected interblock scalar history, BQG scalar kernel, background cosmology and lensing closure remain open.",
+        "scientific_interpretation":"GREEN means the exact local q=2 shape 1PI and collective volume carrier are recorded without promoting them to physical cosmology. The physical volume-history, lapse-response, scalar gauge reduction, conserved matter-source coupling, connected interblock scalar history, BQG scalar kernel, background cosmology and lensing closure remain open.",
         "errors":errors,
     }
     txt=json.dumps(result,indent=2); print(txt)
