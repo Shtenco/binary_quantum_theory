@@ -16,6 +16,10 @@ Closure layers:
 Only (1)+(2)+(3) can close the repository-level PHYSICAL_PROJECTOR_HISTORY
 claim. Layer (4) is additionally required before connected correlator claims.
 
+Important status rule: top-level `passed` means the refinement-compatible
+PHYSICAL_PROJECTOR_HISTORY certificate passed. A finite linked stage is exposed
+separately as `finite_stage_passed` and is NOT a green physical certificate.
+
 The self-test is synthetic and checks positive hash linkage plus mismatch and
 missing-refinement negative controls. It is not a BQG physical result.
 """
@@ -60,7 +64,10 @@ def _spectral_identity(spectral: Mapping) -> dict:
 
 
 def _matching_identity(expected: Mapping, got: Mapping) -> dict:
-    return {name: bool(expected.get(name)) and str(got.get(name, "")) == str(expected.get(name, "")) for name in LINK_FIELDS}
+    return {
+        name: bool(expected.get(name)) and str(got.get(name, "")) == str(expected.get(name, ""))
+        for name in LINK_FIELDS
+    }
 
 
 def audit_master(master: Mapping) -> dict:
@@ -113,7 +120,8 @@ def audit_refinement(refinement: Mapping | None, expected_identity: Mapping) -> 
             "checks": {
                 "schema": False,
                 "certificate_passed": False,
-                "same_master_family": False,
+                "same_anchor_master": False,
+                "refinement_family_hash_present": False,
                 "low_cluster_scale_separation": False,
                 "projector_converged_under_embeddings": False,
                 "boundary_history_converged": False,
@@ -122,24 +130,18 @@ def audit_refinement(refinement: Mapping | None, expected_identity: Mapping) -> 
             },
             "reason": "no refinement/rigging-map certificate supplied",
         }
-    identity = {name: str(refinement.get(name, "")) for name in LINK_FIELDS}
-    # master_pencil_hash may legitimately change with refinement. A production
-    # refinement certificate must therefore bind the same microscopic family by
-    # habitat/domain/convention family hashes and carry the seed-level master
-    # hash in `anchor_master_pencil_hash`.
-    same_family = (
-        bool(identity["habitat_hash"])
-        and bool(identity["domain_hash"])
-        and bool(identity["convention_hash"])
-        and identity["habitat_hash"] == expected_identity["habitat_hash"]
-        and identity["domain_hash"] == expected_identity["domain_hash"]
-        and identity["convention_hash"] == expected_identity["convention_hash"]
+
+    same_anchor = (
+        str(refinement.get("anchor_habitat_hash", "")) == expected_identity["habitat_hash"]
+        and str(refinement.get("anchor_domain_hash", "")) == expected_identity["domain_hash"]
+        and str(refinement.get("anchor_convention_hash", "")) == expected_identity["convention_hash"]
         and str(refinement.get("anchor_master_pencil_hash", "")) == expected_identity["master_pencil_hash"]
     )
     checks = {
         "schema": refinement.get("schema") == REFINEMENT_SCHEMA,
         "certificate_passed": bool(refinement.get("passed", False)),
-        "same_master_family": bool(same_family),
+        "same_anchor_master": bool(same_anchor),
+        "refinement_family_hash_present": bool(str(refinement.get("refinement_family_hash", ""))),
         "low_cluster_scale_separation": bool(refinement.get("low_cluster_scale_separation", False)),
         "projector_converged_under_embeddings": bool(refinement.get("projector_converged_under_embeddings", False)),
         "boundary_history_converged": bool(refinement.get("boundary_history_converged", False)),
@@ -150,7 +152,13 @@ def audit_refinement(refinement: Mapping | None, expected_identity: Mapping) -> 
         "present": True,
         "valid": bool(all(checks.values())),
         "checks": checks,
-        "identity": identity,
+        "refinement_family_hash": refinement.get("refinement_family_hash"),
+        "anchor": {
+            "habitat_hash": refinement.get("anchor_habitat_hash"),
+            "domain_hash": refinement.get("anchor_domain_hash"),
+            "convention_hash": refinement.get("anchor_convention_hash"),
+            "master_pencil_hash": refinement.get("anchor_master_pencil_hash"),
+        },
         "reason": "matched refinement/rigging-map certificate" if all(checks.values()) else "refinement certificate incomplete or mismatched",
     }
 
@@ -217,7 +225,8 @@ def certify(
     return {
         "schema": CERT_SCHEMA,
         "status": status,
-        "passed": finite_evidence_linked,
+        "passed": physical_projector_history_closed,
+        "finite_stage_passed": finite_evidence_linked,
         "artifact_hashes": {
             "spectral_result_sha256": canonical_sha256(spectral),
             "master_result_sha256": canonical_sha256(master),
@@ -276,10 +285,10 @@ def self_test() -> dict:
     refinement = {
         "schema": REFINEMENT_SCHEMA,
         "passed": True,
-        "habitat_hash": identity["habitat_hash"],
-        "domain_hash": identity["domain_hash"],
-        "convention_hash": identity["convention_hash"],
-        "master_pencil_hash": "refined-family-tip",
+        "refinement_family_hash": "refinement-family:test",
+        "anchor_habitat_hash": identity["habitat_hash"],
+        "anchor_domain_hash": identity["domain_hash"],
+        "anchor_convention_hash": identity["convention_hash"],
         "anchor_master_pencil_hash": identity["master_pencil_hash"],
         "low_cluster_scale_separation": True,
         "projector_converged_under_embeddings": True,
@@ -297,38 +306,39 @@ def self_test() -> dict:
     }
 
     pos = certify(spectral, master, refinement, source)
-    if not pos["physical_projector_history_closed"] or not pos["connected_source_history_closed"]:
+    if not pos["passed"] or not pos["physical_projector_history_closed"] or not pos["connected_source_history_closed"]:
         raise AssertionError(pos)
 
     no_ref = certify(spectral, master)
-    if not no_ref["finite_full_master_spectral_history_certified"]:
+    if not no_ref["finite_stage_passed"] or not no_ref["finite_full_master_spectral_history_certified"]:
         raise AssertionError("finite linked certificate unexpectedly failed")
-    if no_ref["physical_projector_history_closed"]:
+    if no_ref["passed"] or no_ref["physical_projector_history_closed"]:
         raise AssertionError("missing refinement incorrectly closed physical history")
 
     bad_spec = json.loads(json.dumps(spectral))
     bad_spec["provenance"]["master_pencil_hash"] = "wrong-master"
     mismatch = certify(bad_spec, master, refinement, source)
-    if mismatch["finite_full_master_spectral_history_certified"]:
+    if mismatch["finite_stage_passed"] or mismatch["finite_full_master_spectral_history_certified"]:
         raise AssertionError("master-hash mismatch did not fail closed")
 
     bad_master = json.loads(json.dumps(master))
     bad_master["quantum_hda_certificate_audit"]["valid_for_this_master"] = False
     bad_hda = certify(spectral, bad_master, refinement, source)
-    if bad_hda["finite_full_master_spectral_history_certified"]:
+    if bad_hda["finite_stage_passed"] or bad_hda["finite_full_master_spectral_history_certified"]:
         raise AssertionError("invalid HDA-master link did not fail closed")
 
     forged = json.loads(json.dumps(spectral))
     forged["physical_history_closed"] = True
     forged["physical_projector_emitted"] = True
     forged_result = certify(forged, master, refinement, source)
-    if forged_result["finite_full_master_spectral_history_certified"]:
+    if forged_result["finite_stage_passed"] or forged_result["finite_full_master_spectral_history_certified"]:
         raise AssertionError("self-promoted spectral result was accepted")
 
     return {
         "passed": True,
         "positive_status": pos["status"],
         "missing_refinement_status": no_ref["status"],
+        "missing_refinement_top_level_passed": no_ref["passed"],
         "hash_mismatch_status": mismatch["status"],
         "hda_mismatch_status": bad_hda["status"],
         "self_promotion_rejected": True,
