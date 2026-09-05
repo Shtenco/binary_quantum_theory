@@ -1,84 +1,90 @@
 # Full constraint family required by the BQG physical master
 
-Status: **physicalization scope correction. The current five-node Euclidean master remains a normal-constraint diagnostic, not the full physical projector.**
+Status: **physicalization scope correction, refined by the exact HDA-kernel theorem.** The current five-node Euclidean master remains a normal-constraint diagnostic, not by itself the full refinement-level physical projector.
 
 ## 1. Constraint hierarchy
 
 The Peter-Weyl spin-network basis used by the current K5 calculations is already Gauss reduced at every four-valent node. Thus the local SU(2) Gauss constraint is implemented kinematically in the declared basis.
 
-The remaining gravitational constraint structure contains at least
+The remaining gravitational structure contains
 
-- normal/Hamiltonian constraints;
-- tangential/diffeomorphism constraints or their graph/route/habitat realization.
+- node normal/Hamiltonian constraints `H_v`;
+- the commutator-derived HDA action
+  \[
+  D^{comm}_{vw}:=-i[H_v,H_w];
+  \]
+- and, whenever the finite regulator defines one independently, a target tangential/diffeomorphism operator `D_I^target` against which the HDA commutator is compared.
 
-A full finite-regulator master should therefore be understood schematically as
+These last two objects must not be conflated.
+
+## 2. Exact theorem: a commutator block is redundant on an exact common Hamiltonian kernel
+
+If
+
+\[
+H_v|\psi\rangle=0\qquad\forall v,
+\]
+
+then identically
+
+\[
+[H_v,H_w]|\psi\rangle=0\qquad\forall v,w.
+\]
+
+Therefore
 
 \[
 \boxed{
-\mathbb M_{full}
+\ker\sum_v H_v^\dagger H_v
 =
-C_H^\dagger G_H C_H
+\ker\left[
+\sum_v H_v^\dagger H_v
 +
-C_D^\dagger G_D C_D
+\sum_{v<w}(D^{comm}_{vw})^\dagger D^{comm}_{vw}
+\right].
 }
 \]
 
-on the Gauss-reduced habitat, with positive-definite master metrics on the declared independent constraint labels.
+So adding the commutators of the **same** `H_v` as a second master block cannot further select an exact common zero state. `scripts/hda_kernel_redundancy_gate.py` verifies this algebraically/numerically on a noncommuting finite control.
 
-If additional regulator/boundary constraints are retained in the production habitat they must be listed explicitly rather than hidden inside a generic symbol.
+This is an exact operator statement and does not require the continuum HDA to be anomaly-free.
 
-## 2. Why the Hamiltonian-only master is not automatically physical at finite regulator
+## 3. Why finite HDA defects still matter
 
-In an exact first-class continuum algebra,
-
-\[
-[H[N],H[M]]\sim D[\vec\beta(N,M)],
-\]
-
-so a state annihilated by all exact Hamiltonian constraints is also annihilated by their commutators on the appropriate domain.
-
-The finite BQG regulator, however, currently has measured nonzero HDA defects that decrease along a declared scaling family rather than vanishing identically at every finite level.
-
-Therefore it is not legitimate to assume at finite regulator that
+The BQG HDA test is stronger than the identity above because it compares the quantum commutator with a separately defined target tangential action:
 
 \[
-\bigcap_v\ker H_v
+D^{comm}_{vw}
+\stackrel{IR}{\longrightarrow}
+D^{target}[\beta_{vw}(q,N,M)].
 \]
 
-is already identical to the full physical Dirac sector.
-
-The current five-node master
+At finite regulator the measured defect
 
 \[
-M_H^{(B)}
-=B^\dagger\left(\sum_vH_v^\dagger H_v\right)B
+\Delta^{HDA}_{vw}
+=D^{comm}_{vw}-D^{target}_{vw}
 \]
 
-is consequently a **normal-constraint boundary diagnostic**.
-
-## 3. Existing finite Dirac control
-
-`K5_FINITE_DIRAC_REDUCTION.md` provides an exact but regulator-unsafe `Jmax=1/2` control in which the commutator-derived tangential operators first reduce the 32-dimensional fully-active logical carrier to a two-dimensional common scalar sector, after which the normal constraints select one branch.
-
-This establishes an important ordering lesson:
+need not vanish exactly. Hence
 
 \[
-\boxed{
-\text{Gauss reduction}
-\to \text{tangential/diffeomorphism reduction}
-\to \text{normal constraint}
-}
+D^{comm}_{vw}|\psi\rangle=0
 \]
 
-can be nontrivial even when all ingredients originate from the same node Hamiltonians.
+does **not** imply
 
-The old finite result cannot be promoted to the production projector because it lies below the safe Peter-Weyl wall.
+\[
+D^{target}_{vw}|\psi\rangle=0
+\]
 
-## 4. Two legal production strategies
+unless the defect itself vanishes on the candidate physical sector.
 
-### Strategy A — explicit full master
+Thus there are two legal routes:
 
-Construct independent regulator-safe tangential/diffeomorphism operators `D_I` on the same graph-changing habitat and use
+### Route A — explicit target tangential master
+
+If regulator-safe independent `D_I^target` matrices are available on the same habitat, use
 
 \[
 \boxed{
@@ -86,107 +92,158 @@ Construct independent regulator-safe tangential/diffeomorphism operators `D_I` o
 =
 \sum_{v,w}H_v^\dagger G_H^{vw}H_w
 +
-\sum_{I,J}D_I^\dagger G_D^{IJ}D_J.
+\sum_{I,J}(D_I^{target})^\dagger G_D^{IJ}D_J^{target}.
 }
 \]
 
-Then the finite master theorem gives
+### Route B — Hamiltonian exact/low projector plus HDA-target certificate
+
+Use the Hamiltonian master
 
 \[
-\ker\mathbb M_{full}
-=
-\bigcap_v\ker H_v
-\cap
-\bigcap_I\ker D_I
+\mathbb M_H=\sum_v H_v^\dagger H_v
 \]
 
-for positive-definite `G_H,G_D`.
-
-### Strategy B — derived tangential kernel in the joint limit
-
-One may omit an explicit `D` block only if a separate theorem/control proves on the same regulator/refinement family that the asymptotic Hamiltonian zero sector automatically lies in the tangential kernel, with the HDA anomaly vanishing sufficiently fast.
-
-That proof must compare the low projector of the Hamiltonian master to the tangential residual, e.g.
+and separately require, for every target tangential generator,
 
 \[
 \boxed{
-\|D_I P_{low}^{H}\|
-\to0
+\|D_I^{target}P_{phys}^H\|=0
 }
 \]
 
-for every declared independent tangential generator.
-
-Without such a limit, Hamiltonian-only `P_low^H` must not be called the final physical projector.
-
-## 5. Suggested block-Krylov organization
-
-Keep constraint labels explicit. Starting from the q=2 boundary block `B`, generate
+for an exact finite zero sector, or
 
 \[
-\mathcal K_1
-=\operatorname{span}
-\{B,H_vB,D_IB\}
+\boxed{
+\|D_I^{target}P_{low}^H\|\to0
+}
 \]
 
-or, if the tangential operators are derived from Hamiltonian commutators,
+under refinement for a near-zero/rigging sector.
+
+Only after that certificate may `P_H` be promoted to the full physical projector.
+
+## 4. Near-zero warning is genuinely stronger
+
+For approximate states it is not enough that
 
 \[
-\mathcal K_2
-\supset
-\operatorname{span}
-\{B,H_vB,H_wH_vB\}.
+\langle\psi|\mathbb M_H|\psi\rangle\to0.
 \]
 
-The latter is attractive because the same two-H data used for HDA closure can also measure tangential residuals and the master Ritz spectrum.
-
-The constraints should remain separately labelled when constructing Gram matrices. Summing them into one operator before forming a master can create accidental cancellations that are absent from
+`scripts/hda_kernel_redundancy_gate.py` contains a Hermitian counterexample with
 
 \[
-\sum_A\|C_A\psi\|^2.
+\langle M_H\rangle=2\epsilon^2\to0,
 \]
 
-## 6. Lorentzian extension
-
-For
+while
 
 \[
-H_v=H^E_v+\lambda H^L_v,
+\|[H_1,H_2]\psi\|=1
 \]
 
-the full normal master is a matrix pencil in `lambda` on a parity-complete habitat:
+because a constraint operator norm grows as `1/epsilon`.
+
+Therefore even the commutator residual itself must be controlled in a near-zero/refinement construction unless a uniform operator bound proves the implication. The independent `D^target` residual remains mandatory as well whenever the regulator defines that target separately.
+
+## 5. Lorentzian normal master
+
+On one common parity-complete habitat define
 
 \[
-M_H(\lambda)
-=M_{EE}+\lambda M_{EL}+\lambda^2M_{LL}.
+\boxed{
+H_v(\lambda_L)=H_v^E+\lambda_L H_v^L.
+}
 \]
 
-On the pure even q=2 boundary the mixed term is removed by doubled-spin parity, but on an enlarged even+odd physical candidate it can be nonzero and must be retained.
+The normal master is the matrix pencil
 
-Therefore `beta`/relative Lorentzian normalization may not be fixed by the boundary parity simplification.
+\[
+\boxed{
+M_H(\lambda_L)
+=M_{EE}+\lambda_L M_{EL}+\lambda_L^2M_{LL},
+}
+\]
 
-## 7. Physical-projector decision tree
+with
+
+\[
+M_{EE,ij}=\sum_v\langle E_i^{(v)}|E_j^{(v)}\rangle,
+\]
+
+\[
+M_{LL,ij}=\sum_v\langle L_i^{(v)}|L_j^{(v)}\rangle,
+\]
+
+\[
+M_{EL,ij}=\sum_v\left(
+\langle E_i^{(v)}|L_j^{(v)}\rangle+
+\langle L_i^{(v)}|E_j^{(v)}\rangle
+\right).
+\]
+
+On the pure even q=2 boundary the mixed block is forbidden by doubled-spin parity, but on an enlarged even+odd candidate habitat it can be nonzero and must be retained.
+
+The relative Lorentzian coefficient/order convention is theory input and may not be fitted from DM, DE, lensing or gravitational-wave data.
+
+## 6. Production data rule: preserve outgoing columns
+
+The physical master depends on complete outgoing images, not on direct logical returns. Every expensive calculation must therefore preserve
+
+\[
+|E_i^{(v)}\rangle=H_v^E|b_i\rangle,
+\qquad
+|L_i^{(v)}\rangle=H_v^L|b_i\rangle
+\]
+
+in a common sparse Gauss/Peter-Weyl basis before any projection.
+
+The Lorentzian aggregate now serializes its complete Gauss outgoing column so it can be reused directly in Gram/master assembly. Future Euclidean/Lorentzian column jobs must follow the same rule. Recomputing a column merely because a downstream Gram is needed is prohibited workflow design.
+
+## 7. Suggested block-Krylov organization
+
+Starting from the q=2 boundary block `B`, retain separately labelled generated vectors:
+
+\[
+\mathcal K_1=\operatorname{span}\{B,H_vB\},
+\]
+
+\[
+\mathcal K_2\supset\operatorname{span}\{B,H_vB,H_wH_vB\}.
+\]
+
+The same two-H data used for HDA closure can measure both target/commutator residuals and Ritz master spectra. Constraint labels must remain explicit: summing node Hamiltonians before squaring can create accidental cancellations that are absent from
+
+\[
+\sum_v\|H_v\psi\|^2.
+\]
+
+## 8. Physical-projector decision tree
 
 At each regulator/refinement level:
 
-1. construct the separately labelled normal and tangential constraint images;
-2. form the positive master or justified Hamiltonian-only precursor;
-3. inspect exact/near-zero spectral separation using `PHYSICAL_PROJECTOR_NEAR_ZERO_RIGGING_LIMIT.md`;
-4. test the tangential residual of every low-mode candidate;
-5. compare low-subspace projectors under refinement embeddings;
-6. compute the q=2 boundary overlap;
-7. only after these pass, source-dress the resulting physical/history sector.
+1. construct complete separately labelled `H_v^E` and `H_v^L` images on one habitat;
+2. freeze the Lorentzian coefficient/order convention;
+3. assemble `M_H(lambda_L)` from complete outgoing columns;
+4. inspect exact/near-zero spectral separation using `PHYSICAL_PROJECTOR_NEAR_ZERO_RIGGING_LIMIT.md`;
+5. verify commutator/HDA residuals and the independent `D^target` residual when such a target is declared;
+6. compare low-subspace projectors under refinement embeddings;
+7. compute the q=2 boundary overlap;
+8. feed the resulting `P_BQG` into the already existing relational/source stack;
+9. only then evaluate scalar, TT and FLRW sectors of the same `Gamma_BQG`.
 
-## 8. Consequence for scalar cosmology
+## 9. Consequence for scalar cosmology
 
-This distinction is directly relevant to dark-sector claims. A scalar zero of an unreduced normal-constraint master can be
+A low mode of an unreduced normal master can still be
 
-- a tangential/gauge mode;
+- a target-tangential/gauge mode because of finite HDA defect;
 - a regulator anomaly;
-- a genuine additional physical scalar.
+- or a genuine physical scalar response.
 
-Only the third survives the full Dirac/master reduction. Therefore no low Hamiltonian-master eigenvalue is to be labelled dark matter before the tangential residual is shown to vanish and the physical residue/stability tests are passed.
+Only the last survives the target-HDA/refinement checks and then the scalar source/gauge reduction. No normal-master eigenvalue by itself is dark matter or dark energy.
 
-## 9. Claim boundary
+## 10. Claim boundary
 
-The five-node Euclidean boundary master and the K1 outgoing-span calculation remain valuable because they measure the true normal-constraint geometry and the minimal generated habitat. This document only prevents those precursors from being overstated as the complete physical projector before the regulator-safe tangential sector is included or proved redundant in the joint limit.
+The five-node Euclidean boundary master and the K1 outgoing-span/Ritz calculations remain valuable because they measure the true normal-constraint geometry and the minimal generated habitat. The full theory-specific projector is obtained only after the Lorentzian constraint family and the declared HDA-target/refinement conditions are incorporated. No new projector, Hilbert-space formalism, source functional or observable dictionary is required downstream; those components already exist and are reused.
