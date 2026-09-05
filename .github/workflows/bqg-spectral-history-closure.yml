@@ -1,0 +1,86 @@
+name: bqg-spectral-history-closure
+
+on:
+  push:
+    branches: [main, spectral-history-closure]
+    paths:
+      - 'BQG_SPECTRAL_HISTORY_GRAPH.md'
+      - 'scripts/bqg_spectral_history_graph_gate.py'
+      - 'scripts/feshbach_block_krylov_identity_gate.py'
+      - 'scripts/master_constraint_physical_projector_gate.py'
+      - 'scripts/peter_weyl_euclidean_sine_ordering_gate.py'
+      - '.github/workflows/bqg-spectral-history-closure.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'BQG_SPECTRAL_HISTORY_GRAPH.md'
+      - 'scripts/bqg_spectral_history_graph_gate.py'
+      - 'scripts/feshbach_block_krylov_identity_gate.py'
+      - 'scripts/master_constraint_physical_projector_gate.py'
+      - 'scripts/peter_weyl_euclidean_sine_ordering_gate.py'
+      - '.github/workflows/bqg-spectral-history-closure.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bqg-spectral-history-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  algebraic-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile spectral-history gate
+        run: python -m py_compile scripts/bqg_spectral_history_graph_gate.py
+      - name: Existing Feshbach/Krylov identity control
+        run: python scripts/feshbach_block_krylov_identity_gate.py --output verification_results/FESHBACH_BLOCK_KRYLOV_IDENTITY.json
+      - name: Existing master-projector theorem control
+        run: python scripts/master_constraint_physical_projector_gate.py --output verification_results/MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.json
+      - name: Closed spectral-history regression
+        run: python scripts/bqg_spectral_history_graph_gate.py --mode regression --output verification_results/BQG_SPECTRAL_HISTORY_REGRESSION.json
+      - name: Upload algebraic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-spectral-history-algebra
+          path: verification_results/
+          if-no-files-found: error
+
+  actual-euclidean-first-edge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Actual K5 Euclidean master spectral edge
+        run: |
+          python scripts/bqg_spectral_history_graph_gate.py \
+            --mode peter-weyl-euclidean-first-edge \
+            --jmax2 5 \
+            --output verification_results/BQG_EUCLIDEAN_MASTER_FIRST_SPECTRAL_EDGE.json
+      - name: Upload actual spectral evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-euclidean-master-first-spectral-edge
+          path: verification_results/
+          if-no-files-found: error
