@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - research/physical-scalar-kernel-dynamics
+      - recovery/bqg-physical-spectral-history-2026-09-06
     paths:
       - BQG_SPECTRAL_HISTORY_GRAPH.md
       - scripts/bqg_spectral_history_graph_gate.py
@@ -25,11 +26,21 @@ jobs:
           cache: pip
       - name: Install scientific dependencies
         run: python -m pip install -r requirements.txt
-      - name: Run exact finite spectral-history closure and fail-closed controls
+      - name: Run exact finite spectral-history closure and physical-promotion bypass controls
         run: |
           python scripts/bqg_spectral_history_graph_gate.py \
             --self-test \
             --output verification_results/BQG_SPECTRAL_HISTORY_GRAPH_SELFTEST.json
+      - name: Assert this gate cannot self-emit a physical projector
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('verification_results/BQG_SPECTRAL_HISTORY_GRAPH_SELFTEST.json').read_text())
+          assert d['passed'] is True
+          assert d['inline_physical_preconditions_do_not_emit_projector'] is True
+          print('physical-promotion bypass control passed')
+          PY
       - name: Upload spectral-history gate evidence
         uses: actions/upload-artifact@v4
         with:
