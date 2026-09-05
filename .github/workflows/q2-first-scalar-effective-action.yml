@@ -12,6 +12,9 @@ on:
       - 'SCALAR_ADM_WARD_QUOTIENT.md'
       - 'SCALAR_WARD_KERNEL_RESPONSE.md'
       - 'CONNECTED_SCALAR_HISTORY_EXTRACTION.md'
+      - 'SCALAR_ALGEBRAIC_PIPELINE_CLOSURE.md'
+      - 'PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md'
+      - 'FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE.md'
       - 'HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md'
       - 'q2_scalar_frontier.json'
       - 'physicalization_gates.json'
@@ -23,12 +26,17 @@ on:
       - 'scripts/scalar_ward_kernel_response_gate.py'
       - 'scripts/scalar_connected_history_extractor_gate.py'
       - 'scripts/scalar_connected_history_to_response_gate.py'
+      - 'scripts/scalar_connected_history_numeric_inversion_gate.py'
+      - 'scripts/scalar_physical_history_cumulant_gate.py'
+      - 'scripts/flrw_history_effective_action_gate.py'
       - 'scripts/conserved_scalar_probe_convention_gate.py'
       - 'scripts/verify_q2_scalar_frontier.py'
       - 'scripts/collective_volume_rg_gate.py'
       - 'scripts/q2_symmetric_block_peter_weyl_growth_gate.py'
       - 'scripts/dual_k5_lapse_cochain_gate.py'
       - '.github/workflows/scalar-connected-history-closure.yml'
+      - '.github/workflows/scalar-physical-history-measurement.yml'
+      - '.github/workflows/flrw-history-effective-action-response.yml'
       - '.github/workflows/q2-first-scalar-effective-action.yml'
   pull_request:
     branches: [main]
@@ -41,6 +49,9 @@ on:
       - 'SCALAR_ADM_WARD_QUOTIENT.md'
       - 'SCALAR_WARD_KERNEL_RESPONSE.md'
       - 'CONNECTED_SCALAR_HISTORY_EXTRACTION.md'
+      - 'SCALAR_ALGEBRAIC_PIPELINE_CLOSURE.md'
+      - 'PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md'
+      - 'FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE.md'
       - 'HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md'
       - 'q2_scalar_frontier.json'
       - 'physicalization_gates.json'
@@ -52,12 +63,17 @@ on:
       - 'scripts/scalar_ward_kernel_response_gate.py'
       - 'scripts/scalar_connected_history_extractor_gate.py'
       - 'scripts/scalar_connected_history_to_response_gate.py'
+      - 'scripts/scalar_connected_history_numeric_inversion_gate.py'
+      - 'scripts/scalar_physical_history_cumulant_gate.py'
+      - 'scripts/flrw_history_effective_action_gate.py'
       - 'scripts/conserved_scalar_probe_convention_gate.py'
       - 'scripts/verify_q2_scalar_frontier.py'
       - 'scripts/collective_volume_rg_gate.py'
       - 'scripts/q2_symmetric_block_peter_weyl_growth_gate.py'
       - 'scripts/dual_k5_lapse_cochain_gate.py'
       - '.github/workflows/scalar-connected-history-closure.yml'
+      - '.github/workflows/scalar-physical-history-measurement.yml'
+      - '.github/workflows/flrw-history-effective-action-response.yml'
       - '.github/workflows/q2-first-scalar-effective-action.yml'
 
 permissions:
@@ -81,7 +97,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-      - name: Compile scalar frontier sources
+      - name: Compile scalar and background frontier sources
         run: |
           python -m py_compile \
             scripts/q2_first_scalar_effective_action_gate.py \
@@ -92,14 +108,15 @@ jobs:
             scripts/scalar_ward_kernel_response_gate.py \
             scripts/scalar_connected_history_extractor_gate.py \
             scripts/scalar_connected_history_to_response_gate.py \
+            scripts/scalar_connected_history_numeric_inversion_gate.py \
+            scripts/scalar_physical_history_cumulant_gate.py \
+            scripts/flrw_history_effective_action_gate.py \
             scripts/conserved_scalar_probe_convention_gate.py \
             scripts/verify_q2_scalar_frontier.py
-      - name: Exact q2 local 1PI shape action and cosmology obstruction
+      - name: Exact q2 local 1PI shape action and collective volume carrier
         run: |
           python scripts/q2_first_scalar_effective_action_gate.py \
             --output verification_results/Q2_FIRST_SCALAR_EFFECTIVE_ACTION.json
-      - name: Derived collective conformal-volume carrier
-        run: |
           python scripts/q2_collective_scalar_carrier_gate.py \
             --output verification_results/Q2_COLLECTIVE_SCALAR_CARRIER.json
       - name: Exact local scalar ADM seed Ward quotient and reduction engine
@@ -112,21 +129,29 @@ jobs:
             --output verification_results/SCALAR_ADM_DIRAC_ENGINE.json
           python scripts/scalar_ward_kernel_response_gate.py \
             --output verification_results/SCALAR_WARD_KERNEL_RESPONSE.json
-      - name: Exact connected-history extractor and end-to-end scalar consumer pipeline
+      - name: Connected-history exact and numerical consumers
         run: |
           python scripts/scalar_connected_history_extractor_gate.py \
             --output verification_results/SCALAR_CONNECTED_HISTORY_EXTRACTOR.json
           python scripts/scalar_connected_history_to_response_gate.py \
             --output verification_results/SCALAR_CONNECTED_HISTORY_TO_RESPONSE.json
+          python scripts/scalar_connected_history_numeric_inversion_gate.py \
+            --output verification_results/SCALAR_CONNECTED_HISTORY_NUMERIC_INVERSION.json
+      - name: Physical W-history measurement and FLRW response consumers
+        run: |
+          python scripts/scalar_physical_history_cumulant_gate.py \
+            --output verification_results/SCALAR_PHYSICAL_W_HISTORY_CUMULANTS.json
+          python scripts/flrw_history_effective_action_gate.py \
+            --output verification_results/FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE.json
       - name: Frozen universal conserved external probe convention
         run: |
           python scripts/conserved_scalar_probe_convention_gate.py \
             --output verification_results/CONSERVED_SCALAR_PROBE_CONVENTION.json
-      - name: Fail-closed scalar frontier ledger
+      - name: Fail-closed scalar background frontier ledger
         run: |
           python scripts/verify_q2_scalar_frontier.py \
             --output verification_results/Q2_SCALAR_FRONTIER_STATUS.json
-      - name: Cross-guard exact algebra versus open physical outputs
+      - name: Cross-guard closed machinery versus open physical outputs
         run: |
           python - <<'PY'
           import json
@@ -143,22 +168,14 @@ jobs:
           response=load('SCALAR_WARD_KERNEL_RESPONSE.json')
           extractor=load('SCALAR_CONNECTED_HISTORY_EXTRACTOR.json')
           e2e=load('SCALAR_CONNECTED_HISTORY_TO_RESPONSE.json')
+          numeric=load('SCALAR_CONNECTED_HISTORY_NUMERIC_INVERSION.json')
+          whist=load('SCALAR_PHYSICAL_W_HISTORY_CUMULANTS.json')
+          flrw=load('FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE.json')
           probe=load('CONSERVED_SCALAR_PROBE_CONVENTION.json')
           truth=load('Q2_SCALAR_FRONTIER_STATUS.json')
 
-          assert shape['passed'] is True
-          assert carrier['passed'] is True
-          assert seed['passed'] is True
-          assert ward['passed'] is True
-          assert reduction['passed'] is True
-          assert response['passed'] is True
-          assert extractor['passed'] is True
-          assert e2e['passed'] is True
-          assert e2e['selftest']['algebraic_pipeline_closed'] is True
-          assert e2e['selftest']['remaining_microscopic_input'] == [
-              'G_QQ(omega,k)', 'G_Qzeta(omega,k)', 'G_zetazeta(omega,k)'
-          ]
-          assert probe['passed'] is True
+          for x in (shape,carrier,seed,ward,reduction,response,extractor,e2e,numeric,whist,flrw,probe):
+              assert x['passed'] is True
           assert truth['valid'] is True
 
           assert seed['local_log_volume_1PI']['Gamma_second_at_0'] == '18'
@@ -168,27 +185,38 @@ jobs:
           assert response['selftest']['tests']['healthy_positive_residue'] is True
           assert response['selftest']['tests']['ghost_negative_residue_detected'] is True
           assert extractor['selftest']['tests']['singular_control_requires_further_reduction'] is True
-          assert e2e['selftest']['tests']['healthy_physical_chain_allowed'] is True
+          assert e2e['selftest']['algebraic_pipeline_closed'] is True
           assert e2e['selftest']['tests']['healthy_mass2_two'] is True
           assert e2e['selftest']['tests']['healthy_cs2_one_quarter'] is True
+          assert numeric['selftest']['tests']['near_singular_fails_closed'] is True
+          assert numeric['selftest']['tests']['complex_fourier_serialization_supported'] is True
+          assert whist['selftest']['tests']['uncertified_tau_fails_closed'] is True
+          assert whist['selftest']['tests']['raw_Z_like_input_fails_closed'] is True
+          assert whist['selftest']['tests']['finite_difference_without_step_scan_fails_closed'] is True
+          assert flrw['selftest']['tests']['vacuum_w_minus_one'] is True
+          assert flrw['selftest']['tests']['dust_w_zero'] is True
+          assert flrw['selftest']['tests']['radiation_w_one_third'] is True
+          assert flrw['selftest']['tests']['normalized_zero_source_shortcut_fails_closed'] is True
           assert probe['science_status'] == 'FROZEN_EXTERNAL_CONSERVED_PROBE_CONVENTION'
 
-          assert shape['cosmology_outputs']['mu_BQG_a_k'] == 'NOT_DERIVABLE'
-          assert shape['cosmology_outputs']['Sigma_BQG_a_k'] == 'NOT_DERIVABLE'
-          assert carrier['cosmology_outputs']['rho_hist_a'] == 'OPEN_PHYSICAL'
-          assert carrier['cosmology_outputs']['Phi_a_k'] == 'OPEN_PHYSICAL'
-          assert carrier['cosmology_outputs']['Psi_a_k'] == 'OPEN_PHYSICAL'
-          assert carrier['cosmology_outputs']['mu_BQG_a_k'] == 'OPEN_PHYSICAL'
-          assert carrier['cosmology_outputs']['Sigma_BQG_a_k'] == 'OPEN_PHYSICAL'
-
-          algebra=truth['exact_scalar_algebra']
-          assert algebra['flat_Ward_parameter_count'] == 3
-          assert algebra['connected_history_consumer_pipeline'] == 'FROZEN_GCONN_TO_RESPONSE'
-          assert algebra['remaining_microscopic_inputs'] == [
+          closed=truth['closed_downstream_machinery']
+          assert closed['flat_Ward_parameter_count'] == 3
+          assert closed['W_history_measurement'] == 'FROZEN_W_TO_GCONN'
+          assert closed['connected_history_consumer'] == 'FROZEN_GCONN_TO_RESPONSE'
+          assert closed['FLRW_response_consumer'] == 'FROZEN_GAMMA_FLRW_TO_RHO_P_W'
+          remaining=truth['remaining_physical_inputs']
+          assert remaining['scalar'] == 'OPEN_PHYSICAL_W_phys[J_Q,J_zeta;tau,r]'
+          assert remaining['background'] == 'OPEN_PHYSICAL_Gamma_FLRW[a,N]'
+          assert remaining['scalar_connected_outputs'] == [
               'G_QQ(omega,k)', 'G_Qzeta(omega,k)', 'G_zetazeta(omega,k)'
           ]
-          assert truth['frozen_scalar_interfaces']['PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING'] == 'frozen'
-          assert truth['frozen_scalar_interfaces']['SCALAR_CONNECTED_HISTORY_TO_RESPONSE_PIPELINE'] == 'frozen'
+          for gid in [
+              'PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING',
+              'SCALAR_PHYSICAL_W_HISTORY_MEASUREMENT_PIPELINE',
+              'SCALAR_CONNECTED_HISTORY_TO_RESPONSE_PIPELINE',
+              'FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE_PIPELINE'
+          ]:
+              assert truth['frozen_scalar_interfaces'][gid] == 'frozen'
           for status in truth['open_scalar_physical_gates'].values():
               assert status == 'open_physical'
           for status in truth['parent_open_guards'].values():
@@ -196,7 +224,8 @@ jobs:
           for status in truth['cosmology_outputs'].values():
               assert status == 'OPEN_PHYSICAL'
 
-          print('q2 scalar algebraic pipeline CLOSED; theory-specific connected cumulants remain OPEN: PASS')
+          print('PASS downstream scalar/background machinery CLOSED')
+          print('OPEN physics only: actual BQG W_phys[J_Q,J_zeta;tau,r] and Gamma_FLRW[a,N]')
           PY
       - name: Upload scalar frontier evidence
         if: always()
