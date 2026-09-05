@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Executable adapter from a finite constraint family to the existing BQG history/source stack.
 
-This gate does NOT invent a new physicalization formalism.  It factors the already
+This gate does NOT invent a new physicalization formalism. It factors the already
 registered route into one reusable numerical interface:
 
     {C_A} -> M=sum C_A^dagger C_A -> P_phys
@@ -10,7 +10,7 @@ registered route into one reusable numerical interface:
 
 The selftest uses the existing C8 relational positive control, but crucially the
 projector used downstream is reconstructed *only* from the combined constraint
-C=I-G.  It is then regression-tested against the analytic relational projector.
+C=I-G. It is then regression-tested against the analytic relational projector.
 The same functions are intended to accept the future common-habitat BQG bundle
 {H_E,v, H_L,v, D_I} without changing the source/observable machinery.
 """
@@ -25,11 +25,6 @@ TOL = 2e-10
 
 
 def spectral_projector_from_constraints(constraints, zero_rtol=1e-10):
-    """Return M, P0, isometry Q0, spectrum and first positive gap.
-
-    This routine is intentionally agnostic about the physical origin of C_A.
-    Every supplied matrix must act on the same Hilbert space.
-    """
     if not constraints:
         raise ValueError("empty constraint family")
     mats = [np.asarray(c, dtype=complex) for c in constraints]
@@ -56,11 +51,6 @@ def physical_compression(Q0, O):
 
 
 def maximally_mixed_connected_hessian(Q0, observables):
-    """Zero-source connected Hessian for the declared maximally mixed physical state.
-
-    At zero source rho_phys=I/r on the physical sector.  For Hermitian source
-    operators this is the exact quadratic Hessian of log Tr exp(sum j_a O_a).
-    """
     r = Q0.shape[1]
     if r == 0:
         raise ValueError("physical zero sector is empty")
@@ -83,7 +73,6 @@ def c8_control():
     G = np.kron(S, J)
     C = np.eye(16, dtype=complex) - G
 
-    # Analytic history isometry V and projector P_rel=VV^dagger.
     blocks = []
     Rt = np.eye(2, dtype=complex)
     for _ in range(n):
@@ -126,7 +115,6 @@ def run():
     checks["projector_is_idempotent"] = float(np.linalg.norm(P0 @ P0 - P0)) < 2e-9
     checks["projector_is_hermitian"] = float(np.linalg.norm(P0 - P0.conj().T)) < 2e-9
 
-    # X,Z are the metric-shape sources; Y is retained as orientation/history check.
     Csrc, means, compressed = maximally_mixed_connected_hessian(Q0, rel_ops)
     checks["physical_source_means_vanish"] = float(np.max(np.abs(means))) < 2e-9
     checks["XYZ_connected_hessian_is_identity"] = float(np.linalg.norm(Csrc - np.eye(3))) < 2e-9
@@ -143,11 +131,11 @@ def run():
     checks["metric_response_nonzero_eigenvalues_are_9_over_2"] = float(np.max(np.abs(nz - 4.5))) < 2e-9
     checks["metric_Gamma2_nonzero_eigenvalues_are_2_over_9"] = float(np.max(np.abs(gamma_nz - (2.0/9.0)))) < 2e-9
 
-    # Basis-independence regression: Q0 from spectral diagonalization need not equal V,
-    # but compressed source traces/products must agree up to a unitary change of basis.
     pauli_sq = [float(np.linalg.norm(o @ o - np.eye(2))) for o in compressed]
     checks["compressed_relational_sources_square_to_identity"] = max(pauli_sq) < 2e-9
 
+    # Normalize numpy scalar booleans before JSON serialization.
+    checks = {k: bool(v) for k, v in checks.items()}
     passed = bool(all(checks.values()))
     return {
         "status": "constraint-to-existing-history/source physicalization adapter selftest",
@@ -160,8 +148,8 @@ def run():
         "master_first_positive_gap": gap,
         "projector_error_to_existing_relational_projector": float(np.linalg.norm(P0 - P_rel)),
         "connected_source_hessian_XZY": Csrc.tolist(),
-        "metric_response_nonzero_eigenvalues": nz.tolist(),
-        "metric_Gamma2_nonzero_eigenvalues": gamma_nz.tolist(),
+        "metric_response_nonzero_eigenvalues": [float(x) for x in nz],
+        "metric_Gamma2_nonzero_eigenvalues": [float(x) for x in gamma_nz],
         "checks": checks,
         "production_contract": {
             "required_same_habitat_constraints": ["H_E,v", "H_L,v", "D_I (unless independently reduced/proved redundant)"],
