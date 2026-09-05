@@ -1,9 +1,11 @@
 name: lorentzian-reaggregate-existing-run
 
 on:
-  workflow_run:
-    workflows: ["physical-scalar-kernel-dynamics-sharded"]
-    types: [completed]
+  push:
+    branches:
+      - research/physical-scalar-kernel-dynamics
+    paths:
+      - 'triggers/reaggregate-lorentzian.txt'
   workflow_dispatch:
 
 permissions:
@@ -12,10 +14,6 @@ permissions:
 
 jobs:
   reaggregate:
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' &&
-       github.event.workflow_run.head_branch == 'research/physical-scalar-kernel-dynamics')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -31,20 +29,15 @@ jobs:
       - name: Install scientific dependencies
         run: python -m pip install -r requirements.txt
 
-      - name: Resolve source workflow run
+      - name: Resolve latest successful source run
         id: source
         env:
-          EVENT_NAME: ${{ github.event_name }}
-          AUTO_RUN_ID: ${{ github.event.workflow_run.id }}
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ "$EVENT_NAME" = "workflow_run" ]; then
-            echo "run_id=$AUTO_RUN_ID" >> "$GITHUB_OUTPUT"
-          else
-            run_id=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow physical-scalar-kernel-dynamics-sharded.yml --branch research/physical-scalar-kernel-dynamics --status success --limit 1 --json databaseId --jq '.[0].databaseId')
-            test -n "$run_id"
-            echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
-          fi
+          run_id=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow physical-scalar-kernel-dynamics-sharded.yml --branch research/physical-scalar-kernel-dynamics --status success --limit 1 --json databaseId --jq '.[0].databaseId')
+          test -n "$run_id"
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+          echo "Using source run $run_id"
 
       - name: Download already computed 24 term artifacts
         env:
