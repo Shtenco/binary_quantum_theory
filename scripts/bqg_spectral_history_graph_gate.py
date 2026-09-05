@@ -6,6 +6,12 @@ spectral quotient associated with the seed block V. When the cyclic Krylov
 subspace is certified invariant, the quotient is exact for V^† f(M) V,
 including the master heat kernel and the zero spectral projector.
 
+This gate is deliberately LIMITED to the finite spectral statement. It never
+self-certifies a theory-specific physical BQG history from inline booleans.
+Physical promotion requires an independent evidence-linked certificate that
+binds this spectral result to the complete master/HDA/domain/refinement/source
+artifacts on the same habitat.
+
 This gate never interprets master-constraint eigenvalues as particle masses or
 physical frequencies. Its heat parameter sigma is projector/constraint flow,
 not relational proper time.
@@ -238,17 +244,25 @@ def construct(packet: Mapping):
         herm_ok and mu0_ok and hankel_psd and quotient_psd and reproduction_ok and termination_ok
     )
 
+    # These are retained only as DECLARATIONS for diagnostics/backward
+    # compatibility. They are never sufficient to certify physical history.
     pre = packet.get("physical_preconditions", {})
-    physical_preconditions = {
+    declared_physical_preconditions = {
         "domain_complete": bool(pre.get("domain_complete", False)),
         "master_constraint_certified": bool(pre.get("master_constraint_certified", False)),
         "quantum_hda_or_explicit_dtarget_certified": bool(pre.get("quantum_hda_or_explicit_dtarget_certified", False)),
         "source_seed_complete_for_claim": bool(pre.get("source_seed_complete_for_claim", False)),
     }
-    physical_history_closed = finite_spectral_history_closed and all(physical_preconditions.values())
+    physical_history_candidate_ready = bool(
+        finite_spectral_history_closed and all(declared_physical_preconditions.values())
+    )
 
-    if physical_history_closed:
-        status = "PHYSICAL_BQG_SPECTRAL_HISTORY_CLOSED_ON_DECLARED_SEED"
+    # Critical fail-closed rule: this moment/quotient gate cannot verify those
+    # declarations against independent artifacts, so it NEVER emits P_phys.
+    physical_history_closed = False
+
+    if physical_history_candidate_ready:
+        status = "FINITE_SPECTRAL_HISTORY_CLOSED_PHYSICAL_CERTIFICATE_REQUIRED"
     elif finite_spectral_history_closed:
         status = "FINITE_SPECTRAL_HISTORY_CLOSED_BUT_PHYSICAL_PRECONDITIONS_OPEN"
     else:
@@ -261,6 +275,7 @@ def construct(packet: Mapping):
         "depth": depth,
         "boundary_dimension": d,
         "moment_scale": moment_scale,
+        "provenance": dict(packet.get("provenance", {})),
         "hankel": {
             "dimension": int(G.shape[0]),
             "rank": rank,
@@ -287,10 +302,13 @@ def construct(packet: Mapping):
         },
         "termination": termination_detail,
         "finite_spectral_history_closed": finite_spectral_history_closed,
-        "physical_preconditions": physical_preconditions,
+        "physical_preconditions": declared_physical_preconditions,
+        "declared_physical_preconditions": declared_physical_preconditions,
+        "physical_preconditions_verified": False,
+        "physical_history_candidate_ready": physical_history_candidate_ready,
         "physical_history_closed": physical_history_closed,
-        "physical_projector_emitted": physical_history_closed,
-        "physical_projector_boundary_gram": encode_matrix(_herm(zero_weight)) if physical_history_closed else None,
+        "physical_projector_emitted": False,
+        "physical_projector_boundary_gram": None,
         "candidate_zero_spectral_weight": encode_matrix(_herm(zero_weight)),
         "heat_history": heat_rows,
         "spectral_diagnostics": {
@@ -298,9 +316,10 @@ def construct(packet: Mapping):
             "note": "constraint/master spectral diagnostics only; not spacetime dimension, particle mass, physical omega, or relational time",
         },
         "claim_boundary": (
-            "The quotient graph is derived from the supplied master moments. "
-            "Physical BQG history is emitted only after finite cyclic termination, complete production domain, "
-            "certified master/HDA-or-Dtarget, and a source seed complete for the declared correlator claim."
+            "This gate certifies only the finite master spectral quotient/history. "
+            "Inline physical_preconditions are unverified declarations and can never emit P_phys here. "
+            "Physical BQG promotion requires an independent evidence-linked certificate binding this result "
+            "to the complete master/HDA/domain/refinement/source artifacts on the same habitat."
         ),
     }
 
@@ -336,10 +355,15 @@ def self_test():
         },
         "tolerances": {"moment_reproduction": 1e-8, "hankel_rank_rtol": 1e-10},
         "heat_sigma": [0.0, 0.1, 1.0, 10.0],
+        "provenance": {"control": "synthetic_only"},
     }
     got = construct(packet)
-    if not got["physical_history_closed"]:
+    if not got["finite_spectral_history_closed"]:
         raise AssertionError(got)
+    if not got["physical_history_candidate_ready"]:
+        raise AssertionError("declared-precondition candidate readiness regression failed")
+    if got["physical_history_closed"] or got["physical_projector_emitted"]:
+        raise AssertionError("inline physical booleans incorrectly promoted finite spectral closure")
 
     T = decode_matrix(got["quotient"]["operator_matrix"])
     C = decode_array(got["quotient"]["seed_embedding"])
@@ -358,18 +382,23 @@ def self_test():
     if badgot["finite_spectral_history_closed"] or badgot["physical_projector_emitted"]:
         raise AssertionError("missing termination certificate did not fail closed")
 
-    # Fail-closed negative: finite spectral closure but HDA precondition open.
+    # Fail-closed negative: finite spectral closure but one declared upstream
+    # physical precondition is open. The finite quotient remains valid, but even
+    # candidate readiness must be false.
     hda = json.loads(json.dumps(packet))
     hda["physical_preconditions"]["quantum_hda_or_explicit_dtarget_certified"] = False
     hgot = construct(hda)
-    if not hgot["finite_spectral_history_closed"] or hgot["physical_history_closed"]:
-        raise AssertionError("HDA fail-closed regression failed")
+    if not hgot["finite_spectral_history_closed"] or hgot["physical_history_candidate_ready"]:
+        raise AssertionError("HDA declared-precondition fail-closed regression failed")
+    if hgot["physical_history_closed"] or hgot["physical_projector_emitted"]:
+        raise AssertionError("physical promotion bypass regression failed")
 
     return {
         "passed": True,
         "closed_control_quotient_dimension": got["quotient"]["dimension"],
         "closed_control_hankel_rank": got["hankel"]["rank"],
-        "zero_weight_trace": float(np.trace(decode_matrix(got["physical_projector_boundary_gram"])).real),
+        "candidate_zero_weight_trace": float(np.trace(decode_matrix(got["candidate_zero_spectral_weight"])).real),
+        "inline_physical_preconditions_do_not_emit_projector": True,
         "negative_missing_termination_status": badgot["status"],
         "negative_hda_status": hgot["status"],
     }
