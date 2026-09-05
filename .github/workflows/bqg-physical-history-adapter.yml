@@ -1,0 +1,38 @@
+name: bqg-physical-history-adapter
+
+on:
+  push:
+    branches:
+      - research/physical-scalar-kernel-dynamics
+    paths:
+      - 'scripts/bqg_physical_history_adapter_gate.py'
+      - 'scripts/q2_relational_metric_source_gate.py'
+      - 'scripts/master_constraint_physical_projector_gate.py'
+      - 'BQG_PHYSICAL_HISTORY_ADAPTER.md'
+      - '.github/workflows/bqg-physical-history-adapter.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  adapter-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip numpy sympy
+      - name: Re-run exact master-projector theorem control
+        run: python scripts/master_constraint_physical_projector_gate.py --output verification_results/MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.json
+      - name: Re-run existing relational metric-source control
+        run: python scripts/q2_relational_metric_source_gate.py --output verification_results/Q2_RELATIONAL_METRIC_SOURCE.json
+      - name: Run unified constraint-to-history adapter regression
+        run: python scripts/bqg_physical_history_adapter_gate.py --output verification_results/BQG_PHYSICAL_HISTORY_ADAPTER.json
+      - name: Upload regression evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-physical-history-adapter-evidence
+          path: verification_results/*.json
