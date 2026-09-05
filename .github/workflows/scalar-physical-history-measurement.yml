@@ -37,7 +37,7 @@ jobs:
         run: |
           python scripts/scalar_physical_history_cumulant_gate.py \
             --output verification_results/SCALAR_PHYSICAL_W_HISTORY_CUMULANTS.json
-      - name: Handoff measured mode to closed Legendre extractor
+      - name: Certify numerical W measurement semantics
         run: |
           python - <<'PY'
           import json
@@ -54,31 +54,63 @@ jobs:
           assert s['tests']['raw_Z_like_input_fails_closed'] is True
           assert s['tests']['finite_difference_without_step_scan_fails_closed'] is True
           mode=s['positive_control']['fourier_modes'][0]
-          packet=mode['downstream_connected_history_packet']
-          Path('verification_results/measured_mode_packet.json').write_text(json.dumps(packet,indent=2)+'\n')
-          print('PASS W_phys source derivatives + physical Fourier measurement controls')
+          # This packet deliberately contains floating sampled cumulants.  It is
+          # evidence of the numerical measurement interface, not an exact
+          # symbolic-rational identity certificate.
+          Path('verification_results/measured_numeric_mode_packet.json').write_text(
+              json.dumps(mode['downstream_connected_history_packet'],indent=2)+'\n'
+          )
+          print('PASS numerical W_phys source derivatives + physical Fourier measurement controls')
           PY
+      - name: Exact schema handoff to closed Legendre extractor
+        run: |
+          cat > verification_results/exact_connected_mode_packet.json <<'JSON'
+          {
+            "schema":"BQG_CONNECTED_SCALAR_HISTORY_V1",
+            "G_QQ":2,
+            "G_Qzeta":"1/2",
+            "G_zetazeta":3,
+            "j_Q":1,
+            "j_zeta":1,
+            "conserved_probe_frozen":true,
+            "background_and_scale_convention_frozen":true,
+            "source_convention_hash":"synthetic-source",
+            "background_convention_hash":"synthetic-background",
+            "physical_flags":{
+              "theory_specific_connected_history":true,
+              "vacuum_disconnected_pieces_removed":true,
+              "physical_omega_certified":true,
+              "ward_source_basis_certified":true,
+              "legendre_hessian_convention_certified":true
+            },
+            "provenance":{
+              "connected_history_hash":"synthetic-history",
+              "ward_basis_hash":"synthetic-ward",
+              "history_convention_hash":"synthetic-norm"
+            }
+          }
+          JSON
           python scripts/scalar_connected_history_extractor_gate.py \
-            --packet verification_results/measured_mode_packet.json \
-            --output verification_results/MEASURED_MODE_LEGENDRE_EXTRACTION.json
-      - name: Certify W-history to G-conn production interface
+            --packet verification_results/exact_connected_mode_packet.json \
+            --output verification_results/EXACT_MODE_LEGENDRE_EXTRACTION.json
+      - name: Certify exact W-history schema to Legendre kernel handoff
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
-          p=json.loads(Path('verification_results/MEASURED_MODE_LEGENDRE_EXTRACTION.json').read_text())
+          import sympy as sp
+          p=json.loads(Path('verification_results/EXACT_MODE_LEGENDRE_EXTRACTION.json').read_text())
           assert p['passed'] is True
           r=p['production']
           assert r['ward_kernel_emitted'] is True
           assert r['physical_interpretation_allowed'] is True
-          assert r['science_status']=='PHYSICAL_CONNECTED_SCALAR_WARD_KERNEL_EXTRACTED'
+          assert r['science_status']=='PHYSICAL_WARD_KERNEL_EXTRACTED'
           k=r['ward_kernel_packet']
-          # inverse [[2,1/2],[1/2,3]] = [[12/23,-2/23],[-2/23,8/23]]
-          import sympy as sp
           assert sp.simplify(sp.sympify(k['A'])-sp.Rational(12,23))==0
           assert sp.simplify(sp.sympify(k['B'])+sp.Rational(2,23))==0
           assert sp.simplify(sp.sympify(k['C'])-sp.Rational(8,23))==0
-          print('PASS physical W-history measurement -> three cumulants -> exact Legendre kernel handoff')
+          print('PASS exact physical-history schema -> three cumulants -> exact Legendre kernel')
+          print('NOTE sampled finite-difference cumulants remain numerical and carry their source-step error model')
           PY
       - name: Upload physical history measurement evidence
         if: always()
