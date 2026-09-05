@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "parent_physicalization_ledger": "physicalization_gates.json",
-  "scientific_status": "exact local shape 1PI plus derived collective scalar carrier plus frozen conserved external probe convention; physical scalar kernel and cosmology remain open",
+  "scientific_status": "exact local shape 1PI + collective scalar carrier + exact flat scalar Ward quotient + frozen conserved external probe; physical scalar kernel and cosmology remain open",
   "gates": [
     {
       "id": "Q2_LOCAL_SHAPE_1PI",
@@ -57,15 +57,17 @@
       "id": "PHYSICAL_SCALAR_GAUGE_REDUCTION",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "Derive the complete theory-specific scalar constraint/gauge block, including lapse and longitudinal shift or an equivalent relational gauge-invariant construction, then feed it through the already-implemented exact Dirac/Schur reduction engine before identifying Bardeen Phi/Psi or any extra scalar pole.",
+      "claim": "The exact finite Dirac/Schur reduction engine and the exact flat/local scalar Ward quotient are now closed algebraically. The theory-specific background-dependent scalar constraint/gauge block must still be derived; on a flat local background the symmetric Ward-compatible 4x4 ADM kernel is completely parameterized by only three functions A,B,C on the gauge-invariant basis (Q,zeta).",
       "evidence": [
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "SCALAR_ADM_DIRAC_REDUCTION.md",
+        "SCALAR_ADM_WARD_QUOTIENT.md",
         "scripts/scalar_adm_dirac_response_gate.py",
+        "scripts/scalar_adm_ward_basis_gate.py",
         "FLUX_DEWITT_SIGNATURE_THEOREM.md",
         "scripts/dual_k5_lapse_cochain_gate.py"
       ],
-      "hard_scope": "The reduction algorithm is now exact and tested, but the theory-specific lapse/shift/history block entries are not yet derived. An unreduced lapse, shift, conformal or gauge Hessian eigenmode may not be interpreted as dark matter, a scalar graviton or a ghost."
+      "hard_scope": "Flat/local Ward reduction is exact and reduces ten symmetric ADM entries to three functions, but FLRW/background-dependent gauge reduction and the theory-specific A(omega,k),B(omega,k),C(omega,k) remain uncomputed. No unreduced lapse/shift/conformal mode may be called a dark mode or ghost."
     },
     {
       "id": "PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING",
@@ -98,11 +100,12 @@
       "id": "PHYSICAL_BQG_SCALAR_KERNEL",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "After volume-history, lapse/shift block entries and connected interblock history are derived, use the frozen conserved probe convention and exact Dirac reduction engine to obtain Gamma_scalar^(2)(omega,k), then derive Phi, Psi, mu_BQG and Sigma_BQG without phenomenological fitting.",
+      "claim": "After volume-history, lapse/shift/history entries and connected interblock history are derived, use the three-function Ward quotient, frozen conserved probe convention and exact Dirac reduction engine to obtain Gamma_scalar^(2)(omega,k), then derive Phi, Psi, mu_BQG and Sigma_BQG without phenomenological fitting.",
       "evidence": [
         "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
         "Q2_COLLECTIVE_SCALAR_CARRIER.md",
         "SCALAR_ADM_DIRAC_REDUCTION.md",
+        "SCALAR_ADM_WARD_QUOTIENT.md",
         "CONSERVED_SCALAR_PROBE_CONVENTION.md",
         "BQG_SCALAR_RESPONSE_TO_MATTER.md",
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
@@ -115,6 +118,8 @@
     "Gamma_shape_local": "DERIVED_EXACT_POSITIVE_CONTROL",
     "Gamma_volume_local_j1": "DERIVED_EXACT_KINEMATIC_POSITIVE_CONTROL",
     "scalar_ADM_log_volume_seed_K_zetaV_zetaV": "18_EXACT_KINEMATIC_POSITIVE_CONTROL",
+    "flat_scalar_Ward_quotient": "EXACT_TWO_GAUGE_INVARIANTS_THREE_KERNEL_FUNCTIONS",
+    "flat_scalar_Ward_parameter_count": 3,
     "conserved_external_probe_interface": "FROZEN_UNIVERSAL_CONVENTION",
     "rho_hist_a": "OPEN_PHYSICAL",
     "Phi_a_k": "OPEN_PHYSICAL",
@@ -129,6 +134,7 @@
     "Do not identify a lapse smearing label with physical Psi.",
     "Do not interpret an unreduced lapse/shift/conformal gauge mode as a physical dark mode or ghost.",
     "Do not use a pseudoinverse of a strict multiplier block to manufacture a scalar pole.",
+    "Do not use the flat Ward quotient as a substitute for the FLRW/background-dependent Bardeen or relational gauge reduction.",
     "Do not define mu or Sigma from a vacuum kernel; the conserved probe interface is frozen but the physical reduced kernel is still required.",
     "Do not independently renormalize the source for dynamics and lensing.",
     "Do not identify the constraint spectral parameter z with physical omega.",
