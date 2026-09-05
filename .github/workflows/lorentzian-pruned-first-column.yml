@@ -7,6 +7,7 @@ on:
       - research/physical-scalar-kernel-dynamics
     paths:
       - 'scripts/peter_weyl_lorentzian_outer_from_middle_worker.py'
+      - 'scripts/peter_weyl_lorentzian_outer_from_middle_grouped_k_worker.py'
       - 'scripts/peter_weyl_lorentzian_pruned_first_column_aggregate.py'
       - 'scripts/peter_weyl_lorentzian_pruned_prefix_worker.py'
       - 'PETER_WEYL_LORENTZIAN_MIDDLE_PREFIX_RESULT.md'
@@ -71,14 +72,14 @@ jobs:
           github-token: ${{ github.token }}
           repository: Shtenco/binary_quantum_theory
           run-id: 33964666509
-      - name: Continue only the two exact outer C(K) branches
+      - name: Continue exact outer C(K), grouped over k by linearity
         run: |
-          python scripts/peter_weyl_lorentzian_outer_from_middle_worker.py \
+          python scripts/peter_weyl_lorentzian_outer_from_middle_grouped_k_worker.py \
             --middle-prefix-json results/middle/prefix_${{ matrix.idx }}.json \
             --source-node 0 \
             --input-index 0 \
             --output results/outer/prefix_${{ matrix.idx }}.json
-      - name: Verify requested prefix provenance
+      - name: Verify requested prefix provenance and grouped execution
         run: |
           python - <<'PY'
           import json
@@ -87,10 +88,14 @@ jobs:
           c=${{ matrix.c }}
           p=json.load(open(f'results/outer/prefix_{idx}.json'))
           assert p['passed'] is True
+          assert p['schema']=='BQG_LORENTZIAN_OUTER_FROM_MIDDLE_V1'
+          assert p['execution_mode']=='exact_grouped_k_linearity_v2'
           assert p['prefix']['b']==b and p['prefix']['c']==c
           assert p['middle_artifact']['science_status']=='MIDDLE_PREFIX_NONZERO'
           assert p['hard_integrity_checks']['exactly_eight_unique_aux_paths'] is True
-          print('PASS outer-prefix provenance', idx, (b,c), p['science_status'])
+          assert p['hard_integrity_checks']['exactly_four_grouped_ij_channels'] is True
+          assert p['outer_CK_call_count']==8
+          print('PASS grouped-k outer provenance', idx, (b,c), p['science_status'])
           PY
       - name: Upload exact signed prefix continuation
         uses: actions/upload-artifact@v4
