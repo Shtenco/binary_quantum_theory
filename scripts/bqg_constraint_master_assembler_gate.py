@@ -12,16 +12,18 @@ If explicit target tangential/diffeomorphism columns are supplied, it also adds
     M_D = sum_I D_I^dagger D_I,
     M_full = M_H + M_D.
 
-A spectral physical projector is emitted only when BOTH conditions hold:
+A spectral physical projector is emitted only when ALL conditions hold:
 
 1. the serialized domain is declared complete for the finite regulated habitat;
-2. the independent D_target/HDA requirement is closed on that same habitat,
-   either by real serialized D_target columns or by a matching machine-readable
-   certificate for the graph-changing dual-HH residual.
+2. E/L/D columns act in the declared common habitat and master convention;
+3. a matching BQG_QUANTUM_HDA_RESIDUAL_CERTIFICATE_V1 proves the actual
+   graph-changing quantum residual [H_k,H_l]-D_target on that same packet.
 
-Restricted boundary/Krylov domains are always diagnostics. A complete normal
-master with an OPEN D_target/HDA sector is also fail-closed and does not emit
-P_phys.
+Explicit D_target columns are necessary when those tangential constraints belong
+in M_full, but they are NOT by themselves a proof of HDA closure.
+
+Restricted boundary/Krylov domains, legacy target-only certificates, and
+HDA-uncertified complete masters are diagnostics and never emit P_phys.
 """
 from __future__ import annotations
 
@@ -31,7 +33,8 @@ import json
 from pathlib import Path
 import numpy as np
 
-DTARGET_SCHEMA = "BQG_DTARGET_HDA_CERTIFICATE_V1"
+LEGACY_DTARGET_SCHEMA = "BQG_DTARGET_HDA_CERTIFICATE_V1"
+QUANTUM_HDA_SCHEMA = "BQG_QUANTUM_HDA_RESIDUAL_CERTIFICATE_V1"
 
 
 def sparse_inner(a: dict, b: dict) -> complex:
@@ -130,27 +133,68 @@ def load_column(path: Path):
     return decode_state_rows(rows),data
 
 
-def load_dtarget_certificate(base:Path, manifest:dict, domain_label, master_hash):
-    rel=manifest.get("dtarget_hda_certificate")
-    if not rel:
-        return None,{"present":False,"valid_for_this_master":False,"reason":"no certificate supplied"}
-    p=(base/str(rel)).resolve(); cert=json.loads(p.read_text(encoding="utf-8"))
-    schema_ok=cert.get("schema")==DTARGET_SCHEMA
+def audit_hda_certificate(cert: dict, manifest: dict, master_hash: str):
+    schema=cert.get("schema")
+    if schema == LEGACY_DTARGET_SCHEMA:
+        return {
+            "schema": schema,
+            "schema_ok": False,
+            "legacy_target_only_schema": True,
+            "quantum_habitat_residual_certified": False,
+            "valid_for_this_master": False,
+            "reason": "legacy Dtarget target-side certificate cannot authorize P_phys; actual HH-Dtarget residual certificate required",
+        }
+
+    schema_ok=(schema==QUANTUM_HDA_SCHEMA)
     quantum_ok=bool(cert.get("quantum_habitat_residual_certified",False))
-    authorization=bool(cert.get("certified_for_physical_projector",False))
-    habitat=cert.get("habitat_identity")
-    chash=cert.get("constraint_family_hash")
-    habitat_ok=(habitat==domain_label)
-    hash_ok=(chash==master_hash)
-    valid=bool(schema_ok and quantum_ok and authorization and habitat_ok and hash_ok)
-    return cert,{
-        "present":True,"path":str(rel),"schema_ok":schema_ok,
-        "quantum_habitat_residual_certified":quantum_ok,
-        "certified_for_physical_projector":authorization,
-        "habitat_identity_matches":habitat_ok,"constraint_family_hash_matches":hash_ok,
-        "valid_for_this_master":valid,
-        "certificate_sha256":hashlib.sha256(p.read_bytes()).hexdigest(),
+    pre=cert.get("preconditions",{})
+    no_fit=bool(pre.get("lambda_was_not_fitted",False)) and not bool(
+        cert.get("norm_squared_polynomial",{}).get("lambda_fit_used_for_certification",True)
+    )
+    cert_hash=cert.get("hashes",{})
+    expected={
+        "habitat_hash": str(manifest.get("habitat_hash","")),
+        "domain_hash": str(manifest.get("domain_hash","")),
+        "constraint_packet_hash": str(master_hash),
+        "convention_hash": str(manifest.get("convention_hash","")),
     }
+    expected_present=all(bool(v) for v in expected.values())
+    hash_match={name: (str(cert_hash.get(name,""))==value) for name,value in expected.items()}
+    coverage_ok=bool(pre.get("domain_complete",False))
+    numerical_ok=bool(pre.get("numerical_controlled",False))
+    refinement_ok=bool(pre.get("refinement_pass",False))
+    valid=bool(
+        schema_ok and quantum_ok and no_fit and expected_present
+        and all(hash_match.values()) and coverage_ok and numerical_ok and refinement_ok
+    )
+    return {
+        "schema": schema,
+        "schema_ok": schema_ok,
+        "legacy_target_only_schema": False,
+        "quantum_habitat_residual_certified": quantum_ok,
+        "lambda_was_not_fitted": no_fit,
+        "expected_hashes_present": expected_present,
+        "hash_matches": hash_match,
+        "coverage_complete": coverage_ok,
+        "numerical_controlled": numerical_ok,
+        "refinement_pass": refinement_ok,
+        "valid_for_this_master": valid,
+        "reason": "matched actual quantum HDA residual certificate" if valid else "quantum HDA certificate does not satisfy same-master fail-closed contract",
+    }
+
+
+def load_hda_certificate(base:Path, manifest:dict, master_hash):
+    rel=manifest.get("quantum_hda_residual_certificate") or manifest.get("dtarget_hda_certificate")
+    if not rel:
+        return None,{"present":False,"valid_for_this_master":False,"reason":"no quantum HDA residual certificate supplied"}
+    p=(base/str(rel)).resolve(); cert=json.loads(p.read_text(encoding="utf-8"))
+    audit=audit_hda_certificate(cert,manifest,master_hash)
+    audit.update({
+        "present":True,
+        "path":str(rel),
+        "certificate_sha256":hashlib.sha256(p.read_bytes()).hexdigest(),
+    })
+    return cert,audit
 
 
 def assemble_manifest(manifest_path: Path):
@@ -186,34 +230,37 @@ def assemble_manifest(manifest_path: Path):
     explicit_dtarget=bool(D)
     Mfull=0.5*(MH+MD+(MH+MD).conj().T)
     pencil_hash=hash_arrays(MEE,MEL,MLL,MD)
-    cert,cert_audit=load_dtarget_certificate(base,m,domain_label,pencil_hash)
-    hda_closed=bool(explicit_dtarget or cert_audit["valid_for_this_master"])
+    cert,cert_audit=load_hda_certificate(base,m,pencil_hash)
+    hda_closed=bool(cert_audit["valid_for_this_master"])
     projector_allowed=bool(domain_complete and hda_closed)
     a=spectral_audit(Mfull)
     mixed_ratio=float(np.linalg.norm(MEL)/max(np.linalg.norm(MEE)+lam*lam*np.linalg.norm(MLL),1e-300))
 
     if not domain_complete:
         status="RESTRICTED_DOMAIN_MASTER_DIAGNOSTIC"
+    elif not hda_closed and explicit_dtarget:
+        status="COMPLETE_FINITE_FULL_DIRAC_MASTER_HDA_UNCERTIFIED"
     elif not hda_closed:
         status="COMPLETE_DOMAIN_MASTER_HDA_UNCERTIFIED"
     elif explicit_dtarget:
-        status="COMPLETE_FINITE_FULL_DIRAC_MASTER_WITH_EXPLICIT_DTARGET"
+        status="COMPLETE_FINITE_FULL_DIRAC_MASTER_QUANTUM_HDA_CERTIFIED"
     else:
-        status="COMPLETE_FINITE_MASTER_WITH_CERTIFIED_HDA_TARGET"
+        status="COMPLETE_FINITE_NORMAL_MASTER_QUANTUM_HDA_CERTIFIED"
 
     result={
         "status":status,"passed":True,"domain_label":domain_label,"domain_dimension":dim,"domain_complete":domain_complete,
+        "habitat_hash":m.get("habitat_hash"),"domain_hash":m.get("domain_hash"),"convention_hash":m.get("convention_hash"),
         "nodes":nodes,"lambda_L":lam,"master_pencil_hash":pencil_hash,
         "column_file_hashes":hashes,"per_node":rows,"dtarget_per_constraint":drows,
-        "explicit_dtarget_columns_in_master":explicit_dtarget,"hda_target_closed":hda_closed,
-        "dtarget_hda_certificate_audit":cert_audit,"mixed_block_relative_norm":mixed_ratio,
+        "explicit_dtarget_columns_in_master":explicit_dtarget,"quantum_hda_closed":hda_closed,
+        "quantum_hda_certificate_audit":cert_audit,"mixed_block_relative_norm":mixed_ratio,
         "normal_master_frobenius_norm":float(np.linalg.norm(MH)),"dtarget_master_frobenius_norm":float(np.linalg.norm(MD)),
         "spectrum":{"rank":a["rank"],"nullity":a["nullity"],"rank_tolerance":a["rank_tolerance"],
                     "eigenvalue_min":float(np.min(a["eigenvalues"])),"eigenvalue_max":float(np.max(a["eigenvalues"])),
                     "smallest_positive":a["smallest_positive"],"condition_number_on_support":a["condition_number_on_support"],
                     "eigenvalues":[float(x) for x in a["eigenvalues"]]},
         "physical_projector_emitted":projector_allowed,
-        "claim_boundary":"P_phys is emitted only for a complete finite habitat with the independent D_target/HDA requirement closed on the same constraint family. Restricted or HDA-uncertified spectra remain diagnostics."
+        "claim_boundary":"P_phys is emitted only for a complete finite habitat with a matching actual quantum HH-Dtarget residual certificate. Explicit Dtarget columns alone do not certify HDA closure."
     }
     if projector_allowed:
         P=a["P0"]
@@ -243,21 +290,61 @@ def selftest():
     Mfull=np.diag([1.,0.]); B=np.array([[1.],[0.]]); ar=spectral_audit(B.T@Mfull@B); af=spectral_audit(Mfull)
     restricted_ok=ar["nullity"]==0 and af["nullity"]==1
 
-    # HDA authorization controls. A complete normal domain is NOT enough. Real
-    # D_target columns close the requirement constructively and preserve the e0 kernel.
-    complete_without_d_authorized=False
+    # Explicit D_target is a constraint contribution, not an HDA proof.
     D0=np.diag([0.,1.,1.,1.,1.,1.]); MD,_=assemble_dtarget({"D_target_control":matrix_columns(D0)},dim)
     afd=spectral_audit(MH+MD)
-    explicit_d_ok=afd["nullity"]==1 and np.linalg.norm(afd["P0"]-np.outer(e0,e0))<2e-10
-    fail_closed_ok=(complete_without_d_authorized is False and explicit_d_ok)
+    explicit_d_spectrum_ok=afd["nullity"]==1 and np.linalg.norm(afd["P0"]-np.outer(e0,e0))<2e-10
 
-    return {"status":"BQG E/L/D_target outgoing-column master assembler regression","passed":bool(algebra_ok and restricted_ok and fail_closed_ok),
+    master_hash=hash_arrays(MEE,MEL,MLL,MD)
+    manifest={
+        "habitat_hash":"hab:test","domain_hash":"dom:test","convention_hash":"conv:test"
+    }
+    legacy={
+        "schema":LEGACY_DTARGET_SCHEMA,
+        "quantum_habitat_residual_certified":True,
+        "certified_for_physical_projector":True,
+    }
+    legacy_audit=audit_hda_certificate(legacy,manifest,master_hash)
+    legacy_rejected=not legacy_audit["valid_for_this_master"]
+
+    new_cert={
+        "schema":QUANTUM_HDA_SCHEMA,
+        "quantum_habitat_residual_certified":True,
+        "hashes":{
+            "habitat_hash":"hab:test",
+            "domain_hash":"dom:test",
+            "constraint_packet_hash":master_hash,
+            "convention_hash":"conv:test",
+        },
+        "preconditions":{
+            "domain_complete":True,
+            "numerical_controlled":True,
+            "refinement_pass":True,
+            "lambda_was_not_fitted":True,
+        },
+        "norm_squared_polynomial":{"lambda_fit_used_for_certification":False},
+    }
+    new_audit=audit_hda_certificate(new_cert,manifest,master_hash)
+    new_authorized=new_audit["valid_for_this_master"]
+    wrong_hash=json.loads(json.dumps(new_cert)); wrong_hash["hashes"]["domain_hash"]="dom:wrong"
+    wrong_hash_rejected=not audit_hda_certificate(wrong_hash,manifest,master_hash)["valid_for_this_master"]
+
+    fail_closed_ok=explicit_d_spectrum_ok and legacy_rejected and new_authorized and wrong_hash_rejected
+
+    return {"status":"BQG E/L/D_target outgoing-column master assembler regression",
+            "passed":bool(algebra_ok and restricted_ok and fail_closed_ok),
             "formula":"M_full=M_EE+lambda M_EL+lambda^2 M_LL+sum_I D_I^dagger D_I",
             "complete_normal_habitat_algebra_control":{"passed":bool(algebra_ok),"normal_nullity":a["nullity"],"normal_master_hash":hash_arrays(MEE,MEL,MLL)},
             "restricted_domain_negative_control":{"passed":bool(restricted_ok),"restricted_nullity":ar["nullity"],"full_nullity":af["nullity"]},
-            "hda_fail_closed_control":{"passed":bool(fail_closed_ok),"complete_normal_master_without_Dtarget_authorized":complete_without_d_authorized,
-                                       "explicit_Dtarget_full_master_nullity":afd["nullity"]},
-            "production_rule":"P_phys requires domain_complete=true AND either complete serialized D_target columns in M_full or a same-habitat/same-master quantum HDA certificate."}
+            "hda_fail_closed_control":{
+                "passed":bool(fail_closed_ok),
+                "explicit_Dtarget_spectrum_is_well_defined":bool(explicit_d_spectrum_ok),
+                "explicit_Dtarget_alone_authorized":False,
+                "legacy_target_only_certificate_rejected":bool(legacy_rejected),
+                "new_quantum_residual_certificate_authorized":bool(new_authorized),
+                "mismatched_hash_certificate_rejected":bool(wrong_hash_rejected),
+            },
+            "production_rule":"P_phys requires domain_complete=true AND a same-habitat/same-domain/same-master/same-convention BQG_QUANTUM_HDA_RESIDUAL_CERTIFICATE_V1. Explicit Dtarget columns alone never certify [H,H]=Dtarget."}
 
 
 def main():
