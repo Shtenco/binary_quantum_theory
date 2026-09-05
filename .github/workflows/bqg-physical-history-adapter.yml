@@ -6,6 +6,7 @@ on:
       - research/physical-scalar-kernel-dynamics
     paths:
       - 'scripts/bqg_physical_history_adapter_gate.py'
+      - 'scripts/hda_kernel_redundancy_gate.py'
       - 'scripts/q2_relational_metric_source_gate.py'
       - 'scripts/master_constraint_physical_projector_gate.py'
       - 'BQG_PHYSICAL_HISTORY_ADAPTER.md'
@@ -29,6 +30,8 @@ jobs:
         run: python scripts/master_constraint_physical_projector_gate.py --output verification_results/MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.json
       - name: Re-run existing relational metric-source control
         run: python scripts/q2_relational_metric_source_gate.py --output verification_results/Q2_RELATIONAL_METRIC_SOURCE.json
+      - name: Verify exact HDA-kernel redundancy and near-zero warning
+        run: python scripts/hda_kernel_redundancy_gate.py --output verification_results/HDA_KERNEL_REDUNDANCY.json
       - name: Run unified constraint-to-history adapter regression
         run: python scripts/bqg_physical_history_adapter_gate.py --output verification_results/BQG_PHYSICAL_HISTORY_ADAPTER.json
       - name: Upload regression evidence
