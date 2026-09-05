@@ -87,19 +87,20 @@ jobs:
           pattern: bqg-euclidean-master-image-*
           path: master_images
           merge-multiple: true
-      - name: Build actual mu2 and first Lanczos edge Gram
+      - name: Build actual mu2 and first Lanczos graph edge
         run: |
           python scripts/peter_weyl_euclidean_projected_heat_mu2_aggregate.py \
             --master-images master_images \
             --euclidean-packet e_packet \
             --output verification_results/BQG_EUCLIDEAN_PROJECTED_HEAT_MU2.json \
-            --spectral-packet verification_results/BQG_EUCLIDEAN_SPECTRAL_MOMENT_PACKET.json
+            --spectral-packet verification_results/BQG_EUCLIDEAN_SPECTRAL_MOMENT_PACKET.json \
+            --q1-dir verification_results/euclidean_master_lanczos_q1
       - name: Evaluate actual Euclidean spectral-history frontier fail-closed
         run: |
           python scripts/bqg_spectral_history_graph_gate.py \
             --packet verification_results/BQG_EUCLIDEAN_SPECTRAL_MOMENT_PACKET.json \
             --output verification_results/BQG_EUCLIDEAN_SPECTRAL_HISTORY_FRONTIER.json
-      - name: Upload actual Euclidean history evidence
+      - name: Upload actual Euclidean history and Q1 graph block evidence
         uses: actions/upload-artifact@v4
         with:
           name: bqg-euclidean-projected-heat-mu2-spectral-frontier
