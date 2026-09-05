@@ -6,14 +6,18 @@ on:
       - research/physical-scalar-kernel-dynamics
     paths:
       - PHYSICAL_SCALAR_IR_DISCRIMINATORS.md
+      - PHYSICAL_PROJECTOR_BLOCK_KRYLOV_HABITAT.md
       - scripts/scalar_ir_pole_discriminator_gate.py
       - scripts/regge_background_scale_discriminator_gate.py
+      - scripts/boundary_projector_krylov_positive_control.py
       - .github/workflows/scalar-structural-discriminators.yml
   pull_request:
     paths:
       - PHYSICAL_SCALAR_IR_DISCRIMINATORS.md
+      - PHYSICAL_PROJECTOR_BLOCK_KRYLOV_HABITAT.md
       - scripts/scalar_ir_pole_discriminator_gate.py
       - scripts/regge_background_scale_discriminator_gate.py
+      - scripts/boundary_projector_krylov_positive_control.py
       - .github/workflows/scalar-structural-discriminators.yml
 
 jobs:
@@ -35,3 +39,6 @@ jobs:
 
       - name: Run exact Regge/background homogeneity discriminator
         run: python scripts/regge_background_scale_discriminator_gate.py
+
+      - name: Run boundary-projector / block-Krylov positive control
+        run: python scripts/boundary_projector_krylov_positive_control.py
