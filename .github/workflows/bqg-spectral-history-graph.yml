@@ -1,0 +1,38 @@
+name: bqg-spectral-history-graph
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/physical-scalar-kernel-dynamics
+    paths:
+      - BQG_SPECTRAL_HISTORY_GRAPH.md
+      - scripts/bqg_spectral_history_graph_gate.py
+      - .github/workflows/bqg-spectral-history-graph.yml
+
+permissions:
+  contents: read
+
+jobs:
+  spectral-history-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install scientific dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Run exact finite spectral-history closure and fail-closed controls
+        run: |
+          python scripts/bqg_spectral_history_graph_gate.py \
+            --self-test \
+            --output verification_results/BQG_SPECTRAL_HISTORY_GRAPH_SELFTEST.json
+      - name: Upload spectral-history gate evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-spectral-history-graph-selftest
+          path: verification_results/BQG_SPECTRAL_HISTORY_GRAPH_SELFTEST.json
+          if-no-files-found: error
