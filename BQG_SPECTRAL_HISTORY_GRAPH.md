@@ -1,6 +1,6 @@
-# BQG spectral-history graph: exact finite cyclic closure of the physical master history
+# BQG spectral-history graph: exact finite cyclic closure of the master history
 
-Status: **spectral-history closure theorem and fail-closed production architecture added; full physical BQG history is not yet emitted because the production Lorentzian/HDA packet remains open.**
+Status: **finite spectral-history closure theorem + hardened fail-closed implementation. The spectral layer itself is not authorized to emit a physical BQG projector; physical promotion requires the independent evidence-linked certificate in `BQG_PHYSICAL_SPECTRAL_HISTORY_CERTIFICATE.md`.**
 
 ## 1. Purpose
 
@@ -17,21 +17,30 @@ BQG does **not** import a guessed Watts--Strogatz graph, a chosen node count `N`
 
 Instead, the spectral graph is **derived from the already-defined BQG master constraint**.
 
-The production chain is
+The finite spectral chain is
 
 ```text
-actual BQG constraint family
-        -> M_BQG >= 0
+actual regulated BQG master M_BQG >= 0
         -> declared boundary/source seed V
         -> block Krylov cyclic subspace K(M_BQG,V)
         -> block-Jacobi / spectral quotient J_V
         -> matrix-valued spectral measure dSigma_V(lambda)
         -> V^dag f(M_BQG) V
-        -> zero spectral weight / physical projector
-        -> existing O_rel -> Z_BQG -> W_BQG -> Gamma_BQG
+        -> candidate zero spectral weight / finite projector content
 ```
 
-No dark-matter, dark-energy, mass, coupling, or cosmological datum enters this construction.
+Physical promotion is a separate chain:
+
+```text
+finite spectral result
+  + complete full-master/HDA certificate on the same habitat
+  + refinement/rigging-map certificate
+  -> PHYSICAL_PROJECTOR_HISTORY certificate
+  + source-dressed convergence certificate
+  -> connected W[J] -> Gamma_BQG
+```
+
+No dark-matter, dark-energy, mass, coupling, or cosmological datum enters either construction.
 
 ---
 
@@ -45,13 +54,13 @@ Define the cyclic block-Krylov space
 \mathcal K_r(M,V)=\operatorname{span}\{V,MV,M^2V,\ldots,M^rV\}.
 \]
 
-Apply rank-revealing block Lanczos/Gram--Schmidt, obtaining orthonormal blocks `Q_n`.  In a non-deflated presentation the recurrence is
+Apply rank-revealing block Lanczos/Gram--Schmidt, obtaining orthonormal blocks `Q_n`. In a non-deflated presentation,
 
 \[
 M Q_n = Q_{n-1}B_n^\dagger+Q_nA_n+Q_{n+1}B_{n+1},
 \]
 
-with `A_n=A_n^dag` and the off-diagonal blocks `B_n` determined by the residual factorization.
+with `A_n=A_n^dag` and off-diagonal blocks `B_n` determined by residual factorization.
 
 The finite block-Jacobi matrix
 
@@ -60,7 +69,7 @@ J_r=Q^\dagger M Q,
 \qquad Q=(Q_0,\ldots,Q_r),
 \]
 
-is the **BQG spectral-history graph** on this seed.  Its block vertices are Krylov layers, its diagonal block weights are `A_n`, and its adjacent block-edge weights are `B_n`.
+is the **BQG spectral-history graph** on this seed. Its block vertices are Krylov layers, diagonal weights are `A_n`, and adjacent block-edge weights are `B_n`.
 
 If the next residual vanishes,
 
@@ -68,18 +77,16 @@ If the next residual vanishes,
 \boxed{B_{r+1}=0,}
 \]
 
-then `K_r` is invariant under `M`.  Consequently for every bounded Borel function `f` on the finite spectrum,
+then `K_r` is invariant under `M`. Consequently, for every bounded Borel function `f` on the finite spectrum,
 
 \[
 \boxed{
 V^\dagger f(M)V
-=E_0^\dagger f(J_r)E_0,
+=E_0^\dagger f(J_r)E_0.
 }
 \]
 
-where `E_0` embeds the seed into the first Lanczos block.
-
-Therefore the finite regulated boundary history closes **exactly**:
+Therefore the finite regulated seed history closes **exactly**:
 
 \[
 \boxed{
@@ -100,7 +107,9 @@ G_{V,0}
 }
 \]
 
-Here `sigma` is the master heat/projector-flow parameter.  It is **not** relational proper time and is **not** the physical frequency `omega`.
+Here `sigma` is the master heat/projector-flow parameter. It is **not** relational proper time and is **not** the physical frequency `omega`.
+
+This theorem says that the quotient contains the entire finite seed-visible functional calculus. It does not say that `M` has already been certified as the complete physical BQG master or that a continuum/refinement physical sector exists.
 
 ---
 
@@ -141,7 +150,7 @@ In particular,
 =\int \lambda^n d\Sigma_V(\lambda).
 \]
 
-Thus the already-measured BQG master moments are not a separate construction: they are moments of the same spectral graph that eventually yields the projector.
+Thus the BQG master moments are moments of the same derived spectral graph that supplies the finite heat history and candidate zero weight.
 
 ---
 
@@ -149,7 +158,7 @@ Thus the already-measured BQG master moments are not a separate construction: th
 
 A useful independent construction of the same finite cyclic quotient starts from certified moments.
 
-For depth `r`, form the block Hankel matrices
+For depth `r`, form
 
 \[
 \mathcal H_r=[\mu_{i+j}]_{i,j=0}^{r},
@@ -157,32 +166,32 @@ For depth `r`, form the block Hankel matrices
 \mathcal H_r^{(1)}=[\mu_{i+j+1}]_{i,j=0}^{r}.
 \]
 
-The first matrix is the Gram matrix of the raw block Krylov family
+`H_r` is the Gram matrix of the raw block Krylov family
 
 \[
 (V,MV,\ldots,M^rV).
 \]
 
-Whitening the numerical support of `H_r` and projecting `H_r^(1)` produces a finite Hermitian quotient operator `T_r`.  Its matrix-valued Gauss spectral measure reproduces the supplied Krylov moments.
+Whitening the numerical support of `H_r` and projecting `H_r^(1)` produces a finite Hermitian quotient operator `T_r`. Its matrix-valued Gauss spectral measure reproduces the supplied Krylov moments.
 
-A particularly useful exact finite closure certificate is rank stabilization:
+An exact finite closure certificate can be obtained from rank stabilization,
 
 \[
 \boxed{
 \operatorname{rank}\mathcal H_{r+1}
-=\operatorname{rank}\mathcal H_r.
+=\operatorname{rank}\mathcal H_r,
 }
 \]
 
-With a certified numerical error bound, this means `M^(r+1)V` introduces no new cyclic direction, hence the Krylov space is invariant.  In production BQG, numerical rank stabilization is accepted only when an upstream error certificate is supplied; a visually small singular value is not enough.
+provided an upstream numerical error certificate is supplied. A visually small singular value is not sufficient.
 
-The preferred production certificate remains the direct block-Lanczos residual norm because it measures termination without reconstructing high powers.
+The preferred production certificate remains the direct block-Lanczos residual norm because it tests termination without reconstructing high powers.
 
 ---
 
 ## 5. Current Euclidean history frontier
 
-For the orthonormal 32-state q=2 boundary seed `V0`, the Euclidean normal master already has
+For the orthonormal 32-state q=2 boundary seed `V0`, the Euclidean normal master has
 
 \[
 \mu_0=I_{32},
@@ -190,7 +199,7 @@ For the orthonormal 32-state q=2 boundary seed `V0`, the Euclidean normal master
 \mu_1=V_0^\dagger M_EV_0=M_{EE}.
 \]
 
-The current history-targeted producer computes
+The history-targeted producer computes
 
 \[
 Y=M_EV_0=\sum_v H_v^E H_v^E V_0
@@ -202,7 +211,7 @@ in the frozen Hermitian Euclidean convention, after which
 \mu_2=Y^\dagger Y.
 \]
 
-The first genuine master-Krylov residual Gram is therefore
+The first genuine master-Krylov residual Gram is
 
 \[
 \boxed{
@@ -219,9 +228,11 @@ If `R1=0` within a certified error bound, the Euclidean boundary cyclic space cl
 V_0^\dagger e^{-\sigma M_E}V_0=e^{-\sigma\mu_1}
 \]
 
-becomes an exact statement **for that finite Euclidean regulated sector**.
+is exact **for that finite Euclidean regulated sector**.
 
-If `R1` has positive rank, factor it to form the next normalized block `Q1`, evaluate one further master action, obtain `A1` and the next residual `B2`, and continue.  No dense ambient Peter--Weyl matrix is required.
+If `R1` has positive rank, factor it to form `Q1`, evaluate `M_E Q1`, obtain `A1` and the next residual `B2`, and continue. No dense ambient Peter--Weyl matrix is required.
+
+The historical production run did not finish all 32 `M_E b_i` columns, so the actual numerical `rank(R1)`, `Q1`, `B1`, `A1` and `B2` are not claimed yet. The calculation has been restarted on the recovered research branch.
 
 ---
 
@@ -235,7 +246,7 @@ V_0^\dagger P_0V_0
 
 is not sufficient to claim a physical two-point kernel or `Gamma^(2)`.
 
-For a declared source family `O_A`, the spectral seed must contain every state required by the desired source derivative.  For a quadratic source claim a safe finite seed is generated from
+For a declared source family `O_A`, the seed must contain every state needed by the desired source derivative. For a quadratic source claim a safe finite seed is generated from
 
 \[
 \boxed{
@@ -246,15 +257,13 @@ For a declared source family `O_A`, the spectral seed must contain every state r
 
 with the exact relational/time-ordered convention used by the existing source machinery.
 
-A block spectral graph built from this source-enriched seed simultaneously supplies all projector matrix elements needed by the zero-source amplitude, one-source derivative and quadratic connected Hessian on the declared source packet.
-
-For the full generating functional to all orders one would need the corresponding full source-generated cyclic algebra.  BQG does **not** need that stronger object before computing the finite scalar/TT quadratic kernels already targeted by the physicalization programme.
+A block spectral graph built from this source-enriched seed can supply all finite projector matrix elements needed by the zero-source amplitude, one-source derivative and quadratic source Hessian. Connected correlators still require the legal `W=log Z` construction and a source-dressed refinement certificate.
 
 ---
 
 ## 7. Spectral diagnostics imported without phenomenological fitting
 
-Once the graph is derived, rather than guessed, several diagnostics are legitimate.
+Once the graph is derived rather than guessed, several diagnostics are legitimate.
 
 ### Seed return probability
 
@@ -276,11 +285,11 @@ d_{s,M}^{(V)}(\sigma)
 }
 \]
 
-This is a **master/constraint spectral-flow diagnostic**.  It is not automatically the dimension of physical spacetime.  Any identification with a continuum spacetime spectral dimension requires an independent refinement/geometry theorem.
+This is a **master/constraint spectral-flow diagnostic**. It is not automatically the dimension of physical spacetime. Any identification with continuum spacetime spectral dimension requires an independent refinement/geometry theorem.
 
 ### Seed-weighted zeta function
 
-On the positive spectral support,
+On the positive finite spectral support,
 
 \[
 \boxed{
@@ -290,13 +299,13 @@ On the positive spectral support,
 }
 \]
 
-This can diagnose refinement stability and scaling.  It is not used to manufacture particle masses or fundamental constants.
+At finite regulator this is an ordinary finite sum; no analytic continuation is needed. It can diagnose refinement stability and scaling, but is not used to manufacture particle masses or fundamental constants.
 
 ---
 
 ## 8. What is explicitly rejected
 
-The following moves are forbidden in the BQG spectral-history pipeline:
+The following moves are forbidden:
 
 ```text
 choose N,K,p,xi to obtain desired physics;
@@ -306,39 +315,98 @@ identify sqrt(master eigenvalue) with particle mass;
 interpret master heat sigma as physical time;
 interpret a master resolvent parameter z as physical omega;
 tune beta/lambda to create a zero mode or a dark sector;
-add Krylov depth until a desired near-zero happens without a predeclared convergence test.
+add Krylov depth until a desired near-zero appears without a predeclared convergence test;
+set inline booleans in a moment packet and call that a physical certificate.
 ```
 
-The positive eigenvalues of `M_BQG` measure violation of the declared constraints at the finite regulator.  Physical particle poles, masses and propagation laws may only be read later from the source-dressed physical effective kernel `Gamma_BQG^(2)(omega,k)`.
+Positive eigenvalues of `M_BQG` measure violation of the declared constraints at the finite regulator. Physical particle poles, masses and propagation laws may only be read later from the source-dressed physical effective kernel `Gamma_BQG^(2)(omega,k)`.
 
 ---
 
-## 9. Fail-closed physical emission rule
+## 9. Hardened fail-closed emission rule
 
-The spectral graph may emit a **physical** BQG history/projector only if all of the following hold on the same declared production packet:
+The spectral graph layer **never emits a physical BQG history/projector by itself**.
 
-1. the seed cyclic history has a certified finite termination or controlled convergent limit;
-2. the master domain is complete for the declared regulated problem;
-3. the master constraint family is production-certified;
-4. the quantum HDA target is certified on the same habitat, or explicit independent `D_target` columns are included in the master;
-5. the seed is complete for the correlator/source claim being emitted.
+It may certify only
 
-Otherwise the graph is retained as a spectral diagnostic and `physical_projector_emitted=false`.
+```text
+finite_spectral_history_closed = true
+```
+
+and expose a
+
+```text
+candidate_zero_spectral_weight
+```
+
+when the finite cyclic quotient is closed.
+
+Inline fields such as
+
+```text
+domain_complete
+master_constraint_certified
+quantum_hda_or_explicit_dtarget_certified
+source_seed_complete_for_claim
+```
+
+are retained only as unverified declarations/backward-compatible diagnostics. Even if all are `true`, the strongest spectral-layer status is
+
+```text
+FINITE_SPECTRAL_HISTORY_CLOSED_PHYSICAL_CERTIFICATE_REQUIRED
+```
+
+and
+
+```text
+physical_history_closed = false
+physical_projector_emitted = false.
+```
+
+Physical promotion is delegated exclusively to
+
+```text
+scripts/bqg_physical_spectral_history_certificate_gate.py
+```
+
+which independently binds the spectral result to the complete full-master/HDA artifact through matching
+
+```text
+habitat_hash
+domain_hash
+convention_hash
+master_pencil_hash
+```
+
+and then additionally requires the refinement/rigging-map certificate defined in `BQG_PHYSICAL_SPECTRAL_HISTORY_CERTIFICATE.md`.
+
+Therefore a successful finite spectral calculation cannot, by construction, close the repository-level `PHYSICAL_PROJECTOR_HISTORY` gate without independent evidence.
 
 ---
 
 ## 10. Status
 
-The spectral-history **mathematical architecture is now closed** at finite regulator:
+The finite spectral-history **mathematical architecture is closed**:
 
 \[
 \boxed{
-M_{BQG}\to\mathcal K(M,V)\to J_V\to d\Sigma_V
+M\to\mathcal K(M,V)\to J_V\to d\Sigma_V
 \to V^\dagger e^{-\sigma M}V
-\to V^\dagger P_0V.
+\to V^\dagger\mathbf 1_{\{0\}}(M)V.
 }
 \]
 
-The current actual Euclidean BQG computation has reached `mu0`, `mu1` and the direct `mu2` producer.  Full physical BQG history remains open only because the production Lorentzian master data and quantum `HH <-> D_target` habitat certificate have not yet been completed on the same physical domain.
+The actual physical BQG history is **not** closed. Its evidence ladder is now explicit:
 
-That distinction is deliberate: **the route to close history no longer requires a new physical hypothesis; it requires completion of the already-defined microscopic constraint packets and spectral termination/refinement tests.**
+```text
+S0  finite spectral cyclic closure
+S1  complete full-master + matching HDA + spectral hash linkage
+S2  refinement/rigging projector and boundary-history convergence
+S3  source-dressed connected-history convergence
+```
+
+`PHYSICAL_PROJECTOR_HISTORY` may close only at S2, and connected source/correlator claims require S3.
+
+The current actual Euclidean BQG calculation is still before completed S0: `mu0` and `mu1` exist, the direct `mu2 -> R1 -> Q1,B1` producer exists, one historical real master-image shard was recovered, and the full 32-column calculation has been restarted. The production Lorentzian/full-master/HDA and refinement evidence remain additional independent requirements.
+
+This is the intended scientific boundary: **spectral closure is now a strong exact computational theorem, not a shortcut around physicalization.**
