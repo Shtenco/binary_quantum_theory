@@ -1,0 +1,148 @@
+name: scalar-adm-physical-response
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/scalar-adm-physical-response
+    paths:
+      - 'scripts/scalar_adm_dirac_response_gate.py'
+      - 'scripts/q2_scalar_adm_seed_gate.py'
+      - 'SCALAR_ADM_DIRAC_REDUCTION.md'
+      - '.github/workflows/scalar-adm-physical-response.yml'
+      - 'scripts/q2_first_scalar_effective_action_gate.py'
+      - 'scripts/q2_collective_scalar_carrier_gate.py'
+      - 'scripts/dual_k5_lapse_cochain_gate.py'
+      - 'scripts/nearest_block_s3_transfer_gate.py'
+
+permissions:
+  contents: read
+
+jobs:
+  scalar-adm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile new scalar ADM gates
+        run: |
+          python -m py_compile \
+            scripts/scalar_adm_dirac_response_gate.py \
+            scripts/q2_scalar_adm_seed_gate.py
+      - name: Reproduce upstream exact local scalar carriers
+        run: |
+          python scripts/q2_first_scalar_effective_action_gate.py \
+            --output verification_results/Q2_FIRST_SCALAR_EFFECTIVE_ACTION.json
+          python scripts/q2_collective_scalar_carrier_gate.py \
+            --output verification_results/Q2_COLLECTIVE_SCALAR_CARRIER.json
+      - name: Exact q2 scalar ADM seed
+        run: |
+          python scripts/q2_scalar_adm_seed_gate.py \
+            --output verification_results/Q2_SCALAR_ADM_SEED.json
+      - name: Exact Dirac Schur reduction and conserved-source controls
+        run: |
+          python scripts/scalar_adm_dirac_response_gate.py \
+            --output verification_results/SCALAR_ADM_DIRAC_ENGINE.json
+      - name: Fail-closed incomplete production packet
+        run: |
+          cat > verification_results/incomplete_packet.json <<'JSON'
+          {
+            "schema":"BQG_SCALAR_ADM_BLOCK_V1",
+            "constraint_variables":["deltaN"],
+            "response_variables":["zeta","E"],
+            "constraint_mode":"lagrange",
+            "constraint_matrix_A":[[1,0]],
+            "K_pp":[[3,0],[0,0]],
+            "J_p":[0,0],
+            "gauge_generators":[[0],[1]],
+            "physical_flags":{},
+            "provenance":{}
+          }
+          JSON
+          python scripts/scalar_adm_dirac_response_gate.py \
+            --packet verification_results/incomplete_packet.json \
+            --output verification_results/SCALAR_ADM_INCOMPLETE_PACKET_RESULT.json
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/SCALAR_ADM_INCOMPLETE_PACKET_RESULT.json'))
+          assert p['passed'] is True
+          r=p['production']
+          assert r['physical_dimension']==0
+          assert r['physical_kernel_emitted'] is False
+          assert r['science_status']=='REDUCTION_ONLY_PHYSICAL_INPUTS_INCOMPLETE'
+          print('PASS fail-closed incomplete scalar ADM packet')
+          PY
+      - name: Complete synthetic extra-scalar production control
+        run: |
+          cat > verification_results/complete_control_packet.json <<'JSON'
+          {
+            "schema":"BQG_SCALAR_ADM_BLOCK_V1",
+            "constraint_variables":["deltaN"],
+            "response_variables":["zeta","E","s"],
+            "constraint_mode":"lagrange",
+            "constraint_matrix_A":[[1,0,0]],
+            "K_pp":[[0,0,0],[0,0,0],[0,0,"w2-k2/4-2"]],
+            "J_p":[0,0,1],
+            "gauge_generators":[[0],[1],[0]],
+            "physical_flags":{
+              "theory_specific_history":true,
+              "volume_to_zeta_normalization_derived":true,
+              "lapse_response_derived":true,
+              "longitudinal_shift_response_derived":true,
+              "connected_interblock_kernel":true,
+              "ward_identity_certified":true,
+              "conserved_source_coupling":true
+            },
+            "provenance":{
+              "physical_history_hash":"synthetic-control-history",
+              "volume_source_hash":"synthetic-control-volume",
+              "lapse_response_hash":"synthetic-control-lapse",
+              "shift_response_hash":"synthetic-control-shift",
+              "ward_certificate_hash":"synthetic-control-ward",
+              "source_coupling_hash":"synthetic-control-source"
+            }
+          }
+          JSON
+          python scripts/scalar_adm_dirac_response_gate.py \
+            --packet verification_results/complete_control_packet.json \
+            --output verification_results/SCALAR_ADM_COMPLETE_CONTROL_RESULT.json
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/SCALAR_ADM_COMPLETE_CONTROL_RESULT.json'))
+          assert p['passed'] is True
+          r=p['production']
+          assert r['physical_dimension']==1
+          assert r['physical_kernel_emitted'] is True
+          assert r['science_status']=='PHYSICAL_SCALAR_KERNEL_REDUCED'
+          print('PASS complete synthetic production control')
+          PY
+      - name: Cross-check exact new seed values
+        run: |
+          python - <<'PY'
+          import json
+          seed=json.load(open('verification_results/Q2_SCALAR_ADM_SEED.json'))
+          eng=json.load(open('verification_results/SCALAR_ADM_DIRAC_ENGINE.json'))
+          assert seed['passed'] is True
+          assert seed['local_log_volume_1PI']['Gamma_second_at_0']=='18'
+          assert seed['local_log_volume_1PI']['Gamma_third_at_0']=='216'
+          assert seed['scalar_ADM_seed']['known_entry_count']==1
+          assert seed['physical_reduction_ready'] is False
+          assert eng['selftest']['pure_gravity_scalar_control']['physical_dimension']==0
+          assert eng['selftest']['extra_scalar_control']['physical_dimension']==1
+          print('PASS q2 scalar ADM exact seed and reduction controls')
+          PY
+      - name: Upload scalar ADM evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scalar-adm-physical-response-evidence
+          path: verification_results/
+          if-no-files-found: error
