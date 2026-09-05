@@ -7,6 +7,7 @@ on:
       - 'Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md'
       - 'Q2_COLLECTIVE_SCALAR_CARRIER.md'
       - 'BQG_SCALAR_RESPONSE_TO_MATTER.md'
+      - 'HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md'
       - 'q2_scalar_frontier.json'
       - 'physicalization_gates.json'
       - 'scripts/q2_first_scalar_effective_action_gate.py'
@@ -22,6 +23,7 @@ on:
       - 'Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md'
       - 'Q2_COLLECTIVE_SCALAR_CARRIER.md'
       - 'BQG_SCALAR_RESPONSE_TO_MATTER.md'
+      - 'HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md'
       - 'q2_scalar_frontier.json'
       - 'physicalization_gates.json'
       - 'scripts/q2_first_scalar_effective_action_gate.py'
@@ -96,6 +98,7 @@ jobs:
           assert carrier['cosmology_outputs']['mu_BQG_a_k'] == 'OPEN_PHYSICAL'
           assert carrier['cosmology_outputs']['Sigma_BQG_a_k'] == 'OPEN_PHYSICAL'
 
+          assert truth['required_scalar_physical_gates']['PHYSICAL_SCALAR_GAUGE_REDUCTION'] == 'open_physical'
           assert truth['required_scalar_physical_gates']['PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING'] == 'open_physical'
           for status in truth['required_scalar_physical_gates'].values():
               assert status == 'open_physical'
