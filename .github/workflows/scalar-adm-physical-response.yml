@@ -8,7 +8,11 @@ on:
     paths:
       - 'scripts/scalar_adm_dirac_response_gate.py'
       - 'scripts/q2_scalar_adm_seed_gate.py'
+      - 'scripts/conserved_scalar_probe_convention_gate.py'
+      - 'scripts/verify_q2_scalar_frontier.py'
       - 'SCALAR_ADM_DIRAC_REDUCTION.md'
+      - 'CONSERVED_SCALAR_PROBE_CONVENTION.md'
+      - 'q2_scalar_frontier.json'
       - '.github/workflows/scalar-adm-physical-response.yml'
       - 'scripts/q2_first_scalar_effective_action_gate.py'
       - 'scripts/q2_collective_scalar_carrier_gate.py'
@@ -36,7 +40,9 @@ jobs:
         run: |
           python -m py_compile \
             scripts/scalar_adm_dirac_response_gate.py \
-            scripts/q2_scalar_adm_seed_gate.py
+            scripts/q2_scalar_adm_seed_gate.py \
+            scripts/conserved_scalar_probe_convention_gate.py \
+            scripts/verify_q2_scalar_frontier.py
       - name: Reproduce upstream exact local scalar carriers
         run: |
           python scripts/q2_first_scalar_effective_action_gate.py \
@@ -51,6 +57,26 @@ jobs:
         run: |
           python scripts/scalar_adm_dirac_response_gate.py \
             --output verification_results/SCALAR_ADM_DIRAC_ENGINE.json
+      - name: Frozen universal conserved external probe
+        run: |
+          python scripts/conserved_scalar_probe_convention_gate.py \
+            --output verification_results/CONSERVED_SCALAR_PROBE_CONVENTION.json
+      - name: Verify updated fail-closed scalar frontier ledger
+        run: |
+          python scripts/verify_q2_scalar_frontier.py \
+            --output verification_results/Q2_SCALAR_FRONTIER_STATUS.json
+          python - <<'PY'
+          import json
+          p=json.load(open('verification_results/Q2_SCALAR_FRONTIER_STATUS.json'))
+          assert p['valid'] is True
+          assert p['frozen_scalar_interfaces']['PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING']=='frozen'
+          assert p['open_scalar_physical_gates']['PHYSICAL_LAPSE_RESPONSE_SOURCE']=='open_physical'
+          assert p['open_scalar_physical_gates']['CONNECTED_SCALAR_INTERBLOCK_HISTORY']=='open_physical'
+          assert p['open_scalar_physical_gates']['PHYSICAL_BQG_SCALAR_KERNEL']=='open_physical'
+          for v in p['cosmology_outputs'].values():
+              assert v=='OPEN_PHYSICAL'
+          print('PASS frozen probe + fail-closed scalar frontier truth')
+          PY
       - name: Fail-closed incomplete production packet
         run: |
           cat > verification_results/incomplete_packet.json <<'JSON'
@@ -63,8 +89,12 @@ jobs:
             "K_pp":[[3,0],[0,0]],
             "J_p":[0,0],
             "gauge_generators":[[0],[1]],
-            "physical_flags":{},
-            "provenance":{}
+            "physical_flags":{
+              "conserved_source_coupling":true
+            },
+            "provenance":{
+              "source_coupling_hash":"frozen-external-probe-convention"
+            }
           }
           JSON
           python scripts/scalar_adm_dirac_response_gate.py \
@@ -78,7 +108,7 @@ jobs:
           assert r['physical_dimension']==0
           assert r['physical_kernel_emitted'] is False
           assert r['science_status']=='REDUCTION_ONLY_PHYSICAL_INPUTS_INCOMPLETE'
-          print('PASS fail-closed incomplete scalar ADM packet')
+          print('PASS source-frozen but history-incomplete packet remains fail-closed')
           PY
       - name: Complete synthetic extra-scalar production control
         run: |
@@ -107,7 +137,7 @@ jobs:
               "lapse_response_hash":"synthetic-control-lapse",
               "shift_response_hash":"synthetic-control-shift",
               "ward_certificate_hash":"synthetic-control-ward",
-              "source_coupling_hash":"synthetic-control-source"
+              "source_coupling_hash":"frozen-external-probe-convention"
             }
           }
           JSON
@@ -124,12 +154,13 @@ jobs:
           assert r['science_status']=='PHYSICAL_SCALAR_KERNEL_REDUCED'
           print('PASS complete synthetic production control')
           PY
-      - name: Cross-check exact new seed values
+      - name: Cross-check exact new seed and probe values
         run: |
           python - <<'PY'
           import json
           seed=json.load(open('verification_results/Q2_SCALAR_ADM_SEED.json'))
           eng=json.load(open('verification_results/SCALAR_ADM_DIRAC_ENGINE.json'))
+          probe=json.load(open('verification_results/CONSERVED_SCALAR_PROBE_CONVENTION.json'))
           assert seed['passed'] is True
           assert seed['local_log_volume_1PI']['Gamma_second_at_0']=='18'
           assert seed['local_log_volume_1PI']['Gamma_third_at_0']=='216'
@@ -137,7 +168,10 @@ jobs:
           assert seed['physical_reduction_ready'] is False
           assert eng['selftest']['pure_gravity_scalar_control']['physical_dimension']==0
           assert eng['selftest']['extra_scalar_control']['physical_dimension']==1
-          print('PASS q2 scalar ADM exact seed and reduction controls')
+          assert probe['passed'] is True
+          assert probe['science_status']=='FROZEN_EXTERNAL_CONSERVED_PROBE_CONVENTION'
+          assert probe['flat_scalar_reference']['qT']==['0','0','0','0']
+          print('PASS q2 scalar ADM exact seed, reduction and frozen probe controls')
           PY
       - name: Upload scalar ADM evidence
         if: always()
