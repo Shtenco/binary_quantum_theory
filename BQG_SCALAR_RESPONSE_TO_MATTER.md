@@ -1,12 +1,12 @@
 # BQG scalar response to a conserved matter probe
 
-Status: **required physical-response interface identified; matter coupling not yet derived.**
+Status: **universal conserved external TEST-PROBE interface frozen; realistic microscopic matter sector and physical scalar kernel remain open.**
 
-The first q=2 scalar-effective-action calculation exposes an additional requirement that must be explicit before `mu_BQG` or `Sigma_BQG` can be called predictions.
+The first q=2 scalar-effective-action calculation exposed a requirement that must be explicit before `mu_BQG` or `Sigma_BQG` can be called predictions: a scalar metric Hessian by itself is a vacuum operator, while `mu` and `Sigma` are response coefficients to matter/energy.
 
-A scalar metric Hessian by itself is a vacuum operator.  The functions conventionally called `mu(a,k)` and `Sigma(a,k)` are response coefficients: they compare metric potentials to a matter/energy source.  Therefore BQG must either derive a universal matter coupling or clearly declare a conserved external probe used only to define the gravitational response.
+The repository now closes the allowed **option-2 response interface** without inventing a matter model: one conserved external test tensor is coupled universally to the metric, with the same normalization convention for dynamics, lensing and time delay.  This removes an otherwise free phenomenological source-coupling ambiguity while leaving realistic matter dynamics open.
 
-## 1. Required physical variational problem
+## 1. Frozen physical response interface
 
 After the theory-specific history has produced a physical metric effective action,
 
@@ -14,48 +14,64 @@ After the theory-specific history has produced a physical metric effective actio
 \Gamma_{grav}[g],
 \]
 
-the linear response about a background `g_bar` requires a source term of the form
+the linear response about a background `g_bar` is defined by
 
 \[
 \Gamma_{tot}[g;T]
-=\Gamma_{grav}[g]
-+S_{probe}[g;T].
+=\Gamma_{grav}[g]+S_{probe}[g;T],
 \]
 
-At linear order one may write schematically
-
-\[
-S_{probe}^{(1)}
-=\frac12\int d^4x\sqrt{-\bar g}\,
- h_{\mu\nu}T^{\mu\nu},
-\]
-
-with the normalization and sign frozen consistently with the emergent Einstein sector.
-
-The response equation is then
+with the frozen linear source term
 
 \[
 \boxed{
-\Gamma_{gg}^{(2)}\,h
-=-J_T
+S_{probe}^{(1)}
+=\frac12\int d^4x\sqrt{-\bar g}\,
+ h_{\mu\nu}T^{\mu\nu}.
 }
 \]
 
-on the properly gauge-fixed or gauge-quotiented physical space.
+No additional `alpha_dyn`, `alpha_lens` or dark-sector source normalization is introduced.
 
-Without `J_T` there is no operational definition of a modified Newtonian response.
+The response equation is
+
+\[
+\boxed{
+\Gamma_{gg}^{(2)}h=-J_T
+}
+\]
+
+on the correctly constrained/gauge-quotiented physical space.
+
+The absolute Newton/length normalization is inherited from the one common Einstein/physicalization scale.  This document does not calibrate that scale.
 
 ## 2. Conservation and Ward consistency
 
-A legal external probe must be conserved on the background,
+The external probe is required to satisfy
 
 \[
+\boxed{
 \bar\nabla_\mu T^{\mu\nu}=0.
+}
 \]
 
-The metric kernel must satisfy the corresponding diffeomorphism/Ward identities before scalar gauge reduction.  Gauge artefacts must not be mistaken for extra dark modes.
+For
 
-This is especially important because the DeWitt conformal direction is negative in the unreduced canonical kinetic form while lapse and shift enforce constraints.  A negative conformal direction before Hamiltonian/diffeomorphism reduction is not by itself a propagating ghost, and a local conformal Hessian is not by itself a dark-matter degree of freedom.
+\[
+\delta h_{\mu\nu}
+=\bar\nabla_\mu\xi_\nu+\bar\nabla_\nu\xi_\mu,
+\]
+
+one obtains, up to a boundary term,
+
+\[
+\delta S_{probe}^{(1)}
+=-\int d^4x\sqrt{-\bar g}\,\xi_\nu\bar\nabla_\mu T^{\mu\nu}=0.
+\]
+
+Thus the frozen probe has zero overlap with linearized pure-gauge metric directions.  `scripts/conserved_scalar_probe_convention_gate.py` verifies the same statement exactly in a flat Fourier scalar control.
+
+This does **not** prove that the future BQG metric kernel itself satisfies all required Ward identities; that remains a property of the theory-specific reduced kernel.
 
 ## 3. Scalar response variables
 
@@ -67,23 +83,27 @@ ds^2=a^2(\eta)
 +(1-2\Phi)d\mathbf x^2\right],
 \]
 
-the response to a conserved scalar matter perturbation can be summarized only after the physical kernel and coupling are derived.
+the same conserved `T^{mu nu}` supplies both source components.  In the flat reference convention,
 
-A standard bookkeeping convention is
+\[
+J_\Psi=-T^{00},
+\qquad
+J_\Phi=-\sum_iT^{ii}.
+\]
+
+Only after the physical reduced scalar kernel exists may the response be summarized as
 
 \[
 -k^2\Psi
 =4\pi G_{ref}a^2\,\mu_{BQG}(a,k)\,\rho\Delta,
 \]
 
-and
-
 \[
 -k^2(\Phi+\Psi)
 =8\pi G_{ref}a^2\,\Sigma_{BQG}(a,k)\,\rho\Delta.
 \]
 
-The reference Newton coupling and source normalization must come from the same one-scale physicalization convention used elsewhere in the repository.  `mu` and `Sigma` are outputs, not independent fit functions.
+The same `G_ref` / one-scale convention enters both equations.  `mu` and `Sigma` are outputs of one reduced kernel, not independent fit functions.
 
 The slip is then
 
@@ -92,27 +112,33 @@ The slip is then
 =\frac{2\Sigma}{\mu}-1
 \]
 
-when the above definitions apply.
+when these definitions apply.
 
-## 4. Lensing makes the source interface unavoidable
+## 4. Lensing and dynamics use one source
 
 Massive nonrelativistic dynamics primarily probes `Psi`.
 
-Weak/strong lensing and the gravitational Fermat/time-delay phase probe the Weyl combination
+Weak/strong lensing and the gravitational Fermat/time-delay phase probe
 
 \[
 \Phi_W=\frac{\Phi+\Psi}{2}.
 \]
 
-Therefore one derived response to the **same** conserved source must generate both sectors.  A theory that uses one coupling or effective mass for dynamics and another for lensing has not closed `LENSING_DYNAMICS_CLOSURE`.
+Because both are contractions of the response to the same `T^{mu nu}`, the source interface enforces
 
-## 5. Two physically distinct outcomes
+\[
+\boxed{\alpha_{dyn}=\alpha_{lens}}
+\]
 
-The future BQG scalar calculation can produce at least two qualitatively different classes of result.
+at the level of coupling convention.  This does not assert `Phi=Psi`; it forbids independent source renormalization between observables.
+
+A future failure of one derived kernel to fit both dynamics and lensing is therefore a falsification signal, not something repaired by introducing another coupling.
+
+## 5. Two physically distinct future outcomes
 
 ### A. Modified-constraint / modified-gravity response
 
-After lapse/shift reduction there may be no new propagating scalar pole, but the constraint kernel can differ from Einstein gravity:
+After lapse/shift reduction there may be no new propagating scalar pole, but
 
 \[
 \mu_{BQG}\ne1,
@@ -120,25 +146,25 @@ After lapse/shift reduction there may be no new propagating scalar pole, but the
 \Sigma_{BQG}\ne1.
 \]
 
-This is a modified-gravity interpretation.  To mimic dark matter it must reproduce dynamics, lensing, growth, background consistency and all stability constraints with the same kernel.
+This is a modified-gravity interpretation.  To mimic dark matter it must reproduce dynamics, lensing, growth and background consistency with the same kernel and frozen source interface.
 
 ### B. Emergent collective dark mode
 
-The connected physical history may instead generate an additional scalar pole or collective excitation.  Before it can be called dark matter it must satisfy, at minimum:
+The connected physical history may instead generate an additional scalar pole or collective excitation.  Before it can be called dark matter it must satisfy at minimum:
 
 - positive physical residue / no ghost;
-- stable dispersion;
-- sufficiently small effective sound speed on structure-forming scales if a cold component is claimed;
+- stable dispersion / no tachyon;
+- acceptable effective sound speed and clustering;
 - controlled anisotropic stress;
-- universal gravitational sourcing of `Phi/Psi`;
+- universal sourcing of `Phi/Psi` through the frozen probe interface;
 - a derived abundance/background history rather than a fitted density;
 - the same lensing-dynamics response.
 
 An additional pole is therefore a much stronger claim than a modified Poisson coefficient.
 
-## 6. Dark energy is a separate zero-momentum/background question
+## 6. Dark energy remains a separate background question
 
-A scalar response to `T_{mu nu}` does not by itself determine dark energy.
+A scalar response to `T_{mu nu}` does not determine dark energy.
 
 The homogeneous physical history must independently determine
 
@@ -157,19 +183,40 @@ w_{hist}(a)
 
 when the effective component is separately conserved in that description.
 
-A zero-source normalization such as `W(0)=0` or `Gamma(p0)=0` is not a vacuum-energy prediction because normalized finite traces remove an additive free-energy normalization.
+A normalized finite trace with `W(0)=0` or a local `Gamma(p0)=0` is not a vacuum-energy prediction.
 
-## 7. New physical gate
+## 7. Updated gate status
 
-The scalar frontier therefore requires
+The permitted response interface is now frozen through
+
+- `CONSERVED_SCALAR_PROBE_CONVENTION.md`;
+- `scripts/conserved_scalar_probe_convention_gate.py`;
+- the exact conservation/Ward reference control;
+- the one-scale/no-independent-lensing-coupling rule.
+
+Therefore the scalar frontier records
 
 ```text
-PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING = open_physical
+PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING = frozen
 ```
 
-until either:
+with the precise meaning:
 
-1. the BQG microscopic construction derives the relevant matter/probe coupling and normalization, or
-2. a conserved external test source is explicitly introduced only as a response probe, with its coupling fixed by the same emergent Einstein/one-scale convention and never refitted between dynamics and lensing.
+```text
+frozen external conserved TEST-PROBE convention
+!= microscopic realistic matter sector derived
+!= common physical scale calibrated
+!= physical BQG scalar kernel derived
+```
 
-Only after this interface and the physical scalar kernel are both frozen may `mu_BQG` and `Sigma_BQG` be promoted from symbols to predictions.
+The remaining route is now narrower:
+
+```text
+physical volume-history source
++ lapse/shift response block
++ connected scalar interblock history
++ Ward-certified Dirac reduction
++ frozen conserved probe
+-> Gamma_scalar^(2)(omega,k)
+-> Phi/Psi -> mu_BQG/Sigma_BQG.
+```
