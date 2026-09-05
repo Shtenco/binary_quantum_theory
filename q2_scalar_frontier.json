@@ -52,6 +52,17 @@
       "hard_scope": "A lapse cochain or HDA smearing label is not by itself the Bardeen/Newtonian lapse potential Psi or a physical susceptibility."
     },
     {
+      "id": "PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING",
+      "status": "open_physical",
+      "closure_role": "physical",
+      "claim": "Derive or explicitly fix a universal conserved matter/probe coupling to the physical metric response so that Phi/Psi, mu_BQG and Sigma_BQG are response predictions rather than vacuum-kernel symbols.",
+      "evidence": [
+        "BQG_SCALAR_RESPONSE_TO_MATTER.md",
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md"
+      ],
+      "hard_scope": "A vacuum scalar Hessian alone does not define mu or Sigma. The source normalization may not be independently refitted between dynamics and lensing, and the current repository does not derive a realistic matter sector."
+    },
+    {
       "id": "CONNECTED_SCALAR_INTERBLOCK_HISTORY",
       "status": "open_physical",
       "closure_role": "physical",
@@ -67,13 +78,14 @@
       "id": "PHYSICAL_BQG_SCALAR_KERNEL",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "After volume, lapse and connected interblock history are derived, gauge-reduce and Legendre-transform the physical connected scalar response to obtain Gamma_scalar^(2)(omega,k), then derive Phi, Psi, mu_BQG and Sigma_BQG without phenomenological fitting.",
+      "claim": "After volume, lapse, conserved source coupling and connected interblock history are derived, gauge-reduce and Legendre-transform the physical connected scalar response to obtain Gamma_scalar^(2)(omega,k), then derive Phi, Psi, mu_BQG and Sigma_BQG without phenomenological fitting.",
       "evidence": [
         "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
         "Q2_COLLECTIVE_SCALAR_CARRIER.md",
+        "BQG_SCALAR_RESPONSE_TO_MATTER.md",
         "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md"
       ],
-      "hard_scope": "No local shape Hessian, j=1 volume Hessian, TT coefficient, constraint eigenvalue or freely chosen mu/Sigma parametrization closes this gate."
+      "hard_scope": "No local shape Hessian, j=1 volume Hessian, TT coefficient, constraint eigenvalue, vacuum scalar kernel or freely chosen mu/Sigma parametrization closes this gate."
     }
   ],
   "current_outputs": {
@@ -89,6 +101,7 @@
     "Do not treat quadratic X/Z volume response as vacuum energy without a physical history/loop measure.",
     "Do not identify the normalized j=1 trace baseline p0=2/3 with a cosmological scale factor.",
     "Do not identify a lapse smearing label with physical Psi.",
+    "Do not define mu or Sigma from a vacuum kernel without one conserved matter/probe coupling and fixed source normalization.",
     "Do not identify the constraint spectral parameter z with physical omega.",
     "Do not fit independent mu and Sigma functions to close lensing and dynamics.",
     "Do not close physical scalar cosmology until the parent physicalization gates remain scientifically consistent."
