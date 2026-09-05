@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "parent_physicalization_ledger": "physicalization_gates.json",
-  "scientific_status": "all scalar/background downstream measurement and response machinery is closed from supplied theory-specific physical W/Gamma inputs; the actual source-dressed BQG W_phys and BQG Gamma_FLRW remain open physical outputs",
+  "scientific_status": "projected-boundary source-dressing/history seam plus all downstream scalar/background measurement and response machinery are closed as fail-closed interfaces; the actual theory-specific BQG physical projector/history, source-dressed W_phys and Gamma_FLRW remain open physical outputs",
   "gates": [
     {
       "id": "Q2_LOCAL_SHAPE_1PI",
@@ -87,6 +87,22 @@
       "hard_scope": "This freezes only the external gravitational-response probe interface allowed by option 2; it does not derive a realistic microscopic matter sector, does not calibrate the common physical scale, and does not make mu or Sigma physical until the theory-specific reduced metric kernel exists. Independent dynamics/lensing source renormalizations remain forbidden."
     },
     {
+      "id": "SCALAR_PROJECTED_SOURCE_HISTORY_BRIDGE",
+      "status": "frozen",
+      "closure_role": "physical",
+      "claim": "Freeze the fail-closed integration seam enlarged physical projector/source dressing -> projected and support-whitened scalar sources -> physical W-history measurement contract, together with the asymptotic near-zero rigging-limit control and the finite constraint-to-history adapter regression.",
+      "evidence": [
+        "PROJECTED_SOURCE_PHYSICAL_HISTORY_BRIDGE.md",
+        "scripts/boundary_projector_source_dressing_gate.py",
+        "scripts/bqg_physical_history_adapter_gate.py",
+        "scripts/near_zero_rigging_limit_gate.py",
+        "scripts/projected_source_history_bridge_gate.py",
+        "scripts/scalar_physical_history_cumulant_gate.py",
+        ".github/workflows/scalar-projected-source-history-bridge.yml"
+      ],
+      "hard_scope": "This freezes only the operator/source/history interface and no-shortcut logic. It does not generate or certify the theory-specific BQG physical projector/history or W_phys, does not identify master heat tau with relational time, does not identify constraint/Feshbach z with physical omega, and does not turn a static equal-history covariance or positive-control density matrix into a propagator or cosmological vacuum."
+    },
+    {
       "id": "SCALAR_PHYSICAL_W_HISTORY_MEASUREMENT_PIPELINE",
       "status": "frozen",
       "closure_role": "physical",
@@ -107,13 +123,14 @@
       "claim": "Compute the actual theory-specific source-dressed connected physical W_phys[J_Q,J_zeta;tau,r] with the certified Ward source insertions, physical boundary/history time, spatial separations, common history normalization and vacuum-disconnected pieces removed. The frozen measurement pipeline then produces G_QQ(omega,k), G_Qzeta(omega,k), G_zetazeta(omega,k).",
       "evidence": [
         "PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md",
+        "PROJECTED_SOURCE_PHYSICAL_HISTORY_BRIDGE.md",
         "CONNECTED_SCALAR_HISTORY_EXTRACTION.md",
         "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "NEAREST_BLOCK_S3_TRANSFER_CLOSURE.md",
         "FESHBACH_INTERBLOCK_EFFECTIVE_KERNEL.md"
       ],
-      "hard_scope": "The unresolved scalar physics is the actual theory-specific source-dressed W_phys and therefore its three connected Ward cumulants. Constraint-resolvent transfer data, local normalized traces, raw Z and z-spectral kernels are not substitutes."
+      "hard_scope": "The unresolved scalar physics is the actual theory-specific source-dressed W_phys and therefore its three connected Ward cumulants. Projector/source-dressing positive controls, constraint-resolvent transfer data, local normalized traces, raw Z and z-spectral kernels are not substitutes."
     },
     {
       "id": "SCALAR_CONNECTED_HISTORY_TO_RESPONSE_PIPELINE",
@@ -138,6 +155,7 @@
       "claim": "Once the actual theory-specific source-dressed W_phys is computed, the frozen W-history measurement and connected-history consumer pipelines deterministically produce Gamma_scalar^(2)(omega,k), Phi, Psi and pole/stability diagnostics; mu_BQG and Sigma_BQG then follow from the same frozen conserved source convention without phenomenological fitting.",
       "evidence": [
         "PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md",
+        "PROJECTED_SOURCE_PHYSICAL_HISTORY_BRIDGE.md",
         "SCALAR_ALGEBRAIC_PIPELINE_CLOSURE.md",
         "CONNECTED_SCALAR_HISTORY_EXTRACTION.md",
         "SCALAR_WARD_KERNEL_RESPONSE.md",
@@ -150,7 +168,7 @@
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md"
       ],
-      "hard_scope": "The complete map from a physical source-dressed W history to the scalar kernel and response is closed, but the BQG kernel itself remains open until that W_phys is actually computed. No local shape Hessian, j=1 volume Hessian, TT coefficient, constraint eigenvalue, unreduced gauge kernel, raw Z, Feshbach resolvent or freely chosen mu/Sigma parametrization closes this gate."
+      "hard_scope": "The complete map from a physical source-dressed W history to the scalar kernel and response is closed, but the BQG kernel itself remains open until that W_phys is actually computed. No local shape Hessian, j=1 volume Hessian, TT coefficient, constraint eigenvalue, unreduced gauge kernel, projected static covariance, raw Z, Feshbach resolvent or freely chosen mu/Sigma parametrization closes this gate."
     },
     {
       "id": "FLRW_HISTORY_EFFECTIVE_ACTION_RESPONSE_PIPELINE",
@@ -173,9 +191,11 @@
     "flat_scalar_Ward_quotient": "EXACT_TWO_GAUGE_INVARIANTS_THREE_KERNEL_FUNCTIONS",
     "flat_scalar_Ward_parameter_count": 3,
     "conserved_external_probe_interface": "FROZEN_UNIVERSAL_CONVENTION",
+    "scalar_projected_source_history_bridge": "FROZEN_PROJECTED_SOURCE_TO_W_HISTORY_SEAM",
     "scalar_physical_W_history_measurement_pipeline": "FROZEN_W_TO_GCONN",
     "scalar_connected_history_consumer_pipeline": "FROZEN_GCONN_TO_RESPONSE",
     "flrw_history_effective_action_response_pipeline": "FROZEN_GAMMA_FLRW_TO_RHO_P_W",
+    "upstream_projector_history_input": "OPEN_PHYSICAL_PROJECTOR_HISTORY",
     "upstream_scalar_history_input": "OPEN_PHYSICAL_W_phys[J_Q,J_zeta;tau,r]",
     "remaining_scalar_microscopic_inputs": [
       "G_QQ(omega,k)",
@@ -199,6 +219,7 @@
     "Do not use the flat Ward quotient as a substitute for the FLRW/background-dependent Bardeen or relational gauge reduction.",
     "Do not define mu or Sigma from a vacuum kernel; the conserved probe interface is frozen but the physical reduced kernel is still required.",
     "Do not independently renormalize the source for dynamics and lensing.",
+    "Do not identify master heat depth tau with physical relational time or omega.",
     "Do not identify the constraint spectral parameter z with physical omega.",
     "Do not replace connected W derivatives by raw Z derivatives or Feshbach/constraint moments.",
     "Do not fit independent mu and Sigma functions to close lensing and dynamics.",
