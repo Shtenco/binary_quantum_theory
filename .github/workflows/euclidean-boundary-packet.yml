@@ -12,6 +12,8 @@ on:
 permissions:
   contents: read
 
+# Production provenance refresh: current producer emits the explicit pruning
+# perturbation bound required by higher projected-heat moment gates.
 jobs:
   build-packet:
     runs-on: ubuntu-latest
@@ -24,7 +26,7 @@ jobs:
           cache: pip
       - name: Install scientific dependencies
         run: python -m pip install -r requirements.txt
-      - name: Build all 160 Euclidean outgoing columns once
+      - name: Build all 160 Euclidean outgoing columns with pruning certificate
         run: python scripts/peter_weyl_euclidean_boundary_packet.py --output-dir euclidean_boundary_packet
       - name: Upload reusable E-sector packet
         uses: actions/upload-artifact@v4
