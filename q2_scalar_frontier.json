@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "parent_physicalization_ledger": "physicalization_gates.json",
-  "scientific_status": "exact local shape 1PI + collective scalar carrier + exact flat scalar Ward quotient + frozen conserved external probe; physical scalar kernel and cosmology remain open",
+  "scientific_status": "scalar algebraic consumer pipeline closed from three connected physical cumulants through Ward kernel and response classification; theory-specific connected history and cosmology remain open",
   "gates": [
     {
       "id": "Q2_LOCAL_SHAPE_1PI",
@@ -57,7 +57,7 @@
       "id": "PHYSICAL_SCALAR_GAUGE_REDUCTION",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "The exact finite Dirac/Schur reduction engine and the exact flat/local scalar Ward quotient are now closed algebraically. The theory-specific background-dependent scalar constraint/gauge block must still be derived; on a flat local background the symmetric Ward-compatible 4x4 ADM kernel is completely parameterized by only three functions A,B,C on the gauge-invariant basis (Q,zeta).",
+      "claim": "The exact finite Dirac/Schur reduction engine and the exact flat/local scalar Ward quotient are closed algebraically. The theory-specific background-dependent scalar constraint/gauge block must still be derived; on a flat local background the symmetric Ward-compatible 4x4 ADM kernel is completely parameterized by only three functions A,B,C on the gauge-invariant basis (Q,zeta).",
       "evidence": [
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "SCALAR_ADM_DIRAC_REDUCTION.md",
@@ -67,7 +67,7 @@
         "FLUX_DEWITT_SIGNATURE_THEOREM.md",
         "scripts/dual_k5_lapse_cochain_gate.py"
       ],
-      "hard_scope": "Flat/local Ward reduction is exact and reduces ten symmetric ADM entries to three functions, but FLRW/background-dependent gauge reduction and the theory-specific A(omega,k),B(omega,k),C(omega,k) remain uncomputed. No unreduced lapse/shift/conformal mode may be called a dark mode or ghost."
+      "hard_scope": "Flat/local Ward reduction is exact and reduces ten symmetric ADM entries to three functions, but FLRW/background-dependent gauge reduction and the theory-specific physical connected history remain uncomputed. No unreduced lapse/shift/conformal mode may be called a dark mode or ghost."
     },
     {
       "id": "PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING",
@@ -87,21 +87,39 @@
       "id": "CONNECTED_SCALAR_INTERBLOCK_HISTORY",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "Compute nonfactorizing connected source cumulants between adjacent/refined blocks for the scalar carrier from the theory-specific physical history amplitude.",
+      "claim": "Compute exactly the three nonfactorizing connected physical cumulants G_QQ(omega,k), G_Qzeta(omega,k), G_zetazeta(omega,k) on the Ward source quotient from one theory-specific physical history after vacuum-disconnected pieces are removed and physical omega is certified.",
       "evidence": [
+        "CONNECTED_SCALAR_HISTORY_EXTRACTION.md",
         "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "NEAREST_BLOCK_S3_TRANSFER_CLOSURE.md",
         "FESHBACH_INTERBLOCK_EFFECTIVE_KERNEL.md"
       ],
-      "hard_scope": "The factorized q=2 source has exactly zero cross-block Hessian; constraint-resolvent transfer data are microscopic inputs but are not physical omega-dependent connected history correlators."
+      "hard_scope": "The unresolved microscopic scalar input is exactly the three physical connected cumulants. Constraint-resolvent transfer data, local normalized traces and z-spectral kernels are not substitutes for them."
+    },
+    {
+      "id": "SCALAR_CONNECTED_HISTORY_TO_RESPONSE_PIPELINE",
+      "status": "frozen",
+      "closure_role": "physical",
+      "claim": "Freeze the exact fail-closed consumer map from a nonsingular physical connected Ward-source Hessian G_conn={G_QQ,G_Qzeta,G_zetazeta} through Gamma^(2)=G_conn^{-1}, the three Ward functions A,B,C, determinant AC-B^2, one conserved source response, Phi/Psi and omega^2 pole/residue/stability classification.",
+      "evidence": [
+        "CONNECTED_SCALAR_HISTORY_EXTRACTION.md",
+        "SCALAR_WARD_KERNEL_RESPONSE.md",
+        "scripts/scalar_connected_history_extractor_gate.py",
+        "scripts/scalar_connected_history_to_response_gate.py",
+        "scripts/scalar_ward_kernel_response_gate.py",
+        ".github/workflows/scalar-connected-history-closure.yml"
+      ],
+      "hard_scope": "This freezes only deterministic algebra after the physical connected cumulants are supplied. It does not compute those cumulants, does not turn a singular source Hessian into a pole by pseudoinverse, does not substitute constraint z for physical omega, and does not make any synthetic pole a BQG dark-matter prediction."
     },
     {
       "id": "PHYSICAL_BQG_SCALAR_KERNEL",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "After volume-history, lapse/shift/history entries and connected interblock history are derived, use the three-function Ward quotient, frozen conserved probe convention and exact Dirac reduction engine to obtain Gamma_scalar^(2)(omega,k), then derive Phi, Psi, mu_BQG and Sigma_BQG without phenomenological fitting.",
+      "claim": "Once the three theory-specific connected physical cumulants are computed on the certified Ward source quotient, the frozen connected-history consumer pipeline deterministically produces Gamma_scalar^(2)(omega,k), Phi, Psi and pole/stability diagnostics; mu_BQG and Sigma_BQG then follow from the same frozen conserved source convention without phenomenological fitting.",
       "evidence": [
+        "CONNECTED_SCALAR_HISTORY_EXTRACTION.md",
+        "SCALAR_WARD_KERNEL_RESPONSE.md",
         "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
         "Q2_COLLECTIVE_SCALAR_CARRIER.md",
         "SCALAR_ADM_DIRAC_REDUCTION.md",
@@ -111,7 +129,7 @@
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md"
       ],
-      "hard_scope": "No local shape Hessian, j=1 volume Hessian, TT coefficient, constraint eigenvalue, unreduced gauge kernel, vacuum scalar kernel or freely chosen mu/Sigma parametrization closes this gate."
+      "hard_scope": "The map from physical G_conn to the scalar kernel is closed, but the BQG kernel itself remains open until G_QQ, G_Qzeta and G_zetazeta are actually computed from the theory-specific physical history. No local shape Hessian, j=1 volume Hessian, TT coefficient, constraint eigenvalue, unreduced gauge kernel, vacuum scalar kernel or freely chosen mu/Sigma parametrization closes this gate."
     }
   ],
   "current_outputs": {
@@ -121,6 +139,12 @@
     "flat_scalar_Ward_quotient": "EXACT_TWO_GAUGE_INVARIANTS_THREE_KERNEL_FUNCTIONS",
     "flat_scalar_Ward_parameter_count": 3,
     "conserved_external_probe_interface": "FROZEN_UNIVERSAL_CONVENTION",
+    "scalar_connected_history_consumer_pipeline": "FROZEN_GCONN_TO_RESPONSE",
+    "remaining_scalar_microscopic_inputs": [
+      "G_QQ(omega,k)",
+      "G_Qzeta(omega,k)",
+      "G_zetazeta(omega,k)"
+    ],
     "rho_hist_a": "OPEN_PHYSICAL",
     "Phi_a_k": "OPEN_PHYSICAL",
     "Psi_a_k": "OPEN_PHYSICAL",
@@ -133,12 +157,13 @@
     "Do not identify the kinematic zeta_V log-volume coordinate with physical FLRW/Bardeen zeta before history normalization is derived.",
     "Do not identify a lapse smearing label with physical Psi.",
     "Do not interpret an unreduced lapse/shift/conformal gauge mode as a physical dark mode or ghost.",
-    "Do not use a pseudoinverse of a strict multiplier block to manufacture a scalar pole.",
+    "Do not use a pseudoinverse of a strict multiplier block or singular connected source Hessian to manufacture a scalar pole.",
     "Do not use the flat Ward quotient as a substitute for the FLRW/background-dependent Bardeen or relational gauge reduction.",
     "Do not define mu or Sigma from a vacuum kernel; the conserved probe interface is frozen but the physical reduced kernel is still required.",
     "Do not independently renormalize the source for dynamics and lensing.",
     "Do not identify the constraint spectral parameter z with physical omega.",
     "Do not fit independent mu and Sigma functions to close lensing and dynamics.",
+    "Do not call synthetic end-to-end controls BQG predictions.",
     "Do not close physical scalar cosmology until the parent physicalization gates remain scientifically consistent."
   ]
 }
