@@ -3,6 +3,7 @@
 
 A green result means the repository correctly distinguishes:
 - exact local shape / collective-volume positive controls;
+- exact flat/local scalar Ward quotient and Dirac reduction machinery;
 - the frozen universal conserved external TEST-PROBE convention;
 - still-open theory-specific volume-history, lapse/shift response, connected
   scalar history, physical scalar kernel, background cosmology and lensing.
@@ -102,6 +103,10 @@ def main()->int:
         errors.append("conserved_external_probe_interface must equal FROZEN_UNIVERSAL_CONVENTION")
     if outputs.get("scalar_ADM_log_volume_seed_K_zetaV_zetaV") != "18_EXACT_KINEMATIC_POSITIVE_CONTROL":
         errors.append("exact scalar ADM zeta_V seed must remain recorded as 18 kinematic positive control")
+    if outputs.get("flat_scalar_Ward_parameter_count") != 3:
+        errors.append("flat scalar Ward quotient must have exactly three kernel functions")
+    if outputs.get("flat_scalar_Ward_quotient") != "EXACT_TWO_GAUGE_INVARIANTS_THREE_KERNEL_FUNCTIONS":
+        errors.append("flat scalar Ward quotient status mismatch")
 
     pgates=parent.get("gates",[]) if isinstance(parent.get("gates",[]),list) else []
     prows={g.get("id"):g for g in pgates if isinstance(g,dict) and isinstance(g.get("id"),str)}
@@ -119,17 +124,30 @@ def main()->int:
     if "common physical scale" not in scope:
         errors.append("frozen probe hard_scope must keep common physical scale calibration separate")
 
+    gauge_gate=rows.get("PHYSICAL_SCALAR_GAUGE_REDUCTION",{})
+    gevidence=set(gauge_gate.get("evidence",[])) if isinstance(gauge_gate.get("evidence",[]),list) else set()
+    required_gauge_evidence={"SCALAR_ADM_DIRAC_REDUCTION.md","scripts/scalar_adm_dirac_response_gate.py","SCALAR_ADM_WARD_QUOTIENT.md","scripts/scalar_adm_ward_basis_gate.py"}
+    if not required_gauge_evidence <= gevidence:
+        errors.append("scalar gauge-reduction gate missing exact Dirac/Ward evidence")
+    gscope=gauge_gate.get("hard_scope","").lower()
+    if "flrw" not in gscope or "three functions" not in gscope:
+        errors.append("scalar gauge-reduction hard_scope must separate exact flat three-function quotient from open FLRW reduction")
+
     result={
         "schema_version":data.get("schema_version"),
         "valid":not errors,
         "gate_count":len(gates),
         "local_positive_controls":{gid:rows.get(gid,{}).get("status") for gid in sorted(REQUIRED_LOCAL)},
+        "exact_scalar_algebra":{
+            "flat_Ward_parameter_count":outputs.get("flat_scalar_Ward_parameter_count"),
+            "log_volume_seed":outputs.get("scalar_ADM_log_volume_seed_K_zetaV_zetaV"),
+        },
         "frozen_scalar_interfaces":{gid:rows.get(gid,{}).get("status") for gid in sorted(FROZEN_PHYSICAL)},
         "open_scalar_physical_gates":{gid:rows.get(gid,{}).get("status") for gid in sorted(OPEN_PHYSICAL)},
         "required_scalar_physical_gates":{gid:rows.get(gid,{}).get("status") for gid in sorted(REQUIRED_PHYSICAL)},
         "parent_open_guards":{gid:prows.get(gid,{}).get("status") for gid in sorted(PARENT_MUST_REMAIN_OPEN)},
         "cosmology_outputs":{key:outputs.get(key) for key in expected_open},
-        "scientific_interpretation":"GREEN means the local q=2 shape/volume controls, exact ADM reduction machinery and universal conserved external test-probe convention are recorded without promoting them to physical scalar cosmology. The theory-specific volume-history, lapse/shift response, connected scalar history, physical Gamma_scalar, background cosmology and lensing closure remain open.",
+        "scientific_interpretation":"GREEN means the local q=2 shape/volume controls, exact flat three-function Ward quotient, exact ADM reduction machinery and universal conserved external test-probe convention are recorded without promoting them to physical scalar cosmology. Theory-specific volume-history, lapse/shift/history entries, connected scalar history, physical Gamma_scalar, FLRW reduction, background cosmology and lensing closure remain open.",
         "errors":errors,
     }
     txt=json.dumps(result,indent=2); print(txt)
