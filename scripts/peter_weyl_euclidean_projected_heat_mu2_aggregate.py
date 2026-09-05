@@ -3,7 +3,8 @@
 
 Consumes a current Euclidean 5x32 one-hit packet with its pruning perturbation
 bound and all 32 raw-reference Y_i=M_E|b_i> master-image columns. Produces
-mu0, mu1=V0^dag Y, mu2=Y^dag Y and R1=mu2-mu1^dag mu1.
+mu0, mu1=V0^dag Y, mu2=Y^dag Y and R1=mu2-mu1^dag mu1. It can also serialize
+the actual orthonormal first master-Lanczos block Q1 and edge matrix B1.
 """
 from __future__ import annotations
 
@@ -50,6 +51,21 @@ def gram(states):
 
 def opnorm(a):
     return float(np.linalg.norm(a, 2)) if a.size else 0.0
+
+
+def add_scaled(dst, src, scale):
+    for k, z in src.items():
+        dst[k] = dst.get(k, 0.0j) + scale * z
+    for k in [k for k, z in dst.items() if z == 0.0j]:
+        del dst[k]
+
+
+def encode_state(state):
+    return [
+        {'spins': [int(x) for x in spins], 'K_labels': [int(x) for x in Ks],
+         'amp': [float(complex(z).real), float(complex(z).imag)]}
+        for (spins, Ks), z in sorted(state.items(), key=lambda kv: repr(kv[0]))
+    ]
 
 
 def load_master_images(root: Path):
@@ -138,6 +154,54 @@ def run(master_root: Path, e_packet_root: Path):
     r_psd = bool(float(np.min(r_ev)) >= -r_tol)
     residual_opnorm = max(0.0, float(np.max(r_ev)))
 
+    # Actual sparse residual columns R = M V0 - V0 A0.
+    residual_states = []
+    for i, yi in enumerate(Y):
+        ri = dict(yi)
+        for j, key in enumerate(basis):
+            z = mu1_raw[j, i]
+            if z != 0.0j:
+                ri[key] = ri.get(key, 0.0j) - z
+                if ri[key] == 0.0j:
+                    del ri[key]
+        residual_states.append(ri)
+    direct_R1_raw = gram(residual_states)
+    direct_R1 = 0.5 * (direct_R1_raw + direct_R1_raw.conj().T)
+    residual_gram_identity_error = opnorm(direct_R1 - R1)
+
+    # Rank-revealing first block factorization R=Q1 B1.
+    rev, rU = np.linalg.eigh(R1)
+    support = rev > r_tol
+    q1_states = []
+    if np.any(support):
+        Ur = rU[:, support]
+        lr = rev[support]
+        for a in range(len(lr)):
+            st = {}
+            for i, ri in enumerate(residual_states):
+                c = Ur[i, a] / np.sqrt(lr[a])
+                if c != 0.0j:
+                    add_scaled(st, ri, c)
+            q1_states.append(st)
+        B1 = np.sqrt(lr)[:, None] * Ur.conj().T
+        q1G = gram(q1_states)
+        q1_orth_error = opnorm(q1G - np.eye(len(q1_states)))
+        recurrence_error = 0.0
+        for i, yi in enumerate(Y):
+            rec = {}
+            for j, key in enumerate(basis):
+                if mu1_raw[j, i] != 0.0j:
+                    rec[key] = rec.get(key, 0.0j) + mu1_raw[j, i]
+            for a, qa in enumerate(q1_states):
+                add_scaled(rec, qa, B1[a, i])
+            diff = dict(yi)
+            add_scaled(diff, rec, -1.0)
+            recurrence_error = max(recurrence_error, np.sqrt(max(float(inner(diff, diff).real), 0.0)))
+    else:
+        B1 = np.zeros((0, 32), complex)
+        q1_orth_error = 0.0
+        recurrence_error = max(np.sqrt(max(float(inner(r, r).real), 0.0)) for r in residual_states)
+
     m1_ev = np.linalg.eigvalsh(mu1_raw)
     m2_ev = np.linalg.eigvalsh(mu2)
     checks = {
@@ -149,6 +213,9 @@ def run(master_root: Path, e_packet_root: Path):
         'mu1_positive_semidefinite': float(np.min(m1_ev)) >= -3e-9 * max(1.0, float(np.max(np.abs(m1_ev)))),
         'mu2_positive_semidefinite': float(np.min(m2_ev)) >= -3e-9 * max(1.0, float(np.max(np.abs(m2_ev)))),
         'R1_positive_semidefinite': r_psd,
+        'direct_sparse_residual_Gram_matches_moment_R1': residual_gram_identity_error <= max(numerical_slack, 1e-8),
+        'Q1_is_orthonormal_on_selected_support': q1_orth_error <= 5e-8,
+        'first_block_Lanczos_recurrence_reconstructs_master_images': recurrence_error <= 5e-8,
     }
 
     result = {
@@ -183,6 +250,11 @@ def run(master_root: Path, e_packet_root: Path):
             'trace': float(np.trace(R1).real),
             'frobenius_norm': float(np.linalg.norm(R1)),
             'matrix': SPECTRAL.encode_matrix(R1),
+            'B1_matrix': SPECTRAL.encode_matrix(B1),
+            'Q1_rank': len(q1_states),
+            'Q1_orthonormality_error': q1_orth_error,
+            'direct_sparse_residual_Gram_identity_error': residual_gram_identity_error,
+            'Lanczos_recurrence_max_sparse_norm_error': recurrence_error,
         },
         'integrity_checks': checks,
         'passed': bool(all(checks.values())),
@@ -230,7 +302,7 @@ def run(master_root: Path, e_packet_root: Path):
             'mu2_schema': result['schema'],
         },
     }
-    return result, spectral_packet
+    return result, spectral_packet, q1_states
 
 
 def main():
@@ -239,12 +311,31 @@ def main():
     ap.add_argument('--euclidean-packet', type=Path, required=True)
     ap.add_argument('--output', type=Path, required=True)
     ap.add_argument('--spectral-packet', type=Path, required=True)
+    ap.add_argument('--q1-dir', type=Path)
     a = ap.parse_args()
-    result, packet = run(a.master_images, a.euclidean_packet)
+    result, packet, q1_states = run(a.master_images, a.euclidean_packet)
     a.output.parent.mkdir(parents=True, exist_ok=True)
     a.output.write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     a.spectral_packet.parent.mkdir(parents=True, exist_ok=True)
     a.spectral_packet.write_text(json.dumps(packet, indent=2) + '\n', encoding='utf-8')
+    if a.q1_dir is not None:
+        a.q1_dir.mkdir(parents=True, exist_ok=True)
+        meta = {
+            'schema': 'BQG_EUCLIDEAN_MASTER_LANCZOS_Q1_V1',
+            'rank': len(q1_states),
+            'B1_matrix': result['first_master_lanczos_residual_gram']['B1_matrix'],
+            'operator_source_sha256': result['operator_source_sha256'],
+            'claim_boundary': 'First Euclidean master-Lanczos block only; no full history/projector claim.'
+        }
+        (a.q1_dir / 'q1_manifest.json').write_text(json.dumps(meta, indent=2) + '\n', encoding='utf-8')
+        for i, st in enumerate(q1_states):
+            payload = {
+                'schema': 'BQG_EUCLIDEAN_MASTER_LANCZOS_Q1_COLUMN_V1',
+                'q1_index': i,
+                'support': len(st),
+                'state': encode_state(st),
+            }
+            (a.q1_dir / f'q1_{i:02d}.json').write_text(json.dumps(payload, separators=(',', ':')) + '\n', encoding='utf-8')
     print(json.dumps({k: v for k, v in result.items() if k not in ('mu1', 'mu2', 'first_master_lanczos_residual_gram')}, indent=2))
     return 0 if result['passed'] else 1
 
