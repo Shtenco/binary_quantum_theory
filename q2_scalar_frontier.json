@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "parent_physicalization_ledger": "physicalization_gates.json",
+  "scientific_status": "exact local shape 1PI plus derived collective scalar carrier; physical scalar cosmology open",
+  "gates": [
+    {
+      "id": "Q2_LOCAL_SHAPE_1PI",
+      "status": "tested_finite",
+      "closure_role": "positive_control",
+      "claim": "The registered q=2 relational source has an exact nonlinear radial Legendre transform and an exact induced local intrinsic-metric shape action.",
+      "evidence": [
+        "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
+        "scripts/q2_first_scalar_effective_action_gate.py"
+      ],
+      "hard_scope": "This is the existing C8/R=J relational positive-control source, not the theory-specific graph-changing physical gravitational history."
+    },
+    {
+      "id": "Q2_COLLECTIVE_CONFORMAL_VOLUME_CARRIER",
+      "status": "tested_finite",
+      "closure_role": "positive_control",
+      "claim": "Common flux scaling is the conformal DeWitt direction, fixed j=1/2 freezes absolute volume, and the conditionally derived two-strand j=1 sector is the first registered equal-spin four-valent carrier with non-scalar absolute volume and an exact local normalized-trace volume Legendre transform.",
+      "evidence": [
+        "Q2_COLLECTIVE_SCALAR_CARRIER.md",
+        "FLUX_DEWITT_SIGNATURE_THEOREM.md",
+        "COLLECTIVE_J1_VOLUME_DYNAMICS.md",
+        "scripts/q2_collective_scalar_carrier_gate.py",
+        "scripts/collective_volume_rg_gate.py",
+        "scripts/q2_symmetric_block_peter_weyl_growth_gate.py"
+      ],
+      "hard_scope": "Symmetric blocking remains conditional and the j=1 volume source is a kinematic normalized trace, not a physical FLRW history measure."
+    },
+    {
+      "id": "PHYSICAL_VOLUME_HISTORY_SOURCE",
+      "status": "open_physical",
+      "closure_role": "physical",
+      "claim": "Derive the common-flux-scale/volume source insertion and its weights inside the actual graph-changing physical projector or history amplitude.",
+      "evidence": [
+        "Q2_COLLECTIVE_SCALAR_CARRIER.md",
+        "MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md"
+      ],
+      "hard_scope": "The existence of a nontrivial j=1 volume spectrum and a normalized kinematic source does not determine physical history weights or a cosmological scale factor."
+    },
+    {
+      "id": "PHYSICAL_LAPSE_RESPONSE_SOURCE",
+      "status": "open_physical",
+      "closure_role": "physical",
+      "claim": "Promote the existing lapse-smearing/cochain structure to a source-dressed physical response variable whose connected history derivatives enter the scalar metric effective action.",
+      "evidence": [
+        "Q2_COLLECTIVE_SCALAR_CARRIER.md",
+        "scripts/dual_k5_lapse_cochain_gate.py"
+      ],
+      "hard_scope": "A lapse cochain or HDA smearing label is not by itself the Bardeen/Newtonian lapse potential Psi or a physical susceptibility."
+    },
+    {
+      "id": "CONNECTED_SCALAR_INTERBLOCK_HISTORY",
+      "status": "open_physical",
+      "closure_role": "physical",
+      "claim": "Compute nonfactorizing connected source cumulants between adjacent/refined blocks for the scalar carrier from the theory-specific physical history amplitude.",
+      "evidence": [
+        "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
+        "NEAREST_BLOCK_S3_TRANSFER_CLOSURE.md",
+        "FESHBACH_INTERBLOCK_EFFECTIVE_KERNEL.md"
+      ],
+      "hard_scope": "The factorized q=2 source has exactly zero cross-block Hessian; constraint-resolvent transfer data are microscopic inputs but are not physical omega-dependent connected history correlators."
+    },
+    {
+      "id": "PHYSICAL_BQG_SCALAR_KERNEL",
+      "status": "open_physical",
+      "closure_role": "physical",
+      "claim": "After volume, lapse and connected interblock history are derived, gauge-reduce and Legendre-transform the physical connected scalar response to obtain Gamma_scalar^(2)(omega,k), then derive Phi, Psi, mu_BQG and Sigma_BQG without phenomenological fitting.",
+      "evidence": [
+        "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
+        "Q2_COLLECTIVE_SCALAR_CARRIER.md",
+        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md"
+      ],
+      "hard_scope": "No local shape Hessian, j=1 volume Hessian, TT coefficient, constraint eigenvalue or freely chosen mu/Sigma parametrization closes this gate."
+    }
+  ],
+  "current_outputs": {
+    "Gamma_shape_local": "DERIVED_EXACT_POSITIVE_CONTROL",
+    "Gamma_volume_local_j1": "DERIVED_EXACT_KINEMATIC_POSITIVE_CONTROL",
+    "rho_hist_a": "OPEN_PHYSICAL",
+    "Phi_a_k": "OPEN_PHYSICAL",
+    "Psi_a_k": "OPEN_PHYSICAL",
+    "mu_BQG_a_k": "OPEN_PHYSICAL",
+    "Sigma_BQG_a_k": "OPEN_PHYSICAL"
+  },
+  "forbidden_shortcuts": [
+    "Do not treat quadratic X/Z volume response as vacuum energy without a physical history/loop measure.",
+    "Do not identify the normalized j=1 trace baseline p0=2/3 with a cosmological scale factor.",
+    "Do not identify a lapse smearing label with physical Psi.",
+    "Do not identify the constraint spectral parameter z with physical omega.",
+    "Do not fit independent mu and Sigma functions to close lensing and dynamics.",
+    "Do not close physical scalar cosmology until the parent physicalization gates remain scientifically consistent."
+  ]
+}
