@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "parent_physicalization_ledger": "physicalization_gates.json",
-  "scientific_status": "exact local shape 1PI plus derived collective scalar carrier; physical scalar cosmology open",
+  "scientific_status": "exact local shape 1PI plus derived collective scalar carrier plus frozen conserved external probe convention; physical scalar kernel and cosmology remain open",
   "gates": [
     {
       "id": "Q2_LOCAL_SHAPE_1PI",
@@ -57,25 +57,29 @@
       "id": "PHYSICAL_SCALAR_GAUGE_REDUCTION",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "Derive the complete scalar constraint/gauge reduction, including lapse and longitudinal shift or an equivalent relational gauge-invariant construction, before identifying Bardeen Phi/Psi or any extra scalar pole.",
+      "claim": "Derive the complete theory-specific scalar constraint/gauge block, including lapse and longitudinal shift or an equivalent relational gauge-invariant construction, then feed it through the already-implemented exact Dirac/Schur reduction engine before identifying Bardeen Phi/Psi or any extra scalar pole.",
       "evidence": [
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
+        "SCALAR_ADM_DIRAC_REDUCTION.md",
+        "scripts/scalar_adm_dirac_response_gate.py",
         "FLUX_DEWITT_SIGNATURE_THEOREM.md",
         "scripts/dual_k5_lapse_cochain_gate.py"
       ],
-      "hard_scope": "An unreduced lapse, shift, conformal or gauge Hessian eigenmode may not be interpreted as dark matter, a scalar graviton or a ghost. Constraint variables must be imposed/eliminated consistently with Ward/HDA structure."
+      "hard_scope": "The reduction algorithm is now exact and tested, but the theory-specific lapse/shift/history block entries are not yet derived. An unreduced lapse, shift, conformal or gauge Hessian eigenmode may not be interpreted as dark matter, a scalar graviton or a ghost."
     },
     {
       "id": "PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING",
-      "status": "open_physical",
+      "status": "frozen",
       "closure_role": "physical",
-      "claim": "Derive or explicitly fix a universal conserved matter/probe coupling to the physical metric response so that Phi/Psi, mu_BQG and Sigma_BQG are response predictions rather than vacuum-kernel symbols.",
+      "claim": "Freeze the permitted external conserved TEST-PROBE convention S_probe^(1)=1/2 int sqrt(-gbar) h_munu T^munu, with nabla_bar_mu T^munu=0 and one universal source normalization shared by dynamics, lensing and time-delay response.",
       "evidence": [
         "BQG_SCALAR_RESPONSE_TO_MATTER.md",
+        "CONSERVED_SCALAR_PROBE_CONVENTION.md",
+        "scripts/conserved_scalar_probe_convention_gate.py",
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
-        "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md"
+        "PHYSICALIZATION_SCALE_OBSERVABLE_PREDICTION.md"
       ],
-      "hard_scope": "A vacuum scalar Hessian alone does not define mu or Sigma. The source normalization may not be independently refitted between dynamics and lensing, and the current repository does not derive a realistic matter sector."
+      "hard_scope": "This freezes only the external gravitational-response probe interface allowed by option 2; it does not derive a realistic microscopic matter sector, does not calibrate the common physical scale, and does not make mu or Sigma physical until the theory-specific reduced metric kernel exists. Independent dynamics/lensing source renormalizations remain forbidden."
     },
     {
       "id": "CONNECTED_SCALAR_INTERBLOCK_HISTORY",
@@ -94,10 +98,12 @@
       "id": "PHYSICAL_BQG_SCALAR_KERNEL",
       "status": "open_physical",
       "closure_role": "physical",
-      "claim": "After volume, lapse, gauge reduction, conserved source coupling and connected interblock history are derived, Legendre-transform the physical connected scalar response to obtain Gamma_scalar^(2)(omega,k), then derive Phi, Psi, mu_BQG and Sigma_BQG without phenomenological fitting.",
+      "claim": "After volume-history, lapse/shift block entries and connected interblock history are derived, use the frozen conserved probe convention and exact Dirac reduction engine to obtain Gamma_scalar^(2)(omega,k), then derive Phi, Psi, mu_BQG and Sigma_BQG without phenomenological fitting.",
       "evidence": [
         "Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md",
         "Q2_COLLECTIVE_SCALAR_CARRIER.md",
+        "SCALAR_ADM_DIRAC_REDUCTION.md",
+        "CONSERVED_SCALAR_PROBE_CONVENTION.md",
         "BQG_SCALAR_RESPONSE_TO_MATTER.md",
         "HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md",
         "UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md"
@@ -108,6 +114,8 @@
   "current_outputs": {
     "Gamma_shape_local": "DERIVED_EXACT_POSITIVE_CONTROL",
     "Gamma_volume_local_j1": "DERIVED_EXACT_KINEMATIC_POSITIVE_CONTROL",
+    "scalar_ADM_log_volume_seed_K_zetaV_zetaV": "18_EXACT_KINEMATIC_POSITIVE_CONTROL",
+    "conserved_external_probe_interface": "FROZEN_UNIVERSAL_CONVENTION",
     "rho_hist_a": "OPEN_PHYSICAL",
     "Phi_a_k": "OPEN_PHYSICAL",
     "Psi_a_k": "OPEN_PHYSICAL",
@@ -117,9 +125,12 @@
   "forbidden_shortcuts": [
     "Do not treat quadratic X/Z volume response as vacuum energy without a physical history/loop measure.",
     "Do not identify the normalized j=1 trace baseline p0=2/3 with a cosmological scale factor.",
+    "Do not identify the kinematic zeta_V log-volume coordinate with physical FLRW/Bardeen zeta before history normalization is derived.",
     "Do not identify a lapse smearing label with physical Psi.",
     "Do not interpret an unreduced lapse/shift/conformal gauge mode as a physical dark mode or ghost.",
-    "Do not define mu or Sigma from a vacuum kernel without one conserved matter/probe coupling and fixed source normalization.",
+    "Do not use a pseudoinverse of a strict multiplier block to manufacture a scalar pole.",
+    "Do not define mu or Sigma from a vacuum kernel; the conserved probe interface is frozen but the physical reduced kernel is still required.",
+    "Do not independently renormalize the source for dynamics and lensing.",
     "Do not identify the constraint spectral parameter z with physical omega.",
     "Do not fit independent mu and Sigma functions to close lensing and dynamics.",
     "Do not close physical scalar cosmology until the parent physicalization gates remain scientifically consistent."
