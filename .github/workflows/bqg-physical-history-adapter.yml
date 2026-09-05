@@ -9,6 +9,9 @@ on:
       - 'scripts/hda_kernel_redundancy_gate.py'
       - 'scripts/q2_relational_metric_source_gate.py'
       - 'scripts/master_constraint_physical_projector_gate.py'
+      - 'scripts/physical_cosmology_background_scalar_gate.py'
+      - 'scripts/binary_history_interference_lensing_gate.py'
+      - 'UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md'
       - 'BQG_PHYSICAL_HISTORY_ADAPTER.md'
       - '.github/workflows/bqg-physical-history-adapter.yml'
   workflow_dispatch:
@@ -34,7 +37,11 @@ jobs:
         run: python scripts/hda_kernel_redundancy_gate.py --output verification_results/HDA_KERNEL_REDUNDANCY.json
       - name: Run unified constraint-to-history adapter regression
         run: python scripts/bqg_physical_history_adapter_gate.py --output verification_results/BQG_PHYSICAL_HISTORY_ADAPTER.json
-      - name: Upload regression evidence
+      - name: Re-run existing background and scalar-cosmology reference map
+        run: python scripts/physical_cosmology_background_scalar_gate.py --output verification_results/PHYSICAL_COSMOLOGY_BACKGROUND_SCALAR_REFERENCE.json
+      - name: Re-run existing interference and lensing reference map
+        run: python scripts/binary_history_interference_lensing_gate.py --output verification_results/BINARY_HISTORY_INTERFERENCE_LENSING_REFERENCE.json
+      - name: Upload unified physicalization evidence
         uses: actions/upload-artifact@v4
         with:
           name: bqg-physical-history-adapter-evidence
