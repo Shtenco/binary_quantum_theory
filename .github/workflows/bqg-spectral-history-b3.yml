@@ -2,7 +2,7 @@ name: bqg-spectral-history-b3
 
 on:
   push:
-    branches: [spectral-history-closure]
+    branches: [main]
     paths:
       - 'scripts/bqg_b3_formula_regression.py'
       - 'scripts/peter_weyl_spectral_history_b3_gate.py'
@@ -20,7 +20,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: bqg-spectral-history-b3-${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
