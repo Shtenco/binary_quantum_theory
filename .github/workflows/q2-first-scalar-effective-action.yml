@@ -1,0 +1,116 @@
+name: q2-first-scalar-effective-action
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md'
+      - 'Q2_COLLECTIVE_SCALAR_CARRIER.md'
+      - 'BQG_SCALAR_RESPONSE_TO_MATTER.md'
+      - 'HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md'
+      - 'q2_scalar_frontier.json'
+      - 'physicalization_gates.json'
+      - 'scripts/q2_first_scalar_effective_action_gate.py'
+      - 'scripts/q2_collective_scalar_carrier_gate.py'
+      - 'scripts/verify_q2_scalar_frontier.py'
+      - 'scripts/collective_volume_rg_gate.py'
+      - 'scripts/q2_symmetric_block_peter_weyl_growth_gate.py'
+      - 'scripts/dual_k5_lapse_cochain_gate.py'
+      - '.github/workflows/q2-first-scalar-effective-action.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md'
+      - 'Q2_COLLECTIVE_SCALAR_CARRIER.md'
+      - 'BQG_SCALAR_RESPONSE_TO_MATTER.md'
+      - 'HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md'
+      - 'q2_scalar_frontier.json'
+      - 'physicalization_gates.json'
+      - 'scripts/q2_first_scalar_effective_action_gate.py'
+      - 'scripts/q2_collective_scalar_carrier_gate.py'
+      - 'scripts/verify_q2_scalar_frontier.py'
+      - 'scripts/collective_volume_rg_gate.py'
+      - 'scripts/q2_symmetric_block_peter_weyl_growth_gate.py'
+      - 'scripts/dual_k5_lapse_cochain_gate.py'
+      - '.github/workflows/q2-first-scalar-effective-action.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: q2-first-scalar-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scalar-frontier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile scalar frontier sources
+        run: |
+          python -m py_compile \
+            scripts/q2_first_scalar_effective_action_gate.py \
+            scripts/q2_collective_scalar_carrier_gate.py \
+            scripts/verify_q2_scalar_frontier.py
+      - name: Exact q2 local 1PI shape action and cosmology obstruction
+        run: |
+          python scripts/q2_first_scalar_effective_action_gate.py \
+            --output verification_results/Q2_FIRST_SCALAR_EFFECTIVE_ACTION.json
+      - name: Derived collective conformal-volume carrier
+        run: |
+          python scripts/q2_collective_scalar_carrier_gate.py \
+            --output verification_results/Q2_COLLECTIVE_SCALAR_CARRIER.json
+      - name: Fail-closed scalar frontier ledger
+        run: |
+          python scripts/verify_q2_scalar_frontier.py \
+            --output verification_results/Q2_SCALAR_FRONTIER_STATUS.json
+      - name: Cross-guard exact local results versus physical outputs
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          def load(name):
+              return json.loads(Path('verification_results', name).read_text())
+
+          shape=load('Q2_FIRST_SCALAR_EFFECTIVE_ACTION.json')
+          carrier=load('Q2_COLLECTIVE_SCALAR_CARRIER.json')
+          truth=load('Q2_SCALAR_FRONTIER_STATUS.json')
+
+          assert shape['passed'] is True
+          assert carrier['passed'] is True
+          assert truth['valid'] is True
+
+          assert shape['cosmology_outputs']['mu_BQG_a_k'] == 'NOT_DERIVABLE'
+          assert shape['cosmology_outputs']['Sigma_BQG_a_k'] == 'NOT_DERIVABLE'
+          assert carrier['cosmology_outputs']['rho_hist_a'] == 'OPEN_PHYSICAL'
+          assert carrier['cosmology_outputs']['Phi_a_k'] == 'OPEN_PHYSICAL'
+          assert carrier['cosmology_outputs']['Psi_a_k'] == 'OPEN_PHYSICAL'
+          assert carrier['cosmology_outputs']['mu_BQG_a_k'] == 'OPEN_PHYSICAL'
+          assert carrier['cosmology_outputs']['Sigma_BQG_a_k'] == 'OPEN_PHYSICAL'
+
+          assert truth['required_scalar_physical_gates']['PHYSICAL_SCALAR_GAUGE_REDUCTION'] == 'open_physical'
+          assert truth['required_scalar_physical_gates']['PHYSICAL_CONSERVED_MATTER_SOURCE_COUPLING'] == 'open_physical'
+          for status in truth['required_scalar_physical_gates'].values():
+              assert status == 'open_physical'
+          for status in truth['parent_open_guards'].values():
+              assert status == 'open_physical'
+
+          print('q2 scalar physical-claim cross-guard: PASS')
+          PY
+      - name: Upload scalar frontier evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: q2-first-scalar-effective-action-evidence
+          path: verification_results/
+          if-no-files-found: error
