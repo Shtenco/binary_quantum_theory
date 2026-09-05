@@ -1,0 +1,100 @@
+name: scalar-connected-history-closure
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/scalar-adm-physical-response
+    paths:
+      - 'scripts/scalar_connected_history_extractor_gate.py'
+      - 'scripts/scalar_connected_history_to_response_gate.py'
+      - 'scripts/scalar_ward_kernel_response_gate.py'
+      - 'CONNECTED_SCALAR_HISTORY_EXTRACTION.md'
+      - '.github/workflows/scalar-connected-history-closure.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  connected-history-closure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile scalar connected-history chain
+        run: |
+          python -m py_compile \
+            scripts/scalar_connected_history_extractor_gate.py \
+            scripts/scalar_connected_history_to_response_gate.py \
+            scripts/scalar_ward_kernel_response_gate.py
+      - name: Exact connected-history Legendre extractor
+        run: |
+          python scripts/scalar_connected_history_extractor_gate.py \
+            --output verification_results/SCALAR_CONNECTED_HISTORY_EXTRACTOR.json
+      - name: End-to-end connected-history to physical-response algebra
+        run: |
+          python scripts/scalar_connected_history_to_response_gate.py \
+            --output verification_results/SCALAR_CONNECTED_HISTORY_TO_RESPONSE.json
+      - name: Independent response classifier regression
+        run: |
+          python scripts/scalar_ward_kernel_response_gate.py \
+            --output verification_results/SCALAR_WARD_KERNEL_RESPONSE.json
+      - name: Certify algebraic scalar pipeline closure
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          def load(name):
+              return json.loads(Path('verification_results', name).read_text())
+
+          ext=load('SCALAR_CONNECTED_HISTORY_EXTRACTOR.json')
+          e2e=load('SCALAR_CONNECTED_HISTORY_TO_RESPONSE.json')
+          resp=load('SCALAR_WARD_KERNEL_RESPONSE.json')
+
+          assert ext['passed'] is True
+          et=ext['selftest']['tests']
+          assert et['identity_connected_control_gives_identity_1PI'] is True
+          assert et['correlated_exact_inverse_A'] is True
+          assert et['correlated_exact_inverse_B'] is True
+          assert et['correlated_exact_inverse_C'] is True
+          assert et['singular_control_requires_further_reduction'] is True
+          assert et['complete_synthetic_history_allows_physical_extraction'] is True
+
+          assert e2e['passed'] is True
+          s=e2e['selftest']
+          assert s['algebraic_pipeline_closed'] is True
+          assert s['remaining_microscopic_input'] == [
+              'G_QQ(omega,k)', 'G_Qzeta(omega,k)', 'G_zetazeta(omega,k)'
+          ]
+          t=s['tests']
+          assert t['static_no_omega2_pole'] is True
+          assert t['static_fail_closed_without_physical_history'] is True
+          assert t['healthy_physical_chain_allowed'] is True
+          assert t['healthy_one_omega2_pole'] is True
+          assert t['healthy_positive_residue'] is True
+          assert t['healthy_no_tachyon'] is True
+          assert t['healthy_mass2_two'] is True
+          assert t['healthy_cs2_one_quarter'] is True
+          assert t['singular_stops_before_response'] is True
+          assert t['singular_never_allows_physical_interpretation'] is True
+
+          assert resp['passed'] is True
+          print('PASS algebraic scalar pipeline CLOSED: G_conn -> A,B,C -> response/poles')
+          print('OPEN microscopic input only: G_QQ, G_Qzeta, G_zetazeta from theory-specific physical history')
+          PY
+      - name: Upload scalar connected-history closure evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scalar-connected-history-closure-evidence
+          path: verification_results/
+          if-no-files-found: error
