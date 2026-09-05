@@ -1,0 +1,89 @@
+name: scalar-physical-history-measurement
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - research/scalar-adm-physical-response
+    paths:
+      - 'scripts/scalar_physical_history_cumulant_gate.py'
+      - 'scripts/scalar_connected_history_extractor_gate.py'
+      - 'PHYSICAL_SCALAR_W_HISTORY_MEASUREMENT.md'
+      - '.github/workflows/scalar-physical-history-measurement.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  physical-history-measurement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile physical W-history measurement gate
+        run: |
+          python -m py_compile \
+            scripts/scalar_physical_history_cumulant_gate.py \
+            scripts/scalar_connected_history_extractor_gate.py
+      - name: Physical W-history connected cumulant controls
+        run: |
+          python scripts/scalar_physical_history_cumulant_gate.py \
+            --output verification_results/SCALAR_PHYSICAL_W_HISTORY_CUMULANTS.json
+      - name: Handoff measured mode to closed Legendre extractor
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          src=json.loads(Path('verification_results/SCALAR_PHYSICAL_W_HISTORY_CUMULANTS.json').read_text())
+          assert src['passed'] is True
+          s=src['selftest']
+          assert s['passed'] is True
+          assert s['tests']['quadratic_central_difference_G_QQ_exact'] is True
+          assert s['tests']['quadratic_central_difference_G_Qzeta_exact'] is True
+          assert s['tests']['quadratic_central_difference_G_zetazeta_exact'] is True
+          assert s['tests']['complete_synthetic_history_is_physical_ready'] is True
+          assert s['tests']['uncertified_tau_fails_closed'] is True
+          assert s['tests']['raw_Z_like_input_fails_closed'] is True
+          assert s['tests']['finite_difference_without_step_scan_fails_closed'] is True
+          mode=s['positive_control']['fourier_modes'][0]
+          packet=mode['downstream_connected_history_packet']
+          Path('verification_results/measured_mode_packet.json').write_text(json.dumps(packet,indent=2)+'\n')
+          print('PASS W_phys source derivatives + physical Fourier measurement controls')
+          PY
+          python scripts/scalar_connected_history_extractor_gate.py \
+            --packet verification_results/measured_mode_packet.json \
+            --output verification_results/MEASURED_MODE_LEGENDRE_EXTRACTION.json
+      - name: Certify W-history to G-conn production interface
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=json.loads(Path('verification_results/MEASURED_MODE_LEGENDRE_EXTRACTION.json').read_text())
+          assert p['passed'] is True
+          r=p['production']
+          assert r['ward_kernel_emitted'] is True
+          assert r['physical_interpretation_allowed'] is True
+          assert r['science_status']=='PHYSICAL_CONNECTED_SCALAR_WARD_KERNEL_EXTRACTED'
+          k=r['ward_kernel_packet']
+          # inverse [[2,1/2],[1/2,3]] = [[12/23,-2/23],[-2/23,8/23]]
+          import sympy as sp
+          assert sp.simplify(sp.sympify(k['A'])-sp.Rational(12,23))==0
+          assert sp.simplify(sp.sympify(k['B'])+sp.Rational(2,23))==0
+          assert sp.simplify(sp.sympify(k['C'])-sp.Rational(8,23))==0
+          print('PASS physical W-history measurement -> three cumulants -> exact Legendre kernel handoff')
+          PY
+      - name: Upload physical history measurement evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scalar-physical-history-measurement-evidence
+          path: verification_results/
+          if-no-files-found: error
