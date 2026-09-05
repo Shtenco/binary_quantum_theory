@@ -4,11 +4,13 @@ on:
   push:
     branches: [spectral-history-closure]
     paths:
+      - 'scripts/bqg_b3_formula_regression.py'
       - 'scripts/peter_weyl_spectral_history_b3_gate.py'
       - '.github/workflows/bqg-spectral-history-b3.yml'
   pull_request:
     branches: [main]
     paths:
+      - 'scripts/bqg_b3_formula_regression.py'
       - 'scripts/peter_weyl_spectral_history_b3_gate.py'
       - '.github/workflows/bqg-spectral-history-b3.yml'
   workflow_dispatch:
@@ -22,7 +24,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  formula-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Compile B3 sources
+        run: |
+          python -m py_compile \
+            scripts/bqg_b3_formula_regression.py \
+            scripts/peter_weyl_spectral_history_b3_gate.py
+      - name: Independent known-B3 reconstruction
+        run: |
+          python scripts/bqg_b3_formula_regression.py \
+            --output verification_results/BQG_B3_FORMULA_REGRESSION.json
+      - name: Upload formula evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-b3-formula-regression
+          path: verification_results/BQG_B3_FORMULA_REGRESSION.json
+          if-no-files-found: error
+
   extend-h3-columns:
+    needs: formula-regression
     runs-on: ubuntu-latest
     timeout-minutes: 180
     strategy:
