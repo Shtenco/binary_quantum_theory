@@ -1,16 +1,25 @@
 #!/usr/bin/env python3
-"""Fail-closed BQG multi-block Schur -> metric -> TT -> six-Wilson extractor.
+"""Fail-closed signed-BQG five-block Schur -> metric -> TT extractor.
 
-This script introduces no new physical operator.  It consumes an already-produced
-collective multi-block BQG constraint matrix in the frozen six-coordinate metric
-carrier, performs the zero-energy Schur/Feshbach reduction on gapped Q modes,
-applies the measured q->metric map, forms the nearest-neighbour Fourier symbol,
-projects to TT, and extracts the six canonical parity-even S4 quartic Wilson
-coefficients.
+This script introduces no new physical operator.  It consumes the already frozen
+microscopic signed gravitational constraint
 
-If the input contains a Q zero mode coupled to P, an incomplete/non-production
-operator, a non-tetrahedral neighbour shell, or a non-GR leading TT sector, the
-script stops and does not report c1..c6 as a BQG science result.
+    G = -(2/3) H_E^sine -(32/9) S,
+    S = -i/2 (L_raw - L_raw^dagger),
+
+compressed on a centered five-block metric carrier plus its closed Q complement.
+It performs the zero-constraint-energy Schur/Feshbach reduction on gapped Q
+modes, applies the measured q->metric map, forms the nearest-neighbour spatial
+Fourier symbol, projects to TT, and extracts the six canonical parity-even S4
+quartic spatial coefficients.
+
+The result of this script is deliberately named `c_micro_spatial_BQG`: it is a
+microscopic signed-constraint spatial TT precursor.  It is NOT the physical
+`c_BQG_IR` vector until the separate theory-specific physical chain
+
+    projector/history -> Z_phys -> W_phys -> Gamma_phys -> Gamma_TT^(2)
+
+has been constructed.  This script therefore always leaves `c_BQG_IR = null`.
 """
 from __future__ import annotations
 
@@ -71,19 +80,42 @@ def load_metadata(z) -> dict:
     return json.loads(str(raw))
 
 
+def _pair(value) -> list[int] | None:
+    try:
+        a, b = value
+        return [int(a), int(b)]
+    except Exception:
+        return None
+
+
 def validate_provenance(meta: dict) -> tuple[bool, list[str]]:
     errors = []
     if meta.get('actual_bqg_operator') is not True:
         errors.append('metadata.actual_bqg_operator must be true')
     if meta.get('synthetic') is not False:
         errors.append('metadata.synthetic must be false')
+    if meta.get('provenance_level') != 'microscopic_constraint':
+        errors.append('metadata.provenance_level must be microscopic_constraint')
+    if meta.get('physical_history_1pi') is not False:
+        errors.append('physical_history_1pi must be false for this microscopic constraint extractor')
+    if meta.get('operator_family') != 'frozen_signed_gravitational_constraint':
+        errors.append('operator_family must be frozen_signed_gravitational_constraint')
     comps = set(meta.get('operator_components', []))
-    if not {'E','S','R_op'} <= comps:
-        errors.append('operator_components must contain E,S,R_op')
+    if not {'H_E_sine','S'} <= comps:
+        errors.append('operator_components must contain H_E_sine and S')
+    if 'R_op' in comps or meta.get('route_operator_included') is not False:
+        errors.append('R_op/route operator is forbidden in the gravitational TT precursor')
+    coeffs = meta.get('operator_coefficients_exact', {})
+    if _pair(coeffs.get('H_E_sine')) != [-2,3]:
+        errors.append('H_E_sine coefficient must be exactly -2/3')
+    if _pair(coeffs.get('S')) != [-32,9]:
+        errors.append('S coefficient must be exactly -32/9')
     if not str(meta.get('source_commit', '')).strip():
         errors.append('source_commit is required')
     if not meta.get('regulator'):
         errors.append('regulator declaration is required')
+    if meta.get('basis_closure_complete') is not True:
+        errors.append('basis_closure_complete must be true')
     if meta.get('target_fitting_used') is not False:
         errors.append('target_fitting_used must be false')
     return not errors, errors
@@ -298,8 +330,7 @@ def science_run(path: Path, output: Path|None=None) -> dict:
     sch=schur_zero_energy(C,pidx)
     all_blocks=sorted(set(map(int,pb)))
     Ce,order_blocks=canonicalize_p(sch['Ceff'],pb,pc,positions,central)
-    # Exact normalized-state Hessian from the frozen protocol.
-    if abs(C00.imag)>1e-9: raise RuntimeError('C00 must be real for Hermitian physical scalar')
+    if abs(C00.imag)>1e-9: raise RuntimeError('C00 must be real for Hermitian signed gravitational operator')
     Kq=2*Ce.real-2*C00.real*np.eye(Ce.shape[0])
     T=blockdiag(np.linalg.inv(M),5)
     Kh=T.T@Kq@T
@@ -307,9 +338,10 @@ def science_run(path: Path, output: Path|None=None) -> dict:
     if not geo['passed']:
         raise RuntimeError('NEIGHBOUR_GEOMETRY_NOT_FROZEN_TETRAHEDRAL: '+json.dumps({k:v for k,v in geo.items() if k not in ('offsets','unit_normals')}))
     spatial=analyze_spatial_kernel(Kh,geo['offsets'],geo['a_star'])
+    micro=spatial['coefficients'].tolist() if spatial['passed'] else None
     out={
-        'status':'BQG actual multi-block Schur-to-TT six-Wilson extraction',
-        'science_status':'PHYSICAL_TT_SIX_WILSON_EXTRACTED' if spatial['passed'] else 'MULTIBLOCK_KERNEL_FAILS_PHYSICAL_IR_GUARDS',
+        'status':'BQG microscopic signed-G five-block Schur-to-TT spatial extraction',
+        'science_status':'MICROSCOPIC_SIGNED_G_TT_SPATIAL_PRECURSOR_EXTRACTED' if spatial['passed'] else 'MICROSCOPIC_SIGNED_G_FAILS_IR_GUARDS',
         'passed':bool(spatial['passed']),
         'source_metadata':meta,
         'metric_map':M.tolist(),'metric_map_condition_number':float(np.linalg.cond(M)),
@@ -327,8 +359,13 @@ def science_run(path: Path, output: Path|None=None) -> dict:
             'wilson_fit_relative_defect':spatial['wilson_fit_relative_defect'],
             'checks':spatial['checks'],
         },
-        'c_BQG_IR':spatial['coefficients'].tolist() if spatial['passed'] else None,
-        'hard_scope_guard':'c_BQG_IR is emitted only for an actual frozen E+S+R_op multi-block BQG operator passing Q-gap, tetrahedral-geometry, massless/isotropic k2, reciprocity and six-basis closure guards.',
+        'c_micro_spatial_BQG':micro,
+        'c_BQG_IR':None,
+        'physicalization_required_next':'projector/history -> Z_phys[J_g] -> W_phys[J_g] -> Gamma_phys[g] -> physical TT projection',
+        'hard_scope_guard':(
+            'The emitted six-vector, when present, is a microscopic signed-constraint spatial precursor only. '
+            'It is not the physical IR Wilson vector; c_BQG_IR remains null until derived from the theory-specific connected physical 1PI kernel.'
+        ),
     }
     if output is not None:
         output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
@@ -339,7 +376,6 @@ def selftest() -> dict:
     if WILSON is None: raise RuntimeError('missing six-Wilson predictor')
     M=frozen_metric_map(); metric_ok=bool(abs(float(np.linalg.cond(M))-math.sqrt(2))<2e-12)
     normals=np.asarray([(1,1,1),(1,-1,-1),(-1,1,-1),(-1,-1,1)],float)/math.sqrt(3)
-    # Target h-coordinate 5-block nearest-neighbour kernel: K_a=-I, K_0=8I.
     Kh=np.zeros((30,30),float)
     for b in range(5): Kh[6*b:6*b+6,6*b:6*b+6]=8*np.eye(6)
     for i in range(4):
@@ -364,9 +400,24 @@ def selftest() -> dict:
         schur_zero_energy(np.asarray([[0.0,0.01],[0.01,0.0]]),np.asarray([0]))
     except RuntimeError as e:
         gapless_rejected='GAPLESS_COUPLED_Q_MODE_REQUIRES_PROMOTION' in str(e)
+    good_meta={
+        'actual_bqg_operator':True,'synthetic':False,
+        'provenance_level':'microscopic_constraint','physical_history_1pi':False,
+        'operator_family':'frozen_signed_gravitational_constraint',
+        'operator_components':['H_E_sine','S'],
+        'operator_coefficients_exact':{'H_E_sine':[-2,3],'S':[-32,9]},
+        'route_operator_included':False,'source_commit':'SELFTEST',
+        'regulator':{'Jmax':'selftest'},'basis_closure_complete':True,
+        'target_fitting_used':False,
+    }
+    prov_ok,prov_errors=validate_provenance(good_meta)
+    bad_meta=dict(good_meta);bad_meta['operator_components']=['H_E_sine','S','R_op'];bad_meta['route_operator_included']=True
+    route_ok,_=validate_provenance(bad_meta)
     checks={
         'frozen_metric_map_cond_sqrt2':metric_ok,
         'gapless_coupled_Q_mode_rejected':gapless_rejected,
+        'signed_G_provenance_accepted':prov_ok and not prov_errors,
+        'route_operator_provenance_rejected':not route_ok,
         'synthetic_Schur_recovers_target':schur_err<2e-12,
         'tetra_scalar_kernel_passes_IR_guards':spatial['passed'],
         'known_analytic_Wilson_vector_recovered':c_err<2e-10,
@@ -375,16 +426,18 @@ def selftest() -> dict:
         'status':'synthetic known-answer test only','science_status':'INFRASTRUCTURE_SELFTEST_NOT_BQG_EVIDENCE',
         'passed':bool(all(checks.values())),'checks':checks,'schur_relative_error':schur_err,
         'expected_c':expected.tolist(),'recovered_c':spatial['coefficients'].tolist(),
-        'c_relative_error':c_err,'spatial_diagnostics':{
+        'c_relative_error':c_err,'c_BQG_IR':None,
+        'spatial_diagnostics':{
             'Z2_spatial':spatial['Z2_spatial'],'leading_isotropy_defect':spatial['leading_isotropy_defect'],
             'mass_defect':spatial['mass_defect'],'wilson_fit_relative_defect':spatial['wilson_fit_relative_defect'],
-        }
+        },
+        'hard_scope_guard':'Synthetic algebra test only; physical c_BQG_IR remains null.',
     }
 
 
 def main() -> int:
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--input',type=Path,help='production NPZ containing actual multi-block BQG operator')
+    p.add_argument('--input',type=Path,help='NPZ containing the assembled frozen signed-G five-block operator')
     p.add_argument('--output',type=Path)
     p.add_argument('--selftest',action='store_true')
     a=p.parse_args()
@@ -394,9 +447,9 @@ def main() -> int:
         try:
             out=science_run(a.input,a.output)
         except Exception as e:
-            out={'status':'STOP','science_status':'MISSING_OR_INVALID_ACTUAL_MULTIBLOCK_INPUT','passed':False,
-                 'c_BQG_IR':None,'error':str(e),
-                 'hard_scope_guard':'No Wilson coefficients are emitted when the frozen physical input chain is incomplete.'}
+            out={'status':'STOP','science_status':'MISSING_OR_INVALID_SIGNED_G_MULTIBLOCK_INPUT','passed':False,
+                 'c_micro_spatial_BQG':None,'c_BQG_IR':None,'error':str(e),
+                 'hard_scope_guard':'No Wilson coefficients are emitted when the frozen signed-operator chain is incomplete or invalid.'}
             if a.output is not None:
                 a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(out,indent=2,default=lambda x:x.tolist() if isinstance(x,np.ndarray) else x))
