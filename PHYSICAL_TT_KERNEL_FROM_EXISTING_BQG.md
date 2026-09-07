@@ -1,248 +1,229 @@
-# Physical TT 1PI kernel from existing BQG
+# Conditional ADM/HDA leading TT IR form from existing BQG structure
 
-Status: **leading two-derivative TT kernel derived from the already registered BQG ADM/HDA sector; higher-derivative coefficients remain microscopic outputs.**
+Status: **the registered local two-derivative ADM/HDA premises imply the standard leading TT form; the theory-specific physical 1PI BQG kernel remains open.**
 
-## 1. No new microscopic input
+This file introduces no new microscopic degree of freedom, clock, history operator or transfer coefficient. It records what follows conditionally from the already registered local ADM/HDA sector and, just as importantly, what does **not** follow until the physical projector/history and connected generating functional are constructed.
 
-This derivation introduces no new clock, history operator, transfer coefficient or microscopic degree of freedom. It uses only the already registered local ADM family
+## 1. Registered conditional input
+
+Inside the declared local two-derivative ADM family,
 
 \[
 H[N]=\int d^3x\,N\left[
 A\frac{\pi_{ab}\pi^{ab}-c\pi^2}{\sqrt q}
 -B\sqrt q(R-2\Lambda)
-\right]+O(\partial^4/\Lambda_{UV}^2)
+\right]+O(\partial^4),
 \]
 
-and the existing HDA implication
+the existing HDA result selects
 
 \[
 \boxed{c=\frac12,\qquad AB=1.}
 \]
 
-The TT reduction therefore belongs to the same physical low-energy sector already selected by BQG's HDA analysis.
+This is a structural/IR statement under the registered hypotheses. It is not by itself a derivation of the BQG physical history measure or physical inner product.
 
-## 2. TT Hamiltonian
+## 2. TT reduction of that ADM family
 
-On a flat/nondegenerate background, choose two orthonormal physical TT polarizations `h_A`, `A=1,2`, with conjugate momenta `pi_A`. The registered ADM normalization gives
+For two orthonormal TT polarizations `h_A`, `A=1,2`,
 
 \[
-\boxed{
 H_{TT}^{(2)}
-=\sum_{A=1}^2\int d^3x\left[
+=\sum_A\int d^3x\left[
 A\pi_A^2+\frac B4(\partial_i h_A)(\partial_i h_A)
-\right]
+\right]+O(\partial^4).
+\]
+
+Since
+
+\[
+\dot h_A=2A\pi_A,
+\qquad
+\pi_A=\frac{\dot h_A}{2A},
+\]
+
+the ordinary canonical Legendre transform of this selected ADM model gives
+
+\[
+\boxed{
+S_{TT,ADM}^{(2)}
+=\frac1{4A}\sum_A\int d^4x
+\left[\dot h_A^2-AB(\nabla h_A)^2\right].
+}
+\]
+
+Using `AB=1`,
+
+\[
+\boxed{
+S_{TT,ADM}^{(2)}
+=\frac1{4A}\sum_A\int d^4x
+\left[\dot h_A^2-(\nabla h_A)^2\right]
 +O(\partial^4).
 }
 \]
 
-The canonical equation is
+Therefore the **conditional leading ADM/HDA TT reference form** is massless, two-polarization and relativistic:
 
 \[
-\dot h_A=\frac{\delta H}{\delta\pi_A}=2A\pi_A,
+\boxed{m_{TT}=0,\qquad N_{TT}=2,\qquad c_T^2=1.}
 \]
 
-so
+No constraint spectral parameter is used as physical frequency in this derivation.
+
+## 3. Reference Hessian notation
+
+If this local ADM action is written in Euclidean quadratic-Hessian notation,
 
 \[
-\boxed{\pi_A=\frac{\dot h_A}{2A}.}
+S_{E,TT}^{(2)}
+=\frac12\int\frac{d\omega_Ed^3k}{(2\pi)^4}
+\,h_A(-p)\,K^{ADM}_{E,AB}(p)\,h_B(p),
 \]
 
-No constraint-resolvent spectral parameter is identified with physical frequency in this step.
-
-## 3. Quadratic physical action
-
-The ordinary Legendre transform gives
-
-\[
-\begin{aligned}
-\mathcal L_{TT}^{(2)}
-&=\sum_A\left(\pi_A\dot h_A
--A\pi_A^2
--\frac B4(\nabla h_A)^2\right)\\
-&=\frac1{4A}\sum_A\left[
-\dot h_A^2-AB(\nabla h_A)^2
-\right].
-\end{aligned}
-\]
-
-Since the existing HDA result fixes `AB=1`,
+then
 
 \[
 \boxed{
-S_{TT}^{(2)}
-=\frac1{4A}\sum_{A=1}^2\int d^4x
-\left[
-\dot h_A^2-(\nabla h_A)^2
-\right]
-+O(\partial^4).
+K^{ADM}_{E,TT}(\omega_E,\mathbf k)
+=Z_T(\omega_E^2+\mathbf k^2)I_2+O(\partial^4),
+\qquad Z_T=\frac1{2A}.
 }
 \]
 
-Thus the leading TT light cone is not an additional fit:
+With the conventional GR parametrization `A=16 pi G`, this becomes `Z_T=1/(32 pi G)` in the stated polarization normalization.
 
-\[
-\boxed{c_T^2=1.}
-\]
-
-## 4. Euclidean 1PI Hessian
-
-For a quadratic Euclidean action written as
-
-\[
-S_E^{(2)}=\frac12\int\frac{d\omega_Ed^3k}{(2\pi)^4}\,
-h_A(-p)\,\Gamma^{(2)}_{E,AB}(p)\,h_B(p),
-\]
-
-the result is
+Likewise the conditional Lorentzian ADM/HDA reference form is
 
 \[
 \boxed{
-\Gamma^{(2)}_{E,TT}(\omega_E,\mathbf k)
-=Z_T(\omega_E^2+\mathbf k^2)I_2
-+O(\partial^4),
+K^{ADM}_{TT}(\omega,\mathbf k)
+=Z_T[-(\omega+i0)^2+\mathbf k^2]I_2+O(\partial^4).
 }
 \]
 
-with
+The notation `K_ADM` is intentional: this result must not be silently promoted to the theory-specific physical BQG `Gamma_phys^(2)`.
 
-\[
-\boxed{Z_T=\frac1{2A}.}
-\]
+## 4. Why the physical machine gate remains open
 
-Under the standard ADM parametrization already used in the repository,
-
-\[
-A=16\pi G,\qquad B=(16\pi G)^{-1},
-\]
-
-so in the stated orthonormal polarization convention
-
-\[
-\boxed{Z_T=\frac1{32\pi G}.}
-\]
-
-The corresponding Gaussian Euclidean connected propagator is
+The repository's legal physicalization order remains
 
 \[
 \boxed{
-G^{TT}_E(\omega_E,\mathbf k)
-=32\pi G\,\frac{I_2}{\omega_E^2+\mathbf k^2}
-+O(\Lambda_{UV}^{-2}).
+\{C_A\}
+\to M_G
+\to P_{phys}/\eta
+\to Z_{phys}[J_g]
+\to W_{phys}[J_g]
+\to\Gamma_{phys}[g]
+\to\Gamma^{(2)}_{metric,phys}(\omega,\mathbf k)
+\to\Gamma^{(2)}_{TT,phys}.
 }
 \]
 
-## 5. Lorentzian causal kernel
+The candidate theory has not yet completed the theory-specific refinement/rigging/boundary-history step and therefore has not yet derived the connected physical BQG 1PI metric kernel.
 
-Using the repository's Lorentzian convention and the usual causal continuation,
-
-\[
-\boxed{
-\Gamma^{(2)}_{TT}(\omega,\mathbf k)
-=Z_T\left[-(\omega+i0)^2+\mathbf k^2\right]I_2
-+O(\partial^4).
-}
-\]
-
-An overall sign can move with a different global Lorentzian Hessian convention, but the physical content is invariant:
-
-\[
-\boxed{
-\omega^2=\mathbf k^2+O(k^4/\Lambda_{UV}^2),
-\qquad m_g^2=0,
-\qquad N_{pol}=2,
-\qquad c_T=1.
-}
-\]
-
-For `G>0`, the Gaussian TT residue in this convention is positive.
-
-## 6. Why this does not silently identify a constraint resolvent with a propagator
-
-The forbidden shortcut remains forbidden:
-
-\[
-z_{constraint}\ne\omega_{physical}
-\]
-
-unless a separate physical construction establishes such an equality.
-
-The result above follows instead from the already physical canonical ADM/HDA infrared sector and its Legendre transform after TT reduction. Therefore it does not use a Lanczos eigenvalue, master-constraint gap, C8 character or other internal spectral coordinate as physical frequency.
-
-The full interacting physical history is still required for genuinely microscopic nonlocal/frequency-dependent corrections beyond the leading local ADM sector.
-
-## 7. Relation to the reduced lattice TT propagator
-
-The repository also contains a reduced Gaussian lattice control with a discrete kernel such as
-
-\[
-4\sin^2(\omega/2)+\Omega_{\mathbf k}^2.
-\]
-
-That object remains a finite reduced/control propagator. Its bare finite-lattice velocity or quartic Taylor coefficients are **not** imported into the physical BQG kernel derived here.
-
-Only its long-wavelength massless-Gaussian structure can be used as a consistency control after conventions are aligned.
-
-## 8. The true remaining spin-2 frontier
-
-The leading two-derivative shape is therefore fixed:
-
-\[
-\boxed{
-\Gamma^{(2)}_{TT}
-=Z_T[-\omega^2+k^2]I_2
-+\Gamma^{(4)}_{TT}
-+O(\partial^6).
-}
-\]
-
-At generic nonzero vector momentum the repository has already proved that the complete parity-even tetrahedral TT spatial quartic sector is six-dimensional. Hence
-
-\[
-\boxed{
-\Gamma^{(4)}_{TT,spatial}
-=Z_Ta_*^2\sum_{r=1}^6c_r^{IR}W_r(\mathbf k).
-}
-\]
-
-The six numbers
-
-\[
-\boxed{\mathbf c^{IR}=(c_1,c_2,c_3,c_4,c_5,c_6)}
-\]
-
-must be produced by the actual interblock/multi-block BQG dynamics. They may not be replaced by:
-
-- the local first-refinement `E/T2` splitting;
-- the reduced bare lattice `eta2/zeta4` values;
-- a constraint spectral parameter;
-- an externally fitted dispersion coefficient.
-
-Independent quartic structures involving physical frequency, such as `omega^4` or `omega^2 k^2` when allowed by the final effective action, also remain outputs of the full physical/microscopic calculation and are not determined by the spatial six-vector alone.
-
-## 9. Absolute normalization versus shape
-
-The derivation fixes the leading kernel in terms of the remaining ADM normalization `A`, equivalently `G`.
-
-Therefore two statements must be kept separate:
-
-1. **shape already derived:** massless two-polarization relativistic TT pole at two-derivative order;
-2. **absolute microscopic scale still open:** deriving/matching the physical value of `G` from the microscopic BQG scale rather than supplying it externally.
-
-The latter is still part of BQG physicalization and is not solved by the HDA identity `AB=1` alone.
-
-## 10. Current status
-
-The old statement “the physical TT kernel is entirely open until a full history is built” is too broad.
-
-The correct frontier is now
+Thus the machine truth must remain
 
 ```text
-existing BQG ADM/HDA
-    -> leading physical Gamma_TT^(2): CLOSED CONDITIONALLY ON THE REGISTERED IR HYPOTHESES
-    -> absolute microscopic G: OPEN
-    -> actual interblock six spatial quartic Wilson coefficients: OPEN
-    -> independent quartic frequency structures: OPEN
-    -> full interacting physical history / nonlocal self-energy: OPEN
+physical_TT_kernel_frozen = false
 ```
 
-No experimental confirmation is claimed by this derivation.
+until the final source-derived object exists.
+
+## 5. Constraint resolvents remain constraint resolvents
+
+The prohibition remains exact:
+
+\[
+\boxed{z_{constraint}\ne\omega_{physical}}
+\]
+
+unless an independent physical-time/history construction derives an identification.
+
+The same applies to:
+
+- master-constraint gaps;
+- Lanczos shell eigenvalues;
+- C8 character angles;
+- reduced-control clock labels.
+
+They may be microscopic inputs. They are not physical frequencies by renaming.
+
+## 6. Relation to the five-block signed-G calculation
+
+The microscopic spatial calculation now being built uses the separately frozen signed gravitational constraint
+
+\[
+\boxed{
+G_{frozen}=-\frac23H_E^{sine}-\frac{32}{9}S,
+\qquad
+S=-\frac i2(L_{raw}-L_{raw}^\dagger).
+}
+\]
+
+Its centered five-block chain is
+
+```text
+G_frozen
+ -> complete common P+Q basis
+ -> zero-energy Schur precursor
+ -> K_q
+ -> measured M_hq
+ -> K_h(k)
+ -> TT
+ -> c_micro_spatial_BQG
+```
+
+This chain is useful because it produces a theory-specific microscopic spatial fingerprint without adding phenomenological coefficients. But it is still a **constraint-derived microscopic precursor**, not the physical connected 1PI kernel.
+
+The extractor therefore deliberately outputs
+
+```text
+c_micro_spatial_BQG = <six numbers, if all guards pass>
+c_BQG_IR            = null
+```
+
+until physicalization is completed.
+
+## 7. Six-dimensional quartic shell
+
+The algebraically closed parity-even tetrahedral spatial TT sector remains six-dimensional:
+
+\[
+\Gamma^{(4)}_{TT,spatial}
+\sim a_*^2\sum_{r=1}^6c_r W_r(\mathbf k).
+\]
+
+The six-basis theorem and extractor are already complete. What remains open is the **status of the coefficients**:
+
+1. the signed five-block constraint calculation can produce a microscopic spatial six-vector;
+2. the theory-specific connected physical history must determine the physical pole six-vector;
+3. only the latter may be frozen as `c_BQG_IR` and carried into a blind external comparison.
+
+Independent `omega^4` and `omega^2 k^2` quartic structures are also outputs of the eventual physical effective action and are not fixed by the spatial six-vector alone.
+
+## 8. Absolute normalization
+
+HDA fixes the relative leading kinetic/gradient structure in the declared ADM family, not the microscopic physical value of the overall normalization `A` or equivalently `G`.
+
+Therefore both remain distinct:
+
+```text
+conditional leading ADM/HDA TT shape: DERIVED WITHIN REGISTERED IR PREMISES
+microscopic absolute Newton/residue scale: OPEN
+physical BQG connected TT 1PI kernel: OPEN
+physical quartic TT six-vector: OPEN
+```
+
+## 9. Exact current statement
+
+The strongest claim supported by this derivation is:
+
+> Given the registered local two-derivative ADM/HDA premises, the TT reduction has the ordinary massless two-polarization relativistic leading form up to one overall normalization.
+
+It is **not**:
+
+> BQG has already derived its physical interacting graviton 1PI kernel from the microscopic quantum history.
+
+That stronger statement remains a target of the physicalization bridge. No experimental confirmation is claimed.
