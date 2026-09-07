@@ -1,0 +1,61 @@
+name: recover-euclidean-spectral-mu2
+
+on:
+  push:
+    branches:
+      - research/physical-scalar-kernel-dynamics
+    paths:
+      - scripts/peter_weyl_euclidean_projected_heat_mu2_aggregate_jsonsafe.py
+      - .github/workflows/recover-euclidean-spectral-mu2.yml
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  recover-actual-mu2-q1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install scientific dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Download completed Euclidean packet from microscopic run 33995325388
+        uses: actions/download-artifact@v4
+        with:
+          name: bqg-euclidean-boundary-packet-current
+          path: e_packet
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 33995325388
+      - name: Download all 32 completed master-image artifacts from run 33995325388
+        uses: actions/download-artifact@v4
+        with:
+          pattern: bqg-euclidean-master-image-*
+          path: master_images
+          merge-multiple: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: 33995325388
+      - name: Recover actual mu2, R1, B1 and Q1 without recomputing microscopic actions
+        run: |
+          python scripts/peter_weyl_euclidean_projected_heat_mu2_aggregate_jsonsafe.py \
+            --master-images master_images \
+            --euclidean-packet e_packet \
+            --output verification_results/BQG_EUCLIDEAN_PROJECTED_HEAT_MU2.json \
+            --spectral-packet verification_results/BQG_EUCLIDEAN_SPECTRAL_MOMENT_PACKET.json \
+            --q1-dir verification_results/euclidean_master_lanczos_q1
+      - name: Evaluate recovered actual spectral-history frontier fail-closed
+        run: |
+          python scripts/bqg_spectral_history_graph_gate.py \
+            --packet verification_results/BQG_EUCLIDEAN_SPECTRAL_MOMENT_PACKET.json \
+            --output verification_results/BQG_EUCLIDEAN_SPECTRAL_HISTORY_FRONTIER.json
+      - name: Upload recovered actual Euclidean spectral frontier
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-euclidean-spectral-mu2-q1-recovered
+          path: verification_results/
+          if-no-files-found: error
