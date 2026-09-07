@@ -2,41 +2,41 @@
 """Assemble the frozen signed BQG gravitational operator for a centered five-block patch.
 
 This is an operator/provenance bridge, not a new microscopic dynamics model.
+
 It consumes exact action-column matrices for the already frozen Hermitian pieces
 
     H_E^sine
     S = -i/2 (L_raw - L_raw^dagger)
 
-on one common closed finite basis and forms only
+on one common closed finite microscopic basis and forms only
 
     G_frozen = -(2/3) H_E^sine -(32/9) S .
 
-The route operator R_op is deliberately forbidden in this gravitational TT
-precursor.  The output is the NPZ contract consumed by
-`bqg_multiblock_tt_wilson_extractor.py`.
+The retained five-block metric carrier is a genuine 30-column microscopic
+superposition matrix P_vectors (N x 30), not a list of coordinate basis indices.
+Each column is one frozen coarse q-coordinate tangent.  The assembler removes
+only its background component, fixes unit norm by a positive scalar, preserves
+its phase/label, and records the full non-orthogonal Gram matrix.
 
 Input NPZ (allow_pickle=False) must contain
 
-    E_columns       NxN complex matrix, column j = H_E^sine |j>
-    S_columns       NxN complex matrix, column j = S |j>
-    p_indices       30 retained metric-carrier indices
-    p_block         30 block ids, exactly five blocks x six coordinates
-    p_coord         30 coordinate ids 0..5
-    block_positions 5x3 positions ordered by sorted block id
-    central_block   scalar block id
-    C00_E            <0|H_E^sine|0>
-    C00_S            <0|S|0>
-    metadata_json   provenance JSON string
+    E_columns         NxN complex matrix, column j = H_E^sine |j>
+    S_columns         NxN complex matrix, column j = S |j>
+    P_vectors         Nx30 complex microscopic coarse-carrier columns
+    background_vector N complex normalized background |Omega>
+    p_block           30 block ids, exactly five blocks x six coordinates
+    p_coord           30 coordinate ids 0..5
+    block_positions   5x3 positions ordered by sorted block id
+    central_block     scalar block id
+    metadata_json     provenance JSON string
 
 Optional:
+    C00_E, C00_S      independent cross-checks of <Omega|H_E/S|Omega>
+    basis_ids         N unique string ids for auditability
+    metric_map        frozen/production 6x6 q->h map
 
-    basis_ids       N unique string ids for auditability
-    metric_map      frozen/production 6x6 q->h map
-
-The producer that creates E_columns/S_columns must already have completed the
-chosen cutoff/reachable-basis closure.  This assembler never fills missing
-columns, invents shared-face amplitudes, adds an i*eta regulator, or fits a
-transfer coefficient.
+No target fit, transfer coefficient, route operator, i*eta shift, or missing
+amplitude is permitted.
 """
 from __future__ import annotations
 
@@ -45,13 +45,13 @@ import hashlib
 import json
 import math
 from pathlib import Path
-import tempfile
 
 import numpy as np
 
 RTOL = 1e-10
 HERM_TOL = 5e-9
 GEOM_TOL = 2e-9
+C00_TOL = 2e-9
 E_COEFF = -2.0 / 3.0
 S_COEFF = -32.0 / 9.0
 
@@ -88,14 +88,6 @@ def load_metadata(z) -> dict:
     return json.loads(str(raw))
 
 
-def rational_pair(value, expected: tuple[int, int]) -> bool:
-    try:
-        a, b = value
-        return int(a) == expected[0] and int(b) == expected[1]
-    except Exception:
-        return False
-
-
 def validate_source_provenance(meta: dict) -> tuple[bool, list[str]]:
     errors: list[str] = []
     if meta.get('synthetic') is not False:
@@ -121,15 +113,12 @@ def validate_source_provenance(meta: dict) -> tuple[bool, list[str]]:
     return not errors, errors
 
 
-def validate_p_layout(pidx: np.ndarray, pblock: np.ndarray, pcoord: np.ndarray,
-                      positions: np.ndarray, central: int, n: int) -> dict:
-    pidx = np.asarray(pidx, int).ravel()
+def validate_layout(pblock: np.ndarray, pcoord: np.ndarray,
+                    positions: np.ndarray, central: int) -> dict:
     pblock = np.asarray(pblock, int).ravel()
     pcoord = np.asarray(pcoord, int).ravel()
-    if pidx.size != 30 or pblock.size != 30 or pcoord.size != 30:
-        raise RuntimeError('five-block metric carrier must contain exactly 30 P vectors')
-    if len(set(map(int, pidx))) != 30 or np.any(pidx < 0) or np.any(pidx >= n):
-        raise RuntimeError('p_indices must be 30 unique in-range basis indices')
+    if pblock.size != 30 or pcoord.size != 30:
+        raise RuntimeError('five-block metric carrier must contain exactly 30 labelled P vectors')
     blocks = sorted(set(map(int, pblock)))
     if len(blocks) != 5 or central not in blocks:
         raise RuntimeError('p_block must contain exactly five blocks including central_block')
@@ -157,27 +146,68 @@ def validate_p_layout(pidx: np.ndarray, pblock: np.ndarray, pcoord: np.ndarray,
     return {'blocks': blocks, 'a_star': a, **defects}
 
 
+def prepare_carrier(P: np.ndarray, bg: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray, dict]:
+    P = np.asarray(P, complex)
+    bg = np.asarray(bg, complex).ravel()
+    if P.ndim != 2 or P.shape[1] != 30 or P.shape[0] != bg.size:
+        raise RuntimeError('P_vectors must have shape (N,30) and match background_vector length')
+    if not np.isfinite(P.real).all() or not np.isfinite(P.imag).all():
+        raise RuntimeError('P_vectors contain non-finite amplitudes')
+    bn = float(np.linalg.norm(bg))
+    if not math.isfinite(bn) or bn <= 0:
+        raise RuntimeError('background_vector has invalid norm')
+    bg = bg / bn
+    before = bg.conj() @ P
+    Pp = P - np.outer(bg, before)
+    norms = np.linalg.norm(Pp, axis=0)
+    if np.any(norms <= RTOL * max(float(np.max(norms)), 1.0)):
+        raise RuntimeError('background-orthogonalized P carrier contains a zero/near-zero column')
+    Pn = Pp / norms[None, :]
+    K = Pn.conj().T @ Pn
+    K = (K + K.conj().T) / 2
+    vals = np.linalg.eigvalsh(K)
+    scale = max(float(np.max(np.abs(vals))), 1.0)
+    rank = int(np.sum(vals > RTOL * scale))
+    if rank != 30:
+        raise RuntimeError(f'five-block P carrier is rank deficient after background projection: rank={rank}')
+    cond = float(np.max(vals) / np.min(vals))
+    diag_def = float(np.max(np.abs(np.diag(K) - 1.0)))
+    meta = {
+        'background_input_norm': bn,
+        'max_background_overlap_before_projection': float(np.max(np.abs(before))),
+        'min_column_norm_after_projection_before_unit_normalization': float(np.min(norms)),
+        'max_column_norm_after_projection_before_unit_normalization': float(np.max(norms)),
+        'P_gram_rank': rank,
+        'P_gram_min_eigenvalue': float(np.min(vals)),
+        'P_gram_max_eigenvalue': float(np.max(vals)),
+        'P_gram_condition': cond,
+        'P_unit_diagonal_defect': diag_def,
+    }
+    return Pn, bg, K, meta
+
+
 def assemble(input_path: Path, output_path: Path, summary_path: Path | None = None) -> dict:
     with np.load(input_path, allow_pickle=False) as z:
         required = {
-            'E_columns','S_columns','p_indices','p_block','p_coord',
-            'block_positions','central_block','C00_E','C00_S','metadata_json'
+            'E_columns','S_columns','P_vectors','background_vector',
+            'p_block','p_coord','block_positions','central_block','metadata_json'
         }
         missing = sorted(required - set(z.files))
         if missing:
             raise RuntimeError(f'missing source arrays: {missing}')
         E = np.asarray(z['E_columns'], complex)
         S = np.asarray(z['S_columns'], complex)
-        pidx = np.asarray(z['p_indices'], int)
+        Praw = np.asarray(z['P_vectors'], complex)
+        bgraw = np.asarray(z['background_vector'], complex)
         pblock = np.asarray(z['p_block'], int)
         pcoord = np.asarray(z['p_coord'], int)
         positions = np.asarray(z['block_positions'], float)
         central = int(np.asarray(z['central_block']).item())
-        c00e = complex(np.asarray(z['C00_E']).item())
-        c00s = complex(np.asarray(z['C00_S']).item())
         meta = load_metadata(z)
         metric_map = np.asarray(z['metric_map'], float) if 'metric_map' in z.files else None
         basis_ids = np.asarray(z['basis_ids']).astype(str) if 'basis_ids' in z.files else None
+        supplied_c00e = complex(np.asarray(z['C00_E']).item()) if 'C00_E' in z.files else None
+        supplied_c00s = complex(np.asarray(z['C00_S']).item()) if 'C00_S' in z.files else None
 
     ok, errors = validate_source_provenance(meta)
     if not ok:
@@ -185,20 +215,33 @@ def assemble(input_path: Path, output_path: Path, summary_path: Path | None = No
     if E.ndim != 2 or E.shape[0] != E.shape[1] or S.shape != E.shape:
         raise RuntimeError('E_columns and S_columns must be square matrices of the same shape')
     n = E.shape[0]
-    if basis_ids is not None:
-        if basis_ids.shape != (n,) or len(set(map(str, basis_ids))) != n:
-            raise RuntimeError('basis_ids must contain N unique state ids')
+    if Praw.shape != (n, 30):
+        raise RuntimeError(f'P_vectors must have shape ({n},30), got {Praw.shape}')
+    if np.asarray(bgraw).size != n:
+        raise RuntimeError('background_vector must have N amplitudes')
+    if basis_ids is not None and (basis_ids.shape != (n,) or len(set(map(str, basis_ids))) != n):
+        raise RuntimeError('basis_ids must contain N unique state ids')
     edef = hermitian_defect(E)
     sdef = hermitian_defect(S)
     if edef > HERM_TOL:
         raise RuntimeError(f'H_E_sine column matrix is not Hermitian: defect={edef:.3e}')
     if sdef > HERM_TOL:
         raise RuntimeError(f'S column matrix is not Hermitian: defect={sdef:.3e}')
-    if abs(c00e.imag) > HERM_TOL or abs(c00s.imag) > HERM_TOL:
-        raise RuntimeError('C00_E and C00_S must be real for Hermitian components')
-    layout = validate_p_layout(pidx, pblock, pcoord, positions, central, n)
+    layout = validate_layout(pblock, pcoord, positions, central)
     if metric_map is not None and (metric_map.shape != (6,6) or np.linalg.matrix_rank(metric_map, RTOL) != 6):
         raise RuntimeError('metric_map must be an invertible 6x6 matrix')
+
+    P, bg, Pgram, carrier_meta = prepare_carrier(Praw, bgraw)
+
+    c00e = complex(np.vdot(bg, E @ bg))
+    c00s = complex(np.vdot(bg, S @ bg))
+    if abs(c00e.imag) > HERM_TOL or abs(c00s.imag) > HERM_TOL:
+        raise RuntimeError('background expectations of Hermitian components must be real')
+    for name, supplied, actual in [('C00_E', supplied_c00e, c00e), ('C00_S', supplied_c00s, c00s)]:
+        if supplied is not None:
+            scale = max(abs(actual), 1.0)
+            if abs(supplied - actual) > C00_TOL * scale:
+                raise RuntimeError(f'{name} supplied cross-check disagrees with background expectation')
 
     G = E_COEFF * E + S_COEFF * S
     G = (G + G.conj().T) / 2.0
@@ -221,16 +264,23 @@ def assemble(input_path: Path, output_path: Path, summary_path: Path | None = No
         'regulator': meta['regulator'],
         'basis_closure_complete': True,
         'target_fitting_used': False,
+        'carrier_representation': 'background_orthogonal_unit_columns_with_nonorthogonal_Gram',
+        'carrier_dimension': 30,
         'source_bundle_sha256': sha256_file(input_path),
         'E_matrix_sha256': sha256_array(E),
         'S_matrix_sha256': sha256_array(S),
         'G_matrix_sha256': sha256_array(G),
+        'P_matrix_sha256': sha256_array(P),
+        'P_gram_sha256': sha256_array(Pgram),
+        'carrier_diagnostics': carrier_meta,
         'source_component_metadata': meta,
     }
 
     kwargs = dict(
         C_full=G,
-        p_indices=np.asarray(pidx, int),
+        P_vectors=P,
+        P_gram=Pgram,
+        background_vector=bg,
         p_block=np.asarray(pblock, int),
         p_coord=np.asarray(pcoord, int),
         block_positions=np.asarray(positions, float),
@@ -246,21 +296,25 @@ def assemble(input_path: Path, output_path: Path, summary_path: Path | None = No
     np.savez_compressed(output_path, **kwargs)
 
     out = {
-        'status': 'assembled frozen signed gravitational five-block operator',
-        'science_status': 'MICROSCOPIC_SIGNED_G_OPERATOR_READY_FOR_SCHUR',
+        'status': 'assembled frozen signed gravitational five-block operator with superposition carrier',
+        'science_status': 'MICROSCOPIC_SIGNED_G_OPERATOR_AND_TRUE_P_SUBSPACE_READY_FOR_SCHUR',
         'passed': True,
         'dimension': n,
-        'P_dimension': int(np.asarray(pidx).size),
-        'Q_dimension': int(n - np.asarray(pidx).size),
+        'P_dimension': 30,
+        'Q_dimension': int(n - 30),
         'E_coefficient': E_COEFF,
         'S_coefficient': S_COEFF,
         'E_hermitian_defect': edef,
         'S_hermitian_defect': sdef,
         'G_hermitian_defect': gdef,
+        'C00_E': float(c00e.real),
+        'C00_S': float(c00s.real),
         'C00_signed_G': float(C00),
+        'carrier': carrier_meta,
         'geometry': layout,
         'source_bundle_sha256': out_meta['source_bundle_sha256'],
         'G_matrix_sha256': out_meta['G_matrix_sha256'],
+        'P_matrix_sha256': out_meta['P_matrix_sha256'],
         'output': str(output_path),
         'hard_scope_guard': (
             'This is the frozen microscopic signed-constraint spatial precursor only. '
@@ -275,12 +329,14 @@ def assemble(input_path: Path, output_path: Path, summary_path: Path | None = No
 
 def selftest() -> dict:
     rng = np.random.default_rng(20260907)
-    n = 34
+    n = 36
     X = rng.normal(size=(n,n)) + 1j*rng.normal(size=(n,n))
     E = (X + X.conj().T) / 2
     Y = rng.normal(size=(n,n)) + 1j*rng.normal(size=(n,n))
     S = (Y + Y.conj().T) / 2
-    pidx = np.arange(30, dtype=int)
+    bg = np.zeros(n, complex); bg[-1] = 1.0
+    P = np.eye(n, 30, dtype=complex)
+    P[:, 1:] += 0.02 * P[:, :-1]
     pblock = np.repeat(np.arange(5), 6)
     pcoord = np.tile(np.arange(6), 5)
     normals = np.asarray([(1,1,1),(1,-1,-1),(-1,1,-1),(-1,-1,1)], float)/math.sqrt(3)
@@ -299,27 +355,31 @@ def selftest() -> dict:
         },
     }
     ok, errs = validate_source_provenance(meta)
-    layout = validate_p_layout(pidx, pblock, pcoord, positions, 0, n)
+    layout = validate_layout(pblock, pcoord, positions, 0)
+    _, bgn, K, cm = prepare_carrier(P, bg)
     G = E_COEFF*E + S_COEFF*S
     coeff_ok = np.linalg.norm(G - (-(2/3)*E -(32/9)*S)) < 1e-12*np.linalg.norm(G)
     bad = dict(meta)
     bad['operator_components'] = ['H_E_sine','S','R_op']
     bad['route_operator_included'] = True
     bad_ok, _ = validate_source_provenance(bad)
-    nonherm_rejected = hermitian_defect(E + np.triu(np.ones_like(E),1)) > HERM_TOL
     checks = {
         'valid_signed_source_provenance': ok and not errs,
         'route_operator_rejected': not bad_ok,
         'exact_signed_coefficients': bool(coeff_ok),
         'tetrahedral_five_block_layout': max(layout[k] for k in ('sum_defect','second_moment_defect','equal_length_defect')) < GEOM_TOL,
         'Hermitian_components': hermitian_defect(E) < HERM_TOL and hermitian_defect(S) < HERM_TOL,
-        'nonhermitian_control_detected': bool(nonherm_rejected),
+        'true_superposition_carrier_rank30': cm['P_gram_rank'] == 30,
+        'carrier_not_forced_to_identity_Gram': float(np.linalg.norm(K-np.eye(30))) > 1e-6,
+        'background_projection_preserves_unit_background': bool(abs(np.linalg.norm(bgn)-1) < 1e-12),
+        'P_columns_unit_norm': float(np.max(np.abs(np.diag(K)-1))) < 1e-12,
     }
     return {
-        'status': 'signed five-block assembler infrastructure selftest',
+        'status': 'signed five-block assembler superposition-carrier selftest',
         'science_status': 'INFRASTRUCTURE_SELFTEST_NOT_BQG_EVIDENCE',
         'passed': bool(all(checks.values())),
         'checks': checks,
+        'P_gram_condition': cm['P_gram_condition'],
         'hard_scope_guard': 'Synthetic algebra/provenance test only; no BQG Wilson coefficient is computed.',
     }
 
@@ -344,7 +404,7 @@ def main() -> int:
                 'science_status': 'MISSING_OR_INVALID_SIGNED_OPERATOR_SOURCE',
                 'passed': False,
                 'error': str(exc),
-                'hard_scope_guard': 'No matrix is emitted from incomplete, fitted, route-mixed, non-Hermitian, or non-closed input.',
+                'hard_scope_guard': 'No matrix is emitted from incomplete, fitted, route-mixed, non-Hermitian, rank-deficient, or non-closed input.',
             }
             if a.summary is not None:
                 a.summary.parent.mkdir(parents=True, exist_ok=True)
