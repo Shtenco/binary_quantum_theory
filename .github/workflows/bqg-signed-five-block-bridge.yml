@@ -1,0 +1,28 @@
+name: bqg-signed-five-block-bridge
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/bqg_signed_5block_operator_assembler.py'
+      - 'scripts/bqg_multiblock_tt_wilson_extractor.py'
+      - 'scripts/s4_tt_six_wilson_predictor.py'
+      - '.github/workflows/bqg-signed-five-block-bridge.yml'
+      - 'BQG_MULTIBLOCK_TT_WILSON_PRODUCTION_STATUS.md'
+      - 'PHYSICAL_TT_KERNEL_FROM_EXISTING_BQG.md'
+      - 'PHYSICAL_TT_KERNEL_LEADING_IR_DERIVATION.md'
+  workflow_dispatch:
+
+jobs:
+  bridge-selftests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Signed gravitational operator assembler selftest
+        run: python scripts/bqg_signed_5block_operator_assembler.py --selftest
+      - name: Schur metric TT six-Wilson extractor selftest
+        run: python scripts/bqg_multiblock_tt_wilson_extractor.py --selftest
