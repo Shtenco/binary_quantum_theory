@@ -1,25 +1,19 @@
 #!/usr/bin/env python3
 """Fail-closed signed-BQG five-block Schur -> metric -> TT extractor.
 
-This script introduces no new physical operator.  It consumes the already frozen
-microscopic signed gravitational constraint
+Consumes the already frozen microscopic signed gravitational constraint
 
     G = -(2/3) H_E^sine -(32/9) S,
     S = -i/2 (L_raw - L_raw^dagger),
 
-compressed on a centered five-block metric carrier plus its closed Q complement.
-It performs the zero-constraint-energy Schur/Feshbach reduction on gapped Q
-modes, applies the measured q->metric map, forms the nearest-neighbour spatial
-Fourier symbol, projects to TT, and extracts the six canonical parity-even S4
-quartic spatial coefficients.
+on a common closed microscopic basis together with a genuine 30-column
+five-block coarse carrier P_vectors. P_vectors may be non-orthogonal
+superpositions of microscopic basis states. The Schur/Feshbach reduction is
+therefore performed in the orthonormalized span(P), then transformed back to the
+original labelled q coordinates before the measured q->metric map is applied.
 
-The result of this script is deliberately named `c_micro_spatial_BQG`: it is a
-microscopic signed-constraint spatial TT precursor.  It is NOT the physical
-`c_BQG_IR` vector until the separate theory-specific physical chain
-
-    projector/history -> Z_phys -> W_phys -> Gamma_phys -> Gamma_TT^(2)
-
-has been constructed.  This script therefore always leaves `c_BQG_IR = null`.
+This script emits only c_micro_spatial_BQG. It never promotes a constraint
+spectral kernel into the physical c_BQG_IR vector.
 """
 from __future__ import annotations
 
@@ -44,10 +38,7 @@ GEOM_TOL = 2e-9
 LEADING_TOL = 2e-6
 FIT_TOL = 2e-8
 
-# Frozen L1 metric map reconstructed from
-# scripts/collective_l1_coarse_flux_response_gate.py:
-# M_hq = (J_F^bg)^(-1) B_F, with C_face=9/2 and opposite response=-sqrt(3).
-# Coordinate order h=(xx,yy,zz,sqrt(2)xy,sqrt(2)xz,sqrt(2)yz).
+
 def frozen_metric_map() -> np.ndarray:
     a = 1.0 / math.sqrt(12.0)
     b = 1.0 / math.sqrt(6.0)
@@ -100,6 +91,8 @@ def validate_provenance(meta: dict) -> tuple[bool, list[str]]:
         errors.append('physical_history_1pi must be false for this microscopic constraint extractor')
     if meta.get('operator_family') != 'frozen_signed_gravitational_constraint':
         errors.append('operator_family must be frozen_signed_gravitational_constraint')
+    if meta.get('carrier_representation') != 'background_orthogonal_unit_columns_with_nonorthogonal_Gram':
+        errors.append('production carrier must be the true superposition P subspace, not coordinate-selector p_indices')
     comps = set(meta.get('operator_components', []))
     if not {'H_E_sine','S'} <= comps:
         errors.append('operator_components must contain H_E_sine and S')
@@ -121,29 +114,62 @@ def validate_provenance(meta: dict) -> tuple[bool, list[str]]:
     return not errors, errors
 
 
-def schur_zero_energy(C: np.ndarray, pidx: np.ndarray, rtol: float = RTOL) -> dict:
+def gram_sqrt_and_invhalf(V: np.ndarray, rtol: float = RTOL) -> tuple[np.ndarray,np.ndarray,np.ndarray,dict]:
+    V = np.asarray(V, complex)
+    K = V.conj().T @ V
+    K = (K + K.conj().T) / 2
+    vals,U = np.linalg.eigh(K)
+    scale = max(float(np.max(np.abs(vals))), 1.0)
+    keep = vals > rtol * scale
+    rank = int(np.sum(keep))
+    if rank != V.shape[1]:
+        raise RuntimeError(f'P carrier rank deficient: rank={rank}, expected={V.shape[1]}')
+    root = (U * np.sqrt(vals)) @ U.conj().T
+    invhalf = (U * (1.0/np.sqrt(vals))) @ U.conj().T
+    return K, root, invhalf, {
+        'P_rank': rank,
+        'P_gram_min_eigenvalue': float(np.min(vals)),
+        'P_gram_max_eigenvalue': float(np.max(vals)),
+        'P_gram_condition': float(np.max(vals)/np.min(vals)),
+    }
+
+
+def complete_orthogonal_complement(Q0: np.ndarray) -> tuple[np.ndarray,float]:
+    Qfull, _ = np.linalg.qr(np.asarray(Q0, complex), mode='complete')
+    p = Q0.shape[1]
+    Q1 = Qfull[:, p:]
+    defect = float(np.linalg.norm(Q0.conj().T @ Q1))
+    return Q1, defect
+
+
+def schur_zero_energy_subspace(C: np.ndarray, V: np.ndarray, rtol: float = RTOL) -> dict:
     C = np.asarray(C, complex)
+    V = np.asarray(V, complex)
     if C.ndim != 2 or C.shape[0] != C.shape[1]:
         raise ValueError('C_full must be square')
     if hermitian_defect(C) > 5e-9:
         raise RuntimeError(f'C_full is not Hermitian: defect={hermitian_defect(C):.3e}')
     n = C.shape[0]
-    pidx = np.asarray(pidx, int).ravel()
-    if len(set(map(int, pidx))) != len(pidx) or np.any(pidx < 0) or np.any(pidx >= n):
-        raise ValueError('invalid p_indices')
-    mask = np.ones(n, dtype=bool); mask[pidx] = False
-    qidx = np.flatnonzero(mask)
-    CPP = C[np.ix_(pidx,pidx)]
-    if qidx.size == 0:
-        return {
-            'Ceff': CPP.copy(), 'q_indices': qidx, 'q_eigenvalues': np.asarray([]),
-            'q_gap': None, 'q_spectral_radius': None, 'q_condition': None,
-            'zero_mode_count': 0, 'coupled_zero_mode_norm': 0.0,
-            'zero_modes_uncoupled': True,
-        }
-    CPQ = C[np.ix_(pidx,qidx)]
-    A = C[np.ix_(qidx,qidx)]
-    vals,U = np.linalg.eigh((A + A.conj().T)/2)
+    if V.ndim != 2 or V.shape[0] != n:
+        raise ValueError('P_vectors must be N x p')
+    p = V.shape[1]
+    if p >= n:
+        raise RuntimeError('production Schur requires a non-empty Q complement')
+
+    K, Ksqrt, Kinvhalf, gdiag = gram_sqrt_and_invhalf(V, rtol)
+    Q0 = V @ Kinvhalf
+    orth_def = float(np.linalg.norm(Q0.conj().T @ Q0 - np.eye(p)))
+    if orth_def > 100*rtol:
+        raise RuntimeError(f'orthonormalized P carrier defect too large: {orth_def:.3e}')
+    Q1, pq_def = complete_orthogonal_complement(Q0)
+    if pq_def > 100*rtol:
+        raise RuntimeError(f'P/Q complement orthogonality defect too large: {pq_def:.3e}')
+
+    CPP = Q0.conj().T @ C @ Q0
+    CPQ = Q0.conj().T @ C @ Q1
+    A = Q1.conj().T @ C @ Q1
+    A = (A + A.conj().T)/2
+    vals,U = np.linalg.eigh(A)
     scale = max(float(np.max(np.abs(vals))), 1.0)
     nz = np.abs(vals) > rtol * scale
     zmask = ~nz
@@ -158,25 +184,39 @@ def schur_zero_energy(C: np.ndarray, pidx: np.ndarray, rtol: float = RTOL) -> di
     invvals = np.zeros_like(vals)
     invvals[nz] = 1.0 / vals[nz]
     Ainv = (U * invvals) @ U.conj().T
-    Ceff = CPP - CPQ @ Ainv @ CPQ.conj().T
-    Ceff = (Ceff + Ceff.conj().T)/2
+    Ceff0 = CPP - CPQ @ Ainv @ CPQ.conj().T
+    Ceff0 = (Ceff0 + Ceff0.conj().T)/2
+
+    Ceff_q = Ksqrt @ Ceff0 @ Ksqrt
+    Ceff_q = (Ceff_q + Ceff_q.conj().T)/2
     av = np.abs(vals[nz])
     gap = float(np.min(av)) if av.size else None
     radius = float(np.max(av)) if av.size else None
     cond = float(radius/gap) if gap not in (None,0.0) else None
     return {
-        'Ceff': Ceff, 'q_indices': qidx, 'q_eigenvalues': vals,
-        'q_gap': gap, 'q_spectral_radius': radius, 'q_condition': cond,
-        'zero_mode_count': int(np.sum(zmask)), 'coupled_zero_mode_norm': coupled_zero,
+        'Ceff_q': Ceff_q,
+        'P_gram': K,
+        'P_orthonormalization_defect': orth_def,
+        'P_Q_orthogonality_defect': pq_def,
+        'q_dimension': int(Q1.shape[1]),
+        'q_eigenvalues': vals,
+        'q_gap': gap,
+        'q_spectral_radius': radius,
+        'q_condition': cond,
+        'zero_mode_count': int(np.sum(zmask)),
+        'coupled_zero_mode_norm': coupled_zero,
         'zero_modes_uncoupled': coupled_zero <= 20*rtol,
+        **gdiag,
     }
 
 
-def canonicalize_p(Ceff: np.ndarray, p_block: np.ndarray, p_coord: np.ndarray,
-                   positions: np.ndarray, central_block: int) -> tuple[np.ndarray,list[int]]:
-    p_block=np.asarray(p_block,int).ravel(); p_coord=np.asarray(p_coord,int).ravel()
+def canonicalize_p(Ceff: np.ndarray, Pgram: np.ndarray,
+                   p_block: np.ndarray, p_coord: np.ndarray,
+                   positions: np.ndarray, central_block: int) -> tuple[np.ndarray,np.ndarray,list[int]]:
+    p_block=np.asarray(p_block,int).ravel()
+    p_coord=np.asarray(p_coord,int).ravel()
     if p_block.size != Ceff.shape[0] or p_coord.size != Ceff.shape[0]:
-        raise ValueError('p_block/p_coord length must equal len(p_indices)')
+        raise ValueError('p_block/p_coord length must equal P carrier dimension')
     blocks=sorted(set(map(int,p_block)))
     if central_block not in blocks:
         raise ValueError('central_block absent from p_block')
@@ -190,9 +230,9 @@ def canonicalize_p(Ceff: np.ndarray, p_block: np.ndarray, p_coord: np.ndarray,
         for c in range(6):
             hit=np.flatnonzero((p_block==b)&(p_coord==c))
             if hit.size != 1:
-                raise RuntimeError(f'block {b} coordinate {c}: expected exactly one P basis vector, got {hit.size}')
+                raise RuntimeError(f'block {b} coordinate {c}: expected exactly one P vector, got {hit.size}')
             order.append(int(hit[0]))
-    return Ceff[np.ix_(order,order)], order_blocks
+    return Ceff[np.ix_(order,order)], Pgram[np.ix_(order,order)], order_blocks
 
 
 def geometry(order_blocks: list[int], all_blocks_sorted: list[int], positions: np.ndarray) -> dict:
@@ -200,11 +240,11 @@ def geometry(order_blocks: list[int], all_blocks_sorted: list[int], positions: n
     c=order_blocks[0]; rc=pos_by_block[c]
     offs=np.asarray([pos_by_block[b]-rc for b in order_blocks[1:]],float)
     lens=np.linalg.norm(offs,axis=1)
-    if np.min(lens)<=0: raise RuntimeError('zero neighbour displacement')
+    if np.min(lens)<=0:
+        raise RuntimeError('zero neighbour displacement')
     a=float(np.mean(lens)); unit=offs/lens[:,None]
     sum_def=float(np.linalg.norm(np.sum(unit,axis=0)))
-    second=unit.T@unit
-    second_def=float(np.linalg.norm(second-(4/3)*np.eye(3)))
+    second_def=float(np.linalg.norm(unit.T@unit-(4/3)*np.eye(3)))
     length_def=float(np.max(np.abs(lens/a-1)))
     passed=max(sum_def,second_def,length_def)<GEOM_TOL
     return {'offsets':offs,'a_star':a,'unit_normals':unit,'sum_defect':sum_def,
@@ -224,7 +264,8 @@ def tt_frame(n) -> np.ndarray:
 
 
 def central_offsets(Kh: np.ndarray, offs: np.ndarray) -> tuple[np.ndarray,list[np.ndarray]]:
-    if Kh.shape != (30,30): raise ValueError('Kh must be 30x30 for center+4 six-coordinate blocks')
+    if Kh.shape != (30,30):
+        raise ValueError('Kh must be 30x30 for center+4 six-coordinate blocks')
     K0=Kh[:6,:6]
     Knb=[Kh[:6,6+6*i:12+6*i] for i in range(4)]
     return K0,Knb
@@ -232,16 +273,10 @@ def central_offsets(Kh: np.ndarray, offs: np.ndarray) -> tuple[np.ndarray,list[n
 
 def taylor_matrices(K0: np.ndarray, Knb: list[np.ndarray], offs: np.ndarray, n) -> tuple[np.ndarray,np.ndarray,np.ndarray,float]:
     n=np.asarray(n,float);n=n/np.linalg.norm(n)
-    mass=K0.copy()
-    K2=np.zeros((6,6),float);K4=np.zeros((6,6),float)
-    odd=0.0
+    mass=K0.copy(); K2=np.zeros((6,6),float); K4=np.zeros((6,6),float); odd=0.0
     for A,r in zip(Knb,offs):
-        Ar=np.asarray(A,float)
-        S=Ar+Ar.T; D=Ar-Ar.T
-        x=float(n@r)
-        mass+=S
-        K2+=-0.5*S*x*x
-        K4+=(1/24)*S*x**4
+        Ar=np.asarray(A,float); S=Ar+Ar.T; D=Ar-Ar.T; x=float(n@r)
+        mass+=S; K2+=-0.5*S*x*x; K4+=(1/24)*S*x**4
         odd=max(odd,float(np.linalg.norm(D)/max(np.linalg.norm(S),1e-300)))
     return mass,K2,K4,odd
 
@@ -254,7 +289,6 @@ DIRS={
     'generic':np.asarray([2,3,5],float),
 }
 
-# Exact six-observable extraction matrix certified by s4_tt_quartic_complete_basis_gate.py.
 EXTRACT_A=np.asarray([
     [1/6,0,0,0,0,0],
     [0,0,1/6,0,0,0],
@@ -280,22 +314,19 @@ def analyze_spatial_kernel(Kh: np.ndarray, offs: np.ndarray, a_star: float) -> d
     for name,n in DIRS.items():
         mass,K2,K4,o=taylor_matrices(K0,Knb,offs,n)
         E=tt_frame(n)
-        masstt[name]=E.T@mass@E
-        k2tt[name]=E.T@K2@E
-        k4tt[name]=E.T@K4@E
-        odd=max(odd,o)
+        masstt[name]=E.T@mass@E; k2tt[name]=E.T@K2@E; k4tt[name]=E.T@K4@E; odd=max(odd,o)
     residues=np.asarray([np.trace(k2tt[k])/2 for k in DIRS],float)
     Z2=float(np.mean(residues))
-    if abs(Z2)<1e-14: raise RuntimeError('leading TT k^2 residue is zero')
+    if abs(Z2)<1e-14:
+        raise RuntimeError('leading TT k^2 residue is zero')
     leading_def=max(float(np.linalg.norm(k2tt[k]/Z2-np.eye(2))) for k in DIRS)
     mass_scale=abs(Z2)/max(a_star*a_star,1e-300)
     mass_def=max(float(np.linalg.norm(masstt[k])/max(mass_scale,1e-300)) for k in DIRS)
     dimless={k:k4tt[k]/(Z2*a_star*a_star) for k in DIRS}
     c=extract_six(dimless)
-    fit_def=0.0;pred={}
+    fit_def=0.0; pred={}
     for k,n in DIRS.items():
-        p=np.asarray(WILSON.evaluate(c,n)['quartic_TT_matrix'],float)
-        pred[k]=p
+        p=np.asarray(WILSON.evaluate(c,n)['quartic_TT_matrix'],float); pred[k]=p
         fit_def=max(fit_def,float(np.linalg.norm(dimless[k]-p)/max(np.linalg.norm(dimless[k]),1.0)))
     checks={
         'leading_k2_positive':Z2>0,
@@ -314,50 +345,66 @@ def analyze_spatial_kernel(Kh: np.ndarray, offs: np.ndarray, a_star: float) -> d
 
 def science_run(path: Path, output: Path|None=None) -> dict:
     with np.load(path,allow_pickle=False) as z:
-        required={'C_full','p_indices','p_block','p_coord','block_positions','central_block','C00','metadata_json'}
+        required={'C_full','P_vectors','P_gram','p_block','p_coord','block_positions','central_block','C00','metadata_json'}
         missing=sorted(required-set(z.files))
-        if missing: raise RuntimeError(f'missing production arrays: {missing}')
-        meta=load_metadata(z);okprov,perr=validate_provenance(meta)
+        if missing:
+            raise RuntimeError(f'missing production arrays: {missing}')
+        meta=load_metadata(z); okprov,perr=validate_provenance(meta)
         if not okprov:
             raise RuntimeError('PRODUCTION_PROVENANCE_REJECTED: '+'; '.join(perr))
-        C=np.asarray(z['C_full'],complex);pidx=np.asarray(z['p_indices'],int)
-        pb=np.asarray(z['p_block'],int);pc=np.asarray(z['p_coord'],int)
-        positions=np.asarray(z['block_positions'],float);central=int(np.asarray(z['central_block']).item())
+        C=np.asarray(z['C_full'],complex); V=np.asarray(z['P_vectors'],complex); Kstored=np.asarray(z['P_gram'],complex)
+        pb=np.asarray(z['p_block'],int); pc=np.asarray(z['p_coord'],int)
+        positions=np.asarray(z['block_positions'],float); central=int(np.asarray(z['central_block']).item())
         C00=complex(np.asarray(z['C00']).item())
         M=np.asarray(z['metric_map'],float) if 'metric_map' in z.files else frozen_metric_map()
+
     if M.shape!=(6,6) or np.linalg.matrix_rank(M,RTOL)!=6:
         raise RuntimeError('metric_map must be invertible 6x6')
-    sch=schur_zero_energy(C,pidx)
+    if V.shape[1] != 30:
+        raise RuntimeError('P_vectors must contain exactly 30 coarse q columns')
+    Kactual=V.conj().T@V
+    if np.linalg.norm(Kactual-Kstored)/max(np.linalg.norm(Kactual),1e-300)>2e-10:
+        raise RuntimeError('stored P_gram does not match P_vectors')
+
+    sch=schur_zero_energy_subspace(C,V)
     all_blocks=sorted(set(map(int,pb)))
-    Ce,order_blocks=canonicalize_p(sch['Ceff'],pb,pc,positions,central)
-    if abs(C00.imag)>1e-9: raise RuntimeError('C00 must be real for Hermitian signed gravitational operator')
-    Kq=2*Ce.real-2*C00.real*np.eye(Ce.shape[0])
+    Ce,Ke,order_blocks=canonicalize_p(sch['Ceff_q'],sch['P_gram'],pb,pc,positions,central)
+    if abs(C00.imag)>1e-9:
+        raise RuntimeError('C00 must be real for Hermitian signed gravitational operator')
+
+    Kq=2*Ce.real-2*C00.real*Ke.real
     T=blockdiag(np.linalg.inv(M),5)
     Kh=T.T@Kq@T
     geo=geometry(order_blocks,all_blocks,positions)
     if not geo['passed']:
-        raise RuntimeError('NEIGHBOUR_GEOMETRY_NOT_FROZEN_TETRAHEDRAL: '+json.dumps({k:v for k,v in geo.items() if k not in ('offsets','unit_normals')}))
+        raise RuntimeError('NEIGHBOUR_GEOMETRY_NOT_FROZEN_TETRAHEDRAL: '+json.dumps(
+            {k:v for k,v in geo.items() if k not in ('offsets','unit_normals')}))
     spatial=analyze_spatial_kernel(Kh,geo['offsets'],geo['a_star'])
     micro=spatial['coefficients'].tolist() if spatial['passed'] else None
     out={
-        'status':'BQG microscopic signed-G five-block Schur-to-TT spatial extraction',
+        'status':'BQG microscopic signed-G five-block true-subspace Schur-to-TT spatial extraction',
         'science_status':'MICROSCOPIC_SIGNED_G_TT_SPATIAL_PRECURSOR_EXTRACTED' if spatial['passed'] else 'MICROSCOPIC_SIGNED_G_FAILS_IR_GUARDS',
         'passed':bool(spatial['passed']),
         'source_metadata':meta,
+        'carrier':{
+            'dimension':30,'P_rank':sch['P_rank'],
+            'P_gram_min_eigenvalue':sch['P_gram_min_eigenvalue'],
+            'P_gram_max_eigenvalue':sch['P_gram_max_eigenvalue'],
+            'P_gram_condition':sch['P_gram_condition'],
+            'P_orthonormalization_defect':sch['P_orthonormalization_defect'],
+            'P_Q_orthogonality_defect':sch['P_Q_orthogonality_defect'],
+        },
         'metric_map':M.tolist(),'metric_map_condition_number':float(np.linalg.cond(M)),
         'schur':{
-            'q_dimension':int(len(sch['q_indices'])),'q_gap':sch['q_gap'],
+            'q_dimension':sch['q_dimension'],'q_gap':sch['q_gap'],
             'q_spectral_radius':sch['q_spectral_radius'],'q_condition':sch['q_condition'],
             'zero_mode_count':sch['zero_mode_count'],'coupled_zero_mode_norm':sch['coupled_zero_mode_norm'],
         },
         'geometry':{k:(v.tolist() if isinstance(v,np.ndarray) else v) for k,v in geo.items()},
         'spatial':{
-            'Z2_spatial':spatial['Z2_spatial'],
-            'leading_isotropy_defect':spatial['leading_isotropy_defect'],
-            'mass_defect':spatial['mass_defect'],
-            'reciprocity_odd_defect':spatial['reciprocity_odd_defect'],
-            'wilson_fit_relative_defect':spatial['wilson_fit_relative_defect'],
-            'checks':spatial['checks'],
+            'Z2_spatial':spatial['Z2_spatial'],'leading_isotropy_defect':spatial['leading_isotropy_defect'],
+            'mass_defect':spatial['mass_defect'],'reciprocity_odd_defect':spatial['reciprocity_odd_defect'],
+            'wilson_fit_relative_defect':spatial['wilson_fit_relative_defect'],'checks':spatial['checks'],
         },
         'c_micro_spatial_BQG':micro,
         'c_BQG_IR':None,
@@ -368,65 +415,80 @@ def science_run(path: Path, output: Path|None=None) -> dict:
         ),
     }
     if output is not None:
-        output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
+        output.parent.mkdir(parents=True,exist_ok=True); output.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
     return out
 
 
 def selftest() -> dict:
-    if WILSON is None: raise RuntimeError('missing six-Wilson predictor')
+    if WILSON is None:
+        raise RuntimeError('missing six-Wilson predictor')
     M=frozen_metric_map(); metric_ok=bool(abs(float(np.linalg.cond(M))-math.sqrt(2))<2e-12)
     normals=np.asarray([(1,1,1),(1,-1,-1),(-1,1,-1),(-1,-1,1)],float)/math.sqrt(3)
+
     Kh=np.zeros((30,30),float)
     for b in range(5): Kh[6*b:6*b+6,6*b:6*b+6]=8*np.eye(6)
     for i in range(4):
-        sl=slice(6+6*i,12+6*i)
-        Kh[:6,sl]=-np.eye(6);Kh[sl,:6]=-np.eye(6)
-    Bm=blockdiag(M,5)
-    Kq=Bm.T@Kh@Bm
-    Ceff=0.5*Kq
-    rng=np.random.default_rng(20260906)
-    qdim=4;D=np.diag([2.0,-3.0,4.0,5.0]);X=rng.normal(size=(30,qdim))*0.02
-    CPP=Ceff+X@np.linalg.inv(D)@X.T
-    C=np.block([[CPP,X],[X.T,D]])
-    sch=schur_zero_energy(C,np.arange(30))
-    schur_err=float(np.linalg.norm(sch['Ceff']-Ceff)/np.linalg.norm(Ceff))
-    Kq2=2*sch['Ceff'].real
-    T=blockdiag(np.linalg.inv(M),5);Kh2=T.T@Kq2@T
+        sl=slice(6+6*i,12+6*i); Kh[:6,sl]=-np.eye(6); Kh[sl,:6]=-np.eye(6)
+    Bm=blockdiag(M,5); Kq_target=Bm.T@Kh@Bm
+
+    rng=np.random.default_rng(20260907); n=36
+    Z=rng.normal(size=(n,n))+1j*rng.normal(size=(n,n)); U,_=np.linalg.qr(Z); Q0=U[:,:30]
+    L=np.eye(30)
+    for i in range(1,30): L[i-1,i]=0.08
+    V=Q0@L; V=V/np.linalg.norm(V,axis=0)[None,:]
+    K=V.conj().T@V; vals,Uk=np.linalg.eigh((K+K.conj().T)/2)
+    Kinvhalf=(Uk*(1/np.sqrt(vals)))@Uk.conj().T; Q0v=V@Kinvhalf
+
+    Ceff_q_target=0.5*Kq_target; Ceff0=Kinvhalf@Ceff_q_target@Kinvhalf
+    qdim=n-30; D=np.diag(np.linspace(2.0,5.0,qdim)); X=rng.normal(size=(30,qdim))*0.02
+    CPP=Ceff0+X@np.linalg.inv(D)@X.T; Cbasis=np.block([[CPP,X],[X.T,D]])
+    Q1v,_=complete_orthogonal_complement(Q0v); Ufull=np.column_stack((Q0v,Q1v))
+    C=Ufull@Cbasis@Ufull.conj().T; C=(C+C.conj().T)/2
+
+    sch=schur_zero_energy_subspace(C,V)
+    schur_err=float(np.linalg.norm(sch['Ceff_q']-Ceff_q_target)/np.linalg.norm(Ceff_q_target))
+    Kq2=2*sch['Ceff_q'].real; T=blockdiag(np.linalg.inv(M),5); Kh2=T.T@Kq2@T
     spatial=analyze_spatial_kernel(Kh2,normals,1.0)
     expected=(-1/20)*WILSON.ISO+(1/18)*WILSON.Q4V
     c_err=float(np.linalg.norm(spatial['coefficients']-expected)/np.linalg.norm(expected))
+
     gapless_rejected=False
     try:
-        schur_zero_energy(np.asarray([[0.0,0.01],[0.01,0.0]]),np.asarray([0]))
+        Vtiny=np.asarray([[1.0],[0.0]],complex)
+        schur_zero_energy_subspace(np.asarray([[0.0,0.01],[0.01,0.0]],complex),Vtiny)
     except RuntimeError as e:
         gapless_rejected='GAPLESS_COUPLED_Q_MODE_REQUIRES_PROMOTION' in str(e)
+
     good_meta={
         'actual_bqg_operator':True,'synthetic':False,
         'provenance_level':'microscopic_constraint','physical_history_1pi':False,
         'operator_family':'frozen_signed_gravitational_constraint',
+        'carrier_representation':'background_orthogonal_unit_columns_with_nonorthogonal_Gram',
         'operator_components':['H_E_sine','S'],
         'operator_coefficients_exact':{'H_E_sine':[-2,3],'S':[-32,9]},
         'route_operator_included':False,'source_commit':'SELFTEST',
-        'regulator':{'Jmax':'selftest'},'basis_closure_complete':True,
-        'target_fitting_used':False,
+        'regulator':{'Jmax':'selftest'},'basis_closure_complete':True,'target_fitting_used':False,
     }
     prov_ok,prov_errors=validate_provenance(good_meta)
-    bad_meta=dict(good_meta);bad_meta['operator_components']=['H_E_sine','S','R_op'];bad_meta['route_operator_included']=True
+    bad_meta=dict(good_meta); bad_meta['operator_components']=['H_E_sine','S','R_op']; bad_meta['route_operator_included']=True
     route_ok,_=validate_provenance(bad_meta)
+
     checks={
         'frozen_metric_map_cond_sqrt2':metric_ok,
+        'nonorthogonal_carrier_detected':float(np.linalg.norm(K-np.eye(30)))>1e-4,
+        'nonorthogonal_subspace_Schur_recovers_raw_q_form':schur_err<5e-11,
         'gapless_coupled_Q_mode_rejected':gapless_rejected,
         'signed_G_provenance_accepted':prov_ok and not prov_errors,
         'route_operator_provenance_rejected':not route_ok,
-        'synthetic_Schur_recovers_target':schur_err<2e-12,
         'tetra_scalar_kernel_passes_IR_guards':spatial['passed'],
         'known_analytic_Wilson_vector_recovered':c_err<2e-10,
     }
     return {
-        'status':'synthetic known-answer test only','science_status':'INFRASTRUCTURE_SELFTEST_NOT_BQG_EVIDENCE',
+        'status':'synthetic non-orthogonal carrier known-answer test only',
+        'science_status':'INFRASTRUCTURE_SELFTEST_NOT_BQG_EVIDENCE',
         'passed':bool(all(checks.values())),'checks':checks,'schur_relative_error':schur_err,
-        'expected_c':expected.tolist(),'recovered_c':spatial['coefficients'].tolist(),
-        'c_relative_error':c_err,'c_BQG_IR':None,
+        'P_gram_condition':sch['P_gram_condition'],'expected_c':expected.tolist(),
+        'recovered_c':spatial['coefficients'].tolist(),'c_relative_error':c_err,'c_BQG_IR':None,
         'spatial_diagnostics':{
             'Z2_spatial':spatial['Z2_spatial'],'leading_isotropy_defect':spatial['leading_isotropy_defect'],
             'mass_defect':spatial['mass_defect'],'wilson_fit_relative_defect':spatial['wilson_fit_relative_defect'],
@@ -437,10 +499,8 @@ def selftest() -> dict:
 
 def main() -> int:
     p=argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--input',type=Path,help='NPZ containing the assembled frozen signed-G five-block operator')
-    p.add_argument('--output',type=Path)
-    p.add_argument('--selftest',action='store_true')
-    a=p.parse_args()
+    p.add_argument('--input',type=Path,help='NPZ containing assembled frozen signed-G five-block operator and true P_vectors')
+    p.add_argument('--output',type=Path); p.add_argument('--selftest',action='store_true'); a=p.parse_args()
     if a.selftest or a.input is None:
         out=selftest()
     else:
@@ -451,9 +511,10 @@ def main() -> int:
                  'c_micro_spatial_BQG':None,'c_BQG_IR':None,'error':str(e),
                  'hard_scope_guard':'No Wilson coefficients are emitted when the frozen signed-operator chain is incomplete or invalid.'}
             if a.output is not None:
-                a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
+                a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(out,indent=2,default=lambda x:x.tolist() if isinstance(x,np.ndarray) else x))
     return 0 if out.get('passed') else 2
+
 
 if __name__=='__main__':
     raise SystemExit(main())
