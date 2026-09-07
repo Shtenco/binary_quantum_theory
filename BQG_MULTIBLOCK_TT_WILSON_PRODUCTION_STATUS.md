@@ -1,68 +1,132 @@
 # BQG multi-block TT Wilson production status
 
-Status: **downstream physical extractor closed; actual multi-block BQG science input still missing.**
+Status: **the signed microscopic five-block downstream bridge is executable; the actual five-block operator columns and the physical IR six-vector remain open.**
 
-This note records the exact state of the calculation
+This note separates two calculations that must not be collapsed:
 
-\[
-C_{\rm BQG}\to C_{\rm eff}\to K_q\to K_h(\mathbf k)\to K_{TT}(\mathbf k)\to(c_1,\ldots,c_6)_{\rm BQG}^{IR}
-\]
+```text
+microscopic signed gravitational spatial precursor
+    G_frozen -> C_5block -> Schur -> K_h(k) -> TT -> c_micro_spatial_BQG
 
-without introducing a new microscopic operator, clock, history postulate or fitted transfer coefficient.
+physical quantum-gravity response
+    {C_A} -> projector/history -> Z_phys -> W_phys -> Gamma_phys
+          -> Gamma_TT^(2)(omega,k) -> c_BQG_IR
+```
 
-## 1. What is now executable
+The first chain is now fail-closed in code downstream of a completed five-block operator bundle. The second chain is still required before any six-vector is called a physical BQG prediction.
 
-`scripts/bqg_multiblock_tt_wilson_extractor.py` implements the frozen downstream chain:
+## 1. Frozen gravitational operator
 
-1. accept an already-produced Hermitian collective multi-block BQG constraint matrix `C_full`;
-2. define the supplied metric carrier `P` and its complement `Q`;
-3. diagonalize `QCQ` and reject every zero/gapless `Q` mode that still couples to `P`;
-4. on the remaining gapped range compute the zero-constraint-energy Schur/Feshbach operator
+No new microscopic operator is introduced here. The gravitational operator used by the five-block TT precursor is the already frozen Hermitian signed combination
 
 \[
 \boxed{
-C_{eff}=PCP-PCQ(QCQ)^{-1}QCP;
+G_{\rm frozen}
+=-\frac23 H_E^{\rm sine}-\frac{32}{9}S,
+\qquad
+S=-\frac{i}{2}(L_{raw}-L_{raw}^\dagger).
 }
 \]
 
-5. form the normalized-state six-metric Hessian
+The route operator `R_op` is **not** part of this gravitational TT precursor. Historical combined HDA/route constraints may contain a separately declared route block, but a direct route contribution may not be renamed the gravitational DeWitt/TT dynamics.
 
-\[
-\boxed{K_q=2\,\operatorname{Re}C_{eff}-2C_{00}I;}
-\]
+The exact coefficients above are enforced by provenance guards. No fitted transfer coefficient is accepted.
 
-6. transport each block through the independently measured metric map
+## 2. New executable seam: component columns -> signed G
 
-\[
-\boxed{K_h=M_{hq}^{-T}K_qM_{hq}^{-1};}
-\]
+`scripts/bqg_signed_5block_operator_assembler.py` consumes exact action-column matrices for `H_E^sine` and `S` on one common closed finite basis and forms only the signed operator above.
 
-7. require the center plus four neighbors to reproduce the frozen tetrahedral nearest-neighbor shell;
-8. form the small-momentum Fourier/Taylor symbol from the actual center-neighbor blocks;
-9. project to the deterministic two-polarization TT frame;
-10. verify zero TT mass, positive common leading `k^2` residue, leading isotropy and reciprocal/parity-even transfer;
-11. extract the complete six-dimensional parity-even tetrahedral quartic TT vector using the exact full-rank six-observable matrix already certified by `S4_TT_QUARTIC_COMPLETE_BASIS.md`;
-12. emit
-
-\[
-\boxed{\mathbf c_{\rm BQG}^{IR}=(c_1,c_2,c_3,c_4,c_5,c_6)}
-\]
-
-**only** if every production/provenance/gap/geometry/IR/Wilson guard passes.
-
-A failed or incomplete input returns `c_BQG_IR = null`; no coefficient is replaced by zero or inferred from an unrelated precursor.
-
-## 2. Frozen metric map
-
-The extractor uses the already measured L1 map from `scripts/collective_l1_coarse_flux_response_gate.py` unless an explicitly supplied production map is present.
-
-In the metric coordinate convention
+Required source bundle:
 
 ```text
-h = (xx, yy, zz, sqrt(2)xy, sqrt(2)xz, sqrt(2)yz)
+E_columns       NxN, column j = H_E^sine |j>
+S_columns       NxN, column j = S |j>
+p_indices       30 retained metric-carrier vectors
+p_block         five block ids x six q coordinates
+p_coord         coordinate ids 0..5
+block_positions center + four actual neighboring coarse-cell positions
+central_block
+C00_E
+C00_S
+metadata_json
 ```
 
-its exact reconstructed form is
+Optional:
+
+```text
+basis_ids
+metric_map
+```
+
+The source metadata must declare:
+
+```text
+synthetic=false
+target_fitting_used=false
+basis_closure_complete=true
+source_commit=<exact commit>
+regulator=<complete cutoff/support declaration>
+operator_components=[H_E_sine,S]
+route_operator_included=false
+component_definitions.H_E_sine=H_E_sine
+component_definitions.S=-i/2(L_raw-L_raw_dagger)
+```
+
+The assembler rejects route mixing, incomplete basis closure, non-Hermitian component matrices, non-tetrahedral five-block geometry and missing provenance. It records SHA256 hashes of the source bundle and the E/S/G matrices.
+
+Its output metadata freezes
+
+```text
+operator_family=frozen_signed_gravitational_constraint
+operator_coefficients_exact:
+    H_E_sine = -2/3
+    S        = -32/9
+provenance_level=microscopic_constraint
+physical_history_1pi=false
+```
+
+## 3. Downstream Schur -> metric -> TT chain
+
+`scripts/bqg_multiblock_tt_wilson_extractor.py` then performs:
+
+1. supplied metric carrier `P` and complement `Q`;
+2. exact audit of `QCQ`;
+3. rejection of every zero/gapless `Q` mode still coupled to `P`;
+4. zero-constraint-energy Schur/Feshbach reduction on the remaining gapped range,
+
+\[
+\boxed{
+C_{eff}=PCP-PCQ(QCQ)^{+}QCP,
+}
+\]
+
+where the Moore-Penrose zero on a null subspace is allowed only for exactly uncoupled zero modes;
+
+5. normalized-state Hessian
+
+\[
+\boxed{
+K_q=2\,\operatorname{Re}C_{eff}-2C_{00}I;
+}
+\]
+
+6. independently measured q-to-metric map
+
+\[
+\boxed{
+K_h=M_{hq}^{-T}K_qM_{hq}^{-1};
+}
+\]
+
+7. actual center plus four-neighbor tetrahedral shell;
+8. spatial Fourier/Taylor symbol;
+9. deterministic two-polarization TT projection;
+10. zero-TT-mass, positive/isotropic leading `k^2`, reciprocity/parity and six-basis closure guards;
+11. exact six-observable extraction of the parity-even tetrahedral spatial quartic vector.
+
+## 4. Frozen metric map
+
+The default metric calibration remains the measured L1 map
 
 \[
 M_{hq}=\begin{pmatrix}
@@ -81,50 +145,112 @@ with
 \boxed{\operatorname{cond}(M_{hq})=\sqrt2}.
 \]
 
-No identity-coordinate substitution is permitted.
+An identity coordinate map is forbidden.
 
-## 3. Exact production input contract
+## 5. Exact status of the six-vector
 
-The science path accepts one NPZ with at minimum:
-
-```text
-C_full          full compressed Hermitian multi-block constraint matrix
-p_indices       indices of the retained P metric carrier inside C_full
-p_block         block id for every P vector
-p_coord         metric q coordinate 0..5 for every P vector
-block_positions one three-vector per sorted P block id
-central_block   id of the central block
-C00             retained background expectation entering normalized-state Hessian
-metadata_json   provenance declaration
-```
-
-Optional:
-
-```text
-metric_map      production 6x6 M_hq, if a later frozen refinement map supersedes L1
-```
-
-The provenance declaration must state at least
-
-```json
-{
-  "actual_bqg_operator": true,
-  "synthetic": false,
-  "operator_components": ["E", "S", "R_op"],
-  "source_commit": "<exact commit>",
-  "regulator": "<complete cutoff/support declaration>",
-  "target_fitting_used": false
-}
-```
-
-The current extractor deliberately accepts no free physical transfer coefficient.
-
-## 4. Gapless-mode rule is fail-closed
-
-If `QCQ` contains a numerically zero mode `u_0` with
+The raw signed-constraint calculation may now emit only
 
 \[
-PCQ\,u_0\ne0,
+\boxed{
+\mathbf c_{\rm micro,spatial}^{BQG}
+=(c_1,\ldots,c_6)_{\rm micro,spatial}.
+}
+\]
+
+The code field is
+
+```text
+c_micro_spatial_BQG
+```
+
+and the physical field remains
+
+```text
+c_BQG_IR = null
+```
+
+by construction.
+
+This is intentional. A constraint Schur kernel is not automatically the connected physical 1PI graviton kernel.
+
+The physical vector may be frozen only after
+
+\[
+\boxed{
+\{C_A\}
+\to P_{phys}/\eta
+\to Z_{phys}[J_g]
+\to W_{phys}[J_g]
+\to\Gamma_{phys}[g]
+\to\Gamma^{(2)}_{TT}(\omega,\mathbf k).
+}
+\]
+
+Only the quartic pole data read from that final object may be called
+
+\[
+\mathbf c_{BQG}^{IR}.
+\]
+
+## 6. What old calculations already supply
+
+The recovered collective/16-cell research line contains several reusable exact primitives:
+
+- the measured six-dimensional metric carrier and `M_hq` calibration;
+- the theorem `P G_frozen P = 0` for one homogeneous six-edge gravitational block;
+- exact L1 full-E depth-two action `H_B u_e` on a parent block;
+- exact 16-cell physical-sine Euclidean source columns;
+- direct Hermitian Lorentzian pair workers implementing
+  `S=-i/2(L_raw-L_raw^dagger)`;
+- target-independent collective boundary/Krylov and Schur-gap protocols;
+- exact shared-face `S3` symmetry reduction and tetrahedral neighbor geometry.
+
+These are upstream operator primitives, not free parameters.
+
+## 7. What is still missing upstream
+
+The existing archive does **not** contain the completed common-basis matrices
+
+```text
+E_columns
+S_columns
+```
+
+for all retained and reachable basis vectors of the actual centered spatial patch
+
+```text
+one coarse block + its four shared-face neighbors.
+```
+
+In particular:
+
+- the local L1 depth-two result is full Euclidean but only one parent block;
+- the old 16-cell Euclidean/Lorentzian source workers act on background/source columns, not the complete 30-column five-block metric carrier plus Q closure;
+- the nearest-block `S3` theorem fixes the allowed six transfer amplitudes but does not compute their microscopic values;
+- no symmetry value or fitted stencil is allowed to fill those amplitudes.
+
+Therefore the remaining expensive producer is concrete:
+
+```text
+construct centered five-block glued boundary carrier
+ -> globally orthonormalize the 30 metric P vectors
+ -> apply H_E^sine and S to every P vector
+ -> collect every reachable Q state at the frozen support wall
+ -> apply H_E^sine and S to the Q basis until the declared finite closure is complete
+ -> serialize complete Hermitian E_columns and S_columns on one common basis
+ -> run bqg_signed_5block_operator_assembler.py
+ -> run bqg_multiblock_tt_wilson_extractor.py
+```
+
+No GR, TT, observed-dispersion or Wilson target may be used to prune this basis.
+
+## 8. Gapless-mode rule
+
+If `QCQ` has a zero mode `u_0` with
+
+\[
+PCQ u_0\ne0,
 \]
 
 the calculation stops with
@@ -133,129 +259,52 @@ the calculation stops with
 GAPLESS_COUPLED_Q_MODE_REQUIRES_PROMOTION
 ```
 
-because that mode belongs in the low-energy carrier. The code does not add `i eta`, a mass shift, denominator clipping or a fitted pseudoinverse.
+and that mode must be promoted to the retained low-energy carrier. The code does not add `i eta`, a mass shift, denominator clipping or a fitted scalar resolvent.
 
-Only exactly uncoupled zero modes may receive zero Moore-Penrose inverse on their null subspace.
+## 9. Infrastructure selftests
 
-## 5. Downstream known-answer test
+The signed-G assembler selftest checks:
 
-The extractor contains a synthetic test solely to verify implementation. It is explicitly labelled
+- exact coefficients `-2/3` and `-32/9`;
+- route-operator rejection;
+- Hermiticity detection;
+- complete five-block x six-coordinate layout;
+- tetrahedral neighbor geometry.
+
+The downstream extractor synthetic known-answer test still recovers its planted six-vector with machine-precision errors. Those planted numbers remain explicitly labelled
 
 ```text
 INFRASTRUCTURE_SELFTEST_NOT_BQG_EVIDENCE
 ```
 
-The test embeds a known five-block tetrahedral metric kernel into a larger P+Q Hermitian operator, performs the Schur reduction, transports it through the frozen nontrivial `M_hq`, reconstructs the momentum expansion, TT-projects it and recovers a precomputed six-Wilson vector.
+and are not BQG Wilson coefficients.
 
-Current local result:
+## 10. Scientific frontier
 
-```text
-Schur relative error             0.0
-leading k^2 isotropy defect      4.965248094601316e-16
-TT mass defect                   3.3306690738754686e-16
-six-Wilson fit defect            4.8669169352894896e-17
-c-vector relative error          1.7845646559535552e-15
-```
-
-The known-answer vector is
-
-\[
--\frac1{20}\,\mathbf c_{iso}+\frac1{18}\,\mathbf c_{Q4},
-\]
-
-and is recovered numerically as
+The shortest honest path is now
 
 ```text
-[-0.16666666666666669,
- -1.8333333333333302,
- -0.16666666666666674,
- -2.3333333333333335,
-  0.75,
- -1.500000000000005]
-```
+UPSTREAM HEAVY CALCULATION
+actual closed five-block E/S action-column basis
 
-This verifies the downstream algebra only. These numbers are **not** BQG Wilson coefficients.
-
-## 6. Repository audit: why the real c-vector cannot yet be emitted
-
-The existing frozen calculations do not yet supply the required physical five-block metric-carrier `C_full`.
-
-### Local L1 depth-two result
-
-`collective_l1_metric_edge_depth2_shard_collect.py` reconstructs the exact full-E response of one parent block,
-
-\[
-v_e=H_Bu_e,
-\]
-
-and its local `K/A/B` Krylov moments. Its own hard scope guard explicitly says that the local `E/T2` splitting is not `zeta4`; a momentum-dependent interblock effective kernel is still required.
-
-### Multi-node Lorentzian environment result
-
-`LORENTZIAN_MULTI_NODE_ENVIRONMENT_CORRELATION.md` reconstructs exact diagonal-environment dependence, but states explicitly that the historical workers did not calculate the off-diagonal environment blocks
-
-\[
-\langle e'|L|e\rangle,\qquad e'\ne e.
-\]
-
-It is therefore not the complete multi-node Hamiltonian needed here.
-
-### Two-node logical route result
-
-`two_node_lorentzian_route_logical_cross_gate.py` is an exact shared-route **4x4 logical ordering regression**. Its own scope states that it is not the full collective HDA/multi-block metric operator.
-
-### Frozen collective Krylov protocol
-
-`COLLECTIVE_KRYLOV_EFFECTIVE_BASIS.md` explicitly states that the first-refinement Euclidean rank result is only a prerequisite. The full production row still requires internal-link contraction plus full `E/S/R_op` depth-two closure on the target-independent complete boundary basis.
-
-### Nearest-block S3 closure
-
-The nearest-neighbor geometry is already fixed, but the physical shared-face Peter-Weyl transfer amplitudes themselves were not generated by the geometric transfer gate.
-
-Therefore, as of this audit,
-
-\[
-\boxed{
-\mathbf c_{\rm BQG}^{IR}=\text{NOT COMPUTED}
-}
-\]
-
-—not zero, not unknown because of a missing formula, but blocked by one concrete missing **existing-operator amplitude calculation**.
-
-## 7. The one remaining production calculation
-
-No new theory is needed. The next producer must apply the already frozen `E+S+R_op` microscopic operators to the target-independent complete boundary/Krylov basis on a centered block and its four shared-face neighbors, then write the resulting compressed Hermitian matrix in the NPZ contract above.
-
-The calculation must preserve:
-
-- the complete boundary-face recoupling/multiplicity support already frozen by the collective Krylov protocol;
-- exact source commit and cutoff/support provenance;
-- no GR/TT/experimental target pruning;
-- all coupled gapless modes rather than regularizing them away;
-- one common block coordinate convention and the measured metric calibration.
-
-Once that matrix exists, the remaining sequence
-
-```text
-actual C_full
+ALREADY EXECUTABLE
+ -> exact signed G
  -> Q-gap audit
- -> exact zero-energy Schur complement
+ -> zero-energy Schur
  -> normalized K_q
  -> measured M_hq
  -> K_h(k)
- -> TT projection
- -> c1..c6
+ -> TT
+ -> c_micro_spatial_BQG
+
+STILL PHYSICALIZATION-OPEN
+ -> physical projector/history
+ -> connected Z_phys/W_phys
+ -> Gamma_phys
+ -> physical Gamma_TT^(2)(omega,k)
+ -> c_BQG_IR
+ -> one common scale
+ -> blind external test
 ```
 
-is now executable without adding a new physical assumption.
-
-## 8. Scientific claim discipline
-
-The leading two-derivative physical TT form derived separately remains
-
-\[
-\Gamma_{TT}^{(2)}(\omega,\mathbf k)
-=Z_T[-(\omega+i0)^2+k^2]I_2+O(\partial^4).
-\]
-
-This note does **not** claim the six `O(k^4)` coefficients have already been obtained. It freezes the exact calculation that will obtain them from the first valid actual multi-block BQG operator and makes it impossible for placeholders, reduced-propagator coefficients, local anisotropy diagnostics or synthetic controls to masquerade as that result.
+This is the current bridge. No new microscopic degree of freedom, clock, fitted route amplitude or phenomenological Wilson coefficient has been added.
