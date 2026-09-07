@@ -7,8 +7,11 @@ on:
       - research/physical-scalar-kernel-dynamics
     paths:
       - PETER_WEYL_EUCLIDEAN_PROJECTED_HEAT_MU2_PREREGISTRATION.md
+      - PETER_WEYL_EUCLIDEAN_SPECTRAL_LANCZOS_STEP1_PREREGISTRATION.md
       - scripts/peter_weyl_euclidean_master_image_column.py
       - scripts/peter_weyl_euclidean_projected_heat_mu2_aggregate.py
+      - scripts/peter_weyl_euclidean_master_on_sparse_column.py
+      - scripts/peter_weyl_euclidean_spectral_lanczos_step1_aggregate.py
       - scripts/peter_weyl_euclidean_boundary_packet.py
       - scripts/bqg_spectral_history_graph_gate.py
       - .github/workflows/euclidean-projected-heat-mu2.yml
@@ -68,6 +71,10 @@ jobs:
     needs: [euclidean-packet, master-images]
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    outputs:
+      q1_rank: ${{ steps.q1meta.outputs.rank }}
+      q1_indices: ${{ steps.q1meta.outputs.indices }}
+      has_q1: ${{ steps.q1meta.outputs.has_q1 }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -95,6 +102,21 @@ jobs:
             --output verification_results/BQG_EUCLIDEAN_PROJECTED_HEAT_MU2.json \
             --spectral-packet verification_results/BQG_EUCLIDEAN_SPECTRAL_MOMENT_PACKET.json \
             --q1-dir verification_results/euclidean_master_lanczos_q1
+      - name: Export measured Q1 matrix dimension
+        id: q1meta
+        shell: bash
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          m=json.load(open('verification_results/euclidean_master_lanczos_q1/q1_manifest.json'))
+          r=int(m['rank'])
+          print(f'rank={r}')
+          print('has_q1=' + ('true' if r>0 else 'false'))
+          # Keep matrix syntax valid even for a zero-rank scientific outcome;
+          # the downstream job is separately guarded by has_q1.
+          ids=list(range(r)) if r>0 else [0]
+          print('indices='+json.dumps(ids,separators=(',',':')))
+          PY
       - name: Evaluate actual Euclidean spectral-history frontier fail-closed
         run: |
           python scripts/bqg_spectral_history_graph_gate.py \
@@ -104,5 +126,86 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: bqg-euclidean-projected-heat-mu2-spectral-frontier
+          path: verification_results/
+          if-no-files-found: error
+
+  lanczos-step1-master-actions:
+    needs: aggregate-spectral-frontier
+    if: needs.aggregate-spectral-frontier.outputs.has_q1 == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        q1_index: ${{ fromJSON(needs.aggregate-spectral-frontier.outputs.q1_indices) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install scientific dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Download actual Q1 block
+        uses: actions/download-artifact@v4
+        with:
+          name: bqg-euclidean-projected-heat-mu2-spectral-frontier
+          path: parent
+      - name: Apply fixed-cutoff master to one Q1 column
+        shell: bash
+        run: |
+          printf -v idx '%02d' '${{ matrix.q1_index }}'
+          python scripts/peter_weyl_euclidean_master_on_sparse_column.py \
+            --input "parent/euclidean_master_lanczos_q1/q1_${idx}.json" \
+            --output "q1_master_${idx}.json"
+      - name: Upload one MQ1 column
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-euclidean-lanczos-step1-action-${{ matrix.q1_index }}
+          path: q1_master_*.json
+          if-no-files-found: error
+
+  aggregate-lanczos-step1:
+    needs: [aggregate-spectral-frontier, lanczos-step1-master-actions]
+    if: needs.aggregate-spectral-frontier.outputs.has_q1 == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+      - name: Install scientific dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Download Q1 and actual mu2 parent evidence
+        uses: actions/download-artifact@v4
+        with:
+          name: bqg-euclidean-projected-heat-mu2-spectral-frontier
+          path: parent
+      - name: Download all MQ1 columns
+        uses: actions/download-artifact@v4
+        with:
+          pattern: bqg-euclidean-lanczos-step1-action-*
+          path: q1_actions
+          merge-multiple: true
+      - name: Build A1, B2, Q2 and depth-1 actual spectral graph
+        run: |
+          python scripts/peter_weyl_euclidean_spectral_lanczos_step1_aggregate.py \
+            --q1-root parent/euclidean_master_lanczos_q1 \
+            --master-actions q1_actions \
+            --mu2-result parent/BQG_EUCLIDEAN_PROJECTED_HEAT_MU2.json \
+            --output verification_results/BQG_EUCLIDEAN_SPECTRAL_LANCZOS_STEP1.json \
+            --spectral-packet verification_results/BQG_EUCLIDEAN_SPECTRAL_DEPTH1_PACKET.json \
+            --q2-dir verification_results/euclidean_master_lanczos_q2
+      - name: Evaluate actual depth-1 spectral history fail-closed
+        run: |
+          python scripts/bqg_spectral_history_graph_gate.py \
+            --packet verification_results/BQG_EUCLIDEAN_SPECTRAL_DEPTH1_PACKET.json \
+            --output verification_results/BQG_EUCLIDEAN_SPECTRAL_HISTORY_DEPTH1.json
+      - name: Upload depth-1 actual spectral graph and Q2 block
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-euclidean-spectral-history-depth1
           path: verification_results/
           if-no-files-found: error
