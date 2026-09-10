@@ -1,0 +1,95 @@
+name: BQG frozen PL Hermitian S adapter
+
+on:
+  pull_request:
+    paths:
+      - 'scripts/bqg_pl_hermitian_s_adapter.py'
+      - '.github/workflows/bqg-pl-hermitian-s-adapter.yml'
+  workflow_dispatch:
+
+jobs:
+  frozen-adapter-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          path: current
+
+      - name: Checkout frozen upstream physics
+        uses: actions/checkout@v4
+        with:
+          ref: 730237536cb2a3efc818b6b11fb3ebedc60ed16b
+          path: upstream
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: pip
+          cache-dependency-path: upstream/requirements.txt
+
+      - name: Install frozen upstream requirements
+        run: python -m pip install -r upstream/requirements.txt
+
+      - name: Verify frozen upstream SHA
+        shell: bash
+        run: |
+          set -euo pipefail
+          got="$(git -C upstream rev-parse HEAD)"
+          test "$got" = "730237536cb2a3efc818b6b11fb3ebedc60ed16b"
+
+      - name: Compile adapter
+        run: python -m py_compile current/scripts/bqg_pl_hermitian_s_adapter.py
+
+      - name: Re-run frozen direct-Hermitian identity
+        working-directory: upstream
+        run: |
+          mkdir -p verification_results
+          python scripts/lorentzian_direct_hermitian_identity_gate.py \
+            --output verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json
+
+      - name: Re-run general Gauss action bridge
+        working-directory: upstream
+        run: |
+          python scripts/peter_weyl_lorentzian_gauss_action_gate.py \
+            --output verification_results/PETER_WEYL_LORENTZIAN_GAUSS_ACTION.json
+
+      - name: Adapter import and bookkeeping preflight
+        run: |
+          mkdir -p verification_results
+          python current/scripts/bqg_pl_hermitian_s_adapter.py \
+            --upstream-root upstream \
+            --expected-upstream-sha 730237536cb2a3efc818b6b11fb3ebedc60ed16b \
+            --selftest-only \
+            --output verification_results/BQG_PL_HERMITIAN_S_ADAPTER.json
+
+      - name: Hard guards
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          paths = [
+              'upstream/verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json',
+              'upstream/verification_results/PETER_WEYL_LORENTZIAN_GAUSS_ACTION.json',
+              'verification_results/BQG_PL_HERMITIAN_S_ADAPTER.json',
+          ]
+          docs = [json.load(open(p, encoding='utf-8')) for p in paths]
+          assert all(d['passed'] for d in docs), docs
+          a = docs[2]
+          assert a['upstream_sha'] == '730237536cb2a3efc818b6b11fb3ebedc60ed16b'
+          assert a['bookkeeping']['oriented_terms'] == 24
+          assert a['bookkeeping']['unique_oriented_terms'] == 24
+          assert a['bookkeeping']['pair_contributions'] == 12
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bqg-pl-hermitian-s-adapter-preflight
+          path: |
+            upstream/verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json
+            upstream/verification_results/PETER_WEYL_LORENTZIAN_GAUSS_ACTION.json
+            verification_results/BQG_PL_HERMITIAN_S_ADAPTER.json
+          if-no-files-found: error
