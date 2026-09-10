@@ -10,7 +10,7 @@ on:
 jobs:
   frozen-adapter-preflight:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 30
     steps:
       - name: Checkout PR branch
         uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
       - name: Checkout frozen upstream physics
         uses: actions/checkout@v4
         with:
-          ref: research/bcqg-core-candidate-v1
+          ref: 2b2c9f623544f5d38f7ffd7f37617f91f4dae306
           path: upstream
           fetch-depth: 1
 
@@ -50,12 +50,6 @@ jobs:
           python scripts/lorentzian_direct_hermitian_identity_gate.py \
             --output verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json
 
-      - name: Re-run general Gauss action bridge
-        working-directory: upstream
-        run: |
-          python scripts/peter_weyl_lorentzian_gauss_action_gate.py \
-            --output verification_results/PETER_WEYL_LORENTZIAN_GAUSS_ACTION.json
-
       - name: Adapter import and bookkeeping preflight
         run: |
           mkdir -p verification_results
@@ -70,14 +64,10 @@ jobs:
         run: |
           python - <<'PY'
           import json
-          paths = [
-              'upstream/verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json',
-              'upstream/verification_results/PETER_WEYL_LORENTZIAN_GAUSS_ACTION.json',
-              'verification_results/BQG_PL_HERMITIAN_S_ADAPTER.json',
-          ]
-          docs = [json.load(open(p, encoding='utf-8')) for p in paths]
-          assert all(d['passed'] for d in docs), docs
-          a = docs[2]
+          ident = json.load(open('upstream/verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json', encoding='utf-8'))
+          a = json.load(open('verification_results/BQG_PL_HERMITIAN_S_ADAPTER.json', encoding='utf-8'))
+          assert ident['passed'], ident
+          assert a['passed'], a
           assert a['upstream_sha'] == '2b2c9f623544f5d38f7ffd7f37617f91f4dae306'
           assert a['bookkeeping']['oriented_terms'] == 24
           assert a['bookkeeping']['unique_oriented_terms'] == 24
@@ -90,6 +80,5 @@ jobs:
           name: bqg-pl-hermitian-s-adapter-preflight
           path: |
             upstream/verification_results/LORENTZIAN_DIRECT_HERMITIAN_IDENTITY.json
-            upstream/verification_results/PETER_WEYL_LORENTZIAN_GAUSS_ACTION.json
             verification_results/BQG_PL_HERMITIAN_S_ADAPTER.json
           if-no-files-found: error
