@@ -32,6 +32,12 @@ HERM_TOL=5e-9
 P_DIM=30
 
 
+def json_default(x):
+    if isinstance(x,np.generic):return x.item()
+    if isinstance(x,np.ndarray):return x.tolist()
+    raise TypeError(f'Object of type {type(x).__name__} is not JSON serializable')
+
+
 def frozen_metric_map():
     a=1/math.sqrt(12);b=1/math.sqrt(6)
     return np.asarray([[a,0,0,0,0,a],[0,a,0,0,a,0],[0,0,a,a,0,0],[0,0,b,-b,0,0],[0,b,0,0,-b,0],[b,0,0,0,0,-b]],float)
@@ -168,7 +174,7 @@ def science_run(path,output=None):
          'spatial':{k:spatial[k] for k in ('Z2_spatial','leading_isotropy_defect','mass_defect','reciprocity_odd_defect','wilson_fit_relative_defect','checks')},
          'c_micro_spatial_BQG':micro,'c_BQG_IR':None,'physicalization_required_next':'actual constraints -> physical projector/history -> Z_phys[J_g] -> W_phys[J_g] -> Gamma_phys[g] -> Gamma_TT^(2)(omega,k)',
          'hard_scope_guard':'Constraint spatial precursor only. Physical c_BQG_IR remains null.'}
-    if output is not None:output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
+    if output is not None:output.parent.mkdir(parents=True,exist_ok=True);output.write_text(json.dumps(out,indent=2,default=json_default)+'\n',encoding='utf-8')
     return out
 
 
@@ -188,8 +194,8 @@ def selftest():
     try:schur_zero_energy_compressed(np.asarray([[0.,.01],[.01,0.]],complex),1)
     except RuntimeError as e:gap='GAPLESS_COUPLED_Q_MODE_REQUIRES_PROMOTION' in str(e)
     meta={'actual_bqg_operator':True,'synthetic':False,'provenance_level':'compressed_microscopic_constraint','physical_history_1pi':False,'operator_family':'frozen_signed_gravitational_constraint','raw_P_gram_preserved':True,'operator_components':['H_E_sine','S'],'operator_coefficients_exact':{'H_E_sine':[-2,3],'S':[-32,9]},'route_operator_included':False,'source_commit':'SELFTEST','regulator':{'Jmax':'selftest'},'basis_closure_complete':True,'target_fitting_used':False}
-    pok,pe=validate_provenance(meta);checks={'metric_map_cond_sqrt2':abs(np.linalg.cond(M)-math.sqrt(2))<2e-12,'nonidentity_P_gram':np.linalg.norm(K-np.eye(30))>1e-3,'compressed_Schur_recovers_raw_q':err<5e-11,'gapless_coupled_Q_rejected':gap,'provenance_accepts':pok and not pe,'IR_guards_pass':sp['passed'],'Wilson_known_answer':cerr<2e-10}
-    return {'status':'compressed nonorthogonal-P known-answer test','science_status':'INFRASTRUCTURE_SELFTEST_NOT_BQG_EVIDENCE','passed':all(checks.values()),'checks':checks,'schur_relative_error':err,'c_relative_error':cerr,'P_gram_condition':float(np.linalg.cond(K)),'c_BQG_IR':None,'hard_scope_guard':'Synthetic compressed-basis test only.'}
+    pok,pe=validate_provenance(meta);checks={'metric_map_cond_sqrt2':bool(abs(np.linalg.cond(M)-math.sqrt(2))<2e-12),'nonidentity_P_gram':bool(np.linalg.norm(K-np.eye(30))>1e-3),'compressed_Schur_recovers_raw_q':bool(err<5e-11),'gapless_coupled_Q_rejected':bool(gap),'provenance_accepts':bool(pok and not pe),'IR_guards_pass':bool(sp['passed']),'Wilson_known_answer':bool(cerr<2e-10)}
+    return {'status':'compressed nonorthogonal-P known-answer test','science_status':'INFRASTRUCTURE_SELFTEST_NOT_BQG_EVIDENCE','passed':bool(all(checks.values())),'checks':checks,'schur_relative_error':err,'c_relative_error':cerr,'P_gram_condition':float(np.linalg.cond(K)),'c_BQG_IR':None,'hard_scope_guard':'Synthetic compressed-basis test only.'}
 
 
 def main():
@@ -199,7 +205,7 @@ def main():
         try:o=science_run(a.input,a.output)
         except Exception as e:
             o={'status':'STOP','science_status':'MISSING_OR_INVALID_COMPRESSED_SIGNED_G_INPUT','passed':False,'c_micro_spatial_BQG':None,'c_BQG_IR':None,'error':str(e),'hard_scope_guard':'No Wilson coefficients emitted from incomplete/invalid compressed chain.'}
-            if a.output is not None:a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(o,indent=2)+'\n',encoding='utf-8')
-    print(json.dumps(o,indent=2,default=lambda x:x.tolist() if isinstance(x,np.ndarray) else x));return 0 if o.get('passed') else 2
+            if a.output is not None:a.output.parent.mkdir(parents=True,exist_ok=True);a.output.write_text(json.dumps(o,indent=2,default=json_default)+'\n',encoding='utf-8')
+    print(json.dumps(o,indent=2,default=json_default));return 0 if o.get('passed') else 2
 
 if __name__=='__main__':raise SystemExit(main())
