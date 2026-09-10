@@ -1,45 +1,22 @@
 #!/usr/bin/env python3
 """Assemble frozen signed BQG gravity on the compressed five-block Krylov basis.
 
-This is the production seam between the heavy tensor-network amplitude producer
-and the downstream Schur/TT extractor.  It introduces no new dynamics.
+Production seam only; no new dynamics is introduced.
 
-The upstream producer must first construct the true labelled 30-column coarse
-metric carrier V, whiten only its span, orthogonalize every target-independent
-reachable Q history against that span, and whiten the residual Q image.  On the
-resulting orthonormal effective basis W=[Q_P,Q_Q] it supplies the projected
-Hermitian matrices
+Input basis W=[Q_P,Q_Q] is orthonormal.  The first 30 vectors span the true
+labelled five-block q carrier after P whitening; the remainder is the
+orthogonal, target-independent Q complement.  The producer supplies
 
     E_basis = W^dag H_E^sine W
-    S_basis = W^dag S W,
-    S = -i/2 (L_raw-L_raw^dagger).
+    S_basis = W^dag S W,  S=-i/2(L_raw-L_raw^dagger)
 
-This assembler forms only
+and this file forms only
 
     G_basis = -(2/3) E_basis -(32/9) S_basis.
 
-The original labelled q-coordinate Gram K_P=V^dag V is retained separately.
-It is required downstream because the frozen q->metric calibration is attached
-to those labelled q coordinates, not to an arbitrary whitening rotation.
-
-Required input NPZ (allow_pickle=False):
-
-    E_basis          MxM complex Hermitian projected matrix
-    S_basis          MxM complex Hermitian projected matrix
-    P_gram           30x30 complex Gram of the original labelled q carrier
-    p_block          30 block ids = five blocks x six q coordinates
-    p_coord          30 coordinate ids 0..5
-    block_positions  5x3 actual center/four-neighbour coordinates
-    central_block    scalar block id
-    C00_E             <Omega|H_E^sine|Omega>
-    C00_S             <Omega|S|Omega>
-    metadata_json    provenance/closure metadata
-
-Optional: basis_ids, metric_map.
-
-The first 30 effective-basis vectors are required to be the canonical
-orthonormalized span(V); all later vectors are the orthonormal Q complement.
-No dense microscopic Hilbert matrix is required or desired.
+The original 30x30 labelled-coordinate Gram P_gram is preserved for the
+subsequent Schur/metric/TT extraction.  No dense microscopic Hilbert matrix is
+required and no GR/TT/Wilson target is allowed in source selection.
 """
 from __future__ import annotations
 
@@ -67,12 +44,15 @@ def hermitian_defect(A):
 def sha256_file(path:Path)->str:
     h=hashlib.sha256()
     with path.open('rb') as f:
-        for chunk in iter(lambda:f.read(1<<20),b''):h.update(chunk)
+        for chunk in iter(lambda:f.read(1<<20),b''):
+            h.update(chunk)
     return h.hexdigest()
 
 
 def sha256_array(A)->str:
-    A=np.ascontiguousarray(A);h=hashlib.sha256();h.update(str(A.dtype).encode());h.update(str(A.shape).encode());h.update(A.view(np.uint8));return h.hexdigest()
+    A=np.ascontiguousarray(A)
+    h=hashlib.sha256();h.update(str(A.dtype).encode());h.update(str(A.shape).encode());h.update(A.view(np.uint8))
+    return h.hexdigest()
 
 
 def load_metadata(z):
@@ -84,13 +64,13 @@ def load_metadata(z):
 def validate_source_provenance(meta):
     errors=[]
     req={
-      'synthetic':False,
-      'target_fitting_used':False,
-      'basis_closure_complete':True,
-      'route_operator_included':False,
-      'orthonormal_effective_basis':True,
-      'p_first_in_effective_basis':True,
-      'q_target_independent':True,
+        'synthetic':False,
+        'target_fitting_used':False,
+        'basis_closure_complete':True,
+        'route_operator_included':False,
+        'orthonormal_effective_basis':True,
+        'p_first_in_effective_basis':True,
+        'q_target_independent':True,
     }
     for k,v in req.items():
         if meta.get(k) is not v:errors.append(f'metadata.{k} must be {v!r}')
@@ -106,7 +86,8 @@ def validate_source_provenance(meta):
     leaks=meta.get('operator_compression_leakage_relative',{})
     for key in ('H_E_sine','S'):
         try:x=float(leaks[key])
-        except Exception:errors.append(f'operator_compression_leakage_relative.{key} is required');continue
+        except Exception:
+            errors.append(f'operator_compression_leakage_relative.{key} is required');continue
         if not math.isfinite(x) or x<0 or x>LEAK_TOL:errors.append(f'{key} compression leakage {x} exceeds {LEAK_TOL}')
     return not errors,errors
 
@@ -121,12 +102,15 @@ def validate_layout(pblock,pcoord,positions,central):
         if got!=list(range(6)):raise RuntimeError(f'block {b} q labels invalid: {got}')
     if positions.shape!=(5,3):raise RuntimeError('block_positions must be 5x3 ordered by sorted block id')
     pos={b:positions[i] for i,b in enumerate(blocks)}
-    offs=np.asarray([pos[b]-pos[central] for b in blocks if b!=central],float);lens=np.linalg.norm(offs,axis=1)
+    offs=np.asarray([pos[b]-pos[central] for b in blocks if b!=central],float)
+    lens=np.linalg.norm(offs,axis=1)
     if np.min(lens)<=0:raise RuntimeError('zero neighbor displacement')
     unit=offs/lens[:,None];a=float(np.mean(lens))
-    d={'sum_defect':float(np.linalg.norm(np.sum(unit,axis=0))),
-       'second_moment_defect':float(np.linalg.norm(unit.T@unit-(4/3)*np.eye(3))),
-       'equal_length_defect':float(np.max(np.abs(lens/a-1)))}
+    d={
+        'sum_defect':float(np.linalg.norm(np.sum(unit,axis=0))),
+        'second_moment_defect':float(np.linalg.norm(unit.T@unit-(4/3)*np.eye(3))),
+        'equal_length_defect':float(np.max(np.abs(lens/a-1))),
+    }
     if max(d.values())>GEOM_TOL:raise RuntimeError('five-block shell is not tetrahedral: '+json.dumps(d))
     return {'blocks':blocks,'a_star':a,**d}
 
@@ -141,7 +125,10 @@ def validate_gram(K):
     if rank!=30:raise RuntimeError(f'P_gram rank={rank}, expected 30')
     diagdef=float(np.max(np.abs(np.diag(K)-1)))
     if diagdef>GRAM_TOL:raise RuntimeError(f'P_gram diagonal is not unit-normalized q frame: {diagdef:.3e}')
-    return K,{'rank':rank,'min_eigenvalue':float(vals.min()),'max_eigenvalue':float(vals.max()),'condition':float(vals.max()/vals.min()),'unit_diagonal_defect':diagdef,'Hermiticity_defect':hd}
+    return K,{
+        'rank':rank,'min_eigenvalue':float(vals.min()),'max_eigenvalue':float(vals.max()),
+        'condition':float(vals.max()/vals.min()),'unit_diagonal_defect':diagdef,'Hermiticity_defect':hd,
+    }
 
 
 def assemble(input_path:Path,output_path:Path,summary_path:Path|None=None):
@@ -169,24 +156,27 @@ def assemble(input_path:Path,output_path:Path,summary_path:Path|None=None):
     G=E_COEFF*E+S_COEFF*S;G=.5*(G+G.conj().T);gd=hermitian_defect(G)
     C00=E_COEFF*c00e.real+S_COEFF*c00s.real
     outmeta={
-      'actual_bqg_operator':True,'synthetic':False,'provenance_level':'compressed_microscopic_constraint','physical_history_1pi':False,
-      'operator_family':'frozen_signed_gravitational_constraint','operator_components':['H_E_sine','S'],
-      'operator_coefficients_exact':{'H_E_sine':[-2,3],'S':[-32,9]},'operator_formula':'G=-(2/3)H_E_sine-(32/9)S',
-      'route_operator_included':False,'source_commit':meta['source_commit'],'regulator':meta['regulator'],'basis_closure_complete':True,
-      'target_fitting_used':False,'effective_basis_order':'first 30 = whitened span(raw labelled P); remainder = orthogonal target-independent Q',
-      'raw_P_gram_preserved':True,'source_bundle_sha256':sha256_file(input_path),'E_basis_sha256':sha256_array(E),'S_basis_sha256':sha256_array(S),
-      'G_basis_sha256':sha256_array(G),'P_gram_sha256':sha256_array(K),'source_component_metadata':meta,
+        'actual_bqg_operator':True,'synthetic':False,'provenance_level':'compressed_microscopic_constraint','physical_history_1pi':False,
+        'operator_family':'frozen_signed_gravitational_constraint','operator_components':['H_E_sine','S'],
+        'operator_coefficients_exact':{'H_E_sine':[-2,3],'S':[-32,9]},'operator_formula':'G=-(2/3)H_E_sine-(32/9)S',
+        'route_operator_included':False,'source_commit':meta['source_commit'],'regulator':meta['regulator'],'basis_closure_complete':True,
+        'target_fitting_used':False,'effective_basis_order':'first 30 = whitened span(raw labelled P); remainder = orthogonal target-independent Q',
+        'raw_P_gram_preserved':True,'source_bundle_sha256':sha256_file(input_path),'E_basis_sha256':sha256_array(E),'S_basis_sha256':sha256_array(S),
+        'G_basis_sha256':sha256_array(G),'P_gram_sha256':sha256_array(K),'source_component_metadata':meta,
     }
     kw=dict(C_basis=G,P_gram=K,p_block=pb,p_coord=pc,block_positions=positions,central_block=np.asarray(central,int),C00=np.asarray(C00,float),metadata_json=np.asarray(json.dumps(outmeta,sort_keys=True)))
     if metric_map is not None:kw['metric_map']=metric_map
     if basis_ids is not None:kw['basis_ids']=basis_ids
     output_path.parent.mkdir(parents=True,exist_ok=True);np.savez_compressed(output_path,**kw)
-    out={'status':'assembled frozen signed G on compressed five-block Krylov basis','science_status':'COMPRESSED_SIGNED_G_READY_FOR_SCHUR','passed':True,
-         'effective_dimension':n,'P_dimension':30,'Q_dimension':n-30,'E_coefficient':E_COEFF,'S_coefficient':S_COEFF,
-         'E_Hermiticity_defect':ed,'S_Hermiticity_defect':sd,'G_Hermiticity_defect':gd,'C00_signed_G':float(C00),
-         'P_gram':gdiag,'geometry':layout,'source_bundle_sha256':outmeta['source_bundle_sha256'],'G_basis_sha256':outmeta['G_basis_sha256'],
-         'output':str(output_path),'hard_scope_guard':'Compressed microscopic signed constraint only; not Z_phys, Gamma_phys, physical omega, or c_BQG_IR.'}
-    if summary_path is not None:summary_path.parent.mkdir(parents=True,exist_ok=True);summary_path.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
+    out={
+        'status':'assembled frozen signed G on compressed five-block Krylov basis','science_status':'COMPRESSED_SIGNED_G_READY_FOR_SCHUR','passed':True,
+        'effective_dimension':n,'P_dimension':30,'Q_dimension':n-30,'E_coefficient':E_COEFF,'S_coefficient':S_COEFF,
+        'E_Hermiticity_defect':ed,'S_Hermiticity_defect':sd,'G_Hermiticity_defect':gd,'C00_signed_G':float(C00),
+        'P_gram':gdiag,'geometry':layout,'source_bundle_sha256':outmeta['source_bundle_sha256'],'G_basis_sha256':outmeta['G_basis_sha256'],
+        'output':str(output_path),'hard_scope_guard':'Compressed microscopic signed constraint only; not Z_phys, Gamma_phys, physical omega, or c_BQG_IR.',
+    }
+    if summary_path is not None:
+        summary_path.parent.mkdir(parents=True,exist_ok=True);summary_path.write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
     return out
 
 
@@ -203,12 +193,17 @@ def selftest():
           'operator_compression_leakage_relative':{'H_E_sine':0.0,'S':0.0}}
     ok,errs=validate_source_provenance(meta);Kg,gd=validate_gram(K);layout=validate_layout(pb,pc,pos,0);G=E_COEFF*E+S_COEFF*S
     bad=dict(meta);bad['route_operator_included']=True;bad['operator_components']=['H_E_sine','S','R_op'];bok,_=validate_source_provenance(bad)
-    checks={'valid_provenance':ok and not errs,'route_rejected':not bok,'exact_signed_coefficients':np.linalg.norm(G-(-(2/3)*E-(32/9)*S))<1e-12*np.linalg.norm(G),
-            'nonidentity_raw_P_gram':np.linalg.norm(Kg-np.eye(30))>1e-5,'raw_P_rank30':gd['rank']==30,
-            'tetrahedral_layout':max(layout[k] for k in ('sum_defect','second_moment_defect','equal_length_defect'))<GEOM_TOL,
-            'Hermitian_components':hermitian_defect(E)<HERM_TOL and hermitian_defect(S)<HERM_TOL}
+    checks={
+        'valid_provenance':bool(ok and not errs),
+        'route_rejected':bool(not bok),
+        'exact_signed_coefficients':bool(np.linalg.norm(G-(-(2/3)*E-(32/9)*S))<1e-12*np.linalg.norm(G)),
+        'nonidentity_raw_P_gram':bool(np.linalg.norm(Kg-np.eye(30))>1e-5),
+        'raw_P_rank30':bool(gd['rank']==30),
+        'tetrahedral_layout':bool(max(layout[k] for k in ('sum_defect','second_moment_defect','equal_length_defect'))<GEOM_TOL),
+        'Hermitian_components':bool(hermitian_defect(E)<HERM_TOL and hermitian_defect(S)<HERM_TOL),
+    }
     return {'status':'compressed signed-G assembler selftest','science_status':'INFRASTRUCTURE_SELFTEST_NOT_BQG_EVIDENCE','passed':bool(all(checks.values())),
-            'checks':checks,'P_gram_condition':gd['condition'],'hard_scope_guard':'Synthetic compressed-basis algebra test only.'}
+            'checks':checks,'P_gram_condition':float(gd['condition']),'hard_scope_guard':'Synthetic compressed-basis algebra test only.'}
 
 
 def main():
@@ -219,7 +214,9 @@ def main():
         try:o=assemble(a.input,a.output,a.summary)
         except Exception as e:
             o={'status':'STOP','science_status':'MISSING_OR_INVALID_COMPRESSED_OPERATOR_SOURCE','passed':False,'error':str(e),'hard_scope_guard':'No signed matrix emitted from incomplete/fitted/route-mixed/leaky input.'}
-            if a.summary is not None:a.summary.parent.mkdir(parents=True,exist_ok=True);a.summary.write_text(json.dumps(o,indent=2)+'\n',encoding='utf-8')
+            if a.summary is not None:
+                a.summary.parent.mkdir(parents=True,exist_ok=True);a.summary.write_text(json.dumps(o,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(o,indent=2));return 0 if o.get('passed') else 2
+
 
 if __name__=='__main__':raise SystemExit(main())
