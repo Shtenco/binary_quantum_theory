@@ -20,7 +20,7 @@ jobs:
       - name: Checkout frozen upstream physics
         uses: actions/checkout@v4
         with:
-          ref: 730237536cb2a3efc818b6b11fb3ebedc60ed16b
+          ref: research/bcqg-core-candidate-v1
           path: upstream
           fetch-depth: 1
 
@@ -38,7 +38,7 @@ jobs:
         run: |
           set -euo pipefail
           got="$(git -C upstream rev-parse HEAD)"
-          test "$got" = "730237536cb2a3efc818b6b11fb3ebedc60ed16b"
+          test "$got" = "2b2c9f623544f5d38f7ffd7f37617f91f4dae306"
 
       - name: Compile adapter
         run: python -m py_compile current/scripts/bqg_pl_hermitian_s_adapter.py
@@ -61,7 +61,7 @@ jobs:
           mkdir -p verification_results
           python current/scripts/bqg_pl_hermitian_s_adapter.py \
             --upstream-root upstream \
-            --expected-upstream-sha 730237536cb2a3efc818b6b11fb3ebedc60ed16b \
+            --expected-upstream-sha 2b2c9f623544f5d38f7ffd7f37617f91f4dae306 \
             --selftest-only \
             --output verification_results/BQG_PL_HERMITIAN_S_ADAPTER.json
 
@@ -78,7 +78,7 @@ jobs:
           docs = [json.load(open(p, encoding='utf-8')) for p in paths]
           assert all(d['passed'] for d in docs), docs
           a = docs[2]
-          assert a['upstream_sha'] == '730237536cb2a3efc818b6b11fb3ebedc60ed16b'
+          assert a['upstream_sha'] == '2b2c9f623544f5d38f7ffd7f37617f91f4dae306'
           assert a['bookkeeping']['oriented_terms'] == 24
           assert a['bookkeeping']['unique_oriented_terms'] == 24
           assert a['bookkeeping']['pair_contributions'] == 12
