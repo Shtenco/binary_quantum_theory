@@ -16,18 +16,17 @@ it is never approximated by conjugating forward amplitudes.
 from __future__ import annotations
 
 import argparse
-import contextlib
 import importlib
 import json
 import math
 import subprocess
 import sys
 from pathlib import Path
-from typing import Dict, Iterable, Mapping, MutableMapping, Tuple
+from typing import Dict, Mapping, MutableMapping
 
 import numpy as np
 
-EXPECTED_UPSTREAM_SHA = "730237536cb2a3efc818b6b11fb3ebedc60ed16b"
+EXPECTED_UPSTREAM_SHA = "2b2c9f623544f5d38f7ffd7f37617f91f4dae306"
 DEFAULT_TOL = 1e-10
 
 
