@@ -1,0 +1,668 @@
+{
+  "schema": "shtenco.nexus-rvq-real-12b/v1",
+  "model": "mistralai/Mistral-Nemo-Base-2407",
+  "revision": "2045759120154383da48ee84ce4bf2f90cc6ec1f",
+  "elapsed_seconds": 21.54545760154724,
+  "whole_model_structural": [
+    {
+      "name": "PQ8x1",
+      "block": 8,
+      "stages": 1,
+      "bytes": 2297971152,
+      "mib": 2191.516067504883,
+      "gib": 2.140152409672737,
+      "ratio_vs_bf16": 10.65964852460428,
+      "effective_bpw": 1.500987576003963,
+      "raw_bytes": 24495564800,
+      "matrices": 282
+    },
+    {
+      "name": "PQ16x1",
+      "block": 16,
+      "stages": 1,
+      "bytes": 1150357968,
+      "mib": 1097.0668487548828,
+      "gib": 1.0713543444871902,
+      "ratio_vs_bf16": 21.293862850872173,
+      "effective_bpw": 0.7513902062793016,
+      "raw_bytes": 24495564800,
+      "matrices": 282
+    },
+    {
+      "name": "RVQ16x2",
+      "block": 16,
+      "stages": 2,
+      "bytes": 2299886496,
+      "mib": 2193.3426818847656,
+      "gib": 2.1419362127780914,
+      "ratio_vs_bf16": 10.650771176144165,
+      "effective_bpw": 1.502238639380138,
+      "raw_bytes": 24495564800,
+      "matrices": 282
+    },
+    {
+      "name": "RVQ32x2",
+      "block": 32,
+      "stages": 2,
+      "bytes": 1154005920,
+      "mib": 1100.5458068847656,
+      "gib": 1.074751764535904,
+      "ratio_vs_bf16": 21.226550380261482,
+      "effective_bpw": 0.7537729736282709,
+      "raw_bytes": 24495564800,
+      "matrices": 282
+    },
+    {
+      "name": "RVQ64x2",
+      "block": 64,
+      "stages": 2,
+      "bytes": 584530848,
+      "mib": 557.4520568847656,
+      "gib": 0.5443867743015289,
+      "ratio_vs_bf16": 41.9063679595572,
+      "effective_bpw": 0.38180354869792593,
+      "raw_bytes": 24495564800,
+      "matrices": 282
+    }
+  ],
+  "sampled_tensors": [
+    {
+      "name": "model.embed_tokens.weight",
+      "shape": [
+        131072,
+        5120
+      ],
+      "shard": "model-00001-of-00005.safetensors",
+      "row0": 65472,
+      "rows": 128
+    },
+    {
+      "name": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        4096,
+        5120
+      ],
+      "shard": "model-00001-of-00005.safetensors",
+      "row0": 1984,
+      "rows": 128
+    },
+    {
+      "name": "model.layers.0.mlp.gate_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "shard": "model-00001-of-00005.safetensors",
+      "row0": 7104,
+      "rows": 128
+    },
+    {
+      "name": "model.layers.20.mlp.up_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "shard": "model-00003-of-00005.safetensors",
+      "row0": 7104,
+      "rows": 128
+    },
+    {
+      "name": "model.layers.39.mlp.down_proj.weight",
+      "shape": [
+        5120,
+        14336
+      ],
+      "shard": "model-00005-of-00005.safetensors",
+      "row0": 2496,
+      "rows": 128
+    }
+  ],
+  "results": [
+    {
+      "cosine_mean": 0.8468759059906006,
+      "cosine_p05": 0.8436808586120605,
+      "nmse": 0.2827652394771576,
+      "random_activation_rel_l2": 0.5601643621921539,
+      "stage_index_entropy": [
+        7.994064387478513
+      ],
+      "packed_sample_bytes": 125448,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 116548,
+      "lossless_ratio": 1.0763633867591036,
+      "tensor": "model.embed_tokens.weight",
+      "shape": [
+        131072,
+        5120
+      ],
+      "name": "PQ8x1",
+      "block": 8,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.6691346168518066,
+      "cosine_p05": 0.6633578538894653,
+      "nmse": 0.5523593425750732,
+      "random_activation_rel_l2": 0.7225144604841868,
+      "stage_index_entropy": [
+        7.993076455451702
+      ],
+      "packed_sample_bytes": 66056,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 60728,
+      "lossless_ratio": 1.0877354762218416,
+      "tensor": "model.embed_tokens.weight",
+      "shape": [
+        131072,
+        5120
+      ],
+      "name": "PQ16x1",
+      "block": 16,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.8334285020828247,
+      "cosine_p05": 0.8298709392547607,
+      "nmse": 0.3054409623146057,
+      "random_activation_rel_l2": 0.5364077289899191,
+      "stage_index_entropy": [
+        7.993109082030244,
+        7.992766572781203
+      ],
+      "packed_sample_bytes": 132112,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 119868,
+      "lossless_ratio": 1.1021456935962892,
+      "tensor": "model.embed_tokens.weight",
+      "shape": [
+        131072,
+        5120
+      ],
+      "name": "RVQ16x2",
+      "block": 16,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.6847372055053711,
+      "cosine_p05": 0.6782121658325195,
+      "nmse": 0.5310747623443604,
+      "random_activation_rel_l2": 0.6944408516089121,
+      "stage_index_entropy": [
+        7.937778044235833,
+        7.9707517780264325
+      ],
+      "packed_sample_bytes": 78864,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 70636,
+      "lossless_ratio": 1.1164845121467806,
+      "tensor": "model.embed_tokens.weight",
+      "shape": [
+        131072,
+        5120
+      ],
+      "name": "RVQ32x2",
+      "block": 32,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.5586668252944946,
+      "cosine_p05": 0.5425816774368286,
+      "nmse": 0.6878761053085327,
+      "random_activation_rel_l2": 0.8318439622720083,
+      "stage_index_entropy": [
+        7.598829238019659,
+        7.593292933643517
+      ],
+      "packed_sample_bytes": 64528,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 58168,
+      "lossless_ratio": 1.109338467886123,
+      "tensor": "model.embed_tokens.weight",
+      "shape": [
+        131072,
+        5120
+      ],
+      "name": "RVQ64x2",
+      "block": 64,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.9105784893035889,
+      "cosine_p05": 0.8997467160224915,
+      "nmse": 0.16835875809192657,
+      "random_activation_rel_l2": 0.4264898896217346,
+      "stage_index_entropy": [
+        7.760706317597744
+      ],
+      "packed_sample_bytes": 125448,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 108300,
+      "lossless_ratio": 1.158337950138504,
+      "tensor": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        4096,
+        5120
+      ],
+      "name": "PQ8x1",
+      "block": 8,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.7681944370269775,
+      "cosine_p05": 0.7431530356407166,
+      "nmse": 0.40522968769073486,
+      "random_activation_rel_l2": 0.6248835623264313,
+      "stage_index_entropy": [
+        7.905676346913816
+      ],
+      "packed_sample_bytes": 66056,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 58068,
+      "lossless_ratio": 1.1375628573396708,
+      "tensor": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        4096,
+        5120
+      ],
+      "name": "PQ16x1",
+      "block": 16,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.8953496813774109,
+      "cosine_p05": 0.8818461894989014,
+      "nmse": 0.1956843137741089,
+      "random_activation_rel_l2": 0.5085876484711965,
+      "stage_index_entropy": [
+        7.889724851043402,
+        7.933853926871959
+      ],
+      "packed_sample_bytes": 132112,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 119896,
+      "lossless_ratio": 1.1018883031961033,
+      "tensor": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        4096,
+        5120
+      ],
+      "name": "RVQ16x2",
+      "block": 16,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.7744362354278564,
+      "cosine_p05": 0.7398991584777832,
+      "nmse": 0.3944913446903229,
+      "random_activation_rel_l2": 0.6798803011576334,
+      "stage_index_entropy": [
+        7.739945188067732,
+        7.891950631003372
+      ],
+      "packed_sample_bytes": 78864,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 68832,
+      "lossless_ratio": 1.1457461645746165,
+      "tensor": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        4096,
+        5120
+      ],
+      "name": "RVQ32x2",
+      "block": 32,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.6857101917266846,
+      "cosine_p05": 0.6016484498977661,
+      "nmse": 0.5183959603309631,
+      "random_activation_rel_l2": 0.7246238688627878,
+      "stage_index_entropy": [
+        7.74339808033197,
+        7.719092844574883
+      ],
+      "packed_sample_bytes": 64528,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 52776,
+      "lossless_ratio": 1.222676974382295,
+      "tensor": "model.layers.0.self_attn.q_proj.weight",
+      "shape": [
+        4096,
+        5120
+      ],
+      "name": "RVQ64x2",
+      "block": 64,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.8474727869033813,
+      "cosine_p05": 0.8439984917640686,
+      "nmse": 0.28182193636894226,
+      "random_activation_rel_l2": 0.5344278613726298,
+      "stage_index_entropy": [
+        7.993280504144609
+      ],
+      "packed_sample_bytes": 125448,
+      "best_standard_lossless": "zlib9",
+      "lossless_bytes": 118723,
+      "lossless_ratio": 1.0566444581083698,
+      "tensor": "model.layers.0.mlp.gate_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "PQ8x1",
+      "block": 8,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.6701255440711975,
+      "cosine_p05": 0.6625210046768188,
+      "nmse": 0.5510563254356384,
+      "random_activation_rel_l2": 0.7409928341706594,
+      "stage_index_entropy": [
+        7.9914379197327845
+      ],
+      "packed_sample_bytes": 66056,
+      "best_standard_lossless": "zlib9",
+      "lossless_bytes": 62797,
+      "lossless_ratio": 1.0518973836329761,
+      "tensor": "model.layers.0.mlp.gate_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "PQ16x1",
+      "block": 16,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.834030270576477,
+      "cosine_p05": 0.8300936222076416,
+      "nmse": 0.30445629358291626,
+      "random_activation_rel_l2": 0.5727995137373606,
+      "stage_index_entropy": [
+        7.992847132299463,
+        7.993596245128934
+      ],
+      "packed_sample_bytes": 132112,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 125736,
+      "lossless_ratio": 1.0507094229178597,
+      "tensor": "model.layers.0.mlp.gate_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "RVQ16x2",
+      "block": 16,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.6867430806159973,
+      "cosine_p05": 0.67983078956604,
+      "nmse": 0.5284454822540283,
+      "random_activation_rel_l2": 0.7692151069641113,
+      "stage_index_entropy": [
+        7.972639401042031,
+        7.9680732414924345
+      ],
+      "packed_sample_bytes": 78864,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 74292,
+      "lossless_ratio": 1.0615409465352932,
+      "tensor": "model.layers.0.mlp.gate_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "RVQ32x2",
+      "block": 32,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.5586520433425903,
+      "cosine_p05": 0.5440624952316284,
+      "nmse": 0.6877022981643677,
+      "random_activation_rel_l2": 0.8302878737449646,
+      "stage_index_entropy": [
+        7.581191491056894,
+        7.615617005809637
+      ],
+      "packed_sample_bytes": 64528,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 58964,
+      "lossless_ratio": 1.0943626619632318,
+      "tensor": "model.layers.0.mlp.gate_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "RVQ64x2",
+      "block": 64,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.8472553491592407,
+      "cosine_p05": 0.844118595123291,
+      "nmse": 0.2821517884731293,
+      "random_activation_rel_l2": 0.5187757809956869,
+      "stage_index_entropy": [
+        7.993135174858531
+      ],
+      "packed_sample_bytes": 125448,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 118780,
+      "lossless_ratio": 1.0561373968681596,
+      "tensor": "model.layers.20.mlp.up_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "PQ8x1",
+      "block": 8,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.6690713167190552,
+      "cosine_p05": 0.66335129737854,
+      "nmse": 0.5523985624313354,
+      "random_activation_rel_l2": 0.767293115456899,
+      "stage_index_entropy": [
+        7.992732373376607
+      ],
+      "packed_sample_bytes": 66056,
+      "best_standard_lossless": "zlib9",
+      "lossless_bytes": 63183,
+      "lossless_ratio": 1.0454710919076333,
+      "tensor": "model.layers.20.mlp.up_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "PQ16x1",
+      "block": 16,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.8338239789009094,
+      "cosine_p05": 0.8298565745353699,
+      "nmse": 0.30471399426460266,
+      "random_activation_rel_l2": 0.5325432270765305,
+      "stage_index_entropy": [
+        7.993728069502025,
+        7.993644752242074
+      ],
+      "packed_sample_bytes": 132112,
+      "best_standard_lossless": "zlib9",
+      "lossless_bytes": 126344,
+      "lossless_ratio": 1.0456531374659659,
+      "tensor": "model.layers.20.mlp.up_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "RVQ16x2",
+      "block": 16,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.6852186322212219,
+      "cosine_p05": 0.6780512928962708,
+      "nmse": 0.5304882526397705,
+      "random_activation_rel_l2": 0.7409263153870901,
+      "stage_index_entropy": [
+        7.963768661835611,
+        7.958394349783671
+      ],
+      "packed_sample_bytes": 78864,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 75144,
+      "lossless_ratio": 1.0495049504950495,
+      "tensor": "model.layers.20.mlp.up_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "RVQ32x2",
+      "block": 32,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.5583339929580688,
+      "cosine_p05": 0.543903112411499,
+      "nmse": 0.6880868077278137,
+      "random_activation_rel_l2": 0.8331605692704519,
+      "stage_index_entropy": [
+        7.654695682175053,
+        7.594764819494932
+      ],
+      "packed_sample_bytes": 64528,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 59216,
+      "lossless_ratio": 1.089705485004053,
+      "tensor": "model.layers.20.mlp.up_proj.weight",
+      "shape": [
+        14336,
+        5120
+      ],
+      "name": "RVQ64x2",
+      "block": 64,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.8458897471427917,
+      "cosine_p05": 0.8441356420516968,
+      "nmse": 0.28485745191574097,
+      "random_activation_rel_l2": 0.5199880202611288,
+      "stage_index_entropy": [
+        7.992050082895844
+      ],
+      "packed_sample_bytes": 346632,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 323248,
+      "lossless_ratio": 1.0723407414740385,
+      "tensor": "model.layers.39.mlp.down_proj.weight",
+      "shape": [
+        5120,
+        14336
+      ],
+      "name": "PQ8x1",
+      "block": 8,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.6626279950141907,
+      "cosine_p05": 0.6584751009941101,
+      "nmse": 0.5605865120887756,
+      "random_activation_rel_l2": 0.729431668917338,
+      "stage_index_entropy": [
+        7.992569256672766
+      ],
+      "packed_sample_bytes": 176648,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 164208,
+      "lossless_ratio": 1.0757575757575757,
+      "tensor": "model.layers.39.mlp.down_proj.weight",
+      "shape": [
+        5120,
+        14336
+      ],
+      "name": "PQ16x1",
+      "block": 16,
+      "stages": 1
+    },
+    {
+      "cosine_mean": 0.8270022869110107,
+      "cosine_p05": 0.8245277404785156,
+      "nmse": 0.31608736515045166,
+      "random_activation_rel_l2": 0.5849801699320475,
+      "stage_index_entropy": [
+        7.993694283024094,
+        7.994728560852483
+      ],
+      "packed_sample_bytes": 353296,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 330300,
+      "lossless_ratio": 1.0696215561610658,
+      "tensor": "model.layers.39.mlp.down_proj.weight",
+      "shape": [
+        5120,
+        14336
+      ],
+      "name": "RVQ16x2",
+      "block": 16,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.661961555480957,
+      "cosine_p05": 0.6574784517288208,
+      "nmse": 0.5616118311882019,
+      "random_activation_rel_l2": 0.7349526584148407,
+      "stage_index_entropy": [
+        7.987209233119886,
+        7.9790265648239505
+      ],
+      "packed_sample_bytes": 189456,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 173820,
+      "lossless_ratio": 1.0899551259924058,
+      "tensor": "model.layers.39.mlp.down_proj.weight",
+      "shape": [
+        5120,
+        14336
+      ],
+      "name": "RVQ32x2",
+      "block": 32,
+      "stages": 2
+    },
+    {
+      "cosine_mean": 0.5180051326751709,
+      "cosine_p05": 0.5113450288772583,
+      "nmse": 0.7314974069595337,
+      "random_activation_rel_l2": 0.8611325919628143,
+      "stage_index_entropy": [
+        7.764134549711214,
+        7.757455611887174
+      ],
+      "packed_sample_bytes": 119824,
+      "best_standard_lossless": "lzma9",
+      "lossless_bytes": 109860,
+      "lossless_ratio": 1.0906972510467867,
+      "tensor": "model.layers.39.mlp.down_proj.weight",
+      "shape": [
+        5120,
+        14336
+      ],
+      "name": "RVQ64x2",
+      "block": 64,
+      "stages": 2
+    }
+  ],
+  "notes": [
+    "Real BF16 ranges from official five-shard Mistral-Nemo checkpoint.",
+    "PQ/RVQ works on short subvectors rather than entire rows.",
+    "Each stage stores one 8-bit code index plus one 4-bit log-norm per block; centroids are int8 with one FP16 scale per centroid.",
+    "Full-model perplexity is not measured here; random-activation relative L2 is a local falsification metric."
+  ]
+}
