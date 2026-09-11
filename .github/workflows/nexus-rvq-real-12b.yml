@@ -1,0 +1,39 @@
+name: NEXUS RVQ real 12B public runner
+
+on:
+  push:
+    branches: ['exp/nexus-dwe-real-12b']
+    paths:
+      - 'experiments/nexus_rvq_real_12b.py'
+      - '.github/workflows/nexus-rvq-real-12b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exp/nexus-dwe-real-12b
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: python -m pip install numpy scikit-learn
+      - name: Compile
+        run: python -m py_compile experiments/nexus_dwe_real_12b.py experiments/nexus_rvq_real_12b.py
+      - name: Benchmark block PQ and RVQ on real Mistral-Nemo weights
+        run: python experiments/nexus_rvq_real_12b.py --rows 128 --out experiments/results/NEXUS_RVQ_REAL_12B.json
+      - name: Commit evidence
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git pull --rebase origin exp/nexus-dwe-real-12b
+          git add experiments/results/NEXUS_RVQ_REAL_12B.json experiments/results/NEXUS_RVQ_REAL_12B.md
+          git commit -m 'Record real Mistral-Nemo 12B block RVQ evidence'
+          git push origin HEAD:exp/nexus-dwe-real-12b
