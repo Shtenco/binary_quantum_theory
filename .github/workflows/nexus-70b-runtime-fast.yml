@@ -1,0 +1,129 @@
+name: NEXUS real 70B runtime FAST
+
+on:
+  push:
+    branches: [exp/nexus-70b-runtime]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nexus-70b-fast-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL || true
+          sudo apt-get clean || true
+          df -h /
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python deps
+        run: |
+          python -m pip install -q -U pip
+          python -m pip install -q numpy requests 'huggingface_hub[hf_xet]'
+      - name: Download official llama.cpp prebuilt
+        run: |
+          mkdir -p /tmp/llama-bin
+          curl -L --retry 5 --fail -o /tmp/llama.tar.gz https://github.com/ggml-org/llama.cpp/releases/download/b10809/llama-b10809-bin-ubuntu-x64.tar.gz
+          tar -xzf /tmp/llama.tar.gz -C /tmp/llama-bin
+          find /tmp/llama-bin -maxdepth 3 -type f -name 'llama-*' -print
+          LLAMA_BENCH=$(find /tmp/llama-bin -type f -name llama-bench | head -1)
+          LLAMA_SERVER=$(find /tmp/llama-bin -type f -name llama-server | head -1)
+          test -x "$LLAMA_BENCH" && test -x "$LLAMA_SERVER"
+          dirname "$LLAMA_BENCH" >> "$GITHUB_PATH"
+      - name: Download real Llama 3.3 70B IQ1_S
+        run: |
+          mkdir -p models experiments/results
+          python - <<'PY'
+          from huggingface_hub import list_repo_files, hf_hub_download
+          from pathlib import Path
+          repo='mradermacher/Llama-3.3-70B-Instruct-i1-GGUF'
+          files=[x for x in list_repo_files(repo) if 'IQ1_S' in x and x.endswith('.gguf')]
+          if not files:
+              raise SystemExit('IQ1_S GGUF not found')
+          print('IQ1_S files:', files)
+          total=0
+          for f in files:
+              p=hf_hub_download(repo_id=repo,filename=f,local_dir='models')
+              n=Path(p).stat().st_size; total+=n
+              print(p,n)
+          Path('experiments/results/NEXUS_70B_MODEL.json').write_text(__import__('json').dumps({'repo':repo,'files':files,'bytes':total},indent=2))
+          print('TOTAL',total)
+          PY
+          df -h /
+          ls -lh models
+      - name: Storage probe raw vs zlib/lzma samples
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,zlib,lzma,time
+          fs=sorted(Path('models').glob('*IQ1_S*.gguf'))
+          if not fs: raise SystemExit('no model')
+          # Full zstd would add minutes; sample 8 independent 16MiB windows to estimate residual entropy.
+          f=fs[0]; n=f.stat().st_size; win=16*1024*1024
+          offs=[int(i*(max(0,n-win))/7) for i in range(8)]
+          rows=[]
+          with f.open('rb') as h:
+              for off in offs:
+                  h.seek(off); b=h.read(win)
+                  t=time.perf_counter(); z=zlib.compress(b,1); dt=time.perf_counter()-t
+                  rows.append({'offset':off,'raw':len(b),'zlib1':len(z),'ratio':len(b)/len(z),'encode_s':dt})
+          out={'model_bytes':n,'sample_mean_ratio':sum(r['ratio'] for r in rows)/len(rows),'rows':rows}
+          Path('experiments/results/NEXUS_70B_STORAGE_SAMPLE.json').write_text(json.dumps(out,indent=2))
+          print(json.dumps(out,indent=2))
+          PY
+      - name: Benchmark real 70B CPU inference speed
+        run: |
+          MODEL=$(find models -name '*IQ1_S*.gguf' | sort | head -1)
+          /usr/bin/time -v llama-bench -m "$MODEL" -p 32 -n 4 -r 1 -t 4 2>&1 | tee experiments/results/NEXUS_70B_LLAMA_BENCH.txt
+      - name: Start model server
+        run: |
+          MODEL=$(find models -name '*IQ1_S*.gguf' | sort | head -1)
+          nohup llama-server -m "$MODEL" -c 256 -t 4 --host 127.0.0.1 --port 8080 > experiments/results/llama_server.log 2>&1 &
+          echo $! > experiments/results/server.pid
+          for i in $(seq 1 180); do
+            if curl -fsS http://127.0.0.1:8080/health >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          tail -200 experiments/results/llama_server.log
+          exit 1
+      - name: Baseline vs simulated 2-qubit VQC output adapter
+        run: |
+          python experiments/nexus_quantum_mcq.py --out experiments/results/NEXUS_70B_QUANTUM.json
+          PID=$(cat experiments/results/server.pid)
+          grep -E 'VmRSS|VmHWM' /proc/$PID/status | tee experiments/results/NEXUS_70B_RSS.txt || true
+      - name: Build evidence report
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          out=['# NEXUS real 70B FAST runtime evidence','']
+          for fn,title in [('NEXUS_70B_MODEL.json','Model'),('NEXUS_70B_STORAGE_SAMPLE.json','Storage sample'),('NEXUS_70B_QUANTUM.json','Quantum')]:
+              p=Path('experiments/results')/fn
+              if p.exists(): out += [f'## {title}','```json',p.read_text(),'```','']
+          b=Path('experiments/results/NEXUS_70B_LLAMA_BENCH.txt')
+          if b.exists(): out += ['## llama-bench','```text',b.read_text(errors='ignore')[-8000:],'```text','']
+          r=Path('experiments/results/NEXUS_70B_RSS.txt')
+          if r.exists(): out += ['## server RSS','```text',r.read_text(),'```','']
+          l=Path('experiments/results/llama_server.log')
+          if l.exists(): out += ['## server log tail','```text',l.read_text(errors='ignore')[-4000:],'```','']
+          Path('experiments/results/NEXUS_70B_RUNTIME_FAST.md').write_text('\n'.join(out))
+          PY
+      - name: Commit evidence
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/results
+          git commit -m 'Record real 70B FAST runtime and quantum evidence' || true
+          git push
