@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import argparse, json, math, random, time, urllib.request
+import argparse, json, math, time, urllib.request
 from pathlib import Path
 import numpy as np
 
@@ -27,9 +27,14 @@ def post_json(url: str, payload: dict, timeout: int = 900) -> dict:
 
 def get_probs(base: str, q: str, opts: list[str]) -> tuple[np.ndarray,float,str]:
     prompt=q+"\n"+"\n".join(f"{LETTERS[i]}) {x}" for i,x in enumerate(opts))+"\nAnswer with one letter only.\nAnswer:"
-    payload={"prompt":prompt,"n_predict":1,"temperature":0.0,"n_probs":16,
-             "grammar":"root ::= \\\"A\\\" | \\\"B\\\" | \\\"C\\\" | \\\"D\\\"",
-             "cache_prompt":False}
+    payload={
+        "prompt":prompt,
+        "n_predict":1,
+        "temperature":0.0,
+        "n_probs":16,
+        "grammar":'root ::= "A" | "B" | "C" | "D"',
+        "cache_prompt":False,
+    }
     t=time.perf_counter(); out=post_json(base+"/completion",payload); dt=time.perf_counter()-t
     p=np.full(4,1e-12,dtype=np.float64)
     cps=out.get("completion_probabilities") or []
@@ -51,10 +56,8 @@ I=np.eye(2,dtype=np.complex128)
 CNOT=np.array([[1,0,0,0],[0,1,0,0],[0,0,0,1],[0,0,1,0]],dtype=np.complex128)
 
 def vqc(p: np.ndarray, th: np.ndarray) -> np.ndarray:
-    # amplitude encoding of the classical 4-way probability vector
     psi=np.sqrt(np.maximum(p,0)).astype(np.complex128)
     psi/=np.linalg.norm(psi)
-    # Identity at theta=0: CNOT * (Ry(theta2)⊗I) * CNOT surrounds local rotations.
     U1=np.kron(ry(float(th[0])), ry(float(th[1])))
     U2=np.kron(ry(float(th[2])), I)
     psi=U1@psi
@@ -71,7 +74,6 @@ def nll(rows, th):
 def train_vqc(rows, seed=7, trials=5000):
     rng=np.random.default_rng(seed)
     best=np.zeros(3); score=nll(rows,best)
-    # random search around identity, then progressively local refinement
     for scale,count in [(0.8,trials//2),(0.25,trials//3),(0.08,trials-trials//2-trials//3)]:
         center=best.copy()
         for _ in range(count):
