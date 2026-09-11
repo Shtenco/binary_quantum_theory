@@ -1,0 +1,95 @@
+name: NEXUS real 70B runtime DIRECT
+
+on:
+  push:
+    branches: [exp/nexus-70b-runtime]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python deps
+        run: python -m pip install -q numpy 'huggingface_hub[hf_xet]'
+      - name: Install official prebuilt llama.cpp
+        run: |
+          curl -L --retry 5 --fail -o /tmp/llama.tar.gz https://github.com/ggml-org/llama.cpp/releases/download/b10809/llama-b10809-bin-ubuntu-x64.tar.gz
+          mkdir -p /tmp/llama-bin && tar -xzf /tmp/llama.tar.gz -C /tmp/llama-bin
+          B=$(find /tmp/llama-bin -type f -name llama-bench | head -1); S=$(find /tmp/llama-bin -type f -name llama-server | head -1)
+          test -x "$B" && test -x "$S"
+          dirname "$B" >> "$GITHUB_PATH"
+      - name: Download live Llama 3.3 70B IQ1_S
+        run: |
+          mkdir -p models experiments/results
+          python - <<'PY'
+          from huggingface_hub import list_repo_files,hf_hub_download
+          from pathlib import Path
+          import json
+          repo='mradermacher/Llama-3.3-70B-Instruct-i1-GGUF'
+          fs=[f for f in list_repo_files(repo) if 'IQ1_S' in f and f.endswith('.gguf')]
+          if not fs: raise SystemExit('no IQ1_S')
+          total=0
+          for f in fs:
+              p=hf_hub_download(repo_id=repo,filename=f,local_dir='models'); total+=Path(p).stat().st_size
+          Path('experiments/results/NEXUS_70B_MODEL_DIRECT.json').write_text(json.dumps({'repo':repo,'files':fs,'bytes':total},indent=2))
+          print(fs,total)
+          PY
+          df -h /
+      - name: Residual storage entropy sample
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import zlib,json
+          f=sorted(Path('models').glob('*IQ1_S*.gguf'))[0]; n=f.stat().st_size; w=8*1024*1024
+          offs=[int(i*max(0,n-w)/7) for i in range(8)]; rows=[]
+          with f.open('rb') as h:
+            for o in offs:
+              h.seek(o); b=h.read(w); c=zlib.compress(b,1); rows.append({'offset':o,'raw':len(b),'compressed':len(c),'ratio':len(b)/len(c)})
+          d={'model_bytes':n,'mean_ratio':sum(x['ratio'] for x in rows)/len(rows),'rows':rows}
+          Path('experiments/results/NEXUS_70B_STORAGE_DIRECT.json').write_text(json.dumps(d,indent=2)); print(d)
+          PY
+      - name: Real 70B speed
+        run: |
+          MODEL=$(find models -name '*IQ1_S*.gguf' | sort | head -1)
+          /usr/bin/time -v llama-bench -m "$MODEL" -p 32 -n 4 -r 1 -t 4 2>&1 | tee experiments/results/NEXUS_70B_BENCH_DIRECT.txt
+      - name: Start real 70B server
+        run: |
+          MODEL=$(find models -name '*IQ1_S*.gguf' | sort | head -1)
+          nohup llama-server -m "$MODEL" -c 256 -t 4 --host 127.0.0.1 --port 8080 > experiments/results/NEXUS_70B_SERVER_DIRECT.log 2>&1 & echo $! > experiments/results/NEXUS_70B_PID
+          for i in $(seq 1 240); do curl -fsS http://127.0.0.1:8080/health >/dev/null && exit 0; sleep 1; done
+          tail -200 experiments/results/NEXUS_70B_SERVER_DIRECT.log; exit 1
+      - name: Quality A-B baseline vs 2-qubit VQC
+        run: |
+          python experiments/nexus_quantum_mcq.py --out experiments/results/NEXUS_70B_QUANTUM_DIRECT.json
+          PID=$(cat experiments/results/NEXUS_70B_PID); grep -E 'VmRSS|VmHWM' /proc/$PID/status > experiments/results/NEXUS_70B_RSS_DIRECT.txt || true
+      - name: Report
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          d=Path('experiments/results'); out=['# NEXUS 70B DIRECT evidence','']
+          for fn in ['NEXUS_70B_MODEL_DIRECT.json','NEXUS_70B_STORAGE_DIRECT.json','NEXUS_70B_QUANTUM_DIRECT.json']:
+            p=d/fn
+            if p.exists(): out += ['## '+fn,'```json',p.read_text(),'```','']
+          for fn in ['NEXUS_70B_BENCH_DIRECT.txt','NEXUS_70B_RSS_DIRECT.txt','NEXUS_70B_SERVER_DIRECT.log']:
+            p=d/fn
+            if p.exists(): out += ['## '+fn,'```text',p.read_text(errors='ignore')[-8000:],'```','']
+          (d/'NEXUS_70B_RUNTIME_DIRECT.md').write_text('\n'.join(out))
+          PY
+      - name: Commit evidence
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add experiments/results
+          git commit -m 'Record direct real 70B runtime evidence' || true
+          git push
