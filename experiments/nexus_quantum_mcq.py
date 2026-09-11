@@ -25,6 +25,13 @@ def post_json(url: str, payload: dict, timeout: int = 900) -> dict:
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.loads(r.read())
 
+def _prob_from_entry(entry: dict) -> float:
+    if "prob" in entry:
+        return float(entry["prob"])
+    if "logprob" in entry:
+        return math.exp(float(entry["logprob"]))
+    return 0.0
+
 def get_probs(base: str, q: str, opts: list[str]) -> tuple[np.ndarray,float,str]:
     prompt=q+"\n"+"\n".join(f"{LETTERS[i]}) {x}" for i,x in enumerate(opts))+"\nAnswer with one letter only.\nAnswer:"
     payload={
@@ -32,6 +39,7 @@ def get_probs(base: str, q: str, opts: list[str]) -> tuple[np.ndarray,float,str]
         "n_predict":1,
         "temperature":0.0,
         "n_probs":16,
+        "post_sampling_probs":True,
         "grammar":'root ::= "A" | "B" | "C" | "D"',
         "cache_prompt":False,
     }
@@ -39,11 +47,17 @@ def get_probs(base: str, q: str, opts: list[str]) -> tuple[np.ndarray,float,str]
     p=np.full(4,1e-12,dtype=np.float64)
     cps=out.get("completion_probabilities") or []
     if cps:
-        for item in cps[0].get("probs",[]):
-            tok=str(item.get("tok_str","")).strip()
+        first=cps[0]
+        candidates=(first.get("top_probs") or first.get("top_logprobs") or first.get("probs") or [])
+        for item in candidates:
+            tok=str(item.get("token", item.get("tok_str",""))).strip()
             if tok in LETTERS:
-                p[LETTERS.index(tok)]=max(float(item.get("prob",0.0)),1e-12)
-    if p.sum() <= 4e-12:
+                p[LETTERS.index(tok)]=max(_prob_from_entry(item),1e-12)
+        # Include sampled token itself if top-list is absent/partial.
+        tok=str(first.get("token", first.get("tok_str",""))).strip()
+        if tok in LETTERS:
+            p[LETTERS.index(tok)]=max(p[LETTERS.index(tok)], _prob_from_entry(first), 1e-12)
+    if p.sum() <= 4.0001e-12:
         content=str(out.get("content","")).strip()[:1]
         if content in LETTERS: p[LETTERS.index(content)]=1.0
     p/=p.sum()
@@ -100,14 +114,14 @@ def main():
     for _ in range(20000): vqc(rows[0][0],theta)
     vqc_us=(time.perf_counter()-t0)/20000*1e6
     result={
-      "schema":"shtenco.nexus-70b-vqc/v1",
+      "schema":"shtenco.nexus-70b-vqc/v2",
       "questions":len(rows),"train_questions":6,"test_questions":6,
       "baseline_train_accuracy":acc(train),"baseline_test_accuracy":acc(test),
       "vqc_train_accuracy":acc(train,theta),"vqc_test_accuracy":acc(test,theta),
       "theta":theta.tolist(),"train_nll":train_nll,
       "mean_model_query_seconds":float(np.mean(lat)),"median_model_query_seconds":float(np.median(lat)),
       "simulated_2qubit_vqc_overhead_us":vqc_us,
-      "note":"Classically simulated 2-qubit post-logit adapter on A/B/C/D probabilities; this is not a quantum speedup and not a hidden-state quantum layer.",
+      "note":"Classically simulated 2-qubit post-logit unitary adapter on real A/B/C/D probabilities from a live 70B model; this is not a quantum speedup and not a hidden-state quantum layer.",
       "rows":raw}
     Path(a.out).parent.mkdir(parents=True,exist_ok=True); Path(a.out).write_text(json.dumps(result,indent=2),encoding="utf-8")
     print(json.dumps(result,indent=2))
