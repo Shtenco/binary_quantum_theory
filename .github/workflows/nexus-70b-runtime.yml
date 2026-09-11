@@ -1,0 +1,110 @@
+name: NEXUS real 70B runtime benchmark
+
+on:
+  push:
+    branches: [exp/nexus-70b-runtime]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Free disk space
+        run: |
+          df -h /
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup /opt/hostedtoolcache/CodeQL || true
+          sudo apt-get clean || true
+          df -h /
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Python and build deps
+        run: |
+          python -m pip install -U pip
+          python -m pip install numpy requests 'huggingface_hub[hf_xet]'
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cmake ninja-build libcurl4-openssl-dev zstd
+      - name: Build llama.cpp CPU
+        run: |
+          git clone --depth 1 https://github.com/ggml-org/llama.cpp.git /tmp/llama.cpp
+          cmake -S /tmp/llama.cpp -B /tmp/llama.cpp/build -G Ninja -DCMAKE_BUILD_TYPE=Release -DGGML_NATIVE=ON -DLLAMA_CURL=ON
+          cmake --build /tmp/llama.cpp/build --target llama-cli llama-bench llama-server -j 4
+      - name: Download real Llama 3.3 70B IQ1_S
+        run: |
+          mkdir -p models experiments/results
+          python - <<'PY'
+          from huggingface_hub import list_repo_files, hf_hub_download
+          from pathlib import Path
+          repo='mradermacher/Llama-3.3-70B-Instruct-i1-GGUF'
+          files=[x for x in list_repo_files(repo) if 'IQ1_S' in x and x.endswith('.gguf')]
+          if not files:
+              raise SystemExit('IQ1_S GGUF not found')
+          print('files',files)
+          for f in files:
+              p=hf_hub_download(repo_id=repo,filename=f,local_dir='models')
+              print(p,Path(p).stat().st_size)
+          Path('experiments/results/model_files.txt').write_text('\n'.join(files))
+          PY
+          df -h /
+          ls -lh models
+      - name: Measure raw and zstd storage
+        run: |
+          MODEL=$(find models -name '*IQ1_S*.gguf' | sort | head -1)
+          RAW=$(stat -c%s "$MODEL")
+          ZSTD=$(zstd -T0 -3 -q -c "$MODEL" | wc -c)
+          python - <<PY
+          import json
+          raw=int('$RAW'); z=int('$ZSTD')
+          print({'raw_bytes':raw,'zstd3_bytes':z,'ratio':raw/z})
+          open('experiments/results/NEXUS_70B_STORAGE.json','w').write(json.dumps({'raw_bytes':raw,'zstd3_bytes':z,'ratio':raw/z},indent=2))
+          PY
+      - name: Benchmark real 70B inference speed
+        run: |
+          MODEL=$(find models -name '*IQ1_S*.gguf' | sort | head -1)
+          /usr/bin/time -v /tmp/llama.cpp/build/bin/llama-bench -m "$MODEL" -p 32 -n 4 -r 1 -t 4 2>&1 | tee experiments/results/NEXUS_70B_LLAMA_BENCH.txt
+      - name: Start model server
+        run: |
+          MODEL=$(find models -name '*IQ1_S*.gguf' | sort | head -1)
+          nohup /tmp/llama.cpp/build/bin/llama-server -m "$MODEL" -c 256 -t 4 --host 127.0.0.1 --port 8080 > experiments/results/llama_server.log 2>&1 &
+          echo $! > experiments/results/server.pid
+          for i in $(seq 1 180); do
+            if curl -fsS http://127.0.0.1:8080/health >/dev/null; then exit 0; fi
+            sleep 2
+          done
+          tail -200 experiments/results/llama_server.log
+          exit 1
+      - name: Baseline vs simulated quantum output layer
+        run: |
+          python experiments/nexus_quantum_mcq.py --out experiments/results/NEXUS_70B_QUANTUM.json
+          PID=$(cat experiments/results/server.pid)
+          grep -E 'VmRSS|VmHWM' /proc/$PID/status | tee experiments/results/NEXUS_70B_RSS.txt || true
+      - name: Build report
+        if: always()
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json,re
+          out=['# NEXUS real 70B runtime evidence','']
+          p=Path('experiments/results/NEXUS_70B_STORAGE.json')
+          if p.exists():
+              s=json.loads(p.read_text()); out += [f"Storage: {s['raw_bytes']/1e9:.3f} GB; zstd-3 {s['zstd3_bytes']/1e9:.3f} GB; ratio {s['ratio']:.4f}x",'']
+          b=Path('experiments/results/NEXUS_70B_LLAMA_BENCH.txt')
+          if b.exists(): out += ['## llama-bench','```',b.read_text(errors='ignore')[-6000:],'```','']
+          q=Path('experiments/results/NEXUS_70B_QUANTUM.json')
+          if q.exists():
+              d=json.loads(q.read_text()); out += ['## 2-qubit VQC smoke test',f"Baseline test accuracy: {d['baseline_test_accuracy']:.3f}",f"VQC test accuracy: {d['vqc_test_accuracy']:.3f}",f"Mean model query: {d['mean_model_query_seconds']:.3f}s",f"VQC simulator overhead: {d['simulated_2qubit_vqc_overhead_us']:.2f} us",'']
+          Path('experiments/results/NEXUS_70B_RUNTIME.md').write_text('\n'.join(out))
+          PY
+      - name: Commit evidence
+        if: always()
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add experiments/results
+          git commit -m 'Record real 70B inference and quantum benchmark evidence' || true
+          git push
