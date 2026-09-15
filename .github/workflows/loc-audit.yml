@@ -1,0 +1,39 @@
+name: LOC Audit
+on:
+  push:
+    branches:
+      - audit/loc-2026-09-15
+permissions:
+  contents: read
+jobs:
+  count:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Count source lines
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+          CODE_EXT = {'.py','.pyi','.sol','.js','.mjs','.cjs','.ts','.tsx','.jsx','.java','.kt','.kts','.go','.rs','.c','.h','.cc','.cpp','.cxx','.hpp','.hh','.cs','.fs','.fsx','.swift','.scala','.rb','.php','.lua','.r','.R','.m','.mm','.sh','.bash','.zsh','.fish','.ps1','.bat','.cmd','.sql','.html','.htm','.css','.scss','.sass','.less','.vue','.svelte','.dart','.ex','.exs','.erl','.hrl','.clj','.cljs','.groovy','.mq4','.mq5','.mqh'}
+          EXCLUDE = {'.git','node_modules','vendor','dist','build','target','.venv','venv','__pycache__','.next','.nuxt','coverage','.cache'}
+          files = 0
+          loc = 0
+          by_ext = {}
+          for p in Path('.').rglob('*'):
+              if not p.is_file() or any(part in EXCLUDE for part in p.parts):
+                  continue
+              if p.suffix not in CODE_EXT:
+                  continue
+              try:
+                  raw = p.read_bytes()
+                  if b'\x00' in raw[:4096]:
+                      continue
+                  text = raw.decode('utf-8', errors='replace')
+              except OSError:
+                  continue
+              n = len(text.splitlines())
+              files += 1
+              loc += n
+              by_ext[p.suffix] = by_ext.get(p.suffix, 0) + n
+          print('SYNERGY_LOC_JSON=' + json.dumps({'files': files, 'loc': loc, 'by_ext': dict(sorted(by_ext.items()))}, sort_keys=True))
