@@ -9,8 +9,13 @@ Input JSON format:
 {
   "operators": {"name": [[...], ...], ...},
   "hbar": 1.0,
-  "tolerance": 1e-10
+  "tolerance": 1e-10,
+  "commutator_convention": "quantum_i"
 }
+
+`quantum_i` means [A,B]/(i*hbar)=f*C.
+`lie` means [A,B]/hbar=f*C and is useful for non-Hermitian matrix
+representations of the abstract Lie algebra. The convention is never inferred.
 
 The scan is deliberately conservative: candidates are linear combinations
 only of the supplied operators. No optimization over arbitrary nonlinear
@@ -53,35 +58,39 @@ def project_coefficients(x: np.ndarray, basis: list[np.ndarray]) -> tuple[np.nda
     return coeff, frob(residual)
 
 
-def killing_form(structure: np.ndarray) -> np.ndarray:
-    """K_ab = f_{a c}^d f_{b d}^c for a real structure tensor."""
-    n = structure.shape[0]
-    K = np.zeros((n, n), dtype=float)
-    for a in range(n):
-        for b in range(n):
-            K[a, b] = np.real(np.einsum("cd,dc->", structure[a], structure[b]))
-    return K
-
-
-def analyze_triplet(triplet: list[np.ndarray], names: list[str], tol: float, hbar: float) -> dict:
+def analyze_triplet(
+    triplet: list[np.ndarray],
+    names: list[str],
+    tol: float,
+    hbar: float,
+    convention: str,
+) -> dict:
     q = orthonormal_basis(triplet, tol)
     if len(q) != 3:
-        return {"rank": len(q), "accepted": False, "reason": "triplet is linearly dependent"}
+        return {"rank": len(q), "accepted_as_sp2": False, "reason": "triplet is linearly dependent"}
 
+    divisor = 1j * hbar if convention == "quantum_i" else hbar
     f = np.zeros((3, 3, 3), dtype=float)
-    residuals = {}
     max_res = 0.0
-    for i, j in itertools.product(range(3), repeat=2):
-        c = comm(q[i], q[j]) / (1j * hbar)
-        coeff, res = project_coefficients(c, q)
-        f[i, j, :] = np.real_if_close(coeff).real
-        residuals[f"{i},{j}"] = res
-        max_res = max(max_res, res)
+    max_imag_coeff = 0.0
 
-    # Jacobi residual on the actual matrices.
+    for i, j in itertools.product(range(3), repeat=2):
+        c = comm(q[i], q[j]) / divisor
+        coeff, res = project_coefficients(c, q)
+        max_res = max(max_res, res)
+        max_imag_coeff = max(max_imag_coeff, float(np.max(np.abs(np.imag(coeff)))))
+        f[i, j, :] = np.real(coeff)
+
+    # Jacobi residual on the actual matrices. This is a representation check,
+    # independent of whether the chosen structure constants are subsequently
+    # recognized as sl(2,R).
     jacobi_max = 0.0
     for i, j, k in itertools.product(range(3), repeat=3):
-        jac = comm(q[i], comm(q[j], q[k])) + comm(q[j], comm(q[k], q[i])) + comm(q[k], comm(q[i], q[j]))
+        jac = (
+            comm(q[i], comm(q[j], q[k]))
+            + comm(q[j], comm(q[k], q[i]))
+            + comm(q[k], comm(q[i], q[j]))
+        )
         jacobi_max = max(jacobi_max, frob(jac))
 
     # Adjoint matrices: (ad_i)_j^k = f_{ij}^k.
@@ -95,12 +104,19 @@ def analyze_triplet(triplet: list[np.ndarray], names: list[str], tol: float, hba
     nneg = int(np.sum(evals < -tol))
     nzero = 3 - npos - nneg
 
-    accepted = max_res <= tol and jacobi_max <= tol and npos == 2 and nneg == 1
+    accepted = (
+        max_res <= tol
+        and jacobi_max <= tol
+        and max_imag_coeff <= tol
+        and npos == 2
+        and nneg == 1
+    )
     return {
         "names": names,
         "rank": 3,
         "max_closure_residual": max_res,
         "max_jacobi_residual": jacobi_max,
+        "max_imaginary_structure_component": max_imag_coeff,
         "structure_constants": f.tolist(),
         "killing_eigenvalues": evals.tolist(),
         "killing_signature": [npos, nneg, nzero],
@@ -113,11 +129,15 @@ def main() -> int:
     ap.add_argument("input", type=Path)
     ap.add_argument("--tolerance", type=float, default=None)
     ap.add_argument("--hbar", type=float, default=None)
+    ap.add_argument("--convention", choices=["quantum_i", "lie"], default=None)
     args = ap.parse_args()
 
     data = json.loads(args.input.read_text(encoding="utf-8"))
     tol = float(args.tolerance if args.tolerance is not None else data.get("tolerance", 1e-10))
     hbar = float(args.hbar if args.hbar is not None else data.get("hbar", 1.0))
+    convention = args.convention or data.get("commutator_convention", "quantum_i")
+    if convention not in {"quantum_i", "lie"}:
+        raise SystemExit("commutator_convention must be 'quantum_i' or 'lie'")
 
     names = list(data["operators"])
     ops = [np.asarray(data["operators"][n], dtype=complex) for n in names]
@@ -132,7 +152,15 @@ def main() -> int:
     results = []
     if len(ops) >= 3:
         for idx in itertools.combinations(range(len(ops)), 3):
-            results.append(analyze_triplet([ops[i] for i in idx], [names[i] for i in idx], tol, hbar))
+            results.append(
+                analyze_triplet(
+                    [ops[i] for i in idx],
+                    [names[i] for i in idx],
+                    tol,
+                    hbar,
+                    convention,
+                )
+            )
 
     accepted = [r for r in results if r.get("accepted_as_sp2")]
     out = {
@@ -140,6 +168,7 @@ def main() -> int:
         "matrix_dimension": shape[0],
         "tolerance": tol,
         "hbar": hbar,
+        "commutator_convention": convention,
         "triplets_tested": len(results),
         "sp2_triplets": accepted,
         "best_residual": min((r.get("max_closure_residual", float("inf")) for r in results), default=None),
