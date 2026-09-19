@@ -47,10 +47,28 @@ jobs:
           du -sh payload
           find payload -maxdepth 2 -type f -printf '%s %p\n' | sort -nr
           ./payload/bin/llama-cli --version || true
-      - name: Upload courier payload
+      - name: Upload Qwen model artifact
         uses: actions/upload-artifact@v4
         with:
-          name: qwen-local-courier
-          path: payload
+          name: qwen-model
+          path: payload/qwen2.5-0.5b-instruct-q4_k_m.gguf
           compression-level: 0
+          retention-days: 3
+
+      - name: Upload runtime artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-runtime
+          path: |
+            payload/bin
+            payload/wheelhouse
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Omega source artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: omega-v6-source
+          path: payload/omega_src
+          compression-level: 6
           retention-days: 3
