@@ -1,7 +1,5 @@
 name: Qwen local courier
 on:
-  push:
-    branches: [exp/qwen-local-courier]
   workflow_dispatch:
 jobs:
   package:
