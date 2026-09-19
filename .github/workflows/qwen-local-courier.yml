@@ -47,13 +47,42 @@ jobs:
           du -sh payload
           find payload -maxdepth 2 -type f -printf '%s %p\n' | sort -nr
           ./payload/bin/llama-cli --version || true
-      - name: Upload Qwen model artifact
+      - name: Split Qwen model for local transfer
+        run: |
+          mkdir -p payload/model_chunks
+          split -b 50M -d -a 2 payload/qwen2.5-0.5b-instruct-q4_k_m.gguf payload/model_chunks/qwen.gguf.part.
+          ls -lh payload/model_chunks
+          cat payload/model_chunks/qwen.gguf.part.* | sha256sum
+      - name: Upload Qwen chunk 00
         uses: actions/upload-artifact@v4
-        with:
-          name: qwen-model
-          path: payload/qwen2.5-0.5b-instruct-q4_k_m.gguf
-          compression-level: 0
-          retention-days: 3
+        with: {name: qwen-chunk-00, path: payload/model_chunks/qwen.gguf.part.00, compression-level: 0, retention-days: 3}
+      - name: Upload Qwen chunk 01
+        uses: actions/upload-artifact@v4
+        with: {name: qwen-chunk-01, path: payload/model_chunks/qwen.gguf.part.01, compression-level: 0, retention-days: 3}
+      - name: Upload Qwen chunk 02
+        uses: actions/upload-artifact@v4
+        with: {name: qwen-chunk-02, path: payload/model_chunks/qwen.gguf.part.02, compression-level: 0, retention-days: 3}
+      - name: Upload Qwen chunk 03
+        uses: actions/upload-artifact@v4
+        with: {name: qwen-chunk-03, path: payload/model_chunks/qwen.gguf.part.03, compression-level: 0, retention-days: 3}
+      - name: Upload Qwen chunk 04
+        uses: actions/upload-artifact@v4
+        with: {name: qwen-chunk-04, path: payload/model_chunks/qwen.gguf.part.04, compression-level: 0, retention-days: 3}
+      - name: Upload Qwen chunk 05
+        uses: actions/upload-artifact@v4
+        with: {name: qwen-chunk-05, path: payload/model_chunks/qwen.gguf.part.05, compression-level: 0, retention-days: 3}
+      - name: Upload Qwen chunk 06
+        uses: actions/upload-artifact@v4
+        with: {name: qwen-chunk-06, path: payload/model_chunks/qwen.gguf.part.06, compression-level: 0, retention-days: 3}
+      - name: Upload Qwen chunk 07
+        uses: actions/upload-artifact@v4
+        with: {name: qwen-chunk-07, path: payload/model_chunks/qwen.gguf.part.07, compression-level: 0, retention-days: 3}
+      - name: Upload Qwen chunk 08
+        uses: actions/upload-artifact@v4
+        with: {name: qwen-chunk-08, path: payload/model_chunks/qwen.gguf.part.08, compression-level: 0, retention-days: 3}
+      - name: Upload Qwen chunk 09
+        uses: actions/upload-artifact@v4
+        with: {name: qwen-chunk-09, path: payload/model_chunks/qwen.gguf.part.09, compression-level: 0, retention-days: 3}
 
       - name: Upload runtime artifact
         uses: actions/upload-artifact@v4
