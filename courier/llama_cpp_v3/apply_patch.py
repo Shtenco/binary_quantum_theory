@@ -173,6 +173,15 @@ def patch_llama_model_cpp(text: str) -> str:
         "model build_graph",
     )
 
+def patch_llama_context_cpp(text: str) -> str:
+    return _replace_once(
+        text,
+        "        loras.get(),\n        mctx,\n",
+        "        loras.get(),\n        &model.lowrank_q4,\n        mctx,\n",
+        "context graph params",
+    )
+
+
 def patch_llama_graph_cpp(text: str) -> str:
     text = _replace_once(text, '#include "llama-graph.h"\n', '#include "llama-graph.h"\n#include "gguf-compress-lowrank-q4.h"\n', "graph kernel include")
     text = _replace_once(
@@ -245,6 +254,7 @@ def patch_tree(root: Path, repo_root: Path) -> list[Path]:
         Path("src/llama-graph.h"): patch_llama_graph_h,
         Path("src/llama-model.h"): patch_llama_model_h,
         Path("src/llama-model.cpp"): patch_llama_model_cpp,
+        Path("src/llama-context.cpp"): patch_llama_context_cpp,
         Path("src/llama-graph.cpp"): patch_llama_graph_cpp,
     }
     changed=[]
