@@ -1,0 +1,52 @@
+name: Qwen local courier
+on:
+  push:
+    branches: [exp/qwen-local-courier]
+  workflow_dispatch:
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download Qwen GGUF
+        run: |
+          mkdir -p payload/bin payload/wheelhouse
+          curl -L --fail --retry 8 --retry-delay 3             "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf?download=true"             -o payload/qwen2.5-0.5b-instruct-q4_k_m.gguf
+          echo "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db  payload/qwen2.5-0.5b-instruct-q4_k_m.gguf" | sha256sum -c -
+      - name: Fetch pinned llama.cpp
+        uses: actions/checkout@v4
+        with:
+          repository: ggml-org/llama.cpp
+          ref: 5f436dddb440a288ee5611d7d1eca564a6aca9f4
+          path: llama.cpp
+          fetch-depth: 1
+      - name: Patch and build static CPU runtime
+        run: |
+          python courier/llama_cpp_v3/apply_patch.py llama.cpp
+          cmake -S llama.cpp -B llama.cpp/build             -DCMAKE_BUILD_TYPE=Release             -DBUILD_SHARED_LIBS=OFF             -DLLAMA_CURL=OFF             -DLLAMA_BUILD_TESTS=OFF             -DLLAMA_BUILD_EXAMPLES=ON             -DLLAMA_BUILD_SERVER=ON
+          cmake --build llama.cpp/build --target llama-server llama-cli llama-bench llama-perplexity -j2
+          cp llama.cpp/build/bin/llama-server payload/bin/
+          cp llama.cpp/build/bin/llama-cli payload/bin/
+          cp llama.cpp/build/bin/llama-bench payload/bin/
+          cp llama.cpp/build/bin/llama-perplexity payload/bin/
+          chmod +x payload/bin/*
+      - name: Download offline Python packages
+        run: |
+          python -m pip download --dest payload/wheelhouse "gguf>=0.19.0,<0.20" --no-deps
+          python -m pip download --dest payload/wheelhouse "tqdm>=4.66" --no-deps
+      - name: Inventory
+        run: |
+          du -sh payload
+          find payload -maxdepth 2 -type f -printf '%s %p\n' | sort -nr
+          ./payload/bin/llama-cli --version || true
+      - name: Upload courier payload
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-local-courier
+          path: payload
+          compression-level: 0
+          retention-days: 3
