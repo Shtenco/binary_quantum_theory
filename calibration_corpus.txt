@@ -1,0 +1,13 @@
+Калибровочный корпус для нейронной сети. Он не содержит вопросов из контрольного теста.
+Современные языковые модели должны понимать русский и английский текст, причинные связи и обычные инструкции.
+Если система сжимает веса, важно сохранять направления активаций, которые действительно используются на реальных данных.
+В инженерной документации встречаются числа, единицы измерения, названия функций и короткие формулы.
+A robust model should follow instructions, distinguish facts from hypotheses, and reason about simple sequences.
+Software systems contain modules, functions, classes, tensors, matrices, caches, files, and network protocols.
+A compiler translates source code into executable instructions while preserving the intended computation.
+В экономическом тексте могут встречаться проценты, цены, изменения показателей и сравнения величин.
+Научный текст может описывать энергию, массу, скорость, вероятность, температуру и экспериментальные результаты.
+Важно корректно обрабатывать отрицания, условия, причинность, временную последовательность и неопределённость.
+The model may encounter Python code such as x = a + b, loops, dictionaries, exceptions, and function calls.
+Нейросеть должна сохранять смысл длинного предложения даже при наличии вводных конструкций и нескольких зависимых частей.
+This corpus is intentionally unrelated to the benchmark labels and answers used later for evaluation.
