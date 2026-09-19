@@ -176,8 +176,8 @@ def patch_llama_model_cpp(text: str) -> str:
 def patch_llama_context_cpp(text: str) -> str:
     return _replace_once(
         text,
-        "        loras.get(),\n        mctx,\n",
-        "        loras.get(),\n        &model.lowrank_q4,\n        mctx,\n",
+        "        /*.loras       =*/ loras.get(),\n        /*.mctx        =*/ mctx,\n",
+        "        /*.loras       =*/ loras.get(),\n        /*.lowrank_q4  =*/ &model.lowrank_q4,\n        /*.mctx        =*/ mctx,\n",
         "context graph params",
     )
 
