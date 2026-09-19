@@ -153,7 +153,7 @@ def patch_llama_model_cpp(text: str) -> str:
             entry.residual_k = r_cols_meta->ne[0];
         }}
         lowrank_q4.by_proxy[proxy] = entry;
-        LLAMA_LOG_INFO("%s: packed-Q4 low-rank %s rank=%lld residual_k=%lld\n", __func__, original_name.c_str(), (long long) rank, (long long) entry.residual_k);
+        LLAMA_LOG_INFO("%s: packed-Q4 low-rank %s rank=%lld residual_k=%lld\\n", __func__, original_name.c_str(), (long long) rank, (long long) entry.residual_k);
         return proxy;
     }}
 
