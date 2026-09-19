@@ -1,4 +1,4 @@
-name: Qwen local courier
+name: Qwen portable runtime courier
 on:
   push:
     branches: [exp/qwen-local-courier]
@@ -6,44 +6,32 @@ on:
 jobs:
   package:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
-      - name: Download and verify Qwen GGUF
+      - name: Fetch pinned llama.cpp
+        uses: actions/checkout@v4
+        with:
+          repository: ggml-org/llama.cpp
+          ref: 5f436dddb440a288ee5611d7d1eca564a6aca9f4
+          path: llama.cpp
+          fetch-depth: 1
+      - name: Patch and build portable CPU runtime
         run: |
-          mkdir -p payload/model_chunks
-          curl -L --fail --retry 8 --retry-delay 3             "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q4_k_m.gguf?download=true"             -o payload/qwen2.5-0.5b-instruct-q4_k_m.gguf
-          echo "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db  payload/qwen2.5-0.5b-instruct-q4_k_m.gguf" | sha256sum -c -
-          split -b 50M -d -a 2 payload/qwen2.5-0.5b-instruct-q4_k_m.gguf payload/model_chunks/qwen.gguf.part.
-          cat payload/model_chunks/qwen.gguf.part.* | sha256sum
-          ls -lh payload/model_chunks
-      - name: Upload Qwen chunk 00
+          mkdir -p payload/bin
+          python courier/llama_cpp_v3/apply_patch.py llama.cpp
+          cmake -S llama.cpp -B llama.cpp/build             -DCMAKE_BUILD_TYPE=Release             -DBUILD_SHARED_LIBS=OFF             -DGGML_NATIVE=OFF             -DGGML_AVX=ON             -DGGML_AVX2=ON             -DGGML_FMA=ON             -DGGML_AVX512=OFF             -DGGML_AMX=OFF             -DLLAMA_CURL=OFF             -DLLAMA_BUILD_TESTS=OFF             -DLLAMA_BUILD_EXAMPLES=ON             -DLLAMA_BUILD_SERVER=ON
+          cmake --build llama.cpp/build --target llama-server llama-cli llama-bench llama-perplexity -j2
+          cp llama.cpp/build/bin/llama-server payload/bin/
+          cp llama.cpp/build/bin/llama-cli payload/bin/
+          cp llama.cpp/build/bin/llama-bench payload/bin/
+          cp llama.cpp/build/bin/llama-perplexity payload/bin/
+          chmod +x payload/bin/*
+          ./payload/bin/llama-cli --version
+      - name: Upload portable runtime
         uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-00, path: payload/model_chunks/qwen.gguf.part.00, compression-level: 0, retention-days: 3}
-      - name: Upload Qwen chunk 01
-        uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-01, path: payload/model_chunks/qwen.gguf.part.01, compression-level: 0, retention-days: 3}
-      - name: Upload Qwen chunk 02
-        uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-02, path: payload/model_chunks/qwen.gguf.part.02, compression-level: 0, retention-days: 3}
-      - name: Upload Qwen chunk 03
-        uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-03, path: payload/model_chunks/qwen.gguf.part.03, compression-level: 0, retention-days: 3}
-      - name: Upload Qwen chunk 04
-        uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-04, path: payload/model_chunks/qwen.gguf.part.04, compression-level: 0, retention-days: 3}
-      - name: Upload Qwen chunk 05
-        uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-05, path: payload/model_chunks/qwen.gguf.part.05, compression-level: 0, retention-days: 3}
-      - name: Upload Qwen chunk 06
-        uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-06, path: payload/model_chunks/qwen.gguf.part.06, compression-level: 0, retention-days: 3}
-      - name: Upload Qwen chunk 07
-        uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-07, path: payload/model_chunks/qwen.gguf.part.07, compression-level: 0, retention-days: 3}
-      - name: Upload Qwen chunk 08
-        uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-08, path: payload/model_chunks/qwen.gguf.part.08, compression-level: 0, retention-days: 3}
-      - name: Upload Qwen chunk 09
-        uses: actions/upload-artifact@v4
-        with: {name: qwen-chunk-09, path: payload/model_chunks/qwen.gguf.part.09, compression-level: 0, retention-days: 3}
+        with:
+          name: qwen-runtime-portable
+          path: payload/bin
+          compression-level: 0
+          retention-days: 3
