@@ -1,5 +1,7 @@
 name: Qwen local courier
 on:
+  push:
+    branches: [exp/qwen-local-courier]
   workflow_dispatch:
 jobs:
   package:
@@ -36,6 +38,10 @@ jobs:
         run: |
           python -m pip download --dest payload/wheelhouse "gguf>=0.19.0,<0.20" --no-deps
           python -m pip download --dest payload/wheelhouse "tqdm>=4.66" --no-deps
+      - name: Bundle Omega-MIX V6 source
+        run: |
+          cp -r courier/omega_src payload/omega_src
+
       - name: Inventory
         run: |
           du -sh payload
