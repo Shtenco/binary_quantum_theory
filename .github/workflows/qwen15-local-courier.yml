@@ -1,0 +1,299 @@
+name: Qwen 1.5B local courier
+on:
+  push:
+    branches: [exp/qwen15-local-courier]
+  workflow_dispatch:
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Qwen2.5 1.5B GGUF
+        run: |
+          mkdir -p payload/model_chunks
+          curl -L --fail --retry 8 --retry-delay 3 \
+            "https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct-GGUF/resolve/main/qwen2.5-1.5b-instruct-q4_k_m.gguf?download=true" \
+            -o payload/qwen2.5-1.5b-instruct-q4_k_m.gguf
+          stat -c '%s' payload/qwen2.5-1.5b-instruct-q4_k_m.gguf | tee payload/model_size.txt
+          sha256sum payload/qwen2.5-1.5b-instruct-q4_k_m.gguf | tee payload/model_sha256.txt
+          split -b 50M -d -a 2 payload/qwen2.5-1.5b-instruct-q4_k_m.gguf payload/model_chunks/qwen15.gguf.part.
+          ls -lh payload/model_chunks
+      - name: Upload manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-manifest
+          path: |
+            payload/model_size.txt
+            payload/model_sha256.txt
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 00
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-00
+          path: payload/model_chunks/qwen15.gguf.part.00
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 01
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-01
+          path: payload/model_chunks/qwen15.gguf.part.01
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 02
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-02
+          path: payload/model_chunks/qwen15.gguf.part.02
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 03
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-03
+          path: payload/model_chunks/qwen15.gguf.part.03
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 04
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-04
+          path: payload/model_chunks/qwen15.gguf.part.04
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 05
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-05
+          path: payload/model_chunks/qwen15.gguf.part.05
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 06
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-06
+          path: payload/model_chunks/qwen15.gguf.part.06
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 07
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-07
+          path: payload/model_chunks/qwen15.gguf.part.07
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 08
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-08
+          path: payload/model_chunks/qwen15.gguf.part.08
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 09
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-09
+          path: payload/model_chunks/qwen15.gguf.part.09
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 10
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-10
+          path: payload/model_chunks/qwen15.gguf.part.10
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 11
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-11
+          path: payload/model_chunks/qwen15.gguf.part.11
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 12
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-12
+          path: payload/model_chunks/qwen15.gguf.part.12
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 13
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-13
+          path: payload/model_chunks/qwen15.gguf.part.13
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 14
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-14
+          path: payload/model_chunks/qwen15.gguf.part.14
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 15
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-15
+          path: payload/model_chunks/qwen15.gguf.part.15
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 16
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-16
+          path: payload/model_chunks/qwen15.gguf.part.16
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 17
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-17
+          path: payload/model_chunks/qwen15.gguf.part.17
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 18
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-18
+          path: payload/model_chunks/qwen15.gguf.part.18
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 19
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-19
+          path: payload/model_chunks/qwen15.gguf.part.19
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 20
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-20
+          path: payload/model_chunks/qwen15.gguf.part.20
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 21
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-21
+          path: payload/model_chunks/qwen15.gguf.part.21
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 22
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-22
+          path: payload/model_chunks/qwen15.gguf.part.22
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 23
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-23
+          path: payload/model_chunks/qwen15.gguf.part.23
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 24
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-24
+          path: payload/model_chunks/qwen15.gguf.part.24
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 25
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-25
+          path: payload/model_chunks/qwen15.gguf.part.25
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 26
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-26
+          path: payload/model_chunks/qwen15.gguf.part.26
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 27
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-27
+          path: payload/model_chunks/qwen15.gguf.part.27
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 28
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-28
+          path: payload/model_chunks/qwen15.gguf.part.28
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Qwen15 chunk 29
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen15-chunk-29
+          path: payload/model_chunks/qwen15.gguf.part.29
+          if-no-files-found: ignore
+          compression-level: 0
+          retention-days: 3
