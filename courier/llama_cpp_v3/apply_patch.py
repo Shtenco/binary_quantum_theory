@@ -15,6 +15,8 @@ B_SCALE_SUFFIX = ".__gguf_lr_q4_b_scale"
 R_COLS_SUFFIX = ".__gguf_lr_res_cols"
 R_VALUES_SUFFIX = ".__gguf_lr_res_values"
 R_SCALES_SUFFIX = ".__gguf_lr_res_scales"
+GQ4_DATA_SUFFIX = ".__omega_gq4_data"
+GQ4_SCALE_SUFFIX = ".__omega_gq4_scale"
 
 class PatchError(RuntimeError):
     pass
@@ -46,10 +48,13 @@ def patch_llama_graph_h(text: str) -> str:
         "    ggml_tensor * r_cols = nullptr;\n"
         "    ggml_tensor * r_values = nullptr;\n"
         "    ggml_tensor * r_scales = nullptr;\n"
+        "    ggml_tensor * direct_data = nullptr;\n"
+        "    ggml_tensor * direct_scales = nullptr;\n"
         "    int64_t in_features = 0;\n"
         "    int64_t out_features = 0;\n"
         "    int64_t rank = 0;\n"
         "    int64_t residual_k = 0;\n"
+        "    int64_t direct_group_size = 0;\n"
         "};\n"
         "struct llama_lowrank_q4_registry {\n"
         "    std::unordered_map<const ggml_tensor *, llama_lowrank_q4_entry> by_proxy;\n"
@@ -95,6 +100,49 @@ def patch_llama_model_cpp(text: str) -> str:
     const buft_list_t * buft_list_layer = tn.bid == -1 ? nullptr : pimpl->dev_layer.at(tn.bid).buft_list;
 
     const std::string original_name = tn.str();
+    const ggml_tensor * direct_data_meta  = ml.get_tensor_meta((original_name + "{GQ4_DATA_SUFFIX}").c_str());
+    const ggml_tensor * direct_scale_meta = ml.get_tensor_meta((original_name + "{GQ4_SCALE_SUFFIX}").c_str());
+
+    if (direct_data_meta && direct_scale_meta) {{
+        if (ne.size() != 2 || !tn.suffix) {{
+            throw std::runtime_error("gguf_compress V6: direct group-Q4 can replace only a suffix-bearing 2D weight");
+        }}
+        const auto it_ne_direct = ne.begin();
+        const int64_t expected_in_direct = it_ne_direct[0];
+        const int64_t expected_out_direct = it_ne_direct[1];
+        const int64_t groups = direct_scale_meta->ne[0];
+        if (groups <= 0 || direct_scale_meta->ne[1] != expected_out_direct ||
+            direct_data_meta->ne[1] != expected_out_direct || direct_data_meta->ne[0] != (expected_in_direct + 1)/2) {{
+            throw std::runtime_error(format("gguf_compress V6: invalid direct group-Q4 shapes for '%s'", original_name.c_str()));
+        }}
+        const ggml_tensor * proxy_meta = ml.get_tensor_meta(original_name.c_str());
+        if (!proxy_meta) throw std::runtime_error("gguf_compress V6: direct group-Q4 proxy tensor missing");
+        ggml_tensor * proxy = ml.create_tensor(
+            hparams, &pimpl->cpu_buft_list, pimpl->dev_input.buft_list, pimpl->dev_output.buft_list, &pimpl->cpu_buft_list,
+            tn, {{proxy_meta->ne[0], proxy_meta->ne[1]}}, flags | TENSOR_ALLOW_RESHAPE);
+
+        const std::string dd_suffix = std::string(tn.suffix) + "{GQ4_DATA_SUFFIX}";
+        const std::string ds_suffix = std::string(tn.suffix) + "{GQ4_SCALE_SUFFIX}";
+        const LLM_TN_IMPL tn_dd(tn.arch, tn.tensor, dd_suffix.c_str(), tn.bid, tn.xid);
+        const LLM_TN_IMPL tn_ds(tn.arch, tn.tensor, ds_suffix.c_str(), tn.bid, tn.xid);
+        ggml_tensor * direct_data = ml.create_tensor(
+            hparams, &pimpl->cpu_buft_list, pimpl->dev_input.buft_list, pimpl->dev_output.buft_list, &pimpl->cpu_buft_list,
+            tn_dd, {{direct_data_meta->ne[0], direct_data_meta->ne[1]}}, flags);
+        ggml_tensor * direct_scales = ml.create_tensor(
+            hparams, &pimpl->cpu_buft_list, pimpl->dev_input.buft_list, pimpl->dev_output.buft_list, &pimpl->cpu_buft_list,
+            tn_ds, {{direct_scale_meta->ne[0], direct_scale_meta->ne[1]}}, flags);
+
+        llama_lowrank_q4_entry entry;
+        entry.direct_data = direct_data;
+        entry.direct_scales = direct_scales;
+        entry.in_features = expected_in_direct;
+        entry.out_features = expected_out_direct;
+        entry.direct_group_size = (expected_in_direct + groups - 1)/groups;
+        lowrank_q4.by_proxy[proxy] = entry;
+        LLAMA_LOG_INFO("%s: direct group-Q4 %s group=%lld\n", __func__, original_name.c_str(), (long long) entry.direct_group_size);
+        return proxy;
+    }}
+
     const ggml_tensor * a_data_meta  = ml.get_tensor_meta((original_name + "{A_DATA_SUFFIX}").c_str());
     const ggml_tensor * a_scale_meta = ml.get_tensor_meta((original_name + "{A_SCALE_SUFFIX}").c_str());
     const ggml_tensor * b_data_meta  = ml.get_tensor_meta((original_name + "{B_DATA_SUFFIX}").c_str());
@@ -191,6 +239,23 @@ def patch_llama_graph_cpp(text: str) -> str:
         "graph constructor",
     )
     helper = r'''
+static void gguf_compress_direct_q4_forward(ggml_tensor * dst, int ith, int nth, void * userdata) {
+    GGML_UNUSED(nth);
+    if (ith != 0) return;
+    auto * entry = static_cast<llama_lowrank_q4_entry *>(userdata);
+    const ggml_tensor * cur = dst->src[0];
+    GGML_ASSERT(cur && ggml_is_contiguous(cur) && cur->type == GGML_TYPE_F32);
+    GGML_ASSERT(dst->type == GGML_TYPE_F32 && ggml_is_contiguous(dst));
+    const int64_t batch64 = ggml_nelements(cur) / entry->in_features;
+    GGML_ASSERT(batch64 <= INT32_MAX);
+    gguf_compress_v3::direct_group_q4(
+        reinterpret_cast<const float *>(cur->data),
+        int(batch64), int(entry->in_features), int(entry->out_features), int(entry->direct_group_size),
+        reinterpret_cast<const int8_t *>(entry->direct_data->data),
+        reinterpret_cast<const uint16_t *>(entry->direct_scales->data),
+        reinterpret_cast<float *>(dst->data));
+}
+
 static void gguf_compress_lowrank_q4_forward(ggml_tensor * dst, int ith, int nth, void * userdata) {
     GGML_UNUSED(nth);
     if (ith != 0) return;
@@ -238,9 +303,10 @@ static void gguf_compress_lowrank_q4_forward(ggml_tensor * dst, int ith, int nth
         if (it != lowrank_q4->by_proxy.end()) {
             auto * entry = const_cast<llama_lowrank_q4_entry *>(&it->second);
             ggml_tensor * args[1] = { cur };
+            auto fn = entry->direct_data ? gguf_compress_direct_q4_forward : gguf_compress_lowrank_q4_forward;
             res = ggml_custom_4d(ctx0, GGML_TYPE_F32,
                     entry->out_features, cur->ne[1], cur->ne[2], cur->ne[3],
-                    args, 1, gguf_compress_lowrank_q4_forward, 1, entry);
+                    args, 1, fn, 1, entry);
         }
     }
     if (!res) {
