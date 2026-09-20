@@ -139,7 +139,7 @@ def patch_llama_model_cpp(text: str) -> str:
         entry.out_features = expected_out_direct;
         entry.direct_group_size = (expected_in_direct + groups - 1)/groups;
         lowrank_q4.by_proxy[proxy] = entry;
-        LLAMA_LOG_INFO("%s: direct group-Q4 %s group=%lld\n", __func__, original_name.c_str(), (long long) entry.direct_group_size);
+        LLAMA_LOG_INFO("%s: direct group-Q4 %s group=%lld\\n", __func__, original_name.c_str(), (long long) entry.direct_group_size);
         return proxy;
     }}
 
