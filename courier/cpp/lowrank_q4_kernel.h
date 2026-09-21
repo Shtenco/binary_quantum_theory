@@ -19,13 +19,17 @@ inline void direct_group_q4(
         int group_size,
         const int8_t * q4_data,
         const uint16_t * scales_f16,
-        float * y) {
+        float * y,
+        int ith,
+        int nth) {
     const int packed_stride = (in_features + 1) / 2;
     const int groups = (in_features + group_size - 1) / group_size;
+    const int o_begin = (out_features * ith) / nth;
+    const int o_end = (out_features * (ith + 1)) / nth;
     for (int n = 0; n < batch; ++n) {
         const float * xn = x + size_t(n) * in_features;
         float * yn = y + size_t(n) * out_features;
-        for (int o = 0; o < out_features; ++o) {
+        for (int o = o_begin; o < o_end; ++o) {
             const uint8_t * row = reinterpret_cast<const uint8_t *>(q4_data + size_t(o) * packed_stride);
             const uint16_t * row_scales = scales_f16 + size_t(o) * groups;
             float sum = 0.0f;
