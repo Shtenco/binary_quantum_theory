@@ -240,8 +240,6 @@ def patch_llama_graph_cpp(text: str) -> str:
     )
     helper = r'''
 static void gguf_compress_direct_q4_forward(ggml_tensor * dst, int ith, int nth, void * userdata) {
-    GGML_UNUSED(nth);
-    if (ith != 0) return;
     auto * entry = static_cast<llama_lowrank_q4_entry *>(userdata);
     const ggml_tensor * cur = dst->src[0];
     GGML_ASSERT(cur && ggml_is_contiguous(cur) && cur->type == GGML_TYPE_F32);
@@ -253,7 +251,8 @@ static void gguf_compress_direct_q4_forward(ggml_tensor * dst, int ith, int nth,
         int(batch64), int(entry->in_features), int(entry->out_features), int(entry->direct_group_size),
         reinterpret_cast<const int8_t *>(entry->direct_data->data),
         reinterpret_cast<const uint16_t *>(entry->direct_scales->data),
-        reinterpret_cast<float *>(dst->data));
+        reinterpret_cast<float *>(dst->data),
+        ith, nth);
 }
 
 static void gguf_compress_lowrank_q4_forward(ggml_tensor * dst, int ith, int nth, void * userdata) {
@@ -306,7 +305,7 @@ static void gguf_compress_lowrank_q4_forward(ggml_tensor * dst, int ith, int nth
             auto fn = entry->direct_data ? gguf_compress_direct_q4_forward : gguf_compress_lowrank_q4_forward;
             res = ggml_custom_4d(ctx0, GGML_TYPE_F32,
                     entry->out_features, cur->ne[1], cur->ne[2], cur->ne[3],
-                    args, 1, fn, 1, entry);
+                    args, 1, fn, entry->direct_data ? GGML_N_TASKS_MAX : 1, entry);
         }
     }
     if (!res) {
