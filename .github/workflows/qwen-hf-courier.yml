@@ -1,0 +1,256 @@
+name: Qwen HF local courier
+on:
+  push:
+    branches: [exp/qwen-f16-courier]
+  workflow_dispatch:
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download HF source and wheels
+        run: |
+          mkdir -p payload/hf payload/chunks payload/wheelhouse
+          python -m pip install -U pip
+          python -m pip install "huggingface_hub>=0.35" --no-cache-dir
+          python - <<'PY'
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              "Qwen/Qwen2.5-0.5B-Instruct",
+              local_dir="payload/hf",
+              allow_patterns=[
+                  "*.json","*.safetensors","tokenizer*","merges.txt","vocab.json",
+                  "*.model","*.txt"
+              ],
+          )
+          PY
+          find payload/hf -maxdepth 2 -type f -printf '%s %p\n' | sort -nr
+          python -m pip download --dest payload/wheelhouse --only-binary=:all: \
+            "transformers==4.57.1" "tokenizers>=0.22,<0.23" "huggingface_hub>=0.35" \
+            "regex" "requests" "packaging" "pyyaml" "filelock" "fsspec" "tqdm" "safetensors>=0.4"
+      - name: Normalize weights and split
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path("payload/hf")
+          files=sorted(root.glob("*.safetensors"))
+          print("SAFETENSORS",[(p.name,p.stat().st_size) for p in files])
+          if len(files)==1:
+              src=files[0]
+              if src.name!="model.safetensors":
+                  src.rename(root/"model.safetensors")
+          elif len(files)>1:
+              raise SystemExit("multiple safetensors shards; workflow expects one for 0.5B")
+          else:
+              raise SystemExit("no safetensors")
+          PY
+          sha256sum payload/hf/model.safetensors | tee payload/hf/model.sha256
+          split -b 50M -d -a 2 payload/hf/model.safetensors payload/chunks/model.safetensors.part.
+          rm payload/hf/model.safetensors
+          ls -lh payload/chunks
+      - name: Upload HF metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-metadata
+          path: |
+            payload/hf
+            payload/wheelhouse
+          retention-days: 3
+
+      - name: Upload weights chunk 00
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-00
+          path: payload/chunks/model.safetensors.part.00
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 01
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-01
+          path: payload/chunks/model.safetensors.part.01
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 02
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-02
+          path: payload/chunks/model.safetensors.part.02
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 03
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-03
+          path: payload/chunks/model.safetensors.part.03
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 04
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-04
+          path: payload/chunks/model.safetensors.part.04
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 05
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-05
+          path: payload/chunks/model.safetensors.part.05
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 06
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-06
+          path: payload/chunks/model.safetensors.part.06
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 07
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-07
+          path: payload/chunks/model.safetensors.part.07
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 08
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-08
+          path: payload/chunks/model.safetensors.part.08
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 09
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-09
+          path: payload/chunks/model.safetensors.part.09
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 10
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-10
+          path: payload/chunks/model.safetensors.part.10
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 11
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-11
+          path: payload/chunks/model.safetensors.part.11
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 12
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-12
+          path: payload/chunks/model.safetensors.part.12
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 13
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-13
+          path: payload/chunks/model.safetensors.part.13
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 14
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-14
+          path: payload/chunks/model.safetensors.part.14
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 15
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-15
+          path: payload/chunks/model.safetensors.part.15
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 16
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-16
+          path: payload/chunks/model.safetensors.part.16
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 17
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-17
+          path: payload/chunks/model.safetensors.part.17
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 18
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-18
+          path: payload/chunks/model.safetensors.part.18
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 19
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-19
+          path: payload/chunks/model.safetensors.part.19
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 20
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-20
+          path: payload/chunks/model.safetensors.part.20
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 21
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-21
+          path: payload/chunks/model.safetensors.part.21
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 22
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-22
+          path: payload/chunks/model.safetensors.part.22
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload weights chunk 23
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-hf-weights-23
+          path: payload/chunks/model.safetensors.part.23
+          compression-level: 0
+          retention-days: 3
+
