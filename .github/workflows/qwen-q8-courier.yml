@@ -1,0 +1,134 @@
+name: Qwen Q8 courier
+on:
+  push:
+    branches: [exp/qwen-f16-courier]
+  workflow_dispatch:
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download official Q8 GGUF
+        run: |
+          mkdir -p payload/chunks
+          curl -L --fail --retry 8 --retry-delay 3 \
+            "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/qwen2.5-0.5b-instruct-q8_0.gguf?download=true" \
+            -o payload/qwen-q8.gguf
+          echo "ca59ca7f13d0e15a8cfa77bd17e65d24f6844b554a7b6c12e07a5f89ff76844e  payload/qwen-q8.gguf" | sha256sum -c -
+          stat -c '%s %n' payload/qwen-q8.gguf
+          split -b 50M -d -a 2 payload/qwen-q8.gguf payload/chunks/qwen-q8.gguf.part.
+          ls -lh payload/chunks
+
+      - name: Upload Q8 chunk 00
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-00
+          path: payload/chunks/qwen-q8.gguf.part.00
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 01
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-01
+          path: payload/chunks/qwen-q8.gguf.part.01
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 02
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-02
+          path: payload/chunks/qwen-q8.gguf.part.02
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 03
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-03
+          path: payload/chunks/qwen-q8.gguf.part.03
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 04
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-04
+          path: payload/chunks/qwen-q8.gguf.part.04
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 05
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-05
+          path: payload/chunks/qwen-q8.gguf.part.05
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 06
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-06
+          path: payload/chunks/qwen-q8.gguf.part.06
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 07
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-07
+          path: payload/chunks/qwen-q8.gguf.part.07
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 08
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-08
+          path: payload/chunks/qwen-q8.gguf.part.08
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 09
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-09
+          path: payload/chunks/qwen-q8.gguf.part.09
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 10
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-10
+          path: payload/chunks/qwen-q8.gguf.part.10
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 11
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-11
+          path: payload/chunks/qwen-q8.gguf.part.11
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 12
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-12
+          path: payload/chunks/qwen-q8.gguf.part.12
+          compression-level: 0
+          retention-days: 3
+
+      - name: Upload Q8 chunk 13
+        uses: actions/upload-artifact@v4
+        with:
+          name: qwen-q8-chunk-13
+          path: payload/chunks/qwen-q8.gguf.part.13
+          compression-level: 0
+          retention-days: 3
+
