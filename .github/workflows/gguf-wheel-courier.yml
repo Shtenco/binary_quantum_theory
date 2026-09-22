@@ -1,0 +1,25 @@
+name: GGUF wheel courier
+on:
+  push:
+    branches: [exp/qwen-local-courier]
+  workflow_dispatch:
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download gguf wheel
+        run: |
+          mkdir -p payload
+          python -m pip download --dest payload "gguf>=0.19.0,<0.20" --no-deps
+          ls -lh payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gguf-wheel
+          path: payload
+          compression-level: 0
+          retention-days: 3
