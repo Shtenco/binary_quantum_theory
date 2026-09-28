@@ -2047,3 +2047,37 @@ flowchart LR
 `GREEN` присваивается только воспроизводимым утверждениям. Исследовательский код, диаграмма или заявленная метрика без проверяемого artifact trail остаются `R&D/CANDIDATE`.
 
 <!-- SYNERGY-FEDERATION-PASSPORT:END -->
+
+---
+
+# 🧮 Глубокий доказательный паспорт Binary Quantum Gravity
+
+## Почему этот repo уже близок к эталону
+
+Здесь есть явная status taxonomy, отрицательные результаты, preregistration, CI gates, audit documents и сотни математических/вычислительных artifacts. Важнейшая сильная сторона — failed EPRL holdout сохранён как FAIL, а не переписан задним числом.
+
+```mermaid
+flowchart LR
+    BIN[Binary structures] --> GEO[Geometry]
+    GEO --> QG[Quantum geometry]
+    QG --> HDA[GR/HDA controls]
+    HDA --> TT[Quartic TT space]
+    TT --> WIL[Wilson extractor]
+    WIL --> PHYS[Physical projector/history OPEN]
+```
+
+## Главная открытая граница
+
+Структурно-математическая цепочка ещё не равна физической теории гравитации, пока не закрыты physical projector/history, absolute scale и экспериментальный мост.
+
+## Evidence anchors
+
+- `REPOSITORY_AUDIT_2026-08-29.md`;
+- `CORE_FALSIFICATION_TESTS.md`;
+- `.github/workflows/physicalization-truth.yml`;
+- `PREDICTIONS_AND_EXPERIMENTAL_TESTS.md`;
+- numerous preregistration/result pairs.
+
+## Следующий рубеж
+
+не расширять число красивых finite calculations без закрытия physicalization bridge: projector/history → normalized observable → preregistered prediction → external experimental comparison.
