@@ -28,6 +28,77 @@ See:
 
 ---
 
+
+## 0. Immediate finite master-kernel frontier — 29 September 2026
+
+Before the continuum physicalization programme below can be promoted from a legal interface to a theory-specific construction, the current corrected \(K_5\) depth-6 master-kernel calculation must be finished honestly.
+
+Machine source of truth:
+
+- \`depth6_frontier.json\`
+- \`scripts/verify_depth6_frontier.py\`
+
+Current status:
+
+\[
+\boxed{\dim\mathcal H_{d=6}=3\,111\,637}
+\]
+
+with CLOSED sectors
+
+\[
+\boxed{[1^5],\ [5],\ [4,1]}.
+\]
+
+Structural support is closed for all remaining mixed irreps, but structural support is not the same as numerical master-kernel closure.
+
+The \(S_4\)-sign route relevant to \([2,1,1,1]\) has 16 exact \(H_0\)-null directions. They are genuine local-geometric null directions, not numerical artifacts. They are, however, fully lifted by \(H_1\):
+
+\[
+\boxed{\operatorname{rank}H_1|_{16}=16/16},
+\qquad
+\boxed{\sigma_{\min}=1.1304521906426823}.
+\]
+
+The remaining giant component has a rank-aware Hall flow
+
+\[
+\boxed{130007/130007},
+\]
+
+and a planned sparse square minor
+
+\[
+\boxed{130007\times130007}
+\]
+
+with \(47\,543\,521\) expected nonzero scalar entries. Its rank-revealing factorization has **not yet been completed**.
+
+Therefore:
+
+\[
+\boxed{[2,1,1,1]_{d=6}\ \text{ACTIVE / NOT YET CLOSED}}
+\]
+
+and
+
+\[
+\boxed{\ker M^{(d=6)}=\operatorname{span}\{|0\rangle\}\ ?}
+\]
+
+remains a target rather than a theorem.
+
+After that sector, the remaining mixed sectors are
+
+\[
+[3,2],\quad[3,1,1],\quad[2,2,1].
+\]
+
+A future finite depth-6 PASS will still not imply continuum closure; the refinement/rigging/history gates below remain independently necessary.
+
+---
+
+
 ## 1. Open physical gates that DO matter
 
 These are not optional universality embellishments.  They are required before the repository may claim an interacting physical graviton pole or a frozen physical six-Wilson prediction.
