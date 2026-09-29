@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "status_date": "2026-09-29",
+  "scope": "corrected finite K5 depth-6 master-kernel frontier",
+  "status": "ACTIVE_NOT_CLOSED",
+  "shell": {
+    "gauss_admissible_spin_assignments": 264962,
+    "hilbert_dimension": 3111637,
+    "s5_spin_orbits": 2757,
+    "max_doubled_spin": 7
+  },
+  "multiplicities": {
+    "[5]": 27227,
+    "[4,1]": 104146,
+    "[3,2]": 130903,
+    "[3,1,1]": 153455,
+    "[2,2,1]": 130503,
+    "[2,1,1,1]": 103318,
+    "[1^5]": 26794
+  },
+  "closed_irreps": {
+    "[1^5]": {
+      "status": "CLOSED",
+      "rank": 26794,
+      "dimension": 26794,
+      "kernel": "empty"
+    },
+    "[5]": {
+      "status": "CLOSED",
+      "dimension": 27227,
+      "nonvacuum_rank": 27226,
+      "kernel": "zero-spin vacuum line only"
+    },
+    "[4,1]": {
+      "status": "CLOSED",
+      "rank": 104146,
+      "dimension": 104146,
+      "kernel": "empty"
+    }
+  },
+  "structural_support": {
+    "[3,2]": {
+      "blocks": "2755/2755",
+      "columns": "130903/130903",
+      "remainder": 0
+    },
+    "[3,1,1]": {
+      "blocks": "2719/2719",
+      "columns": "153455/153455",
+      "remainder": 0
+    },
+    "[2,2,1]": {
+      "blocks": "2749/2749",
+      "columns": "130503/130503",
+      "remainder": 0
+    },
+    "[2,1,1,1]": {
+      "blocks": "2712/2712",
+      "columns": "103318/103318",
+      "remainder": 0
+    }
+  },
+  "branch_sum": {
+    "formula": "B_lambda=(5/d_lambda) sum_{mu->lambda} d_mu A_{lambda,mu}, A=H0^dagger H0",
+    "kernels": "ker B_lambda = intersection_{mu->lambda} ker A_{lambda,mu}",
+    "[3,2]": "3 A31 + 2 A22",
+    "[3,1,1]": "(5/2)(A31 + A211)",
+    "[2,2,1]": "2 A22 + 3 A211",
+    "[2,1,1,1]": "(5/4)(3 A211 + A1111)"
+  },
+  "s4_sign_frontier": {
+    "decomposition": "[1^5] direct-sum [2,1,1,1]",
+    "total_dimension": 130112,
+    "structural_blocks": 11956,
+    "structural_columns": 130112,
+    "h0_thresholded_maxflow": 130096,
+    "exact_h0_null_directions": 16,
+    "exact_h0_null_reason": "for all 16 directions (j01,j02,j03,j04)=(0,0,0,0), so the local H0 action at vertex 0 vanishes geometrically",
+    "h1_lift": {
+      "rank": 16,
+      "dimension": 16,
+      "sigma_min": 1.1304521906426823,
+      "sigma_max": 3.304257962941286,
+      "condition_number_approx": 2.923
+    },
+    "giant_component": {
+      "input_blocks": 11923,
+      "columns": 130007,
+      "q_blocks": 14586,
+      "nominal_output_rows": 153202,
+      "numerical_q_row_rank_sum": 153056,
+      "rank_aware_maxflow": 130007,
+      "target_flow": 130007,
+      "deficient_inputs_after_rank_aware_flow": 0,
+      "square_minor_plan": {
+        "rows": 130007,
+        "columns": 130007,
+        "expected_nonzero_scalar_entries": 47543521,
+        "zero_selected_rows": 0,
+        "numerical_rank": null,
+        "status": "NOT_YET_FACTORIZED"
+      }
+    },
+    "sector_status": "ACTIVE_NOT_CLOSED",
+    "blocking_gate": "assemble and rank-revealing factorize the planned 130007 x 130007 sparse minor, then combine with the proven 16D H1 lift in the master constraint"
+  },
+  "remaining_irreps_after_s4_sign": [
+    "[3,2]",
+    "[3,1,1]",
+    "[2,2,1]"
+  ],
+  "finite_depth6_target": "ker M^(d=6) = span{|0>} ?",
+  "finite_depth6_theorem_status": "NOT_YET_PROVED",
+  "continuum_boundary": {
+    "refinement_stability": "OPEN",
+    "continuum_physical_projector": "OPEN",
+    "rigging_map_physical_inner_product": "OPEN",
+    "connected_interblock_history": "OPEN",
+    "physical_tt_kernel": "OPEN",
+    "ir_six_wilson_vector": "OPEN",
+    "common_physical_scale": "OPEN"
+  },
+  "claim_discipline": [
+    "structural support closure is not numeric kernel closure",
+    "H0 nullity is not master-kernel nullity",
+    "finite depth-6 closure, even if achieved, is not a continuum quantum-gravity proof",
+    "no experimentally established prediction is claimed"
+  ]
+}
