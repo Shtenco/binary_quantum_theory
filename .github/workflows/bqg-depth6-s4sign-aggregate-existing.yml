@@ -26,15 +26,47 @@ jobs:
           mkdir -p proof_parallel/runtime
           base64 -d proof_parallel/bqg_s4sign_bundle.tar.gz.b64 | tar xz -C proof_parallel/runtime
 
-      - name: Download 128 completed shard artifacts from canonical run
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          run-id: 36527314863
-          pattern: bqg-s4sign-v2-shard-*
-          path: proof_parallel/downloaded
-          merge-multiple: true
+      - name: Download all 128 canonical shard artifacts with API pagination
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_RUN_ID: '36527314863'
+        run: |
+          set -euo pipefail
+          mkdir -p proof_parallel/downloaded
+          : > proof_parallel/artifacts.tsv
+
+          for page in 1 2; do
+            curl -fsSL \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${SOURCE_RUN_ID}/artifacts?per_page=100&page=${page}" \
+              | jq -r '.artifacts[] | select(.expired == false) | select(.name | startswith("bqg-s4sign-v2-shard-")) | [.id,.name] | @tsv' \
+              >> proof_parallel/artifacts.tsv
+          done
+
+          sort -u -k2,2 proof_parallel/artifacts.tsv -o proof_parallel/artifacts.tsv
+          count="$(wc -l < proof_parallel/artifacts.tsv)"
+          echo "ARTIFACT_METADATA_COUNT=${count}"
+          test "${count}" -eq 128
+
+          while IFS=$'\t' read -r artifact_id artifact_name; do
+            zip="/tmp/${artifact_name}.zip"
+            dest="proof_parallel/downloaded/${artifact_name}"
+            mkdir -p "${dest}"
+            curl -fsSL -L \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${artifact_id}/zip" \
+              -o "${zip}"
+            unzip -q "${zip}" -d "${dest}"
+            rm -f "${zip}"
+          done < proof_parallel/artifacts.tsv
+
+          tar_count="$(find proof_parallel/downloaded -type f -name 'bqg-s4sign-v2-shard-*.tar.gz' | wc -l)"
+          echo "DOWNLOADED_TARBALL_COUNT=${tar_count}"
+          test "${tar_count}" -eq 128
 
       - name: Audit coverage and run streaming global peeling
         env:
