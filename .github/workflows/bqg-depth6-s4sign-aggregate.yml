@@ -14,10 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
+      - name: Checkout main orchestration
+        uses: actions/checkout@v4
+
       - name: Checkout proof branch
         uses: actions/checkout@v4
         with:
           ref: research/depth6-s4sign-proof
+          path: proofsrc
 
       - uses: actions/setup-python@v5
         with:
@@ -29,7 +33,7 @@ jobs:
       - name: Unpack exact BQG proof bundle
         run: |
           mkdir -p proof_parallel/runtime
-          base64 -d proof_parallel/bqg_s4sign_bundle.tar.gz.b64 | tar xz -C proof_parallel/runtime
+          base64 -d proofsrc/proof_parallel/bqg_s4sign_bundle.tar.gz.b64 | tar xz -C proof_parallel/runtime
 
       - name: Download all v2 shard artifacts from triggering run
         uses: actions/download-artifact@v4
@@ -50,14 +54,14 @@ jobs:
           done
           test "$(find proof_parallel/downloaded -name 'bqg-s4sign-shard-*.tar.gz' | wc -l)" -eq 128
 
-      - name: Verify full coverage and run fail-closed global peeling
+      - name: Verify full coverage and run fail-closed streaming global peeling
         env:
           PYTHONPATH: ${{ github.workspace }}/proof_parallel/runtime
           OMP_NUM_THREADS: '1'
           OPENBLAS_NUM_THREADS: '1'
           MKL_NUM_THREADS: '1'
         run: |
-          python -u aggregate_tools/bqg_s4sign_aggregate.py \
+          python -u proof_tools/bqg_s4sign_aggregate_streaming.py \
             --artifacts proof_parallel/downloaded \
             --expected-shards 128 \
             --work proof_parallel/aggregate_work \
