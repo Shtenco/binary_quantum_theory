@@ -64,8 +64,21 @@ jobs:
             --out proof_parallel/bqg_depth6_s4sign_distributed_certificate.json
 
       - name: Upload final certificate
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: bqg-depth6-s4sign-final-certificate
           path: proof_parallel/bqg_depth6_s4sign_distributed_certificate.json
           retention-days: 14
+
+      - name: Fail closed unless S4-sign sector is fully certified
+        run: |
+          python - <<'PY'
+          import json
+          p='proof_parallel/bqg_depth6_s4sign_distributed_certificate.json'
+          x=json.load(open(p))
+          assert x['status']=='PASS', x
+          assert x['certified_blocks']==11956 and x['certified_columns']==130112, x
+          assert x['remaining_blocks']==0 and x['remaining_columns']==0, x
+          print('S4SIGN_FULL_RANK_PASS',x['global_sigma_min'])
+          PY
