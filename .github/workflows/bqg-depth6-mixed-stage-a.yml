@@ -66,11 +66,16 @@ jobs:
       - run: |
           mkdir -p mixed_runtime
           base64 -d proofsrc/mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64 | tar xz -C mixed_runtime
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: bqg-mixed-32-shard-*
-          path: mixed_downloaded
-          merge-multiple: true
+      - name: Download all 112 [3,2] shard artifacts with pagination
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/download_workflow_artifacts_paginated.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --prefix "bqg-mixed-32-shard-" \
+            --expected 112 \
+            --out mixed_downloaded
       - name: Aggregate [3,2] fail-closed
         env:
           PYTHONPATH: ${{ github.workspace }}/mixed_runtime
@@ -156,11 +161,16 @@ jobs:
       - run: |
           mkdir -p mixed_runtime
           base64 -d proofsrc/mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64 | tar xz -C mixed_runtime
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: bqg-mixed-311-shard-*
-          path: mixed_downloaded
-          merge-multiple: true
+      - name: Download all 112 [3,1,1] shard artifacts with pagination
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/download_workflow_artifacts_paginated.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --prefix "bqg-mixed-311-shard-" \
+            --expected 112 \
+            --out mixed_downloaded
       - name: Aggregate [3,1,1] fail-closed
         env:
           PYTHONPATH: ${{ github.workspace }}/mixed_runtime
