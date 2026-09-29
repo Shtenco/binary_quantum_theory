@@ -1,6 +1,27 @@
 # Theory status — structural candidate versus physicalization frontier
 
-**Canonical status update: 2026-08-30**
+> ## Canonical update — 29 September 2026
+>
+> The repository now has a separate fail-closed finite depth-6 truth ledger: \`depth6_frontier.json\`, verified by \`scripts/verify_depth6_frontier.py\`.
+>
+> Current finite depth-6 status:
+>
+> - corrected \(K_5\) shell: \(264\,962\) Gauss-admissible spin assignments;
+> - Hilbert dimension: \(\boxed{3\,111\,637}\);
+> - CLOSED irreps: \([1^5]\), \([5]\), \([4,1]\);
+> - structural support is closed for all remaining mixed irreps;
+> - the \(S_4\)-sign shortcut for \([2,1,1,1]\) contains 16 **exact** \(H_0\)-null directions, all lifted by \(H_1\) with rank \(16/16\) and \(\sigma_{\min}=1.1304521906426823\);
+> - the remaining giant component has a planned \(130007\times130007\) sparse minor with \(47\,543\,521\) expected nonzero scalar entries and rank-aware max-flow \(130007/130007\);
+> - that sparse minor has **not yet been rank-revealing factorized**, so \([2,1,1,1]\) remains ACTIVE / NOT YET CLOSED;
+> - the full finite depth-6 theorem \(\ker M^{(d=6)}=\operatorname{span}\{|0\rangle\}\ ?\) is therefore **NOT YET PROVED**.
+>
+> This update supersedes any older prose or orchestration snippet that could be read as saying that total \(S_4\)-sign \(H_0\) is injective. It is not: the 16 exact \(H_0\)-null directions are a real local-geometric effect. The relevant object is the **master constraint**, not \(H_0\) alone.
+>
+> Even a future successful finite depth-6 theorem will not close the continuum theory. Refinement stability, the theory-specific physical projector/rigging-map limit, connected physical history, the interacting TT kernel, the physical six-Wilson vector and one common physical scale remain open.
+
+
+
+**Canonical status update: 2026-09-29**
 
 The repository now records two different scientific propositions separately.
 
