@@ -1,0 +1,190 @@
+name: BQG depth6 mixed stage A
+on:
+  workflow_run:
+    workflows: ["BQG depth6 S4-sign aggregate"]
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  mixed32_shard:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy sympy
+      - name: Unpack mixed proof bundle
+        run: |
+          mkdir -p mixed_runtime
+          base64 -d mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64 | tar xz -C mixed_runtime
+      - name: Run [3,2] shard
+        env:
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          cd mixed_runtime
+          python -u github_mixed_master_shard.py --irrep 32 --shard ${{ matrix.shard }} --shards 112 --workers 4 --out artifact
+      - name: Pack shard
+        if: success()
+        run: tar czf bqg-mixed-32-shard-${{ matrix.shard }}.tar.gz -C mixed_runtime artifact
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: bqg-mixed-32-shard-${{ matrix.shard }}
+          path: bqg-mixed-32-shard-${{ matrix.shard }}.tar.gz
+          retention-days: 2
+          compression-level: 0
+
+  mixed32_aggregate:
+    needs: mixed32_shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+          path: proofsrc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy sympy
+      - run: |
+          mkdir -p mixed_runtime
+          base64 -d proofsrc/mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64 | tar xz -C mixed_runtime
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: bqg-mixed-32-shard-*
+          path: mixed_downloaded
+          merge-multiple: true
+      - name: Aggregate [3,2] fail-closed
+        env:
+          PYTHONPATH: ${{ github.workspace }}/mixed_runtime
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -u proof_tools/bqg_mixed_master_aggregate_streaming.py \
+            --irrep 32 --artifacts mixed_downloaded --expected-shards 112 \
+            --prefix bqg-mixed-32-shard- --work mixed_agg32 \
+            --out bqg_depth6_32_distributed_certificate.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bqg-depth6-32-final-certificate
+          path: bqg_depth6_32_distributed_certificate.json
+          retention-days: 14
+      - name: Require [3,2] PASS
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('bqg_depth6_32_distributed_certificate.json'))
+          assert x['status']=='PASS',x
+          assert x['certified_blocks']==2755 and x['certified_columns']==130903,x
+          assert x['remaining_blocks']==0 and x['remaining_columns']==0,x
+          print('DEPTH6_32_PASS',x['global_sigma_min'])
+          PY
+
+  mixed311_shard:
+    needs: mixed32_aggregate
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy sympy
+      - name: Unpack mixed proof bundle
+        run: |
+          mkdir -p mixed_runtime
+          base64 -d mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64 | tar xz -C mixed_runtime
+      - name: Run [3,1,1] shard
+        env:
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          cd mixed_runtime
+          python -u github_mixed_master_shard.py --irrep 311 --shard ${{ matrix.shard }} --shards 112 --workers 4 --out artifact
+      - name: Pack shard
+        if: success()
+        run: tar czf bqg-mixed-311-shard-${{ matrix.shard }}.tar.gz -C mixed_runtime artifact
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: bqg-mixed-311-shard-${{ matrix.shard }}
+          path: bqg-mixed-311-shard-${{ matrix.shard }}.tar.gz
+          retention-days: 2
+          compression-level: 0
+
+  mixed311_aggregate:
+    needs: mixed311_shard
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+          path: proofsrc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy sympy
+      - run: |
+          mkdir -p mixed_runtime
+          base64 -d proofsrc/mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64 | tar xz -C mixed_runtime
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: bqg-mixed-311-shard-*
+          path: mixed_downloaded
+          merge-multiple: true
+      - name: Aggregate [3,1,1] fail-closed
+        env:
+          PYTHONPATH: ${{ github.workspace }}/mixed_runtime
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -u proof_tools/bqg_mixed_master_aggregate_streaming.py \
+            --irrep 311 --artifacts mixed_downloaded --expected-shards 112 \
+            --prefix bqg-mixed-311-shard- --work mixed_agg311 \
+            --out bqg_depth6_311_distributed_certificate.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bqg-depth6-311-final-certificate
+          path: bqg_depth6_311_distributed_certificate.json
+          retention-days: 14
+      - name: Require [3,1,1] PASS
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('bqg_depth6_311_distributed_certificate.json'))
+          assert x['status']=='PASS',x
+          assert x['certified_blocks']==2719 and x['certified_columns']==153455,x
+          assert x['remaining_blocks']==0 and x['remaining_columns']==0,x
+          print('DEPTH6_311_PASS',x['global_sigma_min'])
+          PY
