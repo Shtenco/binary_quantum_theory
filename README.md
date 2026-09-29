@@ -6643,3 +6643,888 @@ K_{TT}
 \]
 
 Между первой и десятой формулой находится вся наша научная сказка.
+
+
+---
+
+# ТОМ III. Полный реестр ворот  
+## Machine-ledger, переведённый на человеческий язык
+
+Этот том автоматически собран из текущих machine-readable ledgers.
+
+Его назначение простое:
+
+если в сказке выше встречается красивое утверждение, здесь можно найти его официальный gate, статус и evidence-path.
+
+---
+
+# Часть I. Structural candidate gates
+
+Ниже перечислены все зарегистрированные gates из theory_gates.json.
+
+
+## BITQ2
+
+**Статус:** tested_finite  
+**Роль:** core
+
+Frozen q=2 binary-route train/held-out dimensional and observer-smoothing controls pass in the declared protocol.
+
+**Evidence:**
+
+- [BIT_TO_SPACETIME_CENTRAL_EQUATION.md](BIT_TO_SPACETIME_CENTRAL_EQUATION.md)
+- [OBSERVER_SCALE_SMOOTHING.md](OBSERVER_SCALE_SMOOTHING.md)
+- [bcqg_observer_smoothing_unified.py](bcqg_observer_smoothing_unified.py)
+
+
+## DIM3_FIXED_POINT
+
+**Статус:** proved  
+**Роль:** core
+
+For the frozen q=2 refinement count N_g=(4*8^g+10)/7, the finite-step dimension increases monotonically from below to the exact fixed point d*=3.
+
+**Evidence:**
+
+- [Q2_DIMENSION3_FIXED_POINT_CLOSURE.md](Q2_DIMENSION3_FIXED_POINT_CLOSURE.md)
+- [scripts/q2_dimension3_fixed_point_gate.py](scripts/q2_dimension3_fixed_point_gate.py)
+
+
+## MAN3
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The selected q=2 cross-polytope PL completion is a recursive orientable 3-manifold completion with the declared link and homology checks.
+
+**Evidence:**
+
+- [GLOBAL_MANIFOLD_Q2_COMPLETION.md](GLOBAL_MANIFOLD_Q2_COMPLETION.md)
+- [bcqg_global_manifold_gate.py](bcqg_global_manifold_gate.py)
+
+
+## MICRO_WALSH_TETRA
+
+**Статус:** proved  
+**Роль:** core
+
+The three nontrivial Walsh characters of the frozen q=2 labels form an exact closed regular-tetrahedron flux frame and the declared qubit lift has exact Gauss-singlet geometry support.
+
+**Evidence:**
+
+- [MICRO_WALSH_QGEOM_BRIDGE.md](MICRO_WALSH_QGEOM_BRIDGE.md)
+- [scripts/micro_walsh_qgeom_gate.py](scripts/micro_walsh_qgeom_gate.py)
+
+
+## MICRO_GLOBAL_GLUE
+
+**Статус:** proved  
+**Роль:** core
+
+On the selected 16-cell PL completion, q=2 face carriers glue exactly with Q4 dual graph, alternating orientation and pairwise shared-face flux cancellation.
+
+**Evidence:**
+
+- [MICRO_WALSH_QGEOM_BRIDGE.md](MICRO_WALSH_QGEOM_BRIDGE.md)
+- [scripts/q2_global_face_qubit_gluing_gate.py](scripts/q2_global_face_qubit_gluing_gate.py)
+
+
+## Q2_GRAPHLINK_REP
+
+**Статус:** proved  
+**Роль:** core
+
+Four active q=2 states plus the graph-changing no-link singlet give the exact SO(5) (2,2)+(1,1) endpoint representation and factor the frozen q=2 Hamming adjacency through two graph-changing transporter steps.
+
+**Evidence:**
+
+- [Q2_GRAPHLINK_PETER_WEYL_BRIDGE.md](Q2_GRAPHLINK_PETER_WEYL_BRIDGE.md)
+- [scripts/q2_graphlink_peter_weyl_gate.py](scripts/q2_graphlink_peter_weyl_gate.py)
+- [scripts/su2_quantum_link_vector5_gate.py](scripts/su2_quantum_link_vector5_gate.py)
+
+
+## PW_SYM_BLOCK_GROWTH
+
+**Статус:** conditional  
+**Роль:** core
+
+Under the explicitly declared fully symmetric endpoint blocking, occupancy n=0..N supplies exactly the diagonal Peter-Weyl j=0,1/2,...,N/2 tower with correct dimensions and SU(2) Casimirs.
+
+**Evidence:**
+
+- [Q2_GRAPHLINK_PETER_WEYL_BRIDGE.md](Q2_GRAPHLINK_PETER_WEYL_BRIDGE.md)
+- [scripts/q2_symmetric_block_peter_weyl_growth_gate.py](scripts/q2_symmetric_block_peter_weyl_growth_gate.py)
+
+
+## Q2EIN
+
+**Статус:** tested_finite  
+**Роль:** core
+
+A single-data-path Euclidean control reconstructs B, simplicity, Urbantke metric, compatible connection and Einstein curvature from face-qubit data, with an independent non-Einstein negative control.
+
+**Evidence:**
+
+- [QUBIT_TO_EINSTEIN_END_TO_END.md](QUBIT_TO_EINSTEIN_END_TO_END.md)
+- [scripts/qubit_to_einstein_end_to_end.py](scripts/qubit_to_einstein_end_to_end.py)
+
+
+## LOGICAL_METRIC_JACOBIAN
+
+**Статус:** proved  
+**Роль:** core
+
+The logical X/Z shape doublet maps with exact rank two to orthogonal equal-norm trace-free tangents of the reconstructed tetrahedral metric, with the same intrinsic Jacobian on both orientation branches.
+
+**Evidence:**
+
+- [LOGICAL_SHAPE_METRIC_JACOBIAN.md](LOGICAL_SHAPE_METRIC_JACOBIAN.md)
+- [scripts/logical_shape_metric_jacobian_gate.py](scripts/logical_shape_metric_jacobian_gate.py)
+
+
+## L1_METRIC_PRECURSOR
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The certified L1 q4 six-edge S4 compression resolves E and T2 metric channels with lambda_E=1.1111917875584736, lambda_T2=1.0220278507464782, Delta_ET=0.08916393681199541 and mean-normalized relative_ET_split=0.08359564595312347.
+
+**Evidence:**
+
+- [L1_Q4_S4_METRIC_COMPRESSION_RESULT.md](L1_Q4_S4_METRIC_COMPRESSION_RESULT.md)
+- [scripts/collective_l1_q4_s4_metric_compression.py](scripts/collective_l1_q4_s4_metric_compression.py)
+
+
+## REGGEEH
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The implemented Regge/Einstein-Hilbert refinement controls reproduce the declared finite continuum-scaling relations on their test geometries.
+
+**Evidence:**
+
+- [REGGE_EH_CUBIC_BRIDGE.md](REGGE_EH_CUBIC_BRIDGE.md)
+- [scripts/regge_eh_cubic_bridge.py](scripts/regge_eh_cubic_bridge.py)
+
+
+## PLEBANSKI
+
+**Статус:** tested_finite  
+**Роль:** core
+
+Finite simplicity/Urbantke/connection controls reconstruct the declared metric-sector quantities and distinguish Einstein from non-Einstein controls.
+
+**Evidence:**
+
+- [PLEBANSKI_URBANTKE_BRIDGE.md](PLEBANSKI_URBANTKE_BRIDGE.md)
+- [PLEBANSKI_CONNECTION_EINSTEIN_GATE.md](PLEBANSKI_CONNECTION_EINSTEIN_GATE.md)
+- [scripts/plebanski_urbantke_gate.py](scripts/plebanski_urbantke_gate.py)
+- [scripts/plebanski_connection_einstein_gate.py](scripts/plebanski_connection_einstein_gate.py)
+
+
+## PWGEO
+
+**Статус:** tested_finite  
+**Роль:** core
+
+Finite Peter-Weyl SU(2) geometry, Euclidean Hamiltonian, volume/extrinsic-curvature and covariant composition gates pass within the declared cutoff domains.
+
+**Evidence:**
+
+- [PETER_WEYL_TRUNCATION_GATE.md](PETER_WEYL_TRUNCATION_GATE.md)
+- [K5_PETER_WEYL_SAFE_HDA_FIRST_COLUMN.md](K5_PETER_WEYL_SAFE_HDA_FIRST_COLUMN.md)
+- [scripts/peter_weyl_lorentzian_K_block_gate.py](scripts/peter_weyl_lorentzian_K_block_gate.py)
+- [scripts/peter_weyl_covariant_composition_gate.py](scripts/peter_weyl_covariant_composition_gate.py)
+- [scripts/peter_weyl_covariant_K_composition_gate.py](scripts/peter_weyl_covariant_K_composition_gate.py)
+
+
+## PW_MASTER32
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The nonlinear two-shell Peter-Weyl master normalization is applied on the complete 32D logical sector before environment tracing and its support-projector limit passes the finite control.
+
+**Evidence:**
+
+- [scripts/peter_weyl_master_32_gate.py](scripts/peter_weyl_master_32_gate.py)
+- [CANONICAL_THEORY_PACKAGE.md](CANONICAL_THEORY_PACKAGE.md)
+
+
+## PW_HIGHER_SHELL
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The completed 32D higher-shell Lambda is positive and non-scalar with lambda_min=10.635759878291307, lambda_max=15.059927665966466 and block-Lanczos reconstruction at approximately 1e-13 residual scale.
+
+**Evidence:**
+
+- [PETER_WEYL_HIGHER_SHELL_LAMBDA_RESULT.md](PETER_WEYL_HIGHER_SHELL_LAMBDA_RESULT.md)
+- [scripts/peter_weyl_higher_shell_lambda_gate.py](scripts/peter_weyl_higher_shell_lambda_gate.py)
+
+
+## PW_J1_S4
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The four-j=1 singlet space contains the multiplicity-one S4 [2,2] coarse doublet used as the representation-RG geometry carrier.
+
+**Evidence:**
+
+- [PETER_WEYL_J1_S4_BLOCK_RESULT.md](PETER_WEYL_J1_S4_BLOCK_RESULT.md)
+- [scripts/peter_weyl_j1_s4_block_gate.py](scripts/peter_weyl_j1_s4_block_gate.py)
+
+
+## ROUTE
+
+**Статус:** tested_finite  
+**Роль:** core
+
+Independent dual-cell sharp, path-diffeomorphism and route-normal HDA principal-symbol gates pass on the declared probes.
+
+**Evidence:**
+
+- [DUAL_CELL_SHARP_RT0.md](DUAL_CELL_SHARP_RT0.md)
+- [QUANTUM_HDA_KILLER_RESULT.md](QUANTUM_HDA_KILLER_RESULT.md)
+- [scripts/path_normal_hda_gate.py](scripts/path_normal_hda_gate.py)
+- [scripts/path_rerouting_diffeo_gate.py](scripts/path_rerouting_diffeo_gate.py)
+- [scripts/path_vector_diffeo_gate.py](scripts/path_vector_diffeo_gate.py)
+
+
+## E2NODE
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The preregistered two-node Euclidean Peter-Weyl by route HDA regression exhibits the declared route, cross and pure-geometry scaling hierarchy without channel-dependent fitting.
+
+**Evidence:**
+
+- [PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md](PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md)
+- [PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md](PETER_WEYL_TWO_NODE_EUCLIDEAN_PREREGISTRATION.md)
+- [scripts/peter_weyl_two_node_euclidean_joint_gate.py](scripts/peter_weyl_two_node_euclidean_joint_gate.py)
+
+
+## HDA_3NODE
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The frozen three-node graph-changing Peter-Weyl by route regression retains j=0 outputs and reproduces route~epsilon, cross~epsilon, pure-geometry~epsilon^2 and joint~epsilon scaling across all node pairs.
+
+**Evidence:**
+
+- [THREE_NODE_GRAPH_HDA_RESULT.md](THREE_NODE_GRAPH_HDA_RESULT.md)
+- [scripts/peter_weyl_three_node_graph_hda_gate.py](scripts/peter_weyl_three_node_graph_hda_gate.py)
+
+
+## LORENTZ
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The fixed real-beta Lorentzian coefficient control, spin-parity control and finite Peter-Weyl support bound pass through the declared regulator-safe window.
+
+**Evidence:**
+
+- [LORENTZIAN_BETA_CANCELLATION.md](LORENTZIAN_BETA_CANCELLATION.md)
+- [scripts/lorentzian_beta_cancellation_gate.py](scripts/lorentzian_beta_cancellation_gate.py)
+- [scripts/lorentzian_hit_depth_bound.py](scripts/lorentzian_hit_depth_bound.py)
+- [scripts/peter_weyl_lorentzian_parity_gate.py](scripts/peter_weyl_lorentzian_parity_gate.py)
+
+
+## LHDA_COMP
+
+**Статус:** proved  
+**Роль:** core
+
+Under the explicitly stated fixed-cutoff habitat assumptions, composition gives cross/D=O(epsilon) and geometry-geometry/D=O(epsilon^2), reducing the full defect to the route defect in the regulator limit.
+
+**Evidence:**
+
+- [FIXED_CUTOFF_COMPOSITION_BOUND.md](FIXED_CUTOFF_COMPOSITION_BOUND.md)
+
+
+## JOINT_FIXED_INPUT
+
+**Статус:** tested_finite  
+**Роль:** core
+
+For the frozen all-j=1/2 finite HH family the exact hit-depth theorem makes truncation inactive above Jmax=5/2 in the Euclidean calculation while the measured joint HDA defect decreases as epsilon^1.00644; the declared Lorentzian support wall is Jmax=13/2.
+
+**Evidence:**
+
+- [JOINT_REGULATOR_LIMIT.md](JOINT_REGULATOR_LIMIT.md)
+- [scripts/joint_regulator_limit_gate.py](scripts/joint_regulator_limit_gate.py)
+- [scripts/lorentzian_hit_depth_bound.py](scripts/lorentzian_hit_depth_bound.py)
+
+
+## DEWITT
+
+**Статус:** proved  
+**Роль:** core
+
+Within the declared local two-derivative canonical ansatz, the DeWitt/HDA signature and degree-counting results identify the GR kinetic structure required by first-class closure.
+
+**Evidence:**
+
+- [DEWITT_HDA_UNIQUENESS.md](DEWITT_HDA_UNIQUENESS.md)
+- [FLUX_DEWITT_SIGNATURE_THEOREM.md](FLUX_DEWITT_SIGNATURE_THEOREM.md)
+- [BF_GR_DIRAC_COUNT_DISCRIMINATOR.md](BF_GR_DIRAC_COUNT_DISCRIMINATOR.md)
+
+
+## REGGE_L6_HELDOUT
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The preregistered L=3,4,5 Regge TT residue continuation predicted the independently computed L=6 value with about 0.00714 percent relative error without refitting on L=6.
+
+**Evidence:**
+
+- [TT_REGGE_ZT_L6_PREREGISTRATION.md](TT_REGGE_ZT_L6_PREREGISTRATION.md)
+- [TT_REGGE_ZT_L6_RESULT.md](TT_REGGE_ZT_L6_RESULT.md)
+- [scripts/tt_regge_zt_l6_gate.py](scripts/tt_regge_zt_l6_gate.py)
+
+
+## TT_PROPAGATOR
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The reduced TT positive-control kernel has a massless leading pole, positive residue and the expected inverse-momentum equal-time covariance, with exact bare lattice correction controls in the declared model.
+
+**Evidence:**
+
+- [TT_PROPAGATOR_FIRST_PASS.md](TT_PROPAGATOR_FIRST_PASS.md)
+- [scripts/tt_propagator_first_pass.py](scripts/tt_propagator_first_pass.py)
+
+
+## TT_VACUUM
+
+**Статус:** tested_finite  
+**Роль:** core
+
+The finite Gaussian TT vacuum two-point calculation reproduces the declared polarization covariance and equal-time scaling checks.
+
+**Evidence:**
+
+- [TT_VACUUM_TWO_POINT_RESULT.md](TT_VACUUM_TWO_POINT_RESULT.md)
+- [scripts/tt_vacuum_two_point_gate.py](scripts/tt_vacuum_two_point_gate.py)
+
+
+## S4_TT_QUARTIC
+
+**Статус:** proved  
+**Роль:** core
+
+The generic directed-momentum parity-even S4 quartic TT quotient has exactly six independent physical structures.
+
+**Evidence:**
+
+- [S4_TT_QUARTIC_COMPLETE_BASIS.md](S4_TT_QUARTIC_COMPLETE_BASIS.md)
+- [scripts/s4_tt_quartic_complete_basis_gate.py](scripts/s4_tt_quartic_complete_basis_gate.py)
+
+
+## SIX_WILSON_EXTRACTOR
+
+**Статус:** proved  
+**Роль:** core
+
+The frozen 100/110/111/120 extraction system has full rank six and exact determinant 1/699840000; the first three high-symmetry directions alone have rank five.
+
+**Evidence:**
+
+- [S4_TT_QUARTIC_COMPLETE_BASIS.md](S4_TT_QUARTIC_COMPLETE_BASIS.md)
+- [C6_TO_TT_WILSON_COEFFICIENTS.md](C6_TO_TT_WILSON_COEFFICIENTS.md)
+- [scripts/c6_tt_wilson_extractor.py](scripts/c6_tt_wilson_extractor.py)
+
+
+## NEAREST_BLOCK_S3
+
+**Статус:** proved  
+**Роль:** core
+
+A reciprocal face-sharing nearest-block transfer reduces to two symmetric 2x2 multiplicity matrices, giving six real amplitudes, and the regular tetrahedral stencil has the declared isotropic second and symmetry-resolved fourth moments.
+
+**Evidence:**
+
+- [NEAREST_BLOCK_S3_TRANSFER_CLOSURE.md](NEAREST_BLOCK_S3_TRANSFER_CLOSURE.md)
+- [scripts/nearest_block_s3_transfer_gate.py](scripts/nearest_block_s3_transfer_gate.py)
+
+
+## ON_SHELL_WILSON
+
+**Статус:** proved  
+**Роль:** core
+
+Four-derivative terms proportional to the leading TT equation of motion are field-redefinition redundant on shell, leaving the physical quartic pole quotient six-dimensional.
+
+**Evidence:**
+
+- [ON_SHELL_TT_WILSON_INVARIANCE.md](ON_SHELL_TT_WILSON_INVARIANCE.md)
+
+
+## FESHBACH
+
+**Статус:** proved  
+**Роль:** core
+
+For a specified Hermitian constraint operator and coarse carrier, the projected resolvent and K/A/B block-Krylov/Feshbach identities are exact.
+
+**Evidence:**
+
+- [FESHBACH_INTERBLOCK_EFFECTIVE_KERNEL.md](FESHBACH_INTERBLOCK_EFFECTIVE_KERNEL.md)
+- [scripts/feshbach_block_krylov_identity_gate.py](scripts/feshbach_block_krylov_identity_gate.py)
+
+
+## REAL_GW_MAP
+
+**Статус:** proved  
+**Роль:** core
+
+A frozen six-Wilson TT pole response maps algebraically to the two polarization eigenvalues, alpha=4 modified-dispersion coefficient, velocity and phase observables.
+
+**Evidence:**
+
+- [TT_TO_REAL_PHYSICS_OBSERVABLES.md](TT_TO_REAL_PHYSICS_OBSERVABLES.md)
+- [scripts/s4_tt_six_wilson_predictor.py](scripts/s4_tt_six_wilson_predictor.py)
+
+
+## SCALE_MAP
+
+**Статус:** conditional  
+**Роль:** core
+
+Given one common positive action/length normalization lambda_R_eff, the repository maps dimensionless TT coefficients to one common microscopic length and physical modified-dispersion units without per-observable fitting.
+
+**Evidence:**
+
+- [PHYSICALIZATION_SCALE_OBSERVABLE_PREDICTION.md](PHYSICALIZATION_SCALE_OBSERVABLE_PREDICTION.md)
+- [scripts/physical_scale_prediction_bridge.py](scripts/physical_scale_prediction_bridge.py)
+- [CONSTANTS_ZERO_FIT_LEDGER.md](CONSTANTS_ZERO_FIT_LEDGER.md)
+
+
+## CORECERT
+
+**Статус:** conditional  
+**Роль:** core
+
+The registered exact, finite-tested and explicitly conditional arrows compose into one internally closed candidate gravity package; conditional labels preserve their stated assumptions and do not imply experimental truth.
+
+**Evidence:**
+
+- [CANONICAL_THEORY_PACKAGE.md](CANONICAL_THEORY_PACKAGE.md)
+- [THEORY_STATUS.md](THEORY_STATUS.md)
+- [FIXED_CUTOFF_COMPOSITION_BOUND.md](FIXED_CUTOFF_COMPOSITION_BOUND.md)
+
+
+## MICRO_DYNAMICAL_UNIQUENESS
+
+**Статус:** external_extension  
+**Роль:** extension
+
+A stronger theorem could prove unique dynamical attraction from broad generic microscopic ensembles to the same Peter-Weyl geometric phase and blocking measure; this is not a blocker for the declared constructed candidate.
+
+**Evidence:**
+
+- [Q2_GRAPHLINK_PETER_WEYL_BRIDGE.md](Q2_GRAPHLINK_PETER_WEYL_BRIDGE.md)
+- [PREDICTIONS_AND_EXPERIMENTAL_TESTS.md](PREDICTIONS_AND_EXPERIMENTAL_TESTS.md)
+
+
+## HDA_ARBITRARY_GRAPH
+
+**Статус:** external_extension  
+**Роль:** extension
+
+A theorem uniform over arbitrary graph families, arbitrary held-out habitats and the full Lorentzian graph-changing domain would strengthen universality beyond the finite declared HDA package.
+
+**Evidence:**
+
+- [GRAPH_CHANGING_HDA_TARGET.md](GRAPH_CHANGING_HDA_TARGET.md)
+- [OFF_SHELL_HDA_HABITAT_TARGET.md](OFF_SHELL_HDA_HABITAT_TARGET.md)
+- [PREDICTIONS_AND_EXPERIMENTAL_TESTS.md](PREDICTIONS_AND_EXPERIMENTAL_TESTS.md)
+
+
+## JOINT_UNBOUNDED_REFINEMENT
+
+**Статус:** external_extension  
+**Роль:** extension
+
+A uniform theorem over unbounded graph size, collective spin and regulator refinement would strengthen the finite-word support and fixed-input joint-limit result.
+
+**Evidence:**
+
+- [JOINT_REGULATOR_LIMIT.md](JOINT_REGULATOR_LIMIT.md)
+- [FIXED_CUTOFF_COMPOSITION_BOUND.md](FIXED_CUTOFF_COMPOSITION_BOUND.md)
+- [PREDICTIONS_AND_EXPERIMENTAL_TESTS.md](PREDICTIONS_AND_EXPERIMENTAL_TESTS.md)
+
+
+## UNIVERSALITY
+
+**Статус:** external_extension  
+**Роль:** extension
+
+Testing broad alternative microscopic ensembles, compatible blocking maps and larger graph families can measure the universality class of the closed candidate without redefining its current core.
+
+**Evidence:**
+
+- [PREDICTIONS_AND_EXPERIMENTAL_TESTS.md](PREDICTIONS_AND_EXPERIMENTAL_TESTS.md)
+
+
+## BLIND_GW_TEST
+
+**Статус:** experimental_test  
+**Роль:** experiment
+
+Freeze the theory commit, six-vector, common scale rule and likelihood before opening a held-out gravitational-wave dispersion/birefringence comparison.
+
+**Evidence:**
+
+- [PREDICTIONS_AND_EXPERIMENTAL_TESTS.md](PREDICTIONS_AND_EXPERIMENTAL_TESTS.md)
+- [TT_TO_REAL_PHYSICS_OBSERVABLES.md](TT_TO_REAL_PHYSICS_OBSERVABLES.md)
+
+
+## INDEPENDENT_REPLICATION
+
+**Статус:** experimental_test  
+**Роль:** experiment
+
+Independently written implementations should reproduce the key exact and numerical certificates without importing the implementation under test.
+
+**Evidence:**
+
+- [PREDICTIONS_AND_EXPERIMENTAL_TESTS.md](PREDICTIONS_AND_EXPERIMENTAL_TESTS.md)
+- [CANONICAL_THEORY_PACKAGE.md](CANONICAL_THEORY_PACKAGE.md)
+
+
+---
+
+# Часть II. Physicalization gates
+
+Эта часть особенно важна: она показывает разницу между уже работающими reference/positive controls и теми physical objects, которые всё ещё нужно вывести.
+
+
+## CONSTRAINT_FESHBACH
+
+**Статус:** proved  
+**Роль:** reference
+
+For a specified finite Hermitian constraint operator and coarse carrier, the projected resolvent, Feshbach/Schur complement and block-Krylov identities are exact.
+
+**Жёсткая граница применимости:** The constraint spectral parameter z is not physical omega and this gate does not construct a graviton propagator.
+
+**Evidence:**
+
+- [FESHBACH_INTERBLOCK_EFFECTIVE_KERNEL.md](FESHBACH_INTERBLOCK_EFFECTIVE_KERNEL.md)
+- [scripts/feshbach_block_krylov_identity_gate.py](scripts/feshbach_block_krylov_identity_gate.py)
+
+
+## MASTER_PROJECTOR_FINITE
+
+**Статус:** proved  
+**Роль:** reference
+
+For a finite regulated constraint family C_A and every positive-definite constraint metric G, M_G=C_A^dagger G^AB C_B is positive and ker(M_G)=intersection_A ker(C_A); an isolated zero sector defines an exact finite spectral projector.
+
+**Жёсткая граница применимости:** Exact finite operator theorem only; the candidate-theory refinement/rigging-map limit and physical boundary amplitude remain open.
+
+**Evidence:**
+
+- [MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md](MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md)
+- [scripts/master_constraint_physical_projector_gate.py](scripts/master_constraint_physical_projector_gate.py)
+
+
+## GRAPH_CHANGING_HDA_PREREQUISITE
+
+**Статус:** tested_finite  
+**Роль:** reference
+
+The current three-node graph-changing Peter-Weyl HDA control retains graph/spin-changing outputs and exhibits the frozen route/cross/pure-geometry scaling hierarchy on its finite habitat family.
+
+**Жёсткая граница применимости:** Finite HDA consistency prerequisite only; it does not select the physical inner product, rigging map, boundary state or physical time.
+
+**Evidence:**
+
+- [THREE_NODE_GRAPH_HDA_RESULT.md](THREE_NODE_GRAPH_HDA_RESULT.md)
+- [scripts/peter_weyl_three_node_graph_hda_gate.py](scripts/peter_weyl_three_node_graph_hda_gate.py)
+
+
+## RELATIONAL_HISTORY_POSITIVE_CONTROL
+
+**Статус:** tested_finite  
+**Роль:** positive_control
+
+A finite C8 Page-Wootters/rigging-map model shows exactly that a combined clock+system projector can be globally invariant while retaining nontrivial clock-conditioned system evolution.
+
+**Жёсткая граница применимости:** Positive control only: the clock factor is declared externally and R=J is not the graph-changing gravitational evolution operator.
+
+**Evidence:**
+
+- [Q2_RELATIONAL_HISTORY_PROJECTOR.md](Q2_RELATIONAL_HISTORY_PROJECTOR.md)
+- [scripts/q2_relational_history_projector_gate.py](scripts/q2_relational_history_projector_gate.py)
+
+
+## RELATIONAL_METRIC_SOURCE_POSITIVE_CONTROL
+
+**Статус:** tested_finite  
+**Роль:** positive_control
+
+On the finite relational positive control, gauge-invariant source insertions implement the legal order P_rel -> Z[J] -> W[J] -> connected metric response -> tangent Gamma^(2) pseudoinverse.
+
+**Жёсткая граница применимости:** Positive control only: this Gamma^(2) is not the spacetime 1PI graviton kernel, the C8 label is not physical omega, and no physical TT Wilson coefficient is frozen.
+
+**Evidence:**
+
+- [Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md](Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md)
+- [scripts/q2_relational_metric_source_gate.py](scripts/q2_relational_metric_source_gate.py)
+
+
+## HISTORY_INTERFERENCE_REFERENCE
+
+**Статус:** tested_finite  
+**Роль:** reference
+
+The finite history reference reproduces coherent two-path composition, environment-overlap decoherence and zero Sorkin I3 under a quadratic Born rule.
+
+**Жёсткая граница применимости:** Reference identities only; they do not derive the BQG Born rule, photon state or physical Maxwell dynamics.
+
+**Evidence:**
+
+- [UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md](UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md)
+- [scripts/binary_history_interference_lensing_gate.py](scripts/binary_history_interference_lensing_gate.py)
+
+
+## GRAVITATIONAL_WAVE_OPTICS_REFERENCE
+
+**Статус:** tested_finite  
+**Роль:** reference
+
+A finite point-lens control uses one Fermat potential for both stationary lensing paths and their relative wave-optics phase, with a split-potential negative control.
+
+**Жёсткая граница применимости:** Standard wave-optics reference only; the physical BQG Weyl potential remains open.
+
+**Evidence:**
+
+- [UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md](UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md)
+- [scripts/binary_history_interference_lensing_gate.py](scripts/binary_history_interference_lensing_gate.py)
+
+
+## BACKGROUND_SCALAR_COSMOLOGY_REFERENCE
+
+**Статус:** tested_finite  
+**Роль:** reference
+
+The finite cosmology reference verifies rho-to-w conservation identities and the mu/Sigma/slip lensing-dynamics consistency dictionary with negative controls.
+
+**Жёсткая граница применимости:** Reference bookkeeping only; it does not supply a BQG dark component or observational fit.
+
+**Evidence:**
+
+- [UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md](UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md)
+- [scripts/physical_cosmology_background_scalar_gate.py](scripts/physical_cosmology_background_scalar_gate.py)
+
+
+## PHYSICAL_PROJECTOR_HISTORY
+
+**Статус:** open_physical  
+**Роль:** physical
+
+Construct the theory-specific anomaly/refinement-compatible rigging-map or boundary-history amplitude from the actual graph-changing gravitational constraint family, with a derived clock only if the microscopic construction supplies one.
+
+**Жёсткая граница применимости:** The exact finite master-projector theorem and the C8 relational positive control do not close this theory-specific physical gate.
+
+**Evidence:**
+
+- [MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md](MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md)
+- [Q2_RELATIONAL_HISTORY_PROJECTOR.md](Q2_RELATIONAL_HISTORY_PROJECTOR.md)
+- [CORE_FALSIFICATION_TESTS.md](CORE_FALSIFICATION_TESTS.md)
+
+
+## CONNECTED_INTERBLOCK_HISTORY
+
+**Статус:** open_physical  
+**Роль:** physical
+
+Compute connected multi-block/refinement metric cumulants with the theory-specific physical projector/history amplitude and remove vacuum-disconnected pieces through the generating functional.
+
+**Жёсткая граница применимости:** A local finite shape-source Hessian is not a connected spacetime interblock correlator.
+
+**Evidence:**
+
+- [Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md](Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md)
+- [CORE_FALSIFICATION_TESTS.md](CORE_FALSIFICATION_TESTS.md)
+
+
+## PHYSICAL_TT_KERNEL
+
+**Статус:** open_physical  
+**Роль:** physical
+
+Derive the continuum/IR physical metric 1PI Hessian and its TT projection K_TT(omega,k) from the theory-specific physical generating functional, recovering the leading massless Einstein/Fierz-Pauli pole before reading quartic corrections.
+
+**Жёсткая граница применимости:** Constraint-resolvent z, finite C8 character angle and reduced TT positive-control frequency are not promoted to the physical omega of the interacting gravity theory.
+
+**Evidence:**
+
+- [MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md](MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md)
+- [Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md](Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md)
+- [TT_PROPAGATOR_FIRST_PASS.md](TT_PROPAGATOR_FIRST_PASS.md)
+
+
+## IR_SIX_VECTOR
+
+**Статус:** open_physical  
+**Роль:** physical
+
+Freeze the six microscopic on-shell quartic TT Wilson coefficients from the derived physical TT pole without post-hoc reduction to a lower-dimensional ansatz.
+
+**Жёсткая граница применимости:** The six-dimensional observable dictionary and extractor are closed algebraically, but the interacting physical six-vector itself is not yet derived.
+
+**Evidence:**
+
+- [S4_TT_QUARTIC_COMPLETE_BASIS.md](S4_TT_QUARTIC_COMPLETE_BASIS.md)
+- [C6_TO_TT_WILSON_COEFFICIENTS.md](C6_TO_TT_WILSON_COEFFICIENTS.md)
+- [scripts/s4_tt_six_wilson_predictor.py](scripts/s4_tt_six_wilson_predictor.py)
+
+
+## COMMON_SCALE_CALIBRATION
+
+**Статус:** open_physical  
+**Роль:** physical
+
+After the dimensionless physical outputs are frozen, derive one common physical scale internally or calibrate exactly one declared datum and hold that scale fixed for all remaining observables.
+
+**Жёсткая граница применимости:** The algebraic unit translator is available, but no common physical calibration is declared complete here and separate sector-by-sector scales are forbidden.
+
+**Evidence:**
+
+- [PHYSICALIZATION_SCALE_OBSERVABLE_PREDICTION.md](PHYSICALIZATION_SCALE_OBSERVABLE_PREDICTION.md)
+- [CONSTANTS_ZERO_FIT_LEDGER.md](CONSTANTS_ZERO_FIT_LEDGER.md)
+- [CORE_FALSIFICATION_TESTS.md](CORE_FALSIFICATION_TESTS.md)
+- [COSMOLOGY_INTERFERENCE_PREREGISTRATION.md](COSMOLOGY_INTERFERENCE_PREREGISTRATION.md)
+
+
+## DYNAMICAL_MAXWELL_KERNEL
+
+**Статус:** open_physical  
+**Роль:** physical
+
+Derive the theory-specific transverse photon 1PI kernel Gamma_AA^(2), Maxwell stiffness Z_A, massless deconfined photon pole and IR causal cone from the same connected physical history generating functional.
+
+**Жёсткая граница применимости:** Compact U(1) phase topology, Chern number and finite interference identities are not a physical Maxwell derivation.
+
+**Evidence:**
+
+- [UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md](UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md)
+- [COSMOLOGY_INTERFERENCE_PREREGISTRATION.md](COSMOLOGY_INTERFERENCE_PREREGISTRATION.md)
+
+
+## PHYSICAL_BACKGROUND_COSMOLOGY
+
+**Статус:** open_physical  
+**Роль:** physical
+
+Derive the physical homogeneous Gamma_FLRW and its rho_hist(a), p_hist(a), H(a) and w_hist(a) from the same connected history measure, with w inferred only after rho is derived.
+
+**Жёсткая граница применимости:** The rho-to-w reference map is solved, but no BQG background dark component is currently derived and no evolving-dark-energy ansatz is selected from data.
+
+**Evidence:**
+
+- [UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md](UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md)
+- [COSMOLOGY_INTERFERENCE_PREREGISTRATION.md](COSMOLOGY_INTERFERENCE_PREREGISTRATION.md)
+
+
+## PHYSICAL_SCALAR_COSMOLOGY
+
+**Статус:** open_physical  
+**Роль:** physical
+
+Derive the physical scalar metric kernel and stable Phi/Psi, growth, effective sound-speed and anisotropic-stress response from the same theory-specific effective action.
+
+**Жёсткая граница применимости:** No TT coefficient, E/T2 split, constraint eigenvalue or fitted mu/Sigma function is promoted to physical dark matter.
+
+**Evidence:**
+
+- [UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md](UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md)
+- [COSMOLOGY_INTERFERENCE_PREREGISTRATION.md](COSMOLOGY_INTERFERENCE_PREREGISTRATION.md)
+
+
+## LENSING_DYNAMICS_CLOSURE
+
+**Статус:** open_physical  
+**Роль:** physical
+
+Show that one derived scalar metric response simultaneously predicts massive-body dynamics, weak/strong/CMB lensing, Fermat/time-delay phase and coherent gravitational wave-optics, with no independent lensing or interference potential.
+
+**Жёсткая граница применимости:** Finite lensing/interference and mu/Sigma controls are prerequisites only; joint observed BQG lensing-dynamics closure remains uncomputed.
+
+**Evidence:**
+
+- [UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md](UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md)
+- [COSMOLOGY_INTERFERENCE_PREREGISTRATION.md](COSMOLOGY_INTERFERENCE_PREREGISTRATION.md)
+- [scripts/binary_history_interference_lensing_gate.py](scripts/binary_history_interference_lensing_gate.py)
+- [scripts/physical_cosmology_background_scalar_gate.py](scripts/physical_cosmology_background_scalar_gate.py)
+
+
+## BLIND_GW_COMPARISON
+
+**Статус:** experimental_test  
+**Роль:** experiment
+
+Only after the physical TT kernel, six-vector and one-scale rule are frozen, preregister and open a held-out gravitational-wave dispersion/birefringence likelihood comparison.
+
+**Жёсткая граница применимости:** No current internal regression constitutes experimental confirmation of the theory.
+
+**Evidence:**
+
+- [PREDICTIONS_AND_EXPERIMENTAL_TESTS.md](PREDICTIONS_AND_EXPERIMENTAL_TESTS.md)
+- [TT_TO_REAL_PHYSICS_OBSERVABLES.md](TT_TO_REAL_PHYSICS_OBSERVABLES.md)
+
+
+## BLIND_COSMOLOGY_LENSING_COMPARISON
+
+**Статус:** experimental_test  
+**Роль:** experiment
+
+After background, scalar, photon, lensing-dynamics and one-scale outputs are frozen, compare jointly against preregistered expansion, growth and lensing datasets without retuning.
+
+**Жёсткая граница применимости:** DESI, CMB, lensing and dark-matter observations are external tests, not selectors for the microscopic BQG output.
+
+**Evidence:**
+
+- [COSMOLOGY_INTERFERENCE_PREREGISTRATION.md](COSMOLOGY_INTERFERENCE_PREREGISTRATION.md)
+- [UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md](UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md)
+
+
+---
+
+# Часть III. Как читать этот реестр
+
+Если gate имеет статус **proved**, это не означает больше, чем написано в его claim и hard scope.
+
+Если gate имеет статус **tested_finite**, это finite evidence, а не автоматически continuum theorem.
+
+Если gate имеет статус **conditional**, assumption является частью результата.
+
+Если gate имеет статус **open_physical**, его нельзя заменять ссылкой на structural control.
+
+Если gate имеет статус **experimental_test**, он не считается выполненным до внешнего blind protocol.
+
+Самая важная формула этого тома:
+
+\[
+\boxed{
+\text{status}
++
+\text{scope}
++
+\text{evidence}
+=
+\text{полный смысл результата}.
+}
+\]
+
