@@ -351,7 +351,7 @@ The independent collective optical bridge gives
 
 for five balanced phase channels and five traceless metric coordinates.
 
-The response is invertible on that sector, and its exact finite-condition-number sensitivity spectrum is derived in `BCQG_PHOTON_INTERFERENCE_BRIDGE.md` on the collective branch.
+The five-channel optical readout below is retained as an algebraic interface only. The historical file `BCQG_PHOTON_INTERFERENCE_BRIDGE.md` is not present in the current canonical `main` tree, so no proof claim may rely on that missing document. Until an explicit replacement bridge is committed and registered in the machine ledger, this subsection is **NOT canonical evidence** for physicalization.
 
 For a metric covariance/spectrum `S_h`,
 
