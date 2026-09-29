@@ -1,0 +1,61 @@
+name: BQG depth6 S4-sign aggregate completed shards
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - 'aggregate_existing/**'
+      - '.github/workflows/bqg-depth6-s4sign-aggregate-existing.yml'
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install numerical dependencies
+        run: pip install --disable-pip-version-check numpy sympy
+
+      - name: Unpack exact BQG proof bundle
+        run: |
+          mkdir -p proof_parallel/runtime
+          base64 -d proof_parallel/bqg_s4sign_bundle.tar.gz.b64 | tar xz -C proof_parallel/runtime
+
+      - name: Download 128 completed shard artifacts from canonical run
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          run-id: 36527314863
+          pattern: bqg-s4sign-v2-shard-*
+          path: proof_parallel/downloaded
+          merge-multiple: true
+
+      - name: Audit coverage and run streaming global peeling
+        env:
+          PYTHONPATH: ${{ github.workspace }}/proof_parallel/runtime
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -u aggregate_existing/bqg_s4sign_aggregate_stream.py \
+            --artifacts proof_parallel/downloaded \
+            --expected-shards 128 \
+            --work proof_parallel/aggregate_work \
+            --out proof_parallel/bqg_depth6_s4sign_distributed_certificate.json
+
+      - name: Upload final and partial certificates
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-s4sign-aggregate-certificate
+          path: |
+            proof_parallel/bqg_depth6_s4sign_distributed_certificate.json
+            proof_parallel/bqg_depth6_s4sign_distributed_certificate.partial.json
+          if-no-files-found: warn
+          retention-days: 7
