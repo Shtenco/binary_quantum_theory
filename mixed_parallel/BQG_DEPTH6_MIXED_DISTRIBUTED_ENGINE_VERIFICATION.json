@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-29",
+  "status": "PASS_SMOKE",
+  "scope": "distributed generic mixed-irrep master-row engine",
+  "master_row_identity": "B_lambda = A0 + A1 + 3 A2 on the normalized one-dimensional S3 Jucys row",
+  "exact_target_ledgers": {
+    "32": {"blocks": 2755, "columns": 130903},
+    "311": {"blocks": 2719, "columns": 153455},
+    "221": {"blocks": 2749, "columns": 130503},
+    "2111": {"blocks": 2712, "columns": 103318}
+  },
+  "smoke_test": {
+    "irrep": "32",
+    "orbit_index": 10,
+    "multiplicity": 2,
+    "master_map_row_blocks": 211,
+    "master_map_rows": 372,
+    "conservative_support_blocks": 352,
+    "actual_support_subset_of_conservative_support": true,
+    "rank": 2,
+    "sigma_min": 4.745548462434674
+  },
+  "files": [
+    "github_mixed_master_shard.py",
+    "bqg_mixed_master_aggregate.py",
+    "bqg_depth6_generic_jucys_selector.py",
+    "bqg_depth6_generic_master_row.py"
+  ],
+  "claim_boundary": "Engine construction and smoke regression passed; full mixed-sector global rank certificates require distributed shard execution and global peeling."
+}
