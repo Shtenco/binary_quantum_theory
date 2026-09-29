@@ -1,4 +1,4 @@
-name: BQG depth6 mixed stage B and final gate
+name: BQG depth6 mixed stage B and master frontier
 on:
   workflow_run:
     workflows: ["BQG depth6 mixed stage A"]
@@ -66,11 +66,16 @@ jobs:
       - run: |
           mkdir -p mixed_runtime
           base64 -d proofsrc/mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64 | tar xz -C mixed_runtime
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: bqg-mixed-221-shard-*
-          path: mixed_downloaded
-          merge-multiple: true
+      - name: Download all 160 [2,2,1] shard artifacts with pagination
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/download_workflow_artifacts_paginated.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --prefix "bqg-mixed-221-shard-" \
+            --expected 160 \
+            --out mixed_downloaded
       - name: Aggregate [2,2,1] fail-closed
         env:
           PYTHONPATH: ${{ github.workspace }}/mixed_runtime
@@ -99,7 +104,7 @@ jobs:
           print('DEPTH6_221_PASS',x['global_sigma_min'])
           PY
 
-  final_depth6_gate:
+  finite_depth6_frontier_gate:
     needs: mixed221_aggregate
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -107,101 +112,89 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Download [3,2] certificate from triggering Stage A run
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
-          name: bqg-depth6-32-final-certificate
-          path: cert32
-
-      - name: Download [3,1,1] certificate from triggering Stage A run
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
-          name: bqg-depth6-311-final-certificate
-          path: cert311
-
-      - name: Download current [2,2,1] certificate
-        uses: actions/download-artifact@v4
-        with:
-          name: bqg-depth6-221-final-certificate
-          path: cert221
-
-      - name: Locate latest successful S4-sign aggregate run
-        id: s4run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python - <<'PY' >> "$GITHUB_OUTPUT"
-          import json,os,urllib.request
-          repo=os.environ['GITHUB_REPOSITORY']
-          req=urllib.request.Request(
-              f'https://api.github.com/repos/{repo}/actions/workflows/bqg-depth6-s4sign-aggregate.yml/runs?status=success&per_page=1',
-              headers={'Authorization':'Bearer '+os.environ['GH_TOKEN'],'Accept':'application/vnd.github+json'}
-          )
-          x=json.load(urllib.request.urlopen(req))
-          assert x['workflow_runs'],x
-          print('run_id='+str(x['workflow_runs'][0]['id']))
-          PY
+          python scripts/download_workflow_artifacts_paginated.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${{ github.event.workflow_run.id }}" \
+            --prefix "bqg-depth6-32-final-certificate" \
+            --expected 1 \
+            --out cert32
 
-      - name: Download S4-sign certificate
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          run-id: ${{ steps.s4run.outputs.run_id }}
-          name: bqg-depth6-s4sign-final-certificate
-          path: certs4
-
-      - name: Build final finite depth-6 certificate
+      - name: Download [3,1,1] certificate from triggering Stage A run
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          python scripts/download_workflow_artifacts_paginated.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${{ github.event.workflow_run.id }}" \
+            --prefix "bqg-depth6-311-final-certificate" \
+            --expected 1 \
+            --out cert311
+
+      - name: Download current [2,2,1] certificate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/download_workflow_artifacts_paginated.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${GITHUB_RUN_ID}" \
+            --prefix "bqg-depth6-221-final-certificate" \
+            --expected 1 \
+            --out cert221
+
+      - name: Verify mixed certificates and preserve master-aware frontier
+        run: |
+          python scripts/verify_depth6_frontier.py
           python - <<'PY'
-          import json,glob
-          def one(path):
-              fs=glob.glob(path)
-              assert len(fs)==1,(path,fs)
+          import glob,json
+
+          def one(root):
+              fs=glob.glob(root+'/**/*.json',recursive=True)
+              assert len(fs)==1,(root,fs)
               return json.load(open(fs[0]))
-          s4=one('certs4/*.json')
-          c32=one('cert32/*.json')
-          c311=one('cert311/*.json')
-          c221=one('cert221/*.json')
-          assert s4['status']=='PASS' and s4['certified_columns']==130112 and s4['remaining_columns']==0,s4
+
+          c32=one('cert32')
+          c311=one('cert311')
+          c221=one('cert221')
+          frontier=json.load(open('depth6_frontier.json'))
+
           assert c32['status']=='PASS' and c32['certified_columns']==130903 and c32['remaining_columns']==0,c32
           assert c311['status']=='PASS' and c311['certified_columns']==153455 and c311['remaining_columns']==0,c311
           assert c221['status']=='PASS' and c221['certified_columns']==130503 and c221['remaining_columns']==0,c221
-          mult={'5':27227,'41':104146,'32':130903,'311':153455,'221':130503,'2111':103318,'11111':26794}
-          dims={'5':1,'41':4,'32':5,'311':6,'221':5,'2111':4,'11111':1}
-          total=sum(mult[k]*dims[k] for k in mult)
-          assert total==3111637,(total,mult)
+
+          s4=frontier['s4_sign_frontier']
+          assert s4['sector_status']=='ACTIVE_NOT_CLOSED',s4
+          assert s4['exact_h0_null_directions']==16,s4
+          assert s4['h1_lift']['rank']==16,s4
+          plan=s4['giant_component']['square_minor_plan']
+          assert plan['numerical_rank'] is None,plan
+          assert plan['status']=='NOT_YET_FACTORIZED',plan
+
           out={
-            'status':'PASS',
-            'scope':'finite corrected K5 depth-6 genuine-volume graph-changing master constraint',
-            'hilbert_dimension':3111637,
-            'spin_assignments':264962,
-            's5_orbits':2757,
-            'sector_certificates':{
-              '[1^5]':{'multiplicity':26794,'rank':26794,'kernel':'empty','source':'previous closed certificate'},
-              '[5]':{'multiplicity':27227,'nonvac_rank':27226,'kernel':'zero-spin vacuum line only','source':'previous strengthened certificate'},
-              '[4,1]':{'multiplicity':104146,'rank':104146,'kernel':'empty','source':'previous closed certificate'},
-              '[3,2]':{'multiplicity':130903,'rank':130903,'kernel':'empty','distributed_sigma_min':c32.get('global_sigma_min')},
-              '[3,1,1]':{'multiplicity':153455,'rank':153455,'kernel':'empty','distributed_sigma_min':c311.get('global_sigma_min')},
-              '[2,2,1]':{'multiplicity':130503,'rank':130503,'kernel':'empty','distributed_sigma_min':c221.get('global_sigma_min')},
-              '[2,1,1,1]':{'multiplicity':103318,'rank':103318,'kernel':'empty','derivation':'S4-sign total H0 injective on [1^5] direct-sum [2,1,1,1]','s4sign_total_rank':130112,'s4sign_sigma_min':s4.get('global_sigma_min')}
+            'status':'ACTIVE_NOT_CLOSED',
+            'scope':'finite corrected K5 depth-6 master-kernel frontier',
+            'mixed_sector_certificates':{
+              '[3,2]':{'status':'PASS','columns':130903,'sigma_min':c32.get('global_sigma_min')},
+              '[3,1,1]':{'status':'PASS','columns':153455,'sigma_min':c311.get('global_sigma_min')},
+              '[2,2,1]':{'status':'PASS','columns':130503,'sigma_min':c221.get('global_sigma_min')},
             },
-            'dimension_reconstruction':total,
-            'finite_depth6_common_kernel':'span{|0>}: the zero-spin vacuum line in [5] only',
-            'theorem_statement':'For the tested finite depth-6 corrected regulator/habitat, the master constraint has no non-vacuum kernel across all seven S5 irreps; the common kernel is the zero-spin vacuum line.',
-            'physicalization_boundary':'Continuum/refinement physical projector, rigging-map/history consistency, connected interblock history, physical TT kernel, and final IR scale remain OPEN.'
+            '[2,1,1,1]_master_status':'ACTIVE_NOT_CLOSED',
+            's4_sign_exact_H0_null_directions':16,
+            's4_sign_H1_lift_rank':'16/16',
+            'giant_sparse_minor_shape':[130007,130007],
+            'giant_sparse_minor_numerical_rank':None,
+            'finite_depth6_common_kernel':'NOT_YET_PROVED',
+            'blocking_gate':'rank-revealing factorization of the 130007x130007 giant sparse minor, followed by master-aware combination with the proven 16D H1 lift',
+            'continuum_boundary':'even a future finite depth-6 PASS is not a continuum/physical-projector proof'
           }
-          open('BQG_DEPTH6_FULL_KERNEL_FINAL.json','w').write(json.dumps(out,indent=2)+'\n')
+          open('BQG_DEPTH6_MIXED_FRONTIER.json','w').write(json.dumps(out,indent=2)+'\n')
           print(json.dumps(out,indent=2))
           PY
 
       - uses: actions/upload-artifact@v4
         with:
-          name: BQG-DEPTH6-FULL-KERNEL-FINAL
-          path: BQG_DEPTH6_FULL_KERNEL_FINAL.json
+          name: BQG-DEPTH6-MIXED-FRONTIER
+          path: BQG_DEPTH6_MIXED_FRONTIER.json
           retention-days: 30
