@@ -1,0 +1,72 @@
+name: BQG depth6 S4-sign giant square UMFPACK
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - 'giant_lu/**'
+      - '.github/workflows/bqg-depth6-s4sign-giant-lu.yml'
+  workflow_dispatch:
+jobs:
+  giant-lu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install UMFPACK and Python dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y libsuitesparse-dev swig pkg-config
+          pip install --disable-pip-version-check numpy scipy meson-python ninja
+          pip install --disable-pip-version-check scikit-umfpack
+      - name: Download all 128 canonical shard artifacts
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SOURCE_RUN_ID: '36527314863'
+        run: |
+          set -euo pipefail
+          mkdir -p proof_parallel/downloaded
+          : > /tmp/artifacts.tsv
+          for page in 1 2; do
+            curl -fsSL -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${SOURCE_RUN_ID}/artifacts?per_page=100&page=${page}" \
+              | jq -r '.artifacts[] | select(.expired == false) | select(.name | startswith("bqg-s4sign-v2-shard-")) | [.id,.name] | @tsv' >> /tmp/artifacts.tsv
+          done
+          sort -u -k2,2 /tmp/artifacts.tsv -o /tmp/artifacts.tsv
+          test "$(wc -l < /tmp/artifacts.tsv)" -eq 128
+          export GH_TOKEN GITHUB_REPOSITORY
+          cat /tmp/artifacts.tsv | xargs -P 8 -n 2 bash -c '
+            set -euo pipefail
+            id="$1"; name="$2"; zip="/tmp/${name}.zip"; dest="proof_parallel/downloaded/${name}"
+            mkdir -p "${dest}"
+            curl -fsSL -L -H "Authorization: Bearer ${GH_TOKEN}" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${id}/zip" -o "${zip}"
+            unzip -q "${zip}" -d "${dest}"; rm -f "${zip}"
+          ' _
+          test "$(find proof_parallel/downloaded -type f -name 'bqg-s4sign-v2-shard-*.tar.gz' | wc -l)" -eq 128
+      - name: Recover giant SCC
+        run: |
+          python -u giant_qr/prepare_giant.py --artifacts proof_parallel/downloaded --work giant_lu/work --out giant_lu/giant_meta.json
+      - name: Select square row minor
+        run: |
+          python -u giant_lu/plan_square.py --meta giant_lu/giant_meta.json --out giant_lu/square_plan.json
+      - name: UMFPACK factor and inverse-norm certificate
+        env:
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -u giant_lu/factor_square.py --plan giant_lu/square_plan.json --out giant_lu/square_lu_certificate.json
+      - name: Upload certificate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-s4sign-giant-lu-certificate
+          path: |
+            giant_lu/square_lu_certificate.json
+            giant_lu/square_plan.json
+            giant_lu/giant_meta.json
+          if-no-files-found: warn
+          retention-days: 7
