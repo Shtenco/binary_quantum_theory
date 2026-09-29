@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   aggregate:
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.id == 36527314863 }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -35,24 +35,27 @@ jobs:
           mkdir -p proof_parallel/runtime
           base64 -d proofsrc/proof_parallel/bqg_s4sign_bundle.tar.gz.b64 | tar xz -C proof_parallel/runtime
 
-      - name: Download all v2 shard artifacts from triggering run
-        uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          run-id: ${{ github.event.workflow_run.id }}
-          pattern: bqg-s4sign-v2-shard-*
-          path: proof_parallel/downloaded
-          merge-multiple: true
+      - name: Download all 128 v2 shard artifacts with pagination
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/download_workflow_artifacts_paginated.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${{ github.event.workflow_run.id }}" \
+            --prefix "bqg-s4sign-v2-shard-" \
+            --expected 128 \
+            --out proof_parallel/downloaded
 
-      - name: Normalize artifact filenames for aggregator
+      - name: Normalize artifact filenames for diagnostic aggregator
         run: |
           set -euo pipefail
-          for f in proof_parallel/downloaded/bqg-s4sign-v2-shard-*.tar.gz; do
-            base="$(basename "$f")"
-            mv "$f" "proof_parallel/downloaded/${base/bqg-s4sign-v2-shard-/bqg-s4sign-shard-}"
-          done
-          test "$(find proof_parallel/downloaded -name 'bqg-s4sign-shard-*.tar.gz' | wc -l)" -eq 128
+          mkdir -p proof_parallel/normalized
+          find proof_parallel/downloaded -type f -name 'bqg-s4sign-v2-shard-*.tar.gz' -print0 |
+            while IFS= read -r -d '' f; do
+              base="$(basename "$f")"
+              cp "$f" "proof_parallel/normalized/${base/bqg-s4sign-v2-shard-/bqg-s4sign-shard-}"
+            done
+          test "$(find proof_parallel/normalized -name 'bqg-s4sign-shard-*.tar.gz' | wc -l)" -eq 128
 
       - name: Verify full coverage and run fail-closed streaming global peeling
         env:
@@ -62,7 +65,7 @@ jobs:
           MKL_NUM_THREADS: '1'
         run: |
           python -u proof_tools/bqg_s4sign_aggregate_streaming.py \
-            --artifacts proof_parallel/downloaded \
+            --artifacts proof_parallel/normalized \
             --expected-shards 128 \
             --work proof_parallel/aggregate_work \
             --out proof_parallel/bqg_depth6_s4sign_distributed_certificate.json
@@ -71,18 +74,18 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bqg-depth6-s4sign-final-certificate
+          name: bqg-depth6-s4sign-h0-diagnostic
           path: proof_parallel/bqg_depth6_s4sign_distributed_certificate.json
           retention-days: 14
 
-      - name: Fail closed unless S4-sign sector is fully certified
+      - name: Enforce current master-aware frontier semantics
         run: |
+          python scripts/verify_depth6_frontier.py
           python - <<'PY'
           import json
           p='proof_parallel/bqg_depth6_s4sign_distributed_certificate.json'
           x=json.load(open(p))
-          assert x['status']=='PASS', x
-          assert x['certified_blocks']==11956 and x['certified_columns']==130112, x
-          assert x['remaining_blocks']==0 and x['remaining_columns']==0, x
-          print('S4SIGN_FULL_RANK_PASS',x['global_sigma_min'])
+          print('S4SIGN_H0_DIAGNOSTIC_STATUS', x.get('status'))
+          print('IMPORTANT: H0 diagnostic is not a master-kernel certificate.')
+          print('The canonical master frontier is depth6_frontier.json.')
           PY
