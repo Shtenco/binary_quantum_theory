@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-29",
+  "status": "PASS_REGRESSION",
+  "scope": "generic master-row reduction for remaining mixed depth-6 S5 irreps",
+  "theorem": "For a normalized one-dimensional S3 row e_lambda, M|lambda=B_lambda tensor I and S3 covariance implies B_lambda=A0+A1+3*A2, where Av=(Hv e_lambda)^dagger(Hv e_lambda).",
+  "raw_five_vertex_regression": {
+    "orbit_index": 10,
+    "[3,2]": {
+      "m": 2,
+      "rel_error_B5_vs_A0_A1_3A2": 2.5481966551197726e-16,
+      "rel_error_A2_vs_A3": 4.866335788384401e-16,
+      "rel_error_A2_vs_A4": 6.560575678124791e-16
+    },
+    "[3,1,1]": {
+      "m": 1,
+      "rel_error_B5_vs_A0_A1_3A2": 1.5775654396009568e-16
+    },
+    "[2,2,1]": {
+      "m": 1,
+      "rel_error_B5_vs_A0_A1_3A2": 1.558701814214338e-16
+    }
+  },
+  "reduced_coordinate_regression": {
+    "[3,2]": {"relative_gram_error_vs_direct_5_vertex": 1.5605778003745796e-9},
+    "[3,1,1]": {"relative_gram_error_vs_direct_5_vertex": 1.5970262868638742e-9},
+    "note": "The reduced-vs-direct difference is at the established ultrafast Hamiltonian numerical tolerance scale; the exact covariance identity itself is verified at machine precision in the raw five-vertex calculation."
+  },
+  "implementation": "H0,H1 reduced by the S3 one-dimensional row; H2 reduced by the S2 stabilizer of vertex 2 and weighted by sqrt(3) in the stacked master map.",
+  "claim_boundary": "This verifies the generic per-row master reduction and its reduced implementation. Full global depth-6 mixed-irrep rank certificates still require distributed output-map assembly and fail-closed global peeling."
+}
