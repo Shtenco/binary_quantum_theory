@@ -1,0 +1,46 @@
+name: BQG depth6 S4-sign proof shards
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - 'proof_parallel/**'
+      - '.github/workflows/bqg-depth6-s4sign-shards.yml'
+  workflow_dispatch:
+jobs:
+  shard:
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical dependencies
+        run: pip install --disable-pip-version-check numpy sympy
+      - name: Unpack exact BQG proof bundle
+        run: |
+          mkdir -p proof_parallel/runtime
+          base64 -d proof_parallel/bqg_s4sign_bundle.tar.gz.b64 | tar xz -C proof_parallel/runtime
+      - name: Run exact depth6 shard
+        env:
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          cd proof_parallel/runtime
+          python -u github_s4sign_shard.py --shard ${{ matrix.shard }} --shards 32 --workers 4 --out artifact
+      - name: Pack shard result
+        if: always()
+        run: tar czf proof_parallel/bqg-s4sign-shard-${{ matrix.shard }}.tar.gz -C proof_parallel/runtime artifact
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bqg-s4sign-shard-${{ matrix.shard }}
+          path: proof_parallel/bqg-s4sign-shard-${{ matrix.shard }}.tar.gz
+          retention-days: 3
+          compression-level: 0
