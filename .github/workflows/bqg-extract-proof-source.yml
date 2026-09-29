@@ -1,0 +1,22 @@
+name: BQG extract proof bundle source
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - '.github/workflows/bqg-extract-proof-source.yml'
+  workflow_dispatch:
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unpack proof bundle
+        run: |
+          mkdir -p extracted
+          base64 -d proof_parallel/bqg_s4sign_bundle.tar.gz.b64 | tar xz -C extracted
+          find extracted -maxdepth 2 -type f -print
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-proof-source
+          path: extracted
+          retention-days: 1
