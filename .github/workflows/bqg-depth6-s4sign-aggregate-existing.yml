@@ -72,26 +72,27 @@ jobs:
           echo "DOWNLOADED_TARBALL_COUNT=${tar_count}"
           test "${tar_count}" -eq 128
 
-      - name: Audit coverage and run streaming global peeling
+      - name: Audit coverage and run exact-capacity-pruned global peeling
         env:
           PYTHONPATH: ${{ github.workspace }}/proof_parallel/runtime
           OMP_NUM_THREADS: '1'
           OPENBLAS_NUM_THREADS: '1'
           MKL_NUM_THREADS: '1'
         run: |
-          python -u aggregate_existing/bqg_s4sign_aggregate_stream.py \
+          python -u aggregate_existing/bqg_s4sign_aggregate_capacity.py \
             --artifacts proof_parallel/downloaded \
+            --capacity proof_parallel/s4triv_positive_q.json \
             --expected-shards 128 \
-            --work proof_parallel/aggregate_work \
-            --out proof_parallel/bqg_depth6_s4sign_distributed_certificate.json
+            --work proof_parallel/aggregate_capacity_work \
+            --out proof_parallel/bqg_depth6_s4sign_capacity_certificate.json
 
       - name: Upload final and partial certificates
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bqg-depth6-s4sign-aggregate-certificate
+          name: bqg-depth6-s4sign-capacity-certificate
           path: |
-            proof_parallel/bqg_depth6_s4sign_distributed_certificate.json
-            proof_parallel/bqg_depth6_s4sign_distributed_certificate.partial.json
+            proof_parallel/bqg_depth6_s4sign_capacity_certificate.json
+            proof_parallel/bqg_depth6_s4sign_capacity_certificate.partial.json
           if-no-files-found: warn
           retention-days: 7
