@@ -1,0 +1,36 @@
+{
+  "date": "2026-09-29",
+  "status": "DISTRIBUTED_PROOF_RUNNING",
+  "repository": "Shtenco/binary_quantum_theory",
+  "branch": "research/depth6-s4sign-proof",
+  "commits": {
+    "bundle": "dcfd854a7f09f1c240f18c205b58432798a94052",
+    "workflow": "6bbdf3be8718dafc9e38bd6ed887455b920f16bf",
+    "aggregator": "f6cc963787bc277a4457b20918a8f1d7ccf011d4"
+  },
+  "workflow_run_id": 36525453073,
+  "distributed_target": {
+    "space": "S4-sign input = [1^5] + [2,1,1,1]",
+    "shell_states": 264962,
+    "blocks": 11956,
+    "dimension": 130112,
+    "closed_component": "[1^5] = 26794",
+    "target_irrep": "[2,1,1,1] = 103318"
+  },
+  "proof_gate": "All 32 shard artifacts must cover blocks 0..11955 exactly once; aggregate using conservative geometric occupancy and numeric full-column-rank SVD on rows geometrically unique at removal time.",
+  "closed_depth6_irreps": [
+    "[1^5]",
+    "[5]",
+    "[4,1]"
+  ],
+  "remaining_after_pass": [
+    "[3,2]",
+    "[3,1,1]",
+    "[2,2,1]"
+  ],
+  "do_not_recompute": [
+    "[1^5]",
+    "[5]",
+    "[4,1]"
+  ]
+}
