@@ -34,6 +34,9 @@ jobs:
         run: python -m compileall -q .
       - name: Validate canonical v2 truth ledger
         run: python scripts/verify_theory_gates.py
+
+      - name: Validate finite depth6 frontier truth
+        run: python scripts/verify_depth6_frontier.py
       - name: Validate public status surface
         run: |
           python scripts/validate_github_latex.py \
