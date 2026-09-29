@@ -26,7 +26,7 @@ jobs:
           mkdir -p proof_parallel/runtime
           base64 -d proof_parallel/bqg_s4sign_bundle.tar.gz.b64 | tar xz -C proof_parallel/runtime
 
-      - name: Download all 128 canonical shard artifacts with API pagination
+      - name: Download all 128 canonical shard artifacts in parallel
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SOURCE_RUN_ID: '36527314863'
@@ -50,7 +50,11 @@ jobs:
           echo "ARTIFACT_METADATA_COUNT=${count}"
           test "${count}" -eq 128
 
-          while IFS=$'\t' read -r artifact_id artifact_name; do
+          export GH_TOKEN GITHUB_REPOSITORY
+          cat proof_parallel/artifacts.tsv | xargs -P 8 -n 2 bash -c '
+            set -euo pipefail
+            artifact_id="$1"
+            artifact_name="$2"
             zip="/tmp/${artifact_name}.zip"
             dest="proof_parallel/downloaded/${artifact_name}"
             mkdir -p "${dest}"
@@ -62,7 +66,7 @@ jobs:
               -o "${zip}"
             unzip -q "${zip}" -d "${dest}"
             rm -f "${zip}"
-          done < proof_parallel/artifacts.tsv
+          ' _
 
           tar_count="$(find proof_parallel/downloaded -type f -name 'bqg-s4sign-v2-shard-*.tar.gz' | wc -l)"
           echo "DOWNLOADED_TARBALL_COUNT=${tar_count}"
