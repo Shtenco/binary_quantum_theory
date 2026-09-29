@@ -2,7 +2,7 @@
 
 ## От одного различия к геометрии, ограничениям, физической истории и проверяемому гравитону
 
-> **Канонический научный обзор: 29 августа 2026.**  
+> **Канонический научный обзор: 29 сентября 2026.**  
 > **Статус: candidate mathematical/computational theory; experimental confirmation не заявлена.**
 
 Этот репозиторий исследует очень жёсткий вопрос:
@@ -13,7 +13,7 @@
 
 ---
 
-# Паспорт теории на 29 августа 2026
+# Паспорт теории на 29 сентября 2026
 
 ```text
 STRUCTURAL BINARY -> GEOMETRY CHAIN        : CLOSED in declared scopes
@@ -24,6 +24,13 @@ GR / ADM / HDA STRUCTURAL CONTROLS          : EXACT + FINITE in declared habitat
 REGGE L=6 HELD-OUT                          : PASS
 EPRL FINITE-WINDOW POWER-LAW HOLDOUT        : FAIL (correctly retained as failure)
 PETER-WEYL HIGHER-SHELL                     : FINITE EXACT constraint data
+DEPTH-4 FULL S5 KERNEL                       : CLOSED in finite habitat; [5] leaves only vacuum
+DEPTH-6 SHELL                                : 264,962 Gauss assignments / dim 3,111,637
+DEPTH-6 CLOSED IRREPS                        : [1^5], [5], [4,1]
+DEPTH-6 STRUCTURAL SUPPORT                   : CLOSED for all seven S5 irreps
+DEPTH-6 MIXED NUMERIC FRONTIER               : [2,1,1,1] giant sparse-rank gate ACTIVE
+DEPTH-6 REMAINING AFTER THAT                 : [3,2], [3,1,1], [2,2,1]
+REFINEMENT / ALL-DEPTH KERNEL THEOREM        : OPEN
 GENERAL PARITY-EVEN S4 QUARTIC TT SPACE     : EXACTLY 6-dimensional
 SIX-OBSERVABLE WILSON EXTRACTOR             : EXACT full rank
 PHYSICAL GRAVITY PROJECTOR / HISTORY        : OPEN
@@ -35,6 +42,420 @@ EXPERIMENTAL CONFIRMATION                    : NO
 ```
 
 Полный branch/PR/CI audit находится в [`REPOSITORY_AUDIT_2026-08-29.md`](REPOSITORY_AUDIT_2026-08-29.md).
+
+---
+
+
+# Актуальный finite-habitat frontier — 29 сентября 2026
+
+Эта секция является текущим каноническим статусом конечного master-kernel расчёта. Она **не заменяет** открытые physicalization gates ниже и **не означает**, что continuum BQG уже доказана.
+
+## Depth-6 shell: полный размер задачи
+
+Для corrected finite \(K_5\) depth-6 shell получено:
+
+\[
+\boxed{N_{\rm Gauss}=264\,962}
+\]
+
+Gauss-admissible spin assignments и полный размер Hilbert space
+
+\[
+\boxed{\dim\mathcal H_{d=6}=3\,111\,637}.
+\]
+
+Разложение по irreps группы \(S_5\):
+
+| \(S_5\)-irrep | multiplicity |
+|---|---:|
+| \([5]\) | 27,227 |
+| \([4,1]\) | 104,146 |
+| \([3,2]\) | 130,903 |
+| \([3,1,1]\) | 153,455 |
+| \([2,2,1]\) | 130,503 |
+| \([2,1,1,1]\) | 103,318 |
+| \([1^5]\) | 26,794 |
+
+С размерностями irreps это точно воспроизводит
+
+\[
+\boxed{3\,111\,637}.
+\]
+
+## Master constraint и covariance
+
+Для пяти вершинных Hamiltonian constraints используется
+
+\[
+M=\sum_{v=0}^{4}H_v^\dagger H_v,
+\]
+
+поэтому в конечном habitat
+
+\[
+\boxed{\ker M=\bigcap_{v=0}^{4}\ker H_v}.
+\]
+
+Проверена \(S_5\)-covariance
+
+\[
+H_{p(v)}U(p)=c_v(p)\,U(p)H_v,
+\qquad
+c_v(p)=\operatorname{sgn}(p)(-1)^{p(v)-v}.
+\]
+
+Это позволяет работать irrep-by-irrep и не строить гигантский master operator в полном \(3.1\)-миллионном basis.
+
+## Уже закрытые depth-6 irreps
+
+### \([1^5]\)
+
+\[
+\boxed{\operatorname{rank}H_0=26\,794/26\,794},
+\qquad
+\boxed{\ker=0}.
+\]
+
+**Статус:** [1^5] depth-6 = CLOSED.
+
+### \([5]\)
+
+Нулевой spin orbit даёт единственную vacuum line. На non-vacuum части:
+
+\[
+\boxed{\operatorname{rank}H_0=27\,226/27\,226}.
+\]
+
+Следовательно
+
+\[
+\boxed{\ker H_0^{[5]}=\operatorname{span}\{|0\rangle\}}.
+\]
+
+**Статус:** [5] depth-6 = CLOSED; kernel = vacuum only.
+
+### \([4,1]\)
+
+Использована ветвь
+
+\[
+[4,1]\downarrow S_4=[4]\oplus[3,1].
+\]
+
+Финальный finite certificate:
+
+\[
+\boxed{\operatorname{rank}=104\,146/104\,146}.
+\]
+
+**Статус:** [4,1] depth-6 = CLOSED.
+
+Таким образом три из семи depth-6 irreps уже закрыты численно и representation-theoretically.
+
+## Structural status всех mixed irreps
+
+Для оставшихся mixed sectors geometric/capacity peeling уже не оставляет structural obstruction:
+
+\[
+[3,2]:
+\quad
+\boxed{2755/2755\ \text{blocks}},
+\quad
+\boxed{130903/130903\ \text{columns}}
+\]
+
+\[
+[3,1,1]:
+\quad
+\boxed{2719/2719},
+\quad
+\boxed{153455/153455}
+\]
+
+\[
+[2,2,1]:
+\quad
+\boxed{2749/2749},
+\quad
+\boxed{130503/130503}
+\]
+
+\[
+[2,1,1,1]:
+\quad
+\boxed{2712/2712},
+\quad
+\boxed{103318/103318}.
+\]
+
+То есть:
+
+**STRUCTURAL SUPPORT = CLOSED**, но **NUMERIC KERNEL = ещё не автоматически CLOSED**.
+
+Structural Hall/capacity certificate сам по себе не заменяет numeric rank certificate.
+
+## Branch-sum reduction для mixed irreps
+
+В finite regulated setting master operator на каждом \(S_5\)-irrep \(\lambda\) сводится к положительной сумме его \(S_4\)-ветвей:
+
+\[
+\boxed{
+B_\lambda=
+\frac{5}{d_\lambda}
+\sum_{\mu\to\lambda}
+d_\mu A_{\lambda,\mu}
+}
+\]
+
+где
+
+\[
+A_{\lambda,\mu}=H_0^\dagger H_0
+\]
+
+на соответствующей \(S_4\)-ветви.
+
+Поскольку каждый \(A_{\lambda,\mu}\ge0\),
+
+\[
+\boxed{
+\ker B_\lambda
+=
+\bigcap_{\mu\to\lambda}
+\ker A_{\lambda,\mu}.
+}
+\]
+
+Для четырёх mixed irreps:
+
+\[
+\boxed{B_{[3,2]}=3A_{31}+2A_{22}}
+\]
+
+\[
+\boxed{B_{[3,1,1]}=\frac52(A_{31}+A_{211})}
+\]
+
+\[
+\boxed{B_{[2,2,1]}=2A_{22}+3A_{211}}
+\]
+
+\[
+\boxed{
+B_{[2,1,1,1]}
+=
+\frac54(3A_{211}+A_{1111})
+}.
+\]
+
+Это заменяет четыре разные brute-force задачи одним универсальным branch-sum engine.
+
+## Текущий активный shortcut: \(S_4\)-sign sector
+
+Для irrep \([2,1,1,1]\) используется дополнительный shortcut:
+
+\[
+\mathcal H^{S_4\text{-sign}}
+=
+[1^5]\oplus[2,1,1,1].
+\]
+
+Его размер:
+
+\[
+\boxed{
+\dim\mathcal H^{S_4\text{-sign}}_{d=6}
+=
+130\,112
+=
+26\,794+103\,318.
+}
+\]
+
+Structural peeling этого пространства закрывается полностью:
+
+\[
+\boxed{11\,956/11\,956\ \text{blocks}}
+\]
+
+\[
+\boxed{130\,112/130\,112\ \text{columns}}.
+\]
+
+### Почему одного \(H_0\) недостаточно
+
+На actual thresholded support max-flow дал
+
+\[
+\boxed{130\,096/130\,112},
+\]
+
+и min-cut локализовал весь deficit в **ровно 16 одномерных input directions**.
+
+Для всех этих 16 состояний
+
+\[
+(j_{01},j_{02},j_{03},j_{04})=(0,0,0,0),
+\]
+
+поэтому
+
+\[
+\boxed{H_0=0}
+\]
+
+на них **точно по локальной геометрии**, а не из-за numerical cutoff.
+
+Но это не master-kernel. Совместная проверка \(H_1\) на этих 16 направлениях дала:
+
+\[
+\boxed{\operatorname{rank}H_1|_{16}=16/16}
+\]
+
+\[
+\boxed{\sigma_{\min}=1.1304521906426823}
+\]
+
+\[
+\boxed{\sigma_{\max}=3.304257962941286}
+\]
+
+\[
+\boxed{\kappa\approx2.923}.
+\]
+
+Следовательно найденный 16-мерный \(H_0\)-obstruction полностью поднимается другой вершиной и **не является master-kernel**.
+
+## Giant sparse-rank gate для \([2,1,1,1]\)
+
+После локализации 16D obstruction остаётся giant component:
+
+\[
+\boxed{11\,923\ \text{input blocks}}
+\]
+
+\[
+\boxed{130\,007\ \text{columns}}
+\]
+
+\[
+\boxed{14\,586\ q\text{-blocks}}
+\]
+
+с номинальной output-row capacity
+
+\[
+\boxed{153\,202}.
+\]
+
+После вычисления фактических численных row ranks:
+
+\[
+\sum_q r_q^{\rm numerical}
+=
+\boxed{153\,056}.
+\]
+
+Даже с этими уменьшенными capacities max-flow остаётся полным:
+
+\[
+\boxed{\text{FLOW}=130\,007/130\,007}
+\]
+
+и deficient input blocks отсутствуют.
+
+Уже построен план квадратного minor:
+
+\[
+\boxed{
+A_{\rm giant}\in
+\mathbb C^{130007\times130007}
+}
+\]
+
+с ожидаемым числом ненулевых scalar entries около
+
+\[
+\boxed{47\,543\,521},
+\]
+
+и **zero_selected_rows = 0**.
+
+### Текущий незакрытый gate
+
+Нужно ещё **фактически собрать и rank-revealing factorize** этот sparse minor:
+
+\[
+\boxed{
+\operatorname{rank}A_{\rm giant}
+\stackrel{?}{=}
+130\,007.
+}
+\]
+
+Пока эта факторизация не выполнена, корректный статус:
+
+**[2,1,1,1] depth-6 = ACTIVE / NOT YET CLOSED.**
+
+Если rank окажется полным, 16D obstruction уже отдельно снят \(H_1\), и сектор \([2,1,1,1]\) можно будет перевести в CLOSED.
+
+## Что останется после \([2,1,1,1]\)
+
+Далее тем же branch-sum engine должны быть закрыты:
+
+\[
+\boxed{
+[3,2]\rightarrow[3,1,1]\rightarrow[2,2,1].
+}
+\]
+
+После этого можно впервые собрать полный depth-6 statement
+
+\[
+\boxed{
+\ker M^{(d=6)}
+\stackrel{?}{=}
+\operatorname{span}\{|0\rangle\}
+}
+\]
+
+на всём habitat размерности
+
+\[
+\boxed{3\,111\,637}.
+\]
+
+## Что depth-6 theorem НЕ докажет автоматически
+
+Даже полный depth-6 kernel theorem не равен continuum proof. После finite closure остаются самостоятельные mathematical/physical gates:
+
+\[
+d=4,6,8,\ldots
+\longrightarrow
+\text{refinement stability / induction}
+\]
+
+\[
+\longrightarrow
+P_{\rm phys}^{\rm continuum}
+\]
+
+\[
+\longrightarrow
+\text{rigging-map / physical inner-product limit}
+\]
+
+\[
+\longrightarrow
+\text{connected physical history}
+\]
+
+\[
+\longrightarrow
+\text{regulator-independent physical sector}.
+\]
+
+Наиболее сильный следующий теоретический рычаг после depth-6 — не бесконечный brute-force \(d=8,10,12,\ldots\), а поиск индукционного/refinement theorem, который использует finite bases \(d=4,6\) как начальные случаи.
 
 ---
 
@@ -99,7 +520,9 @@ TT spin-2 sector
         ↓
 complete six-dimensional quartic pole dictionary
         ↓
-PHYSICAL PROJECTOR / RELATIONAL HISTORY   ← current main physical bottleneck
+FINITE MASTER-KERNEL / REFINEMENT THEOREM ← current mathematical bottleneck
+        ↓
+PHYSICAL PROJECTOR / RELATIONAL HISTORY   ← current physicalization bottleneck
         ↓
 Z[J] -> W[J] -> Gamma[g] -> Gamma^(2)
         ↓
