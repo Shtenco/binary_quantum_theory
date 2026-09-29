@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-29",
+  "status": "PASS",
+  "scope": "generic S3 -> J4 -> J5 selectors for remaining depth-6 mixed S5 irreps",
+  "exact_multiplicity_sums": {
+    "[3,2]": 130903,
+    "[3,1,1]": 153455,
+    "[2,2,1]": 130503,
+    "[2,1,1,1]": 103318
+  },
+  "active_s5_orbits": {
+    "[3,2]": 2755,
+    "[3,1,1]": 2719,
+    "[2,2,1]": 2749,
+    "[2,1,1,1]": 2712
+  },
+  "max_character_rounding_error": 4.547473508864641e-13,
+  "fast_selector_examples": {
+    "orbit_2500": {"coord_dim": 1440, "m32": 360, "m311": 432, "m221": 360, "m2111": 288},
+    "orbit_2756": {"m32": 49, "m311": 45, "m221": 49, "m2111": 36}
+  },
+  "method": "exact stabilizer-character multiplicity + polynomial Jucys projectors applied to deterministic probes + explicit full-rank and J4/J5/projector/orthonormality residual checks",
+  "claim_boundary": "This verifies generic multiplicity/branch selector construction. It is not yet the numerical Hamiltonian rank certificate for the three remaining branch-sum sectors."
+}
