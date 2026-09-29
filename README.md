@@ -32,11 +32,11 @@
 
 Главное правило книги:
 
-\[
+$$
 \boxed{
 \text{красивая история никогда не сильнее доказательства}
 }
-\]
+$$
 
 Если что-то пока только идея — мы пишем OPEN.
 
@@ -78,7 +78,7 @@
 
 А таким, чтобы на каждом шаге можно было написать:
 
-\[
+$$
 \text{input}
 \longrightarrow
 \text{operator}
@@ -86,11 +86,11 @@
 \text{certificate}
 \longrightarrow
 \text{PASS или FAIL}.
-\]
+$$
 
 В этом репозитории построена большая цепочка:
 
-\[
+$$
 \boxed{
 \text{binary microstructure}
 \to
@@ -106,19 +106,19 @@ SU(2)\text{ quantum geometry}
 \to
 \text{TT observable algebra}
 }
-\]
+$$
 
 Но последняя строчка нашей сказки пока не написана.
 
 После этой цепочки остаётся самая трудная часть:
 
-\[
+$$
 \boxed{
 \text{finite quantum geometry}
 \not\Rightarrow
 \text{physical continuum quantum gravity автоматически}.
 }
-\]
+$$
 
 Именно эту границу важно помнить во всех последующих главах.
 
@@ -132,9 +132,9 @@ SU(2)\text{ quantum geometry}
 
 Два независимых бинарных признака дают четыре состояния:
 
-\[
+$$
 \mathbb Z_2^2.
-\]
+$$
 
 Их можно представить как четыре вершины маленького логического квадрата.
 
@@ -153,18 +153,18 @@ SU(2)\text{ quantum geometry}
 
 Точные тождества:
 
-\[
+$$
 \sum_{a=1}^{4} n_a = 0,
-\]
+$$
 
-\[
+$$
 n_a\cdot n_a=1,
-\]
+$$
 
-\[
+$$
 n_a\cdot n_b=-\frac13,
 \qquad a\neq b.
-\]
+$$
 
 Это ровно геометрия нормалей правильного тетраэдра.
 
@@ -200,21 +200,21 @@ BQG отвечает не одной картинкой, а отдельной r
 
 Для frozen q=2 refinement count получено:
 
-\[
+$$
 N_g=\frac{4\cdot 8^g+10}{7}.
-\]
+$$
 
 Из отношения соседних поколений определяется effective finite-step dimension:
 
-\[
+$$
 d_g
 =
 \log_2\frac{N_g}{N_{g-1}}.
-\]
+$$
 
 Она принимает вид
 
-\[
+$$
 d_g
 =
 3+
@@ -223,21 +223,21 @@ d_g
 1-
 \frac{35}{16\cdot 8^{g-1}+40}
 \right).
-\]
+$$
 
 Для каждого конечного шага:
 
-\[
+$$
 d_g<3,
-\]
+$$
 
 но последовательность монотонно растёт и
 
-\[
+$$
 \boxed{
 \lim_{g\to\infty}d_g=3.
 }
-\]
+$$
 
 Это не численный фит.
 
@@ -266,31 +266,31 @@ Gauss constraint требует локальной gauge-invariance.
 
 В простейшем q=2 carrier получено:
 
-\[
+$$
 \text{Gauss-singlet weight}=\frac29.
-\]
+$$
 
 Появляется двумерный logical sector.
 
 В нём удобно говорить о Pauli-like logical directions:
 
-\[
+$$
 X,\quad Y,\quad Z.
-\]
+$$
 
-Два направления, \(X\) и \(Z\), меняют intrinsic shape.
+Два направления, $X$ и $Z$, меняют intrinsic shape.
 
-Направление \(Y\) связано с orientation / oriented-volume branch.
+Направление $Y$ связано с orientation / oriented-volume branch.
 
 Точный logical metric Jacobian имеет rank два:
 
-\[
+$$
 \boxed{
 \operatorname{rank}J_{\rm metric}=2.
 }
-\]
+$$
 
-Причём \(X\)- и \(Z\)-tangents:
+Причём $X$- и $Z$-tangents:
 
 - trace-free;
 - взаимно ортогональны;
@@ -309,31 +309,31 @@ X,\quad Y,\quad Z.
 
 Если оставить только четыре активных q=2 состояния, endpoint representation оказывается слишком бедной для нужного graph-changing transport.
 
-В конструкции появляется no-link / \(j=0\) state.
+В конструкции появляется no-link / $j=0$ state.
 
 Тогда набор
 
-\[
+$$
 4\ \text{active states}
 +
 1\ \text{no-link state}
-\]
+$$
 
 образует точную пятикомпонентную структуру, связанную с SO(5)-вектором:
 
-\[
+$$
 (2,2)+(1,1)
-\]
+$$
 
-в соответствующем SU(2)\(_L\times\)SU(2)\(_R\) разложении.
+в соответствующем SU(2)$_L\times$SU(2)$_R$ разложении.
 
 Ключевой transporter identity:
 
-\[
+$$
 P_g U_a P_0 U_b P_g
 =
 |a\rangle\langle b|.
-\]
+$$
 
 То есть переход между активными состояниями можно факторизовать через graph-changing excursion в no-link sector.
 
@@ -356,7 +356,7 @@ P_g U_a P_0 U_b P_g
 
 - 16 tetrahedral cells;
 - 32 shared triangular faces;
-- dual graph \(Q_4\).
+- dual graph $Q_4$.
 
 На общей грани соседние клетки используют согласованный q=2 carrier.
 
@@ -382,33 +382,33 @@ Outward Walsh flux на shared face сокращается попарно.
 
 Когда quantum link становится более возбуждённым, representation content должен расти.
 
-При явно заданном symmetric blocking occupancy \(n\) даёт
+При явно заданном symmetric blocking occupancy $n$ даёт
 
-\[
+$$
 j=\frac n2.
-\]
+$$
 
 Размер representation:
 
-\[
+$$
 \dim(j,j)
 =
 (2j+1)^2
 =
 (n+1)^2.
-\]
+$$
 
 Таким образом occupancy
 
-\[
+$$
 n=0,1,\ldots,N
-\]
+$$
 
 воспроизводит диагональную Peter–Weyl tower
 
-\[
+$$
 j=0,\frac12,1,\frac32,\ldots,\frac N2.
-\]
+$$
 
 Ключевой файл:
 
@@ -430,7 +430,7 @@ j=0,\frac12,1,\frac32,\ldots,\frac N2.
 
 В проекте есть несколько независимых мостов:
 
-\[
+$$
 \text{flux}
 \to
 B\text{-field}
@@ -442,7 +442,7 @@ B\text{-field}
 \text{connection}
 \to
 \text{curvature}.
-\]
+$$
 
 Файлы:
 
@@ -475,9 +475,9 @@ Independent non-Einstein control отвергается после metric stage.
 - diagonal-2;
 - diagonal-3.
 
-Held-out test на \(L=6\) использует rule, обученную только на \(L=3,4,5\):
+Held-out test на $L=6$ использует rule, обученную только на $L=3,4,5$:
 
-\[
+$$
 Z_L
 =
 \frac18
@@ -485,27 +485,27 @@ Z_L
 \frac C{L^2}
 +
 \frac D{L^4}.
-\]
+$$
 
 Получено:
 
-\[
+$$
 Z_6^{\rm pred}
 =
 0.11876923193907167,
-\]
+$$
 
-\[
+$$
 Z_6^{\rm obs}
 =
 0.11876075461190198.
-\]
+$$
 
 Relative error около
 
-\[
+$$
 0.00714\%.
-\]
+$$
 
 Файлы:
 
@@ -534,7 +534,7 @@ Relative error около
 
 Целевой continuum HDA:
 
-\[
+$$
 \{H[N],H[M]\}
 \to
 D
@@ -542,31 +542,31 @@ D
 q^{ab}
 (N\partial_bM-M\partial_bN)
 \right].
-\]
+$$
 
 BQG строит finite analogues и проверяет scaling hierarchy на выбранных habitats.
 
 Например three-node graph-changing control показывает:
 
-\[
+$$
 \text{route}\sim\epsilon,
-\]
+$$
 
-\[
+$$
 \text{cross}\sim\epsilon,
-\]
+$$
 
-\[
+$$
 \text{pure geometry}\sim\epsilon^2.
-\]
+$$
 
 Для joint defect measured exponent:
 
-\[
+$$
 \boxed{
 1.0064429344.
 }
-\]
+$$
 
 Файлы:
 
@@ -597,17 +597,17 @@ Canonical GR имеет особенную kinetic signature в superspace.
 
 common radial flux scaling
 
-\[
+$$
 E_f\to(1+\epsilon)E_f
-\]
+$$
 
 задаёт conformal DeWitt direction с
 
-\[
+$$
 \boxed{Q_{\rm DW}=-6}.
-\]
+$$
 
-Этот результат позже становится важным для scalar/cosmology story, потому что локальный \(X/Z\)-carrier сам по себе conformal mode не содержит.
+Этот результат позже становится важным для scalar/cosmology story, потому что локальный $X/Z$-carrier сам по себе conformal mode не содержит.
 
 ---
 
@@ -644,48 +644,48 @@ Graph-changing Hamiltonian acts locally.
 
 Вместо требования анализировать каждый constraint отдельно вводится positive master operator:
 
-\[
+$$
 \boxed{
 M
 =
 \sum_{v=0}^{4}
 H_v^\dagger H_v.
 }
-\]
+$$
 
 Поскольку каждый term положителен,
 
-\[
+$$
 \langle\psi|M|\psi\rangle
 =
 \sum_v
 \|H_v\psi\|^2.
-\]
+$$
 
 Поэтому
 
-\[
+$$
 \boxed{
 \ker M
 =
 \bigcap_{v=0}^{4}
 \ker H_v.
 }
-\]
+$$
 
 Это важнейшая логика всей depth-6 программы.
 
 Отсюда следует ключевой урок:
 
-\[
+$$
 \boxed{
 H_0\psi=0
 \quad\not\Rightarrow\quad
 \psi\in\ker M.
 }
-\]
+$$
 
-Чтобы быть master-null, состояние должно умереть под всеми relevant \(H_v\).
+Чтобы быть master-null, состояние должно умереть под всеми relevant $H_v$.
 
 Файл общего finite theorem:
 
@@ -703,43 +703,43 @@ H_0\psi=0
 
 Полный finite depth-4 Hilbert space:
 
-\[
+$$
 \dim\mathcal H_{d=4}=217953.
-\]
+$$
 
 S5 multiplicities:
 
-\[
+$$
 [5]:2085,
-\]
+$$
 
-\[
+$$
 [4,1]:7357,
-\]
+$$
 
-\[
+$$
 [3,2]:9332,
-\]
+$$
 
-\[
+$$
 [3,1,1]:10471,
-\]
+$$
 
-\[
+$$
 [2,2,1]:9249,
-\]
+$$
 
-\[
+$$
 [2,1,1,1]:7180,
-\]
+$$
 
-\[
+$$
 [1^5]:1989.
-\]
+$$
 
 Все non-vacuum sectors были found injective в соответствующем finite analysis.
 
-В trivial \([5]\)-sector остаётся только vacuum line.
+В trivial $[5]$-sector остаётся только vacuum line.
 
 Это стало важным positive control перед depth-6.
 
@@ -749,59 +749,59 @@ S5 multiplicities:
 
 Теперь начинается текущая главная computational saga.
 
-Corrected finite \(K_5\) depth-6 shell содержит:
+Corrected finite $K_5$ depth-6 shell содержит:
 
-\[
+$$
 \boxed{
 264\,962
 }
-\]
+$$
 
 Gauss-admissible spin assignments.
 
 Полная Hilbert dimension:
 
-\[
+$$
 \boxed{
 3\,111\,637.
 }
-\]
+$$
 
 S5 spin-orbits:
 
-\[
+$$
 \boxed{
 2757.
 }
-\]
+$$
 
 Максимальный doubled spin:
 
-\[
+$$
 2j_{\max}=7,
 \qquad
 j_{\max}=\frac72.
-\]
+$$
 
 Точный S5 multiplicity ledger:
 
-| \(S_5\)-irrep | multiplicity |
+| $S_5$-irrep | multiplicity |
 |---|---:|
-| \([5]\) | 27,227 |
-| \([4,1]\) | 104,146 |
-| \([3,2]\) | 130,903 |
-| \([3,1,1]\) | 153,455 |
-| \([2,2,1]\) | 130,503 |
-| \([2,1,1,1]\) | 103,318 |
-| \([1^5]\) | 26,794 |
+| $[5]$ | 27,227 |
+| $[4,1]$ | 104,146 |
+| $[3,2]$ | 130,903 |
+| $[3,1,1]$ | 153,455 |
+| $[2,2,1]$ | 130,503 |
+| $[2,1,1,1]$ | 103,318 |
+| $[1^5]$ | 26,794 |
 
 С учётом dimensions irreps это точно даёт
 
-\[
+$$
 \boxed{
 3\,111\,637.
 }
-\]
+$$
 
 Машинный источник правды:
 
@@ -812,75 +812,75 @@ j_{\max}=\frac72.
 
 # Глава 15. Три уже закрытые крепости
 
-## 15.1. Sign irrep \([1^5]\)
+## 15.1. Sign irrep $[1^5]$
 
 Получено:
 
-\[
+$$
 \boxed{
 \operatorname{rank}H_0
 =
 26794/26794.
 }
-\]
+$$
 
 Следовательно:
 
-\[
+$$
 \boxed{
 \ker=0.
 }
-\]
+$$
 
 **Статус: CLOSED.**
 
 ---
 
-## 15.2. Trivial irrep \([5]\)
+## 15.2. Trivial irrep $[5]$
 
 Нулевой spin orbit — vacuum.
 
 На non-vacuum части:
 
-\[
+$$
 \boxed{
 \operatorname{rank}H_0
 =
 27226/27226.
 }
-\]
+$$
 
 Поэтому:
 
-\[
+$$
 \boxed{
 \ker H_0^{[5]}
 =
 \operatorname{span}\{|0\rangle\}.
 }
-\]
+$$
 
 **Статус: CLOSED, vacuum only.**
 
 ---
 
-## 15.3. Standard irrep \([4,1]\)
+## 15.3. Standard irrep $[4,1]$
 
 Используется branching:
 
-\[
+$$
 [4,1]\downarrow S_4
 =
 [4]\oplus[3,1].
-\]
+$$
 
 Финальный finite rank:
 
-\[
+$$
 \boxed{
 104146/104146.
 }
-\]
+$$
 
 **Статус: CLOSED.**
 
@@ -890,7 +890,7 @@ j_{\max}=\frac72.
 
 Mixed irreps:
 
-\[
+$$
 [3,2],
 \quad
 [3,1,1],
@@ -898,15 +898,15 @@ Mixed irreps:
 [2,2,1],
 \quad
 [2,1,1,1].
-\]
+$$
 
 Для них naive идея:
 
-> если \(H_0\) full rank, сектор закрыт
+> если $H_0$ full rank, сектор закрыт
 
 оказалась слишком сильной.
 
-У mixed representation могут существовать \(H_0\)-null directions, которые не являются master-null.
+У mixed representation могут существовать $H_0$-null directions, которые не являются master-null.
 
 И это не баг.
 
@@ -918,9 +918,9 @@ Mixed irreps:
 
 # Глава 17. Branch-sum theorem
 
-Для S5-irrep \(\lambda\) master operator можно разложить по S4 branches:
+Для S5-irrep $\lambda$ master operator можно разложить по S4 branches:
 
-\[
+$$
 \boxed{
 B_\lambda
 =
@@ -929,70 +929,70 @@ B_\lambda
 d_\mu
 A_{\lambda,\mu}
 }
-\]
+$$
 
 где
 
-\[
+$$
 A_{\lambda,\mu}
 =
 H_0^\dagger H_0
-\]
+$$
 
 на соответствующей branch.
 
 Поскольку
 
-\[
+$$
 A_{\lambda,\mu}\ge0,
-\]
+$$
 
 имеем:
 
-\[
+$$
 \boxed{
 \ker B_\lambda
 =
 \bigcap_{\mu\to\lambda}
 \ker A_{\lambda,\mu}.
 }
-\]
+$$
 
 Для оставшихся sectors:
 
-\[
+$$
 \boxed{
 B_{[3,2]}
 =
 3A_{31}+2A_{22}
 }
-\]
+$$
 
-\[
+$$
 \boxed{
 B_{[3,1,1]}
 =
 \frac52
 (A_{31}+A_{211})
 }
-\]
+$$
 
-\[
+$$
 \boxed{
 B_{[2,2,1]}
 =
 2A_{22}+3A_{211}
 }
-\]
+$$
 
-\[
+$$
 \boxed{
 B_{[2,1,1,1]}
 =
 \frac54
 (3A_{211}+A_{1111})
 }
-\]
+$$
 
 Это один из главных conceptual boosts проекта.
 
@@ -1004,57 +1004,57 @@ B_{[2,1,1,1]}
 
 Для всех mixed irreps geometric/capacity support уже structurally closes.
 
-\[
+$$
 [3,2]:
 \quad
 2755/2755\ \text{blocks},
 \quad
 130903/130903\ \text{columns}
-\]
+$$
 
-\[
+$$
 [3,1,1]:
 \quad
 2719/2719,
 \quad
 153455/153455
-\]
+$$
 
-\[
+$$
 [2,2,1]:
 \quad
 2749/2749,
 \quad
 130503/130503
-\]
+$$
 
-\[
+$$
 [2,1,1,1]:
 \quad
 2712/2712,
 \quad
 103318/103318.
-\]
+$$
 
 Это означает:
 
-\[
+$$
 \boxed{
 \text{structural obstruction}=0
 }
-\]
+$$
 
 в соответствующем support model.
 
 Но очень важно:
 
-\[
+$$
 \boxed{
 \text{Hall capacity}
 \neq
 \text{numeric injectivity автоматически}.
 }
-\]
+$$
 
 Structural support говорит:
 
@@ -1068,67 +1068,67 @@ Structural support говорит:
 
 # Глава 19. Секрет S4-sign и шестнадцать молчащих стражей
 
-Для \([2,1,1,1]\) появился дополнительный shortcut:
+Для $[2,1,1,1]$ появился дополнительный shortcut:
 
-\[
+$$
 \mathcal H^{S_4\text{-sign}}
 =
 [1^5]
 \oplus
 [2,1,1,1].
-\]
+$$
 
 Размер:
 
-\[
+$$
 \boxed{
 130112
 =
 26794+103318.
 }
-\]
+$$
 
 Structural peeling:
 
-\[
+$$
 11956/11956
-\]
+$$
 
 blocks,
 
-\[
+$$
 130112/130112
-\]
+$$
 
 columns.
 
-Сначала казалось, что можно доказать injectivity одним \(H_0\).
+Сначала казалось, что можно доказать injectivity одним $H_0$.
 
 Но actual-support max-flow дал:
 
-\[
+$$
 \boxed{
 130096/130112.
 }
-\]
+$$
 
 Не хватало ровно шестнадцати scalar directions.
 
 Min-cut показал:
 
-\[
+$$
 \boxed{
 S_{\rm deficient}
 =
 \{0,1,\ldots,15\}.
 }
-\]
+$$
 
 Каждый block одномерен:
 
-\[
+$$
 d_i=1.
-\]
+$$
 
 ---
 
@@ -1136,11 +1136,11 @@ d_i=1.
 
 Пересчёт с нулевым cutoff показал:
 
-\[
+$$
 \boxed{
 H_0\psi_i=0
 }
-\]
+$$
 
 для всех 16.
 
@@ -1150,13 +1150,13 @@ H_0\psi_i=0
 
 У всех этих states:
 
-\[
+$$
 (j_{01},j_{02},j_{03},j_{04})
 =
 (0,0,0,0).
-\]
+$$
 
-То есть все четыре edges, входящие в vertex \(0\), имеют zero spin.
+То есть все четыре edges, входящие в vertex $0$, имеют zero spin.
 
 Локальный vertex-0 Hamiltonian просто не видит там активной геометрии.
 
@@ -1164,10 +1164,10 @@ H_0\psi_i=0
 
 Старая гипотеза:
 
-\[
+$$
 H_0
 \text{ injective on total S4-sign}
-\]
+$$
 
 оказалась неверной.
 
@@ -1181,61 +1181,61 @@ H_0
 
 Хотя
 
-\[
+$$
 H_0\psi_i=0,
-\]
+$$
 
-мы проверили \(H_1\).
+мы проверили $H_1$.
 
 Для всей 16D obstruction subspace:
 
-\[
+$$
 \boxed{
 \operatorname{rank}
 H_1|_{16}
 =
 16/16.
 }
-\]
+$$
 
 Минимальная singular value:
 
-\[
+$$
 \boxed{
 \sigma_{\min}
 =
 1.1304521906426823.
 }
-\]
+$$
 
 Максимальная:
 
-\[
+$$
 \boxed{
 \sigma_{\max}
 =
 3.304257962941286.
 }
-\]
+$$
 
 Condition number:
 
-\[
+$$
 \kappa\approx2.923.
-\]
+$$
 
 Поэтому:
 
-\[
+$$
 \boxed{
 \ker H_0
 \text{ на этих 16 directions}
 \not\subset
 \ker M.
 }
-\]
+$$
 
-Все шестнадцать directions подняты \(H_1\).
+Все шестнадцать directions подняты $H_1$.
 
 **Это закрытый локальный obstruction, но ещё не весь sector theorem.**
 
@@ -1245,98 +1245,98 @@ Condition number:
 
 После удаления локализованной 16D obstruction основной S4-sign giant component имеет:
 
-\[
+$$
 \boxed{
 11923
 }
-\]
+$$
 
 input blocks,
 
-\[
+$$
 \boxed{
 130007
 }
-\]
+$$
 
 columns,
 
-\[
+$$
 \boxed{
 14586
 }
-\]
+$$
 
-output \(q\)-blocks.
+output $q$-blocks.
 
 Номинальная row capacity:
 
-\[
+$$
 153202.
-\]
+$$
 
 После actual numerical row-rank audit:
 
-\[
+$$
 \boxed{
 \sum_q r_q^{\rm numerical}
 =
 153056.
 }
-\]
+$$
 
 Несмотря на локальные rank deficits, rank-aware max-flow остаётся:
 
-\[
+$$
 \boxed{
 130007/130007.
 }
-\]
+$$
 
 Deficient inputs после этого flow:
 
-\[
+$$
 \boxed{
 0.
 }
-\]
+$$
 
 Уже выбран square minor:
 
-\[
+$$
 \boxed{
 A_{\rm giant}
 \in
 \mathbb C^{130007\times130007}.
 }
-\]
+$$
 
 Expected scalar nonzero entries:
 
-\[
+$$
 \boxed{
 47\,543\,521.
 }
-\]
+$$
 
 Zero selected rows:
 
-\[
+$$
 \boxed{
 0.
 }
-\]
+$$
 
 Но главный вопрос ещё открыт:
 
-\[
+$$
 \boxed{
 \operatorname{rank}
 A_{\rm giant}
 \stackrel{?}{=}
 130007.
 }
-\]
+$$
 
 **Статус: ACTIVE / NOT YET CLOSED.**
 
@@ -1358,39 +1358,39 @@ Giant Hall flow полон.
 
 Пока sparse minor не factorized rank-revealing методом, мы не имеем права писать:
 
-\[
+$$
 [2,1,1,1]\ \text{CLOSED}.
-\]
+$$
 
 И пока остальные mixed irreps не получили финальные numeric certificates, мы не имеем права писать:
 
-\[
+$$
 \boxed{
 \ker M^{(d=6)}
 =
 \operatorname{span}\{|0\rangle\}.
 }
-\]
+$$
 
 Поэтому machine truth сейчас:
 
-\[
+$$
 \boxed{
 \text{finite depth-6 theorem status}
 =
 \text{NOT YET PROVED}.
 }
-\]
+$$
 
 ---
 
 # Глава 24. Что останется после S4-sign giant
 
-Если giant rank gate проходит, \([2,1,1,1]\) становится CLOSED.
+Если giant rank gate проходит, $[2,1,1,1]$ становится CLOSED.
 
 После этого остаются:
 
-\[
+$$
 \boxed{
 [3,2],
 \quad
@@ -1398,7 +1398,7 @@ Giant Hall flow полон.
 \quad
 [2,2,1].
 }
-\]
+$$
 
 Для них уже есть:
 
@@ -1418,13 +1418,13 @@ Giant Hall flow полон.
 
 Представим, что завтра мы получаем:
 
-\[
+$$
 \boxed{
 \ker M^{(d=6)}
 =
 \operatorname{span}\{|0\rangle\}.
 }
-\]
+$$
 
 Будет ли BQG доказанной quantum gravity?
 
@@ -1436,7 +1436,7 @@ Giant Hall flow полон.
 
 Нужна последовательность:
 
-\[
+$$
 d=4,
 \quad
 d=6,
@@ -1444,13 +1444,13 @@ d=6,
 d=8,
 \quad
 \ldots
-\]
+$$
 
 и понятие refinement map между ними.
 
 Идеальная цель:
 
-\[
+$$
 \boxed{
 \ker M^{(d)}
 =
@@ -1458,11 +1458,11 @@ d=8,
 \quad
 \forall d\ge d_0
 }
-\]
+$$
 
 или более физически правильный stabilized-kernel theorem.
 
-Самый выгодный будущий breakthrough — не бесконечно считать depth \(8,10,12,\ldots\), а доказать induction/refinement mechanism.
+Самый выгодный будущий breakthrough — не бесконечно считать depth $8,10,12,\ldots$, а доказать induction/refinement mechanism.
 
 ---
 
@@ -1470,35 +1470,35 @@ d=8,
 
 Finite master theorem говорит:
 
-\[
+$$
 M_G
 =
 C_A^\dagger
 G^{AB}
 C_B
 \ge0,
-\]
+$$
 
-и для positive \(G\)
+и для positive $G$
 
-\[
+$$
 \boxed{
 \ker M_G
 =
 \bigcap_A
 \ker C_A.
 }
-\]
+$$
 
 Если zero sector isolated, можно построить finite spectral projector.
 
 Но настоящая physical theory требует limit:
 
-\[
+$$
 P_{\rm phys}^{(d)}
 \longrightarrow
 P_{\rm phys}^{\rm continuum}.
-\]
+$$
 
 Нужно показать:
 
@@ -1528,7 +1528,7 @@ Constraint system не даёт обычный external time автоматич�
 
 Они показывают математическую возможность цепочки:
 
-\[
+$$
 \text{combined constraint projector}
 \to
 \text{relational observables}
@@ -1536,7 +1536,7 @@ Constraint system не даёт обычный external time автоматич�
 Z[J]
 \to
 W[J].
-\]
+$$
 
 Но текущий finite control использует deliberately declared clock construction.
 
@@ -1551,11 +1551,11 @@ W[J].
 
 Theory-specific physical history:
 
-\[
+$$
 \boxed{
 \text{OPEN}.
 }
-\]
+$$
 
 ---
 
@@ -1563,25 +1563,25 @@ Theory-specific physical history:
 
 Есть очень опасная интеллектуальная ловушка.
 
-Можно взять constraint operator \(H\) и написать:
+Можно взять constraint operator $H$ и написать:
 
-\[
+$$
 (z-H)^{-1}.
-\]
+$$
 
 Объект похож на Green function.
 
-Но parameter \(z\) не обязан быть physical frequency \(\omega\).
+Но parameter $z$ не обязан быть physical frequency $\omega$.
 
 Поэтому:
 
-\[
+$$
 \boxed{
 (z-H_{\rm constraint})^{-1}
 \neq
 G_{\rm physical}(\omega)
 }
-\]
+$$
 
 без independently derived time/history structure.
 
@@ -1598,7 +1598,7 @@ G_{\rm physical}(\omega)
 
 Легальная цепочка выглядит так:
 
-\[
+$$
 \boxed{
 \{C_A\}
 \to
@@ -1612,17 +1612,17 @@ W[J_g]
 \to
 \Gamma[g]
 }
-\]
+$$
 
 затем
 
-\[
+$$
 \Gamma[g]
 \to
 \Gamma^{(2)}_{\rm metric}
 \to
 K_{TT}(\omega,\mathbf k).
-\]
+$$
 
 И только после этого можно говорить о physical graviton pole.
 
@@ -1647,31 +1647,31 @@ Positive control показывает leading massless pole.
 
 Но это именно reduced/reference controls.
 
-Они не заменяют interacting theory-specific physical \(K_{TT}\).
+Они не заменяют interacting theory-specific physical $K_{TT}$.
 
 ---
 
 # Глава 31. Шесть чисел будущего
 
-Для parity-even quartic TT response с tetrahedral \(S_4\) symmetry доказано:
+Для parity-even quartic TT response с tetrahedral $S_4$ symmetry доказано:
 
-\[
+$$
 \boxed{
 \dim\mathcal V_{\rm quartic}^{TT}
 =
 6.
 }
-\]
+$$
 
 То есть общий on-shell quartic response определяется шестью Wilson coefficients:
 
-\[
+$$
 \boxed{
 \mathbf c_{\rm IR}
 =
 (c_1,c_2,c_3,c_4,c_5,c_6).
 }
-\]
+$$
 
 Файлы:
 
@@ -1683,17 +1683,17 @@ Extraction system имеет full rank six.
 
 Exact determinant:
 
-\[
+$$
 \boxed{
 \det A
 =
 \frac1{699840000}.
 }
-\]
+$$
 
 **Статус algebraic basis/extractor: PROVED.**
 
-Но physical values \(c_i\) ещё не выведены.
+Но physical values $c_i$ ещё не выведены.
 
 ---
 
@@ -1701,7 +1701,7 @@ Exact determinant:
 
 Physical TT poles можно написать:
 
-\[
+$$
 \omega_\sigma^2
 =
 c^2k^2
@@ -1710,22 +1710,22 @@ c^2k^2
 +
 O(a_*^4k^4)
 \right].
-\]
+$$
 
 Тогда:
 
-\[
+$$
 \frac{v_{g,\sigma}-c}{c}
 =
 \frac32
 a_*^2k^2
 e_{4,\sigma}(\hat n)
 +\cdots
-\]
+$$
 
 и phase shift:
 
-\[
+$$
 \delta\phi_\sigma
 =
 -\frac12
@@ -1735,17 +1735,17 @@ La_*^2
 \right)^3
 e_{4,\sigma}(\hat n)
 +\cdots
-\]
+$$
 
 Polarization splitting:
 
-\[
+$$
 \Delta e_4(\hat n)
 =
 e_{4,1}(\hat n)
 -
 e_{4,2}(\hat n).
-\]
+$$
 
 Observable translator уже готов:
 
@@ -1755,12 +1755,12 @@ Observable translator уже готов:
 
 Но сегодня:
 
-\[
+$$
 \boxed{
 (c_1,\ldots,c_6)_{\rm physical}
 \text{ ещё OPEN}.
 }
-\]
+$$
 
 Поэтому observable algebra готова.
 
@@ -1774,11 +1774,11 @@ Physical prediction ещё нет.
 
 В проекте используется convention:
 
-\[
+$$
 \lambda_R^{\rm eff}
 =
 \frac{a_*^2}{8\pi\ell_P^2}.
-\]
+$$
 
 Правило anti-overfitting:
 
@@ -1802,7 +1802,7 @@ Physical prediction ещё нет.
 
 Для finite relational source получен exact local 1PI shape action:
 
-\[
+$$
 \boxed{
 \Gamma_{\rm shape}(s)
 =
@@ -1811,11 +1811,11 @@ s\,\operatorname{artanh}s
 \frac12
 \log(1-s^2)
 }
-\]
+$$
 
 и expansion:
 
-\[
+$$
 \Gamma_{\rm shape}
 =
 \frac{s^2}{2}
@@ -1825,27 +1825,27 @@ s\,\operatorname{artanh}s
 \frac{s^6}{30}
 +
 \cdots.
-\]
+$$
 
 Это настоящий exact nonlinear result.
 
 Но затем обнаруживается conformal obstruction.
 
-Локальные \(X/Z\) tangents trace-free:
+Локальные $X/Z$ tangents trace-free:
 
-\[
+$$
 \operatorname{Tr}
 (g_0^{-1}M_X)
 =
 0,
-\]
+$$
 
-\[
+$$
 \operatorname{Tr}
 (g_0^{-1}M_Z)
 =
 0.
-\]
+$$
 
 Поэтому local q=2 shape carrier не содержит нужный conformal/volume scalar.
 
@@ -1857,21 +1857,21 @@ s\,\operatorname{artanh}s
 
 Следовательно сегодня нельзя честно вывести:
 
-\[
+$$
 \rho_{\rm hist}(a),
-\]
+$$
 
-\[
+$$
 \Phi(a,k),
 \quad
 \Psi(a,k),
-\]
+$$
 
-\[
+$$
 \mu_{\rm BQG}(a,k),
 \quad
 \Sigma_{\rm BQG}(a,k).
-\]
+$$
 
 **Статус cosmological scalar physics: OPEN.**
 
@@ -1887,17 +1887,17 @@ DeWitt analysis подсказывает natural direction.
 
 Common radial flux scaling создаёт conformal mode.
 
-При фиксированном \(j=\frac12\) absolute volume frozen в маленьком intertwiner carrier.
+При фиксированном $j=\frac12$ absolute volume frozen в маленьком intertwiner carrier.
 
-Но \(j=1\) — первый equal-spin four-valent sector, где absolute volume становится non-scalar.
+Но $j=1$ — первый equal-spin four-valent sector, где absolute volume становится non-scalar.
 
 Conditional symmetric blocking даёт:
 
-\[
+$$
 2\ \text{active q=2 strands}
 \longrightarrow
 j=1.
-\]
+$$
 
 Отсюда возникает следующий candidate scalar carrier.
 
@@ -1922,11 +1922,11 @@ j=1.
 
 Пока coupling не derived:
 
-\[
+$$
 \mu_{\rm BQG},
 \quad
 \Sigma_{\rm BQG}
-\]
+$$
 
 не являются predictions.
 
@@ -1940,9 +1940,9 @@ Physicalization ledger отдельно требует dynamical Maxwell kernel.
 
 Нужно получить theory-specific transverse photon 1PI kernel:
 
-\[
+$$
 \Gamma^{(2)}_{AA}
-\]
+$$
 
 и показать:
 
@@ -1967,23 +1967,23 @@ Physicalization ledger отдельно требует dynamical Maxwell kernel.
 
 Нужна структура типа:
 
-\[
+$$
 Q_{11}\sim X^2,
-\]
+$$
 
-\[
+$$
 Q_{12}\sim X\cdot P,
-\]
+$$
 
-\[
+$$
 Q_{22}\sim P^2,
-\]
+$$
 
 с
 
-\[
+$$
 Sp(2,\mathbb R)
-\]
+$$
 
 gauge closure.
 
@@ -1995,15 +1995,15 @@ gauge closure.
 
 Сегодня НЕ доказаны:
 
-\[
+$$
 Sp(2,\mathbb R)\ \text{closure},
-\]
+$$
 
-\[
+$$
 (d,2)\ \text{kinetic signature},
-\]
+$$
 
-ghost-free 2T \(\to\) 1T reduction.
+ghost-free 2T $\to$ 1T reduction.
 
 Поэтому корректная фраза:
 
@@ -2021,37 +2021,37 @@ ghost-free 2T \(\to\) 1T reduction.
 
 Вторая большая исследовательская линия хочет получить:
 
-\[
+$$
 (A,\Theta,g_{\mu\nu})
 \to
 S_{\rm shadow}
-\]
+$$
 
 и затем решить spherical sector без ручного выбора metric correction:
 
-\[
+$$
 \boxed{
 h_{\rm BQG}(r)
 }
-\]
+$$
 
 должна выйти из equations, а не быть вставлена ansatz'ом.
 
 Только после этого можно честно вычислять:
 
-\[
+$$
 \Delta T_H,
-\]
+$$
 
-\[
+$$
 \Delta r_{\rm ph},
-\]
+$$
 
-\[
+$$
 \Delta\Omega_{\rm QNM}.
-\]
+$$
 
-Пока такой derived \(h_{\rm BQG}(r)\) не существует.
+Пока такой derived $h_{\rm BQG}(r)$ не существует.
 
 Поэтому black-hole deviations — future observable target, не готовое prediction.
 
@@ -2079,27 +2079,27 @@ h_{\rm BQG}(r)
 
 Нужно построить:
 
-\[
+$$
 Z[J_g]
 \to
 W[J_g].
-\]
+$$
 
 ## 40.5. Effective action
 
 Нужно получить:
 
-\[
+$$
 \Gamma[g].
-\]
+$$
 
 ## 40.6. Physical graviton kernel
 
 Нужно вывести:
 
-\[
+$$
 K_{TT}(\omega,\mathbf k).
-\]
+$$
 
 ## 40.7. Einstein pole
 
@@ -2109,9 +2109,9 @@ Leading low-energy part должен восстановить massless Einstein/
 
 Только потом читаются:
 
-\[
+$$
 (c_1,\ldots,c_6)_{\rm IR}.
-\]
+$$
 
 ## 40.9. Один absolute scale
 
@@ -2159,42 +2159,42 @@ Machine ledger [theory_gates.json](theory_gates.json) разделяет statuse
 
 Это означает:
 
-\[
+$$
 \boxed{
 \text{structural candidate architecture exists}
 }
-\]
+$$
 
 но не:
 
-\[
+$$
 \boxed{
 \text{theory of Nature experimentally established}.
 }
-\]
+$$
 
 Главная дисциплина:
 
-\[
+$$
 \text{finite structural theorem}
 \neq
 \text{continuum theorem}
-\]
+$$
 
-\[
+$$
 \neq
 \text{physical propagator}
-\]
+$$
 
-\[
+$$
 \neq
 \text{prediction}
-\]
+$$
 
-\[
+$$
 \neq
 \text{experiment}.
-\]
+$$
 
 ---
 
@@ -2222,15 +2222,15 @@ Machine ledger [theory_gates.json](theory_gates.json) разделяет statuse
 
 # Глава 44. Почему мы переписали depth-6 CI
 
-Исторически S4-sign orchestration пытался интерпретировать sector как full \(H_0\)-injective.
+Исторически S4-sign orchestration пытался интерпретировать sector как full $H_0$-injective.
 
 Свежий расчёт доказал:
 
-\[
+$$
 \boxed{
 16\ \text{exact }H_0\text{-null directions}.
 }
-\]
+$$
 
 Поэтому такое утверждение стало неверным.
 
@@ -2357,9 +2357,9 @@ Green core regression означает:
 | All-depth/refinement theorem | regulator family | OPEN |
 | Continuum physical projector | physical Hilbert space | OPEN |
 | Theory-specific physical history | time/history | OPEN |
-| Connected \(W[J]\) | physical correlations | OPEN |
-| Physical \(\Gamma[g]\) | effective action | OPEN |
-| Physical \(K_{TT}\) | graviton kernel | OPEN |
+| Connected $W[J]$ | physical correlations | OPEN |
+| Physical $\Gamma[g]$ | effective action | OPEN |
+| Physical $K_{TT}$ | graviton kernel | OPEN |
 | Six Wilson values | microscopic IR prediction | OPEN |
 | One physical scale | absolute normalization | OPEN |
 | Scalar cosmology | background/perturbations | OPEN |
@@ -2381,31 +2381,31 @@ Green core regression означает:
 
 Самый сильный математический следующий шаг:
 
-\[
+$$
 \boxed{
 \text{finish finite depth-6}
 }
-\]
+$$
 
 затем
 
-\[
+$$
 \boxed{
 \text{derive refinement / induction theorem}.
 }
-\]
+$$
 
 Самый сильный физический следующий шаг:
 
-\[
+$$
 \boxed{
 P_{\rm phys}^{\rm continuum}
 }
-\]
+$$
 
 и затем
 
-\[
+$$
 \boxed{
 Z[J_g]
 \to
@@ -2413,13 +2413,13 @@ W[J_g]
 \to
 \Gamma[g].
 }
-\]
+$$
 
 Если из этой цепочки emerge:
 
-\[
+$$
 K_{TT}(\omega,\mathbf k)
-\]
+$$
 
 с правильным Einstein pole и без ghost/tachyon pathology, проект перейдёт в другой научный класс.
 
@@ -2459,7 +2459,7 @@ BQG должна быть отвергнута или радикально пе�
 
 Ещё короче:
 
-\[
+$$
 \boxed{
 \text{binary information}
 \to
@@ -2469,7 +2469,7 @@ BQG должна быть отвергнута или радикально пе�
 \to
 \text{unfinished physical continuum}.
 }
-\]
+$$
 
 ---
 
@@ -2491,7 +2491,7 @@ BQG должна быть отвергнута или радикально пе�
 
 Мы уже далеко прошли:
 
-\[
+$$
 \text{idea}
 \to
 \text{microstructure}
@@ -2503,23 +2503,23 @@ BQG должна быть отвергнута или радикально пе�
 \text{constraint operators}
 \to
 \text{large finite habitats}.
-\]
+$$
 
 Сейчас мы стоим примерно здесь:
 
-\[
+$$
 \boxed{
 \text{large finite master-kernel programme}
 }
-\]
+$$
 
 и смотрим на следующую гору:
 
-\[
+$$
 \boxed{
 \text{continuum physicalization}.
 }
-\]
+$$
 
 ---
 
@@ -2557,7 +2557,7 @@ BQG пытается идти наоборот.
 
 ## q=2
 
-Бинарная локальная структура с четырьмя состояниями \(\mathbb Z_2^2\).
+Бинарная локальная структура с четырьмя состояниями $\mathbb Z_2^2$.
 
 ## Walsh carrier
 
@@ -2591,9 +2591,9 @@ Hypersurface-deformation algebra.
 
 Positive sum
 
-\[
+$$
 M=\sum_v H_v^\dagger H_v.
-\]
+$$
 
 ## Habitat
 
@@ -2617,21 +2617,21 @@ Low-energy effective coefficients, кодирующие higher-derivative respon
 
 ## 1PI effective action
 
-\[
+$$
 \Gamma[g]
-\]
+$$
 
 — объект, Hessian которого определяет physical linear response.
 
 ## 2T
 
-Two-Time Physics hypothesis с \(Sp(2,\mathbb R)\)-type gauge structure.
+Two-Time Physics hypothesis с $Sp(2,\mathbb R)$-type gauge structure.
 
 ---
 
 # Глава 55. Главная карта всей теории
 
-\[
+$$
 \boxed{
 \begin{array}{c}
 \text{binary labels}\\
@@ -2673,7 +2673,7 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 \text{experiment}
 \end{array}
 }
-\]
+$$
 
 Верхняя половина этой лестницы уже густо населена exact и finite results.
 
@@ -2715,7 +2715,7 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 
 Не объявлять PASS без сохранённого certificate.
 
-Не заменять master constraint одним \(H_0\), если mixed sector этого не позволяет.
+Не заменять master constraint одним $H_0$, если mixed sector этого не позволяет.
 
 Не считать structural flow numeric rank.
 
@@ -2725,7 +2725,7 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 
 Не считать observable translator prediction.
 
-Не считать 2T analogy \(Sp(2,\mathbb R)\) theorem.
+Не считать 2T analogy $Sp(2,\mathbb R)$ theorem.
 
 Не считать README доказательством.
 
@@ -2753,9 +2753,9 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 
 Из finite dynamics — огромная depth-6 задача размерности
 
-\[
+$$
 3\,111\,637.
-\]
+$$
 
 Мы уже научились разрезать её symmetry на irreps.
 
@@ -2773,7 +2773,7 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 
 Либо binary microstructure действительно сможет пройти путь:
 
-\[
+$$
 \boxed{
 \text{bits}
 \to
@@ -2783,7 +2783,7 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 \to
 \text{physics},
 }
-\]
+$$
 
 либо на одном из gates теория честно остановится.
 
@@ -2791,11 +2791,11 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 
 Потому что настоящая научная сказка отличается от обычной сказки одним правилом:
 
-\[
+$$
 \boxed{
 \text{конец нельзя придумать заранее}.
 }
-\]
+$$
 
 ---
 
@@ -2831,9 +2831,9 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 | Есть ли finite GR/HDA controls? | **Да** |
 | Есть ли algebraic TT observable basis? | **Да** |
 | Закрыт ли весь depth-6 master kernel? | **Нет** |
-| Закрыт ли \([2,1,1,1]\)? | **Нет, ACTIVE** |
-| Поднят ли 16D exact \(H_0\)-null obstruction? | **Да, \(H_1\) rank \(16/16\)** |
-| Выполнен ли giant sparse rank \(130007\times130007\)? | **Нет** |
+| Закрыт ли $[2,1,1,1]$? | **Нет, ACTIVE** |
+| Поднят ли 16D exact $H_0$-null obstruction? | **Да, $H_1$ rank $16/16$** |
+| Выполнен ли giant sparse rank $130007\times130007$? | **Нет** |
 | Есть ли all-depth refinement theorem? | **Нет** |
 | Есть ли continuum physical projector? | **Нет** |
 | Есть ли theory-specific physical history? | **Нет** |
@@ -2842,7 +2842,7 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 | Зафиксирован ли absolute scale? | **Нет** |
 | Есть ли полноценная scalar cosmology? | **Нет** |
 | Доказана ли 2T embedding? | **Нет** |
-| Выведен ли \(h_{\rm BQG}(r)\)? | **Нет** |
+| Выведен ли $h_{\rm BQG}(r)$? | **Нет** |
 | Есть ли экспериментальное подтверждение? | **Нет** |
 | Есть ли серьёзная воспроизводимая исследовательская программа? | **Да** |
 
@@ -2852,7 +2852,7 @@ K_{TT}(\omega,\mathbf k)\ ?\\
 
 Сегодня наиболее точная граница проекта выглядит так:
 
-\[
+$$
 \boxed{
 \underbrace{
 \text{binary microstructure}
@@ -2875,7 +2875,7 @@ K_{TT}
 \text{prediction}
 }_{\text{главная открытая физика}}
 }
-\]
+$$
 
 Именно эту вертикальную черту мы сейчас пытаемся перейти.
 
@@ -2917,17 +2917,17 @@ Structural truth записывается в:
 
 Текущий core ledger содержит три допустимых класса:
 
-\[
+$$
 \text{PROVED},
-\]
+$$
 
-\[
+$$
 \text{TESTED\_FINITE},
-\]
+$$
 
-\[
+$$
 \text{CONDITIONAL}.
-\]
+$$
 
 Это означает:
 
@@ -2956,7 +2956,7 @@ Machine source:
 
 Там существуют статусы:
 
-\[
+$$
 \text{proved},
 \quad
 \text{tested\_finite},
@@ -2964,7 +2964,7 @@ Machine source:
 \text{open\_physical},
 \quad
 \text{experimental\_test}.
-\]
+$$
 
 Сегодня большая часть genuinely physical gates остаётся OPEN.
 
@@ -2987,11 +2987,11 @@ Machine source:
 
 Сегодня:
 
-\[
+$$
 \boxed{
 \text{experimentally confirmed}=false.
 }
-\]
+$$
 
 ---
 
@@ -3001,21 +3001,21 @@ Machine source:
 
 Например:
 
-\[
+$$
 d_H\approx2.999229782,
-\]
+$$
 
-\[
+$$
 d_s(\text{slice})\approx3.004393867,
-\]
+$$
 
-\[
+$$
 z\approx0.998281156.
-\]
+$$
 
 Очень легко посмотреть на них и сказать:
 
-> вот же, пространство трёхмерное и \(z=1\)!
+> вот же, пространство трёхмерное и $z=1$!
 
 Но scientific protocol требует осторожности.
 
@@ -3027,9 +3027,9 @@ z\approx0.998281156.
 
 Именно поэтому internal near-hit:
 
-\[
+$$
 \neq
-\]
+$$
 
 experimental confirmation.
 
@@ -3041,26 +3041,26 @@ experimental confirmation.
 
 Имеем:
 
-\[
+$$
 N_g=
 \frac{4\cdot8^g+10}{7}.
-\]
+$$
 
-Для больших \(g\):
+Для больших $g$:
 
-\[
+$$
 N_g
 \sim
 \frac47 8^g.
-\]
+$$
 
 Поскольку
 
-\[
+$$
 8=2^3,
-\]
+$$
 
-один refinement step asymptotically умножает count на \(2^3\).
+один refinement step asymptotically умножает count на $2^3$.
 
 Отсюда и возникает three-dimensional exponent.
 
@@ -3068,16 +3068,16 @@ N_g
 
 Она использует exact finite-step dimension:
 
-\[
+$$
 d_g
 =
 \log_2
 \frac{N_g}{N_{g-1}}.
-\]
+$$
 
 Можно переписать:
 
-\[
+$$
 d_g
 =
 3+
@@ -3087,23 +3087,23 @@ d_g
 \frac{35}
 {16\cdot8^{g-1}+40}
 \right].
-\]
+$$
 
 В квадратных скобках число меньше единицы.
 
 Поэтому:
 
-\[
+$$
 d_g<3.
-\]
+$$
 
-С ростом \(g\) correction стремится к нулю.
+С ростом $g$ correction стремится к нулю.
 
 Следовательно:
 
-\[
+$$
 d_g\nearrow3.
-\]
+$$
 
 Здесь важен не факт, что numerical fit дал 3.
 
@@ -3119,17 +3119,17 @@ d_g\nearrow3.
 
 Их pairwise scalar products:
 
-\[
+$$
 n_a\cdot n_b=-\frac13.
-\]
+$$
 
 Для unit vectors это именно cosine tetrahedral angle.
 
 Кроме того:
 
-\[
+$$
 \sum_a n_a=0.
-\]
+$$
 
 То есть центр mass находится в origin.
 
@@ -3155,21 +3155,21 @@ n_a\cdot n_b=-\frac13.
 
 В q=2 carrier возникает маленькая logical Hilbert space.
 
-В ней Pauli-like operators \(X,Y,Z\) удобно интерпретируются как directions в space of shapes/orientation.
+В ней Pauli-like operators $X,Y,Z$ удобно интерпретируются как directions в space of shapes/orientation.
 
 Exact metric Jacobian показывает:
 
-\[
+$$
 X,Z
-\]
+$$
 
 дают два independent trace-free metric tangents.
 
 Это значит:
 
-\[
+$$
 \dim T_{\rm local\ shape}=2
-\]
+$$
 
 в данном minimal carrier.
 
@@ -3187,21 +3187,21 @@ Orientation reversal может оставить intrinsic lengths неизме�
 
 Схематично:
 
-\[
+$$
 X,Z
 \to
 \text{intrinsic shape}
-\]
+$$
 
 а
 
-\[
+$$
 Y
 \to
 \text{orientation-sensitive direction}.
-\]
+$$
 
-Это не значит, что \(Y\) «не геометрический».
+Это не значит, что $Y$ «не геометрический».
 
 Это значит, что он относится к другому типу geometric information.
 
@@ -3220,19 +3220,19 @@ Y
 
 В selected 16-cell completion:
 
-\[
+$$
 16\ \text{tetrahedra},
-\]
+$$
 
-\[
+$$
 32\ \text{shared faces}.
-\]
+$$
 
 Dual adjacency:
 
-\[
+$$
 Q_4.
-\]
+$$
 
 Shared-face flux cancellation гарантирует local consistency.
 
@@ -3257,7 +3257,7 @@ PL geometry даёт:
 
 Она является мостом между combinatorics и differential geometry.
 
-BQG сознательно не начинает с smooth \(g_{\mu\nu}(x)\).
+BQG сознательно не начинает с smooth $g_{\mu\nu}(x)$.
 
 Она пытается получить его как collective description.
 
@@ -3265,11 +3265,11 @@ BQG сознательно не начинает с smooth \(g_{\mu\nu}(x)\).
 
 # Глава 66. Первый мост к Einstein geometry
 
-Plebanski-like language удобен тем, что gravity можно выразить через two-form \(B\) и simplicity constraints.
+Plebanski-like language удобен тем, что gravity можно выразить через two-form $B$ и simplicity constraints.
 
 Схема:
 
-\[
+$$
 \text{qubit/flux data}
 \to
 B
@@ -3277,7 +3277,7 @@ B
 \text{simplicity}
 \to
 g_{\mu\nu}.
-\]
+$$
 
 Urbantke reconstruction позволяет получить metric из подходящего triplet two-forms.
 
@@ -3295,9 +3295,9 @@ Urbantke reconstruction позволяет получить metric из подх
 
 В некоторых reconstruction controls появляется число, похожее на:
 
-\[
+$$
 \Lambda\approx3
-\]
+$$
 
 в определённых unit conventions.
 
@@ -3319,47 +3319,47 @@ Urbantke reconstruction позволяет получить metric из подх
 
 В более коллективном q4 sector получено symmetry-resolved splitting:
 
-\[
+$$
 \lambda_E
 =
 1.1111917875584736,
-\]
+$$
 
-\[
+$$
 \lambda_{T_2}
 =
 1.0220278507464782.
-\]
+$$
 
 Разность:
 
-\[
+$$
 \Delta_{ET}
 =
 0.08916393681199541.
-\]
+$$
 
 Mean-normalized split:
 
-\[
+$$
 \boxed{
 0.08359564595312347
 }
-\]
+$$
 
-то есть около \(8.36\%\).
+то есть около $8.36\%$.
 
 S4 commutator relative max:
 
-\[
+$$
 6.89\times10^{-16}.
-\]
+$$
 
 S4 orbit residual:
 
-\[
+$$
 1.79\times10^{-16}.
-\]
+$$
 
 Это сильный finite symmetry certificate.
 
@@ -3377,7 +3377,7 @@ S4 orbit residual:
 
 В BQG Regge chain используется не как доказательство всего continuum limit, а как проверка правильного направления.
 
-Особенно важен held-out \(L=6\) test.
+Особенно важен held-out $L=6$ test.
 
 Он демонстрирует, что fitted finite-size trend обладает predictive continuation хотя бы на следующую lattice size.
 
@@ -3399,11 +3399,11 @@ Canonical GR определяется first-class constraint structure.
 
 Цель:
 
-\[
+$$
 \{H[N],H[M]\}
 \sim
 D[\ldots].
-\]
+$$
 
 Если algebra не closes, theory может содержать anomaly.
 
@@ -3415,9 +3415,9 @@ Finite HDA tests поэтому являются не украшением, а �
 
 Graph-changing operators способны поднимать spin.
 
-Для finite operator word длины \(r\) есть support bound:
+Для finite operator word длины $r$ есть support bound:
 
-\[
+$$
 \boxed{
 J_{\max}
 \ge
@@ -3425,33 +3425,33 @@ j_{\rm in}
 +
 \frac r2.
 }
-\]
+$$
 
 Для frozen Euclidean HH word:
 
-\[
+$$
 j_{\rm in}=\frac12,
-\]
+$$
 
-\[
+$$
 r=4,
-\]
+$$
 
 значит:
 
-\[
+$$
 J_{\max}
 =
 \frac52
-\]
+$$
 
 уже находится за exact support wall.
 
 То есть truncation error above support wall:
 
-\[
+$$
 0.
-\]
+$$
 
 Это существенно сильнее statement:
 
@@ -3467,13 +3467,13 @@ Lorentzian part требует extra structure, coefficient controls и larger s
 
 В текущем package declared conservative Lorentzian support wall:
 
-\[
+$$
 \boxed{
 J_{\max}
 =
 \frac{13}{2}.
 }
-\]
+$$
 
 Это finite declared wall.
 
@@ -3505,31 +3505,31 @@ J_{\max}
 
 Historical certified result:
 
-\[
+$$
 \lambda_{\min}
 =
 10.635759878291307,
-\]
+$$
 
-\[
+$$
 \lambda_{\max}
 =
 15.059927665966466.
-\]
+$$
 
 Relative distance from scalar identity:
 
-\[
+$$
 \boxed{
 0.09440461833276048.
 }
-\]
+$$
 
 Block-Lanczos reconstruction closes примерно на scale:
 
-\[
+$$
 10^{-13}.
-\]
+$$
 
 Это говорит, что higher-shell operator positive и заметно non-scalar в tested finite sector.
 
@@ -3555,15 +3555,15 @@ Irrep — irreducible symmetry sector.
 
 Depth-6:
 
-\[
+$$
 3\,111\,637
-\]
+$$
 
 Hilbert states превращаются в
 
-\[
+$$
 2757
-\]
+$$
 
 S5 spin orbits для symmetry bookkeeping.
 
@@ -3573,37 +3573,37 @@ S5 spin orbits для symmetry bookkeeping.
 
 # Глава 76. Почему S5
 
-\(K_5\) имеет пять vertices.
+$K_5$ имеет пять vertices.
 
 Permutation group пяти vertices:
 
-\[
+$$
 S_5.
-\]
+$$
 
-Hamiltonian covariance under relabeling позволяет decomposing Hilbert space по irreps \(S_5\).
+Hamiltonian covariance under relabeling позволяет decomposing Hilbert space по irreps $S_5$.
 
 Проверенная covariance:
 
-\[
+$$
 H_{p(v)}U(p)
 =
 c_v(p)
 U(p)H_v,
-\]
+$$
 
-\[
+$$
 c_v(p)
 =
 \operatorname{sgn}(p)
 (-1)^{p(v)-v}.
-\]
+$$
 
 Это фундамент всей representation reduction.
 
 ---
 
-# Глава 77. Почему \([5]\) хранит vacuum
+# Глава 77. Почему $[5]$ хранит vacuum
 
 Trivial irrep содержит fully symmetric states.
 
@@ -3621,15 +3621,15 @@ Hamiltonian не может извлечь geometric excitation из абсол�
 
 # Глава 78. Почему sign irrep оказался проще
 
-\([1^5]\) — one-dimensional sign representation of S5.
+$[1^5]$ — one-dimensional sign representation of S5.
 
 Symmetry restrictions делают branch structure очень жёсткой.
 
 В depth-6 sector удалось полностью certify:
 
-\[
+$$
 26794
-\]
+$$
 
 multiplicity columns.
 
@@ -3647,7 +3647,7 @@ multiplicity columns.
 
 Null direction одной branch может быть visible другой branch.
 
-Поэтому master sum естественно важнее single \(H_0\).
+Поэтому master sum естественно важнее single $H_0$.
 
 Именно здесь branch-sum theorem становится центральным.
 
@@ -3663,13 +3663,13 @@ Jucys–Murphy operators позволяют различать branches внут
 
 Таким образом computational problem становится:
 
-\[
+$$
 \text{orbit multiplicity}
 \to
 \text{selected branch row}
 \to
 \text{local Hamiltonian map}.
-\]
+$$
 
 Это один из ключевых engineering tricks depth-6.
 
@@ -3727,9 +3727,9 @@ Geometric graph может содержать edge, для которого actu
 
 В distributed S4-sign maps использовался numerical threshold порядка:
 
-\[
+$$
 10^{-11}.
-\]
+$$
 
 Actual support меньше geometric.
 
@@ -3747,37 +3747,37 @@ Actual support меньше geometric.
 
 Если discarded local block имеет Frobenius norm не больше:
 
-\[
+$$
 10^{-11},
-\]
+$$
 
-и discarded edges \(N_{\rm omit}\), то global discarded operator obeys:
+и discarded edges $N_{\rm omit}$, то global discarded operator obeys:
 
-\[
+$$
 \|E\|_2
 \le
 \|E\|_F
 \le
 10^{-11}\sqrt{N_{\rm omit}}.
-\]
+$$
 
 Для observed omitted count:
 
-\[
+$$
 N_{\rm omit}
 =
 25068.
-\]
+$$
 
 Получалось:
 
-\[
+$$
 \boxed{
 \|E\|_2
 \lesssim
 1.5833\times10^{-9}.
 }
-\]
+$$
 
 Это useful robust bound.
 
@@ -3787,7 +3787,7 @@ N_{\rm omit}
 
 # Глава 85. Hall theorem глазами ребёнка
 
-Есть \(n\) детей и \(n\) стульев.
+Есть $n$ детей и $n$ стульев.
 
 Каждый ребёнок может сесть только на некоторые стулья.
 
@@ -3803,7 +3803,7 @@ Hall condition проверяет:
 - стулья — output row capacity;
 - allowed seating — operator support.
 
-Max-flow \(130007/130007\) говорит:
+Max-flow $130007/130007$ говорит:
 
 > structural row capacity giant core достаточна.
 
@@ -3821,26 +3821,26 @@ Full thresholded operator слишком большой.
 
 Но flow выбирает ровно столько rows, сколько columns:
 
-\[
+$$
 130007.
-\]
+$$
 
 Получается square matrix.
 
 Если:
 
-\[
+$$
 \det A_{\rm giant}\neq0
-\]
+$$
 
 или equivalently
 
-\[
+$$
 \operatorname{rank}
 A_{\rm giant}
 =
 130007,
-\]
+$$
 
 giant component injective.
 
@@ -3882,33 +3882,33 @@ giant component injective.
 
 Например:
 
-\[
+$$
 \text{numerical\_rank}
 =
 130007.
-\]
+$$
 
 Только тогда verifier разрешит сменить:
 
-\[
+$$
 [2,1,1,1]:
 \quad
 \text{ACTIVE}
 \to
 \text{CLOSED}.
-\]
+$$
 
 Затем mixed sector certificates должны быть сохранены.
 
 И лишь после all seven irreps:
 
-\[
+$$
 \boxed{
 \text{finite depth-6 common kernel}
 =
 \operatorname{span}\{|0\rangle\}
 }
-\]
+$$
 
 может стать theorem statement.
 
@@ -3934,9 +3934,9 @@ giant component injective.
 
 То есть задача:
 
-\[
+$$
 d=4,6
-\]
+$$
 
 должна стать base case, а не началом бесконечного списка.
 
@@ -3946,31 +3946,31 @@ d=4,6
 
 Finite theorem:
 
-\[
+$$
 M_G
 =
 C^\dagger G C.
-\]
+$$
 
-Если \(G>0\), тогда:
+Если $G>0$, тогда:
 
-\[
+$$
 \langle\psi|M_G|\psi\rangle
 =
 \|G^{1/2}C\psi\|^2.
-\]
+$$
 
 Следовательно:
 
-\[
+$$
 M_G\psi=0
-\]
+$$
 
 iff
 
-\[
+$$
 C_A\psi=0
-\]
+$$
 
 для всех constraints.
 
@@ -3978,25 +3978,25 @@ C_A\psi=0
 
 Нужно определить family:
 
-\[
+$$
 M^{(d)}.
-\]
+$$
 
 И maps между physical sectors:
 
-\[
+$$
 \iota_{d\to d'}.
-\]
+$$
 
 Хотелось бы compatibility:
 
-\[
+$$
 P_{\rm phys}^{(d')}
 \iota_{d\to d'}
 \approx
 \iota_{d\to d'}
 P_{\rm phys}^{(d)}.
-\]
+$$
 
 Без такого control physical spaces разных cutoff могут быть несогласованы.
 
@@ -4010,12 +4010,12 @@ Rigging map — способ перейти от kinematical states к solutions
 
 Схематично:
 
-\[
+$$
 \eta:
 \mathcal H_{\rm kin}
 \to
 \mathcal H_{\rm phys}^\ast.
-\]
+$$
 
 Для BQG нужно, чтобы этот construction emerged from actual constraint family и behaved under refinement.
 
@@ -4029,30 +4029,30 @@ Finite projector theorem показывает algebraic possibility.
 
 Если blocks независимы:
 
-\[
+$$
 Z_N
 =
 \prod_b Z_b.
-\]
+$$
 
 Тогда:
 
-\[
+$$
 W_N
 =
 \sum_b W_b.
-\]
+$$
 
 Cross-block connected correlators:
 
-\[
+$$
 \frac{\partial^2 W_N}
 {\partial j_b\partial j_c}
 =
 0
 \quad
 b\neq c.
-\]
+$$
 
 Без connected interblock response невозможно получить настоящий momentum-dependent propagation.
 
@@ -4066,37 +4066,37 @@ b\neq c.
 
 Connected generator:
 
-\[
+$$
 W[J]
 =
 -i\hbar\log Z[J].
-\]
+$$
 
 Mean field:
 
-\[
+$$
 \bar g
 =
 \frac{\delta W}{\delta J}.
-\]
+$$
 
 Legendre transform:
 
-\[
+$$
 \Gamma[\bar g]
 =
 W[J]
 -
 J\cdot\bar g
-\]
+$$
 
 с соответствующими convention signs.
 
 Hessian:
 
-\[
+$$
 \Gamma^{(2)}
-\]
+$$
 
 является inverse connected response на physical subspace.
 
@@ -4108,39 +4108,39 @@ Hessian:
 
 Metric perturbation:
 
-\[
+$$
 h_{ij}.
-\]
+$$
 
 TT conditions:
 
-\[
+$$
 \partial_i h_{ij}=0,
-\]
+$$
 
-\[
+$$
 h_{ii}=0.
-\]
+$$
 
 Остаются две graviton polarizations.
 
 Проектор:
 
-\[
+$$
 \Pi_{TT}.
-\]
+$$
 
 Physical TT kernel:
 
-\[
+$$
 K_{TT}
 =
 \Pi_{TT}
 \Gamma^{(2)}
 \Pi_{TT}.
-\]
+$$
 
-Leading small-\(k\) behavior должен давать massless spin-2 pole.
+Leading small-$k$ behavior должен давать massless spin-2 pole.
 
 Если появляется mass term, wrong sign residue или extra ghost pole — theory fails или требует пересмотра.
 
@@ -4171,9 +4171,9 @@ Tetrahedral symmetry меньше full rotational symmetry.
 
 Directions:
 
-\[
+$$
 100,\quad110,\quad111
-\]
+$$
 
 кажутся естественными high-symmetry probes.
 
@@ -4181,15 +4181,15 @@ Directions:
 
 Чтобы получить полный rank шесть, нужен дополнительный direction, например:
 
-\[
+$$
 120.
-\]
+$$
 
 Exact determinant full extraction:
 
-\[
+$$
 \frac1{699840000}.
-\]
+$$
 
 Это отличный пример, как symmetry intuition может недосчитать observable space.
 
@@ -4201,16 +4201,16 @@ Exact determinant full extraction:
 
 Например scalar cubic:
 
-\[
+$$
 \bar e_4(\hat n)
 =
 \eta_2
 +
 \zeta_4
 Q_4^{cub}(\hat n).
-\]
+$$
 
-Или single-\(Q_{\rm tet}\) splitting.
+Или single-$Q_{\rm tet}$ splitting.
 
 Но порядок должен быть:
 
@@ -4225,17 +4225,17 @@ Q_4^{cub}(\hat n).
 
 В reduced TT control встречаются:
 
-\[
+$$
 \eta_2^{\rm bare}
 =
 -\frac1{45},
-\]
+$$
 
-\[
+$$
 \zeta_4^{\rm bare}
 =
 -\frac1{12}.
-\]
+$$
 
 Они относятся к конкретной bare/reduced control model.
 
@@ -4256,7 +4256,7 @@ Q_4^{cub}(\hat n).
 
 Modified dispersion class:
 
-\[
+$$
 E^2
 =
 (pc)^2
@@ -4265,16 +4265,16 @@ A_{4,\sigma}(\hat n)
 (pc)^4
 +
 \ldots
-\]
+$$
 
 где:
 
-\[
+$$
 A_{4,\sigma}
 =
 \frac{a_*^2}{(\hbar c)^2}
 e_{4,\sigma}.
-\]
+$$
 
 Тогда можно preregister likelihood.
 
@@ -4296,7 +4296,7 @@ Scalar cosmology требует:
 - background history;
 - connected interblock response.
 
-Minimal q=2 \(X/Z\) carrier covers only rank-two trace-free slice.
+Minimal q=2 $X/Z$ carrier covers only rank-two trace-free slice.
 
 Поэтому scalar sector обнаружил no-go раньше, чем TT sector.
 
@@ -4310,7 +4310,7 @@ Exact analysis выделил три отсутствующих компонен
 
 ## 101.1. Conformal/volume carrier
 
-В \(X/Z\) его нет.
+В $X/Z$ его нет.
 
 ## 101.2. Lapse/clock response
 
@@ -4318,7 +4318,7 @@ Independent susceptibility не построена.
 
 ## 101.3. Connected interblock physical history
 
-Local product source не создаёт \(k\)-dependence.
+Local product source не создаёт $k$-dependence.
 
 Эта декомпозиция очень полезна: она превращает vague «космология не готова» в три конкретных engineering tasks.
 
@@ -4340,9 +4340,9 @@ Local product source не создаёт \(k\)-dependence.
 
 Поэтому physicalization ledger содержит gate:
 
-\[
+$$
 \text{LENSING\_DYNAMICS\_CLOSURE}.
-\]
+$$
 
 ---
 
@@ -4352,9 +4352,9 @@ Local product source не создаёт \(k\)-dependence.
 
 Нужен:
 
-\[
+$$
 \Gamma_{AA}^{(2)}.
-\]
+$$
 
 Требования:
 
@@ -4365,11 +4365,11 @@ Local product source не создаёт \(k\)-dependence.
 
 Сегодня этот gate:
 
-\[
+$$
 \boxed{
 \text{OPEN}.
 }
-\]
+$$
 
 ---
 
@@ -4404,7 +4404,7 @@ Local product source не создаёт \(k\)-dependence.
 3. search three-generator independent subspaces;
 4. compute commutator closure;
 5. check Jacobi;
-6. reconstruct canonical \(X,P\);
+6. reconstruct canonical $X,P$;
 7. derive signature;
 8. gauge-fix;
 9. compare reduced dynamics with existing BQG history.
@@ -4417,59 +4417,59 @@ Local product source не создаёт \(k\)-dependence.
 
 Если 2T-like or Weyl-compatible parent structure eventually exists, следующая ambition:
 
-\[
+$$
 S_{\rm parent}
 \to
 S_{\rm shadow}[A,\Theta,g].
-\]
+$$
 
 Затем spherical ansatz должен быть решён from equations.
 
 Нельзя написать:
 
-\[
+$$
 h(r)
-\]
+$$
 
 руками только потому, что хочется получить красивое black-hole correction.
 
 Correct target:
 
-\[
+$$
 \boxed{
 h_{\rm BQG}(r)
 =
 \text{solution of derived field equations}.
 }
-\]
+$$
 
 ---
 
 # Глава 107. Какие black-hole observables действительно интересны
 
-Если \(h_{\rm BQG}(r)\) существует, можно вычислить:
+Если $h_{\rm BQG}(r)$ существует, можно вычислить:
 
 ## Hawking temperature
 
-\[
+$$
 \Delta T_H.
-\]
+$$
 
 ## Photon sphere
 
-\[
+$$
 \Delta r_{\rm ph}.
-\]
+$$
 
 ## Quasinormal modes
 
-\[
+$$
 \Delta\Omega_{\rm QNM}.
-\]
+$$
 
 Эти quantities гораздо ближе к real phenomenology, чем abstract parent action.
 
-Но без derived \(h(r)\) они premature.
+Но без derived $h(r)$ они premature.
 
 ---
 
@@ -4480,7 +4480,7 @@ h_{\rm BQG}(r)
 Примеры:
 
 - local q=2 source не даёт full scalar cosmology;
-- \(H_0\) не injective на total S4-sign;
+- $H_0$ не injective на total S4-sign;
 - 2T closure не заявлена;
 - photon bridge отсутствует в canonical tree.
 
@@ -4547,13 +4547,13 @@ Scientific computing требует audit infrastructure так же строг�
 
 Правильный порядок:
 
-\[
+$$
 \text{certificate}
 \to
 \text{ledger}
 \to
 \text{README}.
-\]
+$$
 
 Именно поэтому текущий README ссылается на machine truth.
 
@@ -4625,15 +4625,15 @@ Result может быть:
 
 Например:
 
-\[
+$$
 [4,1]\ \text{depth-6 finite sector CLOSED}.
-\]
+$$
 
 Это не значит:
 
-\[
+$$
 \text{BQG continuum CLOSED}.
-\]
+$$
 
 Scope — часть theorem.
 
@@ -4657,7 +4657,7 @@ Core не означает:
 
 Physical claim должен пройти более строгую цепочку:
 
-\[
+$$
 P_{\rm phys}
 \to
 W
@@ -4667,7 +4667,7 @@ W
 \text{gauge reduction}
 \to
 \text{observable}.
-\]
+$$
 
 Если какого-то звена нет, слово physical должно использоваться осторожно.
 
@@ -4721,29 +4721,29 @@ Giant sparse rank может быть numerically difficult.
 
 Minimal singular value:
 
-\[
+$$
 \sigma_{\min}
-\]
+$$
 
 прямо показывает расстояние до rank deficiency.
 
 Если:
 
-\[
+$$
 \sigma_{\min}
 \gg
 \text{numerical error},
-\]
+$$
 
 rank certificate устойчив.
 
 Если:
 
-\[
+$$
 \sigma_{\min}
 \sim
 \text{roundoff},
-\]
+$$
 
 нужна higher precision/exact method.
 
@@ -4763,7 +4763,7 @@ rank certificate устойчив.
 - singular-value behavior;
 - regulator maps.
 
-Иначе depth \(d+2\) может неожиданно родить новые physical zero modes.
+Иначе depth $d+2$ может неожиданно родить новые physical zero modes.
 
 ---
 
@@ -4775,11 +4775,11 @@ rank certificate устойчив.
 
 Тогда target:
 
-\[
+$$
 \ker M
 =
 \operatorname{span}\{|0\rangle\}
-\]
+$$
 
 будет неверным physical conjecture.
 
@@ -4821,9 +4821,9 @@ rank certificate устойчив.
 
 ## Bottleneck A
 
-\[
+$$
 130007\times130007
-\]
+$$
 
 sparse rank.
 
@@ -4831,11 +4831,11 @@ sparse rank.
 
 Mixed sectors:
 
-\[
+$$
 [3,2],
 [3,1,1],
 [2,2,1].
-\]
+$$
 
 ## Bottleneck C
 
@@ -5094,15 +5094,15 @@ OPEN/FINITE/PROVED distinctions.
 
 Поэтому архив:
 
-\[
+$$
 \text{история сохраняется},
-\]
+$$
 
 но
 
-\[
+$$
 \text{canonical surface остаётся чистой}.
-\]
+$$
 
 ---
 
@@ -5179,7 +5179,7 @@ Archive исключён из active scan.
 
 Если все depth-6 sectors закрыты:
 
-\[
+$$
 [1^5],
 [5],
 [4,1],
@@ -5187,17 +5187,17 @@ Archive исключён из active scan.
 [3,1,1],
 [2,2,1],
 [2,1,1,1]
-\]
+$$
 
 и только vacuum line survives, тогда:
 
-\[
+$$
 \boxed{
 \ker M^{(d=6)}
 =
 \operatorname{span}\{|0\rangle\}.
 }
-\]
+$$
 
 Это будет новый canonical theorem.
 
@@ -5209,9 +5209,9 @@ README тогда должен измениться только после mach
 
 Если:
 
-\[
+$$
 \operatorname{rank}A_{\rm giant}<130007,
-\]
+$$
 
 мы не будем «лечить» result threshold tuning.
 
@@ -5219,7 +5219,7 @@ README тогда должен измениться только после mach
 
 - find nullspace;
 - verify precision;
-- lift through other \(H_v\);
+- lift through other $H_v$;
 - understand symmetry;
 - determine master nullity.
 
@@ -5237,7 +5237,7 @@ single vertex не всегда достаточно.
 
 Поэтому future proof architecture должна строить master combinations сразу.
 
-Лучше лишний раз учитывать covariance, чем потом ошибочно принимать \(H_0\)-null за physical null.
+Лучше лишний раз учитывать covariance, чем потом ошибочно принимать $H_0$-null за physical null.
 
 ---
 
@@ -5245,19 +5245,19 @@ single vertex не всегда достаточно.
 
 Positive sum:
 
-\[
+$$
 B_\lambda
 =
 \sum_\mu w_\mu A_\mu
-\]
+$$
 
-с \(w_\mu>0\) даёт:
+с $w_\mu>0$ даёт:
 
-\[
+$$
 \ker B_\lambda
 =
 \bigcap_\mu\ker A_\mu.
-\]
+$$
 
 Это conceptual simplification kernel problem.
 
@@ -5314,9 +5314,9 @@ Universality потребовала бы:
 
 Поэтому external extension:
 
-\[
+$$
 \text{MICRO\_DYNAMICAL\_UNIQUENESS}
-\]
+$$
 
 остаётся open.
 
@@ -5358,11 +5358,11 @@ General topological universality не доказана.
 
 Physical amplitude требует:
 
-\[
+$$
 |\Psi_{\rm in}\rangle,
 \quad
 |\Psi_{\rm out}\rangle.
-\]
+$$
 
 Выбор boundary states не должен быть скрытой подгонкой.
 
@@ -5381,15 +5381,15 @@ Physical amplitude требует:
 
 Physical generating functional требует source coupling:
 
-\[
+$$
 J_g\cdot O_g.
-\]
+$$
 
-Observable \(O_g\) должен быть derived metric operator.
+Observable $O_g$ должен быть derived metric operator.
 
 Insertion prescription должен быть symmetric/gauge-compatible.
 
-Без этого derivatives \(W[J]\) могут не быть physical correlators.
+Без этого derivatives $W[J]$ могут не быть physical correlators.
 
 ---
 
@@ -5397,15 +5397,15 @@ Insertion prescription должен быть symmetric/gauge-compatible.
 
 Connected correlators приходят из:
 
-\[
+$$
 W=\log Z.
-\]
+$$
 
-Не из raw \(Z\).
+Не из raw $Z$.
 
 Почему?
 
-Потому что \(\log Z\) автоматически отделяет connected diagrams/cumulants.
+Потому что $\log Z$ автоматически отделяет connected diagrams/cumulants.
 
 В finite product model это сразу показывает отсутствие interblock connected response.
 
@@ -5415,9 +5415,9 @@ W=\log Z.
 
 Physical graviton propagator должен иметь pole:
 
-\[
+$$
 \omega^2-c^2k^2=0
-\]
+$$
 
 на leading order.
 
@@ -5425,15 +5425,15 @@ Residue должен иметь правильный знак.
 
 Если residue negative:
 
-\[
+$$
 \text{ghost}.
-\]
+$$
 
 Если pole смещён mass-like term без основания:
 
-\[
+$$
 \text{wrong IR gravity}.
-\]
+$$
 
 Эти checks будут частью physical TT gate.
 
@@ -5443,9 +5443,9 @@ Residue должен иметь правильный знак.
 
 Quartic corrections:
 
-\[
+$$
 a_*^2k^4
-\]
+$$
 
 естественно интерпретируются как higher-derivative EFT terms.
 
@@ -5459,18 +5459,18 @@ a_*^2k^4
 
 Если six coefficients dimensionless, нужен один length scale:
 
-\[
+$$
 a_*.
-\]
+$$
 
 Можно:
 
-- derive \(a_*/\ell_P\);
+- derive $a_*/\ell_P$;
 - или calibrate one datum.
 
 После этого все другие observables predicted.
 
-Если каждый direction/polarization получает свой fitted \(a_*\), predictive power исчезает.
+Если каждый direction/polarization получает свой fitted $a_*$, predictive power исчезает.
 
 ---
 
@@ -5496,7 +5496,7 @@ Future test должен заранее зафиксировать:
 
 Если scalar sector когда-нибудь closed, нужно jointly compare:
 
-- expansion \(H(z)\);
+- expansion $H(z)$;
 - growth;
 - lensing;
 - slip;
@@ -5562,7 +5562,7 @@ BQG пока не утверждает:
 - finite Plebanski/Regge/HDA controls;
 - exact finite master-kernel identity;
 - closed depth-4 reference result;
-- closed depth-6 sectors \([1^5],[5],[4,1]\);
+- closed depth-6 sectors $[1^5],[5],[4,1]$;
 - structural closure mixed sectors;
 - exact 16D H0 obstruction и H1 lift;
 - six-dimensional quartic TT quotient;
@@ -5580,19 +5580,19 @@ Giant sparse rank certificate.
 
 ## M2
 
-Master-aware \([2,1,1,1]\) closure.
+Master-aware $[2,1,1,1]$ closure.
 
 ## M3
 
-\([3,2]\) closure.
+$[3,2]$ closure.
 
 ## M4
 
-\([3,1,1]\) closure.
+$[3,1,1]$ closure.
 
 ## M5
 
-\([2,2,1]\) closure.
+$[2,2,1]$ closure.
 
 ## M6
 
@@ -5620,29 +5620,29 @@ Frozen six-vector + scale.
 
 Тогда впервые появится право написать:
 
-\[
+$$
 \boxed{
 \text{BQG predicts ...}
 }
-\]
+$$
 
 с конкретными numbers/functions.
 
 До этого правильнее:
 
-\[
+$$
 \boxed{
 \text{BQG constructs/tests ...}
 }
-\]
+$$
 
 или
 
-\[
+$$
 \boxed{
 \text{BQG would predict ... if physical coefficients are derived}.
 }
-\]
+$$
 
 ---
 
@@ -5779,19 +5779,19 @@ Validator не доказывает physics.
 
 GREEN означает:
 
-\[
+$$
 \boxed{
 \text{registered internal structural package reproduced}.
 }
-\]
+$$
 
 Не означает:
 
-\[
+$$
 \boxed{
 \text{Nature confirmed BQG}.
 }
-\]
+$$
 
 Эта фраза должна быть мысленно приклеена к каждому зелёному badge.
 
@@ -5865,13 +5865,13 @@ FAIL может быть:
 
 Идея схематична:
 
-\[
+$$
 B_\lambda^{(d)}
 =
 \sum_\mu
 w_{\lambda\mu}
 A_{\lambda\mu}^{(d)}.
-\]
+$$
 
 Если kernels branches контролируются under refinement, можно попытаться prove stability master kernel.
 
@@ -5921,7 +5921,7 @@ Local SU(2) recoupling amplitudes часто выражаются через rad
 
 # Глава 176. Что делать, если giant rank near-singular
 
-1. Estimate \(\sigma_{\min}\).
+1. Estimate $\sigma_{\min}$.
 2. Find candidate null vectors.
 3. Verify residual in high precision.
 4. Classify by symmetry.
@@ -5935,11 +5935,11 @@ Local SU(2) recoupling amplitudes часто выражаются через rad
 
 Он показывает concrete example:
 
-\[
+$$
 \ker H_0
 \neq
 \ker M.
-\]
+$$
 
 Это не abstract warning.
 
@@ -6078,7 +6078,7 @@ Scripts — reproduction.
 
 А успешная chain:
 
-\[
+$$
 \boxed{
 P_{\rm phys}^{\rm continuum}
 \to
@@ -6086,7 +6086,7 @@ P_{\rm phys}^{\rm continuum}
 \to
 K_{TT}
 }
-\]
+$$
 
 с Einstein pole.
 
@@ -6100,7 +6100,7 @@ K_{TT}
 
 # Глава 187. Почему экспериментальный успех без этого был бы подозрительным
 
-Если заранее подобрать phenomenological \(h(r)\), dispersion или cosmology и найти fit, это не проверит microscopic theory.
+Если заранее подобрать phenomenological $h(r)$, dispersion или cosmology и найти fit, это не проверит microscopic theory.
 
 Нужно prediction from internal dynamics.
 
@@ -6112,15 +6112,15 @@ K_{TT}
 
 Не:
 
-\[
+$$
 \text{bit}
 =
 \text{graviton}.
-\]
+$$
 
 А:
 
-\[
+$$
 \text{binary combinatorics}
 \to
 \text{representation carrier}
@@ -6130,7 +6130,7 @@ K_{TT}
 \text{constraint dynamics}
 \to
 \text{coarse geometric response}.
-\]
+$$
 
 Это длинная chain.
 
@@ -6170,7 +6170,7 @@ Gravity — target emergent geometric/HDA/TT sector.
 
 # Глава 191. Финальная карта для эксперта
 
-\[
+$$
 \boxed{
 \begin{aligned}
 &\mathbb Z_2^2
@@ -6208,7 +6208,7 @@ K_{TT}
 \text{observables}.
 \end{aligned}
 }
-\]
+$$
 
 Current frontier sits between line three and line four.
 
@@ -6226,9 +6226,9 @@ Current frontier sits between line three and line four.
 
 А:
 
-\[
+$$
 \text{metric map}.
-\]
+$$
 
 Не:
 
@@ -6236,9 +6236,9 @@ Current frontier sits between line three and line four.
 
 А:
 
-\[
+$$
 \text{HDA / Einstein controls}.
-\]
+$$
 
 Не:
 
@@ -6246,9 +6246,9 @@ Current frontier sits between line three and line four.
 
 А:
 
-\[
+$$
 P_{\rm phys}.
-\]
+$$
 
 Не:
 
@@ -6256,9 +6256,9 @@ P_{\rm phys}.
 
 А:
 
-\[
+$$
 K_{TT}.
-\]
+$$
 
 Не:
 
@@ -6266,10 +6266,10 @@ K_{TT}.
 
 А:
 
-\[
+$$
 h_{\rm BQG}(r)
 \text{ derived from equations}.
-\]
+$$
 
 Не:
 
@@ -6277,9 +6277,9 @@ h_{\rm BQG}(r)
 
 А:
 
-\[
+$$
 \text{blind frozen likelihood}.
-\]
+$$
 
 Именно так сказка превращается в физику.
 
@@ -6289,127 +6289,127 @@ h_{\rm BQG}(r)
 
 ## Microstructure
 
-\[
+$$
 d_H=2.999229782
-\]
+$$
 
-\[
+$$
 d_s(\text{slice})=3.004393867
-\]
+$$
 
-\[
+$$
 z=0.998281156
-\]
+$$
 
-\[
+$$
 d_s(\text{history})\approx4.004393867
-\]
+$$
 
 Эти значения — internal finite diagnostics.
 
 ## L1 q4 S4 metric
 
-\[
+$$
 \lambda_E=1.1111917875584736
-\]
+$$
 
-\[
+$$
 \lambda_{T_2}=1.0220278507464782
-\]
+$$
 
-\[
+$$
 \Delta_{ET}=0.08916393681199541
-\]
+$$
 
-\[
+$$
 \text{relative split}=0.08359564595312347
-\]
+$$
 
 ## Higher-shell Lambda
 
-\[
+$$
 \lambda_{\min}=10.635759878291307
-\]
+$$
 
-\[
+$$
 \lambda_{\max}=15.059927665966466
-\]
+$$
 
-\[
+$$
 \text{relative nonscalarity}=0.09440461833276048
-\]
+$$
 
 ## Three-node HDA
 
-\[
+$$
 \text{route exponent}=0.9999571195
-\]
+$$
 
-\[
+$$
 \text{cross exponent}=1.0024037289
-\]
+$$
 
-\[
+$$
 \text{pure geometry exponent}=2.0061524985
-\]
+$$
 
-\[
+$$
 \text{joint exponent}=1.0064429344
-\]
+$$
 
 ## Depth-6
 
-\[
+$$
 N_{\rm Gauss}=264962
-\]
+$$
 
-\[
+$$
 \dim\mathcal H=3111637
-\]
+$$
 
-\[
+$$
 N_{S_5\text{ orbits}}=2757
-\]
+$$
 
 ## S4-sign obstruction
 
-\[
+$$
 16\ \text{exact }H_0\text{-null directions}
-\]
+$$
 
-\[
+$$
 \operatorname{rank}H_1=16/16
-\]
+$$
 
-\[
+$$
 \sigma_{\min}=1.1304521906426823
-\]
+$$
 
 ## Giant component
 
-\[
+$$
 11923\ \text{blocks}
-\]
+$$
 
-\[
+$$
 130007\ \text{columns}
-\]
+$$
 
-\[
+$$
 14586\ q\text{-blocks}
-\]
+$$
 
-\[
+$$
 153056\ \text{sum numerical q-row ranks}
-\]
+$$
 
-\[
+$$
 130007/130007\ \text{rank-aware max-flow}
-\]
+$$
 
-\[
+$$
 47\,543\,521\ \text{expected scalar nonzeros in square plan}
-\]
+$$
 
 ---
 
@@ -6449,41 +6449,41 @@ Only with explicit scope.
 
 Нельзя писать:
 
-\[
+$$
 \text{BQG доказана}
-\]
+$$
 
 пока continuum physicalization open.
 
 Нельзя писать:
 
-\[
+$$
 \text{2T доказана}
-\]
+$$
 
-пока нет \(Sp(2,\mathbb R)\) closure.
+пока нет $Sp(2,\mathbb R)$ closure.
 
 Нельзя писать:
 
-\[
+$$
 \text{black-hole correction predicted}
-\]
+$$
 
-пока нет derived \(h_{\rm BQG}(r)\).
+пока нет derived $h_{\rm BQG}(r)$.
 
 Нельзя писать:
 
-\[
+$$
 \text{dark energy explained}
-\]
+$$
 
 пока physical FLRW action open.
 
 Нельзя писать:
 
-\[
+$$
 \text{GW dispersion predicted}
-\]
+$$
 
 пока physical six-vector open.
 
@@ -6493,43 +6493,43 @@ Only with explicit scope.
 
 Можно писать:
 
-\[
+$$
 \text{exact q=2 tetrahedral character carrier}
-\]
+$$
 
 в declared construction.
 
 Можно писать:
 
-\[
+$$
 d_*=3
-\]
+$$
 
 для frozen q=2 refinement count.
 
 Можно писать:
 
-\[
+$$
 \text{finite depth-6 }[1^5],[5],[4,1]\text{ CLOSED}.
-\]
+$$
 
 Можно писать:
 
-\[
+$$
 16D\ H_0\text{ obstruction lifted by }H_1.
-\]
+$$
 
 Можно писать:
 
-\[
+$$
 \dim\mathcal V_{TT}^{(4)}=6.
-\]
+$$
 
 Можно писать:
 
-\[
+$$
 \text{physicalization remains open}.
-\]
+$$
 
 ---
 
@@ -6572,75 +6572,75 @@ d_*=3
 
 Первая:
 
-\[
+$$
 \mathbb Z_2^2.
-\]
+$$
 
 Вторая:
 
-\[
+$$
 n_a\cdot n_b=-\frac13.
-\]
+$$
 
 Третья:
 
-\[
+$$
 \lim_{g\to\infty}d_g=3.
-\]
+$$
 
 Четвёртая:
 
-\[
+$$
 M=\sum_vH_v^\dagger H_v.
-\]
+$$
 
 Пятая:
 
-\[
+$$
 \ker M=\bigcap_v\ker H_v.
-\]
+$$
 
 Шестая:
 
-\[
+$$
 \dim\mathcal H_{d=6}=3111637.
-\]
+$$
 
 Седьмая:
 
-\[
+$$
 B_\lambda
 =
 \frac5{d_\lambda}
 \sum_{\mu\to\lambda}
 d_\mu A_{\lambda,\mu}.
-\]
+$$
 
 Восьмая:
 
-\[
+$$
 P_{\rm phys}^{(d)}
 \to
 P_{\rm phys}^{\rm continuum}\ ?.
-\]
+$$
 
 Девятая:
 
-\[
+$$
 K_{TT}
 =
 \Pi_{TT}
 \Gamma^{(2)}
 \Pi_{TT}.
-\]
+$$
 
 Десятая:
 
-\[
+$$
 \text{prediction}
 \stackrel{?}{=}
 \text{Nature}.
-\]
+$$
 
 Между первой и десятой формулой находится вся наша научная сказка.
 
@@ -7516,7 +7516,7 @@ After background, scalar, photon, lensing-dynamics and one-scale outputs are fro
 
 Самая важная формула этого тома:
 
-\[
+$$
 \boxed{
 \text{status}
 +
@@ -7526,5 +7526,5 @@ After background, scalar, photon, lensing-dynamics and one-scale outputs are fro
 =
 \text{полный смысл результата}.
 }
-\]
+$$
 
