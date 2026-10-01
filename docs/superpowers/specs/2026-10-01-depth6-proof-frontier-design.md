@@ -1,41 +1,55 @@
-# Depth-6 proof frontier closure and [3,2] master-rank pipeline
+# Depth-6 proof frontier recovery and [3,2] independent numerical witness
 
 Date: 2026-10-01
 Repository: `Shtenco/binary_quantum_theory`
-Canonical base commit at design time: `9de8df36c34f0a39305f28bd09ec6496ad954473`
+Supersedes the mistaken frontier wording introduced by commit `36aa2cd48a7ae3b912cb729a2cfbe1618382e75a`.
+Canonical finite-depth inputs include the 2026-09-29 branch-sum checkpoints and the 2026-10-01 `[2,1,1,1]` master certificate.
 
 ## 1. Purpose
 
-This change moves the finite corrected K5 depth-6 programme from the now-closed S4-sign sector `[2,1,1,1]` to the first remaining mixed irrep `[3,2]`, while repairing repository truth/provenance so that machine-readable status, documentation, CI and proof artifacts all describe the same theorem boundary.
+This document restores the correct depth-6 theorem boundary.
 
-The design is intentionally fail-closed. It must never turn a structural or matching failure into a claimed operator kernel, and it must never reopen the historical H2/null-lift route unless a residual vector survives an independent application of the complete declared master map.
-
-The target sequence is
+`[3,2]` is **not** a new structural target. Its corrected K5 depth-6 structural/branch-sum proof was already closed on 2026-09-29:
 
 ```text
-preserve [2,1,1,1] evidence
+irrep                         = [3,2]
+active blocks                 = 2755 / 2755
+multiplicity-space columns    = 130903 / 130903
+remaining blocks              = 0
+remaining columns             = 0
+structural status             = CLOSED
+```
+
+The only unfinished `[3,2]` task is the **independent numerical master-rank witness**. Therefore all already-certified shell, orbit, Jucys, branching, support/capacity and structural peeling work is immutable input and MUST NOT be recomputed merely to continue the proof.
+
+The corrected target sequence is:
+
+```text
+preserve already-closed evidence
   -> synchronize canonical depth6 truth
   -> freeze [2,1,1,1] as CLOSED_FINITE_NUMERICAL
-  -> build [3,2] branch-q rank map
-  -> robust capacitated matching
-  -> quarantine weak/conflicting columns
-  -> assemble small residual master Gram
-  -> independent true-kernel check only if needed
-  -> close [3,2] or report a verified residual kernel
+  -> freeze [3,2] structural certificate as CLOSED
+  -> recover all surviving [3,2] numerical checkpoints / Actions artifacts
+  -> validate recovered evidence against immutable 130903-column ledger
+  -> compute only missing numerical master witness pieces
+  -> quarantine genuinely unresolved numerical subspace
+  -> assemble residual full master Gram only where needed
+  -> independent true-kernel check only if a near-null vector survives
+  -> close [3,2] numerically or report the exact unresolved numerical state
 ```
 
 ## 2. Scientific claim boundaries
 
 ### 2.1 `[2,1,1,1]`
 
-The canonical finite statement is
+The canonical finite statement is:
 
 ```text
 scope: corrected K5 depth-6 S4-sign multiplicity space
 status: CLOSED_FINITE_NUMERICAL
 ```
 
-with the certified decomposition
+with:
 
 ```text
 ker H0 = K16
@@ -45,33 +59,36 @@ rank H1 | K16 = 16 / 16
 sigma_min(H1 | K16) = 1.1304521906426825
 ```
 
-and therefore
+and hence:
 
 ```text
 ker M | S4-sign = 0
-[2,1,1,1] dimension 103318 -> rank 103318 -> empty kernel
+[2,1,1,1] multiplicity dimension 103318 -> empty kernel
 ```
 
-This is a finite numerical rank certificate with a large conditioning margin. It is not promoted to an all-depth, continuum, rigging-map, physical-propagator or experimental theorem.
+This is a finite numerical rank certificate, not an all-depth, continuum, rigging-map, physical-propagator or experimental theorem.
 
 ### 2.2 `[3,2]`
 
-The next target is
+The canonical structural statement is already:
 
 ```text
-irrep: [3,2]
-multiplicity-space dimension: 130903
-active S5 orbit blocks: 2755
+multiplicity-space dimension = 130903
+active S5 orbit blocks       = 2755
+structural blocks            = 2755 / 2755
+structural columns           = 130903 / 130903
+structural remainder         = 0
+structural status            = CLOSED
 ```
 
-The S5 -> S4 branching identity is frozen as
+The exact S5 -> S4 branch identity is frozen:
 
 ```text
 [3,2] -> [3,1] + [2,2]
 B32 = 3 A31 + 2 A22
 ```
 
-Equivalently the positive stacked map is
+Equivalently:
 
 ```text
 C32 = [sqrt(3) H31 ; sqrt(2) H22]
@@ -79,140 +96,201 @@ B32 = C32^dagger C32
 ker B32 = ker H31 intersect ker H22
 ```
 
-The existing vertex/S3 reduction
+The existing vertex/S3 master-row identity
 
 ```text
 B = A0 + A1 + 3 A2
 ```
 
-is a compatible decomposition of the same positive master object and remains available as an implementation-level route. It must not be confused with the S4 branch identity.
+is a compatible implementation-level decomposition of the same positive master object. It is not a replacement for the S4 branching statement and is not a reason to reopen structural proof.
 
-## 3. P0 provenance and artifact preservation
+The historical 2026-09-29 numerical checkpoint was **partial**, not negative. H0-only probes found local rank deficits on some blocks; this established only that H0 by itself was an insufficient certificate. It did not establish a master-constraint kernel. The numerical continuation must therefore use the complete declared positive master map or an equivalent independently verified stacked map.
 
-The `[2,1,1,1]` master certificate references source workflow run `36527314863`, source head SHA `5cefb20906e1d0a95d9abc06c038fcdae026235c`, and 128 `bqg-s4sign-v2-shard-*` Actions artifacts. Those artifacts are temporary and must not remain the sole carrier of the source maps.
+## 3. Immutable depth-6 structural ledger
 
-The repository already contains `.github/workflows/bqg-depth6-s4sign-aggregate-existing.yml`, which downloads all 128 canonical shards and verifies their count. The preservation change should reuse that exact ingestion path rather than introduce a second downloader.
-
-Required preservation output:
+The mixed-sector branch-sum structural certificates are frozen inputs:
 
 ```text
-BQG_DEPTH6_S4SIGN_SOURCE_RUN_36527314863/
-  artifacts.tsv
-  sha256_manifest.txt
-  source_run.json
-  shard_bundle.tar.gz (or tar.zst if runner/tooling is frozen)
+[3,2]       2755/2755 blocks   130903/130903 columns   remaining 0
+[3,1,1]     2719/2719 blocks   153455/153455 columns   remaining 0
+[2,2,1]     2749/2749 blocks   130503/130503 columns   remaining 0
+[2,1,1,1]   2712/2712 blocks   103318/103318 columns   remaining 0
 ```
 
-`source_run.json` must record at least:
+Thus structural/combinatorial capacity is already closed for all seven depth-6 S5 irreps.
+
+This means the following are **DO_NOT_RECOMPUTE** for `[3,2]` unless an explicit integrity check detects corruption:
 
 ```text
-repository
-source_run_id
-source_head_sha
-source_branch
-expected_shards = 128
-artifact names
-artifact ids
-GitHub artifact digest when available
-bundle digest
-creation timestamp
+depth-6 shell enumeration
+264962 spin assignments
+2757 S5 orbit enumeration
+[3,2] multiplicity 130903
+2755 active [3,2] blocks
+S3/J4/J5 Jucys selector construction
+S5 -> S4 branching identity
+structural support graph
+structural capacity ledger
+structural peeling / matching proving 130903/130903 coverage
+universal branch transporter regressions already certified
 ```
 
-The bundle must be copied to a storage location whose lifetime is independent of the original 2-3 day Actions retention. The preservation operation is evidence handling only; it must not change any theorem status.
+Integrity verification of hashes/counts is allowed. Recomputing the mathematical search is not the default continuation path.
 
-## 4. Canonical truth synchronization
+## 4. Canonical status after correction
 
-After evidence preservation, the following surfaces must agree:
-
-- `BQG_DEPTH6_2111_MASTER_CLOSED_2026-10-01.json`
-- `depth6_frontier.json`
-- `scripts/verify_depth6_frontier.py`
-- `THEORY_STATUS.md`
-- `OPEN_PROBLEMS.md`
-- `CANONICAL_THEORY_PACKAGE.md`
-- `.github/workflows/bqg-depth6-s4sign-aggregate.yml`
-- `.github/workflows/bqg-depth6-mixed-stage-b-final.yml`
-- any README status block that still names the obsolete 130007 x 130007 minor as the active blocker
-
-The old giant-minor route remains historical evidence but is no longer the canonical blocker.
-
-The canonical depth-6 status after synchronization must be
+Canonical status must distinguish structural closure from numerical master closure.
 
 ```text
-CLOSED:
+NUMERICALLY CLOSED / finite master witness:
   [1^5]
-  [5]
+  [5]          (non-vacuum sector; zero-spin vacuum line treated separately)
   [4,1]
   [2,1,1,1]
 
-OPEN:
+STRUCTURALLY CLOSED, independent numerical master witness still to recover/finish:
   [3,2]
   [3,1,1]
   [2,2,1]
 
-finite_depth6_full_theorem_status = NOT_YET_PROVED
-next_frontier = [3,2]
+STRUCTURAL DEPTH-6 STATUS:
+  CLOSED_FOR_ALL_7_S5_IRREPS
+
+FULL FINITE DEPTH-6 MASTER THEOREM:
+  NOT_YET_PROVED
+
+CURRENT NUMERICAL WITNESS TARGET:
+  [3,2]
 ```
 
-The verifier must fail if any public/canonical surface attempts to restore `[2,1,1,1]` to `ACTIVE_NOT_CLOSED` without explicitly superseding the 2026-10-01 certificate.
-
-## 5. `[3,2]` proof architecture
-
-### 5.1 Input map
-
-Reuse the current generic selector/master machinery and exact coverage ledger:
+The phrase `next_frontier = [3,2]` is forbidden when it can be read as reopening structural work. Use instead:
 
 ```text
-shell states = 264962
-S5 orbits = 2757
-active [3,2] blocks = 2755
-columns = 130903
+next_numeric_witness = [3,2]
+[3,2].structural_status = CLOSED
+[3,2].numerical_master_status = RECOVER_OR_FINISH
 ```
 
-Each active orbit block produces domain columns and an output map keyed by symmetry-resolved output channels. The new aggregator must preserve enough branch metadata to distinguish `[3,1]` and `[2,2]` contributions when constructing local capacities and certificates.
+## 5. Recovery-first rule for `[3,2]`
 
-### 5.2 Local branch-q ranks
+Before launching any new expensive calculation, recover existing evidence in this order:
 
-For each `(branch, q, orbit-block)` contribution compute a local rank certificate. The certificate must include:
+1. GitHub Actions runs for the mixed Stage-A workflow, including failed/cancelled runs.
+2. Per-shard artifacts and aggregate artifacts from those runs.
+3. Repository checkpoints on historical/research branches.
+4. Canonical Library/project checkpoints already produced during the 2026-09-29 calculation.
+5. Only after deduplication and validation, recompute numerical pieces that are genuinely absent.
+
+Every recovered artifact must be checked against:
 
 ```text
-rows
+irrep = [3,2]
+input dimension = 130903
+active blocks = 2755
+source/proof-engine commit
+block ids / column ranges
+hash or deterministic content identity when available
+```
+
+Recovered numerical evidence may be reused only if its operator convention matches the frozen master definition.
+
+## 6. Known partial numerical checkpoint
+
+The 2026-09-29 `[3,2]` numerical checkpoint is retained as historical evidence:
+
+```text
+runner = PROBE_SELECTOR_V1
+processed blocks = 825
+H0-only pass blocks = 500
+H0-only unresolved blocks = 325
+H0-only certified columns = 3293
+```
+
+Representative H0-only deficits included:
+
+```text
+block 705   rank 6/10
+block 1018  rank 2/6
+block 2145  rank 2/6
+block 2150  rank 2/6
+block 2182  rank 12/20
+block 2183  rank 12/20
+block 2205  rank 9/23
+block 2480  rank 9/23
+```
+
+Interpretation is frozen:
+
+```text
+H0-only rank deficiency != master-constraint kernel
+```
+
+Any continuation which treats those deficits as a physical/algebraic nullspace without applying the missing master components is invalid.
+
+A later live checkpoint also recorded a dynamic master numerical run with committed progress. That progress must be recovered and merged before new work is scheduled.
+
+## 7. Numerical witness architecture
+
+### 7.1 Reuse before recompute
+
+The numerical pipeline starts from a recovery manifest, not from shell/orbit generation.
+
+Create a coverage ledger over the immutable 130903 domain columns:
+
+```text
+RECOVERED_STRONG
+RECOVERED_UNRESOLVED
+MISSING_NUMERICAL_EVIDENCE
+```
+
+No column may appear in more than one final class. The ledger must satisfy:
+
+```text
+recovered_strong
++ recovered_unresolved
++ missing_numerical_evidence
+= 130903
+missing_or_duplicate_domain_columns = 0
+```
+
+### 7.2 Full positive master map
+
+For columns not already covered by a valid recovered numerical witness, use either the exact branch-stacked map
+
+```text
+C32 = [sqrt(3) H31 ; sqrt(2) H22]
+```
+
+or the independently regression-tested equivalent generic master map. Preserve sufficient branch/vertex metadata to verify equivalence.
+
+### 7.3 Robust main witness
+
+Recovered and newly calculated well-conditioned pieces may form a main injectivity witness. Record:
+
+```text
+blocks
 columns
-rank
+operator convention
+selected output channels
 rank tolerance
-sigma_min on the certified local image
-source block id
-branch id
-q id
+minimum selected sigma
+median selected sigma
+1% quantile selected sigma
+independence/disjointness condition
+provenance per chunk
 ```
 
-Row count alone is not a capacity certificate. Matching capacity is bounded by certified numerical rank.
+Matching or peeling is only a sufficient certificate mechanism. A failure of that mechanism is not evidence of an operator kernel.
 
-A local block with weak conditioning is not discarded; it is tagged for quarantine/residual handling.
+### 7.4 Residual/quarantine only for unresolved numerical columns
 
-### 5.3 Robust capacitated matching
-
-Construct a bipartite capacity problem:
-
-```text
-left: domain rank units / columns grouped by S5 orbit block
-right: symmetry-resolved (branch,q) output channels
-right capacity: certified local independent row/rank capacity
-```
-
-The primary objective is full coverage. The secondary objective is conditioning: among full/near-full feasible assignments, prefer assignments whose bottleneck local singular value is largest and that reduce collision pressure on channels needed by difficult blocks.
-
-A matching certificate is only a sufficient injectivity witness for the selected main subspace. Failure to find a full matching is not evidence of an operator kernel.
-
-### 5.4 Main witness and quarantine
-
-Split the 130903-dimensional domain as
+Construct:
 
 ```text
 V32 = V_main direct-sum V_residual
 ```
 
-with exact coverage guards:
+with:
 
 ```text
 main_columns + residual_columns = 130903
@@ -220,30 +298,20 @@ missing_columns = 0
 duplicate_columns = 0
 ```
 
-`V_main` contains columns covered by a robust, row-disjoint/rank-certified witness. `V_residual` contains weak, colliding, unmatched or deliberately quarantined columns.
+`V_residual` contains only columns whose independent numerical injectivity has not already been certified.
 
-The main certificate must record at least:
+Do **not** rebuild a residual merely because a structural matcher once encountered a weak edge. Structural coverage is already closed.
 
-```text
-blocks
-columns
-selected output channels
-minimum selected sigma
-median selected sigma
-1% quantile selected sigma
-row/channel disjointness or the exact generalized independence condition used
-```
+### 7.5 Residual full master Gram
 
-### 5.5 Residual full master map
-
-For the residual subspace build the complete declared stacked master map, not only the channels selected by matching:
+For the genuinely unresolved residual subspace construct the complete declared master map:
 
 ```text
 C_residual
 G_residual = C_residual^dagger C_residual
 ```
 
-The residual certificate must record
+Record:
 
 ```text
 residual blocks
@@ -257,36 +325,48 @@ rank tolerance
 condition estimate when meaningful
 ```
 
-If `lambda_min` is safely positive compared with numerical error and tolerance, `[3,2]` closes.
+If `lambda_min` is safely positive relative to numerical uncertainty, the residual is injective and `[3,2]` closes numerically.
 
-## 6. True-kernel gate and H2 rule
+## 8. True-kernel gate and H2 rule
 
-If the residual calculation produces `lambda_min` compatible with zero, the system must not immediately launch H2/null-lift logic.
+A small singular value, failed local selector or failed matching is not a true kernel.
 
-First extract candidate null vectors and apply the complete independently reconstructed `[3,2]` master map to them. The independent check must use a separately assembled path where practical and must report normalized residuals for every required branch/vertex component.
+If a residual vector is compatible with null numerically:
 
-Only if a candidate survives this check as a genuine operator kernel may the workflow set
+1. extract the candidate vector;
+2. reconstruct the full `[3,2]` master action independently;
+3. apply every required branch/vertex component;
+4. report normalized component residuals;
+5. repeat the weakest calculation with an independent numerical route where practical.
+
+Only if the candidate survives the complete independent check may the workflow set:
 
 ```text
 true_residual_kernel = true
 h2_null_lift_allowed = true
 ```
 
-Otherwise the failure is classified as a certificate/matching/numerical failure, not a physical or algebraic kernel.
+Otherwise:
+
+```text
+true_residual_kernel = false
+h2_null_lift_allowed = false
+```
 
 Canonical rule:
 
 ```text
-TRUE residual kernel -> null-lift/H2 allowed
-anything weaker       -> null-lift/H2 forbidden
+TRUE independently verified master kernel -> H2/null-lift allowed
+anything weaker                           -> H2/null-lift forbidden
 ```
 
-## 7. `[3,2]` decision states
+## 9. Decision states
 
-The new aggregator must have explicit fail-closed states:
+The numerical continuation must be fail-closed:
 
 ```text
 PASS_CLOSED_FINITE_NUMERICAL
+RECOVERED_PARTIAL_NUMERICAL_EVIDENCE
 RESIDUAL_POSITIVE_BUT_UNVERIFIED
 RESIDUAL_NEAR_NULL_REQUIRES_INDEPENDENT_CHECK
 TRUE_KERNEL_CONFIRMED
@@ -295,65 +375,68 @@ INPUT_COVERAGE_FAILURE
 NUMERICAL_INCONCLUSIVE
 ```
 
-Only `PASS_CLOSED_FINITE_NUMERICAL` may update the canonical frontier to `[3,2] = CLOSED`.
+Only `PASS_CLOSED_FINITE_NUMERICAL` changes `[3,2].numerical_master_status` to `CLOSED_FINITE_NUMERICAL`.
 
-## 8. Output certificate
+`[3,2].structural_status` remains `CLOSED` regardless of a numerical-certificate failure unless the immutable structural certificate itself is separately falsified.
 
-The final file should be named along the lines of
+## 10. Output certificate
+
+A successful final numerical certificate should be named:
 
 ```text
 BQG_DEPTH6_32_MASTER_CLOSED_2026-10-XX.json
 ```
 
-and contain:
+and include:
 
 ```text
 schema_version
 status_date
 status
 scope
-source_commit
-proof_engine_commit
-artifact manifest hash
-input dimension
-active block count
-branch identity
-local-rank protocol
+source structural checkpoint(s)
+source numerical runs / artifacts
+source commit(s)
+proof-engine commit
+artifact hashes / manifest
+input dimension = 130903
+active blocks = 2755
+structural_status = CLOSED
+branch identity B32 = 3 A31 + 2 A22
+recovered evidence summary
+newly computed evidence summary
 main witness summary
 residual sparse certificate
 independent recompute result
 kernel dimension
 irrep consequence
-remaining depth6 irreps
+remaining numerical depth6 irreps
 full depth6 theorem status
 claim boundary
 ```
 
-All large intermediate artifacts must have hashes in the certificate even when they are stored outside git.
+The certificate must make it impossible to mistake structural recomputation for new numerical evidence.
 
-## 9. CI architecture
+## 11. CI architecture
 
-The current mixed Stage A requires the streaming peeler to certify all 130903 columns directly. That requirement should be replaced for `[3,2]` by the new two-level certificate:
+The current mixed Stage-A workflow must not force a fresh structural proof before numerical continuation.
 
-```text
-main robust witness + residual Gram + independent near-null gate
-```
+CI for `[3,2]` should check separately:
 
-CI must separately check:
+1. immutable structural checkpoint integrity;
+2. exact `2755` block / `130903` column ledger;
+3. recovered artifact provenance and non-overlap;
+4. master-map convention regression;
+5. main/residual partition integrity;
+6. residual spectral residuals;
+7. final numerical status semantics;
+8. no H2 path unless `true_residual_kernel == true`.
 
-1. exact input coverage;
-2. branch-reduction regression;
-3. local-rank certificate integrity;
-4. main/residual partition integrity;
-5. residual spectral residuals;
-6. final status semantics;
-7. no H2 path unless `true_residual_kernel == true`.
+Existing generic numerical shard generation may be reused for missing chunks, but orchestration should be recovery-aware: schedule only absent or invalid numerical chunks whenever the previous artifacts provide valid reusable evidence.
 
-The existing generic shard generation can remain unchanged unless branch metadata cannot be reconstructed losslessly at aggregation time.
+## 12. Numerical reproducibility
 
-## 10. Numerical reproducibility
-
-Proof runs must record the numerical environment. A dedicated proof environment manifest should freeze or record:
+Every proof run must record:
 
 ```text
 Python version
@@ -367,51 +450,53 @@ OPENBLAS_NUM_THREADS
 MKL_NUM_THREADS
 ```
 
-The general repository `requirements.txt` may remain broad for ordinary development, but depth-6 proof certificates must not rely only on unbounded future dependency upgrades.
+The general repository `requirements.txt` may remain broad for development, but final numerical proof artifacts require a frozen or fully recorded environment.
 
-## 11. Testing strategy
+## 13. Testing strategy
 
-Before accepting any truth update:
+Before accepting `[3,2]` numerical closure:
 
-- run the existing branch/master-row regression;
-- verify the old `[2,1,1,1]` certificate is still accepted;
-- add negative tests showing that malformed coverage, duplicated columns, missing channels and a fake near-null residual fail closed;
-- test that matching failure without an operator null vector does not set `TRUE_KERNEL_CONFIRMED`;
-- test that H2 entry is rejected unless the independent true-kernel flag is present;
+- verify the immutable structural `2755/2755`, `130903/130903`, remainder `0` checkpoint;
+- verify branch/master-row regression;
+- verify recovered artifact hashes and coverage;
+- reject duplicated or missing domain columns;
+- reject operator-convention mismatches;
+- test that H0-only deficiency is not promoted to a master kernel;
+- test that matching failure is not promoted to a master kernel;
+- test the true-kernel/H2 gate;
 - compile all changed Python sources;
-- run `scripts/verify_depth6_frontier.py` against the synchronized ledger;
-- run the canonical status/documentation validation touched by the change.
+- validate canonical frontier semantics;
+- require the dedicated `[3,2]` numerical certificate, not merely generic core CI.
 
-A green generic core regression is not by itself sufficient to certify `[3,2]`; the dedicated depth-6 certificate must pass.
-
-## 12. Execution order
-
-Implementation order is frozen as:
+## 14. Corrected execution order
 
 ```text
-P0. preserve source evidence
-P0. synchronize canonical `[2,1,1,1]` truth
-P1. add tests/status enums for new `[3,2]` pipeline
-P2. implement branch-q local-rank extraction
-P3. implement robust capacitated matching
-P4. implement quarantine/main-residual partition
-P5. implement residual sparse Gram + spectral certificate
-P6. implement independent true-kernel gate
-P7. wire dedicated `[3,2]` CI
-P8. run `[3,2]`
-P9. if PASS, update frontier; otherwise preserve exact failure state
+P0. correct the erroneous 36aa2cd frontier wording                         DONE by superseding commit
+P0. preserve [2,1,1,1] numerical evidence                                 ACTIVE
+P0. synchronize [2,1,1,1] canonical truth                                 ACTIVE
+P0. freeze [3,2] structural 2755/2755, 130903/130903 as immutable          DONE historically
+P1. inventory old [3,2] Actions runs/checkpoints/artifacts                 CURRENT
+P2. build recovery manifest and exact numerical coverage ledger            NEXT
+P3. validate/reuse surviving numerical chunks                              NEXT
+P4. schedule only genuinely missing numerical chunks                       NEXT
+P5. build main/residual numerical witness                                  NEXT
+P6. residual Gram and independent near-null gate if needed                 NEXT
+P7. issue [3,2] finite numerical master certificate                        NEXT
+P8. then continue independent numerical witnesses for [2,2,1]/[3,1,1]     LATER
 ```
 
-No work on `[3,1,1]`, `[2,2,1]`, continuum physicalization or 2T is part of this implementation until `[3,2]` reaches a stable decision state.
+No structural `[3,2]` shell/orbit/Jucys/matching/capacity rerun is part of this continuation.
 
-## 13. Success criteria
+## 15. Success criteria
 
-The change is successful when all of the following are true:
+The correction/continuation succeeds when:
 
-1. the 2026-10-01 `[2,1,1,1]` proof evidence cannot disappear solely because the original Actions artifacts expire;
-2. every canonical status surface agrees that `[2,1,1,1]` is closed only in its finite numerical scope;
-3. the old 130007 x 130007 minor is historical rather than an active blocker;
-4. `[3,2]` has a deterministic fail-closed pipeline with exact 130903-column coverage;
-5. certificate failure cannot be misreported as an operator kernel;
-6. H2/null-lift cannot run without a separately confirmed true residual kernel;
-7. a future PASS certificate contains enough provenance, numerical environment and artifact hashes for independent reproduction.
+1. no canonical document calls `[3,2]` structurally open;
+2. `[3,2]` structural status remains `CLOSED` with `2755/2755`, `130903/130903`, remainder `0`;
+3. the numerical continuation begins from recovered evidence rather than zero;
+4. every reused chunk has explicit provenance and coverage;
+5. only genuinely missing numerical work is recomputed;
+6. certificate failure cannot be misreported as an operator kernel;
+7. H2/null-lift cannot run without a separately confirmed true residual kernel;
+8. a future numerical PASS contains sufficient provenance/environment/hash data for independent reproduction;
+9. the repository continues to distinguish finite depth-6 closure from continuum/refinement physicalization.
