@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "status_date": "2026-10-01",
+  "status": "PASS",
+  "scope": "corrected K5 depth-6 S4-sign multiplicity space = [1^5] direct-sum [2,1,1,1]",
+  "source_shard_run": 36527314863,
+  "source_shard_head_sha": "5cefb20906e1d0a95d9abc06c038fcdae026235c",
+  "input_dimension": 130112,
+  "h0": {
+    "exact_zero_subspace": {
+      "dimension": 16,
+      "block_ids": [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+      "reason": "all four edges incident to vertex 0 have doubled spin 0, so local H0 vanishes geometrically"
+    },
+    "complement_dimension": 130096,
+    "strong_local_threshold": 0.01,
+    "main_unique_q_certificate": {
+      "blocks": 10929,
+      "columns": 123744,
+      "unique_q_channels": 10929,
+      "residual_q_intersection": 0,
+      "selected_sigma_min": 0.010065847991579507,
+      "selected_sigma_median": 0.23302911570042287,
+      "selected_sigma_q01": 0.013466735078432905
+    },
+    "residual_sparse_certificate": {
+      "blocks": 1011,
+      "columns": 6352,
+      "q_channels": 4588,
+      "rows": 61657,
+      "nnz": 3377269,
+      "sigma_min": 0.37777531708248774,
+      "smallest_gram_eigenvalues": [0.14271419019677417,0.1569263611123216,0.16313563987136212],
+      "eigen_relative_residuals": [1.7980472756076056e-13,7.448733058490115e-13,6.590736059462238e-10]
+    },
+    "decomposition_row_disjoint": true,
+    "thresholded_certificate_sigma_lower_bound": 0.010065847991579507,
+    "implementation_default_tol": 1e-11,
+    "gap_to_default_tol_ratio": 1006584799.1579508,
+    "geometric_q_edges": 353600,
+    "retained_q_edges": 328532,
+    "omitted_q_edges": 25068,
+    "conclusion": "At the implementation tolerance, H0 has rank 130096 on the complement of the 16 exact H0-zero directions; the certificate is decomposed into disjoint output-q row sets."
+  },
+  "h1_on_exact_h0_kernel": {
+    "dimension": 16,
+    "rank": 16,
+    "sigma_min": 1.1304521906426825,
+    "sigma_max": 3.3042579629412856,
+    "condition": 2.9229524169993915,
+    "rank_tol": 1.1739082463226983e-12,
+    "source": "fresh direct normalized S4-sign orbit expansion; H_node_apply_ultrafast vertex=1 tol=0; 16 independently persisted outputs",
+    "fresh_recompute": true
+  },
+  "master": {
+    "logic": "ker M is intersection of vertex kernels; ker H0 is exactly the 16D K16 at the certified numerical tolerance, and H1 restricted to K16 is injective",
+    "s4_sign_kernel_dimension": 0,
+    "s4_sign_status": "CLOSED"
+  },
+  "irrep_consequence": {
+    "[1^5]": "already CLOSED independently",
+    "[2,1,1,1]": {"dimension":103318,"rank":103318,"kernel":"empty","status":"CLOSED"}
+  },
+  "remaining_depth6_irreps": ["[3,2]","[3,1,1]","[2,2,1]"],
+  "finite_depth6_full_theorem_status": "NOT_YET_PROVED",
+  "artifacts": {
+    "svd_fullrank_edges.json": "29ee99681323193b7cda1c52bf74c231e3888f2abe4a3a7985e8fb63cf1cb967",
+    "quarantine_thr_1e-02.json": "5406d5c3a08eb6dbb8dd7e9321f39a14df639e952cc307522e428754a88b26cd",
+    "residual_thr_1e-02_eigsh.json": "4918e3f445a8f5d26a8e85280bee8ba07800d8d8a269ea6be3955bb58683c14a",
+    "H1_16_RECOMPUTED.json": "65c4abf13f54587b575dd19ac84f18709c577c280363481f5305167aa6b94c90"
+  },
+  "claim_boundary": "Finite depth-6 sector closure only. This is not an all-depth, continuum, rigging-map, physical propagator, or experimental proof."
+}
