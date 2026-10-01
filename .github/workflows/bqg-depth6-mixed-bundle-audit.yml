@@ -1,0 +1,33 @@
+name: BQG depth6 frozen mixed bundle source audit
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - '.github/workflows/bqg-depth6-mixed-bundle-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  extract-sources:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+      - name: Verify frozen bundle blob and extract source only
+        run: |
+          set -euo pipefail
+          test "$(git hash-object mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64)" = "cbbaa80f6b6b61d353458db1fa1f03f824730532"
+          mkdir -p frozen_bundle
+          base64 -d mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64 | tar xz -C frozen_bundle
+          find frozen_bundle -maxdepth 2 -type f -printf '%P\n' | sort | tee frozen_bundle/filelist.txt
+          test -f frozen_bundle/github_mixed_master_shard.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-frozen-mixed-bundle-sources
+          path: frozen_bundle
+          retention-days: 30
+          compression-level: 6
