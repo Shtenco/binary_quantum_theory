@@ -1,0 +1,28 @@
+name: BQG depth6 mixed recovery tests
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - 'mixed_parallel/bqg_mixed_master_recovery.py'
+      - 'mixed_parallel/test_bqg_mixed_master_recovery.py'
+      - '.github/workflows/bqg-depth6-mixed-recovery-tests.yml'
+  workflow_dispatch:
+
+jobs:
+  recovery-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical dependencies
+        run: pip install --disable-pip-version-check numpy scipy
+      - name: Run recovery-only certifier tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}/mixed_parallel
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: python -m unittest -v mixed_parallel/test_bqg_mixed_master_recovery.py
