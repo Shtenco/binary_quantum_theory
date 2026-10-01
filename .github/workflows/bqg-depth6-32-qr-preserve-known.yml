@@ -1,0 +1,95 @@
+name: BQG depth6 [3,2] preserve known raw shards as QR
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - '.github/workflows/bqg-depth6-32-qr-preserve-known.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  qr-preserve:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - shard: 12
+            artifact_id: '11185097491'
+            artifact_digest: 'sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566'
+          - shard: 14
+            artifact_id: '11185982461'
+            artifact_digest: 'sha256:a67020b65b4f49eb6808d8dc926f76d2c888f6c24d568b30e854ec1570e7cae4'
+          - shard: 17
+            artifact_id: '11185818245'
+            artifact_digest: 'sha256:8a81bcd292e24460098b8d0c65111cd047f5da25ef159b40112db52496c71516'
+          - shard: 18
+            artifact_id: '11184840100'
+            artifact_digest: 'sha256:30c44ee2008b50b06176a97ef4001412603b7cefaa0614cc7ac68b412056b4dc'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy
+      - name: Download already-computed raw numerical artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARTIFACT_ID: ${{ matrix.artifact_id }}
+          SHARD: ${{ matrix.shard }}
+        run: |
+          set -euo pipefail
+          mkdir -p input_zip input
+          curl -fsSL -L \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" \
+            -o "input_zip/shard-${SHARD}.zip"
+          unzip -q "input_zip/shard-${SHARD}.zip" -d input
+          test -f "input/bqg-mixed-32-shard-${SHARD}.tar.gz"
+      - name: Convert persisted raw master maps to QR factors
+        env:
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+          SHARD: ${{ matrix.shard }}
+          ARTIFACT_ID: ${{ matrix.artifact_id }}
+          ARTIFACT_DIGEST: ${{ matrix.artifact_digest }}
+        run: |
+          set -euo pipefail
+          python -u mixed_parallel/compress_master_map_qr.py \
+            --src "input/bqg-mixed-32-shard-${SHARD}.tar.gz" \
+            --work "qr_work_${SHARD}" \
+            --out "bqg-mixed-32-shard-${SHARD}-qr.pkl.gz" \
+            --json "bqg-mixed-32-shard-${SHARD}-qr-stats.json" \
+            --source-run-id 36899125190 \
+            --source-artifact-id "${ARTIFACT_ID}" \
+            --source-artifact-digest "${ARTIFACT_DIGEST}" \
+            --engine-git-blob-sha cbbaa80f6b6b61d353458db1fa1f03f824730532
+          python - "bqg-mixed-32-shard-${SHARD}-qr-stats.json" "${SHARD}" <<'PY'
+          import json,sys
+          p, expected = sys.argv[1], int(sys.argv[2])
+          x=json.load(open(p)); s=x['compression_stats']
+          assert x['kind']=='BQG_MIXED_MASTER_PER_Q_QR' and x['schema_version']==2,x
+          assert x['irrep']=='32' and int(x['shard'])==expected and int(x['shards'])==112,x
+          assert s['qr_factor_bytes_uncompressed'] <= s['raw_matrix_bytes'],s
+          assert int(x['assigned_blocks'])==int(s['blocks']),x
+          print('QR_PRESERVE_PASS', expected, s)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-mixed-32-shard-${{ matrix.shard }}-compact-qr
+          path: |
+            bqg-mixed-32-shard-${{ matrix.shard }}-qr.pkl.gz
+            bqg-mixed-32-shard-${{ matrix.shard }}-qr-stats.json
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
