@@ -1,0 +1,90 @@
+name: BQG depth6 [3,2] targeted keymeta retry
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bqg-depth6-32-targeted-keymeta-retry.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  retry-keymeta:
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        shard: [1,2,3,4,5,7,9,10,15,16,25,26,27]
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 016160879ae148e3aaefa8c4de60f912957e007b
+          path: frozen
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+          path: proofsrc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy sympy
+      - name: Unpack frozen numerical engine
+        run: |
+          mkdir -p mixed_runtime
+          base64 -d frozen/mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64 | tar xz -C mixed_runtime
+      - name: Run frozen [3,2] shard
+        env:
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          cd mixed_runtime
+          python -u github_mixed_master_shard.py \
+            --irrep 32 \
+            --shard ${{ matrix.shard }} \
+            --shards 112 \
+            --workers 4 \
+            --out artifact
+      - name: Pack local raw map
+        run: tar czf bqg-mixed-32-shard-${{ matrix.shard }}.tar.gz -C mixed_runtime artifact
+      - name: Extract actual-q key metadata
+        env:
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -u proofsrc/mixed_parallel/extract_master_key_metadata.py \
+            --src bqg-mixed-32-shard-${{ matrix.shard }}.tar.gz \
+            --work keymeta_work_${{ matrix.shard }} \
+            --out bqg-mixed-32-shard-${{ matrix.shard }}-keymeta.pkl.gz \
+            --json bqg-mixed-32-shard-${{ matrix.shard }}-keymeta-stats.json \
+            --source-run-id ${GITHUB_RUN_ID} \
+            --source-artifact-id targeted-retry-local-raw \
+            --source-artifact-digest not-uploaded-local-raw \
+            --engine-git-blob-sha cbbaa80f6b6b61d353458db1fa1f03f824730532
+      - name: Verify keymeta fail-closed
+        run: |
+          python - "bqg-mixed-32-shard-${{ matrix.shard }}-keymeta-stats.json" "${{ matrix.shard }}" <<'PY'
+          import json,sys
+          p, expected = sys.argv[1], int(sys.argv[2])
+          x=json.load(open(p))
+          assert x['kind']=='BQG_MIXED_MASTER_KEY_METADATA' and x['schema_version']==1,x
+          assert x['irrep']=='32' and int(x['shard'])==expected and int(x['shards'])==112,x
+          assert int(x['assigned_blocks'])==int(x['stats']['blocks'])>0,x
+          assert int(x['assigned_columns'])==int(x['stats']['columns'])>0,x
+          assert x['engine_git_blob_sha']=='cbbaa80f6b6b61d353458db1fa1f03f824730532',x
+          print('TARGETED_KEYMETA_PASS',expected,x['stats'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-mixed-32-shard-${{ matrix.shard }}-keymeta-targeted-retry
+          path: |
+            bqg-mixed-32-shard-${{ matrix.shard }}-keymeta.pkl.gz
+            bqg-mixed-32-shard-${{ matrix.shard }}-keymeta-stats.json
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
