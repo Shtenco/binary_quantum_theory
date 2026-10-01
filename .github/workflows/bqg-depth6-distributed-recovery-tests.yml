@@ -1,0 +1,43 @@
+name: BQG depth6 distributed numerical recovery tests
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - 'mixed_parallel/extract_master_key_metadata.py'
+      - 'mixed_parallel/build_master_key_peeling_schedule.py'
+      - 'mixed_parallel/certify_master_schedule_shard.py'
+      - 'mixed_parallel/replay_master_numerical_certificates.py'
+      - 'mixed_parallel/test_master_key_schedule.py'
+      - 'mixed_parallel/test_distributed_schedule_certification.py'
+      - '.github/workflows/bqg-depth6-distributed-recovery-tests.yml'
+  workflow_dispatch:
+
+jobs:
+  distributed-recovery-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy
+      - name: Compile recovery modules
+        run: |
+          python -m py_compile \
+            mixed_parallel/extract_master_key_metadata.py \
+            mixed_parallel/build_master_key_peeling_schedule.py \
+            mixed_parallel/certify_master_schedule_shard.py \
+            mixed_parallel/replay_master_numerical_certificates.py
+      - name: Run schedule and certification tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}/mixed_parallel
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -m unittest -v \
+            mixed_parallel/test_master_key_schedule.py \
+            mixed_parallel/test_distributed_schedule_certification.py
