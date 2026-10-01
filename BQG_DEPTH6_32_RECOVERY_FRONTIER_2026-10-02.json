@@ -1,5 +1,5 @@
 {
-  "schema_version": 4,
+  "schema_version": 5,
   "date": "2026-10-02",
   "irrep": "[3,2]",
   "structural_status": "CLOSED_IMMUTABLE_INPUT",
@@ -55,17 +55,21 @@
     "existing_run_artifacts_if_any": "DIAGNOSTIC_ONLY_DO_NOT_ADMIT_TO_CANONICAL_COVERAGE",
     "required_replacement": "LEDGER_DRIVEN_NUMERICAL_RETRY_FROM_PERSISTED_FROZEN_ASSIGNMENTS_ONLY"
   },
-  "inventory_autodiscovery_tdd": {
+  "inventory_multishard_tdd": {
     "test_commit": "c7386a525d03f2aa31394d6a4378ca44b9d60958",
-    "ci_commit": "38546fb64d3546410c106f1b51e1813ecc8257e0",
-    "run_id": 36931346662,
-    "job_id": 110601044365,
-    "status_at_checkpoint": "QUEUED",
-    "required_behavior": [
-      "read single-shard keymeta artifacts",
-      "read multi-shard salvage artifacts",
-      "deduplicate by shard using freshest canonical provenance"
-    ]
+    "red_ci_commit": "38546fb64d3546410c106f1b51e1813ecc8257e0",
+    "red_run_id": 36931346662,
+    "red_job_id": 110601044365,
+    "red_result": "EXPECTED_FAILURE_MISSING_MULTI_SHARD_FUNCTIONS",
+    "implementation_commit": "887e76fba5210524650002da0b54653d2c5b37fd",
+    "green_run_id": 36938323927,
+    "green_result": "SUCCESS",
+    "verified_behavior": [
+      "recognize single-shard keymeta artifact names",
+      "recognize multi-shard salvage artifact names",
+      "load multiple BQG_MIXED_MASTER_KEY_METADATA payloads from one salvage ZIP"
+    ],
+    "next_extension": "wire repository-wide canonical artifact discovery and shard-level deduplication into main inventory flow"
   },
   "raw_present_shards": [0,6,8,11,12,13,14,17,18,19,20,21,22,23,24],
   "raw_present_count": 15,
@@ -90,6 +94,6 @@
     "failed_svd_candidate_remains_present_during_fail_closed_replay": true,
     "github_job_success_is_not_sufficient_without_manifest_effective_success": true
   },
-  "next_gate": "Preserve keymeta from every new successful Stage-A raw artifact. Recover missing shards only with a ledger-driven numerical retry built from persisted frozen assignments; do not regenerate shell/orbits/multiplicity/Jucys. Complete inventory auto-discovery. Require exact 112/112, 2755 blocks and 130903 columns before global actual-q peeling/SVD.",
+  "next_gate": "Preserve keymeta from every new successful Stage-A raw artifact. Recover missing shards only with a ledger-driven numerical retry built from persisted frozen assignments; do not regenerate shell/orbits/multiplicity/Jucys. Extend the now-GREEN multi-shard inventory reader to repository-wide canonical artifact discovery and shard-level deduplication. Require exact 112/112, 2755 blocks and 130903 columns before global actual-q peeling/SVD.",
   "claim_boundary": "Recovery/provenance snapshot only. It does not certify rank(C_32)=130903 and does not close [3,2] numerically."
 }
