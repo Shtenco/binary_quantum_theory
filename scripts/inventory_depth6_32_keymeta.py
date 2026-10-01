@@ -2,7 +2,7 @@
 """Inventory tiny persisted [3,2] master-map key metadata across recovery runs.
 
 This script never touches the depth-6 shell, orbit construction, multiplicity,
-Jucys selectors, Hamiltonian, or raw master matrices.  It consumes only already
+Jucys selectors, Hamiltonian, or raw master matrices. It consumes only already
 extracted BQG_MIXED_MASTER_KEY_METADATA artifacts, deduplicates shard IDs by
 latest artifact creation time, and reports the fail-closed actual-q coverage
 needed before any global uniqueness schedule is allowed.
@@ -11,9 +11,11 @@ from __future__ import annotations
 
 import argparse
 import gzip
+import io
 import json
 import pickle
 import re
+import urllib.parse
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -21,33 +23,42 @@ from pathlib import Path
 import build_master_key_peeling_schedule as S
 
 NAME_RE = re.compile(r'^bqg-mixed-32-shard-(\d+)-keymeta$')
+GITHUB_API_HOST = 'api.github.com'
+
+
+def github_headers(token: str) -> dict[str, str]:
+    return {
+        'Authorization': f'Bearer {token}',
+        'Accept': 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'User-Agent': 'bqg-keymeta-inventory',
+    }
 
 
 def api_json(url: str, token: str) -> dict:
-    req = urllib.request.Request(
-        url,
-        headers={
-            'Authorization': f'Bearer {token}',
-            'Accept': 'application/vnd.github+json',
-            'X-GitHub-Api-Version': '2022-11-28',
-            'User-Agent': 'bqg-keymeta-inventory',
-        },
-    )
-    with urllib.request.urlopen(req) as r:
+    req = urllib.request.Request(url, headers=github_headers(token))
+    with urllib.request.urlopen(req, timeout=120) as r:
         return json.load(r)
 
 
+class StripAuthRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Never forward the GitHub bearer token to signed blob-storage redirects."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        new = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if new is None:
+            return None
+        old_host = urllib.parse.urlparse(req.full_url).hostname
+        new_host = urllib.parse.urlparse(newurl).hostname
+        if old_host == GITHUB_API_HOST and new_host != GITHUB_API_HOST:
+            new.remove_header('Authorization')
+        return new
+
+
 def download(url: str, token: str, out: Path) -> None:
-    req = urllib.request.Request(
-        url,
-        headers={
-            'Authorization': f'Bearer {token}',
-            'Accept': 'application/vnd.github+json',
-            'X-GitHub-Api-Version': '2022-11-28',
-            'User-Agent': 'bqg-keymeta-inventory',
-        },
-    )
-    with urllib.request.urlopen(req) as r, out.open('wb') as f:
+    req = urllib.request.Request(url, headers=github_headers(token))
+    opener = urllib.request.build_opener(StripAuthRedirectHandler())
+    with opener.open(req, timeout=180) as r, out.open('wb') as f:
         while True:
             b = r.read(1024 * 1024)
             if not b:
@@ -93,7 +104,6 @@ def load_payload_from_zip(zpath: Path) -> dict:
         if len(names) != 1:
             raise RuntimeError(f'{zpath}: expected one .pkl.gz, got {names}')
         raw = z.read(names[0])
-    import io
     with gzip.GzipFile(fileobj=io.BytesIO(raw), mode='rb') as g:
         x = pickle.load(g)
     if x.get('kind') != 'BQG_MIXED_MASTER_KEY_METADATA' or int(x.get('schema_version', -1)) != 1:
