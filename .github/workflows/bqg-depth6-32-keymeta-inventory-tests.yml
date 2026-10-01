@@ -1,0 +1,28 @@
+name: BQG depth6 [3,2] keymeta inventory tests
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - '.github/workflows/bqg-depth6-32-keymeta-inventory-tests.yml'
+      - 'scripts/test_inventory_depth6_32_keymeta.py'
+      - 'scripts/inventory_depth6_32_keymeta.py'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run inventory regression tests
+        env:
+          PYTHONPATH: scripts:mixed_parallel
+        run: python -m unittest -v scripts/test_inventory_depth6_32_keymeta.py
