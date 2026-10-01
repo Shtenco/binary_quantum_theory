@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "date": "2026-10-01",
   "scope": "finite corrected K5 depth-6 S5-[3,2] numerical master-rank recovery",
   "irrep": "[3,2]",
@@ -20,9 +20,9 @@
     "pass_status_required": "PASS_CLOSED_FINITE_NUMERICAL"
   },
   "do_not_recompute": [
-    "depth-6 shell enumeration",
-    "264962 spin assignments",
-    "2757 S5 orbit enumeration",
+    "depth-6 shell enumeration as a proof task",
+    "264962 spin assignments as a proof task",
+    "2757 S5 orbit enumeration as a proof task",
     "[3,2] multiplicity 130903",
     "2755 active [3,2] blocks",
     "Jucys selector construction as a structural proof task",
@@ -36,10 +36,20 @@
     "numerical_engine_bundle_blob_sha": "cbbaa80f6b6b61d353458db1fa1f03f824730532",
     "orchestration_status": "PARTIAL_REUSABLE_EVIDENCE_WITH_INFRASTRUCTURE_FAILURES",
     "known_successful_raw_artifacts": {
+      "8": {
+        "artifact_id": 11187460302,
+        "size_bytes": 2349300913,
+        "digest": "sha256:9902453cc2ed6dc2eedc3585fb2ae6b1a99bf74aa0be8402585fa22549eebee5"
+      },
       "12": {
         "artifact_id": 11185097491,
         "size_bytes": 2478641973,
         "digest": "sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566"
+      },
+      "13": {
+        "artifact_id": 11186940750,
+        "size_bytes": 2673876332,
+        "digest": "sha256:0de0c7ae9a8199e1330b5255065333b00420f8cc639196fced2219d996291148"
       },
       "14": {
         "artifact_id": 11185982461,
@@ -60,9 +70,12 @@
       }
     },
     "known_infrastructure_failures": {
-      "15": "runner shutdown/cancel; not a numerical rank failure",
-      "16": "runner shutdown/exit 143; not a numerical rank failure"
-    }
+      "9": "run step cancelled; no numerical-rank conclusion",
+      "10": "run step cancelled; no numerical-rank conclusion",
+      "15": "runner shutdown/cancel; not a numerical-rank failure",
+      "16": "runner shutdown/exit 143; not a numerical-rank failure"
+    },
+    "raw_aggregation_warning": "Observed completed raw artifacts are about 1.97-2.67 GB each. Central download of 112 raw shards is intentionally not the active architecture."
   },
   "recovery_certifier": {
     "workflow_run_id": 36904772868,
@@ -82,18 +95,29 @@
     "packed_gram_bytes_uncompressed": 7336442880,
     "gram_gzip_bytes": 7055574565,
     "algebraic_ratio": 3.529812140650635,
+    "artifact_id": 11184849769,
+    "artifact_digest": "sha256:356acf4c7bd69c54ab2b25c659ca581905a98e4c1d93e1f1de3267bd37de1bda",
     "reason": "per-q normal-equation Grams expand the heavy shard and square conditioning; retain only as an engineering negative result"
   },
   "qr_transport": {
     "compressor_commit": "cb397eb78e1c992358fa0ffb05a07d9d239556fa",
     "aggregator_commit": "30ce08f22d9026a6f6c4715c61471a326d8065e4",
+    "test_commit": "b135fa15c3256c665c678c42821568f764a95889",
     "test_workflow_run_id": 36910802645,
     "shard18_probe_run_id": 36910833110,
+    "known_shards_preservation_run_id": 36911300305,
+    "known_shards_in_preservation_matrix": [8, 12, 13, 14, 17, 18],
     "status": "AWAITING_INDEPENDENT_TEST_AND_REAL_SHARD_PROBE",
     "identity": "For each output key q, C_q^* C_q = R_q^* R_q under reduced QR C_q=Q_q R_q.",
     "allowed_use": "unique-output-key numerical peeling within one orbit block",
     "forbidden_inference": "per-block QR factors do not preserve shared-q inter-block cross terms",
     "residual_rule": "any nonempty shared-q residual requires raw coupled master maps for residual IDs only"
+  },
+  "automatic_raw_harvest": {
+    "status": "DISABLED",
+    "main_commit": "525fcf6deaec3781965d03522a606be484d0a63e",
+    "reason": "prevent automatic download of 112 multi-gigabyte raw shard artifacts onto one hosted runner",
+    "legacy_workflow_mode": "workflow_dispatch only"
   },
   "s4sign_2111_source_preservation": {
     "run_id": 36903898106,
