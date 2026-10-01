@@ -1,0 +1,91 @@
+name: BQG depth6 [3,2] recovery harvest
+on:
+  workflow_run:
+    workflows: ["BQG depth6 mixed stage A"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Existing mixed Stage-A run ID containing 112 [3,2] shard artifacts
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  recover-32:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+          path: proofsrc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numerical dependencies
+        run: pip install --disable-pip-version-check numpy scipy
+      - name: Resolve source run
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            rid="${{ github.event.workflow_run.id }}"
+          else
+            rid="${{ inputs.source_run_id }}"
+          fi
+          test -n "${rid}"
+          echo "run_id=${rid}" >> "$GITHUB_OUTPUT"
+          echo "SOURCE_RUN_ID=${rid}"
+      - name: Download exactly 112 persisted [3,2] numerical master-map shards
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/download_workflow_artifacts_paginated.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${{ steps.source.outputs.run_id }}" \
+            --prefix "bqg-mixed-32-shard-" \
+            --expected 112 \
+            --out mixed_downloaded
+      - name: Recovery-only independent numerical master witness
+        env:
+          PYTHONPATH: ${{ github.workspace }}/proofsrc/mixed_parallel
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -u proofsrc/mixed_parallel/bqg_mixed_master_recovery.py \
+            --irrep 32 \
+            --artifacts mixed_downloaded \
+            --expected-shards 112 \
+            --prefix bqg-mixed-32-shard- \
+            --source-run-id "${{ steps.source.outputs.run_id }}" \
+            --work mixed_recovery32 \
+            --out BQG_DEPTH6_32_MASTER_RECOVERY.json
+      - name: Upload recovery certificate
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-recovery-certificate
+          path: BQG_DEPTH6_32_MASTER_RECOVERY.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Require only a genuine finite numerical PASS
+        run: |
+          python - <<'PY'
+          import json
+          x=json.load(open('BQG_DEPTH6_32_MASTER_RECOVERY.json'))
+          assert x['structural_status']=='CLOSED_IMMUTABLE_INPUT',x
+          assert x['structural_recompute_performed'] is False,x
+          assert x['support_source']=='persisted_master_map_keys_only',x
+          assert x['target_blocks']==2755 and x['target_columns']==130903,x
+          assert x['recovered_blocks']==2755 and x['recovered_columns']==130903,x
+          assert x['status']=='PASS_CLOSED_FINITE_NUMERICAL',x
+          assert x['kernel_dimension']==0,x
+          print('DEPTH6_32_RECOVERY_PASS', x.get('global_sigma_min'))
+          PY
