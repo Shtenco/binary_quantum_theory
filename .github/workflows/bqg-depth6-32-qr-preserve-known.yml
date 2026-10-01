@@ -17,6 +17,9 @@ jobs:
       max-parallel: 2
       matrix:
         include:
+          - shard: 8
+            artifact_id: '11187460302'
+            artifact_digest: 'sha256:9902453cc2ed6dc2eedc3585fb2ae6b1a99bf74aa0be8402585fa22549eebee5'
           - shard: 12
             artifact_id: '11185097491'
             artifact_digest: 'sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566'
