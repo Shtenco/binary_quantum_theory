@@ -1,0 +1,55 @@
+name: BQG depth6 [3,2] keymeta coverage inventory
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - '.github/workflows/bqg-depth6-32-keymeta-inventory.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build fail-closed actual-q coverage inventory
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          PYTHONPATH=mixed_parallel python scripts/inventory_depth6_32_keymeta.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id 36911807083 \
+            --run-id 36916785787 \
+            --run-id 36921419558 \
+            --token "${GH_TOKEN}" \
+            --work keymeta_inventory_work \
+            --out BQG_DEPTH6_32_ACTUAL_Q_KEYMETA_INVENTORY.json
+          python - <<'PY'
+          import json
+          x=json.load(open('BQG_DEPTH6_32_ACTUAL_Q_KEYMETA_INVENTORY.json'))
+          assert x['structural_recompute_performed'] is False,x
+          assert x['schedule_started'] is False,x
+          if x['schedule_allowed']:
+              assert x['recovered_blocks']==2755 and x['recovered_columns']==130903,x
+              assert x['missing_shards']==[],x
+          else:
+              assert x['status']=='INCOMPLETE_KEYMETA_COVERAGE',x
+              assert len(x['missing_shards'])>0,x
+          print('KEYMETA_INVENTORY_PASS',x['recovered_shards'],x['missing_shards'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-actual-q-keymeta-inventory
+          path: BQG_DEPTH6_32_ACTUAL_Q_KEYMETA_INVENTORY.json
+          if-no-files-found: error
+          retention-days: 90
