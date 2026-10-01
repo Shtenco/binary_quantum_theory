@@ -56,8 +56,14 @@ class DistributedScheduleCertificationTests(unittest.TestCase):
             2: {'m': 1, 'q_rows': {('s',): 1}, 'source_shard': 1},
         }
         certs = {
-            1: {'pass': False, 'rank': 0, 'target': 1, 'q_keys': [('a',)]},
-            2: {'pass': True, 'rank': 1, 'target': 1, 'q_keys': [('s',)]},
+            1: {
+                'pass': False, 'rank': 0, 'target': 1, 'q_keys': [('a',)],
+                'sigma_min': 0.0, 'threshold': 1e-12,
+            },
+            2: {
+                'pass': True, 'rank': 1, 'target': 1, 'q_keys': [('s',)],
+                'sigma_min': 1.0, 'threshold': 1e-12,
+            },
         }
         out = R.replay(metadata, certs, sigma_floor=1e-12)
         self.assertEqual(out['accepted_ids'], [])
@@ -65,14 +71,32 @@ class DistributedScheduleCertificationTests(unittest.TestCase):
         self.assertEqual(out['status'], 'NUMERICAL_RESIDUAL_REQUIRES_FURTHER_CHECK')
         self.assertFalse(out['kernel_claim'])
 
+    def test_replay_rejects_bare_pass_flag_without_spectral_evidence(self):
+        metadata = {
+            1: {'m': 1, 'q_rows': {('a',): 1}, 'source_shard': 0},
+        }
+        certs = {
+            1: {'pass': True, 'rank': 1, 'target': 1, 'q_keys': [('a',)]},
+        }
+        out = R.replay(metadata, certs, sigma_floor=1e-12)
+        self.assertEqual(out['accepted_ids'], [])
+        self.assertEqual(out['remaining_ids'], [1])
+        self.assertEqual(out['status'], 'NUMERICAL_RESIDUAL_REQUIRES_FURTHER_CHECK')
+
     def test_replay_accepts_new_uniqueness_after_real_pass(self):
         metadata = {
             1: {'m': 1, 'q_rows': {('a',): 1, ('s',): 1}, 'source_shard': 0},
             2: {'m': 1, 'q_rows': {('s',): 1}, 'source_shard': 1},
         }
         certs = {
-            1: {'pass': True, 'rank': 1, 'target': 1, 'q_keys': [('a',)]},
-            2: {'pass': True, 'rank': 1, 'target': 1, 'q_keys': [('s',)]},
+            1: {
+                'pass': True, 'rank': 1, 'target': 1, 'q_keys': [('a',)],
+                'sigma_min': 2.0, 'threshold': 1e-12,
+            },
+            2: {
+                'pass': True, 'rank': 1, 'target': 1, 'q_keys': [('s',)],
+                'sigma_min': 3.0, 'threshold': 1e-12,
+            },
         }
         out = R.replay(metadata, certs, sigma_floor=1e-12)
         self.assertEqual(out['accepted_ids'], [1, 2])
