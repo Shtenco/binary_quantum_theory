@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Build a candidate peeling schedule from persisted numerical map keys only.
 
-This is deliberately *not* a rank certificate.  It proposes, round by round,
+This is deliberately *not* a rank certificate. It proposes, round by round,
 which output keys are unique to each remaining orbit block according to actual
-persisted master-map keys.  Every proposed block must subsequently pass a
+persisted master-map keys. Every proposed block must subsequently pass a
 numerical SVD/rank check on the original C[i,q] coefficients before removal is
-accepted.  A failed block invalidates any later removal that depended on its
+accepted. A failed block invalidates any later removal that depended on its
 absence; the final validator must therefore replay uniqueness against only
 numerically accepted removals.
 """
@@ -26,26 +26,102 @@ TARGET = {
 }
 
 
-def load_metadata(paths: list[Path], irrep: str, expected_shards: int):
-    if len(paths) != expected_shards:
-        raise RuntimeError(f'expected {expected_shards} metadata shards, got {len(paths)}')
-    blocks = {}
+def validate_keymeta_coverage(records, *, irrep: str, expected_shards: int,
+                              target_blocks: int, target_columns: int) -> dict:
+    """Fail-closed gate for actual persisted numerical key metadata.
+
+    Partial metadata is reusable evidence, but it never authorizes construction
+    of a global uniqueness schedule.  The gate also rejects duplicate shard IDs,
+    incompatible shard counts/irreps, duplicate orbit blocks, and mixed proof
+    engine hashes.
+    """
     shard_ids = set()
-    provenance = {}
+    orbit_ids = set()
     engine_blobs = set()
+    recovered_columns = 0
+    for x in records:
+        if str(x.get('irrep')) != irrep:
+            raise RuntimeError(f"wrong irrep {x.get('irrep')} expected {irrep}")
+        if int(x.get('shards', -1)) != expected_shards:
+            raise RuntimeError(
+                f"wrong total shard count {x.get('shards')} expected {expected_shards}"
+            )
+        sid = int(x['shard'])
+        if sid in shard_ids:
+            raise RuntimeError(f'duplicate shard {sid}')
+        shard_ids.add(sid)
+        blob = x.get('engine_git_blob_sha')
+        if blob:
+            engine_blobs.add(str(blob))
+        for i0, b in x.get('blocks', {}).items():
+            i = int(i0)
+            if i in orbit_ids:
+                raise RuntimeError(f'duplicate orbit block {i}')
+            orbit_ids.add(i)
+            recovered_columns += int(b['m'])
+
+    if len(engine_blobs) > 1:
+        raise RuntimeError(f'multiple proof-engine blobs: {sorted(engine_blobs)}')
+
+    expected = set(range(expected_shards))
+    extra = sorted(shard_ids - expected)
+    if extra:
+        raise RuntimeError(f'extra shard ids outside expected range: {extra}')
+    missing = sorted(expected - shard_ids)
+    recovered_blocks = len(orbit_ids)
+    exact_full = (
+        not missing
+        and recovered_blocks == target_blocks
+        and recovered_columns == target_columns
+    )
+    if not missing and not exact_full:
+        raise RuntimeError(
+            f'full shard coverage but target mismatch blocks={recovered_blocks}/{target_blocks} '
+            f'columns={recovered_columns}/{target_columns}'
+        )
+    return {
+        'status': 'FULL_KEYMETA_COVERAGE' if exact_full else 'INCOMPLETE_KEYMETA_COVERAGE',
+        'expected_shards': expected_shards,
+        'recovered_shards': sorted(shard_ids),
+        'missing_shards': missing,
+        'recovered_blocks': recovered_blocks,
+        'recovered_columns': recovered_columns,
+        'target_blocks': target_blocks,
+        'target_columns': target_columns,
+        'engine_git_blob_shas': sorted(engine_blobs),
+        'schedule_allowed': bool(exact_full),
+        'proof_status': 'COVERAGE_GATE_ONLY_NOT_A_RANK_CERTIFICATE',
+    }
+
+
+def load_metadata(paths: list[Path], irrep: str, expected_shards: int):
+    records = []
     for p in paths:
         with gzip.open(p, 'rb') as f:
             x = pickle.load(f)
         if x.get('kind') != KIND or int(x.get('schema_version', -1)) != 1:
             raise RuntimeError(f'{p}: wrong metadata schema/kind')
-        if str(x.get('irrep')) != irrep:
-            raise RuntimeError(f'{p}: wrong irrep {x.get("irrep")}')
-        if int(x.get('shards', -1)) != expected_shards:
-            raise RuntimeError(f'{p}: wrong total shard count')
+        records.append(x)
+
+    target_columns, target_blocks = TARGET[irrep]
+    coverage = validate_keymeta_coverage(
+        records,
+        irrep=irrep,
+        expected_shards=expected_shards,
+        target_blocks=target_blocks,
+        target_columns=target_columns,
+    )
+    if not coverage['schedule_allowed']:
+        raise RuntimeError(
+            f"actual-q coverage incomplete: missing={coverage['missing_shards']} "
+            f"blocks={coverage['recovered_blocks']}/{target_blocks} "
+            f"columns={coverage['recovered_columns']}/{target_columns}"
+        )
+
+    blocks = {}
+    provenance = {}
+    for x in records:
         sid = int(x['shard'])
-        if sid in shard_ids:
-            raise RuntimeError(f'duplicate shard {sid}')
-        shard_ids.add(sid)
         provenance[sid] = {
             'source_run_id': x.get('source_run_id'),
             'source_artifact_id': x.get('source_artifact_id'),
@@ -53,25 +129,14 @@ def load_metadata(paths: list[Path], irrep: str, expected_shards: int):
             'source_tar_sha256': x.get('source_tar_sha256'),
             'engine_git_blob_sha': x.get('engine_git_blob_sha'),
         }
-        if x.get('engine_git_blob_sha'):
-            engine_blobs.add(x['engine_git_blob_sha'])
         for i0, b in x.get('blocks', {}).items():
             i = int(i0)
-            if i in blocks:
-                raise RuntimeError(f'duplicate orbit block {i}')
             blocks[i] = {
                 'm': int(b['m']),
                 'q_rows': dict(b['q_rows']),
                 'source_shard': sid,
             }
-    expected = set(range(expected_shards))
-    if shard_ids != expected:
-        raise RuntimeError(
-            f'shard coverage mismatch missing={sorted(expected-shard_ids)} extra={sorted(shard_ids-expected)}'
-        )
-    if len(engine_blobs) > 1:
-        raise RuntimeError(f'multiple proof-engine blobs: {sorted(engine_blobs)}')
-    return blocks, provenance, sorted(engine_blobs)
+    return blocks, provenance, coverage['engine_git_blob_shas']
 
 
 def build_schedule(blocks: dict[int, dict]) -> dict:
@@ -132,11 +197,6 @@ def main() -> int:
     blocks, provenance, engine_blobs = load_metadata(paths, a.irrep, a.expected_shards)
     recovered_blocks = len(blocks)
     recovered_columns = sum(int(x['m']) for x in blocks.values())
-    if recovered_blocks != target_blocks or recovered_columns != target_columns:
-        raise RuntimeError(
-            f'coverage mismatch blocks={recovered_blocks}/{target_blocks} '
-            f'columns={recovered_columns}/{target_columns}'
-        )
     proposal = build_schedule(blocks)
     payload = {
         'schema_version': 1,
