@@ -1,0 +1,65 @@
+name: BQG depth6 [3,2] Stage-A keymeta salvage
+on:
+  workflow_run:
+    workflows: ["BQG depth6 mixed stage A"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Stage-A workflow run ID to salvage
+        required: true
+        default: '36899125190'
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  salvage-keymeta:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+          path: proofsrc
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install --disable-pip-version-check numpy
+      - name: Resolve Stage-A source run
+        id: src
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
+            rid="${{ github.event.workflow_run.id }}"
+          else
+            rid="${{ inputs.source_run_id }}"
+          fi
+          test -n "${rid}"
+          echo "run_id=${rid}" >> "$GITHUB_OUTPUT"
+          echo "SALVAGE_SOURCE_RUN=${rid}"
+      - name: Harvest matching raw shards one-at-a-time into tiny key metadata
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -u proofsrc/scripts/harvest_stagea_keymeta.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id "${{ steps.src.outputs.run_id }}" \
+            --prefix bqg-mixed-32-shard- \
+            --expected-shards 112 \
+            --extractor proofsrc/mixed_parallel/extract_master_key_metadata.py \
+            --out-dir stagea32_keymeta \
+            --engine-git-blob-sha cbbaa80f6b6b61d353458db1fa1f03f824730532
+      - name: Show salvage manifest
+        run: cat stagea32_keymeta/manifest.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-stagea-keymeta-salvage-${{ steps.src.outputs.run_id }}
+          path: stagea32_keymeta
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 6
