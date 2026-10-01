@@ -1,5 +1,5 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "date": "2026-10-01",
   "irrep": "[3,2]",
   "scope": "persisted numerical evidence recovery only",
@@ -17,78 +17,49 @@
     "key_metadata_is_not_itself_a_rank_certificate": true
   },
   "raw_artifacts_known": {
-    "8": {
-      "artifact_id": 11187460302,
-      "size_bytes": 2349300913,
-      "digest": "sha256:9902453cc2ed6dc2eedc3585fb2ae6b1a99bf74aa0be8402585fa22549eebee5"
-    },
-    "12": {
-      "artifact_id": 11185097491,
-      "size_bytes": 2478641973,
-      "digest": "sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566"
-    },
-    "13": {
-      "artifact_id": 11186940750,
-      "size_bytes": 2673876332,
-      "digest": "sha256:0de0c7ae9a8199e1330b5255065333b00420f8cc639196fced2219d996291148"
-    },
-    "14": {
-      "artifact_id": 11185982461,
-      "size_bytes": 2614398869,
-      "digest": "sha256:a67020b65b4f49eb6808d8dc926f76d2c888f6c24d568b30e854ec1570e7cae4"
-    },
-    "17": {
-      "artifact_id": 11185818245,
-      "size_bytes": 2018594072,
-      "digest": "sha256:8a81bcd292e24460098b8d0c65111cd047f5da25ef159b40112db52496c71516"
-    },
-    "18": {
-      "artifact_id": 11184840100,
-      "size_bytes": 1974545653,
-      "digest": "sha256:30c44ee2008b50b06176a97ef4001412603b7cefaa0614cc7ac68b412056b4dc"
-    },
-    "19": {
-      "artifact_id": 11186468774,
-      "size_bytes": 2231678998,
-      "digest": "sha256:69b83e982a35bf10fbc7585f2acf7dd2708288ab4830025e4f8f5dae99177b22"
-    }
+    "8": {"artifact_id":11187460302,"size_bytes":2349300913,"digest":"sha256:9902453cc2ed6dc2eedc3585fb2ae6b1a99bf74aa0be8402585fa22549eebee5"},
+    "12":{"artifact_id":11185097491,"size_bytes":2478641973,"digest":"sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566"},
+    "13":{"artifact_id":11186940750,"size_bytes":2673876332,"digest":"sha256:0de0c7ae9a8199e1330b5255065333b00420f8cc639196fced2219d996291148"},
+    "14":{"artifact_id":11185982461,"size_bytes":2614398869,"digest":"sha256:a67020b65b4f49eb6808d8dc926f76d2c888f6c24d568b30e854ec1570e7cae4"},
+    "17":{"artifact_id":11185818245,"size_bytes":2018594072,"digest":"sha256:8a81bcd292e24460098b8d0c65111cd047f5da25ef159b40112db52496c71516"},
+    "18":{"artifact_id":11184840100,"size_bytes":1974545653,"digest":"sha256:30c44ee2008b50b06176a97ef4001412603b7cefaa0614cc7ac68b412056b4dc"},
+    "19":{"artifact_id":11186468774,"size_bytes":2231678998,"digest":"sha256:69b83e982a35bf10fbc7585f2acf7dd2708288ab4830025e4f8f5dae99177b22"}
   },
   "recovered_compact_entries": {
     "12": {
-      "keymeta_artifact_id": 11188955055,
-      "keymeta_artifact_digest": "sha256:1d1bc5c0d5154cdb564c8bc0a193cfc2c77ec0a4d396467e760d2e3fb693f39d",
-      "keymeta_artifact_size_bytes": 19881,
-      "keymeta_payload_bytes": 18624,
-      "source_tar_sha256": "e84a2846cb1774f26f9aa027e814d9bbdc5def18d5a6d238903f447ef8cd3596",
-      "blocks": [
-        {
-          "orbit_index": 2699,
-          "rep": [1, 2, 2, 3, 3, 4, 2, 4, 3, 2],
-          "m": 540,
-          "coord_dim": 2160,
-          "actual_master_q_keys": 4227,
-          "actual_master_rows": 301092,
-          "source_compute_seconds": 4184.836004018784,
-          "source_record_ok": true
-        }
-      ],
-      "recovered_blocks": 1,
-      "recovered_columns": 540,
-      "claim": "persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone"
+      "keymeta_artifact_id":11188955055,
+      "keymeta_artifact_digest":"sha256:1d1bc5c0d5154cdb564c8bc0a193cfc2c77ec0a4d396467e760d2e3fb693f39d",
+      "keymeta_artifact_size_bytes":19881,
+      "keymeta_payload_bytes":18624,
+      "source_tar_sha256":"e84a2846cb1774f26f9aa027e814d9bbdc5def18d5a6d238903f447ef8cd3596",
+      "blocks":[{"orbit_index":2699,"rep":[1,2,2,3,3,4,2,4,3,2],"m":540,"coord_dim":2160,"actual_master_q_keys":4227,"actual_master_rows":301092,"source_compute_seconds":4184.836004018784,"source_record_ok":true}],
+      "recovered_blocks":1,
+      "recovered_columns":540,
+      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone"
+    },
+    "14": {
+      "keymeta_artifact_id":11189830108,
+      "keymeta_artifact_digest":"sha256:4d1691c3223f1ea71ac4d98c7b38d07ab63160ab9235d73c6fd99dba82f6d772",
+      "keymeta_artifact_size_bytes":18173,
+      "source_tar_sha256":"ed236f32632447ccefd28eda1963cc5283830f477c472172fc290d3f5f9a8beb",
+      "blocks":[{"orbit_index":2689,"rep":[1,2,2,3,3,3,3,3,2,4],"m":540,"coord_dim":2160,"actual_master_q_keys":3988,"actual_master_rows":318201,"source_compute_seconds":4263.560735940933,"source_record_ok":true}],
+      "recovered_blocks":1,
+      "recovered_columns":540,
+      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone"
     }
   },
   "historical_dynamic_master_checkpoint": {
-    "source": "BQG_DEPTH6_LIVE_PROOF_STATUS_2026-09-29.json",
-    "operator": "H0 unique + H2 null-lift, H1 fallback where needed",
-    "committed_blocks": 166,
-    "committed_columns": 4671,
-    "status": "AGGREGATE_ONLY_ORBIT_LEVEL_RESULT_FILES_NOT_YET_RECOVERED",
-    "reuse_rule": "Do not add these 4671 columns to the new per-orbit replay until orbit IDs, q selections, ranks/sigmas and compatible operator provenance are recovered."
+    "source":"BQG_DEPTH6_LIVE_PROOF_STATUS_2026-09-29.json",
+    "operator":"H0 unique + H2 null-lift, H1 fallback where needed",
+    "committed_blocks":166,
+    "committed_columns":4671,
+    "status":"AGGREGATE_ONLY_ORBIT_LEVEL_RESULT_FILES_NOT_YET_RECOVERED",
+    "reuse_rule":"Do not add these 4671 columns to the new per-orbit replay until orbit IDs, q selections, ranks/sigmas and compatible operator provenance are recovered."
   },
   "current_exact_recovered_identity_coverage": {
-    "blocks": 1,
-    "columns": 540,
-    "fraction_of_target_columns": 0.0041251912484817
+    "blocks":2,
+    "columns":1080,
+    "fraction_of_target_columns":0.00825038387202738
   },
-  "claim_boundary": "This ledger is a recovery/provenance ledger, not a full-rank certificate. [3,2] remains structural CLOSED and numerical RECOVER_OR_FINISH."
+  "claim_boundary":"This ledger is a recovery/provenance ledger, not a full-rank certificate. [3,2] remains structural CLOSED and numerical RECOVER_OR_FINISH."
 }
