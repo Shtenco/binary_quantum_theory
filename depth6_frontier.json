@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "status_date": "2026-09-29",
+  "status_date": "2026-10-01",
   "scope": "corrected finite K5 depth-6 master-kernel frontier",
-  "status": "ACTIVE_NOT_CLOSED",
+  "status": "NUMERICAL_WITNESSES_PENDING",
   "shell": {
     "gauss_admissible_spin_assignments": 264962,
     "hilbert_dimension": 3111637,
@@ -36,25 +36,37 @@
       "rank": 104146,
       "dimension": 104146,
       "kernel": "empty"
+    },
+    "[2,1,1,1]": {
+      "status": "CLOSED_FINITE_NUMERICAL",
+      "rank": 103318,
+      "dimension": 103318,
+      "kernel": "empty",
+      "certificate": "BQG_DEPTH6_2111_MASTER_CLOSED_2026-10-01.json"
     }
   },
+  "structural_depth6_status": "CLOSED_FOR_ALL_7_S5_IRREPS",
   "structural_support": {
     "[3,2]": {
+      "status": "CLOSED",
       "blocks": "2755/2755",
       "columns": "130903/130903",
       "remainder": 0
     },
     "[3,1,1]": {
+      "status": "CLOSED",
       "blocks": "2719/2719",
       "columns": "153455/153455",
       "remainder": 0
     },
     "[2,2,1]": {
+      "status": "CLOSED",
       "blocks": "2749/2749",
       "columns": "130503/130503",
       "remainder": 0
     },
     "[2,1,1,1]": {
+      "status": "CLOSED",
       "blocks": "2712/2712",
       "columns": "103318/103318",
       "remainder": 0
@@ -71,43 +83,74 @@
   "s4_sign_frontier": {
     "decomposition": "[1^5] direct-sum [2,1,1,1]",
     "total_dimension": 130112,
-    "structural_blocks": 11956,
-    "structural_columns": 130112,
-    "h0_thresholded_maxflow": 130096,
     "exact_h0_null_directions": 16,
-    "exact_h0_null_reason": "for all 16 directions (j01,j02,j03,j04)=(0,0,0,0), so the local H0 action at vertex 0 vanishes geometrically",
+    "h0_complement_dimension": 130096,
+    "h0_complement_rank": 130096,
+    "h0_main_unique_q": {
+      "blocks": 10929,
+      "columns": 123744,
+      "unique_q_channels": 10929,
+      "selected_sigma_min": 0.010065847991579507
+    },
+    "h0_residual_sparse": {
+      "blocks": 1011,
+      "columns": 6352,
+      "q_channels": 4588,
+      "rows": 61657,
+      "nnz": 3377269,
+      "sigma_min": 0.37777531708248774,
+      "smallest_gram_eigenvalue": 0.14271419019677417
+    },
     "h1_lift": {
       "rank": 16,
       "dimension": 16,
-      "sigma_min": 1.1304521906426823,
-      "sigma_max": 3.304257962941286,
-      "condition_number_approx": 2.923
+      "sigma_min": 1.1304521906426825,
+      "sigma_max": 3.3042579629412856,
+      "condition_number_approx": 2.9229524169993915
     },
-    "giant_component": {
-      "input_blocks": 11923,
-      "columns": 130007,
-      "q_blocks": 14586,
-      "nominal_output_rows": 153202,
-      "numerical_q_row_rank_sum": 153056,
-      "rank_aware_maxflow": 130007,
-      "target_flow": 130007,
-      "deficient_inputs_after_rank_aware_flow": 0,
-      "square_minor_plan": {
-        "rows": 130007,
-        "columns": 130007,
-        "expected_nonzero_scalar_entries": 47543521,
-        "zero_selected_rows": 0,
-        "numerical_rank": null,
-        "status": "NOT_YET_FACTORIZED"
-      }
-    },
-    "sector_status": "ACTIVE_NOT_CLOSED",
-    "blocking_gate": "assemble and rank-revealing factorize the planned 130007 x 130007 sparse minor, then combine with the proven 16D H1 lift in the master constraint"
+    "master_kernel_dimension": 0,
+    "sector_status": "CLOSED_FINITE_NUMERICAL",
+    "certificate": "BQG_DEPTH6_2111_MASTER_CLOSED_2026-10-01.json",
+    "obsolete_gate": {
+      "description": "The previously planned 130007 x 130007 H0-only sparse minor is superseded by the preserved main+residual H0 complement certificate plus the fresh 16D H1 lift.",
+      "status": "SUPERSEDED_DO_NOT_USE_AS_BLOCKER"
+    }
   },
-  "remaining_irreps_after_s4_sign": [
+  "numerical_master_witnesses": {
+    "[3,2]": {
+      "structural_status": "CLOSED",
+      "dimension": 130903,
+      "blocks": 2755,
+      "status": "RECOVER_OR_FINISH",
+      "next_action": "recover surviving mixed Stage-A numerical evidence and compute only genuinely missing master-map witness pieces"
+    },
+    "[3,1,1]": {
+      "structural_status": "CLOSED",
+      "dimension": 153455,
+      "blocks": 2719,
+      "status": "PENDING_INDEPENDENT_NUMERICAL_WITNESS"
+    },
+    "[2,2,1]": {
+      "structural_status": "CLOSED",
+      "dimension": 130503,
+      "blocks": 2749,
+      "status": "PENDING_INDEPENDENT_NUMERICAL_WITNESS"
+    }
+  },
+  "current_numerical_witness": "[3,2]",
+  "remaining_numerical_irreps": [
     "[3,2]",
     "[3,1,1]",
     "[2,2,1]"
+  ],
+  "do_not_recompute_for_32": [
+    "depth-6 shell enumeration",
+    "[3,2] multiplicity 130903",
+    "2755 active [3,2] S5 orbit blocks",
+    "S3/J4/J5 Jucys selectors",
+    "S5->S4 branch identity",
+    "structural support graph",
+    "structural capacity/matching/peeling proving 130903/130903"
   ],
   "finite_depth6_target": "ker M^(d=6) = span{|0>} ?",
   "finite_depth6_theorem_status": "NOT_YET_PROVED",
@@ -123,6 +166,7 @@
   "claim_discipline": [
     "structural support closure is not numeric kernel closure",
     "H0 nullity is not master-kernel nullity",
+    "matching failure is not an operator kernel",
     "finite depth-6 closure, even if achieved, is not a continuum quantum-gravity proof",
     "no experimentally established prediction is claimed"
   ]
