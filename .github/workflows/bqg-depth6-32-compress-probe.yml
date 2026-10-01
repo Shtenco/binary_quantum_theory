@@ -1,0 +1,65 @@
+name: BQG depth6 [3,2] compact Gram probe
+on:
+  push:
+    branches: [research/depth6-s4sign-proof]
+    paths:
+      - 'mixed_parallel/compress_master_map_grams.py'
+      - '.github/workflows/bqg-depth6-32-compress-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  compress-shard18:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: research/depth6-s4sign-proof
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install numpy
+        run: pip install --disable-pip-version-check numpy
+      - name: Download completed raw numerical artifact only
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ARTIFACT_ID: '11184840100'
+        run: |
+          set -euo pipefail
+          mkdir -p input_zip input
+          curl -fsSL -L \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" \
+            -o input_zip/shard18.zip
+          unzip -q input_zip/shard18.zip -d input
+          test -f input/bqg-mixed-32-shard-18.tar.gz
+          ls -lh input/bqg-mixed-32-shard-18.tar.gz
+      - name: Compress persisted master maps to per-q Hermitian Grams
+        env:
+          OMP_NUM_THREADS: '1'
+          OPENBLAS_NUM_THREADS: '1'
+          MKL_NUM_THREADS: '1'
+        run: |
+          python -u mixed_parallel/compress_master_map_grams.py \
+            --src input/bqg-mixed-32-shard-18.tar.gz \
+            --work gram_probe_work \
+            --out bqg-mixed-32-shard-18-grams.pkl.gz \
+            --json bqg-mixed-32-shard-18-grams-stats.json
+          cat bqg-mixed-32-shard-18-grams-stats.json
+          ls -lh bqg-mixed-32-shard-18-grams.pkl.gz
+      - name: Upload compact evidence and compression audit
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-mixed-32-shard-18-compact-grams
+          path: |
+            bqg-mixed-32-shard-18-grams.pkl.gz
+            bqg-mixed-32-shard-18-grams-stats.json
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
