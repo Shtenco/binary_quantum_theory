@@ -1,21 +1,25 @@
-name: BQG depth6 [3,2] recovery harvest
+name: BQG depth6 [3,2] legacy raw recovery harvest
 on:
-  workflow_run:
-    workflows: ["BQG depth6 mixed stage A"]
-    types: [completed]
   workflow_dispatch:
     inputs:
       source_run_id:
-        description: Existing mixed Stage-A run ID containing 112 [3,2] shard artifacts
+        description: Existing mixed Stage-A run ID containing all 112 raw [3,2] shard artifacts (legacy/manual only)
         required: true
         type: string
+
+# IMPORTANT: automatic workflow_run triggering was deliberately removed on
+# 2026-10-01. Real Stage-A artifacts are multi-gigabyte (1.97-2.67 GB observed
+# per completed shard), so downloading 112 raw shards onto one hosted runner is
+# not a viable recovery architecture. The active path is per-shard compact QR
+# evidence followed by fail-closed QR peeling and raw coupled checking only for
+# a residual. This file is retained only as a manual historical fallback.
 
 permissions:
   contents: read
   actions: read
 
 jobs:
-  recover-32:
+  recover-32-legacy-raw:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
@@ -29,30 +33,21 @@ jobs:
           python-version: '3.12'
       - name: Install numerical dependencies
         run: pip install --disable-pip-version-check numpy scipy
-      - name: Resolve source run
-        id: source
-        shell: bash
+      - name: Fail closed unless explicitly dispatched
         run: |
-          set -euo pipefail
-          if [[ "${{ github.event_name }}" == "workflow_run" ]]; then
-            rid="${{ github.event.workflow_run.id }}"
-          else
-            rid="${{ inputs.source_run_id }}"
-          fi
-          test -n "${rid}"
-          echo "run_id=${rid}" >> "$GITHUB_OUTPUT"
-          echo "SOURCE_RUN_ID=${rid}"
+          test "${{ github.event_name }}" = "workflow_dispatch"
+          echo "LEGACY_RAW_RECOVERY_MANUAL_ONLY source_run=${{ inputs.source_run_id }}"
       - name: Download exactly 112 persisted [3,2] numerical master-map shards
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python scripts/download_workflow_artifacts_paginated.py \
             --repo "${GITHUB_REPOSITORY}" \
-            --run-id "${{ steps.source.outputs.run_id }}" \
+            --run-id "${{ inputs.source_run_id }}" \
             --prefix "bqg-mixed-32-shard-" \
             --expected 112 \
             --out mixed_downloaded
-      - name: Recovery-only independent numerical master witness
+      - name: Legacy recovery-only independent numerical master witness
         env:
           PYTHONPATH: ${{ github.workspace }}/proofsrc/mixed_parallel
           OMP_NUM_THREADS: '1'
@@ -64,14 +59,14 @@ jobs:
             --artifacts mixed_downloaded \
             --expected-shards 112 \
             --prefix bqg-mixed-32-shard- \
-            --source-run-id "${{ steps.source.outputs.run_id }}" \
+            --source-run-id "${{ inputs.source_run_id }}" \
             --work mixed_recovery32 \
             --out BQG_DEPTH6_32_MASTER_RECOVERY.json
-      - name: Upload recovery certificate
+      - name: Upload legacy recovery certificate
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bqg-depth6-32-recovery-certificate
+          name: bqg-depth6-32-legacy-raw-recovery-certificate
           path: BQG_DEPTH6_32_MASTER_RECOVERY.json
           if-no-files-found: warn
           retention-days: 30
