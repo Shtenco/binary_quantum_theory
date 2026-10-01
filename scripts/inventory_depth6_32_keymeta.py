@@ -22,7 +22,8 @@ from pathlib import Path
 
 import build_master_key_peeling_schedule as S
 
-NAME_RE = re.compile(r'^bqg-mixed-32-shard-(\d+)-keymeta$')
+NAME_RE = re.compile(r'^bqg-mixed-32-shard-(\d+)-keymeta(?:-targeted-retry)?$')
+SALVAGE_RE = re.compile(r'^bqg-depth6-32-stagea-keymeta-salvage-\d+$')
 GITHUB_API_HOST = 'api.github.com'
 
 
@@ -82,6 +83,10 @@ def list_run_artifacts(repo: str, run_id: int, token: str) -> list[dict]:
     return all_items
 
 
+def is_candidate_keymeta_artifact_name(name: str) -> bool:
+    return bool(NAME_RE.match(name) or SALVAGE_RE.match(name))
+
+
 def choose_latest_keymeta(repo: str, run_ids: list[int], token: str) -> dict[int, dict]:
     chosen: dict[int, dict] = {}
     for run_id in run_ids:
@@ -98,17 +103,27 @@ def choose_latest_keymeta(repo: str, run_ids: list[int], token: str) -> dict[int
     return chosen
 
 
-def load_payload_from_zip(zpath: Path) -> dict:
-    with zipfile.ZipFile(zpath) as z:
-        names = [n for n in z.namelist() if n.endswith('.pkl.gz')]
-        if len(names) != 1:
-            raise RuntimeError(f'{zpath}: expected one .pkl.gz, got {names}')
-        raw = z.read(names[0])
+def _load_payload_bytes(raw: bytes, label: str) -> dict:
     with gzip.GzipFile(fileobj=io.BytesIO(raw), mode='rb') as g:
         x = pickle.load(g)
     if x.get('kind') != 'BQG_MIXED_MASTER_KEY_METADATA' or int(x.get('schema_version', -1)) != 1:
-        raise RuntimeError(f'{zpath}: wrong keymeta kind/schema')
+        raise RuntimeError(f'{label}: wrong keymeta kind/schema')
     return x
+
+
+def load_payloads_from_zip(zpath: Path) -> list[dict]:
+    with zipfile.ZipFile(zpath) as z:
+        names = sorted(n for n in z.namelist() if n.endswith('.pkl.gz'))
+        if not names:
+            raise RuntimeError(f'{zpath}: expected at least one .pkl.gz')
+        return [_load_payload_bytes(z.read(name), f'{zpath}:{name}') for name in names]
+
+
+def load_payload_from_zip(zpath: Path) -> dict:
+    payloads = load_payloads_from_zip(zpath)
+    if len(payloads) != 1:
+        raise RuntimeError(f'{zpath}: expected one .pkl.gz, got {len(payloads)}')
+    return payloads[0]
 
 
 def main() -> int:
