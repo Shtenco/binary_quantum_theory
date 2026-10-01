@@ -1,65 +1,130 @@
 {
-  "schema_version": 2,
-  "date": "2026-10-01",
+  "claim_boundary": "This ledger is a recovery/provenance ledger, not a full-rank certificate. [3,2] remains structural CLOSED and numerical RECOVER_OR_FINISH.",
+  "current_exact_recovered_identity_coverage": {
+    "blocks": 6,
+    "columns": 3180,
+    "fraction_of_target_columns": 0.02429279695652506
+  },
+  "date": "2026-10-02",
+  "historical_dynamic_master_checkpoint": {
+    "committed_blocks": 166,
+    "committed_columns": 4671,
+    "operator": "H0 unique + H2 null-lift, H1 fallback where needed",
+    "reuse_rule": "Do not add these 4671 columns to the new per-orbit replay until orbit IDs, q selections, ranks/sigmas and compatible operator provenance are recovered.",
+    "source": "BQG_DEPTH6_LIVE_PROOF_STATUS_2026-09-29.json",
+    "status": "AGGREGATE_ONLY_ORBIT_LEVEL_RESULT_FILES_NOT_YET_RECOVERED"
+  },
   "irrep": "[3,2]",
-  "scope": "persisted numerical evidence recovery only",
-  "structural_status": "CLOSED_IMMUTABLE_INPUT",
-  "target_blocks": 2755,
-  "target_columns": 130903,
-  "source_stage_a_run_id": 36899125190,
-  "source_engine_git_blob_sha": "cbbaa80f6b6b61d353458db1fa1f03f824730532",
-  "rules": {
-    "structural_recompute_performed": false,
-    "multiplicity_recompute_performed": false,
-    "jucys_recompute_performed": false,
-    "entries_must_come_from_persisted_raw_or_compact_artifacts": true,
-    "raw_artifact_presence_is_not_itself_a_rank_certificate": true,
-    "key_metadata_is_not_itself_a_rank_certificate": true
+  "keymeta_preservation_workflow": {
+    "branch": "research/depth6-s4sign-proof",
+    "commit": "72baec59c21c5da91fdfb8581dc08a62e840d8aa",
+    "matrix_shards": [0,6,8,11,12,13,14,17,18,19,20],
+    "purpose": "convert successful raw artifacts to 90-day tiny actual-q metadata without recomputing Hamiltonian or structural geometry"
   },
   "raw_artifacts_known": {
-    "8": {"artifact_id":11187460302,"size_bytes":2349300913,"digest":"sha256:9902453cc2ed6dc2eedc3585fb2ae6b1a99bf74aa0be8402585fa22549eebee5"},
-    "12":{"artifact_id":11185097491,"size_bytes":2478641973,"digest":"sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566"},
-    "13":{"artifact_id":11186940750,"size_bytes":2673876332,"digest":"sha256:0de0c7ae9a8199e1330b5255065333b00420f8cc639196fced2219d996291148"},
-    "14":{"artifact_id":11185982461,"size_bytes":2614398869,"digest":"sha256:a67020b65b4f49eb6808d8dc926f76d2c888f6c24d568b30e854ec1570e7cae4"},
-    "17":{"artifact_id":11185818245,"size_bytes":2018594072,"digest":"sha256:8a81bcd292e24460098b8d0c65111cd047f5da25ef159b40112db52496c71516"},
-    "18":{"artifact_id":11184840100,"size_bytes":1974545653,"digest":"sha256:30c44ee2008b50b06176a97ef4001412603b7cefaa0614cc7ac68b412056b4dc"},
-    "19":{"artifact_id":11186468774,"size_bytes":2231678998,"digest":"sha256:69b83e982a35bf10fbc7585f2acf7dd2708288ab4830025e4f8f5dae99177b22"}
+    "0": {"artifact_id":11189001648,"digest":"sha256:5b908e4b93c675e7bfdaf5ad228e3526208adec8140e5e9d6f88ccb61c99db48","size_bytes":4224469489},
+    "6": {"artifact_id":11187133632,"digest":"sha256:b7605047e45b4855e1663e2f22a13a66e7e32c683e81e8f58fba0f5bf0aee3bb","size_bytes":2970443258},
+    "8": {"artifact_id":11187460302,"digest":"sha256:9902453cc2ed6dc2eedc3585fb2ae6b1a99bf74aa0be8402585fa22549eebee5","size_bytes":2349300913},
+    "11": {"artifact_id":11189890501,"digest":"sha256:e795e270beebe4bc2b31a2241b6900b4a95060588608d080adfc57f386967307","size_bytes":2975822835},
+    "12": {"artifact_id":11185097491,"digest":"sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566","size_bytes":2478641973},
+    "13": {"artifact_id":11186940750,"digest":"sha256:0de0c7ae9a8199e1330b5255065333b00420f8cc639196fced2219d996291148","size_bytes":2673876332},
+    "14": {"artifact_id":11185982461,"digest":"sha256:a67020b65b4f49eb6808d8dc926f76d2c888f6c24d568b30e854ec1570e7cae4","size_bytes":2614398869},
+    "17": {"artifact_id":11185818245,"digest":"sha256:8a81bcd292e24460098b8d0c65111cd047f5da25ef159b40112db52496c71516","size_bytes":2018594072},
+    "18": {"artifact_id":11184840100,"digest":"sha256:30c44ee2008b50b06176a97ef4001412603b7cefaa0614cc7ac68b412056b4dc","size_bytes":1974545653},
+    "19": {"artifact_id":11186468774,"digest":"sha256:69b83e982a35bf10fbc7585f2acf7dd2708288ab4830025e4f8f5dae99177b22","size_bytes":2231678998},
+    "20": {"artifact_id":11188262755,"digest":"sha256:c94b8145db33017407a67de19b78d6607a4c3fe365608d2bf7863e7d3e399c19","size_bytes":1811348635}
   },
   "recovered_compact_entries": {
+    "8": {
+      "blocks": [{"actual_master_q_keys":3785,"actual_master_rows":284749,"coord_dim":2160,"m":540,"orbit_index":2720,"rep":[1,2,3,4,3,3,3,2,3,2],"source_compute_seconds":5428.558969259262,"source_record_ok":true}],
+      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone",
+      "keymeta_artifact_digest":"sha256:c0e9f2b4f4d567a5cfdbb3461a48265e477e4ff15d338368680b2af4d1f5664d",
+      "keymeta_artifact_id":11188502431,
+      "keymeta_artifact_size_bytes":17440,
+      "keymeta_payload_bytes":16189,
+      "recovered_blocks":1,
+      "recovered_columns":540,
+      "source_tar_sha256":"6a75883460aeb14f48b9b2b4bfe598ecd6b4f051c48a960e366b68d638976db5"
+    },
     "12": {
-      "keymeta_artifact_id":11188955055,
+      "blocks": [{"actual_master_q_keys":4227,"actual_master_rows":301092,"coord_dim":2160,"m":540,"orbit_index":2699,"rep":[1,2,2,3,3,4,2,4,3,2],"source_compute_seconds":4184.836004018784,"source_record_ok":true}],
+      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone",
       "keymeta_artifact_digest":"sha256:1d1bc5c0d5154cdb564c8bc0a193cfc2c77ec0a4d396467e760d2e3fb693f39d",
+      "keymeta_artifact_id":11188955055,
       "keymeta_artifact_size_bytes":19881,
       "keymeta_payload_bytes":18624,
-      "source_tar_sha256":"e84a2846cb1774f26f9aa027e814d9bbdc5def18d5a6d238903f447ef8cd3596",
-      "blocks":[{"orbit_index":2699,"rep":[1,2,2,3,3,4,2,4,3,2],"m":540,"coord_dim":2160,"actual_master_q_keys":4227,"actual_master_rows":301092,"source_compute_seconds":4184.836004018784,"source_record_ok":true}],
       "recovered_blocks":1,
       "recovered_columns":540,
-      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone"
+      "source_tar_sha256":"e84a2846cb1774f26f9aa027e814d9bbdc5def18d5a6d238903f447ef8cd3596"
+    },
+    "13": {
+      "blocks": [{"actual_master_q_keys":4456,"actual_master_rows":324255,"coord_dim":2160,"m":540,"orbit_index":2696,"rep":[1,2,2,3,3,4,2,2,3,4],"source_compute_seconds":5339.957082748413,"source_record_ok":true}],
+      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone",
+      "keymeta_artifact_digest":"sha256:30d08436e62be5dffbad933bc1a171a38740793e6339924dec0ec0feca5868a2",
+      "keymeta_artifact_id":11188332638,
+      "keymeta_artifact_size_bytes":20642,
+      "keymeta_payload_bytes":19385,
+      "recovered_blocks":1,
+      "recovered_columns":540,
+      "source_tar_sha256":"44ef58f9fe28d8986b495c7980c87eddd3c9fbd0a930ef4194f4b8ab4da3335c"
     },
     "14": {
-      "keymeta_artifact_id":11189830108,
+      "blocks": [{"actual_master_q_keys":3988,"actual_master_rows":318201,"coord_dim":2160,"m":540,"orbit_index":2689,"rep":[1,2,2,3,3,3,3,3,2,4],"source_compute_seconds":4263.560735940933,"source_record_ok":true}],
+      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone",
       "keymeta_artifact_digest":"sha256:4d1691c3223f1ea71ac4d98c7b38d07ab63160ab9235d73c6fd99dba82f6d772",
+      "keymeta_artifact_id":11189830108,
       "keymeta_artifact_size_bytes":18173,
-      "source_tar_sha256":"ed236f32632447ccefd28eda1963cc5283830f477c472172fc290d3f5f9a8beb",
-      "blocks":[{"orbit_index":2689,"rep":[1,2,2,3,3,3,3,3,2,4],"m":540,"coord_dim":2160,"actual_master_q_keys":3988,"actual_master_rows":318201,"source_compute_seconds":4263.560735940933,"source_record_ok":true}],
+      "keymeta_payload_bytes":16916,
       "recovered_blocks":1,
       "recovered_columns":540,
-      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone"
+      "source_tar_sha256":"ed236f32632447ccefd28eda1963cc5283830f477c472172fc290d3f5f9a8beb"
+    },
+    "17": {
+      "blocks": [{"actual_master_q_keys":3869,"actual_master_rows":244550,"coord_dim":2160,"m":540,"orbit_index":2661,"rep":[1,2,2,3,2,3,4,2,2,3],"source_compute_seconds":4644.0986840724945,"source_record_ok":true}],
+      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone",
+      "keymeta_artifact_digest":"sha256:a673c8ccf2c9a21fda8b28b4d89c88bf2bf877a9339c0d37c42b64a4ed03429a",
+      "keymeta_artifact_id":11188552449,
+      "keymeta_artifact_size_bytes":18178,
+      "keymeta_payload_bytes":16921,
+      "recovered_blocks":1,
+      "recovered_columns":540,
+      "source_tar_sha256":"73878e7c9a1a26ae4e215a54f326feded8f55e9a4ca7d664bf0404cc3a604f9c"
+    },
+    "18": {
+      "blocks": [{"actual_master_q_keys":3972,"actual_master_rows":270628,"coord_dim":1920,"m":480,"orbit_index":2664,"rep":[1,2,2,3,2,3,4,2,4,3],"source_compute_seconds":2953.507827281952,"source_record_ok":true}],
+      "claim":"persisted master-map identity/support metadata recovered; numerical rank not yet certified by this metadata alone",
+      "keymeta_artifact_digest":"sha256:6e572463043a842df60b3b2a99375dcd57b595cae7cdfdc785684d4e1a2619ad",
+      "keymeta_artifact_id":11189221157,
+      "keymeta_artifact_size_bytes":19256,
+      "keymeta_payload_bytes":17999,
+      "recovered_blocks":1,
+      "recovered_columns":480,
+      "source_tar_sha256":"d0225cafa3b795b3a48e74fae4f72d651857fcc061612019e08c5e507244d82c"
     }
   },
-  "historical_dynamic_master_checkpoint": {
-    "source":"BQG_DEPTH6_LIVE_PROOF_STATUS_2026-09-29.json",
-    "operator":"H0 unique + H2 null-lift, H1 fallback where needed",
-    "committed_blocks":166,
-    "committed_columns":4671,
-    "status":"AGGREGATE_ONLY_ORBIT_LEVEL_RESULT_FILES_NOT_YET_RECOVERED",
-    "reuse_rule":"Do not add these 4671 columns to the new per-orbit replay until orbit IDs, q selections, ranks/sigmas and compatible operator provenance are recovered."
+  "rules": {
+    "entries_must_come_from_persisted_raw_or_compact_artifacts": true,
+    "global_candidate_schedule_requires_complete_112_shard_actual_q_occupancy": true,
+    "jucys_recompute_performed": false,
+    "key_metadata_is_not_itself_a_rank_certificate": true,
+    "multiplicity_recompute_performed": false,
+    "raw_artifact_presence_is_not_itself_a_rank_certificate": true,
+    "structural_recompute_performed": false,
+    "subset_q_uniqueness_is_not_a_rank_certificate": true
   },
-  "current_exact_recovered_identity_coverage": {
-    "blocks":2,
-    "columns":1080,
-    "fraction_of_target_columns":0.00825038387202738
+  "schema_version": 3,
+  "scope": "persisted numerical evidence recovery only",
+  "source_engine_git_blob_sha": "cbbaa80f6b6b61d353458db1fa1f03f824730532",
+  "source_stage_a_run_id": 36899125190,
+  "structural_status": "CLOSED_IMMUTABLE_INPUT",
+  "subset_actual_q_diagnostic": {
+    "candidate_blocks_on_subset": 6,
+    "candidate_columns_on_subset": 3180,
+    "candidate_rounds_on_subset": 1,
+    "proof_status": "DIAGNOSTIC_ONLY",
+    "reason": "A q key unique among six recovered blocks may still occur in one of the 2749 unrecovered blocks. No SVD/global removal may be credited from subset uniqueness.",
+    "recovered_shards": [8,12,13,14,17,18]
   },
-  "claim_boundary":"This ledger is a recovery/provenance ledger, not a full-rank certificate. [3,2] remains structural CLOSED and numerical RECOVER_OR_FINISH."
+  "target_blocks": 2755,
+  "target_columns": 130903
 }
