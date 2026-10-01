@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-02",
+  "irrep": "[3,2]",
+  "structural_status": "CLOSED_IMMUTABLE_INPUT",
+  "numerical_status": "RECOVER_OR_FINISH",
+  "target_blocks": 2755,
+  "target_columns": 130903,
+  "source_stage_a_run_id": 36899125190,
+  "source_engine_git_blob_sha": "cbbaa80f6b6b61d353458db1fa1f03f824730532",
+  "do_not_recompute": [
+    "depth6 shell / 264962 assignments",
+    "2757 S5 orbit enumeration",
+    "[3,2] multiplicity 130903",
+    "2755 active [3,2] blocks",
+    "exact_mult / S3-J4-J5 Jucys selector construction",
+    "branch identity B32=3A31+2A22",
+    "structural support/capacity/matching/peeling 130903/130903"
+  ],
+  "coverage_gate": {
+    "implementation_commit": "0165cb6361a4364a6a94841d4fe90ccff106a792",
+    "red_test_commit": "061fb37de6af95b6baf51d375c5dbc40ecb40b1b",
+    "green_run_id": 36919681047,
+    "status": "PASS",
+    "rule": "global candidate schedule is forbidden until exact 112/112 actual-q shard coverage also equals 2755 blocks and 130903 columns; duplicate shards/orbits and mixed engine hashes fail closed"
+  },
+  "known_successful_raw_shards": [0,6,8,11,12,13,14,17,18,19,20,21,22,23,24],
+  "known_successful_raw_count": 15,
+  "exact_recovered_keymeta": {
+    "0": {"orbit_index":2754,"rep":[2,2,3,3,3,2,3,4,3,3],"m":828,"coord_dim":3240,"q_keys":1801,"rows":333410,"compute_sec":6683.264501094818,"keymeta_artifact_id":11190872329,"keymeta_digest":"sha256:c671649a9e8821b132d7e08c3a85cbc47abed1276cce8a1233b0b3dfdf2e0739"},
+    "6": {"orbit_index":2755,"rep":[2,2,3,3,4,2,4,3,3,2],"m":621,"coord_dim":2430,"q_keys":2040,"rows":312894,"compute_sec":6472.756772518158,"keymeta_artifact_id":11191186040,"keymeta_digest":"sha256:b3b4ec449c339107c843dc727a66fad512c7116c33e3db6f28900a4ccac59499"},
+    "8": {"orbit_index":2720,"rep":[1,2,3,4,3,3,3,2,3,2],"m":540,"coord_dim":2160,"q_keys":3785,"rows":284749,"compute_sec":5428.558969259262,"keymeta_artifact_id":11188502431,"keymeta_digest":"sha256:c0e9f2b4f4d567a5cfdbb3461a48265e477e4ff15d338368680b2af4d1f5664d"},
+    "11":{"orbit_index":2700,"rep":[1,2,2,3,3,4,2,4,3,4],"m":540,"coord_dim":2160,"q_keys":4253,"rows":364008,"compute_sec":6780.229848861694,"keymeta_artifact_id":11190681051,"keymeta_digest":"sha256:23255ea7aff283d458c6149baddbcfa15add76385c6f763a6b7d26ea2803c4b7"},
+    "12":{"orbit_index":2699,"rep":[1,2,2,3,3,4,2,4,3,2],"m":540,"coord_dim":2160,"q_keys":4227,"rows":301092,"compute_sec":4184.836004018784,"keymeta_artifact_id":11188955055,"keymeta_digest":"sha256:1d1bc5c0d5154cdb564c8bc0a193cfc2c77ec0a4d396467e760d2e3fb693f39d"},
+    "13":{"orbit_index":2696,"rep":[1,2,2,3,3,4,2,2,3,4],"m":540,"coord_dim":2160,"q_keys":4456,"rows":324255,"compute_sec":5339.957082748413,"keymeta_artifact_id":11188332638,"keymeta_digest":"sha256:30d08436e62be5dffbad933bc1a171a38740793e6339924dec0ec0feca5868a2"},
+    "14":{"orbit_index":2689,"rep":[1,2,2,3,3,3,3,3,2,4],"m":540,"coord_dim":2160,"q_keys":3988,"rows":318201,"compute_sec":4263.560735940933,"keymeta_artifact_id":11189830108,"keymeta_digest":"sha256:4d1691c3223f1ea71ac4d98c7b38d07ab63160ab9235d73c6fd99dba82f6d772"},
+    "17":{"orbit_index":2661,"rep":[1,2,2,3,2,3,4,2,2,3],"m":540,"coord_dim":2160,"q_keys":3869,"rows":244550,"compute_sec":4644.0986840724945,"keymeta_artifact_id":11188552449,"keymeta_digest":"sha256:a673c8ccf2c9a21fda8b28b4d89c88bf2bf877a9339c0d37c42b64a4ed03429a"},
+    "18":{"orbit_index":2664,"rep":[1,2,2,3,2,3,4,2,4,3],"m":480,"coord_dim":1920,"q_keys":3972,"rows":270628,"compute_sec":2953.507827281952,"keymeta_artifact_id":11189221157,"keymeta_digest":"sha256:6e572463043a842df60b3b2a99375dcd57b595cae7cdfdc785684d4e1a2619ad"},
+    "19":{"orbit_index":2605,"rep":[1,1,3,3,4,2,3,3,4,4],"m":480,"coord_dim":1920,"q_keys":4368,"rows":305200,"compute_sec":5867.236959695816,"keymeta_artifact_id":11192120959,"keymeta_digest":"sha256:555c52b0c179269e31a43350ad7cef99d49627652325dce7beb0b40eabf5a10f"},
+    "20":{"orbit_index":2567,"rep":[1,1,3,3,2,2,3,3,4,4],"m":480,"coord_dim":1920,"q_keys":4087,"rows":248148,"compute_sec":3799.763790369034,"keymeta_artifact_id":11192465512,"keymeta_digest":"sha256:a9aafb7f1eb569fefc96a0f38c1251bb342eb5c56b3996dfd655cfdb83429ec6"}
+  },
+  "exact_recovered_identity_coverage": {
+    "blocks": 11,
+    "columns": 6129,
+    "fraction_of_target_columns": 0.04682092847375537,
+    "rank_credit": 0,
+    "reason": "key metadata identifies persisted numerical maps and actual-q occupancy but is not itself a rank certificate"
+  },
+  "incremental_keymeta_batch": {
+    "commit": "579637d772aec544048e7225d52d37fdb783fa50",
+    "shards": [21,22,23,24],
+    "status": "TRIGGERED_OR_RUNNING",
+    "purpose": "preserve newly completed raw shards without re-downloading earlier multi-GB shards"
+  },
+  "old_stage_a_rerun_policy": {
+    "status": "FORBIDDEN_AS_PROOF_PATH",
+    "reason": "frozen runner reconstructs shell/canon5/exact_mult and fast_selector W before numerical master_map; rerun would violate immutable structural/Jucys boundary",
+    "bundle_audit_run_id": 36919535730,
+    "bundle_audit_status": "PASS"
+  },
+  "next_gate": "Recover actual-q metadata for every available raw shard; recover old raw artifacts or persisted W for missing shard inputs; only at exact 112/112 actual-q coverage may global candidate schedule and distributed SVD/replay begin.",
+  "claim_boundary": "This is a recovery checkpoint, not a numerical closure certificate. [3,2] remains structural CLOSED and numerical RECOVER_OR_FINISH."
+}
