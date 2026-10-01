@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "date": "2026-10-01",
+  "scope": "finite corrected K5 depth-6 S5-[3,2] numerical master-rank recovery",
+  "irrep": "[3,2]",
+  "structural_status": "CLOSED_IMMUTABLE_INPUT",
+  "structural_certificate": {
+    "active_blocks": 2755,
+    "target_columns": 130903,
+    "certified_blocks": 2755,
+    "certified_columns": 130903,
+    "remaining_blocks": 0,
+    "remaining_columns": 0,
+    "branch_identity": "B32=3 A31+2 A22"
+  },
+  "numerical_master_status": "RECOVER_OR_FINISH",
+  "numerical_target": {
+    "rank": 130903,
+    "kernel_dimension_if_closed": 0,
+    "pass_status_required": "PASS_CLOSED_FINITE_NUMERICAL"
+  },
+  "do_not_recompute": [
+    "depth-6 shell enumeration",
+    "264962 spin assignments",
+    "2757 S5 orbit enumeration",
+    "[3,2] multiplicity 130903",
+    "2755 active [3,2] blocks",
+    "Jucys selector construction as a structural proof task",
+    "S5->S4 branch theorem",
+    "structural support/capacity ledger",
+    "structural peeling/matching 130903/130903"
+  ],
+  "stage_a_source_run": {
+    "run_id": 36899125190,
+    "workflow_head_sha": "70b94629a9ce8c72db5f4350a079b95b8a706baa",
+    "numerical_engine_bundle_blob_sha": "cbbaa80f6b6b61d353458db1fa1f03f824730532",
+    "orchestration_status": "PARTIAL_REUSABLE_EVIDENCE_WITH_INFRASTRUCTURE_FAILURES",
+    "known_successful_raw_artifacts": {
+      "12": {
+        "artifact_id": 11185097491,
+        "size_bytes": 2478641973,
+        "digest": "sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566"
+      },
+      "14": {
+        "artifact_id": 11185982461,
+        "size_bytes": 2614398869,
+        "digest": "sha256:a67020b65b4f49eb6808d8dc926f76d2c888f6c24d568b30e854ec1570e7cae4"
+      },
+      "17": {
+        "artifact_id": 11185818245,
+        "size_bytes": 2018594072,
+        "digest": "sha256:8a81bcd292e24460098b8d0c65111cd047f5da25ef159b40112db52496c71516"
+      },
+      "18": {
+        "artifact_id": 11184840100,
+        "size_bytes": 1974545653,
+        "digest": "sha256:30c44ee2008b50b06176a97ef4001412603b7cefaa0614cc7ac68b412056b4dc",
+        "known_assigned_blocks": 1,
+        "known_assigned_columns": 480
+      }
+    },
+    "known_infrastructure_failures": {
+      "15": "runner shutdown/cancel; not a numerical rank failure",
+      "16": "runner shutdown/exit 143; not a numerical rank failure"
+    }
+  },
+  "recovery_certifier": {
+    "workflow_run_id": 36904772868,
+    "status": "PASS",
+    "tests": [
+      "unique-row numerical peeling",
+      "coupled residual Gram may close a non-unique-row residual",
+      "true residual null never auto-promotes to PASS"
+    ]
+  },
+  "gram_transport_experiment": {
+    "workflow_run_id": 36906432065,
+    "source_shard": 18,
+    "status": "REJECTED_AS_STORAGE_FORMAT",
+    "mathematical_status": "VALID_FOR_PER_BLOCK_RANK",
+    "raw_matrix_bytes": 2078423040,
+    "packed_gram_bytes_uncompressed": 7336442880,
+    "gram_gzip_bytes": 7055574565,
+    "algebraic_ratio": 3.529812140650635,
+    "reason": "per-q normal-equation Grams expand the heavy shard and square conditioning; retain only as an engineering negative result"
+  },
+  "qr_transport": {
+    "compressor_commit": "cb397eb78e1c992358fa0ffb05a07d9d239556fa",
+    "aggregator_commit": "30ce08f22d9026a6f6c4715c61471a326d8065e4",
+    "test_workflow_run_id": 36910802645,
+    "shard18_probe_run_id": 36910833110,
+    "status": "AWAITING_INDEPENDENT_TEST_AND_REAL_SHARD_PROBE",
+    "identity": "For each output key q, C_q^* C_q = R_q^* R_q under reduced QR C_q=Q_q R_q.",
+    "allowed_use": "unique-output-key numerical peeling within one orbit block",
+    "forbidden_inference": "per-block QR factors do not preserve shared-q inter-block cross terms",
+    "residual_rule": "any nonempty shared-q residual requires raw coupled master maps for residual IDs only"
+  },
+  "s4sign_2111_source_preservation": {
+    "run_id": 36903898106,
+    "status": "PASS",
+    "source_shards_preserved": 128,
+    "preservation_artifact_id": 11185611575,
+    "preservation_size_bytes": 1090704635,
+    "preservation_digest": "sha256:ea1b002ce48d92d57391cf46f455c359e4441e91d2970531f66a95f356460a67",
+    "retention_days": 90
+  },
+  "current_blocker": "Obtain compact, numerically stable QR evidence for reusable [3,2] raw shards; then assemble exact 2755-block/130903-column numerical coverage and run fail-closed unique-q peeling, with raw coupled checking only for any residual.",
+  "claim_boundary": "[3,2] structural closure is already established. This checkpoint does not claim numerical closure. Full finite depth-6 master theorem remains unproved until all outstanding mixed-sector numerical witnesses close. Continuum/refinement physicalization remains open."
+}
