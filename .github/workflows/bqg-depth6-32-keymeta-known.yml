@@ -17,39 +17,18 @@ jobs:
       max-parallel: 4
       matrix:
         include:
-          - shard: 0
-            artifact_id: '11189001648'
-            artifact_digest: 'sha256:5b908e4b93c675e7bfdaf5ad228e3526208adec8140e5e9d6f88ccb61c99db48'
-          - shard: 6
-            artifact_id: '11187133632'
-            artifact_digest: 'sha256:b7605047e45b4855e1663e2f22a13a66e7e32c683e81e8f58fba0f5bf0aee3bb'
-          - shard: 8
-            artifact_id: '11187460302'
-            artifact_digest: 'sha256:9902453cc2ed6dc2eedc3585fb2ae6b1a99bf74aa0be8402585fa22549eebee5'
-          - shard: 11
-            artifact_id: '11189890501'
-            artifact_digest: 'sha256:e795e270beebe4bc2b31a2241b6900b4a95060588608d080adfc57f386967307'
-          - shard: 12
-            artifact_id: '11185097491'
-            artifact_digest: 'sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566'
-          - shard: 13
-            artifact_id: '11186940750'
-            artifact_digest: 'sha256:0de0c7ae9a8199e1330b5255065333b00420f8cc639196fced2219d996291148'
-          - shard: 14
-            artifact_id: '11185982461'
-            artifact_digest: 'sha256:a67020b65b4f49eb6808d8dc926f76d2c888f6c24d568b30e854ec1570e7cae4'
-          - shard: 17
-            artifact_id: '11185818245'
-            artifact_digest: 'sha256:8a81bcd292e24460098b8d0c65111cd047f5da25ef159b40112db52496c71516'
-          - shard: 18
-            artifact_id: '11184840100'
-            artifact_digest: 'sha256:30c44ee2008b50b06176a97ef4001412603b7cefaa0614cc7ac68b412056b4dc'
-          - shard: 19
-            artifact_id: '11186468774'
-            artifact_digest: 'sha256:69b83e982a35bf10fbc7585f2acf7dd2708288ab4830025e4f8f5dae99177b22'
-          - shard: 20
-            artifact_id: '11188262755'
-            artifact_digest: 'sha256:c94b8145db33017407a67de19b78d6607a4c3fe365608d2bf7863e7d3e399c19'
+          - shard: 21
+            artifact_id: '11190801591'
+            artifact_digest: 'sha256:850fa85c365264852ac807fabeff46a0e879df079d2c6dbdbefa078e95ecbdb5'
+          - shard: 22
+            artifact_id: '11191650985'
+            artifact_digest: 'sha256:890037572792273106d5cffc517d54380a62930f5bfd993a9af7fc4eb1a80663'
+          - shard: 23
+            artifact_id: '11188333840'
+            artifact_digest: 'sha256:24d552cb4e9d75d8dd5c71d8a6cb3f6095614f16d97e5bbba5b63b6f3f6b5f52'
+          - shard: 24
+            artifact_id: '11191816012'
+            artifact_digest: 'sha256:7d875fc5dd1096ccab2fdd6fdf8e74616dbd92940f84dfdc0bb350c6498524b3'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
