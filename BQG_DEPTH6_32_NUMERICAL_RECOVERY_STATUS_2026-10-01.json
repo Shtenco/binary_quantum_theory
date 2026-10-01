@@ -1,5 +1,5 @@
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "date": "2026-10-01",
   "scope": "finite corrected K5 depth-6 S5-[3,2] numerical master-rank recovery",
   "irrep": "[3,2]",
@@ -104,14 +104,60 @@
     "aggregator_commit": "30ce08f22d9026a6f6c4715c61471a326d8065e4",
     "test_commit": "b135fa15c3256c665c678c42821568f764a95889",
     "test_workflow_run_id": 36910802645,
+    "test_workflow_status": "QUEUED_AT_CHECKPOINT",
     "shard18_probe_run_id": 36910833110,
-    "known_shards_preservation_run_id": 36911300305,
-    "known_shards_in_preservation_matrix": [8, 12, 13, 14, 17, 18],
-    "status": "AWAITING_INDEPENDENT_TEST_AND_REAL_SHARD_PROBE",
+    "shard18_probe_status": "PASS_ENGINEERING_IDENTITY_AND_PROVENANCE",
+    "shard18_probe": {
+      "blocks": 1,
+      "columns": 480,
+      "q_keys": 3972,
+      "raw_rows": 270628,
+      "qr_factor_rows": 270628,
+      "raw_matrix_bytes": 2078423040,
+      "qr_factor_bytes_uncompressed": 2078423040,
+      "qr_gzip_bytes": 1772548643,
+      "artifact_id": 11186846548,
+      "artifact_digest": "sha256:35347f600f2d5fa89a348dd174837e23e90662a7cf1e720d68b82c84e42b73c9",
+      "source_tar_sha256": "d0225cafa3b795b3a48e74fae4f72d651857fcc061612019e08c5e507244d82c"
+    },
+    "status": "NUMERICALLY_STABLE_BUT_REJECTED_AS_GLOBAL_TRANSPORT_FORMAT",
     "identity": "For each output key q, C_q^* C_q = R_q^* R_q under reduced QR C_q=Q_q R_q.",
-    "allowed_use": "unique-output-key numerical peeling within one orbit block",
+    "reason_not_global_transport": "On the real m=480 shard, reduced QR retained the same algebraic matrix byte count and only modest gzip reduction, so 112 QR shards would still be too large for central collection.",
+    "allowed_use": "local rank-preserving factorization / diagnostics",
     "forbidden_inference": "per-block QR factors do not preserve shared-q inter-block cross terms",
     "residual_rule": "any nonempty shared-q residual requires raw coupled master maps for residual IDs only"
+  },
+  "active_distributed_recovery_architecture": {
+    "status": "IMPLEMENTED_AWAITING_CI_AND_METADATA_RUNS",
+    "principle": "keep raw C_iq on shard runners; centralize only tiny q metadata and tiny SVD certificates",
+    "key_metadata_extractor": {
+      "path": "mixed_parallel/extract_master_key_metadata.py",
+      "commit": "d2e24fd712f2dc1011b39ec1420d7865f95e332e"
+    },
+    "candidate_schedule_builder": {
+      "path": "mixed_parallel/build_master_key_peeling_schedule.py",
+      "commit": "26b10aa9473842b40fcf109de2f7c13d21caaf7a",
+      "proof_status": "NOT_A_NUMERICAL_RANK_CERTIFICATE"
+    },
+    "raw_shard_svd_certifier": {
+      "path": "mixed_parallel/certify_master_schedule_shard.py",
+      "commit": "80f470aa6458c09a700f1848e9ed4b87d0198ecd"
+    },
+    "fail_closed_global_replay": {
+      "path": "mixed_parallel/replay_master_numerical_certificates.py",
+      "commit": "e0e1c94e02ef1ce2328c16de53b138b5ffada3c8",
+      "rule": "a block is globally removed only when its persisted-map SVD certificate passes and every q used by that certificate is unique in the current remaining set after only numerically accepted removals"
+    },
+    "test_contract_commit": "92ef44d88267ca1a81b4ca8854ff17711034b792",
+    "schedule_test_commit": "02541d5ef9ece67c4468650459c693e4775dd50b",
+    "ci_workflow_commit": "d77fdd1a09f9dc0f64242b8b3c11e68c94701eee",
+    "ci_workflow_run_id": 36912280226,
+    "ci_status": "QUEUED_AT_CHECKPOINT",
+    "known_raw_keymeta_run_id": 36911807083,
+    "known_raw_keymeta_status": "QUEUED_AT_CHECKPOINT",
+    "known_raw_keymeta_shards": [8, 12, 13, 14, 17, 18],
+    "failure_semantics": "local SVD failure or inability to peel is never a kernel claim; failed blocks remain in occupancy for replay",
+    "residual_semantics": "when unique-q numerical progress stops, build a coupled raw residual master map/Gram only for remaining orbit IDs"
   },
   "automatic_raw_harvest": {
     "status": "DISABLED",
@@ -128,6 +174,6 @@
     "preservation_digest": "sha256:ea1b002ce48d92d57391cf46f455c359e4441e91d2970531f66a95f356460a67",
     "retention_days": 90
   },
-  "current_blocker": "Obtain compact, numerically stable QR evidence for reusable [3,2] raw shards; then assemble exact 2755-block/130903-column numerical coverage and run fail-closed unique-q peeling, with raw coupled checking only for any residual.",
+  "current_blocker": "Recover/generate complete 112-shard persisted numerical evidence for [3,2], extract tiny q metadata, then execute distributed raw-map SVD certification with fail-closed global replay. Only any final shared-q residual may require a coupled raw residual check.",
   "claim_boundary": "[3,2] structural closure is already established. This checkpoint does not claim numerical closure. Full finite depth-6 master theorem remains unproved until all outstanding mixed-sector numerical witnesses close. Continuum/refinement physicalization remains open."
 }
