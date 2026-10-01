@@ -10,7 +10,7 @@ on:
 jobs:
   aggregate:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
@@ -32,8 +32,15 @@ jobs:
           SOURCE_RUN_ID: '36527314863'
         run: |
           set -euo pipefail
-          mkdir -p proof_parallel/downloaded
+          mkdir -p proof_parallel/downloaded proof_parallel/source_preservation
           : > proof_parallel/artifacts.tsv
+
+          curl -fsSL \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${SOURCE_RUN_ID}" \
+            > proof_parallel/source_preservation/source_run.json
 
           for page in 1 2; do
             curl -fsSL \
@@ -41,7 +48,7 @@ jobs:
               -H "Accept: application/vnd.github+json" \
               -H "X-GitHub-Api-Version: 2022-11-28" \
               "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/runs/${SOURCE_RUN_ID}/artifacts?per_page=100&page=${page}" \
-              | jq -r '.artifacts[] | select(.expired == false) | select(.name | startswith("bqg-s4sign-v2-shard-")) | [.id,.name] | @tsv' \
+              | jq -r '.artifacts[] | select(.expired == false) | select(.name | startswith("bqg-s4sign-v2-shard-")) | [.id,.name,.size_in_bytes,(.digest // ""),.created_at,.expires_at] | @tsv' \
               >> proof_parallel/artifacts.tsv
           done
 
@@ -49,9 +56,10 @@ jobs:
           count="$(wc -l < proof_parallel/artifacts.tsv)"
           echo "ARTIFACT_METADATA_COUNT=${count}"
           test "${count}" -eq 128
+          cp proof_parallel/artifacts.tsv proof_parallel/source_preservation/artifacts.tsv
 
           export GH_TOKEN GITHUB_REPOSITORY
-          cat proof_parallel/artifacts.tsv | xargs -P 8 -n 2 bash -c '
+          cut -f1,2 proof_parallel/artifacts.tsv | xargs -P 8 -n 2 bash -c '
             set -euo pipefail
             artifact_id="$1"
             artifact_name="$2"
@@ -71,6 +79,61 @@ jobs:
           tar_count="$(find proof_parallel/downloaded -type f -name 'bqg-s4sign-v2-shard-*.tar.gz' | wc -l)"
           echo "DOWNLOADED_TARBALL_COUNT=${tar_count}"
           test "${tar_count}" -eq 128
+
+      - name: Freeze source shard evidence bundle before expiry
+        run: |
+          set -euo pipefail
+          cd proof_parallel
+          find downloaded -type f -name 'bqg-s4sign-v2-shard-*.tar.gz' -print0 \
+            | sort -z \
+            | xargs -0 sha256sum \
+            > source_preservation/sha256_manifest.txt
+          test "$(wc -l < source_preservation/sha256_manifest.txt)" -eq 128
+
+          python - <<'PY'
+          import json, pathlib, subprocess, sys
+          root = pathlib.Path('source_preservation')
+          run = json.loads((root / 'source_run.json').read_text())
+          meta = {
+              'schema_version': 1,
+              'purpose': 'Preserve the 128 canonical depth-6 S4-sign source shards before GitHub artifact expiry.',
+              'source_run_id': 36527314863,
+              'source_head_sha': run.get('head_sha'),
+              'source_event': run.get('event'),
+              'source_status': run.get('status'),
+              'source_conclusion': run.get('conclusion'),
+              'repository': run.get('repository', {}).get('full_name'),
+              'expected_shards': 128,
+              'artifact_metadata': 'artifacts.tsv',
+              'sha256_manifest': 'sha256_manifest.txt',
+              'claim_boundary': 'Evidence preservation only; this bundle does not add or alter a mathematical closure claim.'
+          }
+          (root / 'preservation_manifest.json').write_text(json.dumps(meta, indent=2, sort_keys=True) + '\n')
+          PY
+
+          tar -czf source_preservation/shard_bundle.tar.gz \
+            source_preservation/source_run.json \
+            source_preservation/artifacts.tsv \
+            source_preservation/sha256_manifest.txt \
+            source_preservation/preservation_manifest.json \
+            downloaded
+          sha256sum source_preservation/shard_bundle.tar.gz \
+            > source_preservation/shard_bundle.tar.gz.sha256
+
+      - name: Upload immutable source preservation bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-s4sign-source-preservation-run-36527314863
+          path: |
+            proof_parallel/source_preservation/shard_bundle.tar.gz
+            proof_parallel/source_preservation/shard_bundle.tar.gz.sha256
+            proof_parallel/source_preservation/preservation_manifest.json
+            proof_parallel/source_preservation/source_run.json
+            proof_parallel/source_preservation/artifacts.tsv
+            proof_parallel/source_preservation/sha256_manifest.txt
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 0
 
       - name: Audit coverage and run exact-capacity-pruned global peeling
         env:
@@ -95,4 +158,4 @@ jobs:
             proof_parallel/bqg_depth6_s4sign_capacity_certificate.json
             proof_parallel/bqg_depth6_s4sign_capacity_certificate.partial.json
           if-no-files-found: warn
-          retention-days: 7
+          retention-days: 30
