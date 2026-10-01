@@ -20,6 +20,9 @@ jobs:
           - shard: 12
             artifact_id: '11185097491'
             artifact_digest: 'sha256:e102517cb41a1639a098ec3f6ec9780ef135e584f44cba90d10f5a7819e2f566'
+          - shard: 13
+            artifact_id: '11186940750'
+            artifact_digest: 'sha256:0de0c7ae9a8199e1330b5255065333b00420f8cc639196fced2219d996291148'
           - shard: 14
             artifact_id: '11185982461'
             artifact_digest: 'sha256:a67020b65b4f49eb6808d8dc926f76d2c888f6c24d568b30e854ec1570e7cae4'
