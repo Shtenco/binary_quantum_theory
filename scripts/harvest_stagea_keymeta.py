@@ -20,17 +20,28 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
 
 
+API_HEADERS = {
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28',
+    'User-Agent': 'bqg-stagea-keymeta-harvester',
+}
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 def api_json(url: str, token: str):
     req = urllib.request.Request(url, headers={
+        **API_HEADERS,
         'Authorization': f'Bearer {token}',
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'bqg-stagea-keymeta-harvester',
     })
     with urllib.request.urlopen(req, timeout=120) as r:
         return json.load(r)
@@ -53,14 +64,35 @@ def list_artifacts(repo: str, run_id: str, token: str):
 
 
 def download(url: str, token: str, dst: Path):
+    """Download a GitHub Actions artifact without leaking GitHub auth to blob storage.
+
+    GitHub's artifact endpoint returns a signed redirect URL on a storage host.
+    Sending the GitHub Authorization header to that host can invalidate the
+    signed request (401). Resolve the API redirect with auth, then download the
+    signed URL without Authorization.
+    """
     req = urllib.request.Request(url, headers={
+        **API_HEADERS,
         'Authorization': f'Bearer {token}',
-        'Accept': 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'User-Agent': 'bqg-stagea-keymeta-harvester',
     })
-    with urllib.request.urlopen(req, timeout=180) as r, dst.open('wb') as f:
-        shutil.copyfileobj(r, f, length=8 * 1024 * 1024)
+    opener = urllib.request.build_opener(_NoRedirect())
+    try:
+        r = opener.open(req, timeout=120)
+    except urllib.error.HTTPError as exc:
+        if exc.code not in (301, 302, 303, 307, 308):
+            raise
+        location = exc.headers.get('Location')
+        if not location:
+            raise RuntimeError(f'artifact redirect {exc.code} missing Location') from exc
+        signed_req = urllib.request.Request(location, headers={
+            'User-Agent': API_HEADERS['User-Agent'],
+        })
+        with urllib.request.urlopen(signed_req, timeout=180) as r2, dst.open('wb') as f:
+            shutil.copyfileobj(r2, f, length=8 * 1024 * 1024)
+        return
+    else:
+        with r, dst.open('wb') as f:
+            shutil.copyfileobj(r, f, length=8 * 1024 * 1024)
 
 
 def main() -> int:
@@ -90,7 +122,6 @@ def main() -> int:
         shard = int(m.group(1))
         if shard in selected:
             duplicate.setdefault(shard, []).append(int(art['id']))
-            # Keep the newest artifact deterministically.
             old = selected[shard]
             if str(art.get('created_at', '')) > str(old.get('created_at', '')):
                 selected[shard] = art
@@ -98,7 +129,7 @@ def main() -> int:
             selected[shard] = art
 
     manifest = {
-        'schema_version': 1,
+        'schema_version': 2,
         'kind': 'BQG_STAGEA_KEYMETA_SALVAGE_MANIFEST',
         'repo': a.repo,
         'source_run_id': str(a.run_id),
@@ -166,6 +197,7 @@ def main() -> int:
 
     expected = set(range(a.expected_shards))
     harvested = {int(x) for x in manifest['harvested']}
+    discovered = set(selected)
     manifest['harvested_shards'] = sorted(harvested)
     manifest['missing_shards'] = sorted(expected - harvested)
     manifest['harvested_count'] = len(harvested)
@@ -176,11 +208,16 @@ def main() -> int:
         'Salvage of actual persisted numerical master-map key metadata only. '
         'Partial coverage is reusable but cannot prove [3,2] numerical closure.'
     )
-    (a.out_dir / 'manifest.json').write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
+    manifest_path = a.out_dir / 'manifest.json'
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + '\n')
     print(json.dumps({k: manifest[k] for k in (
         'status','harvested_count','harvested_blocks','harvested_columns','missing_shards')}, indent=2))
-    # Partial salvage is a successful preservation operation. Exact closure is
-    # enforced later by the schedule builder's 112-shard coverage check.
+
+    # Partial salvage is allowed, but a run that discovers existing raw shards
+    # and preserves none of them is an infrastructure failure, not success.
+    if discovered and not harvested:
+        print('SALVAGE_FATAL: discovered raw shards but harvested zero', file=sys.stderr)
+        return 2
     return 0
 
 
