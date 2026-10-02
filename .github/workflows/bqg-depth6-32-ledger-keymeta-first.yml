@@ -2,6 +2,11 @@ name: BQG depth6 32 authorized KEYMETA-first replay
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - bqg/depth6-32-canonical-recovery
+    paths:
+      - '.github/START_DEPTH6_32_KEYMETA'
 
 permissions:
   contents: read
