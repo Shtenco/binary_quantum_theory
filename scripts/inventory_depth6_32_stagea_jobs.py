@@ -3,7 +3,7 @@
 
 This script reads GitHub Actions job metadata/logs and the run artifact index. It
 never imports BQG mathematics and never recomputes shell/orbits/multiplicities or
-Jucys selectors.  Its purpose is to distinguish persisted evidence from work
+Jucys selectors. Its purpose is to distinguish persisted evidence from work
 that completed numerically but was lost during pack/upload.
 """
 from __future__ import annotations
@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -20,6 +21,21 @@ LEDGER_RE = re.compile(
 DONE_RE = re.compile(r'DONE\s+(\d+)\s*/\s*(\d+)\s+ok\s+(\d+)\s+sec\s+([0-9.eE+-]+)')
 JOB_RE = re.compile(r'^mixed32_shard \((\d+)\)$')
 RAW_ARTIFACT_RE = re.compile(r'^bqg-mixed-32-shard-(\d+)$')
+GITHUB_API_HOST = 'api.github.com'
+
+
+class StripAuthRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Do not leak GitHub Authorization to signed object-storage redirects."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        new = super().redirect_request(req, fp, code, msg, headers, newurl)
+        if new is None:
+            return None
+        old_host = urllib.parse.urlparse(req.full_url).hostname
+        new_host = urllib.parse.urlparse(newurl).hostname
+        if old_host == GITHUB_API_HOST and new_host != GITHUB_API_HOST:
+            new.remove_header('Authorization')
+        return new
 
 
 def parse_worker_log(text: str, *, expected_shard: int) -> dict:
@@ -100,8 +116,8 @@ def _json(url: str, token: str) -> dict:
 
 def _text(url: str, token: str) -> str:
     req = urllib.request.Request(url, headers=_headers(token))
-    # GitHub job logs redirect to object storage. urllib follows redirects.
-    with urllib.request.urlopen(req, timeout=180) as r:
+    opener = urllib.request.build_opener(StripAuthRedirectHandler())
+    with opener.open(req, timeout=180) as r:
         return r.read().decode('utf-8', errors='replace')
 
 
