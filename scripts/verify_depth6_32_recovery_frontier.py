@@ -2,24 +2,29 @@
 """Fail-closed integrity verifier for the canonical depth-6 [3,2] recovery frontier.
 
 Passing this verifier means the recovery state is internally consistent, the
-canonical recovery implementation is present, and the persisted assignment
-ledger agrees with the recovery identity. It does *not* certify numerical rank
-closure of [3,2].
+canonical recovery implementation is present, the persisted assignment ledger
+agrees with the recovery identity, and (schema >= 6) the Stage-A provenance
+salvage and replay-readiness boundaries are frozen consistently. It does *not*
+certify numerical rank closure of [3,2].
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
 from depth6_assignment_ledger import verify_assignment_ledger
+from depth6_replay_readiness import assess_records
 
 EXPECTED_SHARDS = [0, 6, 8, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24]
 ASSIGNMENT_LEDGER = 'BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json'
+STAGEA_SALVAGE = 'BQG_DEPTH6_32_STAGEA_LOG_SALVAGE_2026-10-02.json'
 REQUIRED_FILES = (
     'scripts/depth6_keymeta_coverage.py',
     'scripts/inventory_depth6_32_keymeta.py',
     'scripts/depth6_assignment_ledger.py',
+    'scripts/depth6_replay_readiness.py',
 )
 
 
@@ -28,8 +33,82 @@ def _require(cond: bool, msg: str) -> None:
         raise RuntimeError(msg)
 
 
+def _canonical_json_sha_without_field(payload: dict, field: str) -> str:
+    q = dict(payload)
+    q.pop(field, None)
+    raw = json.dumps(q, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')
+    return hashlib.sha256(raw).hexdigest()
+
+
+def _verify_schema6_extensions(recovery: dict, root: Path, assignment: dict) -> dict:
+    pal = recovery.get('persisted_assignment_ledger', {})
+    _require(pal.get('path') == ASSIGNMENT_LEDGER, 'schema6 persisted assignment ledger path mismatch')
+    _require(pal.get('status') == 'INCOMPLETE_PERSISTED_ASSIGNMENT_LEDGER', 'schema6 assignment status drifted')
+    _require(pal.get('persisted_blocks') == 15 and pal.get('persisted_columns') == 7749, 'schema6 assignment coverage mismatch')
+    _require(pal.get('missing_blocks') == 2740 and pal.get('missing_columns') == 123154, 'schema6 assignment missing coverage mismatch')
+    _require(pal.get('retry_allowed') is False and pal.get('rank_certified') is False, 'schema6 assignment boundary must remain fail-closed')
+    _require(pal.get('ledger_sha256') == assignment['ledger_sha256'], 'schema6 assignment ledger SHA mismatch')
+
+    salvage_path = root / STAGEA_SALVAGE
+    _require(salvage_path.is_file(), f'missing canonical Stage-A salvage: {STAGEA_SALVAGE}')
+    salvage = json.loads(salvage_path.read_text())
+    _require(salvage.get('kind') == 'BQG_DEPTH6_32_STAGEA_LOG_SALVAGE_CANONICAL', 'wrong Stage-A salvage kind')
+    _require(salvage.get('source_run_id') == 36899125190, 'wrong Stage-A source run')
+    _require(salvage.get('target') == [112, 2755, 130903], 'Stage-A salvage target drifted')
+    _require(len(salvage.get('rows', [])) == 112, 'Stage-A salvage must contain all 112 shard identities')
+    _require(salvage.get('logs_available_count') == 102, 'Stage-A surviving log count drifted')
+    _require(salvage.get('ledger_lines_recovered') == 102, 'Stage-A recovered ledger-line count drifted')
+    _require(salvage.get('recovered_ledger_totals') == [2530, 118883], 'Stage-A recovered batch totals drifted')
+    _require(salvage.get('completed_lost_shards') == [5], 'Stage-A completed-but-lost shard set drifted')
+    _require(salvage.get('log_unavailable_shards') == [1,2,4,36,59,73,85,88,90,104], 'Stage-A unavailable-log set drifted')
+    _require(salvage.get('persisted_raw_shards') == EXPECTED_SHARDS, 'Stage-A persisted raw shard set mismatch')
+    expected_summary_sha = _canonical_json_sha_without_field(salvage, 'summary_sha256')
+    _require(salvage.get('summary_sha256') == expected_summary_sha, 'Stage-A canonical summary SHA mismatch')
+    _require(salvage.get('structural_recompute_performed') is False, 'Stage-A salvage must remain provenance-only')
+
+    sf = recovery.get('stage_a_log_salvage', {})
+    _require(sf.get('path') == STAGEA_SALVAGE, 'recovery frontier Stage-A salvage path mismatch')
+    _require(sf.get('salvage_run_id') == salvage.get('salvage_run_id'), 'recovery frontier salvage run mismatch')
+    _require(sf.get('salvage_artifact_id') == salvage.get('salvage_artifact_id'), 'recovery frontier salvage artifact mismatch')
+    _require(sf.get('salvage_artifact_digest') == salvage.get('salvage_artifact_digest'), 'recovery frontier salvage digest mismatch')
+    _require(sf.get('summary_sha256') == salvage.get('summary_sha256'), 'recovery frontier salvage summary SHA mismatch')
+    _require(sf.get('logs_available') == 102 and sf.get('logs_unavailable') == 10, 'recovery frontier log availability mismatch')
+    _require(sf.get('batch_schedule_blocks_recovered') == 2530, 'recovery frontier batch block salvage mismatch')
+    _require(sf.get('batch_schedule_columns_recovered') == 118883, 'recovery frontier batch column salvage mismatch')
+    _require(sf.get('scientific_boundary') == 'BATCH_LEVEL_LEDGER_TOTALS_ARE_NOT_PER_ORBIT_ASSIGNMENT_IDENTITY', 'batch/assignment boundary drifted')
+
+    replay = assess_records(assignment['records'])
+    rr = recovery.get('replay_readiness', {})
+    _require(rr.get('status') == 'MISSING_SELECTOR_OR_MASTER_MAP_PROVENANCE', 'replay-readiness status drifted')
+    _require(rr.get('assignment_identity_is_not_replay_readiness') is True, 'assignment/replay boundary missing')
+    _require(rr.get('source_raw_artifact_metadata_alone_is_not_enough') is True, 'raw metadata replay boundary missing')
+    _require(rr.get('canonical_compute_allowed') is False, 'canonical compute cannot be enabled without persisted replay evidence')
+    _require(rr.get('rank_certified') is False, 'replay-readiness must not claim rank')
+    _require(replay['canonical_compute_allowed'] is False, 'current persisted assignments unexpectedly became replay-ready')
+    _require(replay['replay_ready_blocks'] == 0, 'current canonical ledger must not infer replay-readiness from source metadata')
+
+    rules = recovery.get('rules', {})
+    for key in (
+        'batch_schedule_is_not_assignment_identity',
+        'assignment_identity_is_not_replay_readiness',
+        'replay_requires_persisted_master_map_or_selector_witness',
+        'unavailable_log_is_unknown_not_failure',
+    ):
+        _require(rules.get(key) is True, f'schema6 rule missing: {key}')
+
+    return {
+        'stagea_logs_available': 102,
+        'stagea_batch_blocks_recovered': 2530,
+        'stagea_batch_columns_recovered': 118883,
+        'replay_ready_blocks': 0,
+        'replay_compute_allowed': False,
+        'stagea_summary_sha256': salvage['summary_sha256'],
+    }
+
+
 def verify(recovery: dict, depth6: dict, root: Path) -> dict:
-    _require(int(recovery.get('schema_version', -1)) >= 5, 'recovery frontier schema must be >= 5')
+    schema = int(recovery.get('schema_version', -1))
+    _require(schema >= 5, 'recovery frontier schema must be >= 5')
     _require(recovery.get('irrep') == '[3,2]', 'recovery frontier irrep must be [3,2]')
     _require(recovery.get('structural_status') == 'CLOSED_IMMUTABLE_INPUT', 'structural input must remain immutable')
     _require(recovery.get('numerical_status') == 'RECOVER_OR_FINISH', '[3,2] numerical status must remain RECOVER_OR_FINISH')
@@ -70,11 +149,7 @@ def verify(recovery: dict, depth6: dict, root: Path) -> dict:
     _require(retry.get('required_replacement') == 'LEDGER_DRIVEN_NUMERICAL_RETRY_FROM_PERSISTED_FROZEN_ASSIGNMENTS_ONLY', 'targeted retry replacement contract drifted')
 
     rules = recovery.get('rules', {})
-    false_rules = (
-        'structural_recompute_performed',
-        'multiplicity_recompute_performed',
-        'jucys_recompute_performed',
-    )
+    false_rules = ('structural_recompute_performed','multiplicity_recompute_performed','jucys_recompute_performed')
     true_rules = (
         'forbid_future_recovery_bootstrap_of_shell_orbits_multiplicity_or_jucys',
         'canonical_retry_requires_persisted_assignment_ledger',
@@ -106,12 +181,17 @@ def verify(recovery: dict, depth6: dict, root: Path) -> dict:
     _require(acov['retry_allowed'] is False, 'assignment retry must remain disabled while persisted ledger is incomplete')
     _require(acov['rank_certified'] is False, 'assignment ledger must never claim rank certification')
 
+    extension = {}
+    if schema >= 6:
+        extension = _verify_schema6_extensions(recovery, root, assignment)
+
     claim = str(recovery.get('claim_boundary', ''))
     _require('does not certify rank(C_32)=130903' in claim, 'claim boundary must deny [3,2] rank certification')
     _require('does not close [3,2] numerically' in claim, 'claim boundary must deny [3,2] numerical closure')
 
     return {
         'status': 'PASS_CANONICAL_RECOVERY_FRONTIER_INCOMPLETE',
+        'schema_version': schema,
         'numerical_closure_claimed': False,
         'schedule_allowed': False,
         'assignment_retry_allowed': False,
@@ -121,6 +201,7 @@ def verify(recovery: dict, depth6: dict, root: Path) -> dict:
         'assignment_ledger_sha256': assignment['ledger_sha256'],
         'target_blocks': 2755,
         'target_columns': 130903,
+        **extension,
     }
 
 
