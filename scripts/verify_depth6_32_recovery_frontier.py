@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Fail-closed integrity verifier for the canonical depth-6 [3,2] recovery frontier.
 
-Passing this verifier certifies recovery-state consistency only.  It never
-certifies numerical rank closure of [3,2].  Schema 7 additionally permits a
-complete deterministic assignment-identity snapshot while keeping actual-q,
-replay-basis and rank gates closed.
+Schema 7 freezes complete assignment identity but identity alone cannot authorize
+numerical replay. Schema 8 adds a separate higher gate: complete frozen identity
++ pinned Stage-A engine + verified frozen-m basis contract + KEYMETA-first
+contract authorizes a fail-closed numerical replay *attempt*. It still does not
+certify actual-q coverage, numerical rank, a kernel statement, or [3,2] closure.
 """
 from __future__ import annotations
 
@@ -20,6 +21,7 @@ from depth6_32_rematerialized_identity import verify_snapshot
 EXPECTED_SHARDS=[0,6,8,11,12,13,14,17,18,19,20,21,22,23,24]
 ASSIGNMENT_LEDGER='BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json'
 STAGEA_SALVAGE='BQG_DEPTH6_32_STAGEA_LOG_SALVAGE_2026-10-02.json'
+REPLAY_AUTHORIZATION='BQG_DEPTH6_32_REPLAY_AUTHORIZATION_2026-10-03.json'
 REQUIRED_FILES=(
     'scripts/depth6_keymeta_coverage.py',
     'scripts/inventory_depth6_32_keymeta.py',
@@ -74,11 +76,14 @@ def _verify_schema6_extensions(recovery:dict,root:Path,assignment:dict)->dict:
     _require(sf.get('batch_schedule_columns_recovered')==118883,'recovery frontier batch column salvage mismatch')
     _require(sf.get('scientific_boundary')=='BATCH_LEVEL_LEDGER_TOTALS_ARE_NOT_PER_ORBIT_ASSIGNMENT_IDENTITY','batch/assignment boundary drifted')
 
+    # This is intentionally the legacy persisted-15 replay-readiness gate. It
+    # stays closed even under schema 8. Schema 8 authorizes a distinct replay
+    # route from the complete rematerialized identity plus frozen-m contract.
     replay=assess_records(assignment['records']); rr=recovery.get('replay_readiness',{})
     _require(rr.get('status')=='MISSING_SELECTOR_OR_MASTER_MAP_PROVENANCE','replay-readiness status drifted')
     _require(rr.get('assignment_identity_is_not_replay_readiness') is True,'assignment/replay boundary missing')
     _require(rr.get('source_raw_artifact_metadata_alone_is_not_enough') is True,'raw metadata replay boundary missing')
-    _require(rr.get('canonical_compute_allowed') is False,'canonical compute cannot be enabled without persisted replay evidence')
+    _require(rr.get('canonical_compute_allowed') is False,'legacy persisted replay-readiness must stay closed')
     _require(rr.get('rank_certified') is False,'replay-readiness must not claim rank')
     _require(replay['canonical_compute_allowed'] is False,'current persisted assignments unexpectedly became replay-ready')
     _require(replay['replay_ready_blocks']==0,'current canonical ledger must not infer replay-readiness from source metadata')
@@ -86,6 +91,77 @@ def _verify_schema6_extensions(recovery:dict,root:Path,assignment:dict)->dict:
     for key in ('batch_schedule_is_not_assignment_identity','assignment_identity_is_not_replay_readiness','replay_requires_persisted_master_map_or_selector_witness','unavailable_log_is_unknown_not_failure'):
         _require(rules.get(key) is True,f'schema6 rule missing: {key}')
     return {'stagea_logs_available':102,'stagea_batch_blocks_recovered':2530,'stagea_batch_columns_recovered':118883,'replay_ready_blocks':0,'replay_compute_allowed':False,'stagea_summary_sha256':salvage['summary_sha256']}
+
+
+def _verify_schema8_replay_authorization(recovery:dict,root:Path)->dict:
+    from depth6_32_replay_authorization import authorize_replay
+
+    required=(
+        'scripts/depth6_32_replay_authorization.py',
+        'scripts/run_depth6_32_ledger_batch.py',
+        'scripts/depth6_32_frozen_m_basis.py',
+        'scripts/depth6_32_keymeta_first.py',
+        '.github/workflows/bqg-depth6-32-ledger-keymeta-first.yml',
+    )
+    for rel in required:
+        _require((root/rel).is_file(),f'missing schema8 replay implementation: {rel}')
+
+    meta=recovery.get('replay_authorization',{})
+    _require(meta.get('path')==REPLAY_AUTHORIZATION,'replay authorization path mismatch')
+    auth_path=root/REPLAY_AUTHORIZATION
+    _require(auth_path.is_file(),f'missing replay authorization certificate: {REPLAY_AUTHORIZATION}')
+
+    ledger_path=root/'BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json'
+    gate_path=root/'BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json'
+    try:
+        dynamic=authorize_replay(json.loads(ledger_path.read_text()),json.loads(gate_path.read_text()))
+    except Exception as exc:
+        raise RuntimeError(f'replay authorization dynamic gate failure: {exc}') from exc
+    cert=json.loads(auth_path.read_text())
+
+    expected={
+        'kind':'BQG_DEPTH6_32_NUMERICAL_REPLAY_AUTHORIZATION',
+        'status':'AUTHORIZED_NUMERICAL_REPLAY_ATTEMPT',
+        'numerical_replay_authorized':True,
+        'blocks':2755,
+        'columns':130903,
+        'nshards':112,
+        'covered_shards':112,
+        'identity_sha256':dynamic.get('identity_sha256'),
+        'frozen_engine_commit':dynamic.get('frozen_engine_commit'),
+        'frozen_bundle_blob_sha':dynamic.get('frozen_bundle_blob_sha'),
+        'frozen_basis_contract':dynamic.get('frozen_basis_contract'),
+        'keymeta_first_contract':dynamic.get('keymeta_first_contract'),
+        'actual_q_coverage_certified':False,
+        'rank_certified':False,
+        'numerical_closure_claimed':False,
+    }
+    for key,val in expected.items():
+        _require(cert.get(key)==val,f'replay authorization certificate mismatch: {key}')
+
+    _require(meta.get('status')==expected['status'],'frontier replay authorization status mismatch')
+    _require(meta.get('blocks')==2755 and meta.get('columns')==130903,'frontier replay authorization target mismatch')
+    _require(meta.get('nshards')==112,'frontier replay authorization shard count mismatch')
+    _require(meta.get('identity_sha256')==dynamic.get('identity_sha256'),'frontier replay authorization identity SHA mismatch')
+    _require(meta.get('frozen_engine_commit')==dynamic.get('frozen_engine_commit'),'frontier frozen engine commit mismatch')
+    _require(meta.get('frozen_bundle_blob_sha')==dynamic.get('frozen_bundle_blob_sha'),'frontier frozen bundle blob mismatch')
+    _require(meta.get('frozen_basis_contract')==dynamic.get('frozen_basis_contract'),'frontier frozen basis contract mismatch')
+    _require(meta.get('keymeta_first_contract')==dynamic.get('keymeta_first_contract'),'frontier KEYMETA-first contract mismatch')
+    _require(meta.get('canonical_numerical_compute_allowed') is True,'schema8 numerical replay attempt must be authorized')
+    _require(meta.get('actual_q_coverage_certified') is False,'authorization cannot certify actual-q coverage')
+    _require(meta.get('rank_certified') is False,'authorization cannot certify rank')
+    _require(meta.get('numerical_closure_claimed') is False,'authorization cannot claim closure')
+
+    rules=recovery.get('rules',{})
+    _require(rules.get('authorized_replay_attempt_is_not_rank_evidence') is True,'schema8 replay/rank boundary missing')
+    _require(rules.get('full_keymeta_coverage_required_before_global_peeling') is True,'schema8 KEYMETA/peeling boundary missing')
+    return {
+        'authorized_numerical_replay_attempt':True,
+        'numerical_replay_schedule_allowed':True,
+        'replay_compute_allowed':True,
+        'global_peeling_allowed':False,
+        'replay_authorization_identity_sha256':dynamic.get('identity_sha256'),
+    }
 
 
 def verify(recovery:dict,depth6:dict,root:Path)->dict:
@@ -113,7 +189,7 @@ def verify(recovery:dict,depth6:dict,root:Path)->dict:
     cov=recovery.get('coverage_inventory',{})
     _require(cov.get('status')=='INCOMPLETE_KEYMETA_COVERAGE','coverage must still be explicitly incomplete')
     _require(cov.get('recovered_shards')==15 and cov.get('recovered_blocks')==15 and cov.get('recovered_columns')==7749,'coverage persisted totals drifted')
-    _require(cov.get('schedule_allowed') is False,'schedule_allowed must remain false until exact complete coverage')
+    _require(cov.get('schedule_allowed') is False,'legacy/global schedule_allowed must remain false until exact complete KEYMETA coverage')
     _require(cov.get('next_action')=='RECOVER_MISSING_KEYMETA_SHARDS_ONLY','coverage next action drifted')
     exact=recovery.get('exact_recovered_identity',{}); _require(exact.get('blocks')==15 and exact.get('columns')==7749,'exact recovered identity mismatch')
     retry=recovery.get('targeted_retry',{})
@@ -144,11 +220,14 @@ def verify(recovery:dict,depth6:dict,root:Path)->dict:
         _require(rules.get('rematerialized_identity_is_not_rank_evidence') is True,'schema7 rematerialized identity/rank boundary missing')
         _require(rules.get('rematerialized_identity_does_not_bypass_replay_readiness') is True,'schema7 rematerialized identity/replay boundary missing')
         extension.setdefault('replay_compute_allowed',False)
+    if schema>=8:
+        extension.update(_verify_schema8_replay_authorization(recovery,root))
 
     claim=str(recovery.get('claim_boundary',''))
     _require('does not certify rank(C_32)=130903' in claim,'claim boundary must deny [3,2] rank certification')
     _require('does not close [3,2] numerically' in claim,'claim boundary must deny [3,2] numerical closure')
-    return {'status':'PASS_CANONICAL_RECOVERY_FRONTIER_INCOMPLETE','schema_version':schema,'numerical_closure_claimed':False,'schedule_allowed':False,'assignment_retry_allowed':False,'recovered_shards':15,'recovered_blocks':15,'recovered_columns':7749,'assignment_ledger_sha256':assignment['ledger_sha256'],'target_blocks':2755,'target_columns':130903,**extension}
+    status='PASS_CANONICAL_RECOVERY_FRONTIER_REPLAY_AUTHORIZED' if schema>=8 else 'PASS_CANONICAL_RECOVERY_FRONTIER_INCOMPLETE'
+    return {'status':status,'schema_version':schema,'numerical_closure_claimed':False,'schedule_allowed':False,'assignment_retry_allowed':False,'recovered_shards':15,'recovered_blocks':15,'recovered_columns':7749,'assignment_ledger_sha256':assignment['ledger_sha256'],'target_blocks':2755,'target_columns':130903,**extension}
 
 
 def main()->int:
