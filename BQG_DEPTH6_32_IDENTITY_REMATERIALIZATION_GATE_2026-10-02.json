@@ -1,0 +1,17 @@
+{
+  "actual_q_coverage_certified": false,
+  "blocks": 2755,
+  "claim_boundary": "Deterministic assignment identity reconstruction only. Passing this gate does not certify actual-q coverage, numerical rank, a master kernel, or closure of [3,2].",
+  "columns": 130903,
+  "historical_batch_matches": 102,
+  "identity_sha256": "cc8c890d8b0c007195eda8e3ce8e9d109c6b1bab0c7db07b283a0dd10556c4dd",
+  "kind": "BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE",
+  "nshards": 112,
+  "numerical_closure_claimed": false,
+  "persisted_identity_matches": 15,
+  "rank_certified": false,
+  "s5_orbits": 2757,
+  "schema_version": 1,
+  "shell_states": 264962,
+  "status": "PASS_IDENTITY_REMATERIALIZATION_ONLY"
+}
