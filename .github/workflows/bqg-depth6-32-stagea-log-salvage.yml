@@ -1,0 +1,54 @@
+name: BQG depth6 32 Stage-A log salvage
+
+on:
+  push:
+    branches:
+      - bqg/depth6-32-canonical-recovery
+    paths:
+      - 'scripts/inventory_depth6_32_stagea_jobs.py'
+      - '.github/workflows/bqg-depth6-32-stagea-log-salvage.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  salvage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Recover immutable Stage-A job-log provenance
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/inventory_depth6_32_stagea_jobs.py \
+            --repo "${GITHUB_REPOSITORY}" \
+            --run-id 36899125190 \
+            --token "${GH_TOKEN}" \
+            --out BQG_DEPTH6_32_STAGEA_LOG_SALVAGE_2026-10-02.json
+      - name: Enforce provenance-only boundary
+        run: |
+          python - <<'PY'
+          import json
+          p='BQG_DEPTH6_32_STAGEA_LOG_SALVAGE_2026-10-02.json'
+          x=json.load(open(p))
+          assert x['kind']=='BQG_DEPTH6_32_STAGEA_LOG_SALVAGE',x
+          assert x['source_run_id']==36899125190,x
+          assert x['target_shards']==112,x
+          assert x['target_blocks']==2755 and x['target_columns']==130903,x
+          assert len(x['records'])==112,x
+          assert x['structural_recompute_performed'] is False,x
+          assert 'does not close [3,2]' in x['claim_boundary'],x
+          print('STAGEA_LOG_SALVAGE_PASS', x['status_counts'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-stagea-log-salvage
+          path: BQG_DEPTH6_32_STAGEA_LOG_SALVAGE_2026-10-02.json
+          if-no-files-found: error
+          retention-days: 90
