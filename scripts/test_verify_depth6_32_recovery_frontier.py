@@ -82,6 +82,7 @@ def setup_root(root: Path, *, include_inventory=True, include_assignment=True) -
     (root / 'scripts').mkdir()
     (root / 'scripts' / 'depth6_keymeta_coverage.py').write_text('# canonical\n')
     (root / 'scripts' / 'depth6_assignment_ledger.py').write_text('# canonical\n')
+    (root / 'scripts' / 'depth6_replay_readiness.py').write_text('# canonical\n')
     if include_inventory:
         (root / 'scripts' / 'inventory_depth6_32_keymeta.py').write_text('# canonical\n')
     if include_assignment:
