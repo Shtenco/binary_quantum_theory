@@ -1,4 +1,4 @@
-name: BQG depth6 32 frozen-m basis tests
+name: BQG depth6 32 frozen-m numerical tests
 
 on:
   push:
@@ -6,7 +6,9 @@ on:
       - bqg/depth6-32-canonical-recovery
     paths:
       - 'scripts/depth6_32_frozen_m_basis.py'
+      - 'scripts/depth6_32_keymeta_first.py'
       - 'scripts/test_depth6_32_frozen_m_basis.py'
+      - 'scripts/test_depth6_32_keymeta_first.py'
       - '.github/workflows/bqg-depth6-32-frozen-m-basis-tests.yml'
 
 permissions:
@@ -37,8 +39,11 @@ jobs:
           mkdir -p frozen_engine
           git show "$FROZEN_COMMIT:mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64" > /tmp/bundle.b64
           base64 -d /tmp/bundle.b64 | tar xzf - -C frozen_engine
-      - name: Run frozen-m basis contract tests
+      - name: Run frozen-m numerical contract tests
         env:
           PYTHONPATH: ${{ github.workspace }}/scripts:${{ github.workspace }}/frozen_engine
         working-directory: scripts
-        run: python -m unittest -v test_depth6_32_frozen_m_basis.py
+        run: |
+          python -m unittest -v \
+            test_depth6_32_frozen_m_basis.py \
+            test_depth6_32_keymeta_first.py
