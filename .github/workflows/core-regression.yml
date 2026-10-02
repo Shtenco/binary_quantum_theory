@@ -37,6 +37,16 @@ jobs:
 
       - name: Validate finite depth6 frontier truth
         run: python scripts/verify_depth6_frontier.py
+      - name: Validate canonical depth6 [3,2] recovery frontier
+        run: python scripts/verify_depth6_32_recovery_frontier.py
+      - name: Run depth6 [3,2] canonical recovery regressions
+        working-directory: scripts
+        run: |
+          python -m unittest -v \
+            test_depth6_keymeta_coverage.py \
+            test_inventory_depth6_32_keymeta.py \
+            test_verify_depth6_32_recovery_frontier.py \
+            test_depth6_assignment_ledger.py
       - name: Validate public status surface
         run: |
           python scripts/validate_github_latex.py \
