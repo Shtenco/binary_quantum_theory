@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import depth6_assignment_ledger as L
 import verify_depth6_32_recovery_frontier as V
 
 
@@ -61,49 +62,83 @@ def depth6() -> dict:
     }
 
 
+def assignment_record(i: int, m: int) -> dict:
+    return {
+        'orbit_id': 1000 + i,
+        'rep': [1,2,3,4,3,2,3,4,3,2],
+        'm': m,
+        'coord_dim': 4*m,
+        'source_shard': i,
+        'source_keymeta_payload_sha256': f'{i:064x}',
+        'source_raw_run_id': '36899125190',
+        'source_raw_artifact_id': str(2000+i),
+        'source_raw_artifact_digest': 'sha256:' + f'{3000+i:064x}',
+        'source_tar_sha256': f'{4000+i:064x}',
+        'engine_git_blob_sha': 'c'*40,
+    }
+
+
+def setup_root(root: Path, *, include_inventory=True, include_assignment=True) -> None:
+    (root / 'scripts').mkdir()
+    (root / 'scripts' / 'depth6_keymeta_coverage.py').write_text('# canonical\n')
+    if include_inventory:
+        (root / 'scripts' / 'inventory_depth6_32_keymeta.py').write_text('# canonical\n')
+    if include_assignment:
+        records = [assignment_record(i, 500) for i in range(14)] + [assignment_record(14, 749)]
+        ledger = L.build_assignment_ledger(records, target_blocks=2755, target_columns=130903)
+        (root / 'BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json').write_text(json.dumps(ledger))
+
+
 class RecoveryFrontierTests(unittest.TestCase):
     def test_valid_incomplete_frontier_passes_integrity_gate_without_closing_32(self):
         with tempfile.TemporaryDirectory() as td:
-            root = Path(td)
-            (root / 'scripts').mkdir()
-            for p in ('depth6_keymeta_coverage.py', 'inventory_depth6_32_keymeta.py'):
-                (root / 'scripts' / p).write_text('# canonical\n')
+            root = Path(td); setup_root(root)
             got = V.verify(recovery(), depth6(), root)
             self.assertEqual('PASS_CANONICAL_RECOVERY_FRONTIER_INCOMPLETE', got['status'])
             self.assertFalse(got['schedule_allowed'])
             self.assertFalse(got['numerical_closure_claimed'])
+            self.assertFalse(got['assignment_retry_allowed'])
 
     def test_schedule_true_on_15_shards_fails_closed(self):
         r = recovery(); r['coverage_inventory']['schedule_allowed'] = True
         with tempfile.TemporaryDirectory() as td:
-            root = Path(td); (root/'scripts').mkdir()
-            for p in ('depth6_keymeta_coverage.py', 'inventory_depth6_32_keymeta.py'):
-                (root/'scripts'/p).write_text('# canonical\n')
+            root = Path(td); setup_root(root)
             with self.assertRaisesRegex(RuntimeError, 'schedule_allowed must remain false'):
                 V.verify(r, depth6(), root)
 
     def test_non_quarantined_targeted_retry_fails(self):
         r = recovery(); r['targeted_retry']['disposition'] = 'ADMITTED'
         with tempfile.TemporaryDirectory() as td:
-            root = Path(td); (root/'scripts').mkdir()
-            for p in ('depth6_keymeta_coverage.py', 'inventory_depth6_32_keymeta.py'):
-                (root/'scripts'/p).write_text('# canonical\n')
+            root = Path(td); setup_root(root)
             with self.assertRaisesRegex(RuntimeError, 'targeted retry'):
                 V.verify(r, depth6(), root)
 
     def test_missing_canonical_inventory_file_fails(self):
         with tempfile.TemporaryDirectory() as td:
-            root = Path(td); (root/'scripts').mkdir()
-            (root/'scripts'/'depth6_keymeta_coverage.py').write_text('# canonical\n')
+            root = Path(td); setup_root(root, include_inventory=False)
             with self.assertRaisesRegex(RuntimeError, 'missing canonical recovery implementation'):
+                V.verify(recovery(), depth6(), root)
+
+    def test_missing_assignment_ledger_fails(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td); setup_root(root, include_assignment=False)
+            with self.assertRaisesRegex(RuntimeError, 'missing persisted assignment ledger'):
+                V.verify(recovery(), depth6(), root)
+
+    def test_assignment_coverage_must_match_recovery_identity(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td); setup_root(root)
+            ledger_path = root / 'BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json'
+            ledger = json.loads(ledger_path.read_text())
+            ledger['coverage']['persisted_columns'] = 7000
+            ledger_path.write_text(json.dumps(ledger))
+            with self.assertRaisesRegex(RuntimeError, 'assignment ledger'):
                 V.verify(recovery(), depth6(), root)
 
     def test_promoted_depth6_theorem_fails_while_32_incomplete(self):
         d = depth6(); d['finite_depth6_theorem_status'] = 'PROVED'
         with tempfile.TemporaryDirectory() as td:
-            root = Path(td); (root/'scripts').mkdir()
-            for p in ('depth6_keymeta_coverage.py', 'inventory_depth6_32_keymeta.py'):
-                (root/'scripts'/p).write_text('# canonical\n')
+            root = Path(td); setup_root(root)
             with self.assertRaisesRegex(RuntimeError, 'finite depth-6 theorem'):
                 V.verify(recovery(), d, root)
 
