@@ -1,0 +1,29 @@
+name: BQG depth6 32 canonical recovery tests
+
+on:
+  push:
+    branches:
+      - bqg/depth6-32-canonical-recovery
+  pull_request:
+    paths:
+      - 'scripts/depth6_keymeta_coverage.py'
+      - 'scripts/inventory_depth6_32_keymeta.py'
+      - 'scripts/test_depth6_keymeta_coverage.py'
+      - 'scripts/test_inventory_depth6_32_keymeta.py'
+      - '.github/workflows/bqg-depth6-32-canonical-recovery-tests.yml'
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run canonical recovery unit tests
+        working-directory: scripts
+        run: |
+          python -m unittest -v \
+            test_depth6_keymeta_coverage.py \
+            test_inventory_depth6_32_keymeta.py
