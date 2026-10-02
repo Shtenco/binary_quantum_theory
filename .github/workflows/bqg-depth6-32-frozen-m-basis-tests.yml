@@ -8,10 +8,12 @@ on:
       - 'scripts/depth6_32_frozen_m_basis.py'
       - 'scripts/depth6_32_keymeta_first.py'
       - 'scripts/depth6_32_replay_authorization.py'
+      - 'scripts/depth6_32_keymeta_aggregate.py'
       - 'scripts/run_depth6_32_ledger_batch.py'
       - 'scripts/test_depth6_32_frozen_m_basis.py'
       - 'scripts/test_depth6_32_keymeta_first.py'
       - 'scripts/test_depth6_32_replay_authorization.py'
+      - 'scripts/test_depth6_32_keymeta_aggregate.py'
       - 'scripts/test_run_depth6_32_ledger_batch.py'
       - '.github/workflows/bqg-depth6-32-frozen-m-basis-tests.yml'
 
@@ -52,4 +54,5 @@ jobs:
             test_depth6_32_frozen_m_basis.py \
             test_depth6_32_keymeta_first.py \
             test_depth6_32_replay_authorization.py \
+            test_depth6_32_keymeta_aggregate.py \
             test_run_depth6_32_ledger_batch.py
