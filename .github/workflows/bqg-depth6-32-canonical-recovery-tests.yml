@@ -11,6 +11,7 @@ on:
       - 'scripts/inventory_depth6_32_stagea_jobs.py'
       - 'scripts/verify_depth6_32_recovery_frontier.py'
       - 'scripts/depth6_assignment_ledger.py'
+      - 'scripts/depth6_replay_readiness.py'
       - 'scripts/plan_depth6_32_batches.py'
       - 'BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json'
       - 'scripts/test_depth6_keymeta_coverage.py'
@@ -18,6 +19,7 @@ on:
       - 'scripts/test_inventory_depth6_32_stagea_jobs.py'
       - 'scripts/test_verify_depth6_32_recovery_frontier.py'
       - 'scripts/test_depth6_assignment_ledger.py'
+      - 'scripts/test_depth6_replay_readiness.py'
       - 'scripts/test_plan_depth6_32_batches.py'
       - '.github/workflows/bqg-depth6-32-canonical-recovery-tests.yml'
 
@@ -39,4 +41,5 @@ jobs:
             test_inventory_depth6_32_stagea_jobs.py \
             test_verify_depth6_32_recovery_frontier.py \
             test_depth6_assignment_ledger.py \
+            test_depth6_replay_readiness.py \
             test_plan_depth6_32_batches.py
