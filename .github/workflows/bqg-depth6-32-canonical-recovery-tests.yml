@@ -10,11 +10,13 @@ on:
       - 'scripts/inventory_depth6_32_keymeta.py'
       - 'scripts/verify_depth6_32_recovery_frontier.py'
       - 'scripts/depth6_assignment_ledger.py'
+      - 'scripts/plan_depth6_32_batches.py'
       - 'BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json'
       - 'scripts/test_depth6_keymeta_coverage.py'
       - 'scripts/test_inventory_depth6_32_keymeta.py'
       - 'scripts/test_verify_depth6_32_recovery_frontier.py'
       - 'scripts/test_depth6_assignment_ledger.py'
+      - 'scripts/test_plan_depth6_32_batches.py'
       - '.github/workflows/bqg-depth6-32-canonical-recovery-tests.yml'
 
 jobs:
@@ -33,4 +35,5 @@ jobs:
             test_depth6_keymeta_coverage.py \
             test_inventory_depth6_32_keymeta.py \
             test_verify_depth6_32_recovery_frontier.py \
-            test_depth6_assignment_ledger.py
+            test_depth6_assignment_ledger.py \
+            test_plan_depth6_32_batches.py
