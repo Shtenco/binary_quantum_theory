@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Fail-closed integrity verifier for the canonical depth-6 [3,2] recovery frontier.
 
-Passing this verifier means the recovery state is internally consistent and the
-canonical recovery implementation is present.  It does *not* certify numerical
-rank closure of [3,2].
+Passing this verifier means the recovery state is internally consistent, the
+canonical recovery implementation is present, and the persisted assignment
+ledger agrees with the recovery identity. It does *not* certify numerical rank
+closure of [3,2].
 """
 from __future__ import annotations
 
@@ -11,10 +12,14 @@ import argparse
 import json
 from pathlib import Path
 
+from depth6_assignment_ledger import verify_assignment_ledger
+
 EXPECTED_SHARDS = [0, 6, 8, 11, 12, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24]
+ASSIGNMENT_LEDGER = 'BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json'
 REQUIRED_FILES = (
     'scripts/depth6_keymeta_coverage.py',
     'scripts/inventory_depth6_32_keymeta.py',
+    'scripts/depth6_assignment_ledger.py',
 )
 
 
@@ -88,6 +93,19 @@ def verify(recovery: dict, depth6: dict, root: Path) -> dict:
     for rel in REQUIRED_FILES:
         _require((root / rel).is_file(), f'missing canonical recovery implementation: {rel}')
 
+    assignment_path = root / ASSIGNMENT_LEDGER
+    _require(assignment_path.is_file(), f'missing persisted assignment ledger: {ASSIGNMENT_LEDGER}')
+    try:
+        assignment = verify_assignment_ledger(json.loads(assignment_path.read_text()))
+    except Exception as exc:
+        raise RuntimeError(f'assignment ledger integrity failure: {exc}') from exc
+    acov = assignment['coverage']
+    _require(acov['persisted_blocks'] == exact['blocks'], 'assignment ledger block count disagrees with recovery identity')
+    _require(acov['persisted_columns'] == exact['columns'], 'assignment ledger column count disagrees with recovery identity')
+    _require(acov['status'] == 'INCOMPLETE_PERSISTED_ASSIGNMENT_LEDGER', 'assignment ledger must remain explicitly incomplete')
+    _require(acov['retry_allowed'] is False, 'assignment retry must remain disabled while persisted ledger is incomplete')
+    _require(acov['rank_certified'] is False, 'assignment ledger must never claim rank certification')
+
     claim = str(recovery.get('claim_boundary', ''))
     _require('does not certify rank(C_32)=130903' in claim, 'claim boundary must deny [3,2] rank certification')
     _require('does not close [3,2] numerically' in claim, 'claim boundary must deny [3,2] numerical closure')
@@ -96,9 +114,11 @@ def verify(recovery: dict, depth6: dict, root: Path) -> dict:
         'status': 'PASS_CANONICAL_RECOVERY_FRONTIER_INCOMPLETE',
         'numerical_closure_claimed': False,
         'schedule_allowed': False,
+        'assignment_retry_allowed': False,
         'recovered_shards': 15,
         'recovered_blocks': 15,
         'recovered_columns': 7749,
+        'assignment_ledger_sha256': assignment['ledger_sha256'],
         'target_blocks': 2755,
         'target_columns': 130903,
     }
