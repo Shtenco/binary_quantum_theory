@@ -1,0 +1,81 @@
+name: BQG depth6 32 freeze identity artifact
+
+on:
+  push:
+    branches:
+      - bqg/depth6-32-canonical-recovery
+    paths:
+      - '.github/workflows/bqg-depth6-32-freeze-identity-artifact.yml'
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: bqg/depth6-32-canonical-recovery
+          fetch-depth: 0
+      - name: Download exact successful identity artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARTIFACT_ID=11233287629
+          EXPECTED_DIGEST='sha256:bb334cbb468321880b69fa01326bd581e41809adafa9aa3f15cc2aa66bd55ee7'
+          EXPECTED_RUN=37021884193
+          META="$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}")"
+          test "$(jq -r '.workflow_run.id' <<<"$META")" = "$EXPECTED_RUN"
+          test "$(jq -r '.digest' <<<"$META")" = "$EXPECTED_DIGEST"
+          test "$(jq -r '.expired' <<<"$META")" = 'false'
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ARTIFACT_ID}/zip" > /tmp/identity.zip
+          mkdir -p /tmp/identity
+          unzip -q /tmp/identity.zip -d /tmp/identity
+      - name: Verify exact frozen certificate before commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import hashlib, json
+          from pathlib import Path
+          root=Path('/tmp/identity')
+          ledger=root/'BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json'
+          gate=root/'BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json'
+          L=json.loads(ledger.read_text())
+          G=json.loads(gate.read_text())
+          assert L['status']=='COMPLETE_IDENTITY_REMATERIALIZATION_ONLY'
+          assert L['target_blocks']==2755 and len(L['records'])==2755
+          assert L['target_columns']==130903 and sum(int(r['m']) for r in L['records'])==130903
+          assert L['shell_states']==264962 and L['s5_orbits']==2757
+          assert L['identity_sha256']=='2c78231935255fe4be1952315f2a036e14f3129b6d3b3942665547b5d50da79b'
+          assert hashlib.sha256(ledger.read_bytes()).hexdigest()=='16ef8297b427d20cbdb4d72690fef4ee0244321bd566abe06e143629f97031ab'
+          assert G['status']=='PASS_IDENTITY_REMATERIALIZATION_ONLY'
+          assert G['persisted_identity_matches']==15
+          assert G['historical_batch_matches']==102
+          assert G['blocks']==2755 and G['columns']==130903
+          assert G['rank_certified'] is False
+          assert G['actual_q_coverage_certified'] is False
+          assert G['numerical_closure_claimed'] is False
+          print('PASS exact artifact identity freeze')
+          PY
+      - name: Commit exact artifact payloads to canonical feature branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          cp /tmp/identity/BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json .
+          cp /tmp/identity/BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json .
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json \
+                  BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json
+          if git diff --cached --quiet; then
+            echo 'artifact payload already canonicalized'
+            exit 0
+          fi
+          git commit -m 'data: freeze complete depth6 32 assignment identity'
+          git push origin HEAD:bqg/depth6-32-canonical-recovery
