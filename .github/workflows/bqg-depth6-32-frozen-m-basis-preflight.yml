@@ -1,0 +1,106 @@
+name: BQG depth6 32 frozen-m basis preflight
+
+on:
+  push:
+    branches:
+      - bqg/depth6-32-canonical-recovery
+    paths:
+      - '.github/workflows/bqg-depth6-32-frozen-m-basis-preflight.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  representative-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numerical dependencies
+        run: python -m pip install --disable-pip-version-check -q numpy scipy sympy
+      - name: Extract immutable frozen Stage-A engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          FROZEN_COMMIT=887e76fba5210524650002da0b54653d2c5b37fd
+          EXPECTED_BLOB=cbbaa80f6b6b61d353458db1fa1f03f824730532
+          git fetch --no-tags origin "$FROZEN_COMMIT"
+          ACTUAL_BLOB="$(git rev-parse "$FROZEN_COMMIT:mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64")"
+          test "$ACTUAL_BLOB" = "$EXPECTED_BLOB"
+          mkdir -p frozen_engine
+          git show "$FROZEN_COMMIT:mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64" > /tmp/bundle.b64
+          base64 -d /tmp/bundle.b64 | tar xzf - -C frozen_engine
+      - name: Run representative frozen-m basis preflight
+        env:
+          PYTHONPATH: ${{ github.workspace }}/scripts:${{ github.workspace }}/frozen_engine
+        run: |
+          python -u - <<'PY'
+          import json, time
+          from pathlib import Path
+          import bqg_depth6_generic_jucys_selector as J
+          import depth6_32_frozen_m_basis as B
+
+          ledger=json.loads(Path('BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json').read_text())
+          records=ledger['records']
+          assert len(records)==2755 and sum(int(r['m']) for r in records)==130903
+          ordered=sorted(records,key=lambda r:(int(r.get('proxy',int(r['coord_dim'])*int(r['m']))),int(r['m']),int(r['orbit_id'])))
+          idxs=sorted(set([0,len(ordered)//4,len(ordered)//2,3*len(ordered)//4,len(ordered)-1]))
+          selected=[ordered[i] for i in idxs]
+          by_id={int(r['orbit_id']):r for r in records}
+          if 2748 not in {int(r['orbit_id']) for r in selected}:
+              selected.append(by_id[2748])
+          selected=sorted(selected,key=lambda r:int(r['orbit_id']))
+
+          old=J.exact_mult
+          def forbidden(*args,**kwargs):
+              raise RuntimeError('FORBIDDEN_EXACT_MULT_CALLED')
+          J.exact_mult=forbidden
+          results=[]
+          try:
+              for r in selected:
+                  t0=time.time()
+                  Q,cert=B.build_frozen_m_basis(
+                      r['rep'],'32',int(r['m']),int(r['coord_dim']),J,tol=1e-8
+                  )
+                  cert['orbit_id']=int(r['orbit_id'])
+                  cert['proxy']=int(r.get('proxy',int(r['coord_dim'])*int(r['m'])))
+                  cert['elapsed_sec']=time.time()-t0
+                  results.append(cert)
+                  print('PASS',cert['orbit_id'],'m',cert['frozen_m'],'d',cert['frozen_coord_dim'],
+                        'res',cert['max_residual'],'sec',cert['elapsed_sec'],flush=True)
+          finally:
+              J.exact_mult=old
+
+          payload={
+              'schema_version':1,
+              'kind':'BQG_DEPTH6_32_FROZEN_M_BASIS_PREFLIGHT',
+              'status':'PASS_REPRESENTATIVE_FROZEN_M_BASIS_PREFLIGHT',
+              'source_identity_sha256':ledger['identity_sha256'],
+              'frozen_engine_commit':'887e76fba5210524650002da0b54653d2c5b37fd',
+              'frozen_bundle_blob_sha':'cbbaa80f6b6b61d353458db1fa1f03f824730532',
+              'selection_rule':'proxy_min_q25_q50_q75_max_plus_persisted_orbit_2748',
+              'selected_blocks':len(results),
+              'results':results,
+              'exact_mult_called':False,
+              'shell_recomputed':False,
+              'orbit_list_recomputed':False,
+              'rank_certified':False,
+              'actual_q_coverage_certified':False,
+              'numerical_closure_claimed':False,
+              'claim_boundary':'Representative numerical-basis preflight only. It does not certify all 2755 basis witnesses, actual-q coverage, master rank, or [3,2] closure.'
+          }
+          Path('BQG_DEPTH6_32_FROZEN_M_BASIS_PREFLIGHT_2026-10-02.json').write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
+          print(json.dumps({'status':payload['status'],'selected_blocks':len(results),'max_residual':max(x['max_residual'] for x in results),'total_sec':sum(x['elapsed_sec'] for x in results)},sort_keys=True))
+          PY
+      - name: Upload compact preflight certificate
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-frozen-m-basis-preflight
+          path: BQG_DEPTH6_32_FROZEN_M_BASIS_PREFLIGHT_2026-10-02.json
+          retention-days: 30
