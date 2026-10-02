@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -26,7 +27,6 @@ GITHUB_API_HOST = 'api.github.com'
 
 class StripAuthRedirectHandler(urllib.request.HTTPRedirectHandler):
     """Do not leak GitHub Authorization to signed object-storage redirects."""
-
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         new = super().redirect_request(req, fp, code, msg, headers, newurl)
         if new is None:
@@ -38,6 +38,23 @@ class StripAuthRedirectHandler(urllib.request.HTTPRedirectHandler):
         return new
 
 
+def unavailable_log_record(shard: int, reason: str) -> dict:
+    return {
+        'shard': int(shard),
+        'log_available': False,
+        'log_unavailable_reason': str(reason),
+        'ledger_seen': None,
+        'assigned_blocks': None,
+        'assigned_columns': None,
+        'proxy': None,
+        'done_blocks': None,
+        'done_total': None,
+        'ok_blocks': None,
+        'elapsed_sec': None,
+        'numerical_complete': None,
+    }
+
+
 def parse_worker_log(text: str, *, expected_shard: int) -> dict:
     ledgers = LEDGER_RE.findall(text)
     if len(ledgers) > 1:
@@ -45,6 +62,8 @@ def parse_worker_log(text: str, *, expected_shard: int) -> dict:
     if not ledgers:
         return {
             'shard': expected_shard,
+            'log_available': True,
+            'log_unavailable_reason': None,
             'ledger_seen': False,
             'assigned_blocks': None,
             'assigned_columns': None,
@@ -77,6 +96,8 @@ def parse_worker_log(text: str, *, expected_shard: int) -> dict:
     numerical_complete = done_blocks == int(n) and ok_blocks == int(n)
     return {
         'shard': shard,
+        'log_available': True,
+        'log_unavailable_reason': None,
         'ledger_seen': True,
         'assigned_blocks': int(n),
         'assigned_columns': int(cols),
@@ -92,6 +113,8 @@ def parse_worker_log(text: str, *, expected_shard: int) -> dict:
 def classify(parsed: dict, *, artifact_present: bool) -> str:
     if artifact_present:
         return 'RAW_PERSISTED'
+    if parsed.get('log_available') is False:
+        return 'LOG_UNAVAILABLE'
     if parsed.get('numerical_complete'):
         return 'NUMERICAL_COMPLETE_BUT_ARTIFACT_LOST'
     if int(parsed.get('done_blocks') or 0) > 0:
@@ -114,11 +137,16 @@ def _json(url: str, token: str) -> dict:
         return json.load(r)
 
 
-def _text(url: str, token: str) -> str:
+def _text_or_unavailable(url: str, token: str) -> tuple[str | None, str | None]:
     req = urllib.request.Request(url, headers=_headers(token))
     opener = urllib.request.build_opener(StripAuthRedirectHandler())
-    with opener.open(req, timeout=180) as r:
-        return r.read().decode('utf-8', errors='replace')
+    try:
+        with opener.open(req, timeout=180) as r:
+            return r.read().decode('utf-8', errors='replace'), None
+    except urllib.error.HTTPError as exc:
+        if exc.code in (404, 410):
+            return None, f'HTTP_{exc.code}_LOG_BLOB_UNAVAILABLE'
+        raise
 
 
 def _paginate(url: str, token: str, field: str) -> list[dict]:
@@ -140,7 +168,7 @@ def build_inventory(repo: str, run_id: int, token: str) -> dict:
     raw_by_shard: dict[int, dict] = {}
     for a in artifacts:
         m = RAW_ARTIFACT_RE.fullmatch(str(a.get('name', '')))
-        if m and not a.get('expired'):
+        if m:
             sid = int(m.group(1))
             raw_by_shard[sid] = {
                 'artifact_id': a.get('id'),
@@ -148,6 +176,7 @@ def build_inventory(repo: str, run_id: int, token: str) -> dict:
                 'artifact_digest': a.get('digest'),
                 'size_in_bytes': a.get('size_in_bytes'),
                 'created_at': a.get('created_at'),
+                'expired': bool(a.get('expired')),
             }
 
     records = []
@@ -156,8 +185,13 @@ def build_inventory(repo: str, run_id: int, token: str) -> dict:
         if not m:
             continue
         sid = int(m.group(1))
-        log = _text(f'https://api.github.com/repos/{repo}/actions/jobs/{job["id"]}/logs', token)
-        parsed = parse_worker_log(log, expected_shard=sid)
+        text, unavailable_reason = _text_or_unavailable(
+            f'https://api.github.com/repos/{repo}/actions/jobs/{job["id"]}/logs', token
+        )
+        if text is None:
+            parsed = unavailable_log_record(sid, unavailable_reason or 'UNKNOWN_LOG_UNAVAILABLE')
+        else:
+            parsed = parse_worker_log(text, expected_shard=sid)
         artifact = raw_by_shard.get(sid)
         status = classify(parsed, artifact_present=artifact is not None)
         records.append({
@@ -183,9 +217,10 @@ def build_inventory(repo: str, run_id: int, token: str) -> dict:
     completed_lost = [r['shard'] for r in records if r['status'] == 'NUMERICAL_COMPLETE_BUT_ARTIFACT_LOST']
     partial = [r['shard'] for r in records if r['status'] == 'PARTIAL_NUMERICAL']
     persisted = [r['shard'] for r in records if r['status'] == 'RAW_PERSISTED']
+    unavailable = [r['shard'] for r in records if r['status'] == 'LOG_UNAVAILABLE']
 
     return {
-        'schema_version': 1,
+        'schema_version': 2,
         'kind': 'BQG_DEPTH6_32_STAGEA_LOG_SALVAGE',
         'source_run_id': int(run_id),
         'irrep': '[3,2]',
@@ -197,13 +232,16 @@ def build_inventory(repo: str, run_id: int, token: str) -> dict:
         'persisted_raw_shards': persisted,
         'numerical_complete_but_artifact_lost_shards': completed_lost,
         'partial_numerical_shards': partial,
-        'ledger_lines_recovered': sum(bool(r['ledger_seen']) for r in records),
+        'log_unavailable_shards': unavailable,
+        'logs_available_count': sum(bool(r.get('log_available')) for r in records),
+        'ledger_lines_recovered': sum(r.get('ledger_seen') is True for r in records),
         'assigned_blocks_from_recovered_ledger_lines': assigned_blocks_known,
         'assigned_columns_from_recovered_ledger_lines': assigned_columns_known,
         'structural_recompute_performed': False,
         'claim_boundary': (
-            'Provenance-only reconstruction from immutable GitHub Actions logs/artifact metadata. '
-            'A NUMERICAL_COMPLETE_BUT_ARTIFACT_LOST classification is evidence that the worker reported completion; '
+            'Provenance-only reconstruction from immutable GitHub Actions job/artifact metadata and surviving logs. '
+            'Unavailable logs remain UNKNOWN and are never interpreted as numerical failure. '
+            'NUMERICAL_COMPLETE_BUT_ARTIFACT_LOST means only that the surviving log reported completion; '
             'without persisted matrices it is not reusable rank evidence and does not close [3,2].'
         ),
     }
@@ -218,7 +256,13 @@ def main() -> int:
     a = ap.parse_args()
     inv = build_inventory(a.repo, a.run_id, a.token)
     a.out.write_text(json.dumps(inv, indent=2, sort_keys=True) + '\n')
-    print(json.dumps({k: inv[k] for k in ('status_counts','persisted_raw_shards','numerical_complete_but_artifact_lost_shards','partial_numerical_shards','ledger_lines_recovered','assigned_blocks_from_recovered_ledger_lines','assigned_columns_from_recovered_ledger_lines')}, indent=2, sort_keys=True))
+    keys = (
+        'status_counts','persisted_raw_shards','numerical_complete_but_artifact_lost_shards',
+        'partial_numerical_shards','log_unavailable_shards','logs_available_count',
+        'ledger_lines_recovered','assigned_blocks_from_recovered_ledger_lines',
+        'assigned_columns_from_recovered_ledger_lines'
+    )
+    print(json.dumps({k: inv[k] for k in keys}, indent=2, sort_keys=True))
     return 0
 
 
