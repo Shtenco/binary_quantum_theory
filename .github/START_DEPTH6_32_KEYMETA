@@ -1,0 +1,4 @@
+authorized_schema=8
+identity_sha256=2c78231935255fe4be1952315f2a036e14f3129b6d3b3942665547b5d50da79b
+workflow=.github/workflows/bqg-depth6-32-ledger-keymeta-first.yml
+claim=KEYMETA-first replay attempt only; no rank or closure claim
