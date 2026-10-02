@@ -20,8 +20,15 @@ REQUIRED_PROVENANCE = (
 )
 
 
+def _missing_value(record: dict, key: str) -> bool:
+    if key not in record:
+        return True
+    value = record[key]
+    return value is None or (isinstance(value, str) and value == '')
+
+
 def normalize_assignment_record(record: dict) -> dict:
-    missing = [k for k in REQUIRED_PROVENANCE if not record.get(k)]
+    missing = [k for k in REQUIRED_PROVENANCE if _missing_value(record, k)]
     if missing:
         raise RuntimeError(f'missing provenance fields: {missing}')
     if 'orbit_id' not in record or 'rep' not in record or 'm' not in record:
@@ -32,12 +39,15 @@ def normalize_assignment_record(record: dict) -> dict:
     m = int(record['m'])
     if m <= 0:
         raise RuntimeError(f"orbit {record['orbit_id']}: m must be positive")
+    source_shard = int(record['source_shard'])
+    if source_shard < 0:
+        raise RuntimeError(f"orbit {record['orbit_id']}: source_shard must be non-negative")
     out = {
         'orbit_id': int(record['orbit_id']),
         'rep': rep,
         'm': m,
         'coord_dim': int(record.get('coord_dim', 0)),
-        'source_shard': int(record['source_shard']),
+        'source_shard': source_shard,
         'source_keymeta_payload_sha256': str(record['source_keymeta_payload_sha256']),
         'source_raw_run_id': str(record['source_raw_run_id']),
         'source_raw_artifact_id': str(record['source_raw_artifact_id']),
