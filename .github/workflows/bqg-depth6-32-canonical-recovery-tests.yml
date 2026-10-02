@@ -14,6 +14,8 @@ on:
       - 'scripts/depth6_replay_readiness.py'
       - 'scripts/plan_depth6_32_batches.py'
       - 'BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json'
+      - 'BQG_DEPTH6_32_STAGEA_LOG_SALVAGE_2026-10-02.json'
+      - 'BQG_DEPTH6_32_RECOVERY_FRONTIER_2026-10-02.json'
       - 'scripts/test_depth6_keymeta_coverage.py'
       - 'scripts/test_inventory_depth6_32_keymeta.py'
       - 'scripts/test_inventory_depth6_32_stagea_jobs.py'
@@ -43,3 +45,5 @@ jobs:
             test_depth6_assignment_ledger.py \
             test_depth6_replay_readiness.py \
             test_plan_depth6_32_batches.py
+      - name: Verify live schema6 recovery frontier
+        run: python scripts/verify_depth6_32_recovery_frontier.py
