@@ -1,5 +1,5 @@
 {
-  "schema_version": 5,
+  "schema_version": 6,
   "date": "2026-10-02",
   "irrep": "[3,2]",
   "structural_status": "CLOSED_IMMUTABLE_INPUT",
@@ -8,6 +8,7 @@
   "target_columns": 130903,
   "source_stage_a_run_id": 36899125190,
   "source_engine_git_blob_sha": "cbbaa80f6b6b61d353458db1fa1f03f824730532",
+  "canonical_recovery_branch": "bqg/depth6-32-canonical-recovery",
   "keymeta_preservation_runs": [36911807083,36916785787,36921419558],
   "keymeta_preservation_status": "15_SHARDS_PRESERVED_SUCCESSFULLY",
   "coverage_inventory": {
@@ -69,7 +70,56 @@
       "recognize multi-shard salvage artifact names",
       "load multiple BQG_MIXED_MASTER_KEY_METADATA payloads from one salvage ZIP"
     ],
-    "next_extension": "wire repository-wide canonical artifact discovery and shard-level deduplication into main inventory flow"
+    "canonical_reimplementation": {
+      "branch": "bqg/depth6-32-canonical-recovery",
+      "coverage_module": "scripts/depth6_keymeta_coverage.py",
+      "inventory_module": "scripts/inventory_depth6_32_keymeta.py",
+      "recovery_verifier": "scripts/verify_depth6_32_recovery_frontier.py",
+      "core_regression_wired": true
+    }
+  },
+  "persisted_assignment_ledger": {
+    "path": "BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json",
+    "kind": "BQG_DEPTH6_32_PERSISTED_ASSIGNMENT_LEDGER",
+    "status": "INCOMPLETE_PERSISTED_ASSIGNMENT_LEDGER",
+    "persisted_blocks": 15,
+    "persisted_columns": 7749,
+    "missing_blocks": 2740,
+    "missing_columns": 123154,
+    "retry_allowed": false,
+    "rank_certified": false,
+    "ledger_sha256": "7fb8e5e16078f6b17f878cb3b6f13d618f9505422822a8bee21689ce7900891e",
+    "source_rule": "PERSISTED_KEYMETA_RECORDS_ONLY_NO_STRUCTURAL_RECONSTRUCTION"
+  },
+  "stage_a_log_salvage": {
+    "path": "BQG_DEPTH6_32_STAGEA_LOG_SALVAGE_2026-10-02.json",
+    "salvage_run_id": 36991232005,
+    "salvage_artifact_id": 11218804169,
+    "salvage_artifact_digest": "sha256:3ced5de88440a6b172a3bef1fba5a0812751f0454a7aca69e0f664220ca94a22",
+    "summary_sha256": "b1cb032e2ad71c1b722e4f2ffa74939a432fca4ef4db44bd1155bea8b8243e56",
+    "logs_available": 102,
+    "logs_unavailable": 10,
+    "ledger_lines_recovered": 102,
+    "batch_schedule_blocks_recovered": 2530,
+    "batch_schedule_columns_recovered": 118883,
+    "batch_schedule_block_fraction": 0.9183303085299455,
+    "batch_schedule_column_fraction": 0.9081755192852723,
+    "raw_persisted_shards": 15,
+    "numerical_complete_but_artifact_lost_shards": [5],
+    "not_completed_shards_with_surviving_logs": 86,
+    "partial_numerical_shards": [],
+    "log_unavailable_shards": [1,2,4,36,59,73,85,88,90,104],
+    "scientific_boundary": "BATCH_LEVEL_LEDGER_TOTALS_ARE_NOT_PER_ORBIT_ASSIGNMENT_IDENTITY"
+  },
+  "replay_readiness": {
+    "gate_module": "scripts/depth6_replay_readiness.py",
+    "status": "MISSING_SELECTOR_OR_MASTER_MAP_PROVENANCE",
+    "assignment_identity_is_not_replay_readiness": true,
+    "allowed_replay_sources": ["PERSISTED_MASTER_MAP", "PERSISTED_SELECTOR_WITNESS"],
+    "source_raw_artifact_metadata_alone_is_not_enough": true,
+    "canonical_compute_allowed": false,
+    "rank_certified": false,
+    "reason": "persisted keymeta freezes orbit/rep/m for 15 blocks but does not persist the Jucys selector W; old worker calls fast_selector/exact_mult before master_map, which is forbidden by the frozen recovery boundary"
   },
   "raw_present_shards": [0,6,8,11,12,13,14,17,18,19,20,21,22,23,24],
   "raw_present_count": 15,
@@ -86,14 +136,18 @@
     "jucys_recompute_performed": false,
     "forbid_future_recovery_bootstrap_of_shell_orbits_multiplicity_or_jucys": true,
     "canonical_retry_requires_persisted_assignment_ledger": true,
+    "batch_schedule_is_not_assignment_identity": true,
+    "assignment_identity_is_not_replay_readiness": true,
+    "replay_requires_persisted_master_map_or_selector_witness": true,
     "raw_artifact_presence_is_not_rank_evidence": true,
     "keymeta_is_not_rank_evidence": true,
     "subset_q_uniqueness_is_not_rank_evidence": true,
     "global_candidate_schedule_requires_112_of_112_actual_q_occupancy": true,
     "svd_removal_requires_full_column_rank_and_sigma_min_threshold": true,
     "failed_svd_candidate_remains_present_during_fail_closed_replay": true,
-    "github_job_success_is_not_sufficient_without_manifest_effective_success": true
+    "github_job_success_is_not_sufficient_without_manifest_effective_success": true,
+    "unavailable_log_is_unknown_not_failure": true
   },
-  "next_gate": "Preserve keymeta from every new successful Stage-A raw artifact. Recover missing shards only with a ledger-driven numerical retry built from persisted frozen assignments; do not regenerate shell/orbits/multiplicity/Jucys. Extend the now-GREEN multi-shard inventory reader to repository-wide canonical artifact discovery and shard-level deduplication. Require exact 112/112, 2755 blocks and 130903 columns before global actual-q peeling/SVD.",
+  "next_gate": "Recover or immutably persist the missing per-orbit assignment identity and replay evidence without invoking shell/orbit/exact_mult/Jucys reconstruction. Preserve compact master-map or selector witnesses for replay-ready blocks. Only after assignment completeness AND replay readiness may ledger-driven keymeta-first compute run. Require exact 112/112 actual-q coverage, 2755 blocks and 130903 columns before global actual-q peeling/SVD.",
   "claim_boundary": "Recovery/provenance snapshot only. It does not certify rank(C_32)=130903 and does not close [3,2] numerically."
 }
