@@ -1,0 +1,22 @@
+{
+  "actual_q_coverage_certified": false,
+  "blocks": 2755,
+  "claim_boundary": "Authorizes only a fail-closed numerical replay attempt from the complete frozen assignment identity through the pinned Stage-A engine and frozen-m/KEYMETA-first contracts. It does not certify successful replay, actual-q coverage, rank, kernel, or numerical closure of [3,2].",
+  "columns": 130903,
+  "covered_shards": 112,
+  "frozen_basis_contract": "PASS_FROZEN_M_NUMERICAL_BASIS_ONLY",
+  "frozen_bundle_blob_sha": "cbbaa80f6b6b61d353458db1fa1f03f824730532",
+  "frozen_engine_commit": "887e76fba5210524650002da0b54653d2c5b37fd",
+  "identity_sha256": "2c78231935255fe4be1952315f2a036e14f3129b6d3b3942665547b5d50da79b",
+  "keymeta_first_contract": "BQG_DEPTH6_32_KEYMETA_FIRST_BLOCK",
+  "kind": "BQG_DEPTH6_32_NUMERICAL_REPLAY_AUTHORIZATION",
+  "multiplicity_recompute_authorized": false,
+  "nshards": 112,
+  "numerical_closure_claimed": false,
+  "numerical_replay_authorized": true,
+  "rank_certified": false,
+  "schema_version": 1,
+  "source_stage_a_run_id": 36899125190,
+  "status": "AUTHORIZED_NUMERICAL_REPLAY_ATTEMPT",
+  "structural_recompute_authorized": false
+}
