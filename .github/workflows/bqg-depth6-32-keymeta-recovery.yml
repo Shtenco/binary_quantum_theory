@@ -1,0 +1,215 @@
+name: BQG depth6 32 missing-orbit KEYMETA recovery
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: 'Original authorized KEYMETA replay run containing durable shard artifacts'
+        required: true
+        default: '37058367350'
+      target_proxy:
+        description: 'Maximum frozen proxy per recovery chunk; oversize records become singleton chunks'
+        required: true
+        default: '250000'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      missing_blocks: ${{ steps.plan.outputs.missing_blocks }}
+      completed_blocks: ${{ steps.plan.outputs.completed_blocks }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download durable artifacts from source replay
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+          pattern: bqg-depth6-32-keymeta-shard-*
+          path: source-keymeta
+          merge-multiple: false
+      - name: Fail-closed authorization and missing-orbit plan
+        id: plan
+        env:
+          PYTHONPATH: ${{ github.workspace }}/scripts
+          TARGET_PROXY: ${{ inputs.target_proxy }}
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          from pathlib import Path
+          import depth6_32_replay_authorization as A
+          import depth6_32_replay_chunks as C
+
+          ledger=json.loads(Path('BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json').read_text())
+          gate=json.loads(Path('BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json').read_text())
+          auth=A.authorize_replay(ledger,gate)
+          if not auth['numerical_replay_authorized']:
+              raise RuntimeError('numerical replay not authorized')
+
+          completed=set()
+          manifests=list(Path('source-keymeta').rglob('shard-*-manifest.json'))
+          for p in manifests:
+              m=json.loads(p.read_text())
+              if m.get('status')!='PASS_KEYMETA_FIRST_SHARD_COMPLETE':
+                  raise RuntimeError(f'non-PASS source manifest: {p}')
+              for rec in m.get('records',[]):
+                  oid=int(rec['orbit_id'])
+                  if oid in completed:
+                      raise RuntimeError(f'duplicate durable source orbit {oid}')
+                  completed.add(oid)
+
+          target=int(os.environ['TARGET_PROXY'])
+          chunks=C.plan_missing_chunks(ledger['records'],completed,target_proxy=target)
+          planned=[oid for c in chunks for oid in c['orbit_ids']]
+          if len(completed)+len(planned)!=2755:
+              raise RuntimeError('source durable + recovery plan does not cover 2755 frozen blocks')
+          if set(planned).intersection(completed):
+              raise RuntimeError('recovery plan overlaps durable source orbits')
+
+          matrix={'include':[{
+              'chunk':int(c['chunk']),
+              'orbit_ids_json':json.dumps(c['orbit_ids'],separators=(',',':')),
+              'proxy':int(c['proxy']),
+              'blocks':int(c['blocks']),
+              'columns':int(c['columns']),
+              'oversize_singleton':bool(c['oversize_singleton']),
+          } for c in chunks]}
+          Path('BQG_DEPTH6_32_RECOVERY_PLAN.json').write_text(json.dumps({
+              'schema_version':1,
+              'kind':'BQG_DEPTH6_32_MISSING_ORBIT_RECOVERY_PLAN',
+              'source_run_id':int('${{ inputs.source_run_id }}'),
+              'identity_sha256':auth['identity_sha256'],
+              'durable_source_blocks':len(completed),
+              'missing_blocks':len(planned),
+              'chunks':chunks,
+              'rank_certified':False,
+              'numerical_closure_claimed':False,
+          },indent=2,sort_keys=True)+'\n')
+          print('matrix='+json.dumps(matrix,separators=(',',':')))
+          print('missing_blocks='+str(len(planned)))
+          print('completed_blocks='+str(len(completed)))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-recovery-plan
+          path: BQG_DEPTH6_32_RECOVERY_PLAN.json
+          retention-days: 30
+
+  recover:
+    needs: prepare
+    if: ${{ needs.prepare.outputs.missing_blocks != '0' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numerical dependencies
+        run: python -m pip install --disable-pip-version-check -q numpy scipy sympy
+      - name: Extract immutable frozen Stage-A engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          FROZEN_COMMIT=887e76fba5210524650002da0b54653d2c5b37fd
+          EXPECTED_BLOB=cbbaa80f6b6b61d353458db1fa1f03f824730532
+          git fetch --no-tags origin "$FROZEN_COMMIT"
+          ACTUAL_BLOB="$(git rev-parse "$FROZEN_COMMIT:mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64")"
+          test "$ACTUAL_BLOB" = "$EXPECTED_BLOB"
+          mkdir -p frozen_engine
+          git show "$FROZEN_COMMIT:mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64" > /tmp/bundle.b64
+          base64 -d /tmp/bundle.b64 | tar xzf - -C frozen_engine
+      - name: Replay explicit missing frozen orbit chunk
+        env:
+          PYTHONPATH: ${{ github.workspace }}/scripts:${{ github.workspace }}/frozen_engine
+        run: |
+          set -euo pipefail
+          python -u scripts/run_depth6_32_orbit_chunk.py \
+            --ledger BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json \
+            --gate BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json \
+            --orbit-ids-json '${{ matrix.orbit_ids_json }}' \
+            --chunk '${{ matrix.chunk }}' \
+            --out-dir 'recovery-chunk-${{ matrix.chunk }}'
+      - name: Upload compact recovery KEYMETA immediately
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-keymeta-recovery-${{ matrix.chunk }}
+          path: recovery-chunk-${{ matrix.chunk }}/
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 30
+
+  aggregate:
+    needs: [prepare,recover]
+    if: ${{ always() && needs.prepare.result == 'success' && (needs.recover.result == 'success' || needs.recover.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numerical dependency
+        run: python -m pip install --disable-pip-version-check -q numpy
+      - name: Download source durable KEYMETA
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+          pattern: bqg-depth6-32-keymeta-shard-*
+          path: union/source
+          merge-multiple: false
+      - name: Download recovery durable KEYMETA
+        if: ${{ needs.recover.result == 'success' }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: bqg-depth6-32-keymeta-recovery-*
+          path: union/recovery
+          merge-multiple: false
+      - name: Require exact 2755/130903 union and write JSON-safe gate
+        env:
+          PYTHONPATH: ${{ github.workspace }}/scripts
+        run: |
+          python - <<'PY'
+          import gzip,pickle
+          from pathlib import Path
+          import depth6_32_keymeta_first as K
+          import depth6_32_keymeta_aggregate as A
+
+          files=list(Path('union').rglob('orbit-*.keymeta.pkl.gz'))
+          blocks=[]
+          for p in files:
+              with gzip.open(p,'rb') as f:
+                  blocks.append(pickle.load(f))
+          gate=K.validate_keymeta_union(blocks,target_blocks=2755,target_columns=130903)
+          if not gate['exact_keymeta_coverage'] or not gate['global_peeling_allowed']:
+              raise RuntimeError(
+                  f"recovery union incomplete: blocks={gate['blocks']} columns={gate['columns']}")
+          gate['source_run_id']=int('${{ inputs.source_run_id }}')
+          gate['recovery_run_id']=int('${{ github.run_id }}')
+          gate['rank_certified']=False
+          gate['numerical_closure_claimed']=False
+          A.write_union_gate_json(Path('BQG_DEPTH6_32_KEYMETA_RECOVERY_UNION_GATE.json'),gate)
+          print('PASS_EXACT_KEYMETA_RECOVERY_UNION',gate['blocks'],gate['columns'],gate['q_key_count'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-keymeta-recovery-union-gate
+          path: BQG_DEPTH6_32_KEYMETA_RECOVERY_UNION_GATE.json
+          retention-days: 30
