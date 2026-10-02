@@ -60,6 +60,7 @@ def setup_root(root: Path, *, include_inventory=True, include_assignment=True) -
 
 def add_schema7(root: Path, r: dict) -> None:
     (root/'scripts'/'depth6_32_identity_rematerialization.py').write_text('# canonical\n')
+    (root/'scripts'/'depth6_32_rematerialized_identity.py').write_text('# canonical\n')
     records=[]
     for i in range(2755):
         m=47 if i<2754 else 1465
@@ -118,11 +119,7 @@ class RecoveryFrontierTests(unittest.TestCase):
         r=recovery()
         with tempfile.TemporaryDirectory() as td:
             root=Path(td); setup_root(root); add_schema7(root,r); got=V.verify(r,depth6(),root)
-            self.assertEqual(2755,got['rematerialized_identity_blocks'])
-            self.assertEqual(130903,got['rematerialized_identity_columns'])
-            self.assertTrue(got['assignment_identity_complete'])
-            self.assertFalse(got['replay_compute_allowed'])
-            self.assertFalse(got['numerical_closure_claimed'])
+            self.assertEqual(2755,got['rematerialized_identity_blocks']); self.assertEqual(130903,got['rematerialized_identity_columns']); self.assertTrue(got['assignment_identity_complete']); self.assertFalse(got['replay_compute_allowed']); self.assertFalse(got['numerical_closure_claimed'])
 
     def test_schema7_tampered_rematerialized_identity_fails_closed(self):
         r=recovery()
