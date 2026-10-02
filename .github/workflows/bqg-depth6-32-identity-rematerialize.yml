@@ -1,0 +1,167 @@
+name: BQG depth6 32 identity rematerialization
+
+on:
+  push:
+    branches:
+      - bqg/depth6-32-canonical-recovery
+    paths:
+      - '.github/workflows/bqg-depth6-32-identity-rematerialize.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rematerialize-identity-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install frozen engine dependencies
+        run: python -m pip install --disable-pip-version-check -q numpy scipy sympy
+      - name: Extract immutable frozen Stage-A engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          FROZEN_COMMIT=887e76fba5210524650002da0b54653d2c5b37fd
+          EXPECTED_BLOB=cbbaa80f6b6b61d353458db1fa1f03f824730532
+          git fetch --no-tags origin "$FROZEN_COMMIT"
+          ACTUAL_BLOB="$(git rev-parse "$FROZEN_COMMIT:mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64")"
+          test "$ACTUAL_BLOB" = "$EXPECTED_BLOB"
+          mkdir -p frozen_engine
+          git show "$FROZEN_COMMIT:mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64" > /tmp/bundle.b64
+          base64 -d /tmp/bundle.b64 | tar xzf - -C frozen_engine
+          printf '%s\n' "$FROZEN_COMMIT" > frozen_engine/FROZEN_COMMIT
+          printf '%s\n' "$ACTUAL_BLOB" > frozen_engine/FROZEN_BUNDLE_BLOB
+      - name: Deterministically re-materialize assignment identity
+        env:
+          PYTHONPATH: ${{ github.workspace }}/scripts:${{ github.workspace }}/frozen_engine
+        run: |
+          python -u - <<'PY'
+          import hashlib
+          import json
+          from pathlib import Path
+
+          import github_mixed_master_shard as G
+          import bqg_depth6_41 as Z
+          import bqg_depth6_generic_jucys_selector as J
+          import depth6_32_identity_rematerialization as R
+
+          ROOT = Path('.')
+          FROZEN_COMMIT = '887e76fba5210524650002da0b54653d2c5b37fd'
+          FROZEN_BLOB = 'cbbaa80f6b6b61d353458db1fa1f03f824730532'
+          SOURCE_RUN = 36899125190
+          NSHARDS = 112
+
+          persisted_ledger = json.loads((ROOT / 'BQG_DEPTH6_32_ASSIGNMENT_LEDGER_2026-10-02.json').read_text())
+          stagea = json.loads((ROOT / 'BQG_DEPTH6_32_STAGEA_LOG_SALVAGE_2026-10-02.json').read_text())
+
+          shell = G.shell(6)
+          shell_count = len(shell)
+          reps = sorted({Z.canon5(tuple(s))[0] for s in shell})
+          orbit_count = len(reps)
+          seed = J.CFG['32'][0]
+
+          records = []
+          for oid, rep in enumerate(reps):
+              m = J.exact_mult(rep, '32')
+              if not m:
+                  continue
+              d = J.layout(rep, seed)[2]
+              records.append({
+                  'orbit_id': int(oid),
+                  'rep': [int(x) for x in rep],
+                  'm': int(m),
+                  'coord_dim': int(d),
+                  'proxy': int(max(1, d) * max(1, m)),
+              })
+
+          historical = {}
+          for row in stagea['rows']:
+              shard, status, assigned_blocks, assigned_columns, proxy = row[:5]
+              if assigned_blocks is None:
+                  continue
+              historical[str(shard)] = {
+                  'assigned_blocks': int(assigned_blocks),
+                  'assigned_columns': int(assigned_columns),
+                  'proxy': float(proxy),
+              }
+
+          gate = R.validate_rematerialized_identity(
+              records,
+              persisted_records=persisted_ledger['records'],
+              historical_batches=historical,
+              expected_shell_states=264962,
+              observed_shell_states=shell_count,
+              expected_s5_orbits=2757,
+              observed_s5_orbits=orbit_count,
+              target_blocks=2755,
+              target_columns=130903,
+              nshards=NSHARDS,
+          )
+
+          bins, loads = R.cost_balanced(records, NSHARDS)
+          source_shard_by_orbit = {}
+          for shard, batch in enumerate(bins):
+              for rec in batch:
+                  source_shard_by_orbit[int(rec['orbit_id'])] = shard
+
+          full_records = []
+          for rec in sorted(records, key=lambda x: x['orbit_id']):
+              full_records.append({
+                  **rec,
+                  'source_shard': int(source_shard_by_orbit[rec['orbit_id']]),
+                  'identity_source': 'DETERMINISTIC_REMATERIALIZATION_FROM_FROZEN_STAGE_A_ENGINE',
+                  'frozen_engine_commit': FROZEN_COMMIT,
+                  'frozen_bundle_blob_sha': FROZEN_BLOB,
+                  'source_stage_a_run_id': SOURCE_RUN,
+              })
+
+          identity_raw = json.dumps(full_records, sort_keys=True, separators=(',', ':')).encode()
+          ledger = {
+              'schema_version': 1,
+              'kind': 'BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER',
+              'date': '2026-10-02',
+              'irrep': '[3,2]',
+              'status': 'COMPLETE_IDENTITY_REMATERIALIZATION_ONLY',
+              'target_blocks': 2755,
+              'target_columns': 130903,
+              'source_stage_a_run_id': SOURCE_RUN,
+              'frozen_engine_commit': FROZEN_COMMIT,
+              'frozen_bundle_blob_sha': FROZEN_BLOB,
+              'shell_states': shell_count,
+              's5_orbits': orbit_count,
+              'records': full_records,
+              'identity_sha256': hashlib.sha256(identity_raw).hexdigest(),
+              'acceptance_gate': gate,
+              'rank_certified': False,
+              'actual_q_coverage_certified': False,
+              'numerical_closure_claimed': False,
+              'claim_boundary': (
+                  'Complete assignment identity reconstructed deterministically from the immutable '
+                  'frozen Stage-A engine after persisted-identity and historical-batch cross-checks. '
+                  'This is not actual-q coverage, numerical rank evidence, a master-kernel result, '
+                  'or closure of [3,2].'
+              ),
+          }
+          out = ROOT / 'BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json'
+          out.write_text(json.dumps(ledger, indent=2, sort_keys=True) + '\n')
+          (ROOT / 'BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json').write_text(
+              json.dumps(gate, indent=2, sort_keys=True) + '\n'
+          )
+          print(json.dumps(gate, indent=2, sort_keys=True), flush=True)
+          print('LEDGER', out, 'records', len(full_records), 'sha256', ledger['identity_sha256'], flush=True)
+          PY
+      - name: Upload identity-only certificate
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-rematerialized-assignment-identity
+          path: |
+            BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json
+            BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json
+          retention-days: 30
