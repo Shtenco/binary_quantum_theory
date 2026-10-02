@@ -125,6 +125,7 @@ jobs:
           import gzip,json,pickle
           from pathlib import Path
           import depth6_32_keymeta_first as K
+          import depth6_32_keymeta_aggregate as A
 
           root=Path('all-keymeta')
           manifests=list(root.rglob('shard-*-manifest.json'))
@@ -154,7 +155,7 @@ jobs:
           gate['shard_coverage']='112/112'
           gate['rank_certified']=False
           gate['numerical_closure_claimed']=False
-          Path('BQG_DEPTH6_32_KEYMETA_UNION_GATE.json').write_text(json.dumps(gate,indent=2,sort_keys=True,default=str)+'\n')
+          A.write_json_gate(Path('BQG_DEPTH6_32_KEYMETA_UNION_GATE.json'),gate)
           print(json.dumps({'status':'PASS_EXACT_KEYMETA_COVERAGE','shards':112,'blocks':gate['blocks'],'columns':gate['columns'],'q_key_count':gate['q_key_count'],'global_peeling_allowed':gate['global_peeling_allowed'],'rank_certified':False},sort_keys=True))
           PY
       - uses: actions/upload-artifact@v4
