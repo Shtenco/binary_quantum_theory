@@ -37,15 +37,26 @@ DONE 10 / 12 ok 10 sec 6000.0
             I.parse_worker_log(log, expected_shard=5)
 
     def test_classification_prefers_persisted_artifact(self):
-        parsed = {'assigned_blocks': 1, 'assigned_columns': 720, 'numerical_complete': True, 'done_blocks': 1, 'ok_blocks': 1}
+        parsed = {'log_available': True, 'assigned_blocks': 1, 'assigned_columns': 720, 'numerical_complete': True, 'done_blocks': 1, 'ok_blocks': 1}
         self.assertEqual('RAW_PERSISTED', I.classify(parsed, artifact_present=True))
         self.assertEqual('NUMERICAL_COMPLETE_BUT_ARTIFACT_LOST', I.classify(parsed, artifact_present=False))
 
     def test_partial_and_not_started_classification(self):
-        partial = {'assigned_blocks': 12, 'assigned_columns': 401, 'numerical_complete': False, 'done_blocks': 5, 'ok_blocks': 5}
-        none = {'assigned_blocks': 12, 'assigned_columns': 401, 'numerical_complete': False, 'done_blocks': 0, 'ok_blocks': 0}
+        partial = {'log_available': True, 'assigned_blocks': 12, 'assigned_columns': 401, 'numerical_complete': False, 'done_blocks': 5, 'ok_blocks': 5}
+        none = {'log_available': True, 'assigned_blocks': 12, 'assigned_columns': 401, 'numerical_complete': False, 'done_blocks': 0, 'ok_blocks': 0}
         self.assertEqual('PARTIAL_NUMERICAL', I.classify(partial, artifact_present=False))
         self.assertEqual('NOT_COMPLETED', I.classify(none, artifact_present=False))
+
+    def test_unavailable_log_never_means_not_completed(self):
+        parsed = I.unavailable_log_record(7, 'HTTP_404_BLOB_MISSING')
+        self.assertEqual('LOG_UNAVAILABLE', I.classify(parsed, artifact_present=False))
+        self.assertFalse(parsed['log_available'])
+        self.assertIsNone(parsed['assigned_blocks'])
+        self.assertIsNone(parsed['numerical_complete'])
+
+    def test_persisted_artifact_still_wins_when_log_is_unavailable(self):
+        parsed = I.unavailable_log_record(7, 'HTTP_404_BLOB_MISSING')
+        self.assertEqual('RAW_PERSISTED', I.classify(parsed, artifact_present=True))
 
 
 if __name__ == '__main__':
