@@ -8,8 +8,10 @@ on:
     paths:
       - 'scripts/depth6_keymeta_coverage.py'
       - 'scripts/inventory_depth6_32_keymeta.py'
+      - 'scripts/verify_depth6_32_recovery_frontier.py'
       - 'scripts/test_depth6_keymeta_coverage.py'
       - 'scripts/test_inventory_depth6_32_keymeta.py'
+      - 'scripts/test_verify_depth6_32_recovery_frontier.py'
       - '.github/workflows/bqg-depth6-32-canonical-recovery-tests.yml'
 
 jobs:
@@ -26,4 +28,5 @@ jobs:
         run: |
           python -m unittest -v \
             test_depth6_keymeta_coverage.py \
-            test_inventory_depth6_32_keymeta.py
+            test_inventory_depth6_32_keymeta.py \
+            test_verify_depth6_32_recovery_frontier.py
