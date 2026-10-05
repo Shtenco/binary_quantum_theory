@@ -1,0 +1,241 @@
+name: BQG depth6 32 residual KEYMETA recovery
+
+on:
+  workflow_dispatch:
+    inputs:
+      prior_recovery_run_id:
+        description: 'Prior recovery run whose durable source snapshot and successful chunks are reusable'
+        required: true
+        default: '37078635281'
+      target_proxy:
+        description: 'Maximum frozen proxy per residual chunk; oversize records are singleton chunks'
+        required: true
+        default: '250000'
+  push:
+    branches:
+      - bqg/depth6-32-canonical-recovery
+    paths:
+      - '.github/bqg-depth6-32-residual-recovery.trigger'
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  PRIOR_RECOVERY_RUN_ID: ${{ github.event.inputs.prior_recovery_run_id || '37078635281' }}
+  TARGET_PROXY: ${{ github.event.inputs.target_proxy || '250000' }}
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      missing_blocks: ${{ steps.plan.outputs.missing_blocks }}
+      completed_blocks: ${{ steps.plan.outputs.completed_blocks }}
+      completed_columns: ${{ steps.plan.outputs.completed_columns }}
+      chunk_count: ${{ steps.plan.outputs.chunk_count }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download frozen source snapshot from prior recovery
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ env.PRIOR_RECOVERY_RUN_ID }}
+          github-token: ${{ github.token }}
+          name: bqg-depth6-32-recovery-source-snapshot
+          path: durable/source
+      - name: Download every durable recovery chunk from prior recovery
+        uses: actions/download-artifact@v4
+        with:
+          run-id: ${{ env.PRIOR_RECOVERY_RUN_ID }}
+          github-token: ${{ github.token }}
+          pattern: bqg-depth6-32-keymeta-recovery-*
+          path: durable/recovery
+          merge-multiple: false
+      - name: Validate durable union and plan only residual frozen orbits
+        id: plan
+        env:
+          PYTHONPATH: ${{ github.workspace }}/scripts
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
+          from pathlib import Path
+          import depth6_32_recovery_inventory as I
+          import depth6_32_replay_authorization as A
+          import depth6_32_replay_chunks as C
+
+          ledger=json.loads(Path('BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json').read_text())
+          gate=json.loads(Path('BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json').read_text())
+          auth=A.authorize_replay(ledger,gate)
+          if not auth['numerical_replay_authorized']:
+              raise RuntimeError('numerical replay not authorized')
+
+          inv=I.inventory_keymeta_roots([Path('durable')])
+          completed=set(int(x) for x in inv['completed_orbit_ids'])
+          if inv['completed_blocks'] > 2755 or inv['completed_columns'] > 130903:
+              raise RuntimeError('durable inventory exceeds frozen target')
+
+          target=int(os.environ['TARGET_PROXY'])
+          chunks=C.plan_missing_chunks(ledger['records'],completed,target_proxy=target)
+          planned=[int(oid) for c in chunks for oid in c['orbit_ids']]
+          if len(completed)+len(planned)!=2755:
+              raise RuntimeError('durable + residual plan does not cover exactly 2755 frozen blocks')
+          if set(planned).intersection(completed):
+              raise RuntimeError('residual plan overlaps durable inventory')
+          if len(chunks)>256:
+              raise RuntimeError(f'residual matrix exceeds GitHub limit: {len(chunks)}>256')
+
+          matrix={'include':[{
+              'chunk':int(c['chunk']),
+              'orbit_ids_json':json.dumps(c['orbit_ids'],separators=(',',':')),
+              'proxy':int(c['proxy']),
+              'blocks':int(c['blocks']),
+              'columns':int(c['columns']),
+              'oversize_singleton':bool(c['oversize_singleton']),
+          } for c in chunks]}
+          report={
+              'schema_version':1,
+              'kind':'BQG_DEPTH6_32_RESIDUAL_RECOVERY_PLAN',
+              'prior_recovery_run_id':int(os.environ['PRIOR_RECOVERY_RUN_ID']),
+              'identity_sha256':auth['identity_sha256'],
+              'durable_inventory':inv,
+              'missing_blocks':len(planned),
+              'missing_columns':130903-int(inv['completed_columns']),
+              'chunk_count':len(chunks),
+              'chunks':chunks,
+              'rank_certified':False,
+              'numerical_closure_claimed':False,
+          }
+          Path('BQG_DEPTH6_32_RESIDUAL_RECOVERY_PLAN.json').write_text(
+              json.dumps(report,indent=2,sort_keys=True)+'\n')
+          print('matrix='+json.dumps(matrix,separators=(',',':')))
+          print('missing_blocks='+str(len(planned)))
+          print('completed_blocks='+str(inv['completed_blocks']))
+          print('completed_columns='+str(inv['completed_columns']))
+          print('chunk_count='+str(len(chunks)))
+          PY
+      - name: Freeze validated durable pre-residual snapshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-residual-source-snapshot
+          path: durable/
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 30
+      - name: Upload residual recovery plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-residual-recovery-plan
+          path: BQG_DEPTH6_32_RESIDUAL_RECOVERY_PLAN.json
+          retention-days: 30
+
+  recover:
+    needs: prepare
+    if: ${{ needs.prepare.outputs.missing_blocks != '0' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 12
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numerical dependencies
+        run: python -m pip install --disable-pip-version-check -q numpy scipy sympy
+      - name: Extract immutable frozen Stage-A engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          FROZEN_COMMIT=887e76fba5210524650002da0b54653d2c5b37fd
+          EXPECTED_BLOB=cbbaa80f6b6b61d353458db1fa1f03f824730532
+          git fetch --no-tags origin "$FROZEN_COMMIT"
+          ACTUAL_BLOB="$(git rev-parse "$FROZEN_COMMIT:mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64")"
+          test "$ACTUAL_BLOB" = "$EXPECTED_BLOB"
+          mkdir -p frozen_engine
+          git show "$FROZEN_COMMIT:mixed_parallel/bqg_mixed_master_bundle.tar.gz.b64" > /tmp/bundle.b64
+          base64 -d /tmp/bundle.b64 | tar xzf - -C frozen_engine
+      - name: Replay one residual frozen orbit chunk
+        env:
+          PYTHONPATH: ${{ github.workspace }}/scripts:${{ github.workspace }}/frozen_engine
+        run: |
+          set -euo pipefail
+          python -u scripts/run_depth6_32_orbit_chunk.py \
+            --ledger BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json \
+            --gate BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json \
+            --orbit-ids-json '${{ matrix.orbit_ids_json }}' \
+            --chunk '${{ matrix.chunk }}' \
+            --out-dir 'residual-chunk-${{ matrix.chunk }}'
+      - name: Upload compact residual KEYMETA immediately
+        uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-keymeta-residual-${{ matrix.chunk }}
+          path: residual-chunk-${{ matrix.chunk }}/
+          if-no-files-found: error
+          compression-level: 6
+          retention-days: 30
+
+  aggregate:
+    needs: [prepare,recover]
+    if: ${{ always() && needs.prepare.result == 'success' && (needs.recover.result == 'success' || needs.recover.result == 'skipped') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install numerical dependency
+        run: python -m pip install --disable-pip-version-check -q numpy
+      - name: Download frozen pre-residual durable snapshot
+        uses: actions/download-artifact@v4
+        with:
+          name: bqg-depth6-32-residual-source-snapshot
+          path: union/prior
+      - name: Download residual durable KEYMETA
+        if: ${{ needs.recover.result == 'success' }}
+        uses: actions/download-artifact@v4
+        with:
+          pattern: bqg-depth6-32-keymeta-residual-*
+          path: union/residual
+          merge-multiple: false
+      - name: Deduplicate and require exact 2755/130903 actual-q union
+        env:
+          PYTHONPATH: ${{ github.workspace }}/scripts
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import depth6_32_keymeta_first as K
+          import depth6_32_keymeta_aggregate as A
+          import depth6_32_recovery_inventory as I
+
+          roots=[Path('union')]
+          inv=I.inventory_keymeta_roots(roots)
+          blocks=I.load_unique_keymeta_blocks(roots)
+          if len(blocks)!=inv['completed_blocks']:
+              raise RuntimeError('inventory/materialized unique block mismatch')
+          gate=K.validate_keymeta_union(blocks,target_blocks=2755,target_columns=130903)
+          if not gate['exact_keymeta_coverage'] or not gate['global_peeling_allowed']:
+              raise RuntimeError(
+                  f"residual union incomplete: blocks={gate['blocks']} columns={gate['columns']}")
+          gate['prior_recovery_run_id']=int('${{ env.PRIOR_RECOVERY_RUN_ID }}')
+          gate['residual_recovery_run_id']=int('${{ github.run_id }}')
+          gate['duplicate_orbits_collapsed']=int(inv['duplicate_orbits_collapsed'])
+          gate['rank_certified']=False
+          gate['numerical_closure_claimed']=False
+          A.write_union_gate_json(Path('BQG_DEPTH6_32_KEYMETA_RESIDUAL_UNION_GATE.json'),gate)
+          print('PASS_EXACT_KEYMETA_RESIDUAL_UNION',gate['blocks'],gate['columns'],gate['q_key_count'])
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-depth6-32-keymeta-residual-union-gate
+          path: BQG_DEPTH6_32_KEYMETA_RESIDUAL_UNION_GATE.json
+          retention-days: 30
