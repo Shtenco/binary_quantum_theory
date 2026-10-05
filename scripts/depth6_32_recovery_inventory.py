@@ -56,7 +56,7 @@ def _payload_fingerprint(block: dict) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def inventory_keymeta_roots(roots: Iterable[Path]) -> dict:
+def _scan_unique_blocks(roots: Iterable[Path]):
     manifests = []
     for root0 in roots:
         root = Path(root0)
@@ -70,7 +70,6 @@ def inventory_keymeta_roots(roots: Iterable[Path]) -> dict:
     by_orbit: dict[int, dict] = {}
     fingerprints: dict[int, str] = {}
     duplicate_orbits_collapsed = 0
-    manifest_count = 0
 
     for mp in manifests:
         m = json.loads(mp.read_text())
@@ -139,8 +138,17 @@ def inventory_keymeta_roots(roots: Iterable[Path]) -> dict:
             else:
                 by_orbit[oid] = block
                 fingerprints[oid] = fp
-        manifest_count += 1
 
+    return by_orbit, duplicate_orbits_collapsed, len(manifests)
+
+
+def load_unique_keymeta_blocks(roots: Iterable[Path]) -> list[dict]:
+    by_orbit, _, _ = _scan_unique_blocks(roots)
+    return [by_orbit[oid] for oid in sorted(by_orbit)]
+
+
+def inventory_keymeta_roots(roots: Iterable[Path]) -> dict:
+    by_orbit, duplicate_orbits_collapsed, manifest_count = _scan_unique_blocks(roots)
     orbit_ids = sorted(by_orbit)
     columns = sum(int(by_orbit[oid]['m']) for oid in orbit_ids)
     return {
