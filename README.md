@@ -5,206 +5,144 @@
 
 ---
 
-# 1. Новый основной вопрос
+# 1. Главный вопрос новой ветки
 
-Главный фронтир BQG теперь формулируется не как поиск произвольной поправки к готовой метрике, а глубже:
+BQG теперь ставит более фундаментальный вопрос, чем поиск поправки к заранее заданной метрике:
 
-> **может ли пространство, геометрия и затем гравитация возникать из физической структуры бинарной квантовой информации?**
+> **может ли геометрия, расстояние и затем гравитация возникать из физической структуры бинарной квантовой информации?**
 
-Новая цепочка проекта:
+Рабочая цепочка:
 
 $$
 \boxed{
 \text{binary quantum degrees of freedom}
 \to
-\text{constraints}
+\text{SU(2) constraints}
 \to
 \text{noncommuting relational observables}
 \to
-\text{quantum volume}
+\text{oriented quantum volume}
 \to
 \text{entanglement / pair spectra}
 \to
-\text{relational geometry}
+\text{inter-node correlations}
+\to
+\text{relational distance ordering}
 \to
 \text{large-scale dimension}
-\to
-\text{causality}
 \to
 \text{effective gravity}
 }
 $$
 
-Старая работа репозитория не удалена: SU(2)/Peter–Weyl carriers, graph-changing constraints, master constraints, HDA/GR controls, Regge/Plebanski/Urbantke bridges, TT/EFT machinery, cosmology, 2T/Weyl и depth-6 proof frontier остаются доказательной библиотекой. Но они больше не задают канонический порядок рассказа.
-
-Главное правило:
+Главный методологический принцип:
 
 $$
-\boxed{\text{симметрия сначала, вычисления потом}}
+\boxed{\text{симметрия сначала, вычисления потом}.}
 $$
 
-и
-
-$$
-\boxed{\text{красивая идея никогда не сильнее доказательства}.}
-$$
+Мы предпочитаем точную матрицу $2\times2$, $4\times4$ или $8\times8$ огромному brute-force пространству, если они отвечают на тот же физический вопрос.
 
 ---
 
-# 2. Почему мы сменили фронтир
+# 2. Почему был сменён фронтир
 
-Минимальный static spherical shadow-sector не дал собственной ненулевой BQG hair-поправки: в заявленных предпосылках система возвращает тривиальный hair / Schwarzschild-like результат.
+Предыдущая static spherical shadow-ветка дала полезный no-go: в минимальном секторе собственная ненулевая BQG hair-поправка не возникла.
 
-Это полезный no-go.
+Это не провал, а указание, что новый эффект не надо выжимать из слишком узкого ansatz.
 
-Он говорит, что новый физический эффект не нужно выжимать из слишком узкого ansatz. Вместо этого мы возвращаемся к более фундаментальному уровню и спрашиваем, откуда вообще появляется геометрия.
+Поэтому канонический фронтир смещён глубже: к вопросу о происхождении самой геометрии.
+
+Старые SU(2), Peter-Weyl, HDA, Regge, Plebanski/Urbantke, TT/EFT, cosmology и 2T/Weyl файлы остаются библиотекой доказательных инструментов, но больше не задают порядок основной истории.
 
 ---
 
-# 3. Минимальный физический объект новой ветки
+# 3. Один физический узел: точный локальный theorem
 
 Берём четыре spin-$1/2$:
 
 $$
-\mathcal H=(\mathbb C^2)^{\otimes4},
-\qquad \dim\mathcal H=16.
+\mathcal H=(\mathbb C^2)^{\otimes4}.
 $$
 
-Но сразу применяем SU(2) Gauss / total-spin-zero reduction:
+После SU(2) Gauss / total-spin-zero reduction:
 
 $$
 \boxed{
 \mathcal H_{\rm phys}^{(4)}
 =\mathrm{Inv}_{SU(2)}[(\tfrac12)^{\otimes4}],
-\qquad
-\dim\mathcal H_{\rm phys}^{(4)}=2.
+\qquad \dim=2.
 }
 $$
 
-То есть первая фундаментальная задача живёт в матрицах $2\times2$, а не в большом brute-force пространстве.
-
-Используем ортонормированный recoupling basis
+Используем recoupling basis
 
 $$
-|s\rangle=|s_{12}\rangle|s_{34}\rangle,
+|s\rangle,\qquad |t\rangle.
 $$
 
-$$
-|t\rangle=((t_{12}t_{34})_{J=0}).
-$$
-
-Любое чистое физическое состояние:
+Любое чистое physical state:
 
 $$
-\boxed{
 |\Psi(\alpha,\phi)\rangle
 =\cos\alpha|s\rangle+e^{i\phi}\sin\alpha|t\rangle.
-}
 $$
 
----
-
-# 4. Первый новый точный theorem: объём — это некоммутативность парной геометрии
-
-Определим oriented triple product
+Определим oriented volume / scalar chirality
 
 $$
 Q_{123}=\epsilon_{abc}J_1^aJ_2^bJ_3^c.
 $$
 
-Точный операторный расчёт даёт:
+Точно:
 
 $$
 \boxed{
 Q_{123}
-=i\left[
-\mathbf J_1\!\cdot\!\mathbf J_2,
-\mathbf J_2\!\cdot\!\mathbf J_3
-\right].
+=i[\mathbf J_1\!\cdot\!\mathbf J_2,\mathbf J_2\!\cdot\!\mathbf J_3].
 }
 $$
 
-То есть oriented quantum volume появляется из **некоммутативности двух конкурирующих pair-geometry observables**.
-
-Это важнее, чем просто формула для объёма: объём здесь является мерой невозможности одновременно сделать две соседние парные геометрии классически совместимыми.
+То есть oriented volume рождается из некоммутативности двух конкурирующих pair-geometry observables.
 
 В physical basis:
 
 $$
 \boxed{
-Q_{123}^{\rm phys}
-=\frac{\sqrt3}{4}\sigma_y
-=\frac{\sqrt3}{4}
-\begin{pmatrix}
-0&-i\\
-i&0
-\end{pmatrix}.
+Q_{123}^{\rm phys}=\frac{\sqrt3}{4}\sigma_y.
 }
 $$
 
-Следовательно,
+Eigenstates:
 
 $$
 \boxed{
-|\Psi_+\rangle
-=\frac{|s\rangle+i|t\rangle}{\sqrt2},
+|\Psi_\pm\rangle
+=\frac{|s\rangle\pm i|t\rangle}{\sqrt2},
 \qquad
-Q_{123}|\Psi_+\rangle
-=+\frac{\sqrt3}{4}|\Psi_+\rangle,
+q_\pm=\pm\frac{\sqrt3}{4}.
 }
 $$
 
-$$
-\boxed{
-|\Psi_-\rangle
-=\frac{|s\rangle-i|t\rangle}{\sqrt2},
-\qquad
-Q_{123}|\Psi_-\rangle
-=-\frac{\sqrt3}{4}|\Psi_-\rangle.
-}
-$$
-
-**Статус: EXACT.**
-
----
-
-# 5. Вторая точная часть: pair-spectrum isotropy
-
-Любая двухчастичная редукция global SU(2) singlet является SU(2)-инвариантной и определяется singlet weight $p_{ij}$:
+Для общего physical state pair-singlet weights равны
 
 $$
-\operatorname{Spec}\rho_{ij}
-=\left\{
- p_{ij},
- \frac{1-p_{ij}}3,
- \frac{1-p_{ij}}3,
- \frac{1-p_{ij}}3
-\right\}.
-$$
-
-Для общего $|\Psi(\alpha,\phi)\rangle$:
-
-$$
-\boxed{p_{12}=p_{34}=\cos^2\alpha,}
+p_{12}=p_{34}=\cos^2\alpha,
 $$
 
 $$
-\boxed{
 p_{13}=p_{24}
 =\frac12-\frac14\cos2\alpha
 +\frac{\sqrt3}{4}\sin2\alpha\cos\phi,
-}
 $$
 
 $$
-\boxed{
 p_{14}=p_{23}
 =\frac12-\frac14\cos2\alpha
 -\frac{\sqrt3}{4}\sin2\alpha\cos\phi.
-}
 $$
 
-Условие одинакового спектра всех шести пар имеет в каноническом диапазоне точные решения
+Полная pair-spectrum isotropy возникает только при
 
 $$
 \boxed{
@@ -214,111 +152,16 @@ $$
 }
 $$
 
-То есть **единственные pair-spectrum isotropic pure states** — ровно два orientation eigenstates $Q_{123}$.
+То есть ровно в двух volume eigenstates.
 
-Следовательно:
-
-$$
-\boxed{
-\text{pair-spectrum isotropy}
-\Longleftrightarrow
-\text{sharp oriented-volume state}
-}
-$$
-
-с точностью до global phase и orientation sign.
-
-**Статус: EXACT.**
-
----
-
-# 6. Общий спектр и mutual information
-
-В isotropic states:
-
-$$
-p_{ij}=\frac12\qquad\forall i<j,
-$$
-
-поэтому
-
-$$
-\boxed{
-\operatorname{Spec}\rho_{ij}
-=\left\{\frac12,\frac16,\frac16,\frac16\right\}.
-}
-$$
-
-Каждый одиночный spin maximally mixed:
-
-$$
-S_i=1.
-$$
-
-Pair entropy:
-
-$$
-S_{ij}=\frac12+\frac12\log_2 6.
-$$
-
-И все шесть mutual informations равны:
-
-$$
-\boxed{
-I_{ij}
-=\frac32-\frac12\log_2 6
-\approx0.20751875\ \mathrm{bit}.
-}
-$$
-
-Если использовать одинаковую монотонную map $d_{ij}=f(I_{ij})$, эти четыре leg-labels образуют равноудалённую relational configuration — regular tetrahedral distance pattern.
-
-Важно: **это ещё не доказательство трёхмерности continuum space**. Четырёхточечный simplex сам по себе кинематически допускает минимальное 3D Euclidean embedding. Настоящий dimension test начнётся только на растущей сети.
-
----
-
-# 7. Главный новый точный результат: anisotropy = volume uncertainty
-
-Определим pair-spectrum anisotropy
+Определим
 
 $$
 \mathcal A_p
 =\sum_{i<j}\left(p_{ij}-\frac12\right)^2.
 $$
 
-Для произвольного чистого физического состояния получаем точно
-
-$$
-\boxed{
-\mathcal A_p
-=\frac34\left[
-\cos^2(2\alpha)
-+\sin^2(2\alpha)\cos^2\phi
-\right].
-}
-$$
-
-При этом
-
-$$
-\langle Q_{123}\rangle
-=\frac{\sqrt3}{4}\sin(2\alpha)\sin\phi,
-$$
-
-а
-
-$$
-(Q_{123}^{\rm phys})^2=\frac{3}{16}\mathbf1.
-$$
-
-Поэтому
-
-$$
-(\Delta Q_{123})^2
-=\frac{3}{16}-\langle Q_{123}\rangle^2.
-$$
-
-И возникает точное тождество
+Тогда для любого чистого physical state выполняется точное тождество
 
 $$
 \boxed{
@@ -326,256 +169,352 @@ $$
 }
 $$
 
-Это центральный результат первого шага новой ветки.
-
-Он означает:
+Следовательно
 
 $$
 \boxed{
-\mathcal A_p=0
+\text{pair-spectrum isotropy}
 \Longleftrightarrow
-\Delta Q_{123}=0.
+\text{sharp oriented quantum volume}.
 }
 $$
 
-То есть **pairwise quantum-geometric isotropy в минимальном physical sector эквивалентна нулевой квантовой неопределённости oriented volume**.
-
-Не приблизительно.
-
-Не после fit.
-
-Не только около vacuum point.
-
-А точно для всего двумерного pure-state physical sector.
-
 **Статус: EXACT.**
+
+Подробности:
+
+- `BQG_MINIMAL_ENTANGLEMENT_VOLUME_RESULT.md`
+- `scripts/bqg_minimal_entanglement_volume_gate.py`
 
 ---
 
-# 8. Устойчивость
+# 4. Два физических узла: первая настоящая склейка
 
-Возмутим один isotropic state:
-
-$$
-\alpha=\frac\pi4+\varepsilon,
-\qquad
-\phi=\frac\pi2+\delta.
-$$
-
-Тогда
+Каждый локальный physical node имеет dimension $2$, поэтому для двух узлов
 
 $$
-p_{12}-\frac12=-\varepsilon+O(2),
+\boxed{\dim\mathcal H_{AB}^{\rm red}=4.}
+$$
+
+Три локальных pair-shape projectors:
+
+$$
+P_{12}=\frac12(I+Z),
 $$
 
 $$
-p_{13}-\frac12
-=\frac\varepsilon2-\frac{\sqrt3}{4}\delta+O(2),
+P_{13}=\frac12I+\frac{\sqrt3}{4}X-\frac14Z,
 $$
 
 $$
-p_{14}-\frac12
-=\frac\varepsilon2+\frac{\sqrt3}{4}\delta+O(2).
+P_{14}=\frac12I-\frac{\sqrt3}{4}X-\frac14Z.
+$$
+
+Они образуют trine в logical $X$-$Z$ plane.
+
+Вводим минимальный reduced shape-matching Hamiltonian
+
+$$
+\boxed{
+H_{\rm glue}
+=\sum_{a\in\{12,13,14\}}
+(P_a^{(A)}-P_a^{(B)})^2.
+}
+$$
+
+Он точно упрощается до
+
+$$
+\boxed{
+H_{\rm glue}
+=\frac32I-\frac34(X_AX_B+Z_AZ_B).
+}
+$$
+
+Спектр:
+
+$$
+\boxed{
+\{0,\tfrac32,\tfrac32,3\}.
+}
+$$
+
+Unique zero-mismatch state:
+
+$$
+\boxed{
+|\Phi^+\rangle
+=\frac{|ss\rangle+|tt\rangle}{\sqrt2}.
+}
+$$
+
+То есть exact matching трёх shape channels выбирает не product state, а maximally entangled intertwiner state.
+
+Каждый узел отдельно имеет
+
+$$
+\boxed{S(A)=S(B)=1\ \text{bit}.}
+$$
+
+При этом локальная ориентация теряет sharpness:
+
+$$
+\langle Q_A\rangle=\langle Q_B\rangle=0,
+$$
+
+$$
+(\Delta Q_A)^2=(\Delta Q_B)^2=\frac3{16}.
+$$
+
+Но relative orientation становится sharp:
+
+$$
+\boxed{
+Q_AQ_B|\Phi^+\rangle
+=-\frac3{16}|\Phi^+\rangle.
+}
+$$
+
+То есть геометрическая информация перемещается из локальных expectation values в inter-node correlations.
+
+Ключевая network-level цепочка:
+
+$$
+\boxed{
+\text{shape matching}
+\to
+\text{maximal node entanglement}
+\to
+\text{sharp relative orientation}.
+}
+$$
+
+**Статус спектрального результата: EXACT для явно заданного reduced Hamiltonian.**  
+**Статус самого $H_{\rm glue}$ как фундаментального BQG dynamics: CANDIDATE.**
+
+Подробности:
+
+- `BQG_TWO_NODE_REDUCED_GLUING_RESULT.md`
+- `scripts/bqg_two_node_reduced_gluing_gate.py`
+
+---
+
+# 5. Три узла: первый correlation-distance hierarchy
+
+Для open chain $A-B-C$:
+
+$$
+\boxed{\dim\mathcal H_{ABC}^{\rm red}=8.}
+$$
+
+Берём
+
+$$
+H_3=H_{AB}+H_{BC},
+$$
+
+где каждый link имеет ту же reduced gluing form.
+
+Точный spectrum:
+
+$$
+\boxed{
+3-\frac{3\sqrt2}{2}\quad(\deg=2),
+}
+$$
+
+$$
+\boxed{
+3\quad(\deg=4),
+}
+$$
+
+$$
+\boxed{
+3+\frac{3\sqrt2}{2}\quad(\deg=2).
+}
+$$
+
+Чтобы не вводить произвольный выбор внутри двухмерного ground space, используем symmetry-neutral density matrix
+
+$$
+\boxed{
+\rho_0=\frac{P_0}{2}.
+}
+$$
+
+Каждый single node maximally mixed:
+
+$$
+\rho_A=\rho_B=\rho_C=\frac12I.
+$$
+
+Для nearest neighbors:
+
+$$
+\boxed{
+\operatorname{Spec}\rho_{AB}
+=\operatorname{Spec}\rho_{BC}
+=
+\left\{
+\frac{3-2\sqrt2}{8},\frac18,\frac18,\frac{3+2\sqrt2}{8}
+\right\}.
+}
 $$
 
 И
 
 $$
 \boxed{
-\mathcal A_p
-=3\varepsilon^2+\frac34\delta^2+O(3).
+I(A:B)=I(B:C)\approx0.7982479266\ \text{bit}.
 }
 $$
 
-Значит isotropic orientation states — изолированные quadratic minima в обеих независимых физических координатах.
-
-Для mutual-information anisotropy:
+Для next-nearest pair:
 
 $$
 \boxed{
-\mathcal A_I
-=(\log_2 3)^2
-\left(3\varepsilon^2+\frac34\delta^2\right)+O(3).
+\operatorname{Spec}\rho_{AC}
+=\left\{0,\frac14,\frac14,\frac12\right\},
 }
 $$
+
+поэтому
+
+$$
+\boxed{I(A:C)=0.5\ \text{bit}.}
+$$
+
+Получаем первый настоящий hierarchy:
+
+$$
+\boxed{
+I(A:B)=I(B:C)>I(A:C).
+}
+$$
+
+Следовательно для любой strictly decreasing distance map $d=f(I)$:
+
+$$
+\boxed{
+d(A:B)=d(B:C)<d(A:C).
+}
+$$
+
+То есть correlation geometry уже отличает graph distance $1$ от graph distance $2$.
+
+Oriented-volume correlations дают независимый контроль:
+
+$$
+\boxed{
+\langle Q_AQ_B\rangle
+=\langle Q_BQ_C\rangle
+=-\frac3{32},
+}
+$$
+
+$$
+\boxed{
+\langle Q_AQ_C\rangle=0.
+}
+$$
+
+Это первый minimal network result, где топологическое соседство отражается сразу в двух разных физических корреляционных observables.
+
+**Статус: EXACT для явно заданной nearest-neighbor reduced model.**
+
+Подробности:
+
+- `BQG_THREE_NODE_REDUCED_CHAIN_RESULT.md`
+- `scripts/bqg_three_node_reduced_chain_gate.py`
 
 ---
 
-# 9. Что этот первый блок доказывает
+# 6. Что уже получилось в новой ветке
 
-В минимальном четырёх-spin SU(2)-singlet sector доказано:
-
-1. oriented volume является commutator двух pair-geometry operators;
-2. physical volume matrix пропорциональна $\sigma_y$;
-3. complex phases $\pm i$ выбираются exact volume eigenstates;
-4. те же и только те же states имеют isotropic spectra всех пар;
-5. все pair mutual informations в них одинаковы;
-6. pair-spectrum anisotropy точно равна четырём volume variances;
-7. isotropy locally stable как isolated quadratic minimum.
-
-Коротко:
+На данный момент замкнута последовательность:
 
 $$
 \boxed{
+\text{SU(2)-invariant local qubit}
+\to
 \text{noncommuting pair geometry}
 \to
 \text{oriented volume}
 \to
-\pm i\text{ phase}
-\Longleftrightarrow
-\text{sharp volume}
-\Longleftrightarrow
-\text{pair-spectrum isotropy}.
+\text{local isotropy}
+\to
+\text{two-node entangled shape matching}
+\to
+\text{three-node correlation-distance hierarchy}.
 }
 $$
 
+Самые сильные exact statements:
+
+1. $Q=i[D_{12},D_{23}]$;
+2. $Q_{\rm phys}=(\sqrt3/4)\sigma_y$;
+3. local isotropy iff local volume is sharp;
+4. $\mathcal A_p=4(\Delta Q)^2$;
+5. exact two-node shape matching selects a Bell-type intertwiner state;
+6. local orientation uncertainty can coexist with sharp relative orientation;
+7. a three-node ground sector distinguishes nearest from next-nearest nodes through mutual information and volume correlations.
+
 ---
 
-# 10. Что НЕ доказано
+# 7. Что пока НЕ доказано
 
 Мы пока не утверждаем, что:
 
-- continuum space обязательно трёхмерно;
+- continuum physical space обязательно трёхмерно;
+- $H_{\rm glue}$ уже выведен из fundamental graph-changing BQG Hamiltonian;
 - mutual information является уникальным физическим расстоянием;
-- universe vacuum обязан быть локальным $|\Psi_+\rangle$ или $|\Psi_-\rangle$;
-- large-scale Lorentzian causality уже выведена;
-- Einstein equations уже следуют из этого theorem;
-- $G$, $c$ и $\hbar$ уже получены из бинарной микрофизики.
+- large-scale metric obeys Einstein equations;
+- correlation distance additive;
+- Lorentzian causal cone уже возник;
+- $G$, $c$ или $\hbar$ выведены из бинарной микрофизики.
 
-Первый блок локальный. Следующий тест обязан быть сетевым.
+Это следующие falsification gates.
 
 ---
 
-# 11. Новый настоящий фронтир: рост без экспоненты
+# 8. Следующий расчёт: не brute force, а идентификация many-node модели
 
-Мы **не** переходим к full $(\mathbb C^2)^{\otimes N}$.
-
-Вместо этого следующий объект строится из уже редуцированных двухмерных intertwiner sectors.
-
-Для $M$ четырёхвалентных узлов наивное локально-физическое пространство имеет размер
-
-$$
-2^M,
-$$
-
-но и его нужно дополнительно уменьшать:
-
-- gluing constraints;
-- graph automorphisms;
-- orientation sectors;
-- conserved total channels;
-- orbit representatives;
-- sparse transfer operators.
-
-Следующая цель:
+Для графа из reduced physical nodes текущий candidate Hamiltonian имеет вид
 
 $$
 \boxed{
-\text{coupled physical intertwiners}
-\to
-\text{correlation graph}
-\to
-\text{spectral dimension }d_s
+H_G
+=\sum_{\langle ij\rangle}
+\left[
+\frac32I-\frac34(X_iX_j+Z_iZ_j)
+\right].
 }
 $$
 
-без заранее заданного $d=3$.
+Перед увеличением $M$ нужно выяснить, к какому exactly/analytically solvable spin-chain class он относится.
 
-Это будет первый настоящий test emergent dimension.
+Следующий приоритет:
 
----
+1. убрать константу и распознать $XX+ZZ$ chain через локальные rotations;
+2. проверить эквивалентность стандартной $XX$ / free-fermion модели;
+3. вывести gap и correlation length аналитически;
+4. получить $I(r)$ без diagonalization $2^M$;
+5. затем сравнить 1D chain, ring и branching graphs;
+6. только после этого строить настоящий emergent-dimension estimator.
 
-# 12. Ближайшие gates
-
-## E2 — Two-node exact gluing
-
-Два physical tetrahedral nodes, связанный face/channel, exact symmetry reduction.
-
-Проверить:
-
-- какие orientation combinations допустимы;
-- сохраняется ли sharp-volume/isotropy relation;
-- появляется ли nontrivial inter-node mutual information;
-- можно ли определить relational edge без ad hoc distance map.
-
-## E3 — Minimal network dimension
-
-Построить smallest nontrivial connected network после symmetry reduction и вычислить:
-
-$$
-d_s(\tau)=-2\frac{d\ln P(\tau)}{d\ln\tau}.
-$$
-
-Именно здесь можно впервые честно спрашивать, возникает ли $d_s\approx3$.
-
-## E4 — Causal propagation
-
-Запустить локальное physical perturbation и измерять commutator growth / information front.
-
-Цель:
-
-$$
-\text{finite propagation cone}
-\to
-\text{emergent causal speed}.
-$$
-
-## E5 — Geometry response
-
-Проверить
-
-$$
-\delta\text{source}
-\to
-\delta I
-\to
-\delta\text{relational geometry}.
-$$
-
-Это будет первый шаг к emergent gravity.
-
----
-
-# 13. Доказательные файлы новой ветки
-
-Главные новые файлы:
-
-- [`BQG_MINIMAL_ENTANGLEMENT_VOLUME_RESULT.md`](BQG_MINIMAL_ENTANGLEMENT_VOLUME_RESULT.md)
-- [`scripts/bqg_minimal_entanglement_volume_gate.py`](scripts/bqg_minimal_entanglement_volume_gate.py)
-
-Запуск:
-
-```bash
-python scripts/bqg_minimal_entanglement_volume_gate.py
-```
-
-Ожидаемый финал:
-
-```text
-PASS
-```
-
-Полезные прежние строительные блоки:
-
-- `MICRO_WALSH_QGEOM_BRIDGE.md`
-- `SPATIAL_QUBIT_GEOMETRY_BRIDGE.md`
-- `LOGICAL_SHAPE_METRIC_JACOBIAN.md`
-- `MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md`
-- `Q2_RELATIONAL_HISTORY_PROJECTOR.md`
-- `Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md`
-- `THEORY_STATUS.md`
-- `OPEN_PROBLEMS.md`
-
----
-
-# 14. Канонический принцип проекта
-
-> **Сначала уменьшить задачу симметрией. Затем решить её точно. И только потом тратить вычисления.**
-
-Текущая точка продолжения:
+То есть новый центральный рубеж:
 
 $$
 \boxed{
-\textbf{Two-node exact physical gluing and first genuine network-level emergence test.}
+\textbf{derive many-node correlation scaling analytically before scaling numerics.}
 }
 $$
+
+---
+
+# 9. Канонический принцип проекта
+
+> **Сначала уменьшить задачу симметрией. Затем распознать точную математическую структуру. Потом решить её аналитически. И только если это невозможно — считать численно.**
+
+Репозиторий: `Shtenco/binary_quantum_theory`
