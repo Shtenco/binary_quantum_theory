@@ -8,6 +8,8 @@ import pickle
 from pathlib import Path
 from typing import Iterable
 
+from depth6_32_keymeta_aggregate import QKEY_ENCODING, q_key_to_text
+
 PASS_STATUSES = {
     'PASS_KEYMETA_FIRST_SHARD_COMPLETE',
     'PASS_KEYMETA_RECOVERY_CHUNK_COMPLETE',
@@ -27,16 +29,31 @@ def _find_payload(manifest_path: Path, keymeta_file: str) -> Path:
 
 
 def _payload_fingerprint(block: dict) -> str:
+    q_rows = block.get('q_rows', {})
+    if not isinstance(q_rows, dict):
+        raise RuntimeError('q_rows must be a dict for payload fingerprint')
+    encoded_rows = []
+    seen = set()
+    for q, n0 in q_rows.items():
+        q_text = q_key_to_text(q)
+        if q_text in seen:
+            raise RuntimeError(f'q-key encoding collision in payload fingerprint: {q_text!r}')
+        seen.add(q_text)
+        encoded_rows.append((q_text, int(n0)))
+    encoded_rows.sort(key=lambda item: item[0])
     payload = {
+        'schema': 'BQG_DEPTH6_32_RECOVERY_PAYLOAD_FINGERPRINT_V1',
+        'q_key_encoding': QKEY_ENCODING,
         'orbit_id': int(block['orbit_id']),
         'm': int(block['m']),
-        'q_rows': block.get('q_rows', {}),
+        'q_rows': encoded_rows,
         'frozen_assignment_sha256': block.get('frozen_assignment_sha256'),
         'kind': block.get('kind'),
         'irrep': block.get('irrep'),
         'irrep_key': block.get('irrep_key'),
     }
-    return hashlib.sha256(pickle.dumps(payload, protocol=pickle.HIGHEST_PROTOCOL)).hexdigest()
+    raw = json.dumps(payload, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')
+    return hashlib.sha256(raw).hexdigest()
 
 
 def inventory_keymeta_roots(roots: Iterable[Path]) -> dict:
