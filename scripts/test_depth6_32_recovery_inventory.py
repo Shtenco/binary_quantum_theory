@@ -57,6 +57,9 @@ class RecoveryInventoryTests(unittest.TestCase):
             self.assertEqual(inv['duplicate_orbits_collapsed'], 0)
             self.assertFalse(inv['rank_certified'])
             self.assertFalse(inv['numerical_closure_claimed'])
+            blocks = I.load_unique_keymeta_blocks([root])
+            self.assertEqual([int(b['orbit_id']) for b in blocks], [1, 2, 3])
+            self.assertEqual(sum(int(b['m']) for b in blocks), 10)
 
     def test_identical_duplicate_payload_is_collapsed_but_conflict_fails(self):
         with tempfile.TemporaryDirectory() as td:
@@ -68,12 +71,17 @@ class RecoveryInventoryTests(unittest.TestCase):
             self.assertEqual(inv['completed_blocks'], 1)
             self.assertEqual(inv['completed_columns'], 4)
             self.assertEqual(inv['duplicate_orbits_collapsed'], 1)
+            blocks = I.load_unique_keymeta_blocks([root])
+            self.assertEqual(len(blocks), 1)
+            self.assertEqual(int(blocks[0]['orbit_id']), 7)
 
             conflict = dict(block)
             conflict['m'] = 5
             self._write_artifact(root, 'c', 'PASS_KEYMETA_RECOVERY_CHUNK_COMPLETE', [conflict])
             with self.assertRaisesRegex(RuntimeError, 'conflicting duplicate orbit 7'):
                 I.inventory_keymeta_roots([root])
+            with self.assertRaisesRegex(RuntimeError, 'conflicting duplicate orbit 7'):
+                I.load_unique_keymeta_blocks([root])
 
     def test_duplicate_q_rows_order_does_not_create_false_conflict(self):
         with tempfile.TemporaryDirectory() as td:
@@ -96,6 +104,9 @@ class RecoveryInventoryTests(unittest.TestCase):
             inv = I.inventory_keymeta_roots([root])
             self.assertEqual(inv['completed_orbit_ids'], [8])
             self.assertEqual(inv['duplicate_orbits_collapsed'], 1)
+            blocks = I.load_unique_keymeta_blocks([root])
+            self.assertEqual(len(blocks), 1)
+            self.assertEqual(int(blocks[0]['orbit_id']), 8)
 
     def test_manifest_sha_mismatch_fails_closed(self):
         with tempfile.TemporaryDirectory() as td:
