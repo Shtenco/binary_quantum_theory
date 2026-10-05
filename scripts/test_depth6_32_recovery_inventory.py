@@ -75,6 +75,28 @@ class RecoveryInventoryTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, 'conflicting duplicate orbit 7'):
                 I.inventory_keymeta_roots([root])
 
+    def test_duplicate_q_rows_order_does_not_create_false_conflict(self):
+        with tempfile.TemporaryDirectory() as td:
+            root = Path(td)
+            a = {
+                'orbit_id': 8,
+                'm': 2,
+                'q_rows': {('z', 2): 4, ('a', 1): 3},
+                'q_key_count': 2,
+                'rows': 7,
+                'frozen_assignment_sha256': 'abc',
+                'kind': 'BQG_DEPTH6_32_KEYMETA_FIRST_BLOCK',
+                'irrep': '[3,2]',
+                'irrep_key': '32',
+            }
+            b = dict(a)
+            b['q_rows'] = {('a', 1): 3, ('z', 2): 4}
+            self._write_artifact(root, 'a', 'PASS_KEYMETA_FIRST_SHARD_COMPLETE', [a])
+            self._write_artifact(root, 'b', 'PASS_KEYMETA_RECOVERY_CHUNK_COMPLETE', [b])
+            inv = I.inventory_keymeta_roots([root])
+            self.assertEqual(inv['completed_orbit_ids'], [8])
+            self.assertEqual(inv['duplicate_orbits_collapsed'], 1)
+
     def test_manifest_sha_mismatch_fails_closed(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td)
