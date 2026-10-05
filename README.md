@@ -1,35 +1,33 @@
 # Бинарная квантовая гравитация (BQG)
 ## Emergence Program: от бинарной квантовой информации к геометрии
 
-**Канонический README новой исследовательской ветки — 6 октября 2026**
-
-> Главный вопрос этой версии проекта:
->
-> **может ли пространство возникать из физической структуры квантовых отношений, а не быть заранее заданным фоном?**
+**Канонический README — 6 октября 2026**
 
 ---
 
-# 0. Новый старт
+# 1. Новый основной вопрос
 
-Проект BQG прошёл длинную ветку finite SU(2)-геометрии, graph-changing constraints, master constraints, HDA/GR-контролей, TT/EFT-переводчиков и отдельной 2T/Weyl-гипотезы. Эта работа не удаляется из репозитория и остаётся доказательной базой и историей проекта.
+Главный фронтир BQG теперь формулируется не как поиск произвольной поправки к готовой метрике, а глубже:
 
-Но канонический фронтир меняется.
+> **может ли пространство, геометрия и затем гравитация возникать из физической структуры бинарной квантовой информации?**
 
-Минимальный статический сферически-симметричный shadow-sector не дал собственной ненулевой hair-поправки: в заявленных предпосылках он возвращает Schwarzschild/constant-map и `h_BQG = 0`. Это означает, что следующий разумный шаг — не подгонять новую функцию метрики, а исследовать более глубокий вопрос: **откуда сама геометрия может появиться в бинарной квантовой системе**.
-
-Поэтому новая основная программа:
+Новая цепочка проекта:
 
 $$
 \boxed{
 \text{binary quantum degrees of freedom}
 \to
-\text{physical constraints}
+\text{constraints}
 \to
-\text{entanglement / correlations}
+\text{noncommuting relational observables}
 \to
-\text{relational distance}
+\text{quantum volume}
 \to
-\text{emergent geometry}
+\text{entanglement / pair spectra}
+\to
+\text{relational geometry}
+\to
+\text{large-scale dimension}
 \to
 \text{causality}
 \to
@@ -37,161 +35,218 @@ $$
 }
 $$
 
-Главное правило остаётся прежним:
+Старая работа репозитория не удалена: SU(2)/Peter–Weyl carriers, graph-changing constraints, master constraints, HDA/GR controls, Regge/Plebanski/Urbantke bridges, TT/EFT machinery, cosmology, 2T/Weyl и depth-6 proof frontier остаются доказательной библиотекой. Но они больше не задают канонический порядок рассказа.
+
+Главное правило:
 
 $$
-\boxed{\text{красивая идея никогда не сильнее доказательства}}
+\boxed{\text{симметрия сначала, вычисления потом}}
 $$
 
-Статусы:
+и
 
-- **EXACT** — точный конечномерный результат;
-- **FINITE PASS** — воспроизводимая конечная вычислительная проверка;
-- **CANDIDATE** — математически определённая, но ещё не физически выведенная конструкция;
-- **OPEN** — следующий рубеж;
-- **NO-GO** — проверенный отрицательный результат в явно указанной области.
+$$
+\boxed{\text{красивая идея никогда не сильнее доказательства}.}
+$$
 
 ---
 
-# 1. Первый объект новой ветки
+# 2. Почему мы сменили фронтир
 
-Мы начинаем максимально дёшево вычислительно.
+Минимальный static spherical shadow-sector не дал собственной ненулевой BQG hair-поправки: в заявленных предпосылках система возвращает тривиальный hair / Schwarzschild-like результат.
 
-Не с гигантского графа.
+Это полезный no-go.
 
-Не с полного пространства $2^N$.
+Он говорит, что новый физический эффект не нужно выжимать из слишком узкого ansatz. Вместо этого мы возвращаемся к более фундаментальному уровню и спрашиваем, откуда вообще появляется геометрия.
 
-Не с continuum.
+---
 
-А с минимального четырёхвалентного SU(2)-инвариантного узла из четырёх spin-$1/2$.
+# 3. Минимальный физический объект новой ветки
 
-Полное пространство:
+Берём четыре spin-$1/2$:
 
 $$
-(\mathbb C^2)^{\otimes 4},
-\qquad \dim=16.
+\mathcal H=(\mathbb C^2)^{\otimes4},
+\qquad \dim\mathcal H=16.
 $$
 
-После Gauss / total-spin-zero projection:
+Но сразу применяем SU(2) Gauss / total-spin-zero reduction:
 
 $$
 \boxed{
 \mathcal H_{\rm phys}^{(4)}
-=\mathrm{Inv}_{SU(2)}\left[(\tfrac12)^{\otimes4}\right],
+=\mathrm{Inv}_{SU(2)}[(\tfrac12)^{\otimes4}],
 \qquad
-\dim \mathcal H_{\rm phys}^{(4)}=2.
+\dim\mathcal H_{\rm phys}^{(4)}=2.
 }
 $$
 
-То есть вся первая задача живёт не в 16 измерениях, а в **двумерном физическом секторе**.
+То есть первая фундаментальная задача живёт в матрицах $2\times2$, а не в большом brute-force пространстве.
 
-Это и есть принцип новой программы:
-
-$$
-\boxed{\text{symmetry first, numerics last}}
-$$
-
----
-
-# 2. Канонический физический базис
-
-Используем coupling channel $(12)(34)$.
-
-Первое состояние — произведение двух singlet-пар:
+Используем ортонормированный recoupling basis
 
 $$
-|s\rangle
-=|s_{12}\rangle|s_{34}\rangle,
+|s\rangle=|s_{12}\rangle|s_{34}\rangle,
 $$
 
-где
-
 $$
-|s_{ij}\rangle
-=\frac{|01\rangle-|10\rangle}{\sqrt2}.
+|t\rangle=((t_{12}t_{34})_{J=0}).
 $$
 
-Второе состояние — две triplet-пары, связанные обратно в полный $J=0$:
-
-$$
-|t\rangle
-=\frac1{\sqrt3}
-\left(
-|t_+\rangle|t_-\rangle
--|t_0\rangle|t_0\rangle
-+|t_-\rangle|t_+\rangle
-\right).
-$$
-
-Они ортонормированы:
-
-$$
-\langle s|s\rangle=1,
-\qquad
-\langle t|t\rangle=1,
-\qquad
-\langle s|t\rangle=0.
-$$
-
-Любое нормированное физическое состояние можно записать как
+Любое чистое физическое состояние:
 
 $$
 \boxed{
 |\Psi(\alpha,\phi)\rangle
-=\cos\alpha\,|s\rangle
-+e^{i\phi}\sin\alpha\,|t\rangle.
+=\cos\alpha|s\rangle+e^{i\phi}\sin\alpha|t\rangle.
 }
 $$
-
-После gauge reduction первая новая ветка BQG имеет всего два реальных параметра: $\alpha$ и $\phi$.
 
 ---
 
-# 3. Первый точный результат: isotropic entanglement state
+# 4. Первый новый точный theorem: объём — это некоммутативность парной геометрии
 
-Рассматриваем состояние
+Определим oriented triple product
+
+$$
+Q_{123}=\epsilon_{abc}J_1^aJ_2^bJ_3^c.
+$$
+
+Точный операторный расчёт даёт:
 
 $$
 \boxed{
-|\Psi_{\rm tet}^{+}\rangle
-=\frac{|s\rangle+i|t\rangle}{\sqrt2}
+Q_{123}
+=i\left[
+\mathbf J_1\!\cdot\!\mathbf J_2,
+\mathbf J_2\!\cdot\!\mathbf J_3
+\right].
 }
 $$
 
-и его complex-conjugate orientation partner
+То есть oriented quantum volume появляется из **некоммутативности двух конкурирующих pair-geometry observables**.
+
+Это важнее, чем просто формула для объёма: объём здесь является мерой невозможности одновременно сделать две соседние парные геометрии классически совместимыми.
+
+В physical basis:
 
 $$
 \boxed{
-|\Psi_{\rm tet}^{-}\rangle
-=\frac{|s\rangle-i|t\rangle}{\sqrt2}.
+Q_{123}^{\rm phys}
+=\frac{\sqrt3}{4}\sigma_y
+=\frac{\sqrt3}{4}
+\begin{pmatrix}
+0&-i\\
+i&0
+\end{pmatrix}.
 }
 $$
 
-Для любой пары $i<j$ определяем
+Следовательно,
 
 $$
-\rho_{ij}
-=\mathrm{Tr}_{\overline{ij}}
-|\Psi\rangle\langle\Psi|.
+\boxed{
+|\Psi_+\rangle
+=\frac{|s\rangle+i|t\rangle}{\sqrt2},
+\qquad
+Q_{123}|\Psi_+\rangle
+=+\frac{\sqrt3}{4}|\Psi_+\rangle,
+}
 $$
 
-Для обоих состояний $|\Psi_{\rm tet}^{\pm}\rangle$ все шесть двухчастичных reduced density matrices имеют один и тот же спектр:
+$$
+\boxed{
+|\Psi_-\rangle
+=\frac{|s\rangle-i|t\rangle}{\sqrt2},
+\qquad
+Q_{123}|\Psi_-\rangle
+=-\frac{\sqrt3}{4}|\Psi_-\rangle.
+}
+$$
+
+**Статус: EXACT.**
+
+---
+
+# 5. Вторая точная часть: pair-spectrum isotropy
+
+Любая двухчастичная редукция global SU(2) singlet является SU(2)-инвариантной и определяется singlet weight $p_{ij}$:
+
+$$
+\operatorname{Spec}\rho_{ij}
+=\left\{
+ p_{ij},
+ \frac{1-p_{ij}}3,
+ \frac{1-p_{ij}}3,
+ \frac{1-p_{ij}}3
+\right\}.
+$$
+
+Для общего $|\Psi(\alpha,\phi)\rangle$:
+
+$$
+\boxed{p_{12}=p_{34}=\cos^2\alpha,}
+$$
+
+$$
+\boxed{
+p_{13}=p_{24}
+=\frac12-\frac14\cos2\alpha
++\frac{\sqrt3}{4}\sin2\alpha\cos\phi,
+}
+$$
+
+$$
+\boxed{
+p_{14}=p_{23}
+=\frac12-\frac14\cos2\alpha
+-\frac{\sqrt3}{4}\sin2\alpha\cos\phi.
+}
+$$
+
+Условие одинакового спектра всех шести пар имеет в каноническом диапазоне точные решения
+
+$$
+\boxed{
+\alpha=\frac\pi4,
+\qquad
+\phi=\frac\pi2\ \text{или}\ \frac{3\pi}{2}.
+}
+$$
+
+То есть **единственные pair-spectrum isotropic pure states** — ровно два orientation eigenstates $Q_{123}$.
+
+Следовательно:
+
+$$
+\boxed{
+\text{pair-spectrum isotropy}
+\Longleftrightarrow
+\text{sharp oriented-volume state}
+}
+$$
+
+с точностью до global phase и orientation sign.
+
+**Статус: EXACT.**
+
+---
+
+# 6. Общий спектр и mutual information
+
+В isotropic states:
+
+$$
+p_{ij}=\frac12\qquad\forall i<j,
+$$
+
+поэтому
 
 $$
 \boxed{
 \operatorname{Spec}\rho_{ij}
-=\left\{\frac12,\frac16,\frac16,\frac16\right\}
-\qquad \forall i<j.
+=\left\{\frac12,\frac16,\frac16,\frac16\right\}.
 }
-$$
-
-Отсюда pair entropy:
-
-$$
-S_{ij}
-=-\frac12\log_2\frac12
--3\frac16\log_2\frac16
-=\frac12+\frac12\log_2 6.
 $$
 
 Каждый одиночный spin maximally mixed:
@@ -200,282 +255,307 @@ $$
 S_i=1.
 $$
 
-Поэтому mutual information любой пары одинакова:
+Pair entropy:
+
+$$
+S_{ij}=\frac12+\frac12\log_2 6.
+$$
+
+И все шесть mutual informations равны:
 
 $$
 \boxed{
 I_{ij}
-=S_i+S_j-S_{ij}
 =\frac32-\frac12\log_2 6
-\approx0.20751875\ \text{bit}.
+\approx0.20751875\ \mathrm{bit}.
 }
 $$
 
-**Статус: EXACT для минимального четырёх-spin singlet sector.**
+Если использовать одинаковую монотонную map $d_{ij}=f(I_{ij})$, эти четыре leg-labels образуют равноудалённую relational configuration — regular tetrahedral distance pattern.
+
+Важно: **это ещё не доказательство трёхмерности continuum space**. Четырёхточечный simplex сам по себе кинематически допускает минимальное 3D Euclidean embedding. Настоящий dimension test начнётся только на растущей сети.
 
 ---
 
-# 4. Информационная геометрия
+# 7. Главный новый точный результат: anisotropy = volume uncertainty
 
-Рабочая гипотеза новой ветки:
-
-> пространственная близость может быть эффективным описанием силы физических квантовых отношений.
-
-Пока это **CANDIDATE**, а не фундаментально выведенная формула.
-
-Можно ввести монотонное отображение
+Определим pair-spectrum anisotropy
 
 $$
- d_{ij}=f(I_{ij}),
-\qquad f'<0.
+\mathcal A_p
+=\sum_{i<j}\left(p_{ij}-\frac12\right)^2.
 $$
 
-Например, только как удобную координатизацию:
-
-$$
- d_{ij}
-=-\ell_*\ln\left(\frac{I_{ij}}{I_{\max}}\right).
-$$
-
-Для isotropic state:
-
-$$
-I_{12}=I_{13}=I_{14}=I_{23}=I_{24}=I_{34},
-$$
-
-следовательно
+Для произвольного чистого физического состояния получаем точно
 
 $$
 \boxed{
- d_{12}=d_{13}=d_{14}=d_{23}=d_{24}=d_{34}.
+\mathcal A_p
+=\frac34\left[
+\cos^2(2\alpha)
++\sin^2(2\alpha)\cos^2\phi
+\right].
 }
 $$
 
-Четыре равноудалённые точки реализуются как regular tetrahedron.
-
-Это даёт минимальную тетраэдрическую relational geometry.
-
-## Важное ограничение
-
-Этот факт **ещё не является доказательством**
+При этом
 
 $$
-q=2\Rightarrow d=3.
+\langle Q_{123}\rangle
+=\frac{\sqrt3}{4}\sin(2\alpha)\sin\phi,
 $$
 
-Причина: для четырёх равноудалённых точек трёхмерный simplex является стандартной минимальной евклидовой реализацией. Поэтому сам rank-3 embedding здесь частично кинематичен.
+а
 
-Сильный будущий тест должен показать, что трёхмерность сохраняется или возникает **на растущих физических графах**, а не только у одного четырёхточечного simplex.
+$$
+(Q_{123}^{\rm phys})^2=\frac{3}{16}\mathbf1.
+$$
 
-Это ограничение является частью результата, а не примечанием мелким шрифтом.
+Поэтому
+
+$$
+(\Delta Q_{123})^2
+=\frac{3}{16}-\langle Q_{123}\rangle^2.
+$$
+
+И возникает точное тождество
+
+$$
+\boxed{
+\mathcal A_p=4(\Delta Q_{123})^2.
+}
+$$
+
+Это центральный результат первого шага новой ветки.
+
+Он означает:
+
+$$
+\boxed{
+\mathcal A_p=0
+\Longleftrightarrow
+\Delta Q_{123}=0.
+}
+$$
+
+То есть **pairwise quantum-geometric isotropy в минимальном physical sector эквивалентна нулевой квантовой неопределённости oriented volume**.
+
+Не приблизительно.
+
+Не после fit.
+
+Не только около vacuum point.
+
+А точно для всего двумерного pure-state physical sector.
+
+**Статус: EXACT.**
 
 ---
 
-# 5. Что именно уже интересно
+# 8. Устойчивость
 
-Хотя один tetrahedron ещё не выводит размерность Вселенной, первый результат даёт важную новую структуру:
-
-$$
-\boxed{
-\text{SU(2) constraint}
-+\text{complex physical phase}
-\to
-\text{pairwise isotropic quantum relations}.
-}
-$$
-
-Ключевой неожиданный элемент — относительная фаза
-
-$$
-\boxed{e^{\pm i\pi/2}=\pm i.}
-$$
-
-Она не является косметической: real superpositions и generic phases дают другую pair-correlation structure.
-
-Поэтому следующий вопрос становится точным:
-
-> существует ли SU(2)-инвариантный геометрический оператор, который динамически выделяет именно эти две фазовые ориентации?
-
----
-
-# 6. Следующий gate: oriented-volume / chirality operator
-
-Определяем минимальный oriented triple product
-
-$$
-\boxed{
-Q_{123}
-=\epsilon_{abc}J_1^aJ_2^bJ_3^c
-=\mathbf J_1\cdot(\mathbf J_2\times\mathbf J_3).
-}
-$$
-
-Следующая проверка должна быть проведена **точно в двумерном физическом базисе** $\{|s\rangle,|t\rangle\}$.
-
-Цель:
-
-$$
-Q_{\rm phys}
-=P_{J=0}Q_{123}P_{J=0}
-\stackrel{?}{\propto}\sigma_y.
-$$
-
-Если это выполняется, то
-
-$$
-|\Psi_{\rm tet}^{\pm}\rangle
-$$
-
-оказываются eigenstates oriented-volume/chirality operator.
-
-Тогда новая цепочка станет:
-
-$$
-\boxed{
-\text{orientation}
-\to
-\text{complex phase}
-\to
-\text{isotropic correlations}
-\to
-\text{tetrahedral relational geometry}.
-}
-$$
-
-**Статус на момент этого README: OPEN — следующий точный расчёт.**
-
----
-
-# 7. После volume gate: только дешёвые аналитические проверки
-
-Мы не увеличиваем систему, пока не закрыты следующие локальные вопросы.
-
-## Gate E1 — exact isotropy locus
-
-Для
-
-$$
-|\Psi(\alpha,\phi)\rangle
-$$
-
-вывести аналитически spectra / singlet weights всех шести $\rho_{ij}$ и решить условия их равенства.
-
-Цель: понять, являются ли $|\Psi_{\rm tet}^{\pm}\rangle$ уникальной isotropic pair-spectrum парой с точностью до global phase и orientation.
-
-## Gate E2 — stability
-
-Возмутить
+Возмутим один isotropic state:
 
 $$
 \alpha=\frac\pi4+\varepsilon,
 \qquad
-\phi=\pm\frac\pi2+\delta
+\phi=\frac\pi2+\delta.
 $$
 
-и вывести leading anisotropy analytically.
-
-## Gate E3 — energy/geometry response
-
-Выбрать физический локальный source operator $O_E$ и проверить
+Тогда
 
 $$
-|\Psi\rangle
-\to
-O_E|\Psi\rangle
-\to
-\delta I_{ij}
-\to
-\delta d_{ij}.
+p_{12}-\frac12=-\varepsilon+O(2),
 $$
 
-Цель — получить первый finite relational analogue идеи
+$$
+p_{13}-\frac12
+=\frac\varepsilon2-\frac{\sqrt3}{4}\delta+O(2),
+$$
 
 $$
-\boxed{\text{energy changes geometry}.}
+p_{14}-\frac12
+=\frac\varepsilon2+\frac{\sqrt3}{4}\delta+O(2).
 $$
 
-## Gate E4 — growth
+И
 
-Только после E1–E3 переходить к нескольким связанным intertwiners и измерять:
+$$
+\boxed{
+\mathcal A_p
+=3\varepsilon^2+\frac34\delta^2+O(3).
+}
+$$
 
-- spectral dimension;
-- area/volume-law scaling;
-- correlation length;
-- causal propagation front.
+Значит isotropic orientation states — изолированные quadratic minima в обеих независимых физических координатах.
+
+Для mutual-information anisotropy:
+
+$$
+\boxed{
+\mathcal A_I
+=(\log_2 3)^2
+\left(3\varepsilon^2+\frac34\delta^2\right)+O(3).
+}
+$$
 
 ---
 
-# 8. Большая программа
+# 9. Что этот первый блок доказывает
 
-Если минимальные gates проходят, новая BQG-программа раскладывается на четыре линии.
+В минимальном четырёх-spin SU(2)-singlet sector доказано:
 
-## BQG-I — Emergent Reality
+1. oriented volume является commutator двух pair-geometry operators;
+2. physical volume matrix пропорциональна $\sigma_y$;
+3. complex phases $\pm i$ выбираются exact volume eigenstates;
+4. те же и только те же states имеют isotropic spectra всех пар;
+5. все pair mutual informations в них одинаковы;
+6. pair-spectrum anisotropy точно равна четырём volume variances;
+7. isotropy locally stable как isolated quadratic minimum.
 
-$$
-\text{binary states}
-\to
-\text{physical correlations}
-\to
-\text{distance}
-\to
-\text{dimension}
-\to
-\text{causal cone}.
-$$
-
-## BQG-II — Emergent Gravity
-
-Искать количественный мост
+Коротко:
 
 $$
-\delta\rho
+\boxed{
+\text{noncommuting pair geometry}
+\to
+\text{oriented volume}
+\to
+\pm i\text{ phase}
+\Longleftrightarrow
+\text{sharp volume}
+\Longleftrightarrow
+\text{pair-spectrum isotropy}.
+}
+$$
+
+---
+
+# 10. Что НЕ доказано
+
+Мы пока не утверждаем, что:
+
+- continuum space обязательно трёхмерно;
+- mutual information является уникальным физическим расстоянием;
+- universe vacuum обязан быть локальным $|\Psi_+\rangle$ или $|\Psi_-\rangle$;
+- large-scale Lorentzian causality уже выведена;
+- Einstein equations уже следуют из этого theorem;
+- $G$, $c$ и $\hbar$ уже получены из бинарной микрофизики.
+
+Первый блок локальный. Следующий тест обязан быть сетевым.
+
+---
+
+# 11. Новый настоящий фронтир: рост без экспоненты
+
+Мы **не** переходим к full $(\mathbb C^2)^{\otimes N}$.
+
+Вместо этого следующий объект строится из уже редуцированных двухмерных intertwiner sectors.
+
+Для $M$ четырёхвалентных узлов наивное локально-физическое пространство имеет размер
+
+$$
+2^M,
+$$
+
+но и его нужно дополнительно уменьшать:
+
+- gluing constraints;
+- graph automorphisms;
+- orientation sectors;
+- conserved total channels;
+- orbit representatives;
+- sparse transfer operators.
+
+Следующая цель:
+
+$$
+\boxed{
+\text{coupled physical intertwiners}
+\to
+\text{correlation graph}
+\to
+\text{spectral dimension }d_s
+}
+$$
+
+без заранее заданного $d=3$.
+
+Это будет первый настоящий test emergent dimension.
+
+---
+
+# 12. Ближайшие gates
+
+## E2 — Two-node exact gluing
+
+Два physical tetrahedral nodes, связанный face/channel, exact symmetry reduction.
+
+Проверить:
+
+- какие orientation combinations допустимы;
+- сохраняется ли sharp-volume/isotropy relation;
+- появляется ли nontrivial inter-node mutual information;
+- можно ли определить relational edge без ad hoc distance map.
+
+## E3 — Minimal network dimension
+
+Построить smallest nontrivial connected network после symmetry reduction и вычислить:
+
+$$
+d_s(\tau)=-2\frac{d\ln P(\tau)}{d\ln\tau}.
+$$
+
+Именно здесь можно впервые честно спрашивать, возникает ли $d_s\approx3$.
+
+## E4 — Causal propagation
+
+Запустить локальное physical perturbation и измерять commutator growth / information front.
+
+Цель:
+
+$$
+\text{finite propagation cone}
+\to
+\text{emergent causal speed}.
+$$
+
+## E5 — Geometry response
+
+Проверить
+
+$$
+\delta\text{source}
 \to
 \delta I
 \to
-\delta g
+\delta\text{relational geometry}.
 $$
 
-и затем проверять, появляется ли в coarse-grained limit Einstein-like response.
-
-## BQG-III — Quantum Cosmology
-
-Строить homogeneous/isotropic coarse-grained states и выводить effective dynamics $a(t)$, а не задавать её вручную.
-
-## BQG-IV — Horizons & Information
-
-Проверять area law, horizon entanglement и Page-like information flow в конечном физическом Hilbert space.
+Это будет первый шаг к emergent gravity.
 
 ---
 
-# 9. Что НЕ заявляется
+# 13. Доказательные файлы новой ветки
 
-Этот README намеренно запрещает следующие преждевременные утверждения.
+Главные новые файлы:
 
-Мы пока **не доказали**, что:
+- [`BQG_MINIMAL_ENTANGLEMENT_VOLUME_RESULT.md`](BQG_MINIMAL_ENTANGLEMENT_VOLUME_RESULT.md)
+- [`scripts/bqg_minimal_entanglement_volume_gate.py`](scripts/bqg_minimal_entanglement_volume_gate.py)
 
-- физическое пространство обязано быть трёхмерным;
-- mutual information является фундаментальным расстоянием;
-- continuum GR уже выведена из новой entanglement branch;
-- $c$, $G$ или $\hbar$ уже получены из бинарной микрофизики;
-- проблема измерения решена;
-- тёмная материя или тёмная энергия объяснены;
-- 2T / extra-dimensional гипотезы выведены из BQG;
-- существуют физические wormholes из entanglement graph;
-- минимальный tetrahedral state описывает реальный вакуум Вселенной.
+Запуск:
 
-Это не недостаток формулировки. Это список будущих falsification gates.
+```bash
+python scripts/bqg_minimal_entanglement_volume_gate.py
+```
 
----
+Ожидаемый финал:
 
-# 10. Что остаётся от старой ветки
+```text
+PASS
+```
 
-Репозиторий содержит большое число прежних finite-конструкций и проверок: SU(2)/Peter–Weyl carriers, global gluing, graph-changing HDA attempts, master constraints, Regge/Plebanski/Urbantke bridges, TT/EFT machinery, cosmology candidates, 2T/Weyl analysis и depth-6 proof frontier.
-
-Они **не объявляются автоматически доказательствами новой emergence chain**.
-
-Они являются библиотекой уже построенных операторов, representations, constraints и negative controls, которую новая программа будет использовать только там, где связь будет явно доказана.
-
-Полезные существующие точки входа:
+Полезные прежние строительные блоки:
 
 - `MICRO_WALSH_QGEOM_BRIDGE.md`
 - `SPATIAL_QUBIT_GEOMETRY_BRIDGE.md`
@@ -488,78 +568,14 @@ $$
 
 ---
 
-# 11. Вычислительная философия новой ветки
-
-Никакого brute force без необходимости.
-
-Каждый новый уровень проходит лестницу:
-
-$$
-\boxed{
-\text{constraints}
-\to
-\text{symmetry reduction}
-\to
-\text{irreducible sectors}
-\to
-\text{analytic invariants}
-\to
-\text{sparse numerics only if unavoidable}.
-}
-$$
-
-Мы предпочитаем точную матрицу $2\times2$ огромному численному скану, если они отвечают на один и тот же физический вопрос.
-
-Мы предпочитаем no-go красивой, но не проверяемой гипотезе.
-
-Мы предпочитаем один вычислимый observable десяти философским заявлениям.
-
----
-
-# 12. Текущий фронтир
-
-На 6 октября 2026 года каноническая точка продолжения:
-
-$$
-\boxed{
-Q_{123}
-=\epsilon_{abc}J_1^aJ_2^bJ_3^c
-\quad\text{в}\quad
-\mathcal H_{\rm phys}^{(4)}.
-}
-$$
-
-Нужно ответить на четыре вопроса:
-
-1. Какова точная матрица $Q_{123}$ в базисе $\{|s\rangle,|t\rangle\}$?
-2. Являются ли $|\Psi_{\rm tet}^{\pm}\rangle$ её eigenstates?
-3. Совпадает ли pair-spectrum isotropy locus с oriented-volume eigenstates?
-4. Насколько быстро возникает анизотропия при отклонении от этих состояний?
-
-Если ответы окажутся положительными, первый локальный блок новой ветки будет закрыт точной цепочкой:
-
-$$
-\boxed{
-\text{Gauss-invariant binary quantum node}
-\to
-\text{oriented volume}
-\to
-\pm i\text{ phase}
-\to
-\text{isotropic pair spectra}
-\to
-\text{tetrahedral relational geometry}.
-}
-$$
-
-После этого можно переходить от одного tetrahedron к **росту сети и настоящему тесту emergent dimension**.
-
----
-
-## Репозиторий
-
-`Shtenco/binary_quantum_theory`
-
-## Канонический принцип
+# 14. Канонический принцип проекта
 
 > **Сначала уменьшить задачу симметрией. Затем решить её точно. И только потом тратить вычисления.**
+
+Текущая точка продолжения:
+
+$$
+\boxed{
+\textbf{Two-node exact physical gluing and first genuine network-level emergence test.}
+}
+$$
