@@ -1,0 +1,360 @@
+# BQG Minimal Entanglement–Volume Result
+
+**Date:** 2026-10-06  
+**Status:** EXACT in the four-spin $j=1/2$, total-$J=0$ sector
+
+---
+
+## 1. Physical sector
+
+For four spin-$1/2$ legs,
+
+$$
+\mathcal H=(\mathbb C^2)^{\otimes4},
+$$
+
+and the SU(2)-invariant sector is two-dimensional:
+
+$$
+\mathcal H_{\rm phys}^{(4)}
+=\mathrm{Inv}_{SU(2)}[(\tfrac12)^{\otimes4}]
+=\mathrm{span}\{|s\rangle,|t\rangle\}.
+$$
+
+Use the orthonormal recoupling basis
+
+$$
+|s\rangle=|s_{12}\rangle|s_{34}\rangle,
+$$
+
+and
+
+$$
+|t\rangle=((t_{12}t_{34})_{J=0}).
+$$
+
+A general physical state is
+
+$$
+|\Psi(\alpha,\phi)\rangle
+=\cos\alpha|s\rangle
++e^{i\phi}\sin\alpha|t\rangle.
+$$
+
+---
+
+## 2. Exact oriented-volume / chirality matrix
+
+Define
+
+$$
+Q_{123}=\epsilon_{abc}J_1^aJ_2^bJ_3^c.
+$$
+
+Direct exact projection to $\mathcal H_{\rm phys}^{(4)}$ gives
+
+$$
+\boxed{
+Q_{123}^{\rm phys}
+=
+\frac{\sqrt3}{4}
+\begin{pmatrix}
+0&-i\\
+i&0
+\end{pmatrix}
+=
+\frac{\sqrt3}{4}\sigma_y.
+}
+$$
+
+Therefore the two normalized eigenstates are
+
+$$
+\boxed{
+|\Psi_{+}\rangle
+=\frac{|s\rangle+i|t\rangle}{\sqrt2},
+\qquad
+Q_{123}|\Psi_+\rangle
+=+\frac{\sqrt3}{4}|\Psi_+\rangle,
+}
+$$
+
+and
+
+$$
+\boxed{
+|\Psi_{-}\rangle
+=\frac{|s\rangle-i|t\rangle}{\sqrt2},
+\qquad
+Q_{123}|\Psi_-\rangle
+=-\frac{\sqrt3}{4}|\Psi_-\rangle.
+}
+$$
+
+Thus the relative phases $\pm i$ are selected exactly by oriented quantum volume / scalar chirality in this sector.
+
+---
+
+## 3. Exact pair-spectrum isotropy locus
+
+Because any two-leg reduced state in a global SU(2) singlet is SU(2)-invariant, each pair density matrix is determined by its pair-singlet weight $p_{ij}$, with spectrum
+
+$$
+\operatorname{Spec}\rho_{ij}
+=
+\left\{
+ p_{ij},
+ \frac{1-p_{ij}}3,
+ \frac{1-p_{ij}}3,
+ \frac{1-p_{ij}}3
+\right\}.
+$$
+
+For the general state $|\Psi(\alpha,\phi)\rangle$ the six pair weights collapse to three symmetry classes:
+
+$$
+\boxed{
+p_{12}=p_{34}=\cos^2\alpha,
+}
+$$
+
+$$
+\boxed{
+p_{13}=p_{24}
+=
+\frac12-rac14\cos2\alpha
++\frac{\sqrt3}{4}\sin2\alpha\cos\phi,
+}
+$$
+
+$$
+\boxed{
+p_{14}=p_{23}
+=
+\frac12-rac14\cos2\alpha
+-\frac{\sqrt3}{4}\sin2\alpha\cos\phi.
+}
+$$
+
+Pair-spectrum isotropy requires
+
+$$
+p_{12}=p_{13}=p_{14}.
+$$
+
+In the canonical domain
+
+$$
+0\le\alpha\le\frac\pi2,
+$$
+
+the nontrivial solution is uniquely
+
+$$
+\boxed{
+\alpha=\frac\pi4,
+\qquad
+\cos\phi=0.
+}
+$$
+
+Therefore
+
+$$
+\boxed{
+\phi=\frac\pi2
+\quad\text{or}\quad
+\frac{3\pi}{2},
+}
+$$
+
+which are precisely the two eigenstates of $Q_{123}^{\rm phys}$.
+
+This yields an exact equivalence in the minimal sector:
+
+$$
+\boxed{
+\text{pair-spectrum isotropy}
+\Longleftrightarrow
+\text{maximal oriented-volume eigenstate}
+}
+$$
+
+up to global phase and orientation sign.
+
+---
+
+## 4. Common reduced-state spectrum
+
+At the isotropic points,
+
+$$
+p_{ij}=\frac12
+\qquad\forall i<j,
+$$
+
+hence
+
+$$
+\boxed{
+\operatorname{Spec}\rho_{ij}
+=\left\{\frac12,\frac16,\frac16,\frac16\right\}.
+}
+$$
+
+The pair entropy is
+
+$$
+S_{ij}
+=\frac12+\frac12\log_2 6,
+$$
+
+and since every one-spin state is maximally mixed,
+
+$$
+S_i=1,
+$$
+
+so
+
+$$
+\boxed{
+I_{ij}
+=\frac32-\frac12\log_2 6
+\approx0.20751875\ \mathrm{bit}
+}
+$$
+
+for all six pairs.
+
+---
+
+## 5. Stability: anisotropy grows quadratically
+
+Perturb one orientation eigenstate by
+
+$$
+\alpha=\frac\pi4+\varepsilon,
+\qquad
+\phi=\frac\pi2+\delta.
+$$
+
+The three inequivalent pair-singlet weights have leading deviations
+
+$$
+p_{12}-\frac12=-\varepsilon+O(2),
+$$
+
+$$
+p_{13}-\frac12
+=\frac\varepsilon2-rac{\sqrt3}{4}\delta+O(2),
+$$
+
+$$
+p_{14}-\frac12
+=\frac\varepsilon2+\frac{\sqrt3}{4}\delta+O(2).
+$$
+
+Using all six pairs, define the simple pair-spectrum anisotropy functional
+
+$$
+\mathcal A_p
+=\sum_{i<j}\left(p_{ij}-\frac12\right)^2.
+$$
+
+Then
+
+$$
+\boxed{
+\mathcal A_p
+=3\varepsilon^2
++\frac34\delta^2
++O(3).
+}
+$$
+
+Thus the isotropic points are isolated quadratic minima in both independent physical directions.
+
+Since near $p=1/2$ the mutual information satisfies
+
+$$
+\frac{dI}{dp}\bigg|_{p=1/2}=\log_2 3,
+$$
+
+the corresponding mutual-information anisotropy is
+
+$$
+\boxed{
+\mathcal A_I
+=(\log_2 3)^2
+\left(
+3\varepsilon^2+\frac34\delta^2
+\right)
++O(3).
+}
+$$
+
+So isotropy is not a flat accidental direction: it is locally stable as an isolated extremal structure in the two-dimensional physical state space.
+
+---
+
+## 6. What this proves — and what it does not
+
+### Exact statements
+
+In the minimal four-spin SU(2)-singlet sector:
+
+1. $Q_{123}^{\rm phys}=(\sqrt3/4)\sigma_y$ exactly.
+2. Its eigenstates are $(|s\rangle\pm i|t\rangle)/\sqrt2$.
+3. These and only these orientation partners have identical spectra for all six two-spin reduced states.
+4. Their pair mutual informations are all equal.
+5. Pair-spectrum anisotropy grows quadratically away from them.
+
+### Not yet proved
+
+This does **not** yet prove that:
+
+- physical space in the continuum is three-dimensional;
+- mutual information is the unique physical distance;
+- the universe dynamically selects one of these two local orientation states;
+- Einstein gravity follows from this local result.
+
+Those are growth / dynamics / continuum questions.
+
+---
+
+## 7. New exact local chain
+
+The first local block of the BQG Emergence Program is therefore
+
+$$
+\boxed{
+\text{Gauss-invariant four-qubit node}
+\to
+Q_{123}\propto\sigma_y
+\to
+\pm i\text{ orientation eigenstates}
+\to
+\text{isotropic pair spectra}
+\to
+\text{isotropic pair mutual information}.
+}
+$$
+
+This is the correct point from which to proceed to connected nodes and a genuine emergent-dimension test.
+
+---
+
+## Reproduction
+
+Run:
+
+```bash
+python scripts/bqg_minimal_entanglement_volume_gate.py
+```
+
+Expected final line:
+
+```text
+PASS
+```
