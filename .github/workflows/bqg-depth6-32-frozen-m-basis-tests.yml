@@ -11,6 +11,7 @@ on:
       - 'scripts/depth6_32_keymeta_aggregate.py'
       - 'scripts/depth6_32_replay_chunks.py'
       - 'scripts/depth6_32_global_peeling.py'
+      - 'scripts/depth6_32_recovery_inventory.py'
       - 'scripts/run_depth6_32_ledger_batch.py'
       - 'scripts/run_depth6_32_orbit_chunk.py'
       - 'scripts/test_depth6_32_frozen_m_basis.py'
@@ -19,6 +20,7 @@ on:
       - 'scripts/test_depth6_32_keymeta_aggregate.py'
       - 'scripts/test_depth6_32_replay_chunks.py'
       - 'scripts/test_depth6_32_global_peeling.py'
+      - 'scripts/test_depth6_32_recovery_inventory.py'
       - 'scripts/test_run_depth6_32_ledger_batch.py'
       - 'scripts/test_run_depth6_32_orbit_chunk.py'
       - '.github/workflows/bqg-depth6-32-frozen-m-basis-tests.yml'
@@ -63,5 +65,6 @@ jobs:
             test_depth6_32_keymeta_aggregate.py \
             test_depth6_32_replay_chunks.py \
             test_depth6_32_global_peeling.py \
+            test_depth6_32_recovery_inventory.py \
             test_run_depth6_32_ledger_batch.py \
             test_run_depth6_32_orbit_chunk.py
