@@ -187,9 +187,7 @@ After cylindrical reduction, $j=0$ links are absent from the abstract graph. Hen
 Their total support fraction is
 
 $$
-\boxed{
-0.44403316\ldots
-}
+\boxed{0.44403316\ldots}
 $$
 
 or about
@@ -203,8 +201,7 @@ of the regulated commutator-column norm.
 For the frozen total norm
 
 $$
-\|[H_0,H_1]\psi\|
-=1.681559985798016,
+\|[H_0,H_1]\psi\|=1.681559985798016,
 $$
 
 the sector norm magnitudes are approximately
@@ -223,19 +220,7 @@ Thus graph-changing support in the regulated constraint habitat is not hypotheti
 
 ### Critical caveat
 
-The number
-
-$$
-44.4\%
-$$
-
-is **not**
-
-$$
-|\mathcal A^{\rm phys}_{\Gamma'\Gamma}|^2
-$$
-
-and is **not** a graph transition probability.
+The number $44.4\%$ is **not** $|\mathcal A^{\rm phys}_{\Gamma'\Gamma}|^2$ and is **not** a graph transition probability.
 
 It is only the fraction of the norm of one regulated constraint-commutator column that lies in sectors whose cylindrical graph changes.
 
@@ -247,7 +232,7 @@ Conflating these two objects would be a category error.
 
 The new gate
 
-`script/bqg_projector_graph_transition_gate.py`
+`scripts/bqg_projector_graph_transition_gate.py`
 
 constructs a finite master-constraint model with two graph sectors and a common physical kernel that mixes them.
 
@@ -255,22 +240,11 @@ It verifies:
 
 1. positivity and the correct zero eigenspace of $\mathbb M$;
 2. recovery of $P_{\rm phys}$ from zero modes;
-3. a nonzero cross-graph block
-   $$
-   \Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma\ne0;
-   $$
-4. the semigroup identity
-   $$
-   e^{-(T_1+T_2)\mathbb M}
-   =e^{-T_1\mathbb M}e^{-T_2\mathbb M};
-   $$
+3. a nonzero cross-graph block $\Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma\ne0$;
+4. the semigroup identity $e^{-(T_1+T_2)\mathbb M}=e^{-T_1\mathbb M}e^{-T_2\mathbb M}$;
 5. the short-$T$ derivative;
 6. exponential convergence to the physical projector controlled by the master gap;
-7. the matrix-element identity
-   $$
-   \langle\beta|\mathbb M|\alpha\rangle
-   =\sum_{AB}G^{AB}\langle C_A\beta|C_B\alpha\rangle.
-   $$
+7. the matrix-element identity $\langle\beta|\mathbb M|\alpha\rangle=\sum_{AB}G^{AB}\langle C_A\beta|C_B\alpha\rangle$.
 
 This is an operator-algebra verification of the bridge, not a substitute for the real enlarged BQG master matrix.
 
@@ -288,9 +262,7 @@ The correct finite-regulator object is instead
 
 $$
 \boxed{
-\mathcal A(G\to G')
-\equiv
-\Pi_{G'}P_{\rm phys}\Pi_G
+\mathcal A(G\to G')\equiv\Pi_{G'}P_{\rm phys}\Pi_G
 }
 $$
 
@@ -300,15 +272,7 @@ Thus the architecture becomes
 
 $$
 \boxed{
-\{C_A\}
-\to
-\mathbb M
-\to
-P_{\rm phys}
-\to
-\mathcal A_{\Gamma'\Gamma}
-\to
-\text{graph-history amplitudes}.
+\{C_A\}\to\mathbb M\to P_{\rm phys}\to\mathcal A_{\Gamma'\Gamma}\to\text{graph-history amplitudes}.
 }
 $$
 
@@ -321,23 +285,12 @@ This is the first operator-derived replacement for the failed topology-free heur
 The current repository does **not yet contain the full numerical matrix**
 
 $$
-\boxed{
-\mathbb M_{\rm enlarged}
-}
-
-on a graph-changing Peter-Weyl habitat large enough to evaluate
-
-$$
-\Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma
+\boxed{\mathbb M_{\rm enlarged}}
 $$
 
-for the actual K5 graph sectors.
+on a graph-changing Peter-Weyl habitat large enough to evaluate $\Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma$ for the actual K5 graph sectors.
 
-Therefore we do **not** yet have numerical physical values for
-
-$$
-\mathcal A^{\rm phys}_{\Gamma'\Gamma}.
-$$
+Therefore we do **not** yet have numerical physical values for $\mathcal A^{\rm phys}_{\Gamma'\Gamma}$.
 
 This is now the precise bottleneck.
 
@@ -350,64 +303,35 @@ Choose an initial regulated state $|\psi_0\rangle$ and build the finite Krylov/c
 $$
 \boxed{
 \mathcal H_{\rm shell}^{(r)}
-=
-\mathrm{span}
-\left\{
-|\psi_0\rangle,
-C_A|\psi_0\rangle,
-C_BC_A|\psi_0\rangle,
-\ldots,
-C_{A_r}\cdots C_{A_1}|\psi_0\rangle
-\right\}.
+=\mathrm{span}\{|\psi_0\rangle,C_A|\psi_0\rangle,C_BC_A|\psi_0\rangle,\ldots,C_{A_r}\cdots C_{A_1}|\psi_0\rangle\}.
 }
 $$
 
 Every basis state is then assigned an abstract graph signature by deleting $j=0$ links.
 
-Let
+The committed assembler
 
-$$
-\Pi_\Gamma^{(r)}
-$$
+`scripts/bqg_k5_graph_sector_master_shell.py`
 
-be the projector onto each graph orbit in this shell.
-
-Then assemble all restricted constraint matrices
-
-$$
-C_A^{(r)}
-$$
-
-and
+uses the **actual regulator-safe K5 Peter-Weyl node operators** to generate this shell, compress the constraint matrices, construct
 
 $$
 \boxed{
-\mathbb M^{(r)}
-=
-\sum_{AB}
-(C_A^{(r)})^\dagger G^{AB}C_B^{(r)}.
+\mathbb M^{(r)}=\sum_A(C_A^{(r)})^\dagger C_A^{(r)},
 }
-$$
 
-Diagonalize it and construct
-
-$$
-P_0^{(r)}
-=
-\mathbf1_{\{0\}}(\mathbb M^{(r)}).
-$$
+and group the resulting zero-mode projector into graph-sector blocks.
 
 The first actual numerical graph-transition blocks are then
 
 $$
 \boxed{
 A_{\Gamma'\Gamma}^{(r)}
-=
-\Pi_{\Gamma'}^{(r)}P_0^{(r)}\Pi_\Gamma^{(r)}.
+=\Pi_{\Gamma'}^{(r)}P_0^{(r)}\Pi_\Gamma^{(r)}.
 }
 $$
 
-This is the next calculation that can genuinely replace hand-built graph dynamics.
+Because the shell is compressed, **shell leakage and convergence in depth $r$ and spin cutoff $J_{\max}$ must be checked before these blocks are promoted to physical amplitudes.**
 
 ---
 
@@ -415,13 +339,7 @@ This is the next calculation that can genuinely replace hand-built graph dynamic
 
 $P_{\rm phys}$ gives coherent amplitudes, not automatically a classical Markov process.
 
-One must not silently define
-
-$$
-p_{\Gamma'\Gamma}=|A_{\Gamma'\Gamma}|^2
-$$
-
-and iterate it as if graph label were external time.
+One must not silently define $p_{\Gamma'\Gamma}=|A_{\Gamma'\Gamma}|^2$ and iterate it as if graph label were external time.
 
 A history interpretation requires either:
 
@@ -433,10 +351,7 @@ For a specified state $|\psi_\Gamma\rangle$, a finite-$T$ diagnostic weight can 
 
 $$
 W_T(\Gamma'\leftarrow\Gamma;\psi)
-=
-\left\|
-\Pi_{\Gamma'}e^{-T\mathbb M}\Pi_\Gamma|\psi\rangle
-\right\|^2,
+=\|\Pi_{\Gamma'}e^{-T\mathbb M}\Pi_\Gamma|\psi\rangle\|^2,
 $$
 
 but this must be described as **constraint/projector flow**, not external physical time.
@@ -473,12 +388,10 @@ d_s(\tau).
 }
 $$
 
-The next milestone is not another graph generator. It is the first explicit numerical block
+The next milestone is the first converged explicit numerical block
 
 $$
-\boxed{
-\Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma
-}
+\boxed{\Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma}
 $$
 
 from the real Peter-Weyl graph-changing shell.
