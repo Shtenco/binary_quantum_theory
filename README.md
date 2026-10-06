@@ -7,21 +7,23 @@
 
 # 1. Главный вопрос
 
-> **Может ли геометрия, расстояние, размерность и затем гравитация возникать из физической структуры бинарной квантовой информации?**
+> **Может ли геометрия, расстояние, размерность, причинность и затем эффективная гравитация возникать из физической структуры бинарной квантовой информации?**
 
-Текущая цепочка проекта:
+Текущая каноническая цепочка:
 
 $$
 \boxed{
 \text{binary quantum degrees of freedom}
 \to
-\text{SU(2) constraints}
+\text{SU(2) physical reduction}
 \to
 \text{noncommuting relational observables}
 \to
 \text{oriented volume}
 \to
-\text{entanglement}
+\text{local isotropy}
+\to
+\text{entangled gluing}
 \to
 \text{local information response}
 \to
@@ -35,7 +37,7 @@ $$
 }
 $$
 
-Канонический метод:
+Канонический метод проекта:
 
 $$
 \boxed{\text{симметрия сначала, вычисления потом}.}
@@ -153,7 +155,8 @@ $$
 \boxed{Q_AQ_B|\Phi^+\rangle=-\frac3{16}|\Phi^+\rangle.}
 $$
 
-**Статус математики: EXACT для заданного reduced Hamiltonian.**  
+**Статус математики: EXACT для заданного reduced Hamiltonian.**
+
 **Статус $H_{\rm glue}$ как fundamental BQG dynamics: CANDIDATE.**
 
 Файлы:
@@ -163,9 +166,9 @@ $$
 
 ---
 
-# 4. Три узла: первый network-distance hierarchy
+# 4. Три узла и первый network hierarchy
 
-Для chain $A-B-C$ symmetry-neutral ground sector даёт
+Для chain $A-B-C$ symmetry-neutral ground sector:
 
 $$
 \boxed{I(A:B)=I(B:C)\approx0.7982479266\ \text{bit},}
@@ -259,36 +262,23 @@ Current chain critical/gapless.
 
 ---
 
-# 6. Critical correlation asymptotics
+# 6. Critical and gapped correlation laws
 
-В thermodynamic bulk limit
+Critical phase:
 
 $$
 \boxed{
 \langle c_0^\dagger c_r\rangle
-=\frac{\sin(\pi r/2)}{\pi r}.
+=\frac{\sin(\pi r/2)}{\pi r},
 }
 $$
-
-Longitudinal logical correlator
-
-$$
-\boxed{
-C_z(r)
-=-\frac{4\sin^2(\pi r/2)}{\pi^2r^2}.
-}
-$$
-
-Transverse correlator содержит Jordan-Wigner string и имеет Toeplitz/Fisher-Hartwig asymptotics
 
 $$
 \boxed{
 C_x(r)=A_xr^{-1/2}[1+O(r^{-2})],
-\qquad A_x\approx0.58835.
+\qquad A_x\approx0.58835,
 }
 $$
-
-Entropy expansion даёт
 
 $$
 \boxed{
@@ -297,30 +287,17 @@ I_0(r)=\frac{A_x^2}{\ln2}\frac1r+O(r^{-2})
 }
 $$
 
-Файлы:
-
-- `BQG_MUTUAL_INFORMATION_ASYMPTOTIC_RESULT.md`
-- `scripts/bqg_mutual_information_asymptotic_gate.py`
-
----
-
-# 7. Controlled gapped deformation
-
-В XX frame вводим exactly solvable staggered deformation
+Controlled staggered-volume deformation:
 
 $$
 \boxed{
-H_m=H_0+m\sum_j(-1)^j Z_j.
+H_m=H_0+m\sum_j(-1)^jZ_j.
 }
 $$
 
-В исходном intertwiner basis это staggered oriented-volume bias, поскольку
+В исходном intertwiner basis это staggered oriented-volume bias.
 
-$$
-Q_j=\frac{\sqrt3}{4}Y_j.
-$$
-
-Two-band spectrum
+Two-band spectrum:
 
 $$
 \boxed{
@@ -328,13 +305,13 @@ E_\pm(k)=\pm\sqrt{(2m)^2+9\cos^2k}.
 }
 $$
 
-Gap
+Gap:
 
 $$
 \boxed{\Delta_{\rm sp}=2|m|.}
 $$
 
-Correlation length
+Correlation length:
 
 $$
 \boxed{
@@ -342,7 +319,7 @@ $$
 }
 $$
 
-Large-distance laws
+Gapped asymptotics:
 
 $$
 \boxed{
@@ -358,46 +335,28 @@ $$
 
 Файлы:
 
+- `BQG_MUTUAL_INFORMATION_ASYMPTOTIC_RESULT.md`
+- `scripts/bqg_mutual_information_asymptotic_gate.py`
 - `BQG_GAPPED_DEFORMATION_DISTANCE_NOGO.md`
 - `scripts/bqg_gapped_distance_nogo_gate.py`
 
 ---
 
-# 8. Scalar-distance no-go
+# 7. Scalar-distance no-go
 
-Critical phase:
-
-$$
-I_0(r)\sim\kappa/r.
-$$
-
-Gapped phase:
+Critical phase требует для linear distance
 
 $$
-I_m(r)\sim Br^{-1}e^{-2r/\xi}.
-$$
-
-Если universal scalar distance имеет вид
-
-$$
-d(r)=f(I(r))\sim ar+b,
-$$
-
-то critical phase требует
-
-$$
-\boxed{f(I)\sim A/I\qquad(I\to0),}
+f(I)\sim A/I,
 $$
 
 а gapped phase требует
 
 $$
-\boxed{f(I)\sim A'\ln(1/I)\qquad(I\to0).}
+f(I)\sim A'\ln(1/I).
 $$
 
-Эти asymptotics несовместимы.
-
-Следовательно
+Поэтому
 
 $$
 \boxed{
@@ -407,128 +366,38 @@ d=f(I_{ij})
 }
 $$
 
-То есть long-range pair mutual information может быть observable, но не универсальной spatial coordinate.
+Long-range pair mutual information остаётся physical observable, но не является универсальной spatial coordinate.
 
 ---
 
-# 9. Новый поворот: correlation как conductance, а не distance
+# 8. Local information conductance and additive metric
 
-После scalar-distance no-go мы перестаём инвертировать long-range correlation law.
+После scalar-distance no-go geometry строится локально.
 
-Вместо этого для каждого локального edge
-
-$$
-e=(ij)
-$$
-
-используем полную reduced state
+Для edge $e=(ij)$ вводим relative twist generator
 
 $$
-\rho_e=\rho_{ij}
+\boxed{K_e=\frac{Z_i-Z_j}{2}.}
 $$
 
-и извлекаем **локальную information conductance**.
-
-Тогда geometry строится network-wise:
-
-$$
-\boxed{
-\text{local state}
-\to
-\text{edge conductance}
-\to
-\text{edge resistance length}
-\to
-\text{shortest-path metric}.
-}
-$$
-
-Это принципиально отличается от
-
-$$
-d_{ij}=f(I_{ij}),
-$$
-
-потому что дальняя distance больше не извлекается из дальней корреляции напрямую.
-
----
-
-# 10. Relative-twist quantum Fisher conductance
-
-Для edge $e=(ij)$ вводим локальный относительный twist generator
-
-$$
-\boxed{
-K_e=\frac{Z_i-Z_j}{2}.
-}
-$$
-
-Рассматриваем unitary family
-
-$$
-\rho_e(\theta)=e^{-i\theta K_e}\rho_e e^{+i\theta K_e}.
-$$
-
-Quantum Fisher information
-
-$$
-F_Q(\rho_e,K_e)
-=2\sum_{a,b}
-\frac{(\lambda_a-\lambda_b)^2}{\lambda_a+\lambda_b}
-|\langle a|K_e|b\rangle|^2.
-$$
-
-Определяем local QFI conductance
+Relative-twist quantum Fisher conductance:
 
 $$
 \boxed{
 g_e^{\rm QFI}=\frac14F_Q(\rho_e,K_e).}
 $$
 
-Фактор $1/4$ совпадает со стандартной Bures/Fisher normalization
-
-$$
-ds_B^2=\frac14F_Q\,d\theta^2.
-$$
-
-Таким образом $g_e$ измеряет **локальную чувствительность physical edge state к relative relational deformation**.
-
-Это уже не просто «сколько два узла коррелированы», а operational response coefficient.
-
----
-
-# 11. Exact critical QFI scale
-
-Для thermodynamic critical reference chain nearest-neighbor correlators дают exact
+Critical reference scale:
 
 $$
 \boxed{
-F_{Q,*}=\frac{32}{\pi^2+4}.
+F_{Q,*}=\frac{32}{\pi^2+4},
+\qquad
+g_*=\frac{8}{\pi^2+4}.
 }
 $$
 
-Следовательно
-
-$$
-\boxed{
-g_*=\frac{8}{\pi^2+4}.}
-$$
-
-Численно
-
-$$
-F_{Q,*}\approx2.307203513,
-\qquad
-g_*\approx0.576800878.
-$$
-
-Это первый exact local information-response scale текущей emergence-ветки.
-
----
-
-# 12. Information resistance metric
-
-Для positive local conductance определяем edge resistance length
+Edge resistance length:
 
 $$
 \boxed{
@@ -536,40 +405,16 @@ $$
 }
 $$
 
-А network distance
+Network distance:
 
 $$
 \boxed{
 d(i,j)=\min_{\gamma:i\to j}\sum_{e\in\gamma}\ell_e.}
 $$
 
-На chain path unique, поэтому
+На chain/tree additivity along geodesics exact.
 
-$$
-\boxed{
-d(i,j)=\sum_{e=i}^{j-1}\ell_e.}
-$$
-
-В homogeneous phase
-
-$$
-\boxed{
-d_m(i,j)=|i-j|\ell(m).}
-$$
-
-То есть additivity точная и не зависит от того, algebraic или exponential long-distance correlations имеет bulk state.
-
-В controlled family $m=0,0.2,0.5,1,2$ relative-twist QFI остаётся positive, а normalized resistance length растёт примерно как
-
-| $m$ | $F_Q$ | $\ell_Q/\ell_*$ |
-|---:|---:|---:|
-| 0 | $\approx2.31$ | $\approx1.00$ |
-| 0.2 | $\approx2.097$ | $\approx1.10$ |
-| 0.5 | $\approx1.623$ | $\approx1.42$ |
-| 1.0 | $\approx0.999$ | $\approx2.31$ |
-| 2.0 | $\approx0.421$ | $\approx5.48$ |
-
-Orientation-mass deformation therefore weakens local information conductance and stretches local emergent resistance length, while the metric composition law remains unchanged.
+Один и тот же local QFI rule применим и к critical, и к gapped phase. Quantum phase меняет local length scale, но не composition law.
 
 Файлы:
 
@@ -578,111 +423,181 @@ Orientation-mass deformation therefore weakens local information conductance and
 
 ---
 
-# 13. Positive theorem: phase-robust additive metric class exists
+# 9. Новый exact result: QFI-weighted spectral dimension
 
-Для любого graph с positive edge conductances
-
-$$
-g_e>0
-$$
-
-локальные resistance lengths
-
-$$
-\ell_e\propto g_e^{-1}
-$$
-
-и shortest-path construction автоматически дают metric с triangle inequality:
-
-$$
-\boxed{d(i,k)\le d(i,j)+d(j,k).}
-$$
-
-На tree/chain вдоль geodesic path additivity exact.
-
-Следовательно текущая reduced BQG branch впервые имеет конструкцию
+Строим weighted graph Laplacian
 
 $$
 \boxed{
-\rho_{ij}
-\to
-\text{local information response}
-\to
-\text{edge conductance}
-\to
-\text{additive network metric}
+(L_g)_{ij}
+=\delta_{ij}\sum_k g_{ik}-g_{ij}.
 }
 $$
 
-которая применяет **один и тот же rule** к critical и gapped фазам.
+Heat kernel:
 
-Это первый positive phase-robust metric result новой ветки.
+$$
+\boxed{K(\tau)=e^{-\tau L_g}.}
+$$
+
+Return probability:
+
+$$
+\boxed{
+P(\tau)=\frac1N\operatorname{Tr}e^{-\tau L_g}.
+}
+$$
+
+Spectral dimension:
+
+$$
+\boxed{
+d_s(\tau)
+=-2\frac{d\ln P(\tau)}{d\ln\tau}.
+}
+$$
+
+Для бесконечной homogeneous $D$-dimensional hypercubic graph с одинаковым QFI conductance $g$ на всех nearest-neighbor edges
+
+$$
+\lambda(\mathbf k)
+=2g\sum_{a=1}^D(1-\cos k_a).
+$$
+
+Return probability факторизуется exact:
+
+$$
+\boxed{
+P_D(\tau)
+=\left[e^{-2g\tau}I_0(2g\tau)\right]^D.
+}
+$$
+
+Отсюда exact running dimension:
+
+$$
+\boxed{
+d_s^{(D)}(\tau)
+=4Dg\tau
+\left[
+1-\frac{I_1(2g\tau)}{I_0(2g\tau)}
+\right].
+}
+$$
+
+При $\tau\to\infty$:
+
+$$
+\boxed{
+d_s^{(D)}(\tau)
+=D+O((g\tau)^{-1}).
+}
+$$
+
+Следовательно
+
+$$
+\boxed{
+\lim_{\tau\to\infty}d_s^{(D)}(\tau)=D.
+}
+$$
+
+Это первый exact dimension-calibration theorem текущей emergence branch.
 
 ---
 
-# 14. Новый uniqueness no-go
+# 10. Phase robustness of dimension
 
-Однако full local state $\rho_{ij}$ сама по себе всё ещё не выбирает единственную metric functional.
-
-Для одного и того же edge естественны, например,
+Вводим dimensionless diffusion time
 
 $$
-I(\rho_{ij}),
+\boxed{u=g\tau.}
 $$
 
-$$
-D_B^2(\rho_{ij},\rho_i\otimes\rho_j),
-$$
-
-и
-
-$$
-\frac14F_Q(\rho_{ij},K_{ij}).
-$$
-
-Все они positive local information measures, но дают разные phase-dependent local scales.
-
-Поэтому
+Тогда
 
 $$
 \boxed{
-\rho_{ij}\ \text{alone}
-\not\Rightarrow
-\text{unique spatial metric functional}.
+d_s^{(D)}(u)
+=4Du\left[1-\frac{I_1(2u)}{I_0(2u)}\right],
 }
 $$
 
-Нужен ещё один principle: **какая именно физическая deformation определяет длину?**
+и conductance $g$ полностью исчезает.
 
-Сейчас relative-twist QFI предпочтителен, потому что он связан с response к конкретной relational deformation, но generator $K_{ij}$ пока должен быть выведен из fundamental BQG dynamics.
+Поэтому critical и gapped homogeneous phases на одной topology имеют **одну и ту же running spectral-dimension curve**, различаясь только физическим diffusion timescale.
+
+Контрольные значения:
+
+при $u=10$
+
+$$
+d_s^{(1)}\approx1.01318,
+\qquad
+d_s^{(2)}\approx2.02636,
+\qquad
+d_s^{(3)}\approx3.03954,
+$$
+
+а при $u=100$
+
+$$
+\boxed{
+d_s^{(1)}\approx1.001256,
+\quad
+d_s^{(2)}\approx2.002513,
+\quad
+d_s^{(3)}\approx3.003769.
+}
+$$
+
+То есть один и тот же local QFI rule без retuning корректно калибрует 1D, 2D и 3D regular lattices.
+
+Файлы:
+
+- `BQG_QFI_SPECTRAL_DIMENSION_RESULT.md`
+- `scripts/bqg_qfi_spectral_dimension_gate.py`
 
 ---
 
-# 15. Каноническая цепочка новой ветки на сегодня
+# 11. Branching topology discriminator
+
+Для infinite 3-regular Bethe lattice
+
+$$
+\boxed{\lambda_0=3-2\sqrt2>0.}
+$$
+
+Long-time return probability имеет вид
+
+$$
+P_{\rm Bethe}(\tau)
+\sim A\tau^{-3/2}e^{-g\lambda_0\tau}.
+$$
+
+Следовательно
 
 $$
 \boxed{
-\text{SU(2) physical node}
-\to
-\text{noncommuting pair geometry}
-\to
-\text{oriented volume}
-\to
-\text{local isotropy}
-\to
-\text{entangled gluing}
-\to
-\text{XX/free fermions}
-\to
-\text{critical/gapped correlation laws}
-\to
-\text{scalar-distance no-go}
-\to
-\text{local QFI conductance}
-\to
-\text{additive resistance metric}.
+d_s^{\rm Bethe}(\tau)
+=2g\lambda_0\tau+3+o(1).
 }
 $$
+
+И поэтому
+
+$$
+\boxed{
+d_s^{\rm Bethe}(\tau)\to\infty.}
+$$
+
+Регулярное exponential branching не маскируется под конечномерную Euclidean geometry.
+
+Это важный контроль: QFI-weighted diffusion различает manifold-like lattices и non-amenable branching topology.
+
+---
+
+# 12. Что теперь доказано в reduced emergence branch
 
 Самые сильные current statements:
 
@@ -693,104 +608,110 @@ $$
 5. two-node matching selects Bell-type intertwiner entanglement;
 6. current many-node chain maps exactly to free fermions;
 7. critical $I_0(r)\sim\kappa/r$;
-8. staggered oriented-volume deformation opens gap $2|m|$;
+8. staggered oriented-volume deformation opens exact gap $2|m|$;
 9. gapped $I_m(r)\sim Br^{-1}e^{-2r/\xi}$;
 10. no universal global scalar distance $d=f(I_{ij})$ works in both phases;
-11. local relative-twist QFI has exact critical scale $32/(\pi^2+4)$;
-12. resistance composition produces an exact additive path metric in both phases;
-13. static local $\rho_{ij}$ alone does not uniquely select the metric functional.
+11. local relative-twist QFI defines a phase-robust conductance rule;
+12. resistance composition gives an additive network metric;
+13. homogeneous QFI-weighted hypercubic graphs satisfy $d_s\to D$ exactly;
+14. critical/gapped change of $g$ rescales diffusion time but not dimension;
+15. Bethe branching has no finite IR spectral-dimension plateau.
+
+Короткая current chain:
+
+$$
+\boxed{
+\text{binary SU(2) data}
+\to
+\text{oriented quantum volume}
+\to
+\text{entangled gluing}
+\to
+\text{local QFI conductance}
+\to
+\text{resistance metric}
+\to
+\text{weighted Laplacian}
+\to
+\text{spectral dimension}.
+}
+$$
 
 ---
 
-# 16. Что пока НЕ доказано
+# 13. Что пока НЕ доказано
 
 Мы не утверждаем, что:
 
 - $H_{\rm glue}$ уже выведен из fundamental graph-changing BQG constraint;
-- staggered-volume deformation является fundamental vacuum term;
 - relative-twist QFI является unique fundamental metric source;
-- $K_{ij}$ уже выведен из physical BQG projector/history dynamics;
+- $K_{ij}$ уже выведен из full physical projector/history dynamics;
 - reference length $\ell_*$ выведена из binary microphysics;
-- continuum space уже доказано трёхмерно;
-- Einstein equations уже получены;
+- **пространство автоматически становится 3D**;
+- cubic/hypercubic connectivity уже выведена из BQG;
+- irregular/dynamical BQG graph уже показал flow к $d_s=3$;
 - Lorentzian causal cone уже выведен;
+- Einstein equations уже получены;
 - $G$, $c$, $\hbar$ уже выведены из first principles.
 
-Ключевой caveat:
+Главный caveat текущего dimension result:
 
 $$
 \boxed{
-\text{exact mathematics of the reduced model}
+\text{we calibrated dimension on supplied topology}
 \neq
-\text{proof that the reduced model is fundamental dynamics}.
+\text{we derived 3D topology from binary dynamics}.
 }
 $$
 
 ---
 
-# 17. Новый настоящий фронтир: weighted Laplacian and spectral dimension
+# 14. Новый настоящий фронтир: убрать topology-by-hand loophole
 
-Теперь перестаём искать ещё одну distance formula.
+Следующий шаг больше не должен брать заранее готовую chain/square/cubic lattice.
 
-Следующий exact/calibration gate:
+Нужно построить family irregular/dynamical graphs непосредственно из BQG gluing/state data и проверить, возникает ли стабильный IR plateau
+
+$$
+\boxed{d_s(\tau)\approx\text{const}.}
+$$
+
+Главный falsification target:
 
 $$
 \boxed{
-(L_g)_{ij}
-=\delta_{ij}\sum_k g_{ik}-g_{ij},
+\textbf{dynamical / irregular QFI-weighted BQG graph}
+\to
+P(\tau)
+\to
+d_s(\tau)
+\to
+\textbf{test for an emergent dimension plateau}.
 }
 $$
 
-где
+Особенно сильный результат был бы
 
 $$
-g_{ij}=\frac14F_Q(\rho_{ij},K_{ij})
+\boxed{d_s^{IR}\to3}
 $$
 
-для physical edges.
+без hard-coded cubic connectivity и без fit dimension by hand.
 
-Из weighted graph Laplacian строим heat kernel
+Практический следующий gate:
 
-$$
-K(\tau)=e^{-\tau L_g},
-$$
-
-return probability
-
-$$
-\boxed{
-P(\tau)=\frac1N\operatorname{Tr}e^{-\tau L_g},
-}
-$$
-
-и spectral dimension
-
-$$
-\boxed{
-d_s(\tau)=-2\frac{d\ln P(\tau)}{d\ln\tau}.}
-$$
-
-Первый calibration test обязан дать
-
-$$
-\boxed{d_s\to1}
-$$
-
-на large homogeneous chain/ring в diffusion window.
-
-После этого тот же local QFI rule, **без retuning**, должен быть применён к:
-
-1. ring;
-2. square lattice;
-3. branching/tree graph;
-4. irregular glued graph;
-5. затем к graph states, которые реально выдаёт BQG constraint/history dynamics.
-
-Если weighted diffusion geometry сохраняет правильную topological/spectral dimension при смене quantum phase, это будет первый настоящий network-level emergent-dimension result.
+1. генерировать irregular graphs из local gluing compatibility;
+2. задавать edge weights только через local QFI rule;
+3. не использовать coordinate labels;
+4. вычислять heat-kernel spectrum;
+5. искать plateau $d_s(\tau)$;
+6. проверить robustness к critical/gapped local state;
+7. сравнить с randomized/null graph ensembles;
+8. только после этого переходить к causal propagation.
 
 ---
 
-# 18. Канонический принцип
+# 15. Канонический принцип
 
 > **Сначала уменьшить задачу симметрией. Затем распознать точную математическую структуру. Потом решить её аналитически. Отрицательные результаты фиксировать так же строго, как положительные. И только если exact путь закрыт — считать численно.**
 
