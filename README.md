@@ -7,9 +7,9 @@
 
 # 1. Главный вопрос
 
-> **Может ли геометрия, расстояние и затем гравитация возникать из физической структуры бинарной квантовой информации?**
+> **Может ли геометрия, расстояние, размерность и затем гравитация возникать из физической структуры бинарной квантовой информации?**
 
-Текущая рабочая цепочка:
+Текущая цепочка проекта:
 
 $$
 \boxed{
@@ -23,11 +23,11 @@ $$
 \to
 \text{entanglement}
 \to
-\text{network correlations}
+\text{local information response}
 \to
-\text{phase-robust relational geometry}
+\text{weighted graph geometry}
 \to
-\text{dimension}
+\text{spectral dimension}
 \to
 \text{causality}
 \to
@@ -41,13 +41,13 @@ $$
 \boxed{\text{симметрия сначала, вычисления потом}.}
 $$
 
-Мы редуцируем Hilbert space, ищем exact algebraic structure, выводим asymptotics, затем используем численность только как независимый gate.
+Мы сначала уменьшаем Hilbert space, затем ищем exact algebraic structure, затем asymptotics и только потом используем численность как независимый gate.
 
 ---
 
 # 2. Один physical node: exact local theorem
 
-Для четырёх spin-$1/2$ после SU(2) Gauss reduction:
+Для четырёх spin-$1/2$ после SU(2) Gauss reduction
 
 $$
 \boxed{
@@ -63,7 +63,7 @@ $$
 Q_{123}=\epsilon_{abc}J_1^aJ_2^bJ_3^c
 $$
 
-удовлетворяет
+удовлетворяет exact identity
 
 $$
 \boxed{
@@ -71,13 +71,13 @@ Q_{123}=i[\mathbf J_1\!\cdot\!\mathbf J_2,\mathbf J_2\!\cdot\!\mathbf J_3].
 }
 $$
 
-В physical sector:
+В physical sector
 
 $$
 \boxed{Q_{123}^{\rm phys}=\frac{\sqrt3}{4}\sigma_y.}
 $$
 
-Volume eigenstates:
+Volume eigenstates
 
 $$
 \boxed{
@@ -94,7 +94,7 @@ $$
 \mathcal A_p=\sum_{i<j}\left(p_{ij}-\frac12\right)^2
 $$
 
-выполняется exact identity
+выполняется
 
 $$
 \boxed{\mathcal A_p=4(\Delta Q_{123})^2.}
@@ -129,13 +129,13 @@ H_{\rm glue}
 }
 $$
 
-Spectrum:
+Spectrum
 
 $$
 \boxed{\{0,\tfrac32,\tfrac32,3\}.}
 $$
 
-Unique zero-mismatch state:
+Unique zero-mismatch state
 
 $$
 \boxed{|\Phi^+\rangle=\frac{|ss\rangle+|tt\rangle}{\sqrt2}.}
@@ -147,13 +147,11 @@ $$
 \langle Q_A\rangle=\langle Q_B\rangle=0,
 $$
 
-но
+но relative orientation sharp:
 
 $$
 \boxed{Q_AQ_B|\Phi^+\rangle=-\frac3{16}|\Phi^+\rangle.}
 $$
-
-То есть local orientation становится неопределённой, а relative orientation остаётся sharp.
 
 **Статус математики: EXACT для заданного reduced Hamiltonian.**  
 **Статус $H_{\rm glue}$ как fundamental BQG dynamics: CANDIDATE.**
@@ -175,12 +173,6 @@ $$
 
 $$
 \boxed{I(A:C)=0.5\ \text{bit}.}
-$$
-
-То есть
-
-$$
-\boxed{I_{\rm nearest}>I_{\rm next-nearest}.}
 $$
 
 Volume correlations независимо подтверждают topology:
@@ -214,7 +206,7 @@ H_M
 }
 $$
 
-После локальной rotation:
+После локальной rotation
 
 $$
 \boxed{
@@ -236,12 +228,10 @@ H_M
 }
 $$
 
-Single-particle energies:
+Single-particle energies
 
 $$
-\boxed{
-\varepsilon_n=-3\cos\frac{n\pi}{M+1}.
-}
+\boxed{\varepsilon_n=-3\cos\frac{n\pi}{M+1}.}
 $$
 
 Gap:
@@ -280,7 +270,7 @@ $$
 }
 $$
 
-Longitudinal logical correlator:
+Longitudinal logical correlator
 
 $$
 \boxed{
@@ -289,7 +279,7 @@ C_z(r)
 }
 $$
 
-Transverse correlator содержит Jordan-Wigner string и имеет Toeplitz form. Fisher-Hartwig asymptotics:
+Transverse correlator содержит Jordan-Wigner string и имеет Toeplitz/Fisher-Hartwig asymptotics
 
 $$
 \boxed{
@@ -298,38 +288,13 @@ C_x(r)=A_xr^{-1/2}[1+O(r^{-2})],
 }
 $$
 
-Two-site reduced state:
+Entropy expansion даёт
 
 $$
 \boxed{
-\rho_{0r}
-=\frac14\left[
-I\otimes I+C_x(r)(X\otimes X+Y\otimes Y)+C_z(r)Z\otimes Z
-\right].
+I_0(r)=\frac{A_x^2}{\ln2}\frac1r+O(r^{-2})
+\approx\frac{0.50}{r}\ \text{bit}.
 }
-$$
-
-Entropy expansion gives
-
-$$
-\boxed{
-I_0(r)
-=\frac{A_x^2}{\ln2}\frac1r+O(r^{-2}).
-}
-$$
-
-Numerically
-
-$$
-\boxed{
-I_0(r)\approx\frac{0.50}{r}\ \text{bit}.
-}
-$$
-
-Therefore
-
-$$
-\boxed{I_0(r)\propto r^{-1}.}
 $$
 
 Файлы:
@@ -339,37 +304,9 @@ $$
 
 ---
 
-# 7. Первый distance-map falsification
+# 7. Controlled gapped deformation
 
-For critical phase:
-
-$$
-I_0(r)\sim\frac{\kappa}{r}.
-$$
-
-Negative-log map gives
-
-$$
-\boxed{
--\ln I_0(r)=\ln r+\text{const}+o(1),
-}
-$$
-
-не linear distance.
-
-Inverse-information map would give
-
-$$
-1/I_0(r)\propto r,
-$$
-
-но объявлять $1/I$ фундаментальным distance после знания asymptotics было бы post-hoc.
-
----
-
-# 8. Controlled gapped deformation
-
-Чтобы проверить distance law на второй фазе той же модели, вводим exactly solvable staggered deformation в XX frame:
+В XX frame вводим exactly solvable staggered deformation
 
 $$
 \boxed{
@@ -377,115 +314,47 @@ H_m=H_0+m\sum_j(-1)^j Z_j.
 }
 $$
 
-После Jordan-Wigner это alternating onsite mass.
-
-Важно: в исходном intertwiner basis rotated $Z$ соответствует local $Y$, а
+В исходном intertwiner basis это staggered oriented-volume bias, поскольку
 
 $$
 Q_j=\frac{\sqrt3}{4}Y_j.
 $$
 
-Поэтому deformation имеет quantum-geometric interpretation:
+Two-band spectrum
 
 $$
 \boxed{
-H_m-H_0\propto\sum_j(-1)^jQ_j,
+E_\pm(k)=\pm\sqrt{(2m)^2+9\cos^2k}.
 }
 $$
 
-то есть это staggered oriented-volume bias.
-
-**Статус этой deformation как fundamental BQG term: CANDIDATE.**
-
----
-
-# 9. Exact gapped spectrum
-
-Для two-site unit cell single-particle bands:
-
-$$
-\boxed{
-E_\pm(k)
-=\pm\sqrt{(2m)^2+9\cos^2k}.
-}
-$$
-
-Minimum positive energy:
+Gap
 
 $$
 \boxed{\Delta_{\rm sp}=2|m|.}
 $$
 
-Каждый $m\neq0$ открывает gap.
-
-Nearest complex branch point даёт exact correlation length
+Correlation length
 
 $$
 \boxed{
-\xi^{-1}
-=\operatorname{arsinh}\left(\frac{2|m|}{3}\right),
+\xi^{-1}=\operatorname{arsinh}\left(\frac{2|m|}{3}\right).
 }
 $$
 
-то есть
+Large-distance laws
 
 $$
 \boxed{
-\xi(m)
-=\frac1{\operatorname{arsinh}(2|m|/3)}.
+C_x^{(m)}(r)\sim A(m)r^{-1/2}e^{-r/\xi},
 }
 $$
-
-При малом $m$:
-
-$$
-\boxed{\xi\sim\frac{3}{2|m|}.}
-$$
-
-Для gate-point $m=0.2$:
 
 $$
 \boxed{
-\Delta_{\rm sp}=0.4,
-\qquad
-\xi\approx7.5221113.
+I_m(r)\sim B(m)r^{-1}e^{-2r/\xi}.
 }
 $$
-
----
-
-# 10. Gapped correlation and mutual-information law
-
-В gapped phase transverse logical correlator имеет large-distance form
-
-$$
-\boxed{
-C_x^{(m)}(r)
-\sim A(m)r^{-1/2}e^{-r/\xi}.
-}
-$$
-
-Mutual information quadratic in small connected correlators, поэтому
-
-$$
-\boxed{
-I_m(r)
-\sim B(m)r^{-1}e^{-2r/\xi}.
-}
-$$
-
-Следовательно MI correlation length
-
-$$
-\boxed{\xi_I=\frac\xi2.}
-$$
-
-Independent finite-chain quadratic gate подтверждает:
-
-- exact gap $2|m|$;
-- exact $\xi$;
-- $C_x\sim r^{-1/2}e^{-r/\xi}$;
-- $I\sim r^{-1}e^{-2r/\xi}$.
 
 Файлы:
 
@@ -494,47 +363,33 @@ Independent finite-chain quadratic gate подтверждает:
 
 ---
 
-# 11. Новый no-go theorem: pair mutual information недостаточна для universal distance
+# 8. Scalar-distance no-go
 
-Теперь у нас две controlled phases одной underlying graph geometry.
-
-Critical:
+Critical phase:
 
 $$
-\boxed{I_0(r)\sim\kappa/r.}
+I_0(r)\sim\kappa/r.
 $$
 
-Gapped:
+Gapped phase:
 
 $$
-\boxed{I_m(r)\sim Br^{-1}e^{-2r/\xi}.}
+I_m(r)\sim Br^{-1}e^{-2r/\xi}.
 $$
 
-Предположим universal phase-independent scalar distance
+Если universal scalar distance имеет вид
 
 $$
-d(r)=f(I(r))\sim ar+b.
+d(r)=f(I(r))\sim ar+b,
 $$
 
-В critical phase:
+то critical phase требует
 
 $$
-r\sim\frac{\kappa}{I},
+\boxed{f(I)\sim A/I\qquad(I\to0),}
 $$
 
-поэтому linearity требует
-
-$$
-\boxed{f(I)\sim A/I\qquad(I\to0).}
-$$
-
-В gapped phase inversion даёт
-
-$$
-r=\frac\xi2\ln\frac1I+O(\ln\ln(1/I)),
-$$
-
-поэтому linearity требует
+а gapped phase требует
 
 $$
 \boxed{f(I)\sim A'\ln(1/I)\qquad(I\to0).}
@@ -542,54 +397,268 @@ $$
 
 Эти asymptotics несовместимы.
 
-Следовательно:
+Следовательно
 
 $$
 \boxed{
 \textbf{не существует одной phase-independent scalar function }
- d=f(I_{ij})
-\textbf{, которая asymptotically linear в обеих фазах.}
+d=f(I_{ij})
+\textbf{, asymptotically linear в обеих фазах.}
 }
 $$
 
-Это более сильный результат, чем предыдущий no-go только для $-\ln I$.
-
-Он исключает **весь класс universal pairwise scalar distances, зависящих только от mutual information одной пары**.
+То есть long-range pair mutual information может быть observable, но не универсальной spatial coordinate.
 
 ---
 
-# 12. Что это означает физически
+# 9. Новый поворот: correlation как conductance, а не distance
 
-Mutual information остаётся полезным relational observable, но одного числа $I_{ij}$ недостаточно, чтобы универсально восстановить расстояние.
+После scalar-distance no-go мы перестаём инвертировать long-range correlation law.
 
-Physical distance должен использовать более богатую network-level structure, например:
-
-- local neighborhood correlation profile;
-- correlation length / gap data;
-- full reduced density matrix;
-- conditional mutual information;
-- multipartite entanglement;
-- graph/transfer Laplacian;
-- modular response;
-- information geometry.
-
-То есть новый вопрос уже не
+Вместо этого для каждого локального edge
 
 $$
-\text{«какую функцию }f(I)\text{ выбрать?»}
+e=(ij)
 $$
 
-а
+используем полную reduced state
+
+$$
+\rho_e=\rho_{ij}
+$$
+
+и извлекаем **локальную information conductance**.
+
+Тогда geometry строится network-wise:
 
 $$
 \boxed{
-\textbf{какой relational operator / variational principle сам определяет metric?}
+\text{local state}
+\to
+\text{edge conductance}
+\to
+\text{edge resistance length}
+\to
+\text{shortest-path metric}.
 }
 $$
 
+Это принципиально отличается от
+
+$$
+d_{ij}=f(I_{ij}),
+$$
+
+потому что дальняя distance больше не извлекается из дальней корреляции напрямую.
+
 ---
 
-# 13. Каноническая цепочка новой ветки на сегодня
+# 10. Relative-twist quantum Fisher conductance
+
+Для edge $e=(ij)$ вводим локальный относительный twist generator
+
+$$
+\boxed{
+K_e=\frac{Z_i-Z_j}{2}.
+}
+$$
+
+Рассматриваем unitary family
+
+$$
+\rho_e(\theta)=e^{-i\theta K_e}\rho_e e^{+i\theta K_e}.
+$$
+
+Quantum Fisher information
+
+$$
+F_Q(\rho_e,K_e)
+=2\sum_{a,b}
+\frac{(\lambda_a-\lambda_b)^2}{\lambda_a+\lambda_b}
+|\langle a|K_e|b\rangle|^2.
+$$
+
+Определяем local QFI conductance
+
+$$
+\boxed{
+g_e^{\rm QFI}=\frac14F_Q(\rho_e,K_e).}
+$$
+
+Фактор $1/4$ совпадает со стандартной Bures/Fisher normalization
+
+$$
+ds_B^2=\frac14F_Q\,d\theta^2.
+$$
+
+Таким образом $g_e$ измеряет **локальную чувствительность physical edge state к relative relational deformation**.
+
+Это уже не просто «сколько два узла коррелированы», а operational response coefficient.
+
+---
+
+# 11. Exact critical QFI scale
+
+Для thermodynamic critical reference chain nearest-neighbor correlators дают exact
+
+$$
+\boxed{
+F_{Q,*}=\frac{32}{\pi^2+4}.
+}
+$$
+
+Следовательно
+
+$$
+\boxed{
+g_*=\frac{8}{\pi^2+4}.}
+$$
+
+Численно
+
+$$
+F_{Q,*}\approx2.307203513,
+\qquad
+g_*\approx0.576800878.
+$$
+
+Это первый exact local information-response scale текущей emergence-ветки.
+
+---
+
+# 12. Information resistance metric
+
+Для positive local conductance определяем edge resistance length
+
+$$
+\boxed{
+\ell_e=\ell_*\frac{g_*}{g_e}.
+}
+$$
+
+А network distance
+
+$$
+\boxed{
+d(i,j)=\min_{\gamma:i\to j}\sum_{e\in\gamma}\ell_e.}
+$$
+
+На chain path unique, поэтому
+
+$$
+\boxed{
+d(i,j)=\sum_{e=i}^{j-1}\ell_e.}
+$$
+
+В homogeneous phase
+
+$$
+\boxed{
+d_m(i,j)=|i-j|\ell(m).}
+$$
+
+То есть additivity точная и не зависит от того, algebraic или exponential long-distance correlations имеет bulk state.
+
+В controlled family $m=0,0.2,0.5,1,2$ relative-twist QFI остаётся positive, а normalized resistance length растёт примерно как
+
+| $m$ | $F_Q$ | $\ell_Q/\ell_*$ |
+|---:|---:|---:|
+| 0 | $\approx2.31$ | $\approx1.00$ |
+| 0.2 | $\approx2.097$ | $\approx1.10$ |
+| 0.5 | $\approx1.623$ | $\approx1.42$ |
+| 1.0 | $\approx0.999$ | $\approx2.31$ |
+| 2.0 | $\approx0.421$ | $\approx5.48$ |
+
+Orientation-mass deformation therefore weakens local information conductance and stretches local emergent resistance length, while the metric composition law remains unchanged.
+
+Файлы:
+
+- `BQG_LOCAL_INFORMATION_RESISTANCE_METRIC.md`
+- `scripts/bqg_local_information_resistance_gate.py`
+
+---
+
+# 13. Positive theorem: phase-robust additive metric class exists
+
+Для любого graph с positive edge conductances
+
+$$
+g_e>0
+$$
+
+локальные resistance lengths
+
+$$
+\ell_e\propto g_e^{-1}
+$$
+
+и shortest-path construction автоматически дают metric с triangle inequality:
+
+$$
+\boxed{d(i,k)\le d(i,j)+d(j,k).}
+$$
+
+На tree/chain вдоль geodesic path additivity exact.
+
+Следовательно текущая reduced BQG branch впервые имеет конструкцию
+
+$$
+\boxed{
+\rho_{ij}
+\to
+\text{local information response}
+\to
+\text{edge conductance}
+\to
+\text{additive network metric}
+}
+$$
+
+которая применяет **один и тот же rule** к critical и gapped фазам.
+
+Это первый positive phase-robust metric result новой ветки.
+
+---
+
+# 14. Новый uniqueness no-go
+
+Однако full local state $\rho_{ij}$ сама по себе всё ещё не выбирает единственную metric functional.
+
+Для одного и того же edge естественны, например,
+
+$$
+I(\rho_{ij}),
+$$
+
+$$
+D_B^2(\rho_{ij},\rho_i\otimes\rho_j),
+$$
+
+и
+
+$$
+\frac14F_Q(\rho_{ij},K_{ij}).
+$$
+
+Все они positive local information measures, но дают разные phase-dependent local scales.
+
+Поэтому
+
+$$
+\boxed{
+\rho_{ij}\ \text{alone}
+\not\Rightarrow
+\text{unique spatial metric functional}.
+}
+$$
+
+Нужен ещё один principle: **какая именно физическая deformation определяет длину?**
+
+Сейчас relative-twist QFI предпочтителен, потому что он связан с response к конкретной relational deformation, но generator $K_{ij}$ пока должен быть выведен из fundamental BQG dynamics.
+
+---
+
+# 15. Каноническая цепочка новой ветки на сегодня
 
 $$
 \boxed{
@@ -603,50 +672,49 @@ $$
 \to
 \text{entangled gluing}
 \to
-\text{network hierarchy}
-\to
 \text{XX/free fermions}
 \to
-I_0(r)\sim r^{-1}
+\text{critical/gapped correlation laws}
 \to
-\text{gapped volume deformation}
+\text{scalar-distance no-go}
 \to
-I_m(r)\sim r^{-1}e^{-2r/\xi}
+\text{local QFI conductance}
 \to
-\text{scalar-distance no-go}.
+\text{additive resistance metric}.
 }
 $$
 
-Самые сильные current results:
+Самые сильные current statements:
 
 1. $Q=i[D_{12},D_{23}]$;
 2. $Q_{\rm phys}=(\sqrt3/4)\sigma_y$;
 3. local isotropy iff oriented volume is sharp;
 4. $\mathcal A_p=4(\Delta Q)^2$;
 5. two-node matching selects Bell-type intertwiner entanglement;
-6. three nodes distinguish graph separation by MI and volume correlations;
-7. complete current 1D reduced chain maps exactly to free fermions;
-8. critical gap closes as $O(M^{-1})$;
-9. critical $I_0(r)\sim\kappa/r$;
-10. staggered oriented-volume deformation opens exact gap $2|m|$;
-11. its correlation length is $\xi^{-1}=\operatorname{arsinh}(2|m|/3)$;
-12. gapped $I_m(r)\sim Br^{-1}e^{-2r/\xi}$;
-13. **no universal phase-independent scalar distance $d=f(I_{ij})$ can be linear in both phases.**
+6. current many-node chain maps exactly to free fermions;
+7. critical $I_0(r)\sim\kappa/r$;
+8. staggered oriented-volume deformation opens gap $2|m|$;
+9. gapped $I_m(r)\sim Br^{-1}e^{-2r/\xi}$;
+10. no universal global scalar distance $d=f(I_{ij})$ works in both phases;
+11. local relative-twist QFI has exact critical scale $32/(\pi^2+4)$;
+12. resistance composition produces an exact additive path metric in both phases;
+13. static local $\rho_{ij}$ alone does not uniquely select the metric functional.
 
 ---
 
-# 14. Что пока НЕ доказано
+# 16. Что пока НЕ доказано
 
 Мы не утверждаем, что:
 
 - $H_{\rm glue}$ уже выведен из fundamental graph-changing BQG constraint;
-- staggered-volume term является фундаментальным vacuum deformation;
+- staggered-volume deformation является fundamental vacuum term;
+- relative-twist QFI является unique fundamental metric source;
+- $K_{ij}$ уже выведен из physical BQG projector/history dynamics;
+- reference length $\ell_*$ выведена из binary microphysics;
 - continuum space уже доказано трёхмерно;
-- mutual information uniquely defines geometry;
-- current 1D reduced chain описывает пространство нашей Вселенной;
 - Einstein equations уже получены;
 - Lorentzian causal cone уже выведен;
-- $G$, $c$, $\hbar$ уже выведены из binary microphysics.
+- $G$, $c$, $\hbar$ уже выведены из first principles.
 
 Ключевой caveat:
 
@@ -660,40 +728,69 @@ $$
 
 ---
 
-# 15. Следующий настоящий расчёт
+# 17. Новый настоящий фронтир: weighted Laplacian and spectral dimension
 
-После scalar-distance no-go нельзя честно подбирать ещё одну функцию $f(I)$.
+Теперь перестаём искать ещё одну distance formula.
 
-Следующий falsification-first frontier:
+Следующий exact/calibration gate:
 
 $$
 \boxed{
-\textbf{derive a network-level additive metric from local quantum information.}
+(L_g)_{ij}
+=\delta_{ij}\sum_k g_{ik}-g_{ij},
 }
 $$
 
-Первый дешёвый кандидат — **local edge cost + shortest path**, где edge weight выводится из local reduced states / conditional information, а не из long-range pair $I_{ij}$.
+где
 
-Нужно проверить одновременно:
+$$
+g_{ij}=\frac14F_Q(\rho_{ij},K_{ij})
+$$
 
-1. critical chain;
-2. gapped staggered-volume chain;
-3. finite ring;
-4. затем branching graph.
+для physical edges.
 
-Успешный distance estimator должен:
+Из weighted graph Laplacian строим heat kernel
 
-- давать additive path length;
-- не зависеть от того, critical или gapped bulk state;
-- различать topology;
-- иметь continuum scaling;
-- не требовать post-hoc знания graph distance.
+$$
+K(\tau)=e^{-\tau L_g},
+$$
 
-Только после этого имеет смысл вычислять spectral dimension и causal propagation.
+return probability
+
+$$
+\boxed{
+P(\tau)=\frac1N\operatorname{Tr}e^{-\tau L_g},
+}
+$$
+
+и spectral dimension
+
+$$
+\boxed{
+d_s(\tau)=-2\frac{d\ln P(\tau)}{d\ln\tau}.}
+$$
+
+Первый calibration test обязан дать
+
+$$
+\boxed{d_s\to1}
+$$
+
+на large homogeneous chain/ring в diffusion window.
+
+После этого тот же local QFI rule, **без retuning**, должен быть применён к:
+
+1. ring;
+2. square lattice;
+3. branching/tree graph;
+4. irregular glued graph;
+5. затем к graph states, которые реально выдаёт BQG constraint/history dynamics.
+
+Если weighted diffusion geometry сохраняет правильную topological/spectral dimension при смене quantum phase, это будет первый настоящий network-level emergent-dimension result.
 
 ---
 
-# 16. Канонический принцип
+# 18. Канонический принцип
 
 > **Сначала уменьшить задачу симметрией. Затем распознать точную математическую структуру. Потом решить её аналитически. Отрицательные результаты фиксировать так же строго, как положительные. И только если exact путь закрыт — считать численно.**
 
