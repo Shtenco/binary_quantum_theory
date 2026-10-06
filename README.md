@@ -1,91 +1,286 @@
 # Бинарная квантовая гравитация (BQG)
-## Emergence Program: от бинарной квантовой информации к геометрии
+## Единый канонический README: от бинарной микроструктуры к квантовой геометрии, физическому projector, emergent metric и наблюдаемой физике
 
-**Канонический README — 6 октября 2026**
+**Каноническая версия: 6 октября 2026 года**
 
 ---
 
-# 1. Главный вопрос
+# 0. Зачем этот README переписан заново
 
-> **Может ли геометрия, расстояние, размерность, причинность и затем эффективная гравитация возникать из физической структуры бинарной квантовой информации?**
+5 октября 2026 года README был фактически обнулён и заменён новой emergence-веткой. Эта ветка дала важные новые результаты — oriented-volume theorem, entanglement gluing, XX/free-fermion mapping, mutual-information no-go, QFI metric, spectral dimension и topology-free falsification — но при этом из главного README исчезла большая уже построенная фундаментальная часть проекта:
 
-Текущая каноническая цепочка:
+- q=2 binary microstructure;
+- exact dimension-three fixed point;
+- Walsh tetrahedral carrier;
+- global PL gluing;
+- Peter–Weyl graph-changing representation;
+- Plebanski/Urbantke/Einstein bridges;
+- Regge/EH controls;
+- HDA / DeWitt / graph-changing constraints;
+- finite master-constraint programme;
+- relational-history projector;
+- generating functional $Z[J]\to W[J]$;
+- TT/graviton reference sector;
+- six-dimensional quartic TT observable space;
+- cosmology/scalar obstructions;
+- 2T and black-hole frontiers;
+- depth-4/depth-6 kernel programme.
+
+Этот README восстанавливает **единый канон**.
+
+Новая emergence/info-geometry ветка теперь является **дополнительным слоем внутри старой BQG**, а не заменой всей теории.
+
+Главное правило проекта остаётся:
 
 $$
-\boxed{
-\text{binary quantum degrees of freedom}
-\to
-\text{SU(2) physical reduction}
-\to
-\text{noncommuting relational observables}
-\to
-\text{oriented volume}
-\to
-\text{local isotropy}
-\to
-\text{entangled gluing}
-\to
-\text{local information response}
-\to
-\text{weighted graph geometry}
-\to
-\text{spectral dimension}
-\to
-\text{physical graph dynamics}
-\to
-\text{causality}
-\to
-\text{effective gravity}
-}
+\boxed{\text{красивая история никогда не сильнее доказательства}.}
 $$
 
-Канонический принцип:
+И второе правило:
 
 $$
 \boxed{\text{симметрия сначала, вычисления потом}.}
 $$
 
-И столь же важно:
+---
+
+# 1. Словарь статусов
+
+Во всём README используются только пять основных статусов.
+
+| Статус | Значение |
+|---|---|
+| **PROVED** | точный theorem / identity в явно заявленной области |
+| **FINITE** | воспроизводимый finite numerical/algebraic control, но не continuum theorem |
+| **CANDIDATE** | физически мотивированная, но ещё не выведенная фундаментально конструкция |
+| **NO-GO** | строго найденный запрет / отрицательный результат в заявленном классе |
+| **OPEN** | необходимый физический мост пока не закрыт |
+
+Дополнительные слова вроде `conditional`, `surrogate`, `positive control` всегда относятся к одному из этих пяти классов и не повышают статус.
+
+Критические различия:
 
 $$
-\boxed{\text{отрицательный результат фиксируется так же строго, как положительный}.}
+\boxed{\text{finite theorem}\neq\text{continuum theorem}}
+$$
+
+$$
+\boxed{\text{constraint object}\neq\text{physical propagator}}
+$$
+
+$$
+\boxed{\text{algebraic observable map}\neq\text{prediction}}
+$$
+
+$$
+\boxed{\text{internal consistency}\neq\text{experimental confirmation}}.
 $$
 
 ---
 
-# 2. Один physical node: exact local theorem
+# 2. Главная объединённая карта BQG
 
-Для четырёх spin-$1/2$ после SU(2) Gauss reduction
+Текущая теория состоит из двух уже развитых слоёв, которые теперь объединены.
+
+## 2.1. Фундаментальная structural ветка
 
 $$
 \boxed{
+\text{binary microstructure}
+\to q=2
+\to \text{Walsh tetrahedron}
+\to d_*=3
+\to SU(2)/\text{Peter--Weyl quantum geometry}
+\to \text{global PL gluing}
+\to \text{metric / Urbantke / Regge}
+\to \text{graph-changing constraints}
+\to \text{HDA / DeWitt}
+\to M
+\to P_{\rm phys}
+\to \text{relational history}
+}
+$$
+
+## 2.2. Новая emergence / information-geometry ветка
+
+$$
+\boxed{
+\text{physical intertwiner node}
+\to \text{noncommuting pair geometry}
+\to \text{oriented volume}
+\to \text{entangled gluing}
+\to \text{network correlations}
+\to \text{local QFI conductance}
+\to L_g
+\to d_s
+}
+$$
+
+## 2.3. Физикализация
+
+Обе ветки должны встретиться в одной цепочке:
+
+$$
+\boxed{
+P_{\rm phys}
+\to \text{physical relational histories}
+\to Z[J_g]
+\to W[J_g]
+\to \Gamma[g]
+\to K_{TT}(\omega,\mathbf k)
+\to (c_1,\ldots,c_6)_{\rm IR}
+\to \text{observables}
+\to \text{experiment}.
+}
+$$
+
+Это и есть единая современная BQG.
+
+---
+
+# 3. Binary microstructure: почему начинается с q=2
+
+Два бинарных признака дают четыре состояния
+
+$$
+\mathbb Z_2^2.
+$$
+
+Три нетривиальных Walsh-character задают четыре нормированных вектора $n_a$, для которых точно:
+
+$$
+\boxed{\sum_{a=1}^4 n_a=0,}
+$$
+
+$$
+\boxed{n_a\cdot n_a=1,}
+$$
+
+$$
+\boxed{n_a\cdot n_b=-\frac13\quad(a\neq b).}
+$$
+
+Это exact normals правильного тетраэдра.
+
+**Статус: PROVED.**
+
+Ключевые файлы:
+
+- `MICRO_WALSH_QGEOM_BRIDGE.md`
+- `scripts/micro_walsh_qgeom_gate.py`
+- `BINARY_TO_GEOMETRY_GATE.md`
+- `BIT_TO_SPACETIME_CENTRAL_EQUATION.md`
+
+---
+
+# 4. Exact dimension-three fixed point
+
+Для frozen q=2 refinement count:
+
+$$
+\boxed{N_g=\frac{4\cdot 8^g+10}{7}.}
+$$
+
+Finite-step dimension:
+
+$$
+\boxed{
+d_g=\log_2\frac{N_g}{N_{g-1}}
+=3+\log_2\left(1-\frac{35}{16\cdot8^{g-1}+40}\right).
+}
+$$
+
+Для каждого finite $g$:
+
+$$
+d_g<3,
+$$
+
+последовательность растёт монотонно, и
+
+$$
+\boxed{\lim_{g\to\infty}d_g=3.}
+$$
+
+Это analytical fixed-point statement внутри заявленной refinement rule.
+
+**Статус: PROVED для frozen q=2 refinement.**
+
+Файлы:
+
+- `Q2_DIMENSION3_FIXED_POINT_CLOSURE.md`
+- `scripts/q2_dimension3_fixed_point_gate.py`
+
+Дополнительные finite diagnostics старой ветки:
+
+```text
+d_H          ≈ 2.999229782
+d_s(slice)   ≈ 3.004393867
+z            ≈ 0.998281156
+d_s(history) ≈ 4.004393867
+```
+
+**Статус этих diagnostics: FINITE, не blind prediction.**
+
+---
+
+# 5. Local SU(2) quantum geometry
+
+Четыре spin-$1/2$ face carriers имеют Gauss-invariant singlet sector
+
+$$
 \mathcal H_{\rm phys}^{(4)}
-=\mathrm{Inv}_{SU(2)}[(\tfrac12)^{\otimes4}],
+=\mathrm{Inv}_{SU(2)}[(1/2)^{\otimes4}],
 \qquad \dim=2.
-}
 $$
 
-В basis $|s\rangle,|t\rangle$
+В logical basis $|s\rangle,|t\rangle$ intrinsic shape живёт в $X/Z$, orientation — в $Y$.
+
+Logical metric Jacobian имеет
 
 $$
-Q_{123}=\epsilon_{abc}J_1^aJ_2^bJ_3^c
+\boxed{\operatorname{rank}J_{\rm metric}=2,}
 $$
 
-и exact identity
+а $X/Z$ tangents:
+
+- trace-free;
+- orthogonal;
+- equal DeWitt norm.
+
+**Статус: PROVED для local carrier.**
+
+Файлы:
+
+- `LOGICAL_SHAPE_METRIC_JACOBIAN.md`
+- `scripts/logical_shape_metric_jacobian_gate.py`
+
+---
+
+# 6. Exact oriented-volume theorem новой ветки
+
+Определим
+
+$$
+Q_{123}=\epsilon_{abc}J_1^aJ_2^bJ_3^c.
+$$
+
+Exact operator identity:
 
 $$
 \boxed{
-Q_{123}=i[\mathbf J_1\!\cdot\!\mathbf J_2,\mathbf J_2\!\cdot\!\mathbf J_3].
+Q_{123}
+=i[\mathbf J_1\cdot\mathbf J_2,\mathbf J_2\cdot\mathbf J_3].
 }
 $$
 
-В physical sector
+В physical doublet:
 
 $$
 \boxed{Q_{123}^{\rm phys}=\frac{\sqrt3}{4}\sigma_y.}
 $$
 
-Volume eigenstates
+Volume eigenstates:
 
 $$
 \boxed{
@@ -94,29 +289,29 @@ $$
 }
 $$
 
-Именно они являются единственными pure pair-spectrum isotropic states.
-
-Для
+Для pair-spectrum anisotropy
 
 $$
 \mathcal A_p=\sum_{i<j}\left(p_{ij}-\frac12\right)^2
 $$
 
-выполняется
+получено exact identity
 
 $$
 \boxed{\mathcal A_p=4(\Delta Q_{123})^2.}
 $$
 
-Следовательно
+Поэтому
 
 $$
 \boxed{
 \text{pair-spectrum isotropy}
 \Longleftrightarrow
-\text{sharp oriented quantum volume}.
+\text{sharp oriented volume}.
 }
 $$
+
+**Статус: PROVED.**
 
 Файлы:
 
@@ -125,25 +320,592 @@ $$
 
 ---
 
-# 3. Reduced gluing
+# 7. Graph-link representation и no-link state
 
-Candidate two-node shape-matching Hamiltonian
+Четырёх активных q=2 states недостаточно для полного graph-changing endpoint carrier.
+
+Добавление no-link / $j=0$ state даёт exact five-component structure
+
+$$
+\boxed{(2,2)+(1,1)}
+$$
+
+в зарегистрированной $SU(2)_L\times SU(2)_R$ конструкции.
+
+Transporter identity:
+
+$$
+\boxed{P_gU_aP_0U_bP_g=|a\rangle\langle b|.}
+$$
+
+То есть active-state transition факторизуется через graph-changing excursion в no-link sector.
+
+**Статус: PROVED в finite representation carrier.**
+
+Файлы:
+
+- `Q2_GRAPHLINK_PETER_WEYL_BRIDGE.md`
+- `scripts/q2_graphlink_peter_weyl_gate.py`
+- `scripts/su2_quantum_link_vector5_gate.py`
+
+---
+
+# 8. Peter–Weyl growth
+
+При явно заданном fully symmetric endpoint blocking occupancy $n$ даёт
+
+$$
+j=\frac n2,
+$$
+
+$$
+\dim(j,j)=(2j+1)^2=(n+1)^2.
+$$
+
+Поэтому $n=0,1,\ldots,N$ воспроизводит diagonal Peter–Weyl tower
+
+$$
+j=0,\frac12,1,\ldots,\frac N2.
+$$
+
+**Статус: CANDIDATE/conditional exact statement**, потому что blocking rule пока не выведена уникально из full microscopic dynamics.
+
+---
+
+# 9. Global PL geometry
+
+Selected finite completion использует boundary 4D cross-polytope:
+
+- 16 tetrahedral cells;
+- 32 shared triangular faces;
+- dual graph $Q_4$.
+
+На shared faces:
+
+- один и тот же q=2 carrier согласуется на двух incidences;
+- orientation parity чередуется;
+- outward Walsh flux сокращается pairwise.
+
+**Статус: FINITE exact/tested completion для выбранной PL geometry.**
+
+Файлы:
+
+- `GLOBAL_MANIFOLD_Q2_COMPLETION.md`
+- `bcqg_global_manifold_gate.py`
+- `scripts/q2_global_face_qubit_gluing_gate.py`
+
+Это не theorem для arbitrary manifold.
+
+---
+
+# 10. Qubit → B → Urbantke → Einstein
+
+Отдельная structural chain:
+
+$$
+\boxed{
+\text{face qubits}
+\to B
+\to \text{simplicity}
+\to g_{\mu\nu}^{\rm Urbantke}
+\to \text{compatible connection}
+\to \text{curvature}.
+}
+$$
+
+Positive control восстанавливает declared Einstein geometry. Independent non-Einstein control отвергается после metric stage.
+
+**Статус: FINITE.**
+
+Файлы:
+
+- `QUBIT_TO_EINSTEIN_END_TO_END.md`
+- `PLEBANSKI_URBANTKE_BRIDGE.md`
+- `PLEBANSKI_CONNECTION_EINSTEIN_GATE.md`
+- `scripts/qubit_to_einstein_end_to_end.py`
+
+---
+
+# 11. Regge / Einstein-Hilbert controls
+
+Finite simplicial bridge проверяет continuum tensor scaling.
+
+Held-out continuation:
+
+$$
+Z_L=\frac18+\frac C{L^2}+\frac D{L^4}
+$$
+
+fitted only on $L=3,4,5$.
+
+Prediction:
+
+$$
+Z_6^{\rm pred}=0.11876923193907167.
+$$
+
+Independent value:
+
+$$
+Z_6^{\rm obs}=0.11876075461190198.
+$$
+
+Relative error:
+
+$$
+\boxed{\approx0.00714\%.}
+$$
+
+**Статус: FINITE held-out internal control.**
+
+Файлы:
+
+- `REGGE_EH_CUBIC_BRIDGE.md`
+- `TT_REGGE_ZT_L6_RESULT.md`
+- `scripts/regge_eh_cubic_bridge.py`
+- `scripts/tt_regge_zt_l6_gate.py`
+
+---
+
+# 12. DeWitt / ADM / HDA structure
+
+В canonical GR target algebra:
+
+$$
+\{H[N],H[M]\}
+\to
+D[q^{ab}(N\partial_bM-M\partial_bN)].
+$$
+
+BQG содержит finite HDA controls с scaling hierarchy:
+
+$$
+\text{route}\sim\epsilon,
+\qquad
+\text{cross}\sim\epsilon,
+\qquad
+\text{pure geometry}\sim\epsilon^2.
+$$
+
+Frozen measured exponents:
+
+```text
+route exponent         = 0.9999571195
+cross exponent         = 1.0024037289
+pure-geometry exponent = 2.0061524985
+joint exponent         = 1.0064429344
+```
+
+Joint defect при $\epsilon=1/64$:
+
+$$
+0.02522380790.
+$$
+
+Minimum registered graph-change fraction:
+
+$$
+\boxed{0.4440331635.}
+$$
+
+**Статус: FINITE HDA evidence, не arbitrary-graph continuum theorem.**
+
+Файлы:
+
+- `THREE_NODE_GRAPH_HDA_RESULT.md`
+- `PETER_WEYL_TWO_NODE_EUCLIDEAN_RESULT.md`
+- `JOINT_REGULATOR_LIMIT.md`
+- `scripts/peter_weyl_three_node_graph_hda_gate.py`
+
+DeWitt radial/conformal direction имеет
+
+$$
+\boxed{Q_{\rm DW}=-6.}
+$$
+
+**Статус: PROVED в заявленном local canonical ansatz.**
+
+---
+
+# 13. Finite master constraint
+
+Главный positive operator:
+
+$$
+\boxed{
+M_G=C_A^\dagger G^{AB}C_B\ge0.
+}
+$$
+
+Для positive-definite $G$:
+
+$$
+\boxed{
+\ker M_G=\bigcap_A\ker C_A.
+}
+$$
+
+При isolated zero sector:
+
+$$
+\boxed{P_{\rm phys}^{(\epsilon)}=\mathbf1_{\{0\}}(M_G).}
+$$
+
+И
+
+$$
+\boxed{
+P_{\rm phys}^{(\epsilon)}
+=\lim_{T\to\infty}e^{-TM_G}
+}
+$$
+
+в finite regulated setting.
+
+**Статус: PROVED finite theorem.**
+
+Файлы:
+
+- `MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md`
+- `scripts/master_constraint_physical_projector_gate.py`
+
+Критическая граница:
+
+$$
+\boxed{
+P_{\rm phys}^{\rm finite}\neq P_{\rm phys}^{\rm continuum}\ \text{автоматически}.
+}
+$$
+
+---
+
+# 14. Depth-4 finite rehearsal
+
+Depth-4 Hilbert dimension:
+
+$$
+\boxed{217953.}
+$$
+
+Все non-vacuum symmetry sectors в заявленном analysis были injective; trivial $[5]$ sector оставляет только vacuum line.
+
+**Статус: FINITE closed in tested scope.**
+
+---
+
+# 15. Depth-6 programme: актуальный статус после 1 октября
+
+Corrected finite K5 shell:
+
+$$
+\boxed{264962}
+$$
+
+Gauss-admissible spin assignments.
+
+Full Hilbert dimension:
+
+$$
+\boxed{3111637.}
+$$
+
+S5 spin orbits:
+
+$$
+\boxed{2757.}
+$$
+
+Irrep multiplicities:
+
+| irrep | multiplicity |
+|---|---:|
+| $[5]$ | 27,227 |
+| $[4,1]$ | 104,146 |
+| $[3,2]$ | 130,903 |
+| $[3,1,1]$ | 153,455 |
+| $[2,2,1]$ | 130,503 |
+| $[2,1,1,1]$ | 103,318 |
+| $[1^5]$ | 26,794 |
+
+Machine ledger now records:
+
+$$
+\boxed{\text{structural depth-6 support closed for all 7 S5 irreps}.}
+$$
+
+Numerically closed sectors include:
+
+- $[1^5]$;
+- $[5]$ — vacuum only;
+- $[4,1]$;
+- $[2,1,1,1]$ — **CLOSED_FINITE_NUMERICAL**.
+
+For $[2,1,1,1]$:
+
+$$
+\boxed{\operatorname{rank}=103318/103318.}
+$$
+
+16 exact $H_0$-null directions are lifted by $H_1$:
+
+$$
+\boxed{\operatorname{rank}H_1|_{16}=16/16,}
+$$
+
+$$
+\boxed{\sigma_{\min}=1.1304521906426825.}
+$$
+
+Старый planned $130007\times130007$ H0-only giant minor больше **не является blocker**; ledger помечает его `SUPERSEDED_DO_NOT_USE_AS_BLOCKER`.
+
+Но остаются independent numerical master witnesses для:
+
+$$
+\boxed{[3,2],\quad[3,1,1],\quad[2,2,1].}
+$$
+
+Поэтому:
+
+$$
+\boxed{
+\text{finite depth-6 full master theorem}
+=\text{NOT YET PROVED}.
+}
+$$
+
+**Статус: FINITE programme, partial numerical closure + full structural closure.**
+
+Machine truth:
+
+- `depth6_frontier.json`
+- `BQG_DEPTH6_2111_MASTER_CLOSED_2026-10-01.json`
+- `scripts/verify_depth6_frontier.py`
+
+---
+
+# 16. Relational history already exists as a positive control
+
+Constraint system не имеет external physical time автоматически.
+
+Finite relational-history model показывает, что
+
+$$
+\text{global combined-constraint invariance}
+$$
+
+может сосуществовать с
+
+$$
+\text{nontrivial clock-conditioned evolution}.
+$$
+
+Chain:
+
+$$
+\boxed{
+P_{\rm rel}
+\to O_{\rm rel}
+\to Z[J]
+\to W[J]
+\to \Gamma^{(2)}_{\rm tangent}.
+}
+$$
+
+**Статус: FINITE positive control.**
+
+Но externally declared C8 clock и toy system не являются физическим gravitational history generator BQG.
+
+Файлы:
+
+- `Q2_RELATIONAL_HISTORY_PROJECTOR.md`
+- `Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md`
+- `scripts/q2_relational_history_projector_gate.py`
+- `scripts/q2_relational_metric_source_gate.py`
+
+Theory-specific physical history:
+
+$$
+\boxed{\text{OPEN}.}
+$$
+
+---
+
+# 17. Почему constraint resolvent не является graviton propagator
+
+Exact Feshbach object:
+
+$$
+G_c(z)=Q_0^\dagger(z-H_{\rm constraint})^{-1}Q_0
+$$
+
+математически корректен.
+
+Но
+
+$$
+\boxed{z\neq\omega_{\rm physical}}
+$$
+
+без independently derived history/time structure.
+
+**Статус Feshbach identities: PROVED.**
+
+**Promotion to physical propagator: NO-GO без physical history.**
+
+Файлы:
+
+- `FESHBACH_INTERBLOCK_EFFECTIVE_KERNEL.md`
+- `HAMILTONIAN_CONSTRAINT_TO_EFFECTIVE_ACTION.md`
+- `scripts/feshbach_block_krylov_identity_gate.py`
+
+---
+
+# 18. Правильный physicalization route
+
+Легальная последовательность:
+
+$$
+\boxed{
+\{C_A^{(\epsilon)}\}
+\to M_\epsilon
+\to P_{\rm phys}^{(\epsilon)}
+\to \text{refinement / rigging / boundary-history limit}
+\to Z[J_g]
+\to W[J_g]
+\to \Gamma[g]
+\to \Gamma^{(2)}_{\rm metric}
+\to K_{TT}(\omega,\mathbf k).
+}
+$$
+
+Нельзя перескакивать:
+
+$$
+H_{\rm constraint}\to G(\omega)
+$$
+
+напрямую.
+
+**Статус theory-specific continuum route: OPEN.**
+
+---
+
+# 19. TT / graviton reference sector
+
+Reduced TT positive control имеет:
+
+- massless leading pole;
+- positive residue;
+- expected inverse-momentum equal-time covariance.
+
+Bare control coefficients:
+
+```text
+eta2_bare  = -1/45
+zeta4_bare = -1/12
+```
+
+Это **не** финальные interacting BQG coefficients.
+
+**Статус: FINITE positive control.**
+
+Файлы:
+
+- `TT_PROPAGATOR_FIRST_PASS.md`
+- `TT_VACUUM_TWO_POINT_RESULT.md`
+
+---
+
+# 20. Six-dimensional quartic TT observable space
+
+Для parity-even quartic TT response с tetrahedral $S_4$ symmetry:
+
+$$
+\boxed{\dim\mathcal V_{\rm quartic}^{TT}=6.}
+$$
+
+Общий low-energy datum:
+
+$$
+\boxed{\mathbf c_{\rm IR}=(c_1,c_2,c_3,c_4,c_5,c_6).}
+$$
+
+Frozen extractor:
+
+$$
+\boxed{\operatorname{rank}=6,}
+$$
+
+$$
+\boxed{\det A=\frac1{699840000}.}
+$$
+
+**Статус algebraic quotient/extractor: PROVED.**
+
+Physical values $(c_1,\ldots,c_6)$:
+
+$$
+\boxed{\text{OPEN}.}
+$$
+
+Файлы:
+
+- `S4_TT_QUARTIC_COMPLETE_BASIS.md`
+- `C6_TO_TT_WILSON_COEFFICIENTS.md`
+- `scripts/s4_tt_quartic_complete_basis_gate.py`
+- `scripts/c6_tt_wilson_extractor.py`
+
+---
+
+# 21. Observable translator уже готов
+
+Если physical six-vector однажды derived/frozen, можно получить
+
+$$
+\omega_\sigma^2
+=c^2k^2\left[1+a_*^2k^2e_{4,\sigma}(\hat n)+O(a_*^4k^4)\right],
+$$
+
+$$
+\frac{v_{g,\sigma}-c}{c}
+=\frac32a_*^2k^2e_{4,\sigma}+\cdots,
+$$
+
+$$
+\delta\phi_\sigma
+=-\frac12La_*^2\left(\frac\omega c\right)^3e_{4,\sigma}+\cdots.
+$$
+
+**Статус map: PROVED algebraically.**
+
+**Статус physical prediction: OPEN.**
+
+Файлы:
+
+- `TT_TO_REAL_PHYSICS_OBSERVABLES.md`
+- `scripts/s4_tt_six_wilson_predictor.py`
+- `scripts/physical_scale_prediction_bridge.py`
+
+---
+
+# 22. Новый entangled-gluing reduced model
+
+Candidate local matching Hamiltonian:
 
 $$
 \boxed{
 H_{\rm glue}
-=\sum_a(P_a^{(A)}-P_a^{(B)})^2
 =\frac32I-\frac34(X_AX_B+Z_AZ_B).
 }
 $$
 
-Spectrum
+Exact spectrum:
 
 $$
-\boxed{\{0,\tfrac32,\tfrac32,3\}.}
+\boxed{\{0,3/2,3/2,3\}.}
 $$
 
-Unique zero-mismatch state
+Unique ground state:
 
 $$
 \boxed{|\Phi^+\rangle=\frac{|ss\rangle+|tt\rangle}{\sqrt2}.}
@@ -155,11 +917,9 @@ $$
 \boxed{Q_AQ_B|\Phi^+\rangle=-\frac3{16}|\Phi^+\rangle.}
 $$
 
-То есть exact shape matching в этой reduced model выбирает maximally entangled intertwiner state с sharp relative orientation.
+**Статус spectrum/result: PROVED для заданного reduced Hamiltonian.**
 
-**Статус математики: EXACT для заданного reduced Hamiltonian.**
-
-**Статус $H_{\rm glue}$ как fundamental BQG dynamics: CANDIDATE.**
+**Статус $H_{\rm glue}$ как fundamental dynamics: CANDIDATE.**
 
 Файлы:
 
@@ -168,9 +928,9 @@ $$
 
 ---
 
-# 4. Network hierarchy and exact many-node reduction
+# 23. Three-node information hierarchy
 
-Для chain $A-B-C$:
+Для open chain $A-B-C$:
 
 $$
 \boxed{I(A:B)=I(B:C)\approx0.7982479266\ \text{bit},}
@@ -180,77 +940,79 @@ $$
 \boxed{I(A:C)=0.5\ \text{bit}.}
 $$
 
-Current many-node Hamiltonian
+Volume correlations:
 
 $$
-\boxed{
+\boxed{\langle Q_AQ_B\rangle=\langle Q_BQ_C\rangle=-3/32,}
+$$
+
+$$
+\boxed{\langle Q_AQ_C\rangle=0.}
+$$
+
+**Статус: PROVED для reduced chain.**
+
+---
+
+# 24. Exact many-node XX/free-fermion mapping
+
+Reduced chain Hamiltonian:
+
+$$
 H_M
 =\sum_{i=1}^{M-1}
-\left[\frac32I-\frac34(X_iX_{i+1}+Z_iZ_{i+1})\right]
-}
+\left[\frac32I-\frac34(X_iX_{i+1}+Z_iZ_{i+1})\right].
 $$
 
-после локальной rotation становится open XX model:
-
-$$
-\boxed{
-H_M\simeq
-\frac32(M-1)I
--\frac34\sum_i(X_iX_{i+1}+Y_iY_{i+1}).
-}
-$$
-
-После Jordan-Wigner:
+После local rotation:
 
 $$
 \boxed{
-H_M
-=\frac32(M-1)I
--\frac32\sum_i(c_i^\dagger c_{i+1}+c_{i+1}^\dagger c_i).
+H_M\simeq\frac32(M-1)I-\frac34\sum_i(X_iX_{i+1}+Y_iY_{i+1}).
 }
 $$
 
-Single-particle energies
+После Jordan–Wigner:
+
+$$
+\boxed{
+H_M=\frac32(M-1)I-\frac32\sum_i(c_i^\dagger c_{i+1}+c_{i+1}^\dagger c_i).
+}
+$$
+
+Single-particle energies:
 
 $$
 \boxed{\varepsilon_n=-3\cos\frac{n\pi}{M+1}.}
 $$
 
-Gap closes as
+Gap:
 
 $$
 \boxed{\Delta_M=O(M^{-1})\to0.}
 $$
 
-Файлы:
-
-- `BQG_THREE_NODE_REDUCED_CHAIN_RESULT.md`
-- `scripts/bqg_three_node_reduced_chain_gate.py`
-- `BQG_MANY_NODE_FREE_FERMION_MAPPING.md`
-- `scripts/bqg_many_node_xx_mapping_gate.py`
+**Статус: PROVED для current reduced many-node model.**
 
 ---
 
-# 5. Critical/gapped correlation laws
+# 25. Critical mutual information asymptotics
 
-Critical phase:
-
-$$
-\boxed{
-\langle c_0^\dagger c_r\rangle=\frac{\sin(\pi r/2)}{\pi r}
-}
-$$
-
-and
+Half-filled XX thermodynamic limit:
 
 $$
-\boxed{
+\langle c_0^\dagger c_r\rangle
+=\frac{\sin(\pi r/2)}{\pi r}.
+$$
+
+Transverse spin correlation:
+
+$$
 C_x(r)=A_xr^{-1/2}[1+O(r^{-2})],
 \qquad A_x\approx0.58835.
-}
 $$
 
-Hence
+Следовательно
 
 $$
 \boxed{
@@ -259,19 +1021,27 @@ I_0(r)=\frac{A_x^2}{\ln2}\frac1r+O(r^{-2})
 }
 $$
 
-Controlled staggered-volume deformation:
+**Статус: PROVED asymptotics + numerical gate.**
+
+---
+
+# 26. Gapped staggered-volume deformation
+
+Controlled deformation:
 
 $$
 \boxed{H_m=H_0+m\sum_j(-1)^jZ_j.}
 $$
 
-Two-band spectrum:
+В original intertwiner frame это staggered oriented-volume bias.
+
+Band spectrum:
 
 $$
 \boxed{E_\pm(k)=\pm\sqrt{(2m)^2+9\cos^2k}.}
 $$
 
-Gap:
+Minimum positive single-particle energy:
 
 $$
 \boxed{\Delta_{\rm sp}=2|m|.}
@@ -280,111 +1050,127 @@ $$
 Correlation length:
 
 $$
-\boxed{\xi^{-1}=\operatorname{arsinh}\left(\frac{2|m|}{3}\right).}
+\boxed{\xi^{-1}=\operatorname{arsinh}(2|m|/3).}
 $$
 
-Gapped asymptotics:
+Asymptotic mutual information:
 
 $$
-\boxed{
-I_m(r)\sim B(m)r^{-1}e^{-2r/\xi}.
-}
+\boxed{I_m(r)\sim B(m)r^{-1}e^{-2r/\xi}.}
 $$
+
+**Статус mathematics: PROVED for reduced deformation.**
+
+**Fundamental BQG status of deformation: CANDIDATE.**
 
 ---
 
-# 6. Scalar-distance no-go
+# 27. Universal scalar-MI distance no-go
 
-Critical phase требует
+Предположим universal phase-independent scalar map
 
 $$
-f(I)\sim A/I,
+d=f(I).
 $$
 
-а gapped phase требует
+Critical phase требует при $I\to0$:
+
+$$
+f(I)\sim A/I.
+$$
+
+Gapped phase требует:
 
 $$
 f(I)\sim A'\ln(1/I).
 $$
 
-Поэтому
+Они несовместимы.
+
+Поэтому:
 
 $$
 \boxed{
-\textbf{не существует одной phase-independent scalar function }
-d=f(I_{ij})
+\textbf{не существует одной phase-independent scalar }d=f(I_{ij})
 \textbf{, asymptotically linear в обеих фазах.}
 }
 $$
 
-Long-range pair mutual information остаётся observable, но не универсальной spatial coordinate.
+**Статус: NO-GO.**
 
 Файлы:
 
-- `BQG_MUTUAL_INFORMATION_ASYMPTOTIC_RESULT.md`
-- `scripts/bqg_mutual_information_asymptotic_gate.py`
 - `BQG_GAPPED_DEFORMATION_DISTANCE_NOGO.md`
 - `scripts/bqg_gapped_distance_nogo_gate.py`
 
 ---
 
-# 7. Local information conductance and additive metric
+# 28. Local QFI conductance and additive resistance metric
 
-Для edge $e=(ij)$ вводим relative twist generator
+Для edge $e=(ij)$ вводится relative twist
 
 $$
-\boxed{K_e=\frac{Z_i-Z_j}{2}.}
+K_e=\frac{Z_i-Z_j}{2}.
 $$
 
-Relative-twist QFI conductance:
+Local quantum-information conductance:
 
 $$
 \boxed{g_e^{\rm QFI}=\frac14F_Q(\rho_e,K_e).}
 $$
 
-Critical reference scale:
+Critical reference:
 
 $$
-\boxed{
-F_{Q,*}=\frac{32}{\pi^2+4},
-\qquad
-g_*=\frac{8}{\pi^2+4}.
-}
+\boxed{F_{Q,*}=\frac{32}{\pi^2+4},}
 $$
 
-Edge resistance length:
+$$
+\boxed{g_*=\frac{8}{\pi^2+4}.}
+$$
+
+Resistance length:
 
 $$
 \boxed{\ell_e=\ell_*\frac{g_*}{g_e}.}
 $$
 
-Network distance:
+Network metric:
 
 $$
 \boxed{d(i,j)=\min_{\gamma:i\to j}\sum_{e\in\gamma}\ell_e.}
 $$
 
-На chain/tree additivity along geodesics exact. Один и тот же rule применяется к critical и gapped phases.
+В chain/tree additivity along geodesics exact.
 
-Файлы:
+**Статус additive metric class: PROVED mathematically.**
 
-- `BQG_LOCAL_INFORMATION_RESISTANCE_METRIC.md`
-- `scripts/bqg_local_information_resistance_gate.py`
+**QFI choice as unique fundamental BQG metric source: CANDIDATE.**
+
+Дополнительный result:
+
+$$
+\boxed{
+\rho_{ij}\text{ alone does not uniquely select a spatial metric functional.}
+}
+$$
+
+**Статус: NO-GO на uniqueness from static local state alone.**
 
 ---
 
-# 8. Exact QFI-weighted spectral dimension calibration
+# 29. QFI-weighted spectral dimension
 
-Weighted Laplacian:
+Weighted graph Laplacian:
 
 $$
-\boxed{(L_g)_{ij}=\delta_{ij}\sum_k g_{ik}-g_{ij}.}
+(L_g)_{ij}=\delta_{ij}\sum_k g_{ik}-g_{ij}.
 $$
 
 Return probability:
 
 $$
-\boxed{P(\tau)=\frac1N\operatorname{Tr}e^{-\tau L_g}.}
+P(\tau)=\frac1N\operatorname{Tr}e^{-\tau L_g}.
 $$
 
 Spectral dimension:
@@ -397,11 +1183,11 @@ $$
 
 $$
 \boxed{
-P_D(\tau)=\left[e^{-2g\tau}I_0(2g\tau)\right]^D
+P_D(\tau)=\left[e^{-2g\tau}I_0(2g\tau)\right]^D.
 }
 $$
 
-и
+И
 
 $$
 \boxed{
@@ -409,13 +1195,15 @@ d_s^{(D)}(\tau)=4Dg\tau\left[1-\frac{I_1(2g\tau)}{I_0(2g\tau)}\right].
 }
 $$
 
-Therefore
+Следовательно
 
 $$
 \boxed{\lim_{\tau\to\infty}d_s^{(D)}=D.}
 $$
 
-При dimensionless time $u=g\tau$ conductance исчезает, поэтому quantum phase меняет diffusion scale, но не dimension фиксированной topology.
+При $u=g\tau$ conductance меняет diffusion scale, но не dimension fixed topology.
+
+**Статус: PROVED calibration theorem.**
 
 Файлы:
 
@@ -424,49 +1212,72 @@ $$
 
 ---
 
-# 9. Branching topology control
+# 30. Branching topology discriminator
 
-Для infinite 3-regular Bethe lattice
-
-$$
-\boxed{\lambda_0=3-2\sqrt2>0}
-$$
-
-и
+Для infinite 3-regular Bethe lattice:
 
 $$
-P_{\rm Bethe}(\tau)\sim A\tau^{-3/2}e^{-g\lambda_0\tau}.
+\lambda_0=3-2\sqrt2>0,
 $$
 
-Hence
+$$
+P(\tau)\sim A\tau^{-3/2}e^{-g\lambda_0\tau}.
+$$
+
+Поэтому
 
 $$
-\boxed{d_s^{\rm Bethe}(\tau)=2g\lambda_0\tau+3+o(1)\to\infty.}
+\boxed{d_s(\tau)=2g\lambda_0\tau+3+o(1)\to\infty.}
 $$
 
 То есть exponential branching не маскируется под finite-dimensional Euclidean geometry.
 
+**Статус: PROVED asymptotic topology control.**
+
 ---
 
-# 10. Первый topology-free emergence gate
+# 31. Topology-free surrogate gate: честный отрицательный результат
 
-Теперь cubic/square/chain topology удалена из generator полностью.
+Первый unlabeled BQG-inspired generator использовал только:
 
-Minimal BQG-inspired surrogate использует только:
+- max valence 4;
+- free-valence preference;
+- local loop closure;
+- no coordinates;
+- no target dimension;
+- no spectral feedback.
 
-1. maximum valence $4$;
-2. preference for free valence;
-3. local loop closure within graph distance $\le2$;
-4. probability $p_2$ второго локального edge;
-5. no coordinate labels;
-6. no target dimension;
-7. no spectral feedback.
+Получено:
 
-Это **SURROGATE / CANDIDATE graph dynamics**, не fundamental BQG constraint.
+$$
+N=150:\quad d_s\approx1.316\pm0.106,
+$$
 
-Для topology gate используется homogeneous critical QFI conductance $g_*$, чтобы изолировать topology. Uniform $g$ лишь rescale diffusion time и не меняет plateau value.
+$$
+N=300:\quad d_s\approx1.226\pm0.031,
+$$
 
-Automatic plateau detector заранее калиброван на known 1D/2D lattices и затем frozen.
+$$
+N=500:\quad d_s\approx1.232\pm0.030.
+$$
+
+Robustness scan по
+
+$$
+p_2\in\{0.25,0.40,0.50,0.60,0.75\}
+$$
+
+не дал robust $d_s\approx3$.
+
+Следовательно:
+
+$$
+\boxed{
+\textbf{four-valence + local loop closure insufficient to derive }d_s\approx3.
+}
+$$
+
+**Статус: NO-GO для minimal surrogate rule.**
 
 Файлы:
 
@@ -475,255 +1286,606 @@ Automatic plateau detector заранее калиброван на known 1D/2D 
 
 ---
 
-# 11. Topology-free result: НЕ 3D
+# 32. Physical graph-transition kernel: как новая ветка соединяется со старой
 
-Для шести fixed seeds:
+Новая emergence ветка не должна использовать arbitrary graph-growth probabilities.
 
-### $N=150$
-
-$$
-\boxed{d_s^{\rm plateau}\approx1.316\pm0.106}
-$$
-
-valid in $5/6$ realizations.
-
-### $N=300$
-
-$$
-\boxed{d_s^{\rm plateau}\approx1.226\pm0.031}
-$$
-
-valid in $5/6$ realizations.
-
-### $N=500$
-
-$$
-\boxed{d_s^{\rm plateau}\approx1.232\pm0.030}
-$$
-
-valid in $6/6$ realizations.
-
-The $N=300$ and $N=500$ values are stable within ensemble spread.
-
-Thus the first topology-free surrogate does **not** drift toward $3$ over the tested size range.
-
-Its average transitivity is around
-
-$$
-T\approx0.20-0.21,
-$$
-
-and mean degree approaches
-
-$$
-\langle k\rangle\approx3,
-$$
-
-so it is not simply a tree.
-
----
-
-# 12. Matched random null
-
-Matched null preserves:
-
-- max valence $4$;
-- same growth schedule;
-- same free-valence preference;
-- same second-edge probability;
-
-but removes local closure preference.
-
-For $N=300$:
-
-$$
-\boxed{0/12}
-$$
-
-null realizations produced an accepted finite plateau under the same frozen detector.
-
-The null has almost the same mean degree
-
-$$
-\langle k\rangle\approx2.97
-$$
-
-but transitivity only
-
-$$
-T\approx0.011.
-$$
-
-So local closure changes diffusion geometry qualitatively, but still does not produce $d_s\approx3$.
-
----
-
-# 13. Robustness scan
-
-We do **not** tune $p_2$ to dimension.
-
-Scan:
-
-$$
-p_2\in\{0.25,0.40,0.50,0.60,0.75\}.
-$$
-
-Whenever a stable plateau is detected, its ensemble mean remains approximately below
-
-$$
-\boxed{d_s\lesssim1.4}
-$$
-
-for the tested sizes and seeds.
-
-No robust $d_s\approx3$ window appears.
-
-Therefore the current result is a genuine falsification of the minimal surrogate rule, not a failed parameter search.
-
----
-
-# 14. First topology-free no-go
-
-The tested local rule is
+Finite master theorem уже задаёт правильный object:
 
 $$
 \boxed{
-\text{four-valent capacity}
-+
-\text{local free-valence attachment}
-+
-\text{local loop closure}.
+K_T(\Gamma',\Gamma)
+=\Pi_{\Gamma'}e^{-TM}\Pi_\Gamma.
 }
 $$
 
-It generates a nontrivial low-dimensional diffusion geometry, but not 3D.
-
-Hence:
+Physical graph-sector block:
 
 $$
 \boxed{
-\textbf{four-valence plus local loop closure is insufficient to derive }d_s\approx3.
+K_{\rm phys}(\Gamma',\Gamma)
+=\Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma.
 }
 $$
 
-This is the first topology-free no-go of the emergence program.
-
-It does **not** prove that BQG cannot produce three dimensions. It proves that the present minimal surrogate cannot.
-
----
-
-# 15. What is missing
-
-The surrogate generator does not yet include:
-
-- full physical projector;
-- graph-changing Hamiltonian/master constraints;
-- amplitudes from physical history dynamics;
-- self-consistent edge-dependent QFI weights;
-- interference between gluing histories;
-- Pachner-like move amplitudes derived from BQG;
-- a dynamical penalty selecting polynomial-growth/manifold-like graphs.
-
-Therefore the central missing object is no longer another graph-growth heuristic.
-
-It is a **physical graph-transition kernel**.
-
----
-
-# 16. New true frontier: derive graph dynamics from BQG itself
-
-The next target is
+Microstate amplitude:
 
 $$
 \boxed{
-\mathcal A(G\to G')
-\propto
-\langle G'|\Pi_{\rm phys}|G\rangle
+\mathcal A^{\rm phys}_{\beta\alpha}
+=\langle\Gamma',\beta|P_{\rm phys}|\Gamma,\alpha\rangle.
 }
 $$
 
-or an equivalent effective graph-changing kernel derived from constraints/history dynamics.
-
-Then the pipeline becomes
+Short-$T$ coupling:
 
 $$
 \boxed{
-\text{fundamental BQG graph amplitudes}
-\to
-\text{graph-history ensemble}
-\to
-\text{self-consistent local }\rho_{ij}
-\to
-\text{QFI conductances}
-\to
-L_g
-\to
-P(\tau)
-\to
-d_s(\tau).
+\langle\beta|M|\alpha\rangle
+=\sum_{AB}G^{AB}\langle C_A\beta|C_B\alpha\rangle.
 }
 $$
 
-Only if this physical ensemble yields a robust plateau near
+Existing K5/Peter–Weyl regulator already has graph-changing support; about $44.4\%$ of one frozen commutator-column norm lies in sectors with $j=0$ links after cylindrical reduction.
+
+Но:
 
 $$
-\boxed{d_s^{IR}\approx3}
+\boxed{44.4\%\neq|\mathcal A^{\rm phys}|^2.}
 $$
 
-without coordinate labels, cubic connectivity or spectral fitting will we have a serious emergent-3D result.
+**Статус finite projector formula: PROVED.**
+
+**Numerical physical K5 graph-transition matrix: OPEN.**
+
+Файлы:
+
+- `BQG_PHYSICAL_GRAPH_TRANSITION_KERNEL.md`
+- `scripts/bqg_projector_graph_transition_gate.py`
+- `scripts/bqg_k5_graph_sector_master_shell.py`
 
 ---
 
-# 17. Current strongest statements
+# 33. Cosmology: exact local result и conformal obstruction
 
-1. $Q=i[D_{12},D_{23}]$.
-2. $Q_{\rm phys}=(\sqrt3/4)\sigma_y$.
-3. Local isotropy iff oriented volume is sharp.
-4. $\mathcal A_p=4(\Delta Q)^2$.
-5. Reduced two-node matching selects Bell-type intertwiner entanglement.
-6. Current many-node chain maps exactly to free fermions.
-7. Critical $I_0(r)\sim\kappa/r$.
-8. Staggered oriented-volume deformation opens exact gap $2|m|$.
-9. Gapped $I_m(r)\sim Br^{-1}e^{-2r/\xi}$.
-10. No universal global scalar distance $d=f(I_{ij})$ works in both phases.
-11. Relative-twist QFI defines a phase-robust local conductance rule.
-12. Resistance composition gives an additive network metric.
-13. Homogeneous QFI-weighted hypercubic graphs satisfy $d_s\to D$ exactly.
-14. Quantum phase rescales diffusion time but not spectral dimension of fixed topology.
-15. Bethe branching has no finite IR spectral-dimension plateau.
-16. **Topology-free valence-4 + local-loop surrogate yields $d_s\approx1.23$, not $3$.**
-17. Therefore minimal local gluing heuristics are insufficient; actual graph-changing BQG dynamics is now the decisive missing layer.
-
----
-
-# 18. What is NOT proved
-
-We do not claim that:
-
-- $H_{\rm glue}$ is already derived from fundamental BQG constraints;
-- relative-twist QFI is the unique fundamental metric source;
-- $K_{ij}$ is already derived from the physical projector;
-- $\ell_*$ is derived from first principles;
-- continuum space has been derived as 3D;
-- the topology-free surrogate is the true BQG graph dynamics;
-- causal Lorentzian propagation has been derived;
-- Einstein equations have been obtained;
-- $G,c,\hbar$ have been derived from binary microphysics.
-
-Key caveat:
+Finite relational source дал exact local 1PI shape action:
 
 $$
 \boxed{
-\text{exact mathematics of a reduced/surrogate model}
-\neq
-\text{proof that it is fundamental dynamics}.
+\Gamma_{\rm shape}(s)
+=s\operatorname{artanh}s+\frac12\log(1-s^2).
+}
+$$
+
+Expansion:
+
+$$
+\Gamma_{\rm shape}
+=\frac{s^2}{2}+\frac{s^4}{12}+\frac{s^6}{30}+\cdots.
+$$
+
+Но $X/Z$ local metric tangents trace-free:
+
+$$
+\operatorname{Tr}(g_0^{-1}M_X)=0,
+$$
+
+$$
+\operatorname{Tr}(g_0^{-1}M_Z)=0.
+$$
+
+Следовательно local q=2 shape carrier не содержит нужного conformal/volume scalar.
+
+**Статус action: PROVED finite.**
+
+**Статус absence of local conformal scalar in X/Z carrier: NO-GO.**
+
+Candidate next scalar carrier:
+
+- collective $j=1$ volume sector.
+
+Файлы:
+
+- `Q2_FIRST_SCALAR_EFFECTIVE_ACTION.md`
+- `Q2_COLLECTIVE_SCALAR_CARRIER.md`
+- `COLLECTIVE_J1_VOLUME_DYNAMICS.md`
+
+Physical cosmology:
+
+$$
+\boxed{\text{OPEN}.}
+$$
+
+---
+
+# 34. Matter, photon and lensing
+
+Даже physical metric kernel недостаточен без theory-specific matter coupling.
+
+Open requirements:
+
+- conserved matter source coupling;
+- dynamical Maxwell kernel $\Gamma^{(2)}_{AA}$;
+- massless deconfined photon pole;
+- common causal IR cone;
+- one scalar metric response for dynamics + weak/strong/CMB lensing + Fermat phase + GW wave optics.
+
+**Статус: OPEN.**
+
+Файлы:
+
+- `BQG_SCALAR_RESPONSE_TO_MATTER.md`
+- `UNIFIED_PHYSICAL_COSMOLOGY_INTERFERENCE.md`
+- `physicalization_gates.json`
+
+---
+
+# 35. 2T extension
+
+Potential two-time embedding требует реальной structure
+
+$$
+Q_{11}\sim X^2,
+\qquad
+Q_{12}\sim X\cdot P,
+\qquad
+Q_{22}\sim P^2,
+$$
+
+с $Sp(2,\mathbb R)$ closure.
+
+Пока не доказаны:
+
+- exact $Sp(2,\mathbb R)$ closure;
+- $(d,2)$ kinetic signature;
+- ghost-free 2T $\to$ 1T reduction.
+
+**Статус: OPEN.**
+
+Файлы:
+
+- `README_2T_FRONTIER.md`
+- `BQG_2T_ALGEBRA_GATE.md`
+- `BQG_2T_CLOSURE_SCAN.md`
+- `BQG_2T_CONSTRAINT_INVENTORY.md`
+
+---
+
+# 36. Shadow action / black-hole frontier
+
+Цель:
+
+$$
+(A,\Theta,g_{\mu\nu})
+\to S_{\rm shadow}.
+$$
+
+Затем spherical solution должна дать
+
+$$
+\boxed{h_{\rm BQG}(r)}
+$$
+
+из equations, а не из ansatz.
+
+Только затем допустимо вычислять
+
+$$
+\Delta T_H,
+\qquad
+\Delta r_{\rm ph},
+\qquad
+\Delta\Omega_{\rm QNM}.
+$$
+
+Старый static-spherical reduced branch дал no-go:
+
+$$
+\boxed{h_{\rm BQG}=0}
+$$
+
+в том конкретном ansatz/sector.
+
+**Статус этого reduced branch: NO-GO.**
+
+**General shadow-action derivation: OPEN.**
+
+---
+
+# 37. Machine-readable truth
+
+README не является последним судьёй.
+
+Основные ledgers:
+
+- `theory_gates.json`
+- `physicalization_gates.json`
+- `depth6_frontier.json`
+
+Verifiers:
+
+- `scripts/verify_theory_gates.py`
+- `scripts/verify_physicalization_gates.py`
+- `scripts/verify_depth6_frontier.py`
+
+Если prose расходится с machine truth, приоритет имеет воспроизводимый certificate/ledger.
+
+---
+
+# 38. Единая актуальная карта статусов
+
+## 38.1. PROVED
+
+- q=2 exact Walsh tetrahedral carrier;
+- exact q=2 dimension-three fixed point;
+- logical metric Jacobian rank two;
+- active + no-link exact graph-link representation;
+- finite master-kernel theorem $\ker M=\cap\ker C_A$;
+- oriented-volume commutator identity;
+- $Q_{\rm phys}=(\sqrt3/4)\sigma_y$;
+- anisotropy-volume identity $\mathcal A_p=4(\Delta Q)^2$;
+- exact two-node reduced spectrum;
+- exact three-node reduced information hierarchy;
+- XX/free-fermion mapping;
+- critical/gapped asymptotics in reduced chain;
+- scalar-MI incompatibility theorem;
+- additive resistance-metric theorem for positive edge conductances;
+- hypercubic QFI spectral-dimension calibration;
+- Bethe-lattice asymptotic discriminator;
+- six-dimensional quartic TT quotient;
+- six-Wilson extractor full rank;
+- Feshbach/block-Krylov identities;
+- algebraic GW observable translator.
+
+## 38.2. FINITE
+
+- selected global PL 16-cell gluing;
+- Plebanski/Urbantke/Einstein reconstruction controls;
+- Regge/EH finite continuum-direction controls;
+- L=6 held-out Regge prediction;
+- Peter–Weyl graph-changing constraint stack;
+- HDA scaling controls;
+- DeWitt/ADM finite controls;
+- depth-4 closure;
+- depth-6 structural closure and several numerical irrep closures;
+- finite relational-history positive control;
+- finite metric-source generating functional positive control;
+- reduced TT propagator/vacuum controls;
+- topology-free surrogate ensembles;
+- finite graph-transition projector bridge selftest.
+
+## 38.3. CANDIDATE
+
+- fully symmetric Peter–Weyl blocking as unique microscopic RG rule;
+- reduced $H_{\rm glue}$ as fundamental BQG dynamics;
+- staggered oriented-volume mass as fundamental deformation;
+- QFI relative-twist conductance as unique fundamental spatial metric source;
+- resistance length normalization $\ell_*$ from first principles;
+- collective $j=1$ scalar carrier;
+- graph-history interpretation of finite-$T$ master heat kernel.
+
+## 38.4. NO-GO
+
+- local pairwise scalar distance $d=f(I_{ij})$ universal across critical/gapped phases;
+- unique spatial metric from static $\rho_{ij}$ alone;
+- valence-4 + local-loop-closure surrogate as sufficient mechanism for $d_s\approx3$;
+- promotion of constraint resolvent spectral parameter $z$ to physical $\omega$ without physical history;
+- local X/Z q=2 shape carrier as sufficient conformal scalar;
+- previous static-spherical ansatz yielding nonzero BQG black-hole hair;
+- treating $H_0$-nullity as master-kernel nullity.
+
+## 38.5. OPEN
+
+- remaining numerical depth-6 master witnesses $[3,2]$, $[3,1,1]$, $[2,2,1]$;
+- all-depth/refinement theorem;
+- continuum physical projector / rigging map;
+- theory-specific physical clock/history;
+- connected interblock metric cumulants;
+- physical $\Gamma[g]$;
+- physical interacting $K_{TT}(\omega,\mathbf k)$;
+- microscopic physical six-Wilson vector;
+- one common physical scale;
+- self-consistent irregular-graph QFI weights from physical histories;
+- actual numerical K5 graph-sector $\Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma$ blocks;
+- physical Maxwell sector;
+- background and scalar cosmology;
+- universal matter/lensing response;
+- 2T closure;
+- derived shadow action and non-ansatz $h_{\rm BQG}(r)$;
+- blind experimental comparison.
+
+---
+
+# 39. Девять обязательных physicalization gates
+
+Machine ledger `physicalization_gates.json` требует закрыть:
+
+1. `PHYSICAL_PROJECTOR_HISTORY`;
+2. `CONNECTED_INTERBLOCK_HISTORY`;
+3. `PHYSICAL_TT_KERNEL`;
+4. `IR_SIX_VECTOR`;
+5. `COMMON_SCALE_CALIBRATION`;
+6. `DYNAMICAL_MAXWELL_KERNEL`;
+7. `PHYSICAL_BACKGROUND_COSMOLOGY`;
+8. `PHYSICAL_SCALAR_COSMOLOGY`;
+9. `LENSING_DYNAMICS_CLOSURE`.
+
+Пока эти gates не закрыты, нельзя заявлять завершённую predictive quantum gravity.
+
+---
+
+# 40. Что является настоящим следующим рубежом
+
+После объединения старой и новой веток frontier больше не должен определяться одним красивым новым proxy.
+
+Следующие задачи идут параллельно, но имеют разный приоритет.
+
+## 40.1. Computational structural priority
+
+Закрыть remaining numerical depth-6 witnesses:
+
+$$
+[3,2],\quad[3,1,1],\quad[2,2,1].
+$$
+
+После этого честно проверить:
+
+$$
+\boxed{\ker M^{(d=6)}=\operatorname{span}\{|0\rangle\}?}
+$$
+
+## 40.2. Main mathematical priority
+
+Вместо бесконечного brute-force по depth:
+
+$$
+\boxed{\text{derive refinement / induction theorem}.}
+$$
+
+Цель:
+
+$$
+P_{\rm phys}^{(d)}\to P_{\rm phys}^{\rm continuum}.
+$$
+
+## 40.3. Main physical priority
+
+Построить theory-specific physical history:
+
+$$
+\boxed{
+P_{\rm phys}
+\to \text{relational history}
+\to Z[J_g]
+\to W[J_g]
+\to \Gamma[g].
+}
+$$
+
+## 40.4. Emergence priority
+
+Не использовать новый hand-built graph generator.
+
+Нужно получить реальные physical graph-sector amplitudes:
+
+$$
+\boxed{
+A_{\Gamma'\Gamma}
+=\Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma.
+}
+$$
+
+Затем:
+
+$$
+\boxed{
+\text{physical graph histories}
+\to \rho_{ij}
+\to g_{ij}^{\rm QFI}
+\to L_g
+\to P(\tau)
+\to d_s(\tau).
+}
+$$
+
+Только если $d_s\approx3$ возникнет **из projector-weighted histories без topology-by-hand**, это будет сильный emergent-3D result.
+
+---
+
+# 41. Короткая формулировка BQG сегодня
+
+> **Binary Quantum Gravity — это воспроизводимая discrete quantum-gravity candidate architecture, в которой binary q=2 microstructure даёт exact tetrahedral geometric carrier и analytical dimension-three refinement fixed point; SU(2)/Peter–Weyl sectors реализуют local quantum geometry и graph-changing dynamics; finite Plebanski, Regge, DeWitt and HDA gates проверяют gravitational structure; master constraint задаёт finite physical projector; relational positive controls показывают легальную дорогу к $Z[J]\to W[J]\to\Gamma[g]$; новая emergence-ветка связывает oriented volume, entanglement, local QFI conductance и spectral dimension. При этом continuum physical projector, theory-specific physical history, interacting graviton kernel, physical six-Wilson vector, common scale, cosmology, Maxwell sector и experimental confirmation остаются OPEN.**
+
+Ещё короче:
+
+$$
+\boxed{
+\text{binary information}
+\to \text{quantum geometry}
+\to \text{finite gravity constraints}
+\to \text{emergent network geometry}
+\to \text{unfinished physical continuum}.
 }
 $$
 
 ---
 
-# 19. Canonical principle
+# 42. Где мы реально находимся
 
-> **Сначала уменьшить задачу симметрией. Затем распознать точную математическую структуру. Потом решить её аналитически. Отрицательные результаты фиксировать так же строго, как положительные. И только если exact путь закрыт — считать численно.**
+Мы уже далеко прошли путь
 
-Репозиторий: `Shtenco/binary_quantum_theory`
+$$
+\text{idea}
+\to \text{microstructure}
+\to \text{local geometry}
+\to \text{global finite geometry}
+\to \text{graph-changing constraints}
+\to \text{large finite habitats}
+\to \text{master-projector machinery}
+\to \text{information-geometry diagnostics}.
+$$
+
+Но вертикальная граница остаётся здесь:
+
+$$
+\boxed{
+\underbrace{
+\text{binary microstructure}
+\to
+\text{finite quantum geometry}
+\to
+\text{finite gravity dynamics}
+}_{\text{сильная построенная часть}}
+\quad\Big|\quad
+\underbrace{
+\text{refinement}
+\to
+P_{\rm phys}^{\rm continuum}
+\to
+\text{physical history}
+\to
+\Gamma[g]
+\to
+K_{TT}
+\to
+\text{prediction}
+}_{\text{главная открытая физика}}
+}
+$$
+
+Новая QFI/spectral-dimension ветка не отменяет эту границу; она даёт дополнительный инструмент для проверки того, какая spatial geometry возникает **после** physical graph dynamics.
+
+---
+
+# 43. Что может убить теорию
+
+BQG должна быть отвергнута или серьёзно пересмотрена, если:
+
+- refinement не стабилизирует physical sector;
+- full depth sequence порождает uncontrolled new master kernels;
+- HDA anomaly не исчезает в controlled limit;
+- physical inner product нельзя сделать положительным;
+- theory-specific physical history не существует;
+- physical TT kernel не имеет Einstein/Fierz–Pauli massless pole;
+- возникают unavoidable ghost/tachyon modes;
+- physical six-vector не имеет regulator-independent limit;
+- разные observables требуют разных fitted scales;
+- scalar/matter/photon sectors нельзя согласовать с одним geometry/history;
+- projector-derived graph histories не имеют controlled continuum geometry;
+- blind external data исключают frozen predictions.
+
+Это часть научной ценности проекта, а не слабость.
+
+---
+
+# 44. Канонические источники
+
+## Structural status
+
+- `THEORY_STATUS.md`
+- `CANONICAL_THEORY_PACKAGE.md`
+- `theory_gates.json`
+
+## Physicalization
+
+- `MASTER_CONSTRAINT_PHYSICAL_PROJECTOR.md`
+- `Q2_RELATIONAL_HISTORY_PROJECTOR.md`
+- `Q2_RELATIONAL_METRIC_SOURCE_GENERATING_FUNCTIONAL.md`
+- `physicalization_gates.json`
+
+## Depth-6
+
+- `depth6_frontier.json`
+- `BQG_DEPTH6_2111_MASTER_CLOSED_2026-10-01.json`
+
+## Emergence / information geometry
+
+- `BQG_MINIMAL_ENTANGLEMENT_VOLUME_RESULT.md`
+- `BQG_TWO_NODE_REDUCED_GLUING_RESULT.md`
+- `BQG_THREE_NODE_REDUCED_CHAIN_RESULT.md`
+- `BQG_MANY_NODE_FREE_FERMION_MAPPING.md`
+- `BQG_MUTUAL_INFORMATION_ASYMPTOTIC_RESULT.md`
+- `BQG_GAPPED_DEFORMATION_DISTANCE_NOGO.md`
+- `BQG_LOCAL_INFORMATION_RESISTANCE_METRIC.md`
+- `BQG_QFI_SPECTRAL_DIMENSION_RESULT.md`
+- `BQG_TOPOLOGY_FREE_EMERGENCE_RESULT.md`
+- `BQG_PHYSICAL_GRAPH_TRANSITION_KERNEL.md`
+
+## Future observables
+
+- `S4_TT_QUARTIC_COMPLETE_BASIS.md`
+- `C6_TO_TT_WILSON_COEFFICIENTS.md`
+- `TT_TO_REAL_PHYSICS_OBSERVABLES.md`
+- `PREDICTIONS_AND_EXPERIMENTAL_TESTS.md`
+
+---
+
+# 45. Последнее правило
+
+Любое новое утверждение должно отвечать на пять вопросов:
+
+1. theorem или numerical evidence?
+2. finite или continuum?
+3. constraint object или physical observable?
+4. algebraic map или physical prediction?
+5. internal consistency или experimental confirmation?
+
+Если ответ неясен, статус понижается.
+
+Источник истины:
+
+$$
+\boxed{
+\text{код}
++\text{certificate}
++\text{machine ledger}
++\text{reproducible gate}
+>\text{красивая формулировка README}.
+}
+$$
+
+---
+
+# Финальная объединённая формула проекта
+
+$$
+\boxed{
+\begin{array}{c}
+\mathbb Z_2^2\\
+\downarrow\\
+\text{Walsh tetrahedron}\\
+\downarrow\\
+d_*=3\\
+\downarrow\\
+SU(2)\text{ physical nodes}\\
+\downarrow\\
+\text{oriented volume + shape geometry}\\
+\downarrow\\
+\text{Peter--Weyl graph-changing dynamics}\\
+\downarrow\\
+\text{Plebanski / Regge / HDA controls}\\
+\downarrow\\
+M\to P_{\rm phys}\\
+\downarrow\\
+\text{relational histories}\\
+\downarrow\\
+\text{entanglement / QFI network geometry}\\
+\downarrow\\
+L_g\to d_s\\
+\downarrow\\
+Z[J_g]\to W[J_g]\to\Gamma[g]\\
+\downarrow\\
+K_{TT}(\omega,\mathbf k)\\
+\downarrow\\
+(c_1,\ldots,c_6)_{\rm IR}\\
+\downarrow\\
+\text{one-scale frozen observables}\\
+\downarrow\\
+\text{experiment}
+\end{array}
+}
+$$
+
+Верхняя и средняя части этой лестницы уже содержат множество exact и finite results.
+
+Нижняя часть — **главная открытая физика BQG**.
