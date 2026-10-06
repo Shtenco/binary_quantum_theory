@@ -5,13 +5,11 @@
 
 ---
 
-# 1. Новый основной вопрос
+# 1. Главный вопрос
 
-Главный фронтир BQG теперь формулируется так:
+> **Может ли геометрия, расстояние и затем гравитация возникать из физической структуры бинарной квантовой информации?**
 
-> **может ли геометрия, расстояние и затем гравитация возникать из физической структуры бинарной квантовой информации?**
-
-Рабочая цепочка:
+Текущая рабочая цепочка:
 
 $$
 \boxed{
@@ -35,31 +33,29 @@ $$
 }
 $$
 
-Методологический принцип проекта:
+Канонический метод проекта:
 
 $$
 \boxed{\text{симметрия сначала, вычисления потом}.}
 $$
 
-Мы сначала редуцируем Hilbert space, затем ищем exact algebraic structure и только после этого считаем численно.
+Мы сначала редуцируем Hilbert space, затем ищем exact algebraic structure, затем asymptotics, и только если это невозможно — используем тяжёлую численность.
 
 ---
 
-# 2. Почему мы сменили фронтир
+# 2. Почему новая ветка
 
 Минимальная static spherical shadow-ветка дала полезный no-go: в заявленном секторе собственная ненулевая BQG hair-поправка не возникла.
 
-Поэтому следующий физический шаг — не придумывать новую функцию метрики, а исследовать происхождение самой геометрии.
+Поэтому новый фронтир — не подгонять функцию метрики, а спросить, откуда сама геометрия может появиться.
 
-Старые SU(2)/Peter-Weyl, graph-changing constraints, HDA, Regge, Plebanski/Urbantke, TT/EFT, cosmology и 2T/Weyl файлы остаются доказательной библиотекой, но больше не задают канонический порядок основной ветки.
+Старые SU(2)/Peter-Weyl, graph-changing constraints, HDA, Regge, Plebanski/Urbantke, TT/EFT, cosmology и 2T/Weyl файлы остаются библиотекой результатов, но не задают канонический порядок новой emergence-ветки.
 
 ---
 
 # 3. Один physical node: exact local theorem
 
-Берём четыре spin-$1/2$.
-
-После SU(2) Gauss / total-spin-zero reduction:
+Для четырёх spin-$1/2$ после SU(2) Gauss / total-spin-zero reduction:
 
 $$
 \boxed{
@@ -69,19 +65,13 @@ $$
 }
 $$
 
-Используем basis
+В basis $|s\rangle,|t\rangle$ oriented volume
 
 $$
-|s\rangle,\qquad |t\rangle.
+Q_{123}=\epsilon_{abc}J_1^aJ_2^bJ_3^c
 $$
 
-Определим oriented volume / scalar chirality
-
-$$
-Q_{123}=\epsilon_{abc}J_1^aJ_2^bJ_3^c.
-$$
-
-Точно:
+удовлетворяет точному operator identity
 
 $$
 \boxed{
@@ -90,14 +80,10 @@ Q_{123}
 }
 $$
 
-То есть oriented volume возникает из некоммутативности двух pair-geometry observables.
-
-В physical basis:
+В physical sector:
 
 $$
-\boxed{
-Q_{123}^{\rm phys}=\frac{\sqrt3}{4}\sigma_y.
-}
+\boxed{Q_{123}^{\rm phys}=\frac{\sqrt3}{4}\sigma_y.}
 $$
 
 Eigenstates:
@@ -106,29 +92,11 @@ $$
 \boxed{
 |\Psi_\pm\rangle
 =\frac{|s\rangle\pm i|t\rangle}{\sqrt2},
-\qquad
-q_\pm=\pm\frac{\sqrt3}{4}.
+\qquad q_\pm=\pm\frac{\sqrt3}{4}.
 }
 $$
 
-Для общего physical state
-
-$$
-|\Psi(\alpha,\phi)\rangle
-=\cos\alpha|s\rangle+e^{i\phi}\sin\alpha|t\rangle
-$$
-
-полная pair-spectrum isotropy возникает только при
-
-$$
-\boxed{
-\alpha=\frac\pi4,
-\qquad
-\phi=\frac\pi2\ \text{или}\ \frac{3\pi}{2}.
-}
-$$
-
-То есть isotropic states — ровно два volume eigenstates.
+Именно эти два states являются единственными pure pair-spectrum isotropic states.
 
 Если
 
@@ -137,15 +105,13 @@ $$
 =\sum_{i<j}\left(p_{ij}-\frac12\right)^2,
 $$
 
-то для любого чистого physical state выполняется
+то для любого pure physical state
 
 $$
-\boxed{
-\mathcal A_p=4(\Delta Q_{123})^2.
-}
+\boxed{\mathcal A_p=4(\Delta Q_{123})^2.}
 $$
 
-Следовательно:
+Следовательно
 
 $$
 \boxed{
@@ -164,7 +130,7 @@ $$
 
 ---
 
-# 4. Два physical nodes: exact reduced gluing
+# 4. Два physical nodes: reduced gluing
 
 Для двух локально редуцированных узлов
 
@@ -172,7 +138,7 @@ $$
 \dim\mathcal H_{AB}^{\rm red}=4.
 $$
 
-Три local shape projectors:
+Используем три local shape projectors
 
 $$
 P_{12}=\frac12(I+Z),
@@ -186,62 +152,42 @@ $$
 P_{14}=\frac12I-\frac{\sqrt3}{4}X-\frac14Z.
 $$
 
-Вводим reduced shape-matching penalty
+Candidate reduced shape-matching Hamiltonian:
 
 $$
 \boxed{
 H_{\rm glue}
-=\sum_a(P_a^{(A)}-P_a^{(B)})^2.
-}
-$$
-
-Он точно упрощается:
-
-$$
-\boxed{
-H_{\rm glue}
+=\sum_a(P_a^{(A)}-P_a^{(B)})^2
 =\frac32I-\frac34(X_AX_B+Z_AZ_B).
 }
 $$
 
-Спектр:
+Его spectrum:
 
 $$
-\boxed{
-\{0,\tfrac32,\tfrac32,3\}.
-}
+\boxed{\{0,\tfrac32,\tfrac32,3\}.}
 $$
 
 Unique zero-mismatch state:
 
 $$
-\boxed{
-|\Phi^+\rangle
-=\frac{|ss\rangle+|tt\rangle}{\sqrt2}.
-}
+\boxed{|\Phi^+\rangle=\frac{|ss\rangle+|tt\rangle}{\sqrt2}.}
 $$
 
-То есть exact shape matching выбирает maximally entangled intertwiner state.
-
-Локально:
+Локально
 
 $$
 \langle Q_A\rangle=\langle Q_B\rangle=0,
 $$
 
-но relationally:
+но relative orientation фиксирована:
 
 $$
-\boxed{
-Q_AQ_B|\Phi^+\rangle
-=-\frac3{16}|\Phi^+\rangle.
-}
+\boxed{Q_AQ_B|\Phi^+\rangle=-\frac3{16}|\Phi^+\rangle.}
 $$
 
-Таким образом геометрическая информация переходит из локальной ориентации в relative orientation correlation.
-
-**Статус spectrum/result: EXACT для явно заданного reduced Hamiltonian.**  
-**Статус $H_{\rm glue}$ как фундаментального BQG dynamics: CANDIDATE.**
+**Статус spectrum/result: EXACT для заданного reduced Hamiltonian.**  
+**Статус самого $H_{\rm glue}$ как фундаментальной BQG dynamics: CANDIDATE.**
 
 Файлы:
 
@@ -258,86 +204,28 @@ $$
 \dim\mathcal H_{ABC}^{\rm red}=8.
 $$
 
-Берём
+При
 
 $$
-H_3=H_{AB}+H_{BC}.
+H_3=H_{AB}+H_{BC}
 $$
 
-Точный spectrum:
+symmetry-neutral ground state даёт
 
 $$
-\boxed{
-3-\frac{3\sqrt2}{2}\quad(\deg=2),
-}
+\boxed{I(A:B)=I(B:C)\approx0.7982479266\ \text{bit},}
 $$
 
-$$
-\boxed{
-3\quad(\deg=4),
-}
-$$
-
-$$
-\boxed{
-3+\frac{3\sqrt2}{2}\quad(\deg=2).
-}
-$$
-
-Используем symmetry-neutral ground density matrix
-
-$$
-\rho_0=\frac{P_0}{2}.
-$$
-
-Nearest-neighbor pair spectra:
-
-$$
-\boxed{
-\operatorname{Spec}\rho_{AB}
-=\operatorname{Spec}\rho_{BC}
-=\left\{
-\frac{3-2\sqrt2}{8},\frac18,\frac18,\frac{3+2\sqrt2}{8}
-\right\}.
-}
-$$
-
-Отсюда
-
-$$
-\boxed{
-I(A:B)=I(B:C)\approx0.7982479266\ \text{bit}.
-}
-$$
-
-Для end-to-end pair:
-
-$$
-\boxed{
-\operatorname{Spec}\rho_{AC}
-=\left\{0,\frac14,\frac14,\frac12\right\},
-}
-$$
-
-поэтому
+а
 
 $$
 \boxed{I(A:C)=0.5\ \text{bit}.}
 $$
 
-Значит
+Следовательно
 
 $$
-\boxed{
-I(A:B)=I(B:C)>I(A:C).
-}
-$$
-
-Для любой strictly decreasing map $d=f(I)$:
-
-$$
-\boxed{
-d(A:B)=d(B:C)<d(A:C).}
+\boxed{I_{\rm nearest}>I_{\rm next-nearest}.}
 $$
 
 Volume correlations дают независимый discriminator:
@@ -351,12 +239,10 @@ $$
 $$
 
 $$
-\boxed{
-\langle Q_AQ_C\rangle=0.
-}
+\boxed{\langle Q_AQ_C\rangle=0.}
 $$
 
-То есть topology уже отражается в двух разных quantum-geometric correlation observables.
+То есть topology уже отражается в двух независимых quantum-geometric observables.
 
 **Статус: EXACT для reduced nearest-neighbor model.**
 
@@ -367,9 +253,9 @@ $$
 
 ---
 
-# 6. Главный новый результат: вся many-node chain решается аналитически
+# 6. Вся many-node chain решается аналитически
 
-Текущий reduced $M$-node Hamiltonian:
+Для $M$ узлов
 
 $$
 \boxed{
@@ -382,13 +268,7 @@ H_M
 }
 $$
 
-Глобальная локальная rotation на $\pi/2$ вокруг logical $X$ переводит
-
-$$
-Z\to\pm Y.
-$$
-
-Поэтому
+После локальной rotation:
 
 $$
 \boxed{
@@ -398,9 +278,9 @@ H_M\simeq
 }
 $$
 
-То есть текущая reduced BQG chain **точно унитарно эквивалентна open XX model**.
+То есть reduced BQG chain точно унитарно эквивалентна open XX model.
 
-После Jordan-Wigner:
+Jordan-Wigner даёт free fermions:
 
 $$
 \boxed{
@@ -411,15 +291,7 @@ H_M
 }
 $$
 
-Задача становится free-fermionic.
-
-Single-particle momenta:
-
-$$
-k_n=\frac{n\pi}{M+1}.
-$$
-
-Exact energies:
+Single-particle spectrum:
 
 $$
 \boxed{
@@ -428,51 +300,16 @@ $$
 }
 $$
 
-Full many-body spectrum:
+Поэтому exponential diagonalization $2^M\times2^M$ не нужна.
 
-$$
-\boxed{
-E
-=\frac32(M-1)
-+\sum_{n=1}^{M}\varepsilon_nN_n,
-\qquad N_n\in\{0,1\}.
-}
-$$
-
-Следовательно exponential diagonalization $2^M\times2^M$ не нужна.
-
----
-
-# 7. Exact parity effect and gap
-
-Для odd $M$ существует exact zero mode:
-
-$$
-\boxed{
-M\ \text{odd}\Rightarrow g_0=2.
-}
-$$
-
-Это объясняет двухкратную ground degeneracy при $M=3$.
-
-Для even $M$:
-
-$$
-\boxed{
-M\ \text{even}\Rightarrow g_0=1.
-}
-$$
-
-Finite-size gap для even $M$:
+Gap:
 
 $$
 \boxed{
 \Delta_M^{\rm even}
-=3\sin\left(\frac{\pi}{2(M+1)}\right).
+=3\sin\left(\frac{\pi}{2(M+1)}\right),
 }
 $$
-
-Для odd $M$, после zero-mode ground degeneracy:
 
 $$
 \boxed{
@@ -481,23 +318,13 @@ $$
 }
 $$
 
-Отсюда:
+Следовательно
 
 $$
-\boxed{
-\Delta_M\to0\quad\text{как}\quad O(M^{-1}).
-}
+\boxed{\Delta_M=O(M^{-1})\to0.}
 $$
 
-Текущая candidate reduced chain gapless в thermodynamic limit.
-
-Формулы проверены explicit diagonalization для
-
-$$
-M=2,3,4,5,6.
-$$
-
-**Статус: EXACT для текущего candidate reduced Hamiltonian.**
+Текущая reduced chain critical/gapless в thermodynamic limit.
 
 Файлы:
 
@@ -506,31 +333,280 @@ $$
 
 ---
 
-# 8. Что это меняет
+# 7. Новый exact asymptotic geometry calculation
 
-Наивный путь требовал бы diagonalization пространства размера
+Теперь большой Hilbert space вообще не нужен.
 
-$$
-2^M.
-$$
-
-Новая exact reduction заменяет его one-particle problem размера
-
-$$
-M.
-$$
-
-И главное: стало ясно, что текущая 1D reduced gluing model — не generic interacting system, а critical free-fermion chain.
-
-Поэтому следующий фронтир надо решать через exact correlation functions и asymptotics.
-
----
-
-# 9. Каноническая цепочка новой ветки на сегодня
+В thermodynamic bulk limit half-filled XX chain имеет exact fermionic correlator
 
 $$
 \boxed{
-\text{SU(2)-invariant local node}
+C_f(r)
+=\langle c_0^\dagger c_r\rangle
+=\frac{\sin(\pi r/2)}{\pi r}.
+}
+$$
+
+Важно: physical logical-spin transverse correlator не равен $C_f(r)$, потому что Jordan-Wigner transformation содержит string.
+
+Для longitudinal logical correlator:
+
+$$
+\boxed{
+C_z(r)
+=\langle Z_0Z_r\rangle
+=-4|C_f(r)|^2
+=-\frac{4\sin^2(\pi r/2)}{\pi^2r^2}.
+}
+$$
+
+Следовательно
+
+$$
+C_z(r)=0\quad(r\;\text{even}),
+$$
+
+и
+
+$$
+C_z(r)=-\frac{4}{\pi^2r^2}\quad(r\;\text{odd}).
+$$
+
+Transverse correlator имеет exact Toeplitz form
+
+$$
+\boxed{
+C_x(r)=\langle X_0X_r\rangle
+=\det_{1\le j,k\le r}G_{j-k-1},
+}
+$$
+
+где
+
+$$
+G_n=\frac{2\sin(\pi n/2)}{\pi n},\qquad G_0=0.
+$$
+
+Fisher-Hartwig asymptotics даёт
+
+$$
+\boxed{
+C_x(r)=A_xr^{-1/2}[1+O(r^{-2})].
+}
+$$
+
+Для нашей Pauli normalization
+
+$$
+A_x\approx0.58835.
+$$
+
+---
+
+# 8. Exact two-site density matrix and mutual information
+
+U(1) symmetry, zero magnetization и translation invariance фиксируют pair state:
+
+$$
+\boxed{
+\rho_{0r}
+=\frac14\left[
+I\otimes I
++C_x(r)(X\otimes X+Y\otimes Y)
++C_z(r)Z\otimes Z
+\right].
+}
+$$
+
+Eigenvalues:
+
+$$
+\boxed{
+\lambda_{1,2}=\frac{1+C_z}{4},
+}
+$$
+
+$$
+\boxed{
+\lambda_{\pm}=\frac{1-C_z\pm2C_x}{4}.
+}
+$$
+
+Каждый single node maximally mixed:
+
+$$
+\rho_i=I/2,\qquad S_i=1\ \text{bit}.
+$$
+
+Поэтому exact mutual information:
+
+$$
+\boxed{
+I(r)=2+\sum_{a=1}^{4}\lambda_a(r)\log_2\lambda_a(r).
+}
+$$
+
+Это уже closed thermodynamic-limit formula после подстановки Toeplitz determinant $C_x(r)$.
+
+---
+
+# 9. Главный новый asymptotic result
+
+При больших $r$:
+
+$$
+C_x(r)=O(r^{-1/2}),
+\qquad
+C_z(r)=O(r^{-2}).
+$$
+
+Entropy expansion около $I_4/4$ даёт
+
+$$
+\boxed{
+I(r)
+=\frac{C_x(r)^2}{\ln2}
++\frac{C_z(r)^2}{2\ln2}
++O(C_x^4,C_x^2C_z,C_z^3).
+}
+$$
+
+Следовательно
+
+$$
+\boxed{
+I(r)
+=\frac{A_x^2}{\ln2}\frac1r
++O(r^{-2}).
+}
+$$
+
+Обозначая
+
+$$
+\kappa=\frac{A_x^2}{\ln2},
+$$
+
+получаем
+
+$$
+\boxed{\kappa\approx0.4994.}
+$$
+
+То есть practically
+
+$$
+\boxed{
+I(r)\approx\frac{0.50}{r}\ \text{bit}.
+}
+$$
+
+Главный закон:
+
+$$
+\boxed{I(r)\propto r^{-1}.}
+$$
+
+Gate на exact Toeplitz determinants подтверждает
+
+$$
+rI(r)\to0.5
+$$
+
+для больших separations.
+
+**Статус: analytic asymptotic result для текущей exact XX reduction + independent determinant check.**
+
+Файлы:
+
+- `BQG_MUTUAL_INFORMATION_ASYMPTOTIC_RESULT.md`
+- `scripts/bqg_mutual_information_asymptotic_gate.py`
+
+---
+
+# 10. Falsification result для distance maps
+
+Теперь можно проверить конкретные distance laws.
+
+## Negative-log map
+
+Если
+
+$$
+d_{\log}(r)
+=-\ell_*\ln\frac{I(r)}{I_*},
+$$
+
+то из $I(r)\sim\kappa/r$ следует
+
+$$
+\boxed{
+d_{\log}(r)=\ell_*\ln r+\text{const}+o(1).}
+$$
+
+Следовательно standard negative-log information distance **не воспроизводит linear graph distance** текущей critical chain.
+
+Это настоящий отрицательный результат, а не проблема вычислений.
+
+## Inverse-information map
+
+Если вместо этого
+
+$$
+d_{\rm inv}(r)=\ell_*\frac{I_*}{I(r)},
+$$
+
+то
+
+$$
+\boxed{d_{\rm inv}(r)\propto r.}
+$$
+
+То есть $1/I$ способен восстановить linear asymptotic distance именно в этой critical model.
+
+Но мы **не объявляем** это фундаментальной формулой BQG, потому что выбор $1/I$ после знания результата был бы post-hoc.
+
+---
+
+# 11. Что мы поняли о расстоянии
+
+Критическое отличие:
+
+- в gapped phase обычно ожидается
+  $$I(r)\sim e^{-r/\xi},$$
+  и тогда
+  $$-\ln I(r)\sim r/\xi;$$
+
+- в нашей current critical phase
+  $$I(r)\sim r^{-1},$$
+  и тогда
+  $$-\ln I(r)\sim\ln r.$$
+
+Следовательно универсальное правило
+
+$$
+\boxed{d\propto-\ln I}
+$$
+
+не может быть принято без дополнительного принципа.
+
+Настоящий BQG distance должен быть **выведен**, а не выбран.
+
+Кандидаты для следующего derivation gate:
+
+1. Bures/Fisher information geometry;
+2. additive local edge cost из conditional mutual information;
+3. modular-Hamiltonian response;
+4. shortest-path reconstruction from local correlation weights;
+5. comparison critical vs deliberately gapped deformation.
+
+---
+
+# 12. Каноническая цепочка новой ветки на сегодня
+
+$$
+\boxed{
+\text{SU(2) physical node}
 \to
 \text{noncommuting pair geometry}
 \to
@@ -538,36 +614,44 @@ $$
 \to
 \text{local isotropy}
 \to
-\text{two-node entangled gluing}
+\text{entangled gluing}
 \to
-\text{three-node distance hierarchy}
+\text{network distance hierarchy}
 \to
-\text{exact XX/free-fermion many-node mapping}.
+\text{XX/free fermions}
+\to
+\text{exact correlation asymptotics}
+\to
+I(r)\sim r^{-1}.
 }
 $$
 
-Самые сильные exact statements:
+Самые сильные statements:
 
 1. $Q=i[D_{12},D_{23}]$;
 2. $Q_{\rm phys}=(\sqrt3/4)\sigma_y$;
 3. local isotropy iff local oriented volume is sharp;
 4. $\mathcal A_p=4(\Delta Q)^2$;
-5. exact two-node shape matching selects a Bell-type intertwiner state;
-6. relative orientation can be sharp while local orientation is uncertain;
-7. a three-node chain distinguishes graph distance $1$ and $2$ by both mutual information and volume correlations;
-8. the complete current 1D reduced chain maps exactly to free fermions;
-9. its gap closes as $O(1/M)$.
+5. reduced two-node gluing selects a Bell-type intertwiner state;
+6. three nodes already distinguish nearest and next-nearest separation;
+7. complete current 1D reduced chain maps exactly to free fermions;
+8. its gap closes as $O(1/M)$;
+9. $C_x(r)\sim r^{-1/2}$;
+10. **mutual information decays as $I(r)\sim\kappa/r$**;
+11. negative-log information distance gives $\ln r$, not $r$;
+12. therefore the physical distance functional remains an OPEN derivation problem.
 
 ---
 
-# 10. Что пока НЕ доказано
+# 13. Что пока НЕ доказано
 
 Мы не утверждаем, что:
 
 - fundamental BQG обязана иметь exactly этот $H_{\rm glue}$;
 - continuum space уже доказано трёхмерно;
-- mutual information является уникальным physical distance;
-- critical 1D chain сама по себе является пространством нашей Вселенной;
+- mutual information itself uniquely defines distance;
+- $1/I$ является фундаментальной метрикой;
+- critical 1D chain описывает пространство нашей Вселенной;
 - Einstein dynamics уже получена;
 - Lorentzian causal cone уже выведен;
 - $G$, $c$, $\hbar$ выведены из binary microphysics.
@@ -584,32 +668,31 @@ $$
 
 ---
 
-# 11. Следующий настоящий расчёт
+# 14. Следующий настоящий расчёт
 
-Теперь не надо увеличивать matrix dimension.
-
-Следующий шаг:
+Теперь лучший falsification-first шаг:
 
 $$
 \boxed{
-\textbf{derive exact correlation scaling }I(r)\textbf{ and geometric observables from the free-fermion solution.}
+\textbf{controlled gapped deformation of the same reduced chain.}
 }
 $$
 
-Приоритет:
+Нужно ввести минимальную deformation, которая сохраняет понятный microscopic meaning, но открывает gap, затем аналитически проверить
 
-1. exact fermionic two-point function $\langle c_i^\dagger c_j\rangle$;
-2. logical $X,Y,Z$ correlators versus separation $r$;
-3. asymptotic mutual-information decay $I(r)$;
-4. проверить наличие/отсутствие finite correlation length;
-5. построить correlation-distance law;
-6. сравнить chain, ring, square-lattice и branching connectivity;
-7. только после этого строить настоящий emergent-dimension estimator;
-8. параллельно пытаться вывести $H_{\rm glue}$ из fundamental BQG constraint/history dynamics, а не принимать его как ansatz.
+$$
+I(r):\quad r^{-1}\longrightarrow e^{-r/\xi}\times\text{power correction}.
+$$
+
+После этого сравнить candidate distance functionals **на двух фазах одной и той же модели**.
+
+Если одна и та же formula $d[I]$ не восстанавливает один и тот же graph distance одновременно в critical и gapped regimes, она исключается как universal BQG distance.
+
+Это намного сильнее, чем просто подобрать функцию под один asymptotic law.
 
 ---
 
-# 12. Канонический принцип проекта
+# 15. Канонический принцип
 
 > **Сначала уменьшить задачу симметрией. Затем распознать точную математическую структуру. Потом решить её аналитически. И только если это невозможно — считать численно.**
 
