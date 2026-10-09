@@ -2577,3 +2577,227 @@ P_{\rm phys}
 
 - \`BQG_PROJECTOR_ONLY_CAUSALITY_NOGO.md\`
 - \`scripts/bqg_projector_only_causality_nogo_gate.py\`
+
+
+---
+
+# 51. Refinement-projector stability theorem
+
+Для finite positive master operators
+
+\[
+M_d,\qquad M_{d+1}
+\]
+
+и isometric embedding
+
+\[
+\iota_d:\mathcal H_d\to\mathcal H_{d+1}
+\]
+
+определим
+
+\[
+R_d=M_{d+1}\iota_d-\iota_dM_d.
+\]
+
+Пусть
+
+\[
+P_d=\mathbf1_{\{0\}}(M_d),
+\qquad
+P_{d+1}=\mathbf1_{\{0\}}(M_{d+1}),
+\]
+
+а \(\Delta_d,\Delta_{d+1}\) — первые positive master gaps.
+
+Тогда exact:
+
+\[
+\boxed{
+\|(I-P_{d+1})\iota_dP_d\|
+\le
+\frac{\|R_d\|}{\Delta_{d+1}},
+}
+\]
+
+\[
+\boxed{
+\|P_{d+1}\iota_d(I-P_d)\|
+\le
+\frac{\|R_d\|}{\Delta_d},
+}
+\]
+
+и поэтому
+
+\[
+\boxed{
+\|P_{d+1}\iota_d-\iota_dP_d\|
+\le
+\frac{\|R_d\|}
+{\min(\Delta_d,\Delta_{d+1})}.
+}
+\]
+
+Следовательно sufficient refinement condition:
+
+\[
+\boxed{
+\epsilon_d
+=
+\frac{\|R_d\|}
+{\min(\Delta_d,\Delta_{d+1})}
+\to0.
+}
+\]
+
+Если
+
+\[
+\sum_d\epsilon_d<\infty,
+\]
+
+то embedded physical projections образуют Cauchy sequence на inductive-limit carrier, что даёт controlled route к
+
+\[
+\boxed{P_\infty.}
+\]
+
+**Статус: PROVED exact finite operator theorem.**
+
+Файлы:
+
+- \`BQG_REFINEMENT_PROJECTOR_STABILITY_THEOREM.md\`
+- \`scripts/bqg_refinement_projector_stability_gate.py\`
+
+---
+
+# 52. Canonical BQG refinement residual decomposition
+
+Первый BQG embedding уже существует:
+
+\[
+W:[2,2]_{j=1/2}\to[2,2]_{j=1},
+\]
+
+\[
+\boxed{
+W=
+\begin{pmatrix}
+0&2/3\\
+1&0\\
+0&-\sqrt5/3
+\end{pmatrix},
+\qquad
+W^\dagger W=I.
+}
+\]
+
+Он exact intertwiner для всех \(24\) permutations \(S_4\).
+
+Для coarse/fine operators:
+
+\[
+R=M_cW-WM_f
+\]
+
+exact разложение:
+
+\[
+\boxed{
+R
+=
+(I-WW^\dagger)M_cW
++
+W(W^\dagger M_cW-M_f).
+}
+\]
+
+Определим
+
+\[
+L=(I-WW^\dagger)M_cW,
+\]
+
+\[
+D=W^\dagger M_cW-M_f.
+\]
+
+Тогда
+
+\[
+\boxed{
+R=L+WD,
+}
+\]
+
+\[
+\boxed{
+R^\dagger R=L^\dagger L+D^\dagger D.
+}
+\]
+
+Таким образом full RG defect распадается на:
+
+- **carrier leakage** \(L\);
+- **internal dynamical mismatch** \(D\).
+
+Это превращает continuum test из giant-matrix comparison в thin-block calculation.
+
+**Статус: PROVED exact identity.**
+
+Файлы:
+
+- \`BQG_CANONICAL_REFINEMENT_RESIDUAL_DECOMPOSITION.md\`
+- \`scripts/bqg_canonical_refinement_residual_gate.py\`
+
+---
+
+# 53. Первый theory-specific dynamical RG datum
+
+Реализован прямой расчёт
+
+\[
+j=\frac12\to j=1
+\]
+
+на одинаковом 32D logical carrier.
+
+Fine:
+
+\[
+K_{1/2}=P(H_{E,0}^{\rm sine}+H_{E,1}^{\rm sine})^2P.
+\]
+
+Coarse logical states строятся через
+
+\[
+W^{\otimes5}
+\]
+
+в all-\(j=1\) K5 singlet sector, после чего тем же production Peter–Weyl operator вычисляется
+
+\[
+K_1.
+\]
+
+Первый dynamical RG mismatch:
+
+\[
+\boxed{
+D_{1/2\to1}^{\rm return}
+=
+K_1-K_{1/2}.
+}
+\]
+
+Это ещё не full master \(M=C^\dagger GC\), но уже первый прямой same-dynamics / same-logical-coordinates RG test.
+
+Файлы:
+
+- \`BQG_JHALF_TO_J1_RETURN_RG.md\`
+- \`scripts/bqg_jhalf_to_j1_return_rg_gate.py\`
+- \`.github/workflows/bqg-refinement-jhalf-j1.yml\`
+
+**Статус: IMPLEMENTED / NUMERICAL EXECUTION ACTIVE.**
