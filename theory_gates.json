@@ -465,6 +465,28 @@
         "scripts/bqg_jhalf_to_j1_return_rg_gate.py",
         ".github/workflows/bqg-refinement-jhalf-j1.yml"
       ]
+    },
+    {
+      "id": "S4_LOGICAL_MULTIPLICITY",
+      "status": "proved",
+      "closure_role": "core",
+      "claim": "For Inv_SU2(V_j^⊗4), the multiplicity of the S4 [2,2] irrep is ceil(2j/3); uniqueness holds only at j=1/2,1,3/2 and fails from j=2 onward.",
+      "evidence": [
+        "BQG_S4_LOGICAL_MULTIPLICITY_THEOREM.md",
+        "scripts/bqg_s4_refinement_carrier_scan.py",
+        ".github/workflows/bqg-s4-refinement-carrier.yml"
+      ]
+    },
+    {
+      "id": "J2_MULTIPLICITY_VOLUME",
+      "status": "conditional",
+      "closure_role": "core",
+      "claim": "The first j=2 multiplicity-two [2,2] sector is being tested with the existing absolute-volume operator to determine whether geometry selects a canonical multiplicity basis.",
+      "evidence": [
+        "BQG_J2_MULTIPLICITY_VOLUME_RESULT.md",
+        "scripts/bqg_j2_multiplicity_volume_gate.py",
+        ".github/workflows/bqg-j2-multiplicity-volume.yml"
+      ]
     }
   ]
 }
