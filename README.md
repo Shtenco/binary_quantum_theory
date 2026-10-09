@@ -1,7 +1,7 @@
 # Бинарная квантовая гравитация (BQG)
 ## Единый канонический README: от бинарной микроструктуры к квантовой геометрии, физическому projector, emergent metric и наблюдаемой физике
 
-**Каноническая версия: 6 октября 2026 года**
+**Каноническая версия: 10 октября 2026 года**
 
 ---
 
@@ -3213,3 +3213,371 @@ A_j\otimes I_2
 - \`.github/workflows/bqg-serial-multiplicity-master.yml\`
 
 **Статус: IMPLEMENTED / NUMERICAL EXECUTION ACTIVE.**
+
+
+---
+
+# 61. Five-scale multiplicity-master RG result
+
+На пяти consecutive representation scales
+
+\[
+j=2,\frac52,3,\frac72,4
+\]
+
+один и тот же production Peter-Weyl Euclidean constraint
+
+\[
+C_0=H_{E,0}^{\rm sine}
+\]
+
+был использован для построения exact \(S_4\)-twirled local master
+
+\[
+M_j^{\rm tw}
+=
+\mathcal T_{S_4}(C_0^\dagger C_0).
+\]
+
+На \([2,2]\)-isotypic sector:
+
+\[
+P_{22}^{(j)}M_j^{\rm tw}P_{22}^{(j)}
+=
+A_j\otimes I_2.
+\]
+
+Получено:
+
+| \(j\) | \(m_{22}\) | \(\operatorname{spec}A_j\) | \(\gamma_j\) |
+|---:|---:|---|---:|
+| \(2\) | 2 | \(5.067680982954,\ 5.807713077901\) | \(0.740032094948\) |
+| \(5/2\) | 2 | \(5.769201915254,\ 22.499018693032\) | \(16.729816777778\) |
+| \(3\) | 2 | \(9.001223358412,\ 10.264684071156\) | \(1.263460712743\) |
+| \(7/2\) | 3 | \(7.140843485222,\ 9.459669912782,\ 36.381268968404\) | \(2.318826427560\) |
+| \(4\) | 3 | \(7.819342874141,\ 14.040428696350,\ 16.140265919741\) | \(6.221085822210\) |
+
+На всех tested scales:
+
+\[
+\boxed{\gamma_j>0.}
+\]
+
+То есть lowest master-selected multiplicity channel остаётся isolated.
+
+Gap nonmonotonic, поэтому monotone convergence law пока не выводится.
+
+**Статус: FINITE PASS.**
+
+Файлы:
+
+- \`BQG_SERIAL_MULTIPLICITY_MASTER_RESULT.md\`
+- \`scripts/bqg_serial_multiplicity_master_scan.py\`
+- \`.github/workflows/bqg-multiplicity-master-shards.yml\`
+
+---
+
+# 62. NO-GO для direct spin refinement и binary-ancilla theorem
+
+Для inequivalent SU(2) irreps:
+
+\[
+\boxed{
+\mathrm{Hom}_{SU(2)}(V_j,V_{j+1/2})=0.
+}
+\]
+
+Следовательно прямой equivariant refinement
+
+\[
+V_j\to V_{j+1/2}
+\]
+
+невозможен.
+
+Но после добавления нового q=2 strand:
+
+\[
+V_j\otimes V_{1/2}
+=
+V_{j+1/2}\oplus V_{j-1/2}.
+\]
+
+Высокоспиновый symmetric channel multiplicity-one, поэтому edge blocking
+
+\[
+\boxed{
+V_j\otimes V_{1/2}^{\rm new}
+\to
+V_{j+1/2}
+}
+\]
+
+unique up to phase.
+
+**Статус: PROVED.**
+
+Файлы:
+
+- \`BQG_ANCILLA_PETER_WEYL_REFINEMENT_THEOREM.md\`
+- \`scripts/bqg_ancilla_peter_weyl_refinement_gate.py\`
+
+---
+
+# 63. Pure-ancilla refinement NO-GO и exact bilinear refinement tensor
+
+Четыре fresh edge ancillas после Gauss reduction сами образуют
+
+\[
+[2,2]_{\rm anc}.
+\]
+
+В этом representation нет invariant vector:
+
+\[
+\boxed{
+\dim [2,2]^{S_4}=0.
+}
+\]
+
+Поэтому fixed pure ancilla singlet не может породить canonical \(S_4\)-equivariant linear refinement map.
+
+Finite gate дал reconstruction error \(=1\).
+
+**Статус: NO-GO.**
+
+Правильный microscopic object:
+
+\[
+\boxed{
+[2,2]_{\rm old}
+\otimes
+[2,2]_{\rm anc}
+\to
+[2,2]_{\rm coarse}.
+}
+\]
+
+Product decomposition:
+
+\[
+\boxed{
+[2,2]\otimes[2,2]
+=
+[4]\oplus[2,2]\oplus[1^4].
+}
+\]
+
+Microscopic blocking gate даёт:
+
+\[
+\text{covariance error}
+\approx
+9.996\times10^{-16},
+\]
+
+\[
+\operatorname{rank}F=2,
+\]
+
+\[
+\sigma_1=\sigma_2=\frac1{\sqrt2},
+\]
+
+и exact projector identities:
+
+\[
+\boxed{
+2F^\dagger F
+=
+P_{22}^{\rm old\otimes anc}
+}
+\]
+
+с error
+
+\[
+1.78\times10^{-15},
+\]
+
+\[
+\boxed{
+2FF^\dagger
+=
+P_{22}^{\rm coarse}
+}
+\]
+
+с error
+
+\[
+2.44\times10^{-15}.
+\]
+
+Следовательно
+
+\[
+\boxed{
+\sqrt2\,F
+}
+\]
+
+является unitary identification единственного \([2,2]\) fusion channel между
+old+binary-ancilla и coarse geometry.
+
+**Статус: PROVED / FINITE exact-regression PASS.**
+
+Файлы:
+
+- \`BQG_MICROSCOPIC_NODE_REFINEMENT.md\`
+- \`BQG_MICROSCOPIC_BILINEAR_REFINEMENT_THEOREM.md\`
+- \`scripts/bqg_microscopic_bilinear_refinement_gate.py\`
+
+---
+
+# 64. Correct graph-changing refinement architecture
+
+Для настоящего constraint refinement одного base map недостаточно.
+
+Нужны:
+
+\[
+\iota_0:
+\mathcal H_f^{(0)}
+\to
+\mathcal H_c^{(0)}
+\]
+
+и
+
+\[
+\iota_1:
+\mathcal H_f^{(1)}
+\to
+\mathcal H_c^{(1)}
+\]
+
+на one-hit graph/spin-changed habitat.
+
+Forward residual:
+
+\[
+E_a
+=
+C_{c,a}\iota_0-\iota_1C_{f,a}.
+\]
+
+Return residual:
+
+\[
+F_a
+=
+C_{c,a}^\dagger\iota_1-\iota_0C_{f,a}^\dagger.
+\]
+
+Exact:
+
+\[
+\boxed{
+M_c\iota_0-\iota_0M_f
+=
+\sum_a
+\left(
+C_{c,a}^\dagger E_a+F_aC_{f,a}
+\right).
+}
+\]
+
+Поэтому:
+
+\[
+\boxed{
+\|R\|
+\le
+\sum_a
+\left(
+\|C_{c,a}\|\|E_a\|
++
+\|F_a\|\|C_{f,a}\|
+\right).
+}
+\]
+
+Это позволяет получать master-refinement bound из one-hit constraint calculations.
+
+**Статус: PROVED.**
+
+Файлы:
+
+- \`BQG_CONSTRAINT_LEVEL_REFINEMENT_BOUND.md\`
+- \`BQG_TWO_SIDED_HABITAT_REFINEMENT_THEOREM.md\`
+- \`scripts/bqg_constraint_level_refinement_bound_gate.py\`
+- \`scripts/bqg_two_sided_habitat_refinement_gate.py\`
+
+---
+
+# 65. Cross-scale multiplicity trajectory
+
+Target isotypic sector:
+
+\[
+\mathcal H_{22}^{(j')}
+\simeq
+\mathbb C^{m_{22}(j')}
+\otimes
+V_{[2,2]}.
+\]
+
+Любой equivariant microscopic refinement из одного \([2,2]\) fusion channel имеет вид
+
+\[
+\boxed{
+F_j=v_j\otimes I_2.
+}
+\]
+
+Master-selected copy задаётся multiplicity vector \(u_{j'}\).
+
+Поэтому canonical cross-scale overlap:
+
+\[
+\boxed{
+\mathcal F_j
+=
+|\langle u_{j'},v_j\rangle|^2
+=
+\frac12
+\operatorname{Tr}
+(P_{j'}^{\rm block}P_{j'}^{\rm master}).
+}
+\]
+
+И channel mismatch:
+
+\[
+\boxed{
+\chi_j
+=
+\sqrt{1-\mathcal F_j}
+=
+\|P_{j'}^{\rm block}-P_{j'}^{\rm master}\|_2.
+}
+\]
+
+Это превращает representation RG в trajectory of lines в малых multiplicity spaces.
+
+**Статус theorem: PROVED.**
+
+Numerical \(\mathcal F_j\) для пар
+
+\[
+2\to2.5,\quad2.5\to3,\quad3\to3.5,\quad3.5\to4
+\]
+
+вычисляются отдельным cross-scale gate.
+
+Файлы:
+
+- \`BQG_MULTIPLICITY_VECTOR_TRAJECTORY_THEOREM.md\`
+- \`BQG_CROSS_SCALE_CHANNEL_OVERLAP.md\`
+- \`scripts/bqg_cross_scale_channel_overlap_gate.py\`
