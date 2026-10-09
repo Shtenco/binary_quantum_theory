@@ -539,6 +539,57 @@
         "scripts/bqg_serial_multiplicity_master_scan.py",
         ".github/workflows/bqg-serial-multiplicity-master.yml"
       ]
+    },
+    {
+      "id": "CONSTRAINT_LEVEL_REFINEMENT_BOUND",
+      "status": "proved",
+      "closure_role": "core",
+      "claim": "For matching Hermitian constraint families, one-hit constraint residuals bound the full master-refinement residual, reducing the expensive master comparison to single constraint applications.",
+      "evidence": [
+        "BQG_CONSTRAINT_LEVEL_REFINEMENT_BOUND.md",
+        "scripts/bqg_constraint_level_refinement_bound_gate.py"
+      ]
+    },
+    {
+      "id": "TWO_SIDED_HABITAT_REFINEMENT",
+      "status": "proved",
+      "closure_role": "core",
+      "claim": "Graph-changing refinement requires compatible embeddings of the base carrier and the one-hit constraint habitat; forward and adjoint residuals give an exact bound on the full master residual.",
+      "evidence": [
+        "BQG_TWO_SIDED_HABITAT_REFINEMENT_THEOREM.md",
+        "scripts/bqg_two_sided_habitat_refinement_gate.py"
+      ]
+    },
+    {
+      "id": "ANCILLA_PETER_WEYL_REFINEMENT",
+      "status": "proved",
+      "closure_role": "core",
+      "claim": "No direct SU2 intertwiner V_j->V_{j+1/2} exists, but after adding one binary spin-1/2 strand the symmetric j+1/2 channel is selected by a unique SU2-equivariant inclusion/coisometry up to phase.",
+      "evidence": [
+        "BQG_ANCILLA_PETER_WEYL_REFINEMENT_THEOREM.md",
+        "scripts/bqg_ancilla_peter_weyl_refinement_gate.py"
+      ]
+    },
+    {
+      "id": "PURE_ANCILLA_NODE_REFINEMENT",
+      "status": "no_go",
+      "closure_role": "core",
+      "claim": "A fixed pure four-qubit Gauss-singlet ancilla cannot induce the canonical S4-equivariant j=1/2 to j=1 logical refinement map.",
+      "evidence": [
+        "BQG_MICROSCOPIC_NODE_REFINEMENT.md",
+        "scripts/bqg_microscopic_node_refinement_gate.py"
+      ]
+    },
+    {
+      "id": "MICROSCOPIC_BILINEAR_REFINEMENT",
+      "status": "proved",
+      "closure_role": "core",
+      "claim": "The correct microscopic q2 refinement object is the unique bilinear S4 intertwiner [2,2]_old x [2,2]_anc -> [2,2]_coarse; the committed gate verifies exact covariance and rank two.",
+      "evidence": [
+        "BQG_MICROSCOPIC_BILINEAR_REFINEMENT_THEOREM.md",
+        "scripts/bqg_microscopic_bilinear_refinement_gate.py",
+        ".github/workflows/bqg-microscopic-bilinear-refinement.yml"
+      ]
     }
   ]
 }
