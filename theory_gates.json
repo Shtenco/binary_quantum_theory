@@ -487,6 +487,27 @@
         "scripts/bqg_j2_multiplicity_volume_gate.py",
         ".github/workflows/bqg-j2-multiplicity-volume.yml"
       ]
+    },
+    {
+      "id": "MULTIPLICITY_CHANNEL_SELECTION",
+      "status": "proved",
+      "closure_role": "core",
+      "claim": "An isolated simple eigenchannel of the S4 multiplicity matrix A_j selects a unique S4-covariant logical copy; its projector is stable under perturbations with norm bounded by 2||E||/gamma.",
+      "evidence": [
+        "BQG_MULTIPLICITY_CHANNEL_SELECTION_THEOREM.md",
+        "scripts/bqg_multiplicity_channel_selection_gate.py"
+      ]
+    },
+    {
+      "id": "J2_CONSTRAINT_MASTER_MULTIPLICITY",
+      "status": "conditional",
+      "closure_role": "core",
+      "claim": "The actual local Peter-Weyl Euclidean constraint master C0^dag C0 at j=2 is being restricted to the multiplicity-two S4 [2,2] sector to determine A_2^(M), its gap, and alignment with the volume-resolved basis.",
+      "evidence": [
+        "BQG_J2_CONSTRAINT_MASTER_MULTIPLICITY.md",
+        "scripts/bqg_j2_constraint_master_multiplicity_gate.py",
+        ".github/workflows/bqg-j2-constraint-master.yml"
+      ]
     }
   ]
 }
