@@ -479,9 +479,9 @@
     },
     {
       "id": "J2_MULTIPLICITY_VOLUME",
-      "status": "conditional",
+      "status": "tested_finite",
       "closure_role": "core",
-      "claim": "The first j=2 multiplicity-two [2,2] sector is being tested with the existing absolute-volume operator to determine whether geometry selects a canonical multiplicity basis.",
+      "claim": "At j=2 the first multiplicity-two S4 [2,2] sector is resolved by the existing absolute-volume operator into two distinct doubly-degenerate multiplicity channels, giving a symmetry-compatible geometric multiplicity basis without fitted projectors.",
       "evidence": [
         "BQG_J2_MULTIPLICITY_VOLUME_RESULT.md",
         "scripts/bqg_j2_multiplicity_volume_gate.py",
