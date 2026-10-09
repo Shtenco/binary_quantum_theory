@@ -1,0 +1,35 @@
+name: BQG master branch tracking
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/bqg_master_branch_tracking_gate.py'
+      - '.github/workflows/bqg-master-branch-tracking.yml'
+  workflow_dispatch:
+
+jobs:
+  scan:
+    strategy:
+      fail-fast: false
+      matrix:
+        s2: [3, 4, 5, 6, 7]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip numpy scipy sympy
+      - name: Track all target master branches
+        run: |
+          mkdir -p verification_results
+          python scripts/bqg_master_branch_tracking_gate.py \
+            --s2 ${{ matrix.s2 }} \
+            --output verification_results/BQG_MASTER_BRANCH_TRACKING_S2_${{ matrix.s2 }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-master-branch-tracking-s2-${{ matrix.s2 }}
+          path: verification_results/BQG_MASTER_BRANCH_TRACKING_S2_${{ matrix.s2 }}.json
+          retention-days: 30
