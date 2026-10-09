@@ -500,9 +500,9 @@
     },
     {
       "id": "J2_CONSTRAINT_MASTER_MULTIPLICITY",
-      "status": "conditional",
+      "status": "tested_finite",
       "closure_role": "core",
-      "claim": "The actual local Peter-Weyl Euclidean constraint master C0^dag C0 at j=2 is being restricted to the multiplicity-two S4 [2,2] sector to determine A_2^(M), its gap, and alignment with the volume-resolved basis.",
+      "claim": "The exact S4-twirled local Euclidean Peter-Weyl constraint master at j=2 has Schur form A2⊗I2 on the multiplicity-two [2,2] sector, with multiplicity eigenvalues 5.067680982953853 and 5.807713077901408 and gap 0.740032094947555; its preferred low channel is not aligned with the low-volume channel.",
       "evidence": [
         "BQG_J2_CONSTRAINT_MASTER_MULTIPLICITY.md",
         "scripts/bqg_j2_constraint_master_multiplicity_gate.py",
