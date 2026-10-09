@@ -1,0 +1,31 @@
+name: BQG serial multiplicity master RG
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/bqg_serial_multiplicity_master_scan.py'
+      - '.github/workflows/bqg-serial-multiplicity-master.yml'
+  workflow_dispatch:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip numpy scipy sympy
+      - name: Compute serial multiplicity-master scan
+        run: |
+          mkdir -p verification_results
+          python scripts/bqg_serial_multiplicity_master_scan.py \
+            --s2 4,5,6,7,8 \
+            --output verification_results/BQG_SERIAL_MULTIPLICITY_MASTER_SCAN.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-serial-multiplicity-master-scan
+          path: verification_results/BQG_SERIAL_MULTIPLICITY_MASTER_SCAN.json
+          retention-days: 30
