@@ -1,0 +1,31 @@
+name: BQG jhalf-to-j1 RG datum
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/bqg_jhalf_to_j1_return_rg_gate.py'
+      - 'scripts/peter_weyl_*.py'
+      - '.github/workflows/bqg-refinement-jhalf-j1.yml'
+
+jobs:
+  rg-datum:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip numpy scipy
+      - name: Compute jhalf-to-j1 return RG datum
+        run: |
+          mkdir -p verification_results
+          python scripts/bqg_jhalf_to_j1_return_rg_gate.py \
+            --output verification_results/BQG_JHALF_TO_J1_RETURN_RG.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-jhalf-to-j1-return-rg
+          path: verification_results/BQG_JHALF_TO_J1_RETURN_RG.json
+          retention-days: 30
