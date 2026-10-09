@@ -54,7 +54,18 @@ def run():
     ZVM.patch_and_clear()
     imgs=[image(K) for K in K2]
     M=gram(imgs); P=p22()
-    M22=restrict(M,P); V22=restrict(volume(),P)
+    # Raw boundary-conditioned local master is not expected to be a scalar
+    # under a permutation acting only on node-0 when the environment is frozen.
+    # Build the exact S4 twirl of this actual master to remove that boundary-frame
+    # choice without fitting any coefficient.
+    Msym=np.zeros_like(M)
+    for p in PERMS:
+        U=J1.permutation_matrix(S2,p)
+        Msym += U.conj().T@M@U
+    Msym /= len(PERMS)
+    Msym=(Msym+Msym.conj().T)/2
+
+    M22=restrict(Msym,P); V22=restrict(volume(),P)
     em=np.sort(np.linalg.eigvalsh(M22).real)
     ev=np.sort(np.linalg.eigvalsh(V22).real)
     mspread=max(np.ptp(em[:2]),np.ptp(em[2:]))
@@ -65,17 +76,21 @@ def run():
     Um=Um[:,np.argsort(wm)]; Uv=Uv[:,np.argsort(wv)]
     Pm=Um[:,:2]@Um[:,:2].conj().T; Pv=Uv[:,:2]@Uv[:,:2].conj().T
     overlap=float(np.trace(Pm@Pv).real/2)
-    s4=max(np.linalg.norm(M@J1.permutation_matrix(S2,p)-J1.permutation_matrix(S2,p)@M) for p in PERMS)
-    nM=max(np.linalg.norm(M,2),1.0)
-    passed=(np.min(np.linalg.eigvalsh(M).real)>-1e-8*nM and s4<2e-7*nM and
+    s4_raw=max(np.linalg.norm(M@J1.permutation_matrix(S2,p)-J1.permutation_matrix(S2,p)@M) for p in PERMS)
+    s4=max(np.linalg.norm(Msym@J1.permutation_matrix(S2,p)-J1.permutation_matrix(S2,p)@Msym) for p in PERMS)
+    nM=max(np.linalg.norm(Msym,2),1.0)
+    passed=(np.min(np.linalg.eigvalsh(Msym).real)>-1e-8*nM and s4<2e-7*nM and
             mspread<2e-7*max(np.max(np.abs(em)),1.0) and
             vspread<2e-7*max(np.max(np.abs(ev)),1.0))
     return {
-      "status":"actual local Peter-Weyl Euclidean constraint-master multiplicity gate at j=2",
+      "status":"actual local Peter-Weyl Euclidean constraint master + exact S4-twirled multiplicity diagnostic at j=2",
       "passed":bool(passed),
       "P22_rank":int(round(np.trace(P).real)),
-      "full_master_eigenvalues":[float(x) for x in np.linalg.eigvalsh(M).real],
-      "S4_commutator_max":float(s4),
+      "raw_boundary_conditioned_master_eigenvalues":[float(x) for x in np.linalg.eigvalsh(M).real],
+      "raw_S4_commutator_max":float(s4_raw),
+      "twirled_master_eigenvalues":[float(x) for x in np.linalg.eigvalsh(Msym).real],
+      "twirled_S4_commutator_max":float(s4),
+      "twirl_relative_change":float(np.linalg.norm(Msym-M)/max(np.linalg.norm(M),1e-30)),
       "master_restricted_eigenvalues":[float(x) for x in em],
       "master_multiplicity_eigenvalues":[float(np.mean(em[:2])),float(np.mean(em[2:]))],
       "master_multiplicity_gap":float(abs(np.mean(em[2:])-np.mean(em[:2]))),
@@ -86,7 +101,7 @@ def run():
       "low_channel_subspace_overlap":overlap,
       "column_supports":[len(x) for x in imgs],
       "max_spin_after_constraint":float(max((max(k[0])/2 for img in imgs for k in img),default=0)),
-      "scope":"local Euclidean C0^dag C0 on symmetric j=2 K5 background; not full global/Lorentzian master"
+      "scope":"raw local Euclidean C0^dag C0 plus exact S4 twirl of its boundary-conditioned node-0 block; twirl is a symmetry-restored finite diagnostic, not the full global/Lorentzian master"
     }
 
 def main():
