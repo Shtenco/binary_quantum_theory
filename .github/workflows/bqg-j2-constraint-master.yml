@@ -1,0 +1,30 @@
+name: BQG j2 constraint master multiplicity
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/bqg_j2_constraint_master_multiplicity_gate.py'
+      - '.github/workflows/bqg-j2-constraint-master.yml'
+  workflow_dispatch:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip numpy scipy sympy
+      - name: Compute j2 local constraint master
+        run: |
+          mkdir -p verification_results
+          python scripts/bqg_j2_constraint_master_multiplicity_gate.py \
+            --output verification_results/BQG_J2_CONSTRAINT_MASTER_MULTIPLICITY.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-j2-constraint-master-multiplicity
+          path: verification_results/BQG_J2_CONSTRAINT_MASTER_MULTIPLICITY.json
+          retention-days: 30
