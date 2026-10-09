@@ -3059,3 +3059,157 @@ A_2^{(M)}\otimes I_2
 - \`BQG_J2_CONSTRAINT_MASTER_MULTIPLICITY.md\`
 - \`scripts/bqg_j2_constraint_master_multiplicity_gate.py\`
 - \`.github/workflows/bqg-j2-constraint-master.yml\`
+
+
+---
+
+# 58. Scale-free refinement control
+
+Physical projector не меняется при
+
+\[
+M_j\to c_jM_j,\qquad c_j>0.
+\]
+
+Поэтому raw cross-scale residual зависит от arbitrary engineering normalization и не является canonical continuum diagnostic.
+
+Для \(\rho>0\):
+
+\[
+R_\rho
+=
+M_{j'}\iota-\rho\,\iota M_j.
+\]
+
+Refinement-projector theorem даёт
+
+\[
+\boxed{
+\|P_{j'}\iota-\iota P_j\|
+\le
+\frac{\|R_\rho\|}
+{\min(\Delta_{j'},\rho\Delta_j)}.
+}
+\]
+
+Минимизируя по \(\rho\):
+
+\[
+\boxed{
+\epsilon_j^{\rm sf}
+=
+\inf_{\rho>0}
+\frac{\|M_{j'}\iota-\rho\,\iota M_j\|}
+{\min(\Delta_{j'},\rho\Delta_j)}.
+}
+\]
+
+Это invariant при независимом positive rescaling обоих master operators.
+
+**Статус: PROVED finite operator theorem.**
+
+Файлы:
+
+- \`BQG_SCALE_FREE_REFINEMENT_RESIDUAL_THEOREM.md\`
+- \`scripts/bqg_scale_free_refinement_residual_gate.py\`
+
+---
+
+# 59. Canonical selected-channel intertwiner
+
+После того как multiplicity matrix \(A_j\) nondegenerately выбирает один \([2,2]\)-channel, межмасштабный embedding не нужно fit-ить.
+
+Для выбранных irreducible copies group-average
+
+\[
+\mathcal P_{\rm Hom}(X)
+=
+\frac1{24}
+\sum_{g\in S_4}
+U_{j'}(g)XU_j(g)^\dagger
+\]
+
+проецирует любой seed \(X\) в one-dimensional intertwiner space.
+
+После normalization:
+
+\[
+\boxed{
+\iota_{j\to j'}
+=
+\frac{Y}{\sqrt{\alpha}},
+\qquad
+Y^\dagger Y=\alpha I.
+}
+\]
+
+Получаем
+
+\[
+\boxed{
+\iota^\dagger\iota=I,
+\qquad
+U_{j'}(g)\iota=\iota U_j(g).
+}
+\]
+
+Intertwiner unique up to overall phase, которая не влияет на projector-distance norms.
+
+**Статус: PROVED finite representation theorem.**
+
+Файлы:
+
+- \`BQG_CANONICAL_SELECTED_CHANNEL_INTERTWINER_THEOREM.md\`
+- \`scripts/bqg_canonical_selected_channel_intertwiner_gate.py\`
+
+---
+
+# 60. Serial multiplicity-master RG scan
+
+Запущен первый серийный calculation на
+
+\[
+j=2,\frac52,3,\frac72,4.
+\]
+
+На каждом scale используется один и тот же production operator
+
+\[
+C_0=H_{E,0}^{\rm sine},
+\qquad
+M_j^{\rm tw}
+=
+\mathcal T_{S_4}(C_0^\dagger C_0).
+\]
+
+Из
+
+\[
+P_{22}^{(j)}M_j^{\rm tw}P_{22}^{(j)}
+=
+A_j\otimes I_2
+\]
+
+извлекаются:
+
+- \(m_{22}(j)\);
+- spectrum \(A_j\);
+- lowest-channel isolation gap \(\gamma_j\);
+- pair-degeneracy defect;
+- raw/twirled covariance diagnostics.
+
+Это первая последовательность данных, необходимая для построения
+
+\[
+\eta_j,\qquad
+\iota_j,\qquad
+\epsilon_j^{\rm sf}.
+\]
+
+Файлы:
+
+- \`BQG_SERIAL_MULTIPLICITY_MASTER_SCAN.md\`
+- \`scripts/bqg_serial_multiplicity_master_scan.py\`
+- \`.github/workflows/bqg-serial-multiplicity-master.yml\`
+
+**Статус: IMPLEMENTED / NUMERICAL EXECUTION ACTIVE.**
