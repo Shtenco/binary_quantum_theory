@@ -1889,3 +1889,125 @@ $$
 Верхняя и средняя части этой лестницы уже содержат множество exact и finite results.
 
 Нижняя часть — **главная открытая физика BQG**.
+
+
+---
+
+# 46. Dynamical distance: первый строгий мост к причинности
+
+После QFI-weighted spatial geometry можно задать локальный propagation Hamiltonian
+
+$$
+oxed{
+h=V-A_g,
+}
+$$
+
+где $V$ — произвольный diagonal onsite operator, а на каждом physical edge
+
+$$
+(A_g)_{ij}=g_{ij}>0.
+$$
+
+Для propagator
+
+$$
+U(t)=e^{-iht}
+$$
+
+и graph distance $d_G(i,j)$ выполняется exact theorem:
+
+$$
+oxed{
+(h^n)_{ij}=0
+qquad
+n<d_G(i,j).
+}
+$$
+
+На первом разрешённом порядке $d=d_G(i,j)$
+
+$$
+oxed{
+(h^d)_{ij}
+=
+(-1)^d
+sum_{gammain {m SP}(i,j)}
+prod_{eingamma} g_e
+
+eq0,
+}
+$$
+
+поскольку все edge weights положительны и shortest-path contributions не могут сократиться.
+
+Поэтому
+
+$$
+oxed{
+d_G(i,j)
+=
+minleft{
+n:
+partial_t^nU_{ij}(0)
+eq0
+ight}.
+}
+$$
+
+То есть combinatorial shortest-path distance восстанавливается из **первого ненулевого short-time propagation order**, без координат, fit и long-range correlation ansatz.
+
+Для QFI weights
+
+$$
+g_{ij}^{\rm QFI}=\frac14F_Q(\rho_{ij},K_{ij})>0
+$$
+
+получаем
+
+$$
+oxed{
+d_G(i,j)
+=
+minleft{
+n:
+partial_t^n[e^{-ih_{\rm QFI}t}]_{ij}|_{t=0}
+eq0
+ight}.
+}
+$$
+
+Arbitrary diagonal gap / staggered onsite terms не меняют этот порядок, поэтому result устойчив к critical/gapped onsite deformations.
+
+Frozen numerical regression:
+
+- $N=6,8,10$;
+- 10 random connected weighted graphs на размер;
+- arbitrary positive edge weights;
+- random diagonal onsite potentials;
+- 30/30 graphs PASS.
+
+**Статус: PROVED для sign-definite graph-local Hamiltonians + FINITE regression.**
+
+Это ещё не Lorentzian spacetime causality. Не выведены physical clock, light cone и universal propagation speed.
+
+Файлы:
+
+- `BQG_DYNAMICAL_DISTANCE_THEOREM.md`
+- `scripts/bqg_dynamical_distance_gate.py`
+
+Следующий causal frontier:
+
+$$
+oxed{
+\text{projector-derived graph histories}
+\to
+\text{many-body local generator}
+\to
+\text{nested-commutator front}
+\to
+v_{\rm LR}
+\to
+\text{continuum causal cone}.
+}
+$$
