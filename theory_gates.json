@@ -508,6 +508,37 @@
         "scripts/bqg_j2_constraint_master_multiplicity_gate.py",
         ".github/workflows/bqg-j2-constraint-master.yml"
       ]
+    },
+    {
+      "id": "SCALE_FREE_REFINEMENT_RESIDUAL",
+      "status": "proved",
+      "closure_role": "core",
+      "claim": "The physical-projector refinement defect is bounded by a scale-free master residual optimized over relative positive master normalization, yielding an invariant continuum diagnostic epsilon_sf.",
+      "evidence": [
+        "BQG_SCALE_FREE_REFINEMENT_RESIDUAL_THEOREM.md",
+        "scripts/bqg_scale_free_refinement_residual_gate.py"
+      ]
+    },
+    {
+      "id": "SELECTED_CHANNEL_INTERTWINER",
+      "status": "proved",
+      "closure_role": "core",
+      "claim": "Once consecutive S4 [2,2] multiplicity channels are nondegenerately selected, the inter-scale S4 intertwiner is unique up to phase and can be constructed by group averaging plus normalization.",
+      "evidence": [
+        "BQG_CANONICAL_SELECTED_CHANNEL_INTERTWINER_THEOREM.md",
+        "scripts/bqg_canonical_selected_channel_intertwiner_gate.py"
+      ]
+    },
+    {
+      "id": "SERIAL_MULTIPLICITY_MASTER_RG",
+      "status": "conditional",
+      "closure_role": "core",
+      "claim": "A serial same-operator S4-twirled Peter-Weyl local master scan over j=2,5/2,3,7/2,4 is implemented to extract A_j and gamma_j before constructing inter-scale eta_j and epsilon_j.",
+      "evidence": [
+        "BQG_SERIAL_MULTIPLICITY_MASTER_SCAN.md",
+        "scripts/bqg_serial_multiplicity_master_scan.py",
+        ".github/workflows/bqg-serial-multiplicity-master.yml"
+      ]
     }
   ]
 }
