@@ -2330,3 +2330,250 @@ v_{\rm front}
 
 - \`BQG_SHARP_ANALYTIC_CAUSAL_CONE.md\`
 - \`scripts/bqg_sharp_analytic_causal_cone_gate.py\`
+
+
+---
+
+# 49. Graph-changing master-flow causal order
+
+Для graph-sector decomposition
+
+\[
+\mathcal H=\bigoplus_\Gamma\mathcal H_\Gamma
+\]
+
+и finite master constraint
+
+\[
+M=C_A^\dagger G^{AB}C_B
+\]
+
+graph-sector heat kernel
+
+\[
+K_T(\Gamma',\Gamma)
+=
+\Pi_{\Gamma'}e^{-TM}\Pi_\Gamma
+\]
+
+имеет expansion
+
+\[
+K_T
+=
+\sum_{n\ge0}
+\frac{(-T)^n}{n!}
+\Pi_{\Gamma'}M^n\Pi_\Gamma.
+\]
+
+Определим
+
+\[
+\boxed{
+d_M(\Gamma,\Gamma')
+=
+\min\{n:
+\Pi_{\Gamma'}M^n\Pi_\Gamma\neq0\}.
+}
+\]
+
+Тогда
+
+\[
+\boxed{
+d_M
+=
+\min\{n:
+\partial_T^n K_T(\Gamma',\Gamma)|_{T=0}\neq0\}.
+}
+\]
+
+Это exact graph-changing analogue fixed-graph dynamical distance.
+
+Если каждый microscopic constraint \(C_A\) меняет graph sector максимум на один elementary move, то
+
+\[
+\Pi_{\Gamma'}M\Pi_\Gamma=0
+\quad
+\text{при }
+d_C(\Gamma,\Gamma')>2,
+\]
+
+и, более общо,
+
+\[
+\boxed{
+\Pi_{\Gamma'}M^n\Pi_\Gamma=0
+\quad
+\text{если }
+d_C(\Gamma,\Gamma')>2n.
+}
+\]
+
+Следовательно
+
+\[
+\boxed{
+d_M(\Gamma,\Gamma')
+\ge
+\left\lceil
+\frac{d_C(\Gamma,\Gamma')}{2}
+\right\rceil.
+}
+\]
+
+И
+
+\[
+\boxed{
+K_T(\Gamma',\Gamma)
+=
+O\!\left(
+T^{\lceil d_C/2\rceil}
+\right).
+}
+\]
+
+Это строгий finite-regulator graph-changing locality bound.
+
+**Статус: PROVED.**
+
+Но \(T\) здесь всё ещё projector/master flow parameter, а не physical time.
+
+Файлы:
+
+- \`BQG_GRAPH_CHANGING_CAUSAL_ORDER_THEOREM.md\`
+- \`scripts/bqg_graph_changing_causal_order_gate.py\`
+
+---
+
+# 50. NO-GO: physical projector alone does not determine causality
+
+Physical projector
+
+\[
+P_{\rm phys}
+=
+\mathbf 1_{\{0\}}(M)
+\]
+
+не сохраняет уникально locality/support structure nonzero master spectrum.
+
+Exact counterexample:
+
+\[
+M_{\rm path}
+=
+\begin{pmatrix}
+1&-1&0\\
+-1&2&-1\\
+0&-1&1
+\end{pmatrix}
+\]
+
+имеет support graph
+
+\[
+1-2-3
+\]
+
+и
+
+\[
+d_M(1,3)=2.
+\]
+
+Но
+
+\[
+M_{\rm complete}
+=
+\begin{pmatrix}
+2&-1&-1\\
+-1&2&-1\\
+-1&-1&2
+\end{pmatrix}
+\]
+
+имеет complete support graph и
+
+\[
+d_M(1,3)=1.
+\]
+
+При этом оба master operators имеют один и тот же zero mode
+
+\[
+\frac1{\sqrt3}(1,1,1)^T
+\]
+
+и один и тот же полный projector
+
+\[
+\boxed{
+P_{\rm phys}
+=
+\frac13
+\begin{pmatrix}
+1&1&1\\
+1&1&1\\
+1&1&1
+\end{pmatrix}.
+}
+\]
+
+Следовательно
+
+\[
+\boxed{
+P_{\rm phys}
+\text{ alone cannot reconstruct causal order.}
+}
+\]
+
+Даже полный \(P_{\rm phys}\), не только отдельный block, недостаточен.
+
+Поэтому universal rule
+
+\[
+d(\Gamma,\Gamma')
+=
+F(\Pi_{\Gamma'}P_{\rm phys}\Pi_\Gamma)
+\]
+
+не существует.
+
+**Статус: NO-GO / PROVED by exact counterexample.**
+
+Правильная архитектура теперь:
+
+\[
+\boxed{
+\{C_A\}
+\to
+M
+\to
+\text{local transition order}
+\to
+P_{\rm phys}
++
+\text{relational history}
+\to
+\text{physical causal histories}.
+}
+\]
+
+То есть
+
+\[
+\boxed{
+\text{constraint selection}
+\neq
+\text{causal ordering}.
+}
+\]
+
+Файлы:
+
+- \`BQG_PROJECTOR_ONLY_CAUSALITY_NOGO.md\`
+- \`scripts/bqg_projector_only_causality_nogo_gate.py\`
