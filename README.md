@@ -2801,3 +2801,126 @@ K_1-K_{1/2}.
 - \`.github/workflows/bqg-refinement-jhalf-j1.yml\`
 
 **Статус: IMPLEMENTED / NUMERICAL EXECUTION ACTIVE.**
+
+
+---
+
+# 54. S4 logical-carrier multiplicity theorem
+
+Для equal-spin four-valent singlet space
+
+\[
+\mathcal H_j^{\rm sing}
+=
+\mathrm{Inv}_{SU(2)}(V_j^{\otimes4})
+\]
+
+точная multiplicity irrep \([2,2]\) равна
+
+\[
+\boxed{
+m_{[2,2]}(j)
+=
+\left\lceil\frac{2j}{3}\right\rceil.
+}
+\]
+
+Следовательно multiplicity-one сохраняется только для
+
+\[
+\boxed{
+j=\frac12,\ 1,\ \frac32.
+}
+\]
+
+Уже при
+
+\[
+\boxed{
+j=2
+}
+\]
+
+имеем
+
+\[
+\boxed{
+m_{[2,2]}=2.
+}
+\]
+
+Поэтому \(S_4\) symmetry **не может** сама по себе задавать один уникальный logical qubit на всех Peter-Weyl scales.
+
+**Статус: PROVED + NO-GO.**
+
+Corrected CI scan на real recoupling engine прошёл GREEN до \(j=4\) и подтвердил
+
+\[
+\operatorname{rank}P_{22}^{(j)}
+=
+2m_{[2,2]}(j).
+\]
+
+Правильная coarse structure теперь:
+
+\[
+\boxed{
+\mathbb C^{m_{22}(j)}
+\otimes
+V_{[2,2]}.
+}
+\]
+
+То есть с \(j\ge2\) появляется новый multiplicity channel, который должен выбираться dynamics, а не symmetry alone.
+
+Файлы:
+
+- \`BQG_S4_LOGICAL_MULTIPLICITY_THEOREM.md\`
+- \`scripts/bqg_s4_refinement_carrier_scan.py\`
+- \`.github/workflows/bqg-s4-refinement-carrier.yml\`
+
+---
+
+# 55. Первый multiplicity-space selection target: j=2
+
+На \(j=2\) впервые возникает
+
+\[
+m_{[2,2]}=2,
+\]
+
+то есть \([2,2]\)-isotypic sector имеет вид
+
+\[
+\mathbb C^2_{\rm mult}\otimes V_{[2,2]}.
+\]
+
+Для любого \(S_4\)-invariant operator \(O\):
+
+\[
+\boxed{
+O|_{[2,2]\text{-iso}}
+=
+A_2\otimes I_2.
+}
+\]
+
+Поэтому первый minimal selection problem — вычислить \(A_2\).
+
+В качестве первого geometric diagnostic уже реализован existing absolute-volume operator:
+
+\[
+V=|Q|^{1/4}.
+\]
+
+Если restricted spectrum содержит две distinct doubly-degenerate eigenvalues, geometry сама задаёт canonical multiplicity eigenbasis.
+
+Если нет — selection должен исходить из full dynamics/master operator.
+
+Файлы:
+
+- \`BQG_J2_MULTIPLICITY_VOLUME_RESULT.md\`
+- \`scripts/bqg_j2_multiplicity_volume_gate.py\`
+- \`.github/workflows/bqg-j2-multiplicity-volume.yml\`
+
+**Статус: IMPLEMENTED / NUMERICAL EXECUTION ACTIVE.**
