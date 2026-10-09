@@ -531,13 +531,14 @@
     },
     {
       "id": "SERIAL_MULTIPLICITY_MASTER_RG",
-      "status": "conditional",
+      "status": "tested_finite",
       "closure_role": "core",
-      "claim": "A serial same-operator S4-twirled Peter-Weyl local master scan over j=2,5/2,3,7/2,4 is implemented to extract A_j and gamma_j before constructing inter-scale eta_j and epsilon_j.",
+      "claim": "The same S4-twirled local Euclidean Peter-Weyl constraint master was evaluated at j=2,5/2,3,7/2,4; the lowest [2,2] multiplicity channel remains isolated at all five scales, with explicit A_j spectra and positive gamma_j.",
       "evidence": [
+        "BQG_SERIAL_MULTIPLICITY_MASTER_RESULT.md",
         "BQG_SERIAL_MULTIPLICITY_MASTER_SCAN.md",
         "scripts/bqg_serial_multiplicity_master_scan.py",
-        ".github/workflows/bqg-serial-multiplicity-master.yml"
+        ".github/workflows/bqg-multiplicity-master-shards.yml"
       ]
     },
     {
