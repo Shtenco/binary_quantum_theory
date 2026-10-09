@@ -2924,3 +2924,138 @@ V=|Q|^{1/4}.
 - \`.github/workflows/bqg-j2-multiplicity-volume.yml\`
 
 **Статус: IMPLEMENTED / NUMERICAL EXECUTION ACTIVE.**
+
+
+---
+
+# 56. Multiplicity-channel spectral selection theorem
+
+Пусть \(S_4\)-equivariant master/operator на \([2,2]\)-isotypic sector имеет вид
+
+\[
+P_{22}M_jP_{22}=A_j\otimes I_2.
+\]
+
+Если \(A_j\) имеет isolated simple eigenvalue \(\lambda_j\) с multiplicity gap
+
+\[
+\gamma_j
+=
+\min_{\mu\neq\lambda_j}
+|\mu-\lambda_j|,
+\]
+
+то eigenvector \(u_j\) задаёт unique \(S_4\)-covariant logical copy
+
+\[
+\boxed{
+\mathcal L_j
+=
+\operatorname{span}\{u_j\}
+\otimes
+V_{[2,2]}.
+}
+\]
+
+Для Hermitian perturbation \(A_j\to A_j+E_j\) при \(\|E_j\|<\gamma_j/2\):
+
+\[
+\boxed{
+\|\widetilde\Pi_{\mathcal L_j}-\Pi_{\mathcal L_j}\|
+\le
+\frac{2\|E_j\|}{\gamma_j}.
+}
+\]
+
+Вводим второй refinement-control parameter:
+
+\[
+\boxed{
+\eta_j=\frac{\|\delta A_j\|}{\gamma_j}.
+}
+\]
+
+Теперь fast-closure hierarchy:
+
+\[
+\boxed{
+A_j
+\to
+\gamma_j
+\to
+\Pi_{\mathcal L_j}
+\to
+\iota_j
+\to
+R_j
+\to
+\epsilon_j
+\to
+P_\infty.
+}
+\]
+
+Где
+
+\[
+\epsilon_j
+=
+\frac{\|R_j\|}{\Delta_{\min,j}}.
+\]
+
+**Статус: PROVED finite operator theorem.**
+
+Файлы:
+
+- \`BQG_MULTIPLICITY_CHANNEL_SELECTION_THEOREM.md\`
+- \`scripts/bqg_multiplicity_channel_selection_gate.py\`
+
+---
+
+# 57. Actual j=2 constraint-master multiplicity calculation
+
+Запущен первый actual constraint-dynamics multiplicity test.
+
+На symmetric K5 background с all links \(j=2\) и локальным node-0 singlet carrier \(K_2=0,2,4,6,8\) используется production operator
+
+\[
+C_0=H_{E,0}^{\rm sine}.
+\]
+
+Строится positive local master block
+
+\[
+\boxed{
+M_0=C_0^\dagger C_0
+}
+\]
+
+и его restriction
+
+\[
+\boxed{
+P_{22}^{(2)}M_0P_{22}^{(2)}
+=
+A_2^{(M)}\otimes I_2
+}
+\]
+
+если \(S_4\)-equivariance проходит.
+
+Измеряются:
+
+- eigenvalues \(A_2^{(M)}\);
+- multiplicity gap \(\gamma_2^{(M)}\);
+- doubled-degeneracy defect;
+- \([M_{22},V_{22}]\);
+- overlap master-selected и volume-selected low channels.
+
+Это actual local Euclidean constraint master, не surrogate.
+
+**Статус: IMPLEMENTED / NUMERICAL EXECUTION ACTIVE.**
+
+Файлы:
+
+- \`BQG_J2_CONSTRAINT_MASTER_MULTIPLICITY.md\`
+- \`scripts/bqg_j2_constraint_master_multiplicity_gate.py\`
+- \`.github/workflows/bqg-j2-constraint-master.yml\`
