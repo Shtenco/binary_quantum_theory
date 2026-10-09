@@ -1,33 +1,111 @@
-# BQG global K5 binary-ancilla symmetry test
+# BQG global K5 correlated-ancilla symmetry result
 
-The correct microscopic node refinement is bilinear in the old logical
-\([2,2]\) state and a fresh ancilla \([2,2]\) state. A fixed local pure
-ancilla is forbidden by tetrahedral symmetry, so the next object must be a
-**correlated global ancilla layer** on shared graph edges.
+Status:
+- **FINITE PASS**: the existing K5 spin-network tensor is exactly S5 covariant.
+- **NO-GO / PROVED finite representation fact**: S5 symmetry alone does not uniquely select the global binary ancilla, because the relevant invariant sector has dimension two.
 
-The existing Peter-Weyl K5 implementation already contains a natural
-all-\(j=\frac12\) spin-network contraction, called v5_tensor in the production
-code, a 32-component tensor over the five local Gauss-singlet doublets.
+The production all-\(j=1/2\) K5 contraction defines a 32-component logical tensor
 
-This gate constructs the exact \(S_5\) vertex-permutation action on that 32D
-logical space, including induced local \(S_4\) recouplings, and tests whether
-the existing K5 tensor spans a unique one-dimensional trivial or sign symmetry
-sector.
+\[
+|V_5\rangle
+\in
+\left([2,2]_{S_4}\right)^{\otimes5}.
+\]
 
-A positive result would provide a symmetry-selected correlated q=2 ancilla
-layer
+The exact induced \(S_5\) action was constructed from vertex relabeling plus
+the corresponding local \(S_4\) recoupling matrices.
+
+## Bare logical action
+
+Without adding the canonical edge-orientation parity correction,
 
 \[
 \boxed{
-|\Omega_{\rm anc}\rangle_{\rm K5}
+R(g)|V_5\rangle
+=
+\operatorname{sgn}(g)|V_5\rangle
 }
 \]
 
-without introducing fitted local ancilla vectors.
+within
 
-That layer is the natural next candidate for extending the microscopic
-bilinear refinement tensor from one node to the full graph-changing K5
-habitat, where the one-hit residuals \(E_v,F_v\) can be measured.
+\[
+2.43\times10^{-15}.
+\]
 
-The result remains kinematical until compatibility with the actual physical
-master/history construction is demonstrated.
+The sign-projector weight is
+
+\[
+\boxed{
+\langle V_5|P_{\rm sign}|V_5\rangle=1
+}
+\]
+
+within floating precision.
+
+## Orientation-corrected action
+
+Including the parity from reversing canonically oriented K5 epsilon edges,
+the same tensor becomes a trivial scalar:
+
+\[
+\boxed{
+R_{\rm oriented}(g)|V_5\rangle
+=
+|V_5\rangle
+}
+\]
+
+again with error
+
+\[
+2.43\times10^{-15}.
+\]
+
+Thus \(V_5\) is an exact global correlated ancilla compatible with the full K5
+permutation symmetry.
+
+## But symmetry does not select it uniquely
+
+The exact group projectors have
+
+\[
+\boxed{
+\operatorname{rank}P_{\rm triv}=2,
+\qquad
+\operatorname{rank}P_{\rm sign}=2,
+}
+\]
+
+depending on the orientation convention.
+
+Therefore the global symmetry-allowed ancilla space is two-dimensional.
+
+Hence
+
+\[
+\boxed{
+S_5\text{ symmetry alone}
+\not\Rightarrow
+\text{unique global q=2 ancilla state}.
+}
+\]
+
+This is the global analogue of the local pure-ancilla selection problem:
+symmetry identifies a small physical candidate sector but not a unique line.
+
+## Consequence
+
+The existing \(V_5\) tensor remains a valid exact symmetry-compatible
+candidate correlated ancilla.
+
+However selecting it rather than the second invariant line requires an
+additional criterion from:
+
+- the actual constraint/master dynamics;
+- a refinement fixed-point condition;
+- or the physical history/boundary prescription.
+
+The next minimal calculation is therefore to restrict the symmetric K5 master
+to this two-dimensional global invariant ancilla sector and test whether it
+has a nondegenerate eigenline, and whether that line coincides with \(V_5\).
