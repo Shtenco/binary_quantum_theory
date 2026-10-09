@@ -1,0 +1,35 @@
+name: BQG cross-scale channel overlap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/bqg_cross_scale_channel_overlap_gate.py'
+      - '.github/workflows/bqg-cross-scale-channel-overlap.yml'
+  workflow_dispatch:
+
+jobs:
+  pair:
+    strategy:
+      fail-fast: false
+      matrix:
+        s2: [4,5,6,7]
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip numpy scipy sympy
+      - name: Compute one cross-scale channel overlap
+        run: |
+          mkdir -p verification_results
+          python scripts/bqg_cross_scale_channel_overlap_gate.py \
+            --s2 ${{ matrix.s2 }} \
+            --output verification_results/BQG_CHANNEL_OVERLAP_S2_${{ matrix.s2 }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-channel-overlap-s2-${{ matrix.s2 }}
+          path: verification_results/BQG_CHANNEL_OVERLAP_S2_${{ matrix.s2 }}.json
+          retention-days: 30
