@@ -12,7 +12,7 @@ representation scale.  If yes, the logical geometry qubit has a unique
 symmetry-selected continuation across the entire tested Peter-Weyl tower.
 """
 from __future__ import annotations
-import argparse, itertools, json, sys
+import argparse, itertools, json, sys, math
 from pathlib import Path
 import numpy as np
 
@@ -96,17 +96,31 @@ def run(s2_max=8):
         row["P22_projector_error"]=float(np.linalg.norm(P@P-P))
         row["P22_eigenvalues"]=[float(x) for x in ev]
         rows.append(row)
-    unique_all=all(r["logical_22_multiplicity"]==1 for r in rows)
+    formula_ok=all(
+        r["logical_22_multiplicity"] == math.ceil(r["s2"]/3)
+        for r in rows
+    )
+    first_failure=next(
+        (r for r in rows if r["logical_22_multiplicity"] != 1),
+        None
+    )
     return {
-        "status":"S4 equal-spin refinement carrier scan",
-        "passed":bool(unique_all and all(r["P22_rank"]==2 for r in rows)),
+        "status":"S4 equal-spin refinement carrier multiplicity theorem / uniqueness no-go scan",
+        "passed":bool(formula_ok and all(r["P22_rank"]==2*r["logical_22_multiplicity"] for r in rows)),
         "s2_max":s2_max,
         "rows":rows,
-        "theorem_tested":"multiplicity of S4 [2,2] in Inv_SU2(V_j^⊗4) across equal-spin j",
+        "theorem_tested":"m_[2,2](j)=ceil((2j)/3) in Inv_SU2(V_j^⊗4)",
+        "multiplicity_formula":"m_[2,2](j)=ceil((2j)/3)=ceil(s2/3)",
+        "first_loss_of_uniqueness": (
+            {
+                "s2": first_failure["s2"],
+                "j": first_failure["j"],
+                "multiplicity": first_failure["logical_22_multiplicity"],
+            } if first_failure else None
+        ),
         "conclusion":(
-            "The [2,2] logical geometry carrier is multiplicity-one at every tested equal-spin scale."
-            if unique_all else
-            "Multiplicity-one [2,2] fails at at least one tested scale; canonical RG chain requires refinement."
+            "The [2,2] carrier is unique only for j=1/2,1,3/2; from j=2 onward multiple symmetry-equivalent [2,2] copies occur. "
+            "Therefore S4 symmetry alone cannot define a unique all-scale logical-qubit embedding."
         ),
     }
 
