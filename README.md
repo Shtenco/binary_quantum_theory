@@ -2144,3 +2144,189 @@ e^{-1/\xi}.
 
 - \`BQG_MANY_BODY_OPERATOR_FRONT_RESULT.md\`
 - \`scripts/bqg_many_body_operator_front_gate.py\`
+
+
+---
+
+# 48. Sharp analytic propagation cone
+
+Для homogeneous reduced chain generic Lieb–Robinson norm bound не является tight. Благодаря exact free-fermion dispersion можно получить более сильный complex-momentum cone.
+
+Для critical phase
+
+\[
+\varepsilon(k)=-3\cos k,
+\]
+
+propagator равен
+
+\[
+\boxed{
+U_r(t)=i^rJ_r(3t).
+}
+\]
+
+Contour shift \(k\to k+i\mu\) даёт
+
+\[
+\boxed{
+|U_r(t)|
+\le
+\exp[-\mu r+3|t|\sinh\mu].
+}
+\]
+
+Поэтому
+
+\[
+\boxed{
+v_\mu^{(0)}
+=
+3\frac{\sinh\mu}{\mu},
+}
+\]
+
+и
+
+\[
+\boxed{
+\lim_{\mu\to0^+}v_\mu^{(0)}=3=v_{\max}(0).
+}
+\]
+
+Для staggered-volume phase
+
+\[
+E_\pm(k)=\pm\sqrt{4m^2+9\cos^2k}
+\]
+
+nearest complex branch point находится на
+
+\[
+\boxed{
+\mu_c
+=
+\operatorname{arsinh}\left(\frac{2|m|}{3}\right)
+=
+\xi^{-1}.
+}
+\]
+
+То есть **static correlation length и dynamical analyticity strip задаются одной и той же singularity**.
+
+Для любого
+
+\[
+0<\mu<\mu_c
+\]
+
+получено exact:
+
+\[
+\boxed{
+\sup_k|\Im E(k+i\mu)|
+=
+\frac{v_{\max}(m)}2\sinh(2\mu).
+}
+\]
+
+Следовательно существует finite \(C_m(\mu)\), для которого
+
+\[
+\boxed{
+\|U_r(t)\|
+\le
+C_m(\mu)
+\exp\left[
+-\mu r
++
+\frac{v_{\max}(m)}2|t|\sinh(2\mu)
+\right].
+}
+\]
+
+Или
+
+\[
+\boxed{
+\|U_r(t)\|
+\le
+C_m(\mu)
+e^{-\mu[r-v_\mu(m)|t|]},
+}
+\]
+
+где
+
+\[
+\boxed{
+v_\mu(m)
+=
+v_{\max}(m)
+\frac{\sinh(2\mu)}{2\mu}.
+}
+\]
+
+При \(\mu\to0\)
+
+\[
+\boxed{
+v_\mu(m)\to v_{\max}(m).
+}
+\]
+
+Поэтому для каждого \(v>v_{\max}\) существует exponential exterior cone, и asymptotic ballistic front равен
+
+\[
+\boxed{
+v_{\rm front}(m)
+=
+v_{\max}(m).
+}
+\]
+
+С учётом предыдущих результатов:
+
+\[
+\boxed{
+\Delta_{\rm sp}=2|m|,
+}
+\]
+
+\[
+\boxed{
+\mu_c=\xi^{-1}
+=
+\operatorname{arsinh}(\Delta_{\rm sp}/3),
+}
+\]
+
+\[
+\boxed{
+v_{\rm front}
+=
+\sqrt{\Delta_{\rm sp}^2+9}-\Delta_{\rm sp},
+}
+\]
+
+\[
+\boxed{
+\frac{v_{\rm front}}3=e^{-1/\xi}.
+}
+\]
+
+То есть одна complex-momentum singularity одновременно управляет:
+
+- static exponential correlations;
+- analyticity radius;
+- exponential propagation cone;
+- exact asymptotic information-front velocity.
+
+**Статус: PROVED для homogeneous reduced free-fermion / staggered-volume model.**
+
+Это всё ещё не physical Lorentz cone полной BQG.
+
+Файлы:
+
+- \`BQG_SHARP_ANALYTIC_CAUSAL_CONE.md\`
+- \`scripts/bqg_sharp_analytic_causal_cone_gate.py\`
