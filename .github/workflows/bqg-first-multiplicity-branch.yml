@@ -1,0 +1,30 @@
+name: BQG first multiplicity branch overlap
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/bqg-first-multiplicity-branch.yml'
+  workflow_dispatch:
+
+jobs:
+  pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install --upgrade pip numpy scipy sympy
+      - name: Compute j=3/2 to j=2 channel overlap
+        run: |
+          mkdir -p verification_results
+          python scripts/bqg_cross_scale_channel_overlap_gate.py \
+            --s2 3 \
+            --output verification_results/BQG_CHANNEL_OVERLAP_S2_3.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bqg-channel-overlap-s2-3
+          path: verification_results/BQG_CHANNEL_OVERLAP_S2_3.json
+          retention-days: 30
