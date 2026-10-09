@@ -69,6 +69,17 @@ def run():
     svals=np.linalg.svd(F,compute_uv=False)
     rank=int(np.sum(svals>1e-10))
 
+    # Product [2,2] projector in old x ancilla space.
+    Pprod=np.zeros((4,4),complex)
+    for p in PERMS:
+        U=J1.permutation_matrix(1,p)
+        Pprod += CHAR22[J1.cycle_type(p)]*np.kron(U,U)
+    Pprod*=2/24
+    Pprod=(Pprod+Pprod.conj().T)/2
+
+    fusion_source_err=float(np.linalg.norm(2*F.conj().T@F-Pprod))
+    fusion_target_err=float(np.linalg.norm(2*F@F.conj().T-P22))
+
     # No nonzero invariant ancilla vector in [2,2].
     # Solve Ua(p) v = v for all p by nullspace of stacked equations.
     A=[]
@@ -95,7 +106,7 @@ def run():
     }
     char_err=max(abs(product[ct]-expected[ct]) for ct in expected)
 
-    passed=(leakage<1e-9 and cov_err<1e-9 and rank==2 and invariant_nullity==0 and char_err<1e-9)
+    passed=(leakage<1e-9 and cov_err<1e-9 and rank==2 and invariant_nullity==0 and char_err<1e-9 and fusion_source_err<1e-9 and fusion_target_err<1e-9)
     out={
       "status":"exact microscopic bilinear q2 refinement tensor",
       "passed":bool(passed),
@@ -104,6 +115,8 @@ def run():
       "coarse_22_tensor_rank":rank,
       "coarse_22_singular_values":[float(x) for x in svals],
       "ancilla_invariant_vector_dimension":invariant_nullity,
+      "fusion_source_projector_error":fusion_source_err,
+      "fusion_target_projector_error":fusion_target_err,
       "product_character_error":float(char_err),
       "decomposition":"[2,2]_old x [2,2]_anc = [4] + [2,2] + [1^4]",
       "claim":"A fixed pure ancilla singlet cannot define an S4-equivariant old-to-coarse map; the correct microscopic refinement object is the bilinear old x ancilla -> coarse tensor."
