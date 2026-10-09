@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - run: python -m pip install --upgrade pip numpy scipy
+      - run: python -m pip install --upgrade pip numpy scipy sympy
       - name: Compute jhalf-to-j1 return RG datum
         run: |
           mkdir -p verification_results
