@@ -2011,3 +2011,136 @@ v_{\rm LR}
 \text{continuum causal cone}.
 }
 $$
+
+
+---
+
+# 47. Many-body operator front и exact velocity-gap-correlation relation
+
+Одночастичный short-time theorem поднимается до many-body locality.
+
+Для graph-local Hamiltonian
+
+\[
+H=\sum_X h_X,
+\]
+
+где каждый \(h_X\) поддержан на одной вершине или одном edge, и local operator \(O_i\),
+
+\[
+O_i(t)=
+\sum_{n=0}^{\infty}
+\frac{(it)^n}{n!}\operatorname{ad}_H^n(O_i).
+\]
+
+После \(n\) nested commutators support не может выйти за radius-\(n\) graph ball:
+
+\[
+\boxed{
+\operatorname{supp}\operatorname{ad}_H^n(O_i)
+\subseteq B_n(i).
+}
+\]
+
+Поэтому для local probe \(O_j\)
+
+\[
+\boxed{
+[\operatorname{ad}_H^n(O_i),O_j]=0,
+\qquad
+n<d_G(i,j).
+}
+\]
+
+То есть operator influence cannot appear before graph-distance order.
+
+Для positive-coupling XX path/tree sector и endpoint probes \(Z_i,Z_j\) первый ненулевой nested-commutator order равен точно
+
+\[
+\boxed{
+\min\{n:[\operatorname{ad}_H^n(Z_i),Z_j]\neq0\}
+=
+d_G(i,j).
+}
+\]
+
+**Статус: PROVED в заявленном graph-local / path-tree scope.**
+
+Для homogeneous reduced chain
+
+\[
+\varepsilon(k)=-3\cos k
+\]
+
+и поэтому
+
+\[
+\boxed{v_{\max}(0)=3.}
+\]
+
+Для staggered-volume deformation
+
+\[
+E_\pm(k)=\pm\sqrt{4m^2+9\cos^2k}
+\]
+
+точный maximum group velocity:
+
+\[
+\boxed{
+v_{\max}(m)=\sqrt{4m^2+9}-2|m|.
+}
+\]
+
+С ранее выведенными
+
+\[
+\Delta_{\rm sp}=2|m|,
+\]
+
+\[
+\xi^{-1}=\operatorname{arsinh}(2|m|/3)
+\]
+
+получаем
+
+\[
+\boxed{
+v_{\max}
+=
+\sqrt{\Delta_{\rm sp}^2+9}-\Delta_{\rm sp}
+}
+\]
+
+и особенно
+
+\[
+\boxed{
+\frac{v_{\max}}{3}
+=
+e^{-1/\xi}.
+}
+\]
+
+Таким образом в reduced model одна и та же deformation одновременно:
+
+- открывает gap;
+- сокращает static correlation length;
+- замедляет ballistic information front.
+
+И эти три quantities связаны **exact analytically**, а не empirical fit.
+
+**Статус: PROVED для homogeneous staggered-volume reduced model.**
+
+Это ещё не physical speed of light. Для Lorentzian cone остаются OPEN:
+
+- physical clock/history;
+- projector-derived graph dynamics;
+- continuum/refinement limit;
+- isotropic causal cone;
+- common gravity/matter/photon cone.
+
+Файлы:
+
+- \`BQG_MANY_BODY_OPERATOR_FRONT_RESULT.md\`
+- \`scripts/bqg_many_body_operator_front_gate.py\`
