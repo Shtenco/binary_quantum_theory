@@ -91,7 +91,7 @@ jobs:
           source = load('Q2_RELATIONAL_METRIC_SOURCE.json')
 
           assert status['valid'] is True
-          assert status['structural_candidate_closed'] is True
+          assert status['structural_candidate_closed'] is False
           assert status['physical_projector_history_closed'] is False
           assert status['physical_tt_kernel_frozen'] is False
           assert status['ir_six_wilson_vector_frozen'] is False
