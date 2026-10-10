@@ -1,0 +1,19 @@
+{
+  "source_column": 0,
+  "cutoff_doubled_spin": 7,
+  "H0H1_support": 1004,
+  "H1H0_support": 1004,
+  "commutator_support": 514,
+  "commutator_norm": 2.879453814704954,
+  "maximum_reverse_symmetry_error": 2.7755575615628914e-16,
+  "reverse_elements_checked": 74,
+  "diagonal_commutator_crossgram_error": 2.220446049250313e-16,
+  "scope": "one source column Euclidean sine/zero-aware; no full HDA or Lorentzian proof",
+  "seconds": 0.013054611001280136,
+  "original_code_projection_norm": 0.5503455636886702,
+  "original_code_projection_crossgram_error": 5.874748045952207e-16,
+  "outside_code_norm": 2.826371177242493,
+  "outside_code_squared_fraction": 0.9634699130467531,
+  "maximum_output_doubled_spin": 3,
+  "fresh_computation_seconds": 268.6
+}

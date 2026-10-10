@@ -24,7 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LEDGER = ROOT / "theory_gates.json"
 
 ROLE_STATUSES = {
-    "core": {"proved", "tested_finite", "conditional"},
+    "core": {"proved", "tested_finite", "conditional", "no_go"},
     "extension": {"external_extension"},
     "experiment": {"experimental_test"},
 }
@@ -131,7 +131,7 @@ def main() -> int:
             core_rows.append({
                 "id": gate_id,
                 "status": status,
-                "accepted_for_structural_closure": status in ROLE_STATUSES["core"],
+                "accepted_for_structural_closure": status in {"proved", "tested_finite", "conditional"},
             })
 
     if len(ids) != len(set(ids)):
@@ -142,10 +142,8 @@ def main() -> int:
         row["accepted_for_structural_closure"] for row in core_rows
     )
     declared = data.get("core_theory_closed_declared")
-    if declared is not True:
-        errors.append(
-            "legacy core_theory_closed_declared must remain true for the registered structural package"
-        )
+    if not isinstance(declared, bool):
+        errors.append("core_theory_closed_declared must be a Boolean")
     if declared is True and not structural_candidate_closed:
         errors.append("declared structural closure is inconsistent with core gate statuses")
 

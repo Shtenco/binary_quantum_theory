@@ -4,10 +4,8 @@ from __future__ import annotations
 import numpy as np
 from q2_symmetric_block_peter_weyl_growth_gate import spin_matrices_from_symmetric_n
 
-sx=np.array([[0,1],[1,0]],complex)/2
-sy=np.array([[0,-1j],[1j,0]],complex)/2
-sz=np.array([[-1,0],[0,1]],complex)/2
-S=(sx,sy,sz)
+# Use the same occupation-order convention as the old and new spin bases.
+S=spin_matrices_from_symmetric_n(1)
 
 def inclusion(n:int):
     # codomain basis: old occupation k=0..n, ancilla a=0,1

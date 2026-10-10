@@ -21,9 +21,15 @@ jobs:
       - name: Compute microscopic q2 node refinement
         run: |
           mkdir -p verification_results
+          set +e
           python scripts/bqg_microscopic_node_refinement_gate.py \
             --output verification_results/BQG_MICROSCOPIC_NODE_REFINEMENT.json
+          result=$?
+          set -e
+          test "$result" -eq 2
+          python -c "import json; assert json.load(open('verification_results/BQG_MICROSCOPIC_NODE_REFINEMENT.json'))['passed'] is False"
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: bqg-microscopic-node-refinement
           path: verification_results/BQG_MICROSCOPIC_NODE_REFINEMENT.json
