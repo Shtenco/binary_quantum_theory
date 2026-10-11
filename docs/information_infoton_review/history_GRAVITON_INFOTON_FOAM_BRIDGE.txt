@@ -1,0 +1,4 @@
+d36a91cc4062a23bdee3ecc8e037d43fb6fde924 2026-08-18T00:37:29+03:00 Refocus theory on binary quantum geometry to continuum GR
+f7efbef736041fd14e4443e0c0a65b7a2f57d965 2026-08-17T23:44:04+03:00 Remove speculative infoton and foam branch
+b6f2f8be1e23a4b1ad88be4dd04140df5cddb1b3 2026-08-14T02:35:20+05:00 Add graviton helicity qubit and vacuum-foam resonance bridge
+042baa6e87b2a0340511cf083c974042c89b848b 2026-08-14T02:34:33+05:00 Add graviton-helicity qubit and vacuum-foam resonance bridge

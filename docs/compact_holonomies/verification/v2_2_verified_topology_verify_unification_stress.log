@@ -1,0 +1,58 @@
+{
+  "trace_relation": {
+    "trace_normalizations_per_generation": {
+      "k_y": "10/3",
+      "k_su2": "2",
+      "k_su3": "2"
+    },
+    "kY_over_k2": "5/3",
+    "conditional_relation": "g3^2=g2^2=(5/3) gY^2",
+    "sin2_thetaW_at_common_normalization_scale": "3/8",
+    "exact_expected": "3/8",
+    "pass": true,
+    "scope": "Conditional on the assumed SM representation pattern and a single common microscopic gauge-trace coefficient. It does not establish that such a scale exists in the minimal model."
+  },
+  "minimal_model_death_test": {
+    "benchmark": {
+      "reference_scale_gev": 91.1876,
+      "alpha_em_inverse_msbar": 127.93,
+      "alpha_em_inverse_sigma": 0.008,
+      "sin2_theta_msbar": 0.23129,
+      "sin2_theta_sigma": 4e-05,
+      "alpha_s_msbar": 0.118,
+      "alpha_s_sigma": 0.0009
+    },
+    "benchmark_sources": {
+      "alpha_em_inverse_msbar": "PDG 2024 Electroweak review, alpha_hat^(5)(MZ)^-1=127.930+/-0.008",
+      "sin2_theta_msbar": "PDG 2024 Electroweak global fit, s_hat_Z^2=0.23129+/-0.00004",
+      "alpha_s_msbar": "PDG 2024 QCD review, world average alpha_s(MZ)=0.1180+/-0.0009"
+    },
+    "fit_inputs": [
+      "alpha1(MZ)",
+      "alpha2(MZ)"
+    ],
+    "held_out_observable": "alpha3(MZ)=alpha_s(MZ)",
+    "prediction": {
+      "log_MU_over_MZ": 25.434546668058058,
+      "unification_scale_gev": 10139558685272.531,
+      "inverse_alpha_unified": 42.40770348715597,
+      "predicted_inverse_alpha3_MZ": 14.071466694495417,
+      "predicted_alpha3_MZ": 0.07106579731245696
+    },
+    "prediction_sigma_from_experimental_EW_inputs": 4.7863396991926026e-05,
+    "observed_alpha3_MZ": 0.118,
+    "observed_alpha3_sigma": 0.0009,
+    "relative_prediction_error": -0.3977474804029071,
+    "experimental_only_pull_sigma": -52.075524077364875,
+    "pairwise_meeting_scales": {
+      "M12_gev": 10139558685272.531,
+      "M13_gev": 240947623690400.34,
+      "M23_gev": 9.7759120829906e+16
+    },
+    "pairwise_scale_spread_factor": 9641.358550633846,
+    "minimal_exact_one_loop_unification_survives": false,
+    "test_pass": true,
+    "verdict": "The conditional 3/8 high-scale trace relation is exact, but the minimal no-threshold one-loop Standard Model does not unify: fitting alpha1 and alpha2 predicts alpha_s far below the held-out measured value. New thresholds or different microscopic content would be required and must be preregistered before refitting.",
+    "scope": "The quoted pull propagates experimental errors only. It is a death test of the exactly specified minimal model, not a precision exclusion of every possible threshold completion."
+  }
+}

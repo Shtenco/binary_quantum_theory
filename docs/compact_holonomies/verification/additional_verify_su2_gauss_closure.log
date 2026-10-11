@@ -1,0 +1,90 @@
+PASS  три спина-1/2                       dims=[2, 2, 2]  max|[Ja,Jb]-i eps Jc| = 0.000e+00
+PASS  спины 1/2,1,1                       dims=[2, 3, 3]  max|[Ja,Jb]-i eps Jc| = 4.441e-16
+PASS  спины 1,1,1                         dims=[3, 3, 3]  max|[Ja,Jb]-i eps Jc| = 4.441e-16
+PASS  спины 1/2,1,3/2                     dims=[2, 3, 4]  max|[Ja,Jb]-i eps Jc| = 4.441e-16
+PASS  четырёхвалентный узел, все 1/2      dims=[2, 2, 2, 2]  max|[Ja,Jb]-i eps Jc| = 0.000e+00
+{
+  "artifact_id": "A7",
+  "claim": "SU(2) Gauss-law generators at a branching vertex close su(2) exactly (no anomaly), for arbitrary spin reps on the incident links.",
+  "results": [
+    {
+      "case": "три спина-1/2",
+      "spins": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "dims": [
+        2,
+        2,
+        2
+      ],
+      "max_anomaly_norm": 0.0,
+      "pass": true
+    },
+    {
+      "case": "спины 1/2,1,1",
+      "spins": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "dims": [
+        2,
+        3,
+        3
+      ],
+      "max_anomaly_norm": 4.440892098500626e-16,
+      "pass": true
+    },
+    {
+      "case": "спины 1,1,1",
+      "spins": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "dims": [
+        3,
+        3,
+        3
+      ],
+      "max_anomaly_norm": 4.440892098500626e-16,
+      "pass": true
+    },
+    {
+      "case": "спины 1/2,1,3/2",
+      "spins": [
+        0.5,
+        1.0,
+        1.5
+      ],
+      "dims": [
+        2,
+        3,
+        4
+      ],
+      "max_anomaly_norm": 4.440892098500626e-16,
+      "pass": true
+    },
+    {
+      "case": "четырёхвалентный узел, все 1/2",
+      "spins": [
+        0.5,
+        0.5,
+        0.5,
+        0.5
+      ],
+      "dims": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "max_anomaly_norm": 0.0,
+      "pass": true
+    }
+  ],
+  "overall": "PASS",
+  "caveat": "This tests kinematics only (representation-theoretic closure of the Gauss constraint algebra), which is guaranteed a priori by finite-dim Lie algebra representation theory (direct sum of reps is a rep). It does NOT test the Hamiltonian constraint / hypersurface-deformation algebra (roadmap item 4), which is the genuinely open, unsolved problem in canonical quantum gravity -- closing THAT algebra without anomaly on a physical Hilbert space is not established here or anywhere in this repository, and remains open in the wider LQG literature as well."
+}

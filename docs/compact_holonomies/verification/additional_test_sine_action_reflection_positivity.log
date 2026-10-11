@@ -1,0 +1,80 @@
+PASS  t= 1.0  delta= 1.0   c[0]=+0.4886  c[0.5]=+0.0000  c[1]=+0.1371  c[1.5]=+0.0000  c[2]=+0.0177  c[2.5]=-0.0000 ...
+PASS  t= 1.0  delta= 0.3   c[0]=+0.0165  c[0.5]=+0.0000  c[1]=+0.0400  c[1.5]=+0.0000  c[2]=+0.0442  c[2.5]=-0.0000 ...
+PASS  t= 4.0  delta= 1.0   c[0]=+0.0932  c[0.5]=+0.0000  c[1]=+0.1220  c[1.5]=+0.0000  c[2]=+0.0644  c[2.5]=-0.0000 ...
+PASS  t= 0.2  delta= 1.0   c[0]=+0.8618  c[0.5]=+0.0000  c[1]=+0.0442  c[1.5]=+0.0000  c[2]=+0.0011  c[2.5]=-0.0000 ...
+PASS  t= 1.0  delta= 2.5   c[0]=+0.8876  c[0.5]=+0.0000  c[1]=+0.0362  c[1.5]=+0.0000  c[2]=+0.0007  c[2.5]=+0.0000 ...
+
+{
+  "artifact_id": "A8",
+  "claim": "Sine-deformed SU(2) plaquette weight exp(-t*(sin(theta)/delta)^2) has nonnegative Peter-Weyl coefficients for all tested j (=> reflection positive => valid Euclidean transfer operator).",
+  "method": "Direct numerical integration (scipy.integrate.quad) of Peter-Weyl coefficients over SU(2) Haar measure on the class angle.",
+  "param_sets": [
+    {
+      "t": 1.0,
+      "delta": 1.0,
+      "coeffs": [
+        {
+          "j": 0,
+          "c_j": 0.4886144672642785,
+          "quad_err": 3.219646771412954e-15,
+          "negative": false
+        },
+        {
+          "j": 0.5,
+          "c_j": 0.0,
+          "quad_err": 2.3446573429158478e-17,
+          "negative": false
+        },
+        {
+          "j": 1,
+          "c_j": 0.13706874547520798,
+          "quad_err": 4.440892098500626e-16,
+          "negative": false
+        },
+        {
+          "j": 1.5,
+          "c_j": 1.734723475976807e-17,
+          "quad_err": 3.957896441921687e-17,
+          "negative": false
+        },
+        {
+          "j": 2,
+          "c_j": 0.017747716202097252,
+          "quad_err": 3.191891195797325e-16,
+          "negative": false
+        },
+        {
+          "j": 2.5,
+          "c_j": -2.0816681711721685e-17,
+          "quad_err": 1.5707167215646932e-17,
+          "negative": false
+        },
+        {
+          "j": 3,
+          "c_j": 0.0015043818886870683,
+          "quad_err": 4.0679265511656126e-16,
+          "negative": false
+        },
+        {
+          "j": 4,
+          "c_j": 9.497201335568681e-05,
+          "quad_err": 4.598372464054146e-16,
+          "negative": false
+        },
+        {
+          "j": 5,
+          "c_j": 4.780097072646164e-06,
+          "quad_err": 6.047019032425285e-16,
+          "negative": false
+        },
+        {
+          "j": 7,
+          "c_j": 7.171625490513811e-09,
+          "quad_err": 1.1918092381046907e-16,
+          "negative": false
+        },
+        {
+          "j": 10,
+          "c_j": 1.571
+
+OVERALL: PASS

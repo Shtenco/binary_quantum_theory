@@ -1,0 +1,2 @@
+b744ff6305b08ab3682867e13614687c3e59497e 2026-09-16T17:31:39+05:00 Make 2T closure scan convention-explicit
+50df0147366b339d029c9d87dc232ca82fa3abef 2026-09-16T17:31:17+05:00 Add falsification-first Sp(2,R) closure scan harness

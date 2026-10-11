@@ -1,0 +1,3 @@
+bc5a3ee9911660bfda91a300b41237851f0df259 2026-09-05T10:34:35+03:00 Unify physical cosmology, light interference and gravitational lensing
+48f350c1e27878003f13620246aa8ec83cf9d451 2026-09-05T00:15:54+03:00 Extend physicalization frontier to light cosmology and lensing
+bf06417913d7c437538ccc5b43382f18a79e11ae 2026-08-30T01:13:52+03:00 Add fail-closed physicalization truth ledger

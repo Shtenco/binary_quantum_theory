@@ -1,0 +1,10 @@
+{
+  "trial_count": 6,
+  "max_zero_singular_value": 4.216544179765782e-14,
+  "minimum_nonzero_singular_value": 0.8626660826084996,
+  "max_chirality_integrality_error": 1.1102230246251565e-15,
+  "pass": true,
+  "conditional_result": "Q=+/-3 gives exactly three same-chirality overlap zero modes",
+  "open_problem": "the dynamics selecting |Q|=3 rather than another integer flux is not derived",
+  "scope": "2D compact U(1) overlap test bed; not yet a 4D Standard-Model compactification"
+}

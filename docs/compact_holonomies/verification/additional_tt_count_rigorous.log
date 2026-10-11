@@ -1,0 +1,16 @@
+{
+  "artifact_id": "A15",
+  "roadmap_item": 5,
+  "scope": "BASELINE undeformed linearized GR only -- see honest_scope_note",
+  "setup": {
+    "raw_components_of_symmetric_eps": 10,
+    "null_wavevector": "k^mu = (w,0,0,w), verified null: k.eta.k = 0"
+  },
+  "constraint_rank_(Lorenz_gauge, 4 candidate conditions)": 4,
+  "gauge_orbit_rank_(4 candidate residual-gauge directions)": 4,
+  "gauge_transformations_automatically_preserve_Lorenz_condition": true,
+  "physical_dof_computed": 2,
+  "expected_from_textbook": 2,
+  "match": true,
+  "honest_scope_note": "This confirms, via explicit rank computation rather than assumed counting, that undeformed linearized vacuum GR has exactly 2 physical TT polarizations. It does NOT show this survives the sine/holonomy deformation (f1=sin^2 etc.) used throughout A1-A14, and does NOT connect to the discrete lattice models of A6-A14 at all -- that would require building an actual transverse sector on the lattice (A14 flagged this as unresolved) and re-running an analogous rank computation on the DEFORMED discrete constraints. That work is not done here and is left explicitly open, not asserted or assumed to go through."
+}

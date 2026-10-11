@@ -1,0 +1,62 @@
+{
+  "A33_weyl_kinematics": {
+    "canonical_commutator_residual": 78.4893877827074,
+    "canonical_trace_obstruction": 31.0,
+    "clock_unitarity_error": 4.298938926073523e-15,
+    "dimension": 31,
+    "expected_trace_obstruction": 31.0,
+    "passed": true,
+    "shift_unitarity_error": 0.0,
+    "verdict": "The finite Hilbert space carries an exact unitary Weyl algebra. An exact canonical commutator is impossible because Tr[A,B]=0 while Tr(iI)=iN; the project therefore uses exponentiated holonomy-flux kinematics rather than a fake truncated CCR.",
+    "weyl_relation_error": 8.96649014544962e-16
+  },
+  "A34_quantum_constraint": {
+    "dimension": 31,
+    "klein_gordon_constraint_residual": 3.738236444360075e-12,
+    "lattice_spacing": 0.2,
+    "mass": 0.35,
+    "maximum_evolution_unitarity_error": 4.371478611518755e-14,
+    "maximum_state_norm_error": 2.4424906541753444e-15,
+    "minimum_theta_eigenvalue": 0.1225000000000024,
+    "passed": true,
+    "spectral_error": 1.652011860642233e-13,
+    "square_root_factorization_error": 3.738236444360075e-12,
+    "theta_hermiticity_error": 0.0,
+    "verdict": "A positive self-adjoint compact holonomy operator defines exact unitary relational evolution and a nonempty family of physical positive-frequency solutions. The construction is a one-degree-of-freedom quantum laboratory, not full quantum gravity."
+  },
+  "A35_continuum_limit": {
+    "circumference": 6.283185307179586,
+    "dimensions": [
+      32,
+      48,
+      64,
+      96,
+      128,
+      192
+    ],
+    "expected_leading_coefficient_ratio": 0.3333333333333333,
+    "fitted_order": 1.9974248812750077,
+    "lattice_spacings": [
+      0.19634954084936207,
+      0.1308996938995747,
+      0.09817477042468103,
+      0.06544984694978735,
+      0.04908738521234052,
+      0.032724923474893676
+    ],
+    "leading_coefficient_ratio": 0.3332857405022523,
+    "mode_number": 2,
+    "passed": true,
+    "relative_errors": [
+      0.012785169233341942,
+      0.005698543736445849,
+      0.003208635955039063,
+      0.0014270788520557298,
+      0.0008029324607687904,
+      0.0003569225706685497
+    ],
+    "verdict": "The low compact-holonomy spectrum converges to the continuum circle Laplacian with the preregistered O(a^2) error and the correct leading coefficient. This controls one spectral limit, not the continuum limit of interacting 3+1 geometry."
+  },
+  "pass": true,
+  "scope": "finite one-degree-of-freedom compact quantum laboratory; explicit Hilbert space and unitary relational dynamics, but no full 3+1 Hamiltonian/diffeomorphism/Gauss operator algebra"
+}

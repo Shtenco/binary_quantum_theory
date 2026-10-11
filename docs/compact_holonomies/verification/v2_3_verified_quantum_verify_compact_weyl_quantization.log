@@ -1,0 +1,27 @@
+{
+  "clock_unitarity_error": 1.2116127558201283e-15,
+  "compact_laplacian_spectral_error": 7.105427357601002e-15,
+  "dimension": 17,
+  "finite_CCR_no_go": {
+    "conclusion": "An exact [Q,P]=i hbar I representation requires an infinite-dimensional Hilbert space. Finite compact models must use the exponentiated Weyl algebra instead.",
+    "dimension": 17,
+    "exact_finite_dimensional_CCR_possible": false,
+    "trace_mismatch_magnitude": 17.0,
+    "trace_of_any_finite_commutator": [
+      0.0,
+      0.0
+    ],
+    "trace_of_i_hbar_identity": [
+      0.0,
+      17.0
+    ]
+  },
+  "pass": true,
+  "periodicity_error": 1.3565655070099056e-14,
+  "root_of_unity": [
+    0.9324722294043558,
+    0.3612416661871529
+  ],
+  "shift_unitarity_error": 0.0,
+  "weyl_relation_error": 6.324679038885917e-16
+}

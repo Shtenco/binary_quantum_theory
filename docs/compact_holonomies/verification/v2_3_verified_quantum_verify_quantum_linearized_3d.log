@@ -1,0 +1,219 @@
+{
+  "anisotropy_correction_ratio_axis_to_diagonal": 3.0,
+  "background": "Minkowski",
+  "boundary_conditions": "periodic spatial three-torus",
+  "constraint_algebra": {
+    "algebra": "exact Abelianized linearized 3+1 constraint algebra",
+    "commutator_matrix_imag": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        6.217248937900877e-15
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        5.329070518200751e-15
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        -6.217248937900877e-15,
+        -5.329070518200751e-15,
+        0.0,
+        0.0
+      ]
+    ],
+    "commutator_matrix_real": [
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        -0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "constraint_names": [
+      "G0",
+      "G1",
+      "G2",
+      "D0",
+      "D1",
+      "D2",
+      "H"
+    ],
+    "max_absolute_commutator_coefficient": 6.217248937900877e-15,
+    "pass": true,
+    "scope": "linear perturbations around a flat background; not the nonlinear Dirac algebra"
+  },
+  "dispersion_convergence": {
+    "absolute_errors": [
+      0.21422035502620673,
+      0.0962527197657419,
+      0.05434931288840694,
+      0.02422125379783857,
+      0.013637476280925043
+    ],
+    "continuum_omega_squared": 5.0,
+    "lattice_sizes": [
+      16,
+      24,
+      32,
+      48,
+      64
+    ],
+    "minimum_observed_order": 1.973111706923545,
+    "mode": [
+      1,
+      2,
+      0
+    ],
+    "observed_orders": [
+      1.973111706923545,
+      1.986725325163201,
+      1.9932700771225105,
+      1.996679483817786
+    ],
+    "pass": true,
+    "spacings": [
+      0.39269908169872414,
+      0.2617993877991494,
+      0.19634954084936207,
+      0.1308996938995747,
+      0.09817477042468103
+    ]
+  },
+  "fock_sector": {
+    "expected_ground_energy": 3.632255324057888,
+    "ground_energy": 3.632255324057888,
+    "hilbert_dimension": 36,
+    "low_occupancy_ccr_error_cross": 3.1401849173675502e-15,
+    "low_occupancy_ccr_error_plus": 3.1401849173675502e-15,
+    "pass": true,
+    "physical_polarizations": 2,
+    "positive_inner_product": true,
+    "unitarity_error": 3.305967926522289e-16
+  },
+  "independent_first_class_constraints": 7,
+  "kinematic_phase_space_dimension_per_nonzero_mode": 18,
+  "maximum_trace_error": 2.220446049250313e-16,
+  "maximum_transversality_error": 7.046126177054644e-16,
+  "microscopic_cutoff_scale_mu": 5.0,
+  "pass": true,
+  "physical_configuration_degrees_of_freedom": 2,
+  "physical_phase_space_dimension_per_nonzero_mode": 4,
+  "projector_eigenvalues": [
+    -1.335104670399533e-16,
+    -3.6317416316166714e-17,
+    7.80611322921025e-19,
+    1.0645930876932941e-16,
+    1.0,
+    1.0000000000000002
+  ],
+  "projector_idempotence_error": 2.1432085566653465e-16,
+  "projector_symmetry_error": 8.151354677681473e-17,
+  "propagator_residue_rank": 2,
+  "scope": "A complete quantum Hilbert-space/constraint/propagator construction for linearized 3+1 gravity only. The nonlinear Hamiltonian-constraint commutator with structure functions remains open.",
+  "tt_rank": 2
+}

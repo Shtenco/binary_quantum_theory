@@ -1,0 +1,82 @@
+{
+  "status": "standard Bell/CHSH reference control sharing the repository q=2 Pauli convention",
+  "passed": true,
+  "science_status": "STANDARD_QM_REFERENCE_CONTROL",
+  "random_trials": 128,
+  "rotation_trials": 64,
+  "seed": 260830,
+  "tolerance": 2e-12,
+  "state_norm_error": 2.220446049250313e-16,
+  "Pauli_commutator_error": 0.0,
+  "Pauli_anticommutator_error": 0.0,
+  "observable_Hermiticity_error": 0.0,
+  "observable_involution_error": 6.280489031298287e-16,
+  "singlet_local_mean_error": 0.0,
+  "singlet_total_spin_annihilation_error": 0.0,
+  "singlet_correlation_tensor": [
+    [
+      -0.9999999999999998,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -0.9999999999999998,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      -0.9999999999999998
+    ]
+  ],
+  "singlet_correlation_tensor_error": 3.8459253727671276e-16,
+  "singlet_random_correlator_max_error": 3.3306690738754696e-16,
+  "common_SU2_rotation_max_error": 4.725491448687417e-16,
+  "CHSH_value": -2.82842712474619,
+  "CHSH_absolute_value": 2.82842712474619,
+  "classical_CHSH_bound": 2.0,
+  "Tsirelson_bound": 2.8284271247461903,
+  "CHSH_operator_norm": 2.8284271247461903,
+  "random_CHSH_operator_norm_max": 2.825169572092996,
+  "random_Tsirelson_excess_max": 0.0,
+  "CHSH_operator_Hermiticity_error": 0.0,
+  "CHSH_operator_spectrum": [
+    -2.8284271247461903,
+    0.0,
+    0.0,
+    2.8284271247461903
+  ],
+  "CHSH_optimal_spectrum_error": 0.0,
+  "Tsirelson_square_identity_error": 1.7763568394002505e-15,
+  "Horodecki_TtT_eigenvalues": [
+    0.9999999999999996,
+    0.9999999999999996,
+    0.9999999999999996
+  ],
+  "Horodecki_max_CHSH": 2.8284271247461894,
+  "checks": {
+    "singlet_normalized": true,
+    "repository_Pauli_commutators_exact": true,
+    "repository_Pauli_anticommutators_exact": true,
+    "spin_observables_Hermitian": true,
+    "spin_observables_square_to_identity": true,
+    "singlet_local_means_zero": true,
+    "singlet_total_spin_zero": true,
+    "singlet_correlation_tensor_is_minus_identity": true,
+    "singlet_random_correlator_equals_minus_a_dot_b": true,
+    "singlet_invariant_under_common_SU2_rotations": true,
+    "CHSH_expectation_real": true,
+    "CHSH_classical_bound_is_violated": true,
+    "optimal_CHSH_reaches_Tsirelson": true,
+    "CHSH_operator_obeys_Tsirelson_bound": true,
+    "random_CHSH_operators_obey_Tsirelson_bound": true,
+    "CHSH_operator_Hermitian": true,
+    "CHSH_optimal_spectrum_matches": true,
+    "Tsirelson_square_identity_holds": true,
+    "Horodecki_optimum_matches_Tsirelson": true,
+    "optimal_measurement_reaches_Horodecki_bound": true
+  },
+  "carrier_relation": "The Pauli matrices are imported from su2_quantum_link_two_qubit_gate.py, so basis/sign conventions are shared with the repository SU(2) link algebra.",
+  "claim_boundary": "This is a standard two-qubit Hilbert/Pauli reference control. It does not identify Bell parties with physical separated BCQG endpoints; derive the singlet, Born rule, measurement locality or entanglement from the microscopic BCQG dynamics; or constitute an experimental Bell test."
+}

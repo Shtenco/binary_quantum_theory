@@ -1,0 +1,16 @@
+[PASS] sin(i*theta) = i*sinh(theta)
+       max|LHS-RHS| по 50000 точкам = 0.000e+00
+[PASS] sin(delta*K)/delta -> K при delta -> 0
+       delta=1e-1..1e-6 -> ошибки = ['1.421e-01', '1.434e-03', '1.434e-05', '1.434e-07', '1.434e-09', '1.434e-11']
+[PASS] Символьно: f2 = (1/2) f1'  для  f1=sin^2(x), f2=sin(x)cos(x)
+       (1/2) d/dx[sin^2 x] = sin(2*x)/2  ==  sin(x)cos(x): разность = 0
+[PASS] Символьно: beta = f2'  для  beta=cos(2x)
+       d/dx[sin(x)cos(x)] = cos(2*x)  ==  cos(2x): разность = 0
+[PASS] Слепая проверка f2=(1/2)f1' на 20000 случайных точках (конечные разности)
+       max|f2_predicted - f2_true| = 1.322e-10
+[PASS] Слепая проверка beta=f2' на 20000 случайных точках (конечные разности)
+       max|beta_predicted - beta_true| = 1.617e-10
+[PASS] beta = cos(2*delta*K) = -1 при delta*K = pi/2
+       cos(pi) = -1.000000000000
+
+7/7 checks passed

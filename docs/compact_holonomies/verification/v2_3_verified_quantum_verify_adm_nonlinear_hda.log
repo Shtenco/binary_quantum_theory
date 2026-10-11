@@ -1,0 +1,61 @@
+{
+  "analytic_momentum_gradient": {
+    "pass": true,
+    "relative_error": 2.2899286395281108e-10
+  },
+  "best_relative_residual": 2.8500522073951997e-06,
+  "classification": "nonlinear off-shell classical 3+1 ADM HDA certificate",
+  "closure_convergence": [
+    {
+      "absolute_residual": 0.0021366434560754904,
+      "dewitt_lambda": 0.5,
+      "diffeomorphism_constraint": 0.09754390403196647,
+      "grid_size": 3,
+      "poisson_bracket": 0.09968054748804196,
+      "relative_residual": 0.021904428342085665,
+      "seed": 2
+    },
+    {
+      "absolute_residual": 2.119424761541644e-05,
+      "dewitt_lambda": 0.5,
+      "diffeomorphism_constraint": 0.0963913262388251,
+      "grid_size": 4,
+      "poisson_bracket": 0.09641252048644051,
+      "relative_residual": 0.00021987712424356796,
+      "seed": 2
+    },
+    {
+      "absolute_residual": 2.746724839935988e-07,
+      "dewitt_lambda": 0.5,
+      "diffeomorphism_constraint": 0.096374544747247,
+      "grid_size": 5,
+      "poisson_bracket": 0.09637427007476301,
+      "relative_residual": 2.8500522073951997e-06,
+      "seed": 2
+    }
+  ],
+  "pass": true,
+  "scope": "Classical Poisson brackets on smooth periodic fields. It fixes the nonlinear classical target but does not establish an operator representation or quantum anomaly freedom.",
+  "standard_dewitt_lambda": 0.5,
+  "worst_wrong_lambda_relative_residual": 1.360360001726798,
+  "wrong_lambda_death_tests": [
+    {
+      "absolute_residual": 0.13269482545736452,
+      "dewitt_lambda": 0.4,
+      "diffeomorphism_constraint": 0.09754390403196647,
+      "grid_size": 3,
+      "poisson_bracket": -0.03515092142539806,
+      "relative_residual": 1.360360001726798,
+      "seed": 2
+    },
+    {
+      "absolute_residual": 0.1369681123799327,
+      "dewitt_lambda": 0.6,
+      "diffeomorphism_constraint": 0.09754390403196647,
+      "grid_size": 3,
+      "poisson_bracket": 0.23451201641189917,
+      "relative_residual": 1.4041688585177643,
+      "seed": 2
+    }
+  ]
+}

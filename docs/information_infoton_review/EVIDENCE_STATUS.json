@@ -1,0 +1,49 @@
+{
+  "physicalization_complete": false,
+  "infoton_particle_proved": false,
+  "extra_spatial_transitions_proved": false,
+  "two_time_physics_proved": false,
+  "history_scope": "reachable commit and blob inventory plus targeted static review and fresh finite controls",
+  "core_reruns": [
+    {
+      "script": "micro_walsh_qgeom_gate",
+      "exit": 0,
+      "error": ""
+    },
+    {
+      "script": "q2_global_face_qubit_gluing_gate",
+      "exit": 0,
+      "error": ""
+    },
+    {
+      "script": "q2_dimension3_fixed_point_gate",
+      "exit": 0,
+      "error": ""
+    },
+    {
+      "script": "face_qubit_bfield_gate",
+      "exit": 0,
+      "error": ""
+    },
+    {
+      "script": "bell_chsh_qubit_gate",
+      "exit": 0,
+      "error": ""
+    },
+    {
+      "script": "k5_quantum_geometry_bridge",
+      "exit": 1,
+      "error": ""
+    }
+  ],
+  "open": [
+    "full Lorentzian constraint images",
+    "normalized nonzero refinement-consistent limit",
+    "physical history",
+    "positive interacting TT response",
+    "gauge-invariant infoton definition",
+    "extra-coordinate transition operators",
+    "2T parent and positive physical reduction",
+    "K5 criterion discrepancy"
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "script": "micro_walsh_qgeom_gate",
+    "exit": 0,
+    "error": ""
+  },
+  {
+    "script": "q2_global_face_qubit_gluing_gate",
+    "exit": 0,
+    "error": ""
+  },
+  {
+    "script": "q2_dimension3_fixed_point_gate",
+    "exit": 0,
+    "error": ""
+  },
+  {
+    "script": "face_qubit_bfield_gate",
+    "exit": 0,
+    "error": ""
+  },
+  {
+    "script": "bell_chsh_qubit_gate",
+    "exit": 0,
+    "error": ""
+  },
+  {
+    "script": "k5_quantum_geometry_bridge",
+    "exit": 1,
+    "error": ""
+  }
+]

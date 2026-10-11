@@ -1,0 +1,49 @@
+{
+  "all_exact_codes_pass": true,
+  "all_have_three_global_logical_qubits": true,
+  "gravity_verdict": "FAIL as a GR continuum candidate: the exact commuting-projector phase has only global topological qubits and zero local tensor polarizations. Noncommuting dynamics or a critical gapless phase is required.",
+  "trials": [
+    {
+      "boundary_of_boundary_weight": 0,
+      "curvature_rank": 14,
+      "edge_qubits": 24,
+      "gauss_rank": 7,
+      "gravity_continuum_pass": false,
+      "ground_state_degeneracy": 8,
+      "lattice_length": 2,
+      "local_graviton_polarizations": 0,
+      "logical_qubits": 3,
+      "pass_exact_code": true,
+      "plaquettes": 24,
+      "vertices": 8
+    },
+    {
+      "boundary_of_boundary_weight": 0,
+      "curvature_rank": 52,
+      "edge_qubits": 81,
+      "gauss_rank": 26,
+      "gravity_continuum_pass": false,
+      "ground_state_degeneracy": 8,
+      "lattice_length": 3,
+      "local_graviton_polarizations": 0,
+      "logical_qubits": 3,
+      "pass_exact_code": true,
+      "plaquettes": 81,
+      "vertices": 27
+    },
+    {
+      "boundary_of_boundary_weight": 0,
+      "curvature_rank": 126,
+      "edge_qubits": 192,
+      "gauss_rank": 63,
+      "gravity_continuum_pass": false,
+      "ground_state_degeneracy": 8,
+      "lattice_length": 4,
+      "local_graviton_polarizations": 0,
+      "logical_qubits": 3,
+      "pass_exact_code": true,
+      "plaquettes": 192,
+      "vertices": 64
+    }
+  ]
+}

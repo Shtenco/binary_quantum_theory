@@ -1,0 +1,409 @@
+{
+  "status": "finite algebraic face-qubit -> adjoint B coefficient gate",
+  "passed": true,
+  "seed": 260809,
+  "trials": 32,
+  "faces_per_block": 17,
+  "max_errors": {
+    "single_qubit_SU2_to_SO3_covariance": 2.2567787370221997e-16,
+    "adjoint_SO3_orthogonality": 9.47051898807097e-16,
+    "adjoint_SO3_determinant": 7.771561172376096e-16,
+    "gauge_covariant_blocking": 2.5438405243138005e-15,
+    "block_norm_gauge_invariance": 1.7763568394002505e-15
+  },
+  "single_rows": [
+    {
+      "trial": 0,
+      "bloch_covariance_error": 1.1102230246251565e-16,
+      "SO3_orthogonality_error": 1.9879441340424253e-16,
+      "SO3_determinant_error": 0.0
+    },
+    {
+      "trial": 1,
+      "bloch_covariance_error": 8.886119947416683e-17,
+      "SO3_orthogonality_error": 4.406113158295357e-16,
+      "SO3_determinant_error": 2.220446049250313e-16
+    },
+    {
+      "trial": 2,
+      "bloch_covariance_error": 1.1102230246251565e-16,
+      "SO3_orthogonality_error": 6.671208437643648e-16,
+      "SO3_determinant_error": 6.661338147750939e-16
+    },
+    {
+      "trial": 3,
+      "bloch_covariance_error": 5.551115123125783e-17,
+      "SO3_orthogonality_error": 9.223088471242579e-16,
+      "SO3_determinant_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 4,
+      "bloch_covariance_error": 1.8619006149354548e-16,
+      "SO3_orthogonality_error": 6.538874389137649e-16,
+      "SO3_determinant_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 5,
+      "bloch_covariance_error": 5.637184056103667e-17,
+      "SO3_orthogonality_error": 2.726058139853047e-16,
+      "SO3_determinant_error": 0.0
+    },
+    {
+      "trial": 6,
+      "bloch_covariance_error": 6.359601310784502e-17,
+      "SO3_orthogonality_error": 5.652826941015485e-16,
+      "SO3_determinant_error": 6.661338147750939e-16
+    },
+    {
+      "trial": 7,
+      "bloch_covariance_error": 1.1631705747361534e-16,
+      "SO3_orthogonality_error": 7.769808352885994e-16,
+      "SO3_determinant_error": 6.661338147750939e-16
+    },
+    {
+      "trial": 8,
+      "bloch_covariance_error": 1.5700924586837752e-16,
+      "SO3_orthogonality_error": 2.7977380810503483e-16,
+      "SO3_determinant_error": 2.220446049250313e-16
+    },
+    {
+      "trial": 9,
+      "bloch_covariance_error": 1.5700924586837752e-16,
+      "SO3_orthogonality_error": 7.773879843968403e-16,
+      "SO3_determinant_error": 6.661338147750939e-16
+    },
+    {
+      "trial": 10,
+      "bloch_covariance_error": 8.886119947416683e-17,
+      "SO3_orthogonality_error": 2.3063312490512695e-16,
+      "SO3_determinant_error": 2.220446049250313e-16
+    },
+    {
+      "trial": 11,
+      "bloch_covariance_error": 4.3885418357208765e-17,
+      "SO3_orthogonality_error": 3.0769798931245523e-16,
+      "SO3_determinant_error": 1.1102230246251565e-16
+    },
+    {
+      "trial": 12,
+      "bloch_covariance_error": 1.1188630228279524e-16,
+      "SO3_orthogonality_error": 2.5478759384888296e-16,
+      "SO3_determinant_error": 3.3306690738754696e-16
+    },
+    {
+      "trial": 13,
+      "bloch_covariance_error": 5.551115123125783e-17,
+      "SO3_orthogonality_error": 4.0260790900748024e-16,
+      "SO3_determinant_error": 2.220446049250313e-16
+    },
+    {
+      "trial": 14,
+      "bloch_covariance_error": 1.0007415106216802e-16,
+      "SO3_orthogonality_error": 3.4243014424103367e-16,
+      "SO3_determinant_error": 0.0
+    },
+    {
+      "trial": 15,
+      "bloch_covariance_error": 0.0,
+      "SO3_orthogonality_error": 5.860070551234685e-16,
+      "SO3_determinant_error": 3.3306690738754696e-16
+    },
+    {
+      "trial": 16,
+      "bloch_covariance_error": 3.917137074465672e-17,
+      "SO3_orthogonality_error": 3.9589635950849745e-16,
+      "SO3_determinant_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 17,
+      "bloch_covariance_error": 3.1031676915590914e-17,
+      "SO3_orthogonality_error": 1.8547160845332397e-16,
+      "SO3_determinant_error": 0.0
+    },
+    {
+      "trial": 18,
+      "bloch_covariance_error": 8.804469334467935e-17,
+      "SO3_orthogonality_error": 7.913811847039397e-16,
+      "SO3_determinant_error": 6.661338147750939e-16
+    },
+    {
+      "trial": 19,
+      "bloch_covariance_error": 5.551115123125783e-17,
+      "SO3_orthogonality_error": 4.795814077481938e-16,
+      "SO3_determinant_error": 5.551115123125783e-16
+    },
+    {
+      "trial": 20,
+      "bloch_covariance_error": 2.2567787370221997e-16,
+      "SO3_orthogonality_error": 3.205049253675358e-16,
+      "SO3_determinant_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 21,
+      "bloch_covariance_error": 7.129270294959674e-17,
+      "SO3_orthogonality_error": 5.294173428912453e-16,
+      "SO3_determinant_error": 5.551115123125783e-16
+    },
+    {
+      "trial": 22,
+      "bloch_covariance_error": 1.0408340855860843e-17,
+      "SO3_orthogonality_error": 4.195635929841984e-16,
+      "SO3_determinant_error": 2.220446049250313e-16
+    },
+    {
+      "trial": 23,
+      "bloch_covariance_error": 7.850462293418876e-17,
+      "SO3_orthogonality_error": 4.603425025465594e-16,
+      "SO3_determinant_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 24,
+      "bloch_covariance_error": 1.734723475976807e-17,
+      "SO3_orthogonality_error": 2.3271750150555733e-16,
+      "SO3_determinant_error": 2.220446049250313e-16
+    },
+    {
+      "trial": 25,
+      "bloch_covariance_error": 5.551115123125783e-17,
+      "SO3_orthogonality_error": 8.393305430785209e-16,
+      "SO3_determinant_error": 7.771561172376096e-16
+    },
+    {
+      "trial": 26,
+      "bloch_covariance_error": 6.798699777552591e-17,
+      "SO3_orthogonality_error": 2.323779635317648e-16,
+      "SO3_determinant_error": 2.220446049250313e-16
+    },
+    {
+      "trial": 27,
+      "bloch_covariance_error": 5.551115123125783e-17,
+      "SO3_orthogonality_error": 2.538076923863551e-16,
+      "SO3_determinant_error": 3.3306690738754696e-16
+    },
+    {
+      "trial": 28,
+      "bloch_covariance_error": 1.716587549445839e-16,
+      "SO3_orthogonality_error": 9.47051898807097e-16,
+      "SO3_determinant_error": 7.771561172376096e-16
+    },
+    {
+      "trial": 29,
+      "bloch_covariance_error": 6.798699777552591e-17,
+      "SO3_orthogonality_error": 5.501787305345499e-16,
+      "SO3_determinant_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 30,
+      "bloch_covariance_error": 4.85722573273506e-17,
+      "SO3_orthogonality_error": 3.4360572862329593e-16,
+      "SO3_determinant_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 31,
+      "bloch_covariance_error": 1.3877787807814457e-16,
+      "SO3_orthogonality_error": 6.525235952262365e-16,
+      "SO3_determinant_error": 4.440892098500626e-16
+    }
+  ],
+  "block_rows": [
+    {
+      "trial": 0,
+      "faces": 17,
+      "block_covariance_error": 1.3417746874990556e-15,
+      "block_norm_invariance_error": 1.3322676295501878e-15
+    },
+    {
+      "trial": 1,
+      "faces": 17,
+      "block_covariance_error": 2.132668787380004e-15,
+      "block_norm_invariance_error": 1.7763568394002505e-15
+    },
+    {
+      "trial": 2,
+      "faces": 17,
+      "block_covariance_error": 8.617648093045562e-16,
+      "block_norm_invariance_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 3,
+      "faces": 17,
+      "block_covariance_error": 2.0001354155359496e-15,
+      "block_norm_invariance_error": 8.881784197001252e-16
+    },
+    {
+      "trial": 4,
+      "faces": 17,
+      "block_covariance_error": 8.95090418262362e-16,
+      "block_norm_invariance_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 5,
+      "faces": 17,
+      "block_covariance_error": 1.538370149106851e-15,
+      "block_norm_invariance_error": 1.7763568394002505e-15
+    },
+    {
+      "trial": 6,
+      "faces": 17,
+      "block_covariance_error": 1.831026719408895e-15,
+      "block_norm_invariance_error": 1.3322676295501878e-15
+    },
+    {
+      "trial": 7,
+      "faces": 17,
+      "block_covariance_error": 1.4895204919483639e-15,
+      "block_norm_invariance_error": 0.0
+    },
+    {
+      "trial": 8,
+      "faces": 17,
+      "block_covariance_error": 2.5438405243138005e-15,
+      "block_norm_invariance_error": 8.881784197001252e-16
+    },
+    {
+      "trial": 9,
+      "faces": 17,
+      "block_covariance_error": 9.42055475210265e-16,
+      "block_norm_invariance_error": 6.661338147750939e-16
+    },
+    {
+      "trial": 10,
+      "faces": 17,
+      "block_covariance_error": 9.489809492268385e-16,
+      "block_norm_invariance_error": 2.220446049250313e-16
+    },
+    {
+      "trial": 11,
+      "faces": 17,
+      "block_covariance_error": 1.5100665727558131e-15,
+      "block_norm_invariance_error": 8.881784197001252e-16
+    },
+    {
+      "trial": 12,
+      "faces": 17,
+      "block_covariance_error": 1.6625566625485463e-15,
+      "block_norm_invariance_error": 0.0
+    },
+    {
+      "trial": 13,
+      "faces": 17,
+      "block_covariance_error": 1.9337988967358255e-15,
+      "block_norm_invariance_error": 1.7763568394002505e-15
+    },
+    {
+      "trial": 14,
+      "faces": 17,
+      "block_covariance_error": 8.3820000221454525e-16,
+      "block_norm_invariance_error": 0.0
+    },
+    {
+      "trial": 15,
+      "faces": 17,
+      "block_covariance_error": 1.7978440106644478e-15,
+      "block_norm_invariance_error": 0.0
+    },
+    {
+      "trial": 16,
+      "faces": 17,
+      "block_covariance_error": 1.5804235333845818e-15,
+      "block_norm_invariance_error": 2.220446049250313e-16
+    },
+    {
+      "trial": 17,
+      "faces": 17,
+      "block_covariance_error": 1.88411095042053e-15,
+      "block_norm_invariance_error": 8.881784197001252e-16
+    },
+    {
+      "trial": 18,
+      "faces": 17,
+      "block_covariance_error": 7.108895957933346e-16,
+      "block_norm_invariance_error": 0.0
+    },
+    {
+      "trial": 19,
+      "faces": 17,
+      "block_covariance_error": 7.130536482749599e-16,
+      "block_norm_invariance_error": 8.881784197001252e-16
+    },
+    {
+      "trial": 20,
+      "faces": 17,
+      "block_covariance_error": 1.1102230246251565e-15,
+      "block_norm_invariance_error": 0.0
+    },
+    {
+      "trial": 21,
+      "faces": 17,
+      "block_covariance_error": 1.066334393690002e-15,
+      "block_norm_invariance_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 22,
+      "faces": 17,
+      "block_covariance_error": 9.036560719766055e-16,
+      "block_norm_invariance_error": 1.3322676295501878e-15
+    },
+    {
+      "trial": 23,
+      "faces": 17,
+      "block_covariance_error": 1.382495163394756e-15,
+      "block_norm_invariance_error": 0.0
+    },
+    {
+      "trial": 24,
+      "faces": 17,
+      "block_covariance_error": 7.417804156968781e-16,
+      "block_norm_invariance_error": 3.3306690738754696e-16
+    },
+    {
+      "trial": 25,
+      "faces": 17,
+      "block_covariance_error": 1.5543122344752192e-15,
+      "block_norm_invariance_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 26,
+      "faces": 17,
+      "block_covariance_error": 1.0175362097255202e-15,
+      "block_norm_invariance_error": 1.7763568394002505e-15
+    },
+    {
+      "trial": 27,
+      "faces": 17,
+      "block_covariance_error": 3.8459253727671276e-16,
+      "block_norm_invariance_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 28,
+      "faces": 17,
+      "block_covariance_error": 1.1957467920563633e-15,
+      "block_norm_invariance_error": 8.881784197001252e-16
+    },
+    {
+      "trial": 29,
+      "faces": 17,
+      "block_covariance_error": 8.851374477315529e-16,
+      "block_norm_invariance_error": 4.440892098500626e-16
+    },
+    {
+      "trial": 30,
+      "faces": 17,
+      "block_covariance_error": 2.2894564718824207e-15,
+      "block_norm_invariance_error": 1.3322676295501878e-15
+    },
+    {
+      "trial": 31,
+      "faces": 17,
+      "block_covariance_error": 3.1401849173675503e-16,
+      "block_norm_invariance_error": 4.440892098500626e-16
+    }
+  ],
+  "microscopic_interpretation": {
+    "face_carrier": "one qubit density operator rho_f on each oriented microscopic 2-cell",
+    "internal_coefficients": "b_f^i = Tr(rho_f sigma^i)",
+    "edge_transport": "SU(2) parallel transport to a chosen block frame",
+    "coarse_object": "adjoint-valued discrete 2-form coefficients; geometric area/metric is not inserted"
+  },
+  "scope_note": "This is gauge covariance of a candidate blocking variable, not a microscopic rewrite law and not evidence that simplicity or four-dimensional geometry emerges."
+}

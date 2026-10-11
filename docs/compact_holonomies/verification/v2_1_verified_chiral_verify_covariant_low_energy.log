@@ -1,0 +1,31 @@
+{
+  "artifact_id": "A19",
+  "completion_status": "explicit minimal completion choice; not uniquely derived from holonomies",
+  "degree_counting_certificate": {
+    "epsilon^0": "0",
+    "epsilon^1": "0",
+    "epsilon^2": "0",
+    "epsilon^3": "r1**3",
+    "quadratic_action_unchanged": true,
+    "leading_correction_is_cubic": true
+  },
+  "predictions": {
+    "background": "Minkowski",
+    "tensor_polarizations": 2,
+    "tree_level_c_gw_over_c": 1.0,
+    "linear_dispersion": "omega^2=k^2",
+    "scope": "Applies to the explicitly chosen diffeomorphism-invariant low-energy completion with corrections beginning at curvature-cubed order."
+  },
+  "external_check": {
+    "observable": "(c_gw-c)/c",
+    "prediction": 0.0,
+    "observational_interval": [
+      -3e-15,
+      7e-16
+    ],
+    "consistent": true,
+    "data_source": "GW170817/GRB170817A, LIGO-Virgo-Fermi-INTEGRAL (2017)",
+    "classification": "external consistency check, not a blind discovery"
+  },
+  "pass": true
+}

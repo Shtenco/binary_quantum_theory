@@ -1,0 +1,7 @@
+{
+  "complete": true,
+  "scope": "free lattice benchmark calculation only",
+  "BQG_correlations_derived": false,
+  "interacting_TT_proved": false,
+  "physicalization_complete": false
+}

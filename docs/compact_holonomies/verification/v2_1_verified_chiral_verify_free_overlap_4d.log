@@ -1,0 +1,42 @@
+{
+  "gamma_algebra": {
+    "max_gamma_hermiticity_error": 0.0,
+    "max_clifford_error": 0.0,
+    "gamma5_square_error": 0.0,
+    "gamma5_anticommutation_error": 0.0,
+    "pass": true
+  },
+  "generic_momentum": [
+    0.37,
+    -0.51,
+    0.22,
+    0.61
+  ],
+  "ginsparg_wilson_error": 1.1102230246251565e-16,
+  "gamma5_hermiticity_error": 0.0,
+  "physical_zero_corner_error": 0.0,
+  "minimum_doubler_corner_gap": 2.0,
+  "continuum_convergence": {
+    "epsilons": [
+      0.2,
+      0.1,
+      0.05,
+      0.025
+    ],
+    "operator_norm_errors": [
+      0.020086908994434893,
+      0.005005516319592053,
+      0.0012503460884668892,
+      0.0003125216511223194
+    ],
+    "observed_orders": [
+      2.0046647809275355,
+      2.001191411205759,
+      2.0002994331741775
+    ],
+    "minimum_observed_order": 2.0002994331741775,
+    "pass": true
+  },
+  "pass": true,
+  "scope": "Free four-dimensional overlap fermion. It proves exact lattice chirality and removal of free Wilson doublers for 0<rho<2r, not a complete interacting chiral gauge theory."
+}

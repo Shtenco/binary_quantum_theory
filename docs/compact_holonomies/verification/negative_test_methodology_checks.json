@@ -1,0 +1,15 @@
+{
+  "A13_delta_is_allowed_parameter": true,
+  "A13_curvature_ansatz_D_factorization": {
+    "bracket": "-2*e*sin(delta*(a - b))**2*sin(delta*(b - c))*cos(delta*(b - c))/delta**3",
+    "D": "e*(-b + c)",
+    "coefficient": "2*sin(delta*(a - b))**2*sin(delta*(-b + c))*cos(delta*(-b + c))/(delta**3*(-b + c))",
+    "residual": "0",
+    "coefficient_limit_at_equal_adjacent_K": "2*sin(delta*(a - b))**2/delta**2"
+  },
+  "A14_arithmetic": {
+    "expression": "4 - 2*4 + 2*2",
+    "value": 0,
+    "claimed_propagating_modes_not_established": true
+  }
+}

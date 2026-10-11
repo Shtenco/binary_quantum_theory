@@ -1,0 +1,10 @@
+[PASS] holonomy_remainder_bound: max excess=0.000e+00
+[PASS] phase_modulus_invariance: probability spread=8.674e-19
+[PASS] amplitude_probability_consistency: P=1.17087962e-03
+[PASS] rectangular_barrier: num=10.9544511501, exact=10.9544511501
+[PASS] nuclear_scale_planck_suppression: (lP/L)^2=2.612e-40
+[PASS] controlled_decoupling: relative shift=0.000e+00
+[PASS] random_phase_is_decohering: coherence factor=0.223130
+
+7/7 checks passed
+results: /workspace/work/compact_holonomies_review/reruns/v1_5_eft/artifacts/A16_effective_foam_eft/effective_foam_eft_results.json

@@ -1,0 +1,73 @@
+{
+  "A25_hypercharge_anomaly_cancellation": {
+    "minimal_without_right_neutrino": {
+      "all_anomalies_zero": true,
+      "all_yukawa_residuals_zero": true,
+      "charge_match": true,
+      "condition": "h=3*q",
+      "cubic_anomaly_after_condition": "0",
+      "electric_charges": {
+        "H_plus": "1",
+        "H_zero": "0",
+        "d_L": "-1/3",
+        "d_R": "-1/3",
+        "e_L": "-1",
+        "e_R": "-1",
+        "nu_L": "0",
+        "u_L": "2/3",
+        "u_R": "2/3"
+      },
+      "generic_gravitational_anomaly": "h - 3*q",
+      "normalized_solution_YH_half": {
+        "d_conjugate": "1/3",
+        "e_conjugate": "1",
+        "higgs": "1/2",
+        "lepton_doublet": "-1/2",
+        "nu_conjugate": null,
+        "q": "1/6",
+        "u_conjugate": "-2/3"
+      },
+      "uniqueness": "unique hypercharge ratios up to overall U(1) normalization, given the assumed representations and Yukawa terms",
+      "witten_SU2_doublet_count": 4,
+      "witten_global_anomaly_cancelled": true
+    },
+    "pass": true,
+    "scope": "Derives U(1) hypercharge ratios from anomaly cancellation only after the SU(3)xSU(2) representation pattern and Yukawa structure have been assumed.",
+    "with_right_neutrino": {
+      "all_anomalies_identically_zero": true,
+      "all_yukawa_residuals_identically_zero": true,
+      "remaining_freedom": "two parameters before normalization; equivalently a hypercharge/B-L mixing direction remains",
+      "solution_family": {
+        "d_conjugate": "h - q",
+        "e_conjugate": "h + 3*q",
+        "higgs": "h",
+        "lepton_doublet": "-3*q",
+        "nu_conjugate": "-h + 3*q",
+        "q": "q",
+        "u_conjugate": "-h - q"
+      }
+    }
+  },
+  "A26_one_loop_rg": {
+    "coefficients": {
+      "b1": "41/10",
+      "b2": "-19/6",
+      "b3": "-7"
+    },
+    "convention": "mu dg_i/dmu = b_i g_i^3/(16*pi^2), g1=sqrt(5/3) gY",
+    "exact_match": true,
+    "expected_exact": {
+      "b1": "41/10",
+      "b2": "-19/6",
+      "b3": "-7"
+    },
+    "pass": true,
+    "qualitative_flow": {
+      "SU2": "asymptotically free at one loop",
+      "SU3": "asymptotically free at one loop",
+      "U1": "not asymptotically free"
+    },
+    "scope": "The coefficients follow from the assumed Standard-Model representation content and the anomaly-derived hypercharges. Absolute gauge couplings and threshold corrections remain inputs."
+  },
+  "pass": true
+}

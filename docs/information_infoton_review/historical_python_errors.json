@@ -1,0 +1,10 @@
+[
+  {
+    "git_blob": "4ab59f5b07423353c85588639f29c2d55fa00f8a",
+    "path": "scripts/validate_github_latex.py",
+    "bytes": 7657,
+    "utf8": true,
+    "AST": "fail",
+    "error": "unmatched ')' (<unknown>, line 188)"
+  }
+]

@@ -1,0 +1,92 @@
+{
+  "graph_refinement_spectra": [
+    {
+      "edges": 3,
+      "eigenvalues": [
+        1.770148518491377,
+        7.8298514815086175,
+        9.599999999999998
+      ],
+      "gaps": [
+        0.0,
+        6.059702963017241,
+        7.829851481508621
+      ]
+    },
+    {
+      "edges": 4,
+      "eigenvalues": [
+        1.882318057101857,
+        9.817681942898144,
+        11.700000000000003
+      ],
+      "gaps": [
+        0.0,
+        7.935363885796287,
+        9.817681942898146
+      ]
+    },
+    {
+      "edges": 5,
+      "eigenvalues": [
+        1.9492424822053753,
+        11.85075751779462,
+        13.799999999999992
+      ],
+      "gaps": [
+        0.0,
+        9.901515035589243,
+        11.850757517794616
+      ]
+    }
+  ],
+  "newtonian_spacing_check": [
+    {
+      "spacing": 0.5,
+      "mean_relative_error": 0.8739300254005142,
+      "pass": false,
+      "missing_continuum_source_normalization_factor": 8.0
+    },
+    {
+      "spacing": 1,
+      "mean_relative_error": 0.012639742373740387,
+      "pass": true,
+      "missing_continuum_source_normalization_factor": 1.0
+    },
+    {
+      "spacing": 2,
+      "mean_relative_error": 7.068478374367092,
+      "pass": false,
+      "missing_continuum_source_normalization_factor": 0.125
+    }
+  ],
+  "heat_kernel_high_mode_counterexample": [
+    {
+      "q": 20,
+      "epsilon": 0.3141592653589793,
+      "m": 20,
+      "N": 20,
+      "walk_multiplier": 1.0,
+      "heat_multiplier": 3.527043382887374e-172,
+      "effective_time": 0.9869604401089358
+    },
+    {
+      "q": 40,
+      "epsilon": 0.15707963267948966,
+      "m": 40,
+      "N": 81,
+      "walk_multiplier": 1.0,
+      "heat_multiplier": 0.0,
+      "effective_time": 0.9992974456102974
+    },
+    {
+      "q": 80,
+      "epsilon": 0.07853981633974483,
+      "m": 80,
+      "N": 324,
+      "walk_multiplier": 1.0,
+      "heat_multiplier": 0.0,
+      "effective_time": 0.9992974456102974
+    }
+  ]
+}
