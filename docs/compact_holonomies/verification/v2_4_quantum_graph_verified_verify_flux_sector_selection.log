@@ -1,0 +1,51 @@
+{
+  "actions": [
+    1263.3093633394378,
+    967.2212313067571,
+    710.6115168784338,
+    493.4802200544679,
+    315.82734083485946,
+    177.65287921960845,
+    78.95683520871486,
+    19.739208802178716,
+    0.0,
+    19.739208802178716,
+    78.95683520871486,
+    177.65287921960845,
+    315.82734083485946,
+    493.4802200544679,
+    710.6115168784338,
+    967.2212313067571,
+    1263.3093633394378
+  ],
+  "area": 1.0,
+  "charges": [
+    -8,
+    -7,
+    -6,
+    -5,
+    -4,
+    -3,
+    -2,
+    -1,
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "gauge_coupling": 1.0,
+  "maximum_charge": 8,
+  "minimizing_charges": [
+    0
+  ],
+  "pass": true,
+  "q3_action_gap_above_vacuum": 177.65287921960845,
+  "q3_to_q1_action_ratio": 9.0,
+  "scope": "uniform compact 2D U(1) flux sector with positive Maxwell action",
+  "verdict": "The minimal positive uniform-flux action selects Q=0 uniquely and penalizes Q=3 by nine times the Q=1 action. Therefore the current toy dynamics cannot explain three generations; a separately derived topological-selection mechanism is required."
+}

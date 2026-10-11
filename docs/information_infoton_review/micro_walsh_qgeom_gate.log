@@ -1,0 +1,133 @@
+{
+  "status": "exact local q=2 Walsh-character -> tetrahedral face-qubit -> Gauss geometry-qubit bridge",
+  "passed": true,
+  "microscopic_rule": "same frozen q=2 route labels 00,01,10,11 with Hamming adjacency",
+  "route_labels": [
+    [
+      0,
+      0
+    ],
+    [
+      0,
+      1
+    ],
+    [
+      1,
+      0
+    ],
+    [
+      1,
+      1
+    ]
+  ],
+  "nontrivial_character_masks": [
+    1,
+    2,
+    3
+  ],
+  "unit_flux_vectors": [
+    [
+      0.5773502691896258,
+      0.5773502691896258,
+      0.5773502691896258
+    ],
+    [
+      0.5773502691896258,
+      -0.5773502691896258,
+      -0.5773502691896258
+    ],
+    [
+      -0.5773502691896258,
+      0.5773502691896258,
+      -0.5773502691896258
+    ],
+    [
+      -0.5773502691896258,
+      -0.5773502691896258,
+      0.5773502691896258
+    ]
+  ],
+  "flux_closure_norm": 0.0,
+  "flux_gram": [
+    [
+      1.0000000000000002,
+      -0.3333333333333334,
+      -0.3333333333333334,
+      -0.3333333333333334
+    ],
+    [
+      -0.3333333333333334,
+      1.0000000000000002,
+      -0.3333333333333334,
+      -0.3333333333333334
+    ],
+    [
+      -0.3333333333333334,
+      -0.3333333333333334,
+      1.0000000000000002,
+      -0.3333333333333334
+    ],
+    [
+      -0.3333333333333334,
+      -0.3333333333333334,
+      -0.3333333333333334,
+      1.0000000000000002
+    ]
+  ],
+  "character_frame_covariance": [
+    [
+      1.3333333333333337,
+      -2.9461301385306534e-18,
+      2.9461301385306534e-18
+    ],
+    [
+      -2.9461301385306534e-18,
+      1.3333333333333337,
+      2.9461301385306534e-18
+    ],
+    [
+      2.9461301385306534e-18,
+      2.9461301385306534e-18,
+      1.3333333333333337
+    ]
+  ],
+  "face_qubit_purity_max_error": 1.2412670766236366e-16,
+  "face_qubit_min_eigenvalue": -8.326672684688674e-17,
+  "gauss_singlet_weight": 0.22222222222222215,
+  "logical_geometry_bloch": [
+    -4.0983946289892446e-16,
+    1.0,
+    -1.1102230246251565e-16
+  ],
+  "logical_oriented_volume_expectation": 0.4330127018922193,
+  "logical_oriented_volume_target": 0.4330127018922193,
+  "reconstructed_tetrahedron_edge_lengths": [
+    1.5196713713031853,
+    1.5196713713031853,
+    1.5196713713031853,
+    1.5196713713031853,
+    1.5196713713031853,
+    1.5196713713031853
+  ],
+  "reconstructed_edge_relative_spread": 0.0,
+  "orientation_reversed_logical_bloch": [
+    -1.5892672211414636e-16,
+    -1.0,
+    -6.661338147750939e-16
+  ],
+  "checks": {
+    "four_route_labels": true,
+    "three_nontrivial_characters": true,
+    "exact_flux_closure": true,
+    "regular_tetrahedron_gram": true,
+    "isotropic_character_frame": true,
+    "face_qubits_pure": true,
+    "face_qubits_positive": true,
+    "face_qubit_decode_exact": true,
+    "nonzero_gauss_singlet_support": true,
+    "geometry_qubit_is_volume_eigenstate": true,
+    "regular_tetrahedron_reconstruction": true,
+    "orientation_reversal_flips_volume": true
+  },
+  "claim_boundary": "This closes the local carrier map inside the declared canonical quantum lift: the q=2 route bits themselves generate the tetrahedral flux frame and a nonzero Gauss-singlet geometry qubit. It does not yet prove that the full unitary graph-changing dynamics drives arbitrary states into a semiclassical coarse B-field phase."
+}

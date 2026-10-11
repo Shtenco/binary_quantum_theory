@@ -1,0 +1,40 @@
+{
+  "status": "exact q=2 tetrahedral face-qubit carrier gluing on selected 16-cell PL completion",
+  "passed": true,
+  "tetrahedra": 16,
+  "triangular_faces": 32,
+  "dual_edges": 32,
+  "dual_graph": "Q4",
+  "route_face_colouring": {
+    "0": [
+      0,
+      0
+    ],
+    "1": [
+      0,
+      1
+    ],
+    "2": [
+      1,
+      0
+    ],
+    "3": [
+      1,
+      1
+    ]
+  },
+  "maximum_shared_outward_flux_sum_norm": 0.0,
+  "checks": {
+    "sixteen_tetrahedra": true,
+    "thirty_two_triangle_faces": true,
+    "each_face_two_sided": true,
+    "four_faces_per_tetrahedron": true,
+    "dual_graph_exact_Q4": true,
+    "shared_face_has_same_q2_label": true,
+    "neighbors_flip_exactly_one_sign_bit": true,
+    "neighbor_orientation_opposite": true,
+    "outward_flux_cancels_on_shared_face": true,
+    "local_flux_frame_remains_regular_tetrahedron": true
+  },
+  "claim_boundary": "Exact global kinematic compatibility of the local q=2 Walsh tetrahedral carrier with the selected 16-cell completion. Dynamical uniqueness/selection of this PL phase and a physical coarse-state measure remain open."
+}

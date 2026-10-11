@@ -1,0 +1,11 @@
+{
+  "spectral_model": "L2(0,1), M=x, C=sqrt(x), a_delta=delta; identity refinements",
+  "normalized_form_limit_rank": 1,
+  "constraint_insertions_vanish": true,
+  "fixed_positive_metric": "q_ab=delta_ab times identity, det q=1",
+  "connected_metric_covariance": 0,
+  "massless_TT_pole": false,
+  "linear_Einstein_gauge_symbol_exact": true,
+  "summable_error_tail_from_n8": "1/128",
+  "BQG_premises_proved": false
+}

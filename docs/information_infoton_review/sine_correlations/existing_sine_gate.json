@@ -1,0 +1,87 @@
+{
+  "scope": "exact finite periodic-lattice identities",
+  "checks": {
+    "incidence_laplacian_identity": true,
+    "exact_sine_dispersion": true,
+    "symplectic_determinant": true,
+    "continuum_error_decreases": true,
+    "fourth_order_coefficient": true,
+    "torus_mode_count": true,
+    "unique_zero_mode": true,
+    "torus_spectral_gap": true,
+    "gap_multiplicity": true,
+    "laplacian_trace_sum_rule": true,
+    "spectral_upper_bound": true,
+    "heat_trace_monotone": true,
+    "heat_trace_factorization": true,
+    "positive_spanning_tree_count": true
+  },
+  "passed": true,
+  "max_incidence_identity_error": 5.551115123125783e-17,
+  "max_dispersion_error": 1.3877787807814457e-17,
+  "max_transfer_determinant_error": 1.1102230246251565e-16,
+  "stable_phases": [
+    0.13,
+    0.41821389580917995,
+    0.6432436274212935
+  ],
+  "continuum_sequence": [
+    {
+      "scale": 0.5,
+      "lambda_over_k2": 0.991959930821492
+    },
+    {
+      "scale": 0.25,
+      "lambda_over_k2": 0.9979842514585281
+    },
+    {
+      "scale": 0.125,
+      "lambda_over_k2": 0.9994957039434539
+    },
+    {
+      "scale": 0.0625,
+      "lambda_over_k2": 0.9998739035420524
+    }
+  ],
+  "fourth_order_target": 0.03228260869565217,
+  "fourth_order_sequence": [
+    0.03216027671403188,
+    0.03225197666355051,
+    0.032274947618951444,
+    0.032280693234582714
+  ],
+  "torus": {
+    "size": 7,
+    "dimension": 3,
+    "mode_count": 343,
+    "zero_mode_multiplicity": 1,
+    "spectral_gap": 0.7530203962825329,
+    "expected_gap": 0.7530203962825329,
+    "gap_multiplicity": 6,
+    "expected_gap_multiplicity": 6,
+    "laplacian_trace": 2058.0000000000005,
+    "expected_laplacian_trace": 2058.0,
+    "spectral_maximum": 11.405813207414516,
+    "heat_times": [
+      0.1,
+      0.3,
+      1.0,
+      3.0
+    ],
+    "heat_trace": [
+      193.96074222249442,
+      73.83906627726935,
+      10.077470377825822,
+      1.7725437279155911
+    ],
+    "factorized_heat_trace": [
+      193.96074222249447,
+      73.83906627726937,
+      10.077470377825826,
+      1.7725437279155911
+    ],
+    "max_heat_factorization_error": 5.684341886080802e-14,
+    "log_spanning_tree_count": 570.5384616997283
+  },
+  "physical_validation": false
+}

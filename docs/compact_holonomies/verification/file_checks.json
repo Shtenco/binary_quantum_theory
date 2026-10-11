@@ -1,0 +1,2725 @@
+[
+  {
+    "file": "repo/requirements.txt",
+    "sha256": "670faba2a058e2616e816e4c974f9c045cb25a1f4c18d6a8c5a18b68c8cd2949",
+    "bytes": 48,
+    "lines": 4,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/README.md",
+    "sha256": "fc58e131cab325941ec7702cfc545489920406c1cf0d2637a6e27c0727c7749b",
+    "bytes": 31442,
+    "lines": 329,
+    "text_read": true
+  },
+  {
+    "file": "repo/scripts/verify_holonomy_document.py",
+    "sha256": "80ee195a237ba0a299dd74e9faede2cefee7f6729cf8bc0a92164da5d4ec5173",
+    "bytes": 11124,
+    "lines": 256,
+    "text_read": true
+  },
+  {
+    "file": "repo/scripts/verify_effective_foam_eft.py",
+    "sha256": "e32db1ab021e2b991deae3a869b96acd3ac74f7eabf7519908993f12dd32df04",
+    "bytes": 2476,
+    "lines": 66,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/scripts/run_core_checks.sh",
+    "sha256": "5c857459a9f5af903abcbff1f63931d8f06f45c7485f916f2921ee95bb2d2d54",
+    "bytes": 1427,
+    "lines": 31,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/audit_predictive_power.py",
+    "sha256": "1a501c566ff73688f2335ffb8643162f79ca3d9ecdafa268493d9ffa6f824adb",
+    "bytes": 3583,
+    "lines": 75,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_anomaly_free_spherical.py",
+    "sha256": "2139698eb1a74785b09af38c93f5adcd832636240222507a6264ff0d4f431ad9",
+    "bytes": 1236,
+    "lines": 33,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_covariant_low_energy.py",
+    "sha256": "f088ee318ca92f75ceda958a4d479169f8ccfcdfe1e732aba651e963a97eb945",
+    "bytes": 1183,
+    "lines": 32,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/run_blind_micro_spectrum.py",
+    "sha256": "28017e3fdf9d7dc89502acb602362ce94fda278730ed58e456e930146f39b689",
+    "bytes": 1285,
+    "lines": 34,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/audit_prediction_registry.py",
+    "sha256": "a3e579115523ac12ec810b4a6779690e7626f3afa44fa5ff633df048d87ce9a1",
+    "bytes": 555,
+    "lines": 15,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_gauge_sector.py",
+    "sha256": "33871183283795df86a5049fa0b6933f3a36516cc5f9fc2b6122c2dad90b3b28",
+    "bytes": 553,
+    "lines": 16,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/scripts/freeze_future_predictions.py",
+    "sha256": "e6e3cba3ccf603c91b5d0c28ef2e76288241850cd50edc003f8c80b2ddac0612",
+    "bytes": 3824,
+    "lines": 69,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/run_legacy_artifacts.sh",
+    "sha256": "ee3f679b036c55e61dfa6c273417cadf95c8820ff54c1718b01898fba9e33408",
+    "bytes": 1153,
+    "lines": 24,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_chiral_overlap.py",
+    "sha256": "8f4a20c9f1ce1249c16613dcb07d1c8fdec6170837756c999dd84414e679522f",
+    "bytes": 620,
+    "lines": 23,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_anomaly_free_matter.py",
+    "sha256": "ee10a84f2353b13a2ab02c87ed949b4f2dbff314b5681cedd278351ccbd4721a",
+    "bytes": 905,
+    "lines": 28,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_free_overlap_4d.py",
+    "sha256": "5a710aacf84a7fb7d205ad5ced7f33ea6ee8934bc7b1dba3e6921ce6a6ede87e",
+    "bytes": 666,
+    "lines": 23,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_topological_generations.py",
+    "sha256": "5f906056fe67c9611352991bff20f46bc90ab945b787cb20c35a77b05113eb03",
+    "bytes": 550,
+    "lines": 13,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_unification_stress.py",
+    "sha256": "07ac21b8684e50ead28ac24af38c6cea3eccb84c5a8d8392610fc716a170ee99",
+    "bytes": 711,
+    "lines": 16,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_generation_selection.py",
+    "sha256": "441bcad1fc17db67983fddda8e8b7b29882440ec3bbaec1ef49b9c4bb5fec624",
+    "bytes": 553,
+    "lines": 13,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_flavor_no_go.py",
+    "sha256": "efca50434b77f749714434be6e8931894cc6d2fc1385fe4da262616728e36371",
+    "bytes": 498,
+    "lines": 13,
+    "text_read": true
+  },
+  {
+    "file": "repo/.gitignore",
+    "sha256": "0dc181b26e7bcbf1aceb3274c5e90c89b9d732ddcdc8a11776762ff83e5e0f26",
+    "bytes": 72
+  },
+  {
+    "file": "repo/docs/Компактные_голономии_как_микроскопика_геометрии_v1_0.docx",
+    "sha256": "009301c50da5fb643b47cf74b5ace7f809f85b51f741ba34b361e0ea3c1b2539",
+    "bytes": 53919
+  },
+  {
+    "file": "repo/docs/EFFECTIVE_FOAM_EFT.md",
+    "sha256": "d4e3f350a8dfbd6013de10b2276691081fbcc5fd07508054fc445029ac8fb5df",
+    "bytes": 6364,
+    "lines": 128,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/docs/PREDICTIVE_VALIDATION_PROTOCOL.md",
+    "sha256": "8d8f6271386b05b2f33af88e97c2c1da915b06d9684e9cdcbc29289c59354558",
+    "bytes": 1440,
+    "lines": 30,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/docs/ANOMALY_FREE_DYNAMICS.md",
+    "sha256": "e461215cf3d2e024243d922bd28165a0ee6c040e70c43b827f1eb45cea380d48",
+    "bytes": 1316,
+    "lines": 28,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/docs/PREDICTIVE_POWER_v2.md",
+    "sha256": "09be91f7f8ab397f73c3ad5ddc261edde3bf87eabadf4531bf520112bdc380c5",
+    "bytes": 1119,
+    "lines": 27,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/docs/ROADMAP_445.md",
+    "sha256": "d7157b351fbb45c4c3f261e2c53d028bc02a3dd5c7ff9ba0523517a72036a641",
+    "bytes": 1524,
+    "lines": 36,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/docs/CHIRAL_MATTER_v2.1.md",
+    "sha256": "0a0d240bd76b5dd2bf431a131649a59867bfb340bb589cb07d7ae9b7445c67ef",
+    "bytes": 2877,
+    "lines": 96,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/THEORY_STATUS_v2.2.md",
+    "sha256": "3afd92d725b654358d002a3eba3650069c96343c44722de9bfd510ef9bb6298c",
+    "bytes": 4374,
+    "lines": 127,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A9_finite_size_scaling/finite_size_scaling_results.json",
+    "sha256": "8a47798c8dda67103df606c0cc26a0c287e025c01098200f38366eb7cf6f65c4",
+    "bytes": 4639,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "model",
+      "N_values",
+      "rows",
+      "corrected_interpretation",
+      "honest_conclusion"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A9_finite_size_scaling/finite_size_scaling.py",
+    "sha256": "4dfeb51f02d02c4f135802aaa9189aea977ab8955bb994c3b8968a35d7c3370a",
+    "bytes": 6842,
+    "lines": 157,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A7_su2_gauss_law/su2_gauss_closure_results.json",
+    "sha256": "b51781e91388babeecec75be6073bd7d9e2d63be754a5c080b3ba733cd539bd3",
+    "bytes": 1993,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "claim",
+      "results",
+      "overall",
+      "caveat"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A7_su2_gauss_law/verify_su2_gauss_closure.py",
+    "sha256": "31e167f457bab95e51449e4c8d90a5e3a60ccc68b49c45487fa4232ca0f684ce",
+    "bytes": 4575,
+    "lines": 114,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A6_death_test/binary_foam_death_test_results.json",
+    "sha256": "924206d9e2c92ff1ef1ad370a90623c361928b6cd22b5a0a33d719eda7a77cd3",
+    "bytes": 3166,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "checks",
+      "criteria",
+      "spectrum_first_10",
+      "summary",
+      "overall_result",
+      "conclusion"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A6_death_test/binary_foam_death_test_full.py",
+    "sha256": "fa7edb26a4c7bc6bf28f33924e8854f98e4d16d648343285e5a5d74cdf7db4de",
+    "bytes": 11823,
+    "lines": 204,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A1_spherical_holonomy/sine_spherical_verification.json",
+    "sha256": "29924683ee212570096ffa82f2733e13c288ffe44c6effe9ca083693e86899e8",
+    "bytes": 1809,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "checks",
+      "summary",
+      "note"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A1_spherical_holonomy/verify_sine_spherical.py",
+    "sha256": "80c9f5b958244a211aac2fdcfd6dbd4ea9102a8fc72ae744aac76c49908115b0",
+    "bytes": 6063,
+    "lines": 132,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A3_uv_kernel_nonuniqueness/test_nonlocal_kernel_underdetermination.py",
+    "sha256": "f134cb762a5b29e49ff25d9b0a28e69bb457e0b361c6948a19c8316d09b82d75",
+    "bytes": 6025,
+    "lines": 116,
+    "text_read": true
+  },
+  {
+    "file": "repo/nonlocal_kernel_underdetermination.json",
+    "sha256": "cc47fcd2ba88c7b2bd882030227d9bc2bf6fb3b9edd03a1f2029a353869a8c9c",
+    "bytes": 2787,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "checks",
+      "ir_series",
+      "uv_values",
+      "summary",
+      "conclusion"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A2_qec_counterexample/constraint_code_results.json",
+    "sha256": "74c2386ac796a46a4980dbdaf2406c1907e085979afe40d0253100e1cbe10de9",
+    "bytes": 2140,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "model",
+      "n_qubits",
+      "n_star_stabilizers",
+      "n_plaquette_stabilizers",
+      "rank_X_stabilizers",
+      "rank_Z_stabilizers",
+      "expected_rank_each",
+      "n_logical_qubits_k",
+      "expected_k_on_torus",
+      "code_distance_lower_bound",
+      "expected_distance"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A2_qec_counterexample/constraint_code_counterexample.py",
+    "sha256": "c07aa1f5ea9d42b40e2a5f54d666ec287d9611eb7abcd2af09af99ae6463e105",
+    "bytes": 9972,
+    "lines": 201,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A11_hda_second_attempt/hda_curvature_ansatz_results.json",
+    "sha256": "7cf82cf2fd82992c2ab961f0f8776896d9cd5f81e096851cdb1807503c8c1d39",
+    "bytes": 1574,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "roadmap_item",
+      "purpose",
+      "exact_symbolic_result",
+      "anomaly_finding",
+      "why_this_matters",
+      "verdict"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A11_hda_second_attempt/hda_closure_curvature_ansatz.py",
+    "sha256": "8e0220ca97919e869205b0c1d26cb54406de591385d043abe13dd0e7ae7b0ed2",
+    "bytes": 2656,
+    "lines": 72,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/README.md",
+    "sha256": "e19692f40f5ec54cf3ecd6dd44055e93d275109108fee0a8c4fa4755a40cc4b5",
+    "bytes": 11434,
+    "lines": 78,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A15_tt_polarization_count/tt_count_rigorous.py",
+    "sha256": "d6bf3da4ddeb38086115e8c031a7f541af009969ffa8207afbed4621141d7b3c",
+    "bytes": 6403,
+    "lines": 134,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A15_tt_polarization_count/tt_count_results.json",
+    "sha256": "6b821806e9c254a5f158d50c0ed46683396c280e90c1bb27f49d2b32a206098b",
+    "bytes": 1169,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "roadmap_item",
+      "scope",
+      "setup",
+      "constraint_rank_(Lorenz_gauge, 4 candidate conditions)",
+      "gauge_orbit_rank_(4 candidate residual-gauge directions)",
+      "gauge_transformations_automatically_preserve_Lorenz_condition",
+      "physical_dof_computed",
+      "expected_from_textbook",
+      "match",
+      "honest_scope_note"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A13_hda_systematic_sweep/hda_ansatz_sweep_results.json",
+    "sha256": "b08c0135753ec788360ee03ec524e6ebd95251f13ce7049f03eb45a1c0f415af",
+    "bytes": 2661,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "N",
+      "final_methodology",
+      "ansatze",
+      "summary"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A13_hda_systematic_sweep/hda_ansatz_sweep.py",
+    "sha256": "899b837c526b94cd14f4d6edc86976395130bd0a79ae80d8bb2455ab7cde8dbd",
+    "bytes": 4914,
+    "lines": 113,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A4_binary_walk_heat_kernel/verify_binary_walk_heat_kernel.py",
+    "sha256": "79b5181a2d0273fc444dae488a7792de4a6ae48785348a7e65491fbfdefdc6ee",
+    "bytes": 5836,
+    "lines": 119,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A4_binary_walk_heat_kernel/derivation_results.json",
+    "sha256": "737d669f243e1e69242d91640810eeea02d70604c0a4f83e112871b36204d2ba",
+    "bytes": 2515,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "checks",
+      "raw_data",
+      "measured_order_binary_walk",
+      "measured_order_sine_action_error",
+      "document_claimed_values",
+      "summary"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A5_binary_sine_foam/final_binary_sine_foam_results.json",
+    "sha256": "89960ca667294ace3acc46a71cb77eb3693fc581f4630a78710ad44e9678f0c4",
+    "bytes": 1904,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "checks",
+      "summary",
+      "conclusion"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A5_binary_sine_foam/final_binary_sine_foam_check.py",
+    "sha256": "7cc66d00f519fa874778a353e3c803f4517c3cba234252274ae0f72a78938321",
+    "bytes": 6285,
+    "lines": 124,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A12_tt_polarizations_scoping/scoping_note.md",
+    "sha256": "58ba836921c4d3ffd5d9c8357e87775f30423e56810f239ebecdc5983904f271",
+    "bytes": 4467,
+    "lines": 49,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A8_su2_transfer_positivity/test_sine_action_reflection_positivity.py",
+    "sha256": "449bef620bfb288ebafd30a394c2872e1494f91a3dc707253e0c280b70c82264",
+    "bytes": 4988,
+    "lines": 110,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A8_su2_transfer_positivity/sine_action_positivity_results.json",
+    "sha256": "46f9159857fb416c1bd054373de703b9aaab8ab45297830ec95270a1f12518b3",
+    "bytes": 9537,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "claim",
+      "method",
+      "param_sets",
+      "overall",
+      "interpretation"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A10_hda_anomaly_test/hda_closure_results.json",
+    "sha256": "67ef351bc409bfd2611de982526440178c12869b72c94d778b3a46ab0a92909d",
+    "bytes": 2886,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "roadmap_item",
+      "claim_tested",
+      "exact_symbolic_result",
+      "anomaly_finding",
+      "what_this_does_and_does_not_show",
+      "scope_caveat",
+      "verdict"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A10_hda_anomaly_test/hda_closure_toy_test.py",
+    "sha256": "de43b80b75a68e237cbd3eb4b7c25a871c16c6ba31f099ced96e351ed6641093",
+    "bytes": 5141,
+    "lines": 120,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A14_midisuperspace_groundwork/midisuperspace_dof_count_results.json",
+    "sha256": "a8b69adcb68cc71d8a2461a2223f2257abf3ae74594c2795c7c4649640714971",
+    "bytes": 2460,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "roadmap_item",
+      "status",
+      "self_correction",
+      "extended_phase_space",
+      "constraints_assumed_per_site",
+      "naive_dof_count_result",
+      "what_this_actually_shows",
+      "explicitly_not_done",
+      "honest_conclusion"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A14_midisuperspace_groundwork/midisuperspace_dof_count.py",
+    "sha256": "b395e7a60d93a4199d40d38b7a2f2fd768cfdc502f88ac7631b5319264670965",
+    "bytes": 5828,
+    "lines": 105,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A16_effective_foam_eft/effective_foam_eft_results.json",
+    "sha256": "8012ba59d2cfe9429f23319ce8a0daf2633eb009f312c5682e6139ef593f60d2",
+    "bytes": 887,
+    "json_valid": true,
+    "keys": [
+      "checks",
+      "passed",
+      "total"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/artifacts/A17_predictive_power_audit/predictive_power_audit.json",
+    "sha256": "be268bd663106afd08fd57546aa2e65252cfd976b2b87467d6c0357cfda6785a",
+    "bytes": 13437,
+    "json_valid": true,
+    "keys": [
+      "schema",
+      "generated_utc",
+      "catalog_claim_tested",
+      "definition_of_physical_constant_prediction",
+      "public_model_functions",
+      "target_leakage_symbols_found",
+      "registered_structural_predictions",
+      "n_registered_structural_predictions",
+      "n_continuous_physical_predictions_tested",
+      "n_continuous_physical_predictions_passed",
+      "successful_physical_constant_coverage_fraction",
+      "failed_continuous_tests"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A18_anomaly_free_spherical/anomaly_free_spherical_results.json",
+    "sha256": "78a64f93b4df0e73b608a8141e3908fb79c26cbcde587b3774c2fc7160bb1683",
+    "bytes": 2971,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "scope",
+      "symbolic_certificate",
+      "closure_trials",
+      "max_relative_residual_on_finest_grid",
+      "signature_change_threshold_delta_times_K",
+      "example_threshold_for_delta_0.3",
+      "pass"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A19_covariant_low_energy/covariant_low_energy_results.json",
+    "sha256": "dbf3121e3d37a4d0b93037e522d051fb951f759cfbe89ba9c9a64bb2a2141884",
+    "bytes": 983,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "completion_status",
+      "degree_counting_certificate",
+      "predictions",
+      "external_check",
+      "pass"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A20_blind_micro_spectrum/blind_micro_spectrum_results.json",
+    "sha256": "5dd372551c77b4e4a38f774963be7df9ccff32a426711e7aa95ea21d017aac36",
+    "bytes": 43775,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "single_challenge",
+      "challenge_suite",
+      "interpretation",
+      "pass"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/artifacts/A21_prediction_registry/prediction_registry_audit.json",
+    "sha256": "bed4bd5f0a5b51bba5b88e069486fa0b343f273678b41ca0fa8197211e046ebd",
+    "bytes": 6684,
+    "json_valid": true,
+    "keys": [
+      "target_count",
+      "registered_predictions_total",
+      "registered_predictions",
+      "continuous_physical_predictions_tested",
+      "continuous_physical_predictions_passed",
+      "successful_coverage_fraction",
+      "failed_tests",
+      "verdict",
+      "artifact_id"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A22_gauge_sector/gauge_sector_results.json",
+    "sha256": "c78afa8058f95b8d33d124d8ae151c78c025c317497562c2079941d4e121d203",
+    "bytes": 1312,
+    "json_valid": true,
+    "keys": [
+      "group",
+      "total_generator_count",
+      "algebra_certificates",
+      "wilson_link_certificates",
+      "pass",
+      "derivation_status",
+      "artifact_id"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/artifacts/A23_future_preregistration/frozen_manifest_hash.json",
+    "sha256": "737b28f37ab95413e3814b42fb2a3d05805a48f6e1e0a77285ef3a917d57d955",
+    "bytes": 174,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "manifest",
+      "sha256"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/artifacts/full_verification_logs/pytest.log",
+    "sha256": "0577a00d8d1e2236f606d83700594fe53d3744dcd4e659a3d6931a19c53c0192",
+    "bytes": 100,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs/A0_document.log",
+    "sha256": "7b2caac140e2f261bdb4c5bb4b6de2258b1a599e2cbef663c8a004d865e673f2",
+    "bytes": 6095,
+    "lines": 82,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs/A16_eft.log",
+    "sha256": "1ee2bc431f903198c2fd3f94400a239973f452faef247aad8f43d93645f5d29e",
+    "bytes": 557,
+    "lines": 10,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs/pytest_v2.log",
+    "sha256": "a70cfb0e7332360d0a1cf613b09ff6db1067bd6a2c8fa808dbfc8a47796968db",
+    "bytes": 100,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs/wheel_import_v2.log",
+    "sha256": "2a960810a0b77f0ba3f30fa6a42cdac5060551dc67e24a697c157dedb174ac8b",
+    "bytes": 45,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_anomaly_free_spherical.log",
+    "sha256": "4aaf79eb2e8476d34c15057441bc0489cb758c89d7586e96a1d3c498aa7506cc",
+    "bytes": 2972,
+    "lines": 100,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs/pytest_v2.2.log",
+    "sha256": "9101c7c3da4bc1c6f4972d61b6559d999a04b912ca3478f31f89e4efa7acdd5d",
+    "bytes": 100,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/HASHES.sha256",
+    "sha256": "0dee1cf22c75b3e64e5f1d7036ce735901debf74eb1ca45aac5d5dedf291048f",
+    "bytes": 5121,
+    "lines": 43,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A24_chiral_overlap/chiral_overlap_certificate.json",
+    "sha256": "7a15a366ac7a8fa5489227a93d902bd6b07181e024c05c981292327215bb02a6",
+    "bytes": 12181,
+    "json_valid": true,
+    "keys": [
+      "max_ginsparg_wilson_error",
+      "max_index_theorem_error",
+      "minimum_kernel_gap",
+      "pass",
+      "scope",
+      "trial_count",
+      "trials"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A25_A26_chiral_matter_rg/chiral_matter_rg_certificate.json",
+    "sha256": "e2dc598fb45dbcc60ae27f4d36be3964a372bf6c193d7622ff8830a8fc89a376",
+    "bytes": 2403,
+    "json_valid": true,
+    "keys": [
+      "A25_hypercharge_anomaly_cancellation",
+      "A26_one_loop_rg",
+      "pass"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A27_free_overlap_4d/free_overlap_4d_certificate.json",
+    "sha256": "9843608c062a522979ddc78c6bd3ce0e17ae633aa701ec9ecef2b74e68836f8a",
+    "bytes": 4068,
+    "json_valid": true,
+    "keys": [
+      "continuum_convergence",
+      "corner_spectrum",
+      "gamma5_hermiticity_error",
+      "gamma_algebra",
+      "generic_momentum",
+      "ginsparg_wilson_error",
+      "minimum_doubler_corner_gap",
+      "pass",
+      "physical_zero_corner_error",
+      "scope"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A28_topological_generations/topological_generations_certificate.json",
+    "sha256": "003985e9413db12b43d39e22c4f7e6b3f18a9bd61913ad61f7ec3c080dde3a61",
+    "bytes": 4228,
+    "json_valid": true,
+    "keys": [
+      "conditional_result",
+      "max_chirality_integrality_error",
+      "max_zero_singular_value",
+      "minimum_nonzero_singular_value",
+      "open_problem",
+      "pass",
+      "scope",
+      "trial_count",
+      "trials"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A29_A30_unification/unification_certificate.json",
+    "sha256": "206814383b6b384d94ac3d5c15f161e118989e371969a87c3af79a5057ed0ea9",
+    "bytes": 2605,
+    "json_valid": true,
+    "keys": [
+      "minimal_model_death_test",
+      "trace_relation"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A31_generation_selection/generation_selection_no_go.json",
+    "sha256": "e62e4c808f48d1b841a2240c96cae348db2068b4da99c3d4ebc72250a92644b0",
+    "bytes": 4634,
+    "json_valid": true,
+    "keys": [
+      "allowed_positive_generation_counts",
+      "exact_bounds",
+      "pass",
+      "rows",
+      "three_is_allowed",
+      "three_is_unique",
+      "verdict"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A32_flavor_no_go/constant_higgs_degeneracy.json",
+    "sha256": "face9c9eafe3bba6ccbfb5812802cdd2501de22807f91bc81b716075ce972685",
+    "bytes": 1124,
+    "json_valid": true,
+    "keys": [
+      "constant_profile_yukawa_matrix_real",
+      "degeneracy_spread",
+      "family_dimension",
+      "flavor_singular_values",
+      "identity_error",
+      "lattice_size",
+      "pass",
+      "scope",
+      "topological_charge",
+      "verdict",
+      "zero_mode_singular_values"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/src/compact_holonomies/__init__.py",
+    "sha256": "48a47b4f54f38819eda42a34be045e0af234ec1388a6e73e5a31add3ebaa1c53",
+    "bytes": 2833,
+    "lines": 109,
+    "text_read": true
+  },
+  {
+    "file": "repo/src/compact_holonomies/effective_foam_eft.py",
+    "sha256": "c3fb8890a53272e09912c4b71c12b60d0ed49dfdfd875c0487e4dc6d01320586",
+    "bytes": 6047,
+    "lines": 173,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/anomaly_free_spherical.py",
+    "sha256": "c9f0df89490b0fe2d67ce00eb3617cf8e4845c14bfdf02c5903095f09e0cf69b",
+    "bytes": 8004,
+    "lines": 226,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/micro_spectrum.py",
+    "sha256": "f8433073524890425af898a1d5a5cfe4c6baf20a01ce0b253e19f59c7e706492",
+    "bytes": 7051,
+    "lines": 170,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/covariant_low_energy.py",
+    "sha256": "87068ffdd793f845926bdd5d3a23c43d0756051802fd399f964ca83c0cedd7da",
+    "bytes": 2280,
+    "lines": 58,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/src/compact_holonomies/prediction_registry.py",
+    "sha256": "4e2c5e555923ffe810e542028cb610fd0a7e22f86d6f2c0d86e0e51ea7f225e5",
+    "bytes": 5965,
+    "lines": 111,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/gauge_sector.py",
+    "sha256": "74bb67c29bea21ae7c3904eabdde50f9ad4db303ebf0d31e8581ca2c327662bd",
+    "bytes": 4837,
+    "lines": 125,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/chiral_overlap.py",
+    "sha256": "9d5b581b3ee8839b871b8ba160d54620e9bd94dae41ea71987d95e468c2f2683",
+    "bytes": 10595,
+    "lines": 280,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/anomaly_free_matter.py",
+    "sha256": "741f1821e9b00bcd930309ddee9860b414f708c01a211f4aaf54fda97520f2e3",
+    "bytes": 7665,
+    "lines": 187,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/renormalization_group.py",
+    "sha256": "36f86cce3d5954a49bcbc8ca75f025078349d9695624099a207037b5bd4d1914",
+    "bytes": 3816,
+    "lines": 101,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/free_overlap_4d.py",
+    "sha256": "b2a9f4fe917c67e8c472100cf6ff1d61c898614a3648a85f8415e552b01aa864",
+    "bytes": 6646,
+    "lines": 168,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/topological_generations.py",
+    "sha256": "e00b399a66a4d3db77c448840eeb5568c7f5c2a16126a530ac2c958269237f21",
+    "bytes": 5243,
+    "lines": 133,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/unification_stress.py",
+    "sha256": "9c70106f30c4def0a113da8264c79d4d16fd73cadf4a1f4100b4ae1ee8a1c384",
+    "bytes": 7982,
+    "lines": 182,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/generation_selection.py",
+    "sha256": "4576bf816924c8e28579ab57d1fbc8e92cd3b841a468d9b0813249aec5200ea9",
+    "bytes": 2245,
+    "lines": 51,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/flavor_no_go.py",
+    "sha256": "a297d95d02217d68483b486581ead95262c47b95c7503748119ef54294c719a3",
+    "bytes": 2411,
+    "lines": 45,
+    "text_read": true
+  },
+  {
+    "file": "repo/tests/test_effective_foam_eft.py",
+    "sha256": "abd4a05b36bcf7a8d497ec797d851832e30d1eb02694cca4a9dafd58781f5910",
+    "bytes": 1981,
+    "lines": 63,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_predictive_audit.py",
+    "sha256": "21770b3c71c4cb460fff48f5559e631e61b2ff9ab67e76392fa337e6f113bae4",
+    "bytes": 885,
+    "lines": 18,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_anomaly_free_spherical.py",
+    "sha256": "f4f647cdd890f7b4204971111a1f61dd994461cd3f2e4bc9a79655498b355666",
+    "bytes": 1124,
+    "lines": 37,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_micro_spectrum.py",
+    "sha256": "1a1516c4c1319504c8c699ef70054f1e019af1bc3ef0d58e3a476013aa6d7588",
+    "bytes": 1242,
+    "lines": 35,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_covariant_low_energy.py",
+    "sha256": "8afaa31137bd6e9f4f29738c0755d37842caf5f9f6bb77f7bace1347f3c76bf6",
+    "bytes": 667,
+    "lines": 19,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_prediction_registry_v20.py",
+    "sha256": "2a54d93a413ac34f1a0120bfa87bb23a5d68b8bcb9d00208b9246391a5404945",
+    "bytes": 510,
+    "lines": 11,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_gauge_sector.py",
+    "sha256": "2974b1d471535b910a51d17c34877452167d24c50ab49ed8af7b77f94afd1a16",
+    "bytes": 338,
+    "lines": 8,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_chiral_overlap.py",
+    "sha256": "90c4a9cb33484fac43bea2c436b439020aadf8754df2a4bd6c8a24cdf4904eb6",
+    "bytes": 913,
+    "lines": 32,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_anomaly_free_matter.py",
+    "sha256": "7258f39642eda9c39d3faafb6d121084e34ae51f1046df9b02657b307e7e50cc",
+    "bytes": 1103,
+    "lines": 32,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_renormalization_group.py",
+    "sha256": "670e41b1f732edffc2ec8d6380619a1a9d4483b8ba796e3a5823fdac6d9d9734",
+    "bytes": 780,
+    "lines": 27,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_free_overlap_4d.py",
+    "sha256": "88dfc95daf5048444c60490107ce1c4d4fb76e7196e47fba450e85275127f650",
+    "bytes": 653,
+    "lines": 22,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_topological_generations.py",
+    "sha256": "bc7480a63da0662b3d790ad2d0fdce720cabb89c4aa39aa9c728e760addb8ff4",
+    "bytes": 846,
+    "lines": 29,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_unification_stress.py",
+    "sha256": "a8fa4efc276be24445e9fb6df4af5c94cd4228c1d685c8c6b3163b04908fec16",
+    "bytes": 905,
+    "lines": 26,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_generation_selection.py",
+    "sha256": "a0ab6e5266ad7f24347634b6d23d57a59f4a69f922b860f553d93dae38033b4c",
+    "bytes": 369,
+    "lines": 9,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_flavor_no_go.py",
+    "sha256": "d5c06ac896745d78570dd1ae89b95b0226391a37a111a2d685eb748416ef85f1",
+    "bytes": 348,
+    "lines": 9,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/pytest.ini",
+    "sha256": "87e61328e5db9d0885c40465ae3890643c90cb4d812e25de43ebd9341e939e55",
+    "bytes": 83,
+    "lines": 5,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/pyproject.toml",
+    "sha256": "33f5648aae98ca4e301c3ac50d4d27786e458eb6d048879e0edd7cb57aee6b82",
+    "bytes": 473,
+    "lines": 19,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/AUDIT_REPORT_v1.6.md",
+    "sha256": "88ccb5bae60efae81f8e5b2b864c6cdc21392e3fa5a337c85dd0d733bf700949",
+    "bytes": 2589,
+    "lines": 41,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/preregistration/A20_micro_spectrum_manifest.json",
+    "sha256": "650096da7e4d4487ff30c65fb2decb7b15a3f3c03f4a64ab4c9965dcebaa1efe",
+    "bytes": 363,
+    "json_valid": true,
+    "keys": [
+      "baselines",
+      "boundary",
+      "holdout_rule",
+      "no_fit_parameters",
+      "operator",
+      "prediction"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/preregistration/FUTURE_BLIND_PREDICTIONS_v2.0.json",
+    "sha256": "7d6471f1ac8f59b0759885e2262dcf414d5a1710f4e512301a2a352480519469",
+    "bytes": 1244,
+    "json_valid": true,
+    "keys": [
+      "frozen_predictions",
+      "prohibited_after_freeze",
+      "version"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/preregistration/FUTURE_BLIND_PREDICTIONS_v2.1.json",
+    "sha256": "59e00b0473c64c8a5031097c4adb1ad9b01bdf4041df5a6ff85d740f912521e5",
+    "bytes": 2366,
+    "json_valid": true,
+    "keys": [
+      "conditional_results_not_counted_as_external_blind_predictions",
+      "frozen_predictions",
+      "prohibited_after_freeze",
+      "version"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/preregistration/FUTURE_BLIND_PREDICTIONS_v2.2.json",
+    "sha256": "a481cadf958886307261caaa017cb4d56085157cc8d440e6f006369986aacaea",
+    "bytes": 2856,
+    "json_valid": true,
+    "keys": [
+      "conditional_results_not_counted_as_external_blind_predictions",
+      "frozen_predictions",
+      "prohibited_after_freeze",
+      "version"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/sine_spherical_verification.json",
+    "sha256": "4cfef8e87b295b7042f3f7c47f65036a4eecdb221b59f78431d103542a369923",
+    "bytes": 1809,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "checks",
+      "summary",
+      "note"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/derivation_results.json",
+    "sha256": "a0c5f966242ba925c9b4f00d1c34295fe96b47f80527474029b44cc4c50e8a3b",
+    "bytes": 2515,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "checks",
+      "raw_data",
+      "measured_order_binary_walk",
+      "measured_order_sine_action_error",
+      "document_claimed_values",
+      "summary"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/binary_foam_death_test_results.json",
+    "sha256": "cdb0771a9d3a629f7947da8edf66d3751c5e13611de30b19937e198738aff9b8",
+    "bytes": 3167,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "checks",
+      "criteria",
+      "spectrum_first_10",
+      "summary",
+      "overall_result",
+      "conclusion"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/THEORY_STATUS_v2.0.md",
+    "sha256": "b58613f3a0f4be730ebee43c8d3e20af99d267c0f32ba4858fdefe8fb4b3cc44",
+    "bytes": 6468,
+    "lines": 142,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/VERIFICATION_SUMMARY_v2.0.json",
+    "sha256": "19929df60fd61ee45396b94a9fb7c44d74856ee6df6abb4011baf3e288c28625",
+    "bytes": 4193,
+    "json_valid": true,
+    "keys": [
+      "release",
+      "generated_utc",
+      "environment",
+      "test_summary",
+      "corrected_legacy_result_A9",
+      "prediction_status",
+      "chain_status",
+      "not_proven",
+      "distribution"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/RELEASE_NOTES_v2.0.md",
+    "sha256": "bd85614759fe5f7c08c36d4816e3ab8898a56b3d95cc91f59d2a56a204aef69f",
+    "bytes": 2418,
+    "lines": 53,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/all_files.sha256",
+    "sha256": "ae9890a32374284b944faa6695ce87c8666faabd7e1564a8b6e62a849384fc68",
+    "bytes": 10649,
+    "lines": 93,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/THEORY_STATUS_v2.1.md",
+    "sha256": "bb2c735d07a91d1189744904644a14bb0b305b006308f4bd39df547aa8a67b77",
+    "bytes": 1878,
+    "lines": 44,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/RELEASE_NOTES_v2.1.md",
+    "sha256": "53f00ebdeaf83e047a1c216615825b23f8643f8295229bc30660ac48850da4bf",
+    "bytes": 808,
+    "lines": 15,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/VERIFICATION_SUMMARY_v2.1.json",
+    "sha256": "21fa645c7328c880ccffdf4eb8ae8e733860e640044a8651d836c6ecdfa5f79c",
+    "bytes": 5354,
+    "json_valid": true,
+    "keys": [
+      "release",
+      "generated_utc",
+      "environment",
+      "test_summary",
+      "prediction_status",
+      "chain_status",
+      "not_proven",
+      "distribution"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/all_files_v2.1.sha256",
+    "sha256": "2d1d97a10ea9716b2c4e75bc19084d91b5547401712e261a3fddda55cbdf2a73",
+    "bytes": 12811,
+    "lines": 113,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/RELEASE_NOTES_v2.2.md",
+    "sha256": "299f1f53b0a7b36e3da94c00970460f281220d4c588d67b47c9aa9f7f245306b",
+    "bytes": 1057,
+    "lines": 17,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.2_verified_topology/dist/compact_holonomies-2.2.0-py3-none-any.whl",
+    "sha256": "386fe1ce120a82670c32b18d40139bf1035e8b4aa7faf8ab1299b6d3c073ef73",
+    "bytes": 32709
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/VERIFICATION_SUMMARY_v2.2.json",
+    "sha256": "2febcef87dd60fce92b2bf4b9676171c8037f9f421e9b2dd0b001c6ac30275bc",
+    "bytes": 3766,
+    "json_valid": true,
+    "keys": [
+      "version",
+      "release_label",
+      "pytest",
+      "A28_topological_generations",
+      "A29_trace_relation",
+      "A30_minimal_unification_death_test",
+      "A31_generation_selection_no_go",
+      "A32_flavor_no_go",
+      "prediction_registry",
+      "target_leakage_symbols_found",
+      "preregistration",
+      "wheel"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/all_files_v2.2.sha256",
+    "sha256": "7da9f0184b60aba70f7856c7c07a1f4de01bf16df977df1de64db06414aa7de0",
+    "bytes": 15424,
+    "lines": 137,
+    "text_read": true
+  },
+  {
+    "file": "repo/requirements.txt",
+    "sha256": "bc7ed35fa95bae186dc32a975169df95a013b1671dab6c2feca2136b68b339a4",
+    "bytes": 36,
+    "lines": 3,
+    "text_read": true
+  },
+  {
+    "file": "repo/README.md",
+    "sha256": "3e3987cf6e54e8397248d61b08ec80fc100a94474b435a29da6cfad10b22c2f4",
+    "bytes": 27562,
+    "lines": 283,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A9_finite_size_scaling/finite_size_scaling.py",
+    "sha256": "ce84f16447650706f0a162de678b7a1c88be21a9b2f16bafaa35a70346587563",
+    "bytes": 6954,
+    "lines": 164,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A9_finite_size_scaling/finite_size_scaling_results.json",
+    "sha256": "34695ec6aa9e27f55faa546cf5e9dc25e2311f68177068fbcd8b0e88490d1f49",
+    "bytes": 4101,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "model",
+      "note_on_method",
+      "rows",
+      "gap01_exponential_fit_slope",
+      "finding",
+      "correction_to_earlier_draft"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A7_su2_gauss_law/verify_su2_gauss_closure.py",
+    "sha256": "6b294f2a2caa1d8e262fe11ef30c12276e6614e4f6ea1e1b8cfdd20067039280",
+    "bytes": 4561,
+    "lines": 113,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A11_hda_second_attempt/hda_closure_curvature_ansatz.py",
+    "sha256": "65bead76d83cd00b4529370123085f5bae63ee16ba9f57c9a1c7b25681d7fb1a",
+    "bytes": 2648,
+    "lines": 71,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A15_tt_polarization_count/tt_count_rigorous.py",
+    "sha256": "5f3b22e86916f198d247ae07c85551c38c08fe380433651b3ded74b73b0ffbf0",
+    "bytes": 6398,
+    "lines": 133,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A13_hda_systematic_sweep/hda_ansatz_sweep.py",
+    "sha256": "79f4c041fc8dd0ce45dfaa66b90848cbd2eded5fe6d7245965ad841af0648bc7",
+    "bytes": 4908,
+    "lines": 112,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/HASHES.sha256",
+    "sha256": "f7076a619d57e590cc1ce696424ad46492ed0ad01c3069eb77bf24dd903af629",
+    "bytes": 3529,
+    "lines": 29,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A8_su2_transfer_positivity/test_sine_action_reflection_positivity.py",
+    "sha256": "d94bbe5655d6a0e2b2e4a68341e6bea140d1245bc3168627b4ae5066342214b5",
+    "bytes": 4423,
+    "lines": 98,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A8_su2_transfer_positivity/sine_action_positivity_results.json",
+    "sha256": "12f630b1747521f1822b671de0a5b54128401414c2a68b9b52fbe3492fad0522",
+    "bytes": 9634,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "claim",
+      "method",
+      "param_sets",
+      "overall",
+      "interpretation"
+    ]
+  },
+  {
+    "file": "repo/artifacts/A10_hda_anomaly_test/hda_closure_toy_test.py",
+    "sha256": "d6d37792c20c71422be63c97290d8a9511c9a88b6901b77effff0b15c641bc95",
+    "bytes": 5131,
+    "lines": 119,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/A14_midisuperspace_groundwork/midisuperspace_dof_count.py",
+    "sha256": "52aae8ecb59b68556eda4190e47c5c9778f0eaf8bcc88962fb91d61f30ce962e",
+    "bytes": 5827,
+    "lines": 104,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/README.md",
+    "sha256": "80974c69c80654ded3415a5aca4850f430001bf64c36dd94192599f955a28acc",
+    "bytes": 30871,
+    "lines": 325,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/scripts/run_core_checks.sh",
+    "sha256": "7a5a5e2c4f56ed1206f6e3b69ac4df81c987732430b8c3b31c74296d906b59f5",
+    "bytes": 1139,
+    "lines": 27,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/scripts/audit_predictive_power.py",
+    "sha256": "eb92b42478afa191ce65d6b62da1ea8d311cd87d2132c196f049c7631f233812",
+    "bytes": 3358,
+    "lines": 73,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/scripts/freeze_future_predictions.py",
+    "sha256": "d36ae3d0bcf87b8bbd29a106f1c224c25853745fb4d98ecbba64963b4da812c6",
+    "bytes": 3293,
+    "lines": 61,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/artifacts/A17_predictive_power_audit/predictive_power_audit.json",
+    "sha256": "9f0c5a0885485bdabe787d9107ab45dd9226c7fbbbb5ec940df2e2572daaa380",
+    "bytes": 9958,
+    "json_valid": true,
+    "keys": [
+      "schema",
+      "generated_utc",
+      "catalog_claim_tested",
+      "definition_of_physical_constant_prediction",
+      "public_model_functions",
+      "target_leakage_symbols_found",
+      "registered_structural_predictions",
+      "n_registered_structural_predictions",
+      "n_registered_physical_constant_predictions",
+      "physical_constant_coverage_fraction",
+      "out_of_sample_mathematical_prediction_artifact",
+      "out_of_sample_physical_constant_predictions_passed"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/artifacts/A21_prediction_registry/prediction_registry_audit.json",
+    "sha256": "74d8287441b79f49494e82b6d91473a600574fac99e219d4d0d9b8b7e70c6f7a",
+    "bytes": 3998,
+    "json_valid": true,
+    "keys": [
+      "target_count",
+      "registered_structural_predictions",
+      "registered_predictions",
+      "independent_modern_physics_constants_predicted",
+      "coverage_fraction",
+      "verdict",
+      "artifact_id"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/artifacts/A23_future_preregistration/frozen_manifest_hash.json",
+    "sha256": "faecbeeea7122fc423529c1d4f5ba226e2de665cbd255470bbcf2809912b8740",
+    "bytes": 174,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "manifest",
+      "sha256"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/artifacts/full_verification_logs/pytest.log",
+    "sha256": "fa0f2441b1664fa149c5b3aa725cfad334389a596d06b9e094a5481e5ae2fc7d",
+    "bytes": 100,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/src/compact_holonomies/__init__.py",
+    "sha256": "b4b4a2462945ecce982a99363950e4e84aeaee2336da4bd63391f8054b0a3b04",
+    "bytes": 2143,
+    "lines": 88,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/src/compact_holonomies/prediction_registry.py",
+    "sha256": "8f3cba99ee39a1753632c131f6a5d94219231735aa30dcbd4a4b2bf80e62bdfd",
+    "bytes": 4000,
+    "lines": 83,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/tests/test_predictive_audit.py",
+    "sha256": "872cf03866da88b7dafd6db3b8674f47030fef936be0cf52f877f65ceaec4b2b",
+    "bytes": 806,
+    "lines": 17,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/tests/test_prediction_registry_v20.py",
+    "sha256": "333b717af8e088ee8d39d6f9d8275cde6700b4f508654a2dc383ae0fdfe6f33c",
+    "bytes": 381,
+    "lines": 9,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/pyproject.toml",
+    "sha256": "e9341f777d224c84eb5ee3040224ac1749b41f9b384c8cf61ba4bf08abd6def9",
+    "bytes": 473,
+    "lines": 19,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.1_verified_chiral/dist/compact_holonomies-2.1.0-py3-none-any.whl",
+    "sha256": "f47e9fba21647d96950a55882cd7bec7365772bf5baf9df1bf28cb99c1611045",
+    "bytes": 24672
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/README.md",
+    "sha256": "0aa72162fc3978adfd12abcd89d6f573746dab1028b23f35879792153eb9650c",
+    "bytes": 32179,
+    "lines": 345,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/scripts/run_core_checks.sh",
+    "sha256": "20bab85848b9d9d77e32a4acb64d85911b07356bf7175877899b6f9fe37dbe4d",
+    "bytes": 1744,
+    "lines": 37,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/scripts/freeze_future_predictions.py",
+    "sha256": "4a60b12cf3d14b1bf418e787fd3194a83d1ec96400cb06efc3c1f640dafb96c1",
+    "bytes": 5949,
+    "lines": 99,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/scripts/verify_quantum_holonomy_dynamics.py",
+    "sha256": "c886f261a648f9b8a3b5fcd0360b92a41ecff41a44babc0a5b23c44f207c6607",
+    "bytes": 523,
+    "lines": 16,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/scripts/verify_flux_sector_selection.py",
+    "sha256": "615cab1318871f8e93b8dc10d72bcc728c4272bd7c3d91270dce78fb293c66ff",
+    "bytes": 532,
+    "lines": 16,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/scripts/verify_quantum_graph_constraints.py",
+    "sha256": "677f626cd4920bfb9ed36d7c43a7604139e3c44409f1dfda124060f902261a89",
+    "bytes": 511,
+    "lines": 16,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/docs/QUANTUM_DYNAMICS_v2.3.md",
+    "sha256": "d46790458f77eecc09e55a922ef57fdf2c3fab0f05170a39ce07e3e0be835d88",
+    "bytes": 4753,
+    "lines": 179,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/docs/QUANTUM_GRAPH_CONSTRAINTS_v2.4.md",
+    "sha256": "9e454754053209f4ac8f637301e1a243f1359b8881a6d63c76f5864c613a0aee",
+    "bytes": 2649,
+    "lines": 95,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/README.md",
+    "sha256": "8aec5d1c76827974d59ca87157a3ee27d9db5b3b7731af2a5565d0e81717d445",
+    "bytes": 13222,
+    "lines": 95,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A17_predictive_power_audit/predictive_power_audit.json",
+    "sha256": "634516145b68d82b2712df755b8a75ed566cea52cee6d6cd17580ab15eb39759",
+    "bytes": 18572,
+    "json_valid": true,
+    "keys": [
+      "schema",
+      "generated_utc",
+      "catalog_claim_tested",
+      "definition_of_physical_constant_prediction",
+      "public_model_functions",
+      "target_leakage_symbols_found",
+      "registered_structural_predictions",
+      "n_registered_structural_predictions",
+      "n_continuous_physical_predictions_tested",
+      "n_continuous_physical_predictions_passed",
+      "successful_physical_constant_coverage_fraction",
+      "failed_continuous_tests"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A20_blind_micro_spectrum/blind_micro_spectrum_results.json",
+    "sha256": "3b0dca80cf817495c7df4a079b55801ce79ed7971a1e80ac0e3a2cf8cd308a8e",
+    "bytes": 43749,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "single_challenge",
+      "challenge_suite",
+      "interpretation",
+      "pass"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A21_prediction_registry/prediction_registry_audit.json",
+    "sha256": "ae76d1b2eb024e5a939eba0b038425890007f5c6d9e790165c3c765f86aa2348",
+    "bytes": 9896,
+    "json_valid": true,
+    "keys": [
+      "target_count",
+      "registered_predictions_total",
+      "registered_predictions",
+      "continuous_physical_predictions_tested",
+      "continuous_physical_predictions_passed",
+      "successful_coverage_fraction",
+      "failed_tests",
+      "verdict",
+      "artifact_id"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A22_gauge_sector/gauge_sector_results.json",
+    "sha256": "bcc58e970b42dd837b13e8b6016fbf02496ba4803ed05bb2af7c17321639c379",
+    "bytes": 1332,
+    "json_valid": true,
+    "keys": [
+      "group",
+      "total_generator_count",
+      "algebra_certificates",
+      "wilson_link_certificates",
+      "pass",
+      "derivation_status",
+      "artifact_id"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A23_future_preregistration/frozen_manifest_hash.json",
+    "sha256": "e70c0afc068253aae72cdfe0d9821cdba41a5cd252c29a437dd8fa59cc0b3e08",
+    "bytes": 174,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "manifest",
+      "sha256"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/pytest_v2.4.log",
+    "sha256": "dc10d318b97e4a5f667b1ede427e7617eb2b2ed5fbc2813afc989692c980121e",
+    "bytes": 99,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A0_document.log",
+    "sha256": "55c512654ef50aea2ef3252a4cf5735d042de7ee9940927df0a51f0637e6f4c8",
+    "bytes": 6095,
+    "lines": 82,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A16_eft.log",
+    "sha256": "ca6b2976a7f87a0b5b8602b49004780f65193c8bb6c9cb7f5c2ac683bf867f36",
+    "bytes": 580,
+    "lines": 10,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_covariant_low_energy.log",
+    "sha256": "3e6136d44206a9e9124817b2d336ac0798318f8cf368cca9543e8cbfefde5281",
+    "bytes": 984,
+    "lines": 31,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A20_blind_spectrum.log",
+    "sha256": "cffdd92633a81c35f79e5b2f7d622f4d207c90292d943501f7bb943ec96746ef",
+    "bytes": 43750,
+    "lines": 1764,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A22_gauge.log",
+    "sha256": "d25fd4ecbadefaa7bd7ddba89cec14001ac043befd2723e6797621445a577a87",
+    "bytes": 1333,
+    "lines": 47,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A23_freeze.log",
+    "sha256": "b9651a1aacf267b3a647930a1b14177e6ecf4191d80859180478ae162b81ffee",
+    "bytes": 175,
+    "lines": 5,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A24_chiral_overlap.log",
+    "sha256": "effde13f514f1670f20ffcd601bec2e0963689efb8029798bc9aba8ad25349f3",
+    "bytes": 372,
+    "lines": 8,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_anomaly_free_matter.log",
+    "sha256": "563d4c3232d9aca9ba0f91b915e5f794ccc4963cd8ae7734886f189a148e591d",
+    "bytes": 2404,
+    "lines": 73,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A27_free_overlap_4d.log",
+    "sha256": "bd933d0f5d5db9fd81c116acf4bf7a6475f1d4fcb0e07a8cdf4895ac75c96f90",
+    "bytes": 1051,
+    "lines": 42,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A28_topological_generations.log",
+    "sha256": "7ff18175d2aad599d26c246994fabc48c4bf4f1ced6deb3b792d1f94a2b53b48",
+    "bytes": 487,
+    "lines": 10,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_unification_stress.log",
+    "sha256": "9003c5aadb382d52587e81168afc5add949cb90cd6e0f33c8aa02bb266c38563",
+    "bytes": 2606,
+    "lines": 58,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_generation_selection.log",
+    "sha256": "4380852914edb3037c8266aefe79df3d39e1da19ae0193a9fb025a7f0926af00",
+    "bytes": 578,
+    "lines": 17,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A32_flavor_no_go.log",
+    "sha256": "21acd322cba55c95d9c60d4e52fc5b4f76f06f923a3cf0be27b9b3cfe9ccdd3b",
+    "bytes": 1127,
+    "lines": 37,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A33_A35_quantum_dynamics.log",
+    "sha256": "1c352be10ea74b71c68beb69a3d13969c1f268cd912062dfa1d77c3e60da07cd",
+    "bytes": 2589,
+    "lines": 62,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A36_flux_sector_selection.log",
+    "sha256": "82ed3d5a196ce89be2e595bdd015da4c8586a97ddcb263c68a76917d11b52b26",
+    "bytes": 1093,
+    "lines": 51,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A17_audit.log",
+    "sha256": "a1c343b936cb0504400a05bce6ffb28762dd15cd13f5404f6400e9e6f319ba44",
+    "bytes": 18573,
+    "lines": 350,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A21_registry.log",
+    "sha256": "5cb563b0a0c2a44d5b91dcb0c8e38dc6df28d8506db435a97aa10cf80a193cc1",
+    "bytes": 9897,
+    "lines": 232,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/pytest_v2.3.log",
+    "sha256": "2147bffc486cd1b40eb70431d9b89e7252d6ed558ce28c0e6d6aad19c44a01f8",
+    "bytes": 100,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/CORE_CHECKS_v2.3.txt",
+    "sha256": "66aa02ac02b7c35105f9957f80e90e8bc7e9d1f2069573f33f62e4017b97a39c",
+    "bytes": 569,
+    "lines": 20,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/A37_A39_quantum_graph.log",
+    "sha256": "a83ce07550bbb79ab2d65622deb5ad51592d1558d2cbe426422a9057cfa10309",
+    "bytes": 4503,
+    "lines": 100,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/full_verification_logs/CORE_CHECKS_v2.4.txt",
+    "sha256": "6f0c8495a1b7432bb7e4cf853acb5e4cb2ba3f776bd23e8400c84f9cc316c425",
+    "bytes": 597,
+    "lines": 21,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A24_chiral_overlap/chiral_overlap_certificate.json",
+    "sha256": "177ccec9b43bb6a19cd9f6b9ca73ed0057b60ed8a926a55d2797c0e9b216f3d6",
+    "bytes": 11976,
+    "json_valid": true,
+    "keys": [
+      "max_ginsparg_wilson_error",
+      "max_index_theorem_error",
+      "minimum_kernel_gap",
+      "pass",
+      "scope",
+      "trial_count",
+      "trials"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A27_free_overlap_4d/free_overlap_4d_certificate.json",
+    "sha256": "f32d842e7ebd485212492b927266f9bd29178f8cf14ba5fb7c4b9cf9c0fe6d68",
+    "bytes": 4069,
+    "json_valid": true,
+    "keys": [
+      "continuum_convergence",
+      "corner_spectrum",
+      "gamma5_hermiticity_error",
+      "gamma_algebra",
+      "generic_momentum",
+      "ginsparg_wilson_error",
+      "minimum_doubler_corner_gap",
+      "pass",
+      "physical_zero_corner_error",
+      "scope"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A28_topological_generations/topological_generations_certificate.json",
+    "sha256": "c2a82849a8ce19bad9747521e3483d2a9043ad05e338fb936f63d392526f9946",
+    "bytes": 4220,
+    "json_valid": true,
+    "keys": [
+      "conditional_result",
+      "max_chirality_integrality_error",
+      "max_zero_singular_value",
+      "minimum_nonzero_singular_value",
+      "open_problem",
+      "pass",
+      "scope",
+      "trial_count",
+      "trials"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A32_flavor_no_go/constant_higgs_degeneracy.json",
+    "sha256": "f4aa95dbce6b44353b8395fb2c8f2b84bef9294dde965ac0b86d30307d00d749",
+    "bytes": 1126,
+    "json_valid": true,
+    "keys": [
+      "constant_profile_yukawa_matrix_real",
+      "degeneracy_spread",
+      "family_dimension",
+      "flavor_singular_values",
+      "identity_error",
+      "lattice_size",
+      "pass",
+      "scope",
+      "topological_charge",
+      "verdict",
+      "zero_mode_singular_values"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A33_A35_quantum_dynamics/quantum_dynamics_certificate.json",
+    "sha256": "550cd5c8186e610eb5927696a0dcadf8640039af5c884fe1a7f85521fb899b66",
+    "bytes": 2588,
+    "json_valid": true,
+    "keys": [
+      "A33_weyl_kinematics",
+      "A34_quantum_constraint",
+      "A35_continuum_limit",
+      "pass",
+      "scope"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A36_flux_sector_selection/flux_selection_no_go.json",
+    "sha256": "252129caf2b7a534d0fad0834cab8bbc9614d66d1b451a0b13b95e108b500524",
+    "bytes": 1092,
+    "json_valid": true,
+    "keys": [
+      "actions",
+      "area",
+      "charges",
+      "gauge_coupling",
+      "maximum_charge",
+      "minimizing_charges",
+      "pass",
+      "q3_action_gap_above_vacuum",
+      "q3_to_q1_action_ratio",
+      "scope",
+      "verdict"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/artifacts/A37_A39_quantum_graph/quantum_graph_constraints.json",
+    "sha256": "e7f6b061c99dd9237fbd0119fd1ad9ade088f54c0a0875f1de7c609560ae5967",
+    "bytes": 4502,
+    "json_valid": true,
+    "keys": [
+      "A37_local_gauss_graph",
+      "A38_master_constraint_dynamics",
+      "A39_cycle_refinement",
+      "pass",
+      "scope"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/src/compact_holonomies/__init__.py",
+    "sha256": "89fbac80c02558b1d20b5b8e14950610dd92aee353801a9a1433d25db92dfdcb",
+    "bytes": 4047,
+    "lines": 154,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/src/compact_holonomies/prediction_registry.py",
+    "sha256": "a94ef735e6c2a5b654842bf681044c93176a0dd1053601836b7fac501de85341",
+    "bytes": 8461,
+    "lines": 146,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/src/compact_holonomies/quantum_holonomy_dynamics.py",
+    "sha256": "26738850c671d8e613fc26631850a3eab3b9d7a4e41cfe546d255ac69a2f92f8",
+    "bytes": 13289,
+    "lines": 349,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/src/compact_holonomies/flux_sector_selection.py",
+    "sha256": "53e51e3820288a70d17c93d2b338764b26cb6bbd3887bac86d3540e29ebd0d6b",
+    "bytes": 2589,
+    "lines": 60,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/src/compact_holonomies/quantum_graph_constraints.py",
+    "sha256": "1ab05d92742d33fa9c63283e0c169086812e4c2e2c3579171cca1c58eb3b42f8",
+    "bytes": 13940,
+    "lines": 335,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/tests/test_quantum_holonomy_dynamics.py",
+    "sha256": "d7d0f31908b33c698d67352124823c6752372894c586da98a9e0ffd7ec7ee2fd",
+    "bytes": 1669,
+    "lines": 51,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/tests/test_flux_sector_selection.py",
+    "sha256": "878d57399610a8f926071f62882f77b25ab78faf6297b0a406b4a17825013bab",
+    "bytes": 569,
+    "lines": 18,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/tests/test_quantum_graph_constraints.py",
+    "sha256": "2cfc224bb1858098ac33d04964960d8e17ab57f71cbb83249b329e1516f8b0c2",
+    "bytes": 1174,
+    "lines": 39,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/pyproject.toml",
+    "sha256": "1eb0dcbeb045f475258f27e4994251dbafcdf650ddaef9be3d7e32f410cd00be",
+    "bytes": 473,
+    "lines": 19,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/preregistration/FUTURE_BLIND_PREDICTIONS_v2.3.json",
+    "sha256": "906b05c4a100f8a1cf8e346c92a10aa3454afd9d143deed498226c0894111ca4",
+    "bytes": 4069,
+    "json_valid": true,
+    "keys": [
+      "conditional_results_not_counted_as_external_blind_predictions",
+      "frozen_predictions",
+      "prohibited_after_freeze",
+      "version"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/preregistration/FUTURE_BLIND_PREDICTIONS_v2.4.json",
+    "sha256": "18c2244e93a84dae5d590cdfc2f5ee1818e4a03260aea791b89f86bae3ff0663",
+    "bytes": 4816,
+    "json_valid": true,
+    "keys": [
+      "conditional_results_not_counted_as_external_blind_predictions",
+      "frozen_predictions",
+      "prohibited_after_freeze",
+      "version"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/dist/compact_holonomies-2.4.0-py3-none-any.whl",
+    "sha256": "e0aeb7f3e683e1083b19359f6dbd463a13b6e847886859d52223f5188a7f4a62",
+    "bytes": 43139
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/THEORY_STATUS_v2.3.md",
+    "sha256": "bdd6083d4d48d3e79f59a8dab4b718c8c5beee36547aa69bcce3e67f0d518287",
+    "bytes": 2783,
+    "lines": 82,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/RELEASE_NOTES_v2.3.md",
+    "sha256": "cf9df6f7b5db5b860c145df1a2c8298b6f17d2b16d247b3f5a63168c58b7c814",
+    "bytes": 1004,
+    "lines": 16,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/VERIFICATION_SUMMARY_v2.3.json",
+    "sha256": "503c526d290b2714ef1f6449f6f53972a565b8d7290cfddab99e1a549cacb19c",
+    "bytes": 5540,
+    "json_valid": true,
+    "keys": [
+      "version",
+      "release_label",
+      "pytest",
+      "core_checks",
+      "A33_weyl_kinematics",
+      "A34_quantum_constraint",
+      "A35_continuum_limit",
+      "A36_flux_sector_selection",
+      "prediction_registry",
+      "preregistration",
+      "wheel",
+      "advances"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/all_files_v2.3.sha256",
+    "sha256": "18f48ffe762896df7f6611babd02c6a1620d4fa5eb340554f559682f6cb8a2de",
+    "bytes": 19035,
+    "lines": 168,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/THEORY_STATUS_v2.4.md",
+    "sha256": "77e36a4e46626361261568ddb79f5e7db3a4e72593f932e57a17fa0ee3d95ee2",
+    "bytes": 2027,
+    "lines": 58,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/RELEASE_NOTES_v2.4.md",
+    "sha256": "11a7050218d06a15b3b2ae5697430f26f465a4aba4ec5585da0ca83218aeb827",
+    "bytes": 770,
+    "lines": 13,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/VERIFICATION_SUMMARY_v2.4.json",
+    "sha256": "6d32081e6db4cfca1f4d1bdf502445184db9bde24506b22bfdbf1d8f6b66cce2",
+    "bytes": 10179,
+    "json_valid": true,
+    "keys": [
+      "version",
+      "release_label",
+      "pytest",
+      "core_checks",
+      "A33_weyl_kinematics",
+      "A34_quantum_constraint",
+      "A35_continuum_limit",
+      "A36_flux_sector_selection",
+      "A37_local_gauss_graph",
+      "A38_master_constraint_dynamics",
+      "A39_cycle_refinement",
+      "prediction_registry"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.4_quantum_graph/all_files_v2.4.sha256",
+    "sha256": "33d4e35928857384250b119f73195342172d31ec60836696793eab04f4b54973",
+    "bytes": 20467,
+    "lines": 181,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/README.md",
+    "sha256": "018d8dbf4b8e7ffb2be1868994ee18a4f09d5af92f26de76909d2731fd4682f3",
+    "bytes": 33126,
+    "lines": 355,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/run_core_checks.sh",
+    "sha256": "d8fa5abc8f6d39802a266d325c472d2b02423a1f9df15f6b48f14b25cf043e05",
+    "bytes": 1892,
+    "lines": 37,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/freeze_future_predictions.py",
+    "sha256": "a6efad2ffca29a1be89b066e15faa7dcad6b2c32146ffe5ac975a4e5031cc1bb",
+    "bytes": 5496,
+    "lines": 91,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_quantum_linearized_3d.py",
+    "sha256": "dd7bdbca0ecd60d474ec06c6595159cab6f46d0b08f0616f635b8506710752eb",
+    "bytes": 585,
+    "lines": 14,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_topological_quantum_geometry.py",
+    "sha256": "d41598c29bee3e3de56038110cac593947303974dea88ba2af2b1f0857a57bbe",
+    "bytes": 582,
+    "lines": 14,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_newtonian_coarse_graining.py",
+    "sha256": "9b4f6bbdcb906ce2792df7a7bbb0ec5061d134ddc6934bbcd62c41621a32719c",
+    "bytes": 582,
+    "lines": 14,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_compact_weyl_quantization.py",
+    "sha256": "5e69735fd333ad2d0382096e1d3801dfca503d00d0f858e76092d86fcd499485",
+    "bytes": 556,
+    "lines": 14,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_quantum_microtheory_preregistration.py",
+    "sha256": "997fae80f3eaf84655fa668c9d85b86db4564c02183c3a1f6727062fa46eb0f4",
+    "bytes": 1246,
+    "lines": 23,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/scripts/verify_adm_nonlinear_hda.py",
+    "sha256": "3ccfb76809c5fb1feaffc957189bebf3afaf8a8a3592ab48d848f3cef851cdbe",
+    "bytes": 545,
+    "lines": 14,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/docs/QUANTUM_LINEARIZED_3D_v2.3.md",
+    "sha256": "ed54fe6609365d4fb00ffab0b90f0cce1f591966a6ba687f2b414bc56f225d42",
+    "bytes": 10731,
+    "lines": 389,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A17_predictive_power_audit/predictive_power_audit.json",
+    "sha256": "c6bde779b8165de881acf2eafe1e2aaa1109f84a580f637340d4296f3eb0f307",
+    "bytes": 20752,
+    "json_valid": true,
+    "keys": [
+      "schema",
+      "generated_utc",
+      "catalog_claim_tested",
+      "definition_of_physical_constant_prediction",
+      "public_model_functions",
+      "target_leakage_symbols_found",
+      "registered_structural_predictions",
+      "n_registered_structural_predictions",
+      "n_continuous_physical_predictions_tested",
+      "n_continuous_physical_predictions_passed",
+      "successful_physical_constant_coverage_fraction",
+      "failed_continuous_tests"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A21_prediction_registry/prediction_registry_audit.json",
+    "sha256": "e551676dcf34eeddcf5a56d99d83a9c8b02bce89cbd69d49723e59304a05204b",
+    "bytes": 10110,
+    "json_valid": true,
+    "keys": [
+      "target_count",
+      "registered_predictions_total",
+      "registered_predictions",
+      "continuous_physical_predictions_tested",
+      "continuous_physical_predictions_passed",
+      "successful_coverage_fraction",
+      "failed_tests",
+      "verdict",
+      "artifact_id"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A23_future_preregistration/frozen_manifest_hash.json",
+    "sha256": "50ade9c34d12ac78793ad33c168e698c0d6854c9213989e56e47c4fc0e8ea460",
+    "bytes": 174,
+    "json_valid": true,
+    "keys": [
+      "artifact_id",
+      "manifest",
+      "sha256"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs/pytest.log",
+    "sha256": "6521501c167df58729fe187950936e0d860cfb7335a5932d846e647e35e3c720",
+    "bytes": 100,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A33_A34_quantum_linearized_3d/certificate.json",
+    "sha256": "571b42c6360f62793c246201dc9760f94ac5af9bb4f3ab92e47566d9e02189bc",
+    "bytes": 4204,
+    "json_valid": true,
+    "keys": [
+      "anisotropy_correction_ratio_axis_to_diagonal",
+      "background",
+      "boundary_conditions",
+      "constraint_algebra",
+      "dispersion_convergence",
+      "fock_sector",
+      "independent_first_class_constraints",
+      "kinematic_phase_space_dimension_per_nonzero_mode",
+      "maximum_trace_error",
+      "maximum_transversality_error",
+      "microscopic_cutoff_scale_mu",
+      "pass"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A35_newtonian_coarse_graining/certificate.json",
+    "sha256": "aac0c11fc53895c4e3658ac8963269cfea0f58da3e49dc22f7a97205cefff8d1",
+    "bytes": 1178,
+    "json_valid": true,
+    "keys": [
+      "continuum_amplitude",
+      "continuum_force",
+      "effective_power_exponent",
+      "fitted_amplitude",
+      "lattice_force",
+      "lattice_size",
+      "maximum_relative_error",
+      "mean_relative_error",
+      "pass",
+      "radius_midpoints",
+      "scope",
+      "spacing"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A36_topological_quantum_geometry/certificate.json",
+    "sha256": "77cd75aa7fdab2c4934e0a2285af04f156599cd98e206a271521800861105832",
+    "bytes": 1458,
+    "json_valid": true,
+    "keys": [
+      "all_exact_codes_pass",
+      "all_have_three_global_logical_qubits",
+      "gravity_verdict",
+      "trials"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A37_compact_weyl_quantization/certificate.json",
+    "sha256": "1877dc780b5148a75e1e83ac6789546608654173d43665635760b6d56cfea133",
+    "bytes": 798,
+    "json_valid": true,
+    "keys": [
+      "clock_unitarity_error",
+      "compact_laplacian_spectral_error",
+      "dimension",
+      "finite_CCR_no_go",
+      "pass",
+      "periodicity_error",
+      "root_of_unity",
+      "shift_unitarity_error",
+      "weyl_relation_error"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A39_nonlinear_adm_3d_hda/certificate.json",
+    "sha256": "e638e30e15702ad6ea14ed3d293416c8967fe0eaf6201f7cb523a423072f4eb4",
+    "bytes": 1988,
+    "json_valid": true,
+    "keys": [
+      "analytic_momentum_gradient",
+      "best_relative_residual",
+      "classification",
+      "closure_convergence",
+      "pass",
+      "scope",
+      "standard_dewitt_lambda",
+      "worst_wrong_lambda_relative_residual",
+      "wrong_lambda_death_tests"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_effective_foam_eft.log",
+    "sha256": "ea2ae49dc5b57894675cf5174b50f04d53a3bfcd11b06e2fbba9b15978900d29",
+    "bytes": 569,
+    "lines": 10,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/run_blind_micro_spectrum.log",
+    "sha256": "74f8ad9553a04fcf5ceafe8343874937e8582527503928a6b44ba4ca86583260",
+    "bytes": 43776,
+    "lines": 1764,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_gauge_sector.log",
+    "sha256": "be4ef869e23fdeb3d675cf46538a2df26b177d363e04e4c7b9c16e982397e699",
+    "bytes": 1313,
+    "lines": 47,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/freeze_future_predictions.log",
+    "sha256": "51083d6b78dd6dc090fa09b8a835a944611fa8c728e4746393d4e05f3180ce18",
+    "bytes": 175,
+    "lines": 5,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_chiral_overlap.log",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "lines": 0,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_free_overlap_4d.log",
+    "sha256": "44ccb16e20226a5894eda4c523aea878aa9b5f9da357865dad244aed8de712ea",
+    "bytes": 1050,
+    "lines": 42,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_topological_generations.log",
+    "sha256": "16cc9056431085ee47fb0cdc03da1f3e8db221650cedc3f30874caff2621e018",
+    "bytes": 486,
+    "lines": 10,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_flavor_no_go.log",
+    "sha256": "93d032013301db7e89c3834daf584df60f7c0edccf7eea2516640b60ccb8c90f",
+    "bytes": 1125,
+    "lines": 37,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_quantum_linearized_3d.log",
+    "sha256": "9180f4bf048e5bd3a2f945a9b0bf191cc857d4b992396e841743abca12a286a3",
+    "bytes": 4205,
+    "lines": 219,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_newtonian_coarse_graining.log",
+    "sha256": "439fc98db866fa8959a4c711652ef29462768feace53b7be128c06b2e050cbac",
+    "bytes": 1179,
+    "lines": 47,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_topological_quantum_geometry.log",
+    "sha256": "69b2a63d02920b8233222ca1978ab36c5bc267d6e84d5693dcf39bd3bec57fc6",
+    "bytes": 1459,
+    "lines": 49,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_compact_weyl_quantization.log",
+    "sha256": "d6f30fc881431d422ff9f0b58d9a5f9365c4f76ced91781430d97777ca109383",
+    "bytes": 799,
+    "lines": 27,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_quantum_microtheory_preregistration.log",
+    "sha256": "2cee18743349f00d37e85cb27ad604ed1de32a0bc3ed2b6d493493693303a29c",
+    "bytes": 173,
+    "lines": 5,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/verify_adm_nonlinear_hda.log",
+    "sha256": "c7f2351c7b42b093d84ffd448af02d3864080011b1407d2bd6d6ae88703739d1",
+    "bytes": 1989,
+    "lines": 61,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/audit_predictive_power.log",
+    "sha256": "d4c3ac0468e6f78ca3e823452a2e499b50b785148d55552e844f816a8aef8276",
+    "bytes": 20753,
+    "lines": 375,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/audit_prediction_registry.log",
+    "sha256": "cebfb6c838e62fdf06977b7750b1b9ad0021a9276a78f492a398737e5e8751d3",
+    "bytes": 10111,
+    "lines": 233,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/pytest.log",
+    "sha256": "24dbc5ab1c8745079dfd10bee9c135d48ef9c7fc0aecc654caa7fef4118c546a",
+    "bytes": 100,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/full_verification_logs_v2.3/wheel_install.log",
+    "sha256": "c91ef8fbb74f8aafddba78bf978462d7c719ef9069785f41f9f26ea8a11dd274",
+    "bytes": 380,
+    "lines": 7,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/artifacts/A38_quantum_microtheory_preregistration/certificate.json",
+    "sha256": "06d2006f3b1789f0830cbf7e0b8c3dafafd4788ffd5af06ec5dea0fa702a7e90",
+    "bytes": 172,
+    "json_valid": true,
+    "keys": [
+      "manifest",
+      "pass",
+      "sha256"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/__init__.py",
+    "sha256": "6aa079eb7c2c7d58a5eb1fed161be8f5a6d42367bab8de96251d4a45028221a7",
+    "bytes": 4347,
+    "lines": 165,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/prediction_registry.py",
+    "sha256": "99ec218043d0dbefb0e15d951e354024d5141ee85db84aacf5dedee5102bd0af",
+    "bytes": 8661,
+    "lines": 152,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/linearized_quantum_gravity.py",
+    "sha256": "152cdf5b767b553b06406ce0da8cd0dda6ec90c747f33c3e69a552618ec885b6",
+    "bytes": 17006,
+    "lines": 408,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/topological_quantum_geometry.py",
+    "sha256": "73388f464139fb4d8059ebba7f13a9a28693dc685643f32942b233abf2353983",
+    "bytes": 5560,
+    "lines": 146,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/newtonian_coarse_graining.py",
+    "sha256": "f2b489ac9849cda3866542d2d267a37c2adc76e549720e82d31193a8b41d193b",
+    "bytes": 2800,
+    "lines": 70,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/compact_weyl_quantization.py",
+    "sha256": "f1d09ff8d1ee5160e05599984ae088bdce2586e2607cdbf1a5a67369177e78a6",
+    "bytes": 3847,
+    "lines": 88,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/build/lib/compact_holonomies/adm_nonlinear_hda.py",
+    "sha256": "d9a2109de43e0f913c72a08d661ff4d72dc736cee7efe20808b0558fd58c6759",
+    "bytes": 12887,
+    "lines": 316,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/src/compact_holonomies.egg-info/dependency_links.txt",
+    "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "bytes": 1,
+    "lines": 1,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/src/compact_holonomies.egg-info/requires.txt",
+    "sha256": "cfdb2a70e584ec1589d8b70218095d43614295b690632625ec71a33c60baa22e",
+    "bytes": 56,
+    "lines": 6,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/src/compact_holonomies.egg-info/top_level.txt",
+    "sha256": "81509f61a3fd7127643d189df319252d81c30e1ae34c4768f5a891c723a3c438",
+    "bytes": 19,
+    "lines": 1,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/src/compact_holonomies.egg-info/SOURCES.txt",
+    "sha256": "b1749039a719e63822803fc39bd11c3e4d8b7e7f0f424d229c99c97733ad149f",
+    "bytes": 1907,
+    "lines": 48,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/src/compact_holonomies.egg-info/PKG-INFO",
+    "sha256": "16563a4c0fb28c614ec730f6c23b6ca75f4a31b155c820d98acd91c796d38713",
+    "bytes": 324
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_linearized_quantum_gravity.py",
+    "sha256": "59a92c5202bb1bb8b4c3742f37376e442d787256e2c62d0df3fac70330fff09c",
+    "bytes": 2081,
+    "lines": 57,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_topological_quantum_geometry.py",
+    "sha256": "08d7638104a80dd5b72bf44aa83e298307793bcd146269c88e1c0f013358b29f",
+    "bytes": 844,
+    "lines": 25,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_newtonian_coarse_graining.py",
+    "sha256": "94930215adce3b0b2b0f431b57d0cb0778ceb59802abf8308d8c57ffe44a04d4",
+    "bytes": 420,
+    "lines": 8,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_compact_weyl_quantization.py",
+    "sha256": "858524f885b2b7c456db4568d0c41291949995ddcab5e0c6f4e0fde84d5531e7",
+    "bytes": 620,
+    "lines": 17,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_quantum_microtheory_preregistration.py",
+    "sha256": "3e2c9bb40b4e8067bf7a3d2316723d3920d651fafa488dc07261f9112265b32f",
+    "bytes": 730,
+    "lines": 15,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/tests/test_adm_nonlinear_hda.py",
+    "sha256": "e057496fee9b0dd748814ca8cf1576538a2fe4cbd5359a2ac2bf894c3dccdcd5",
+    "bytes": 811,
+    "lines": 22,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/pyproject.toml",
+    "sha256": "a886e5ce4bf80572ecc193c0ed289e08a4d75862e0dad504e42167099b4cda64",
+    "bytes": 489,
+    "lines": 19,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/preregistration/QUANTUM_LINEARIZED_MICROTHEORY_v2.3.json",
+    "sha256": "5a7ad3af8b1d4e6511dbeca8c642831e85ef595e13d84c7510a171f7de0a8733",
+    "bytes": 1132,
+    "json_valid": true,
+    "keys": [
+      "background",
+      "boundary_conditions",
+      "canonical_variables",
+      "constraints",
+      "cutoff_scale",
+      "dispersion",
+      "free_parameters",
+      "inner_product",
+      "micro_hamiltonian",
+      "name",
+      "non_claims",
+      "physical_projector"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/preregistration/QUANTUM_LINEARIZED_MICROTHEORY_v2.3.sha256",
+    "sha256": "4461633cb64b0bd96d544ef784382bc0017fb2eebcc5abe8ad629bc385133940",
+    "bytes": 107,
+    "lines": 1,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/preregistration/FUTURE_BLIND_PREDICTIONS_v2.3.json",
+    "sha256": "1dd03ce5190c3c05267c26e1ded3ba75a6aae8f09f677a69b8cd5f63ef8c9f5b",
+    "bytes": 4413,
+    "json_valid": true,
+    "keys": [
+      "conditional_results_not_counted_as_external_blind_predictions",
+      "frozen_predictions",
+      "prohibited_after_freeze",
+      "version"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/dist/compact_holonomies-2.3.0-py3-none-any.whl",
+    "sha256": "4f1b386832fbad6e32407f9c773e4e4771ec463d27f1477d0fe7802c399fa66e",
+    "bytes": 47552
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/RELEASE_NOTES_v2.3.md",
+    "sha256": "ab04a2904caa1278c4ee5241baa9d8926bf60965ad446a75cfc620a0b80bdb3f",
+    "bytes": 1449,
+    "lines": 34,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/THEORY_STATUS_v2.3.md",
+    "sha256": "530ae608e4d44fe5e5f0286441cd7a710af108218161385dbc83f288833d846d",
+    "bytes": 2689,
+    "lines": 59,
+    "text_read": true
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/VERIFICATION_SUMMARY_v2.3.json",
+    "sha256": "dab9f5053e3ebb40710863b1fd2bfcca578d2e0f497f73f7d18c2398772c10e7",
+    "bytes": 12824,
+    "json_valid": true,
+    "keys": [
+      "A33_A34_quantum_linearized_3d",
+      "A35_newtonian_coarse_graining",
+      "A36_topological_quantum_geometry",
+      "A37_compact_weyl_quantization",
+      "A38_quantum_microtheory_preregistration",
+      "A39_nonlinear_adm_3d_hda",
+      "limitations",
+      "prediction_registry",
+      "preregistration",
+      "pytest",
+      "release_label",
+      "scientific_status"
+    ]
+  },
+  {
+    "file": "compact_holonomies_repo_v2.3_quantum_linearized/all_files_v2.3.sha256",
+    "sha256": "a47c324e5e838124b54925a5754becb05ce18719fbe0049dc6bc1c82d42e0971",
+    "bytes": 25044,
+    "lines": 216,
+    "text_read": true
+  },
+  {
+    "file": "repo/README.md",
+    "sha256": "5de69427e59da95f4ff83693ebbf75c863130e81f98bc2d9367daafe3d5df523",
+    "bytes": 28608,
+    "lines": 291,
+    "text_read": true
+  },
+  {
+    "file": "repo/scripts/run_core_checks.sh",
+    "sha256": "1ad39d3cfbdda64feaaa08b1f7a3522f8b82515d558acbf0d0639dee24c6b64c",
+    "bytes": 246,
+    "lines": 8,
+    "text_read": true
+  },
+  {
+    "file": "repo/artifacts/HASHES.sha256",
+    "sha256": "ce203cf9c3fb1641e16b248d5c2ed582dd7ecf945c6e80767c0d67bc4561a2f6",
+    "bytes": 5359,
+    "lines": 44,
+    "text_read": true
+  },
+  {
+    "file": "repo/src/compact_holonomies/__init__.py",
+    "sha256": "47e6912c59ff64db64d0cb2fdd4d604c8cf209ed53656baf478910820e8cee15",
+    "bytes": 649,
+    "lines": 27,
+    "text_read": true
+  },
+  {
+    "file": "repo/pytest.ini",
+    "sha256": "e0e76b5c1594195370b29d46d4415e9f04d239fd3e34c9aed198298008736055",
+    "bytes": 66,
+    "lines": 4,
+    "text_read": true
+  },
+  {
+    "file": "A45_results.json",
+    "sha256": "9f007b1539b0f3efc56e111dcc492f90b4a468b8e9aee29c2647d9d28cf08c31",
+    "bytes": 840,
+    "json_valid": true,
+    "keys": [
+      "jmax=0.5_E=3",
+      "jmax=0.5_E=4",
+      "jmax=1.0_E=2"
+    ]
+  },
+  {
+    "file": "A47_A48_results.json",
+    "sha256": "3d427999c1e8dc2fb6fb77381f2e4d190e6c09997dbb63f33932f0b136594ac5",
+    "bytes": 1361,
+    "json_valid": true,
+    "keys": [
+      "A47",
+      "A48"
+    ]
+  },
+  {
+    "file": "TZ_STAGE2_FROZEN.md",
+    "sha256": "5deb8eeb2618d15cf7958d51d475cceb1b7d8d8e988b0d17a94cf0b32525bfa0",
+    "bytes": 4105,
+    "lines": 47,
+    "text_read": true
+  },
+  {
+    "file": "ERRATUM_STAGE2.md",
+    "sha256": "226dfc41c353b890f2194f2eee64c3528c6f0e4d0a362a907aa8f558f8ce11a5",
+    "bytes": 790,
+    "lines": 7,
+    "text_read": true
+  },
+  {
+    "file": "STAGE2_REPORT.md",
+    "sha256": "c5ef479bcf727ded65c6c0d1cb24c072f546d9dba4c3b22d22be88b0f1ba96e0",
+    "bytes": 7812,
+    "lines": 109,
+    "text_read": true
+  },
+  {
+    "file": "a46_a48_quantum_frw.py",
+    "sha256": "e86a4e11a7372893453df3e282dfac0123de4c79af10f8682aa9b475f4466df0",
+    "bytes": 8058,
+    "lines": 181,
+    "text_read": true
+  },
+  {
+    "file": "TZ_FREEZE.sha256",
+    "sha256": "3ce05d333eb17c264369349e8f919ea8dfc5433ce085b9ffef85d4de3dcbb60e",
+    "bytes": 170,
+    "lines": 2,
+    "text_read": true
+  },
+  {
+    "file": "A46_results.json",
+    "sha256": "3719c8751e9dd4cee9b7e001bc828c4e63ec4066d6db5c18cfd029cfd54682dd",
+    "bytes": 1533,
+    "json_valid": true,
+    "keys": [
+      "A46_calibration",
+      "A46_scan",
+      "A46_proxy_excess_exponent"
+    ]
+  },
+  {
+    "file": "all_files_stage2.sha256",
+    "sha256": "85ff0b18b4aecd2cf763e74da563813c0b7aada2f853fe450ecd9cd0fe2d2464",
+    "bytes": 684,
+    "lines": 8,
+    "text_read": true
+  },
+  {
+    "file": "a45_discrete_diffeo.py",
+    "sha256": "f741c3593f7cf7a7076d6391eb9269422a9a83c0e3d4522e8407204b82c1327a",
+    "bytes": 2560,
+    "lines": 64,
+    "text_read": true
+  }
+]

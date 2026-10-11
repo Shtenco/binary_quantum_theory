@@ -1,0 +1,42 @@
+{
+  "scope": "quadratic nearest-neighbor free vacuum, not physical BQG history",
+  "dispersion": "omega^2=4 c^2/a^2 sum sin^2(k_i a/2)",
+  "vacuum_spectrum": "S(k)=hbar/(2 omega(k))",
+  "continuum_variance": "hbar/(8 pi^2 c L^2)",
+  "leading_correction": "V_lattice/V_continuum=1+a^2/(40 L^2)+O(a^4/L^4)",
+  "rows": [
+    {
+      "L_over_a": 2,
+      "V_lattice_over_continuum": 1.0063032676499617,
+      "quadrature_difference": 3.750333377183779e-13,
+      "scaled_leading_coefficient": 0.025213070599846787,
+      "V_hbar_c_units": 0.0031862449431701986
+    },
+    {
+      "L_over_a": 4,
+      "V_lattice_over_continuum": 1.001565802698895,
+      "quadrature_difference": 2.880584659692431e-12,
+      "scaled_leading_coefficient": 0.02505284318231915,
+      "V_hbar_c_units": 0.0007928111923839077
+    },
+    {
+      "L_over_a": 8,
+      "V_lattice_over_continuum": 1.0003908310087766,
+      "quadrature_difference": 2.9167779302952113e-12,
+      "scaled_leading_coefficient": 0.02501318456170054,
+      "V_hbar_c_units": 0.00019797027949756084
+    },
+    {
+      "L_over_a": 16,
+      "V_lattice_over_continuum": 1.0000976691191596,
+      "quadrature_difference": 2.9254376698872875e-12,
+      "scaled_leading_coefficient": 0.025003294504870155,
+      "V_hbar_c_units": 4.947806620756657e-05
+    }
+  ],
+  "finite_covariance_min_eigenvalue": -1.6653345369377422e-16,
+  "ground_state_equation_error": 1.0833122410516563e-15,
+  "zero_mode": "removed; massless periodic constant mode has no normalizable oscillator vacuum",
+  "discrete_time_stability": "c dt/a <= 1/sqrt(3); sine time rule alone does not imply positive Hamiltonian",
+  "HDA_warning": "sin^2(delta K) replacement implies beta=cos(2 delta K) in reviewed reduced ansatz; beta may become negative"
+}

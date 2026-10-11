@@ -1,0 +1,350 @@
+{
+  "schema": "compact-holonomies-predictive-audit-v2",
+  "generated_utc": "2026-10-11T19:31:48.877103+00:00",
+  "catalog_claim_tested": 445,
+  "definition_of_physical_constant_prediction": "A named numerical CODATA/PDG observable with units and uncertainty, computed from preregistered theory-fixed inputs without using its measured value for fitting, formula selection, normalization, or acceptance.",
+  "public_model_functions": [
+    "src/compact_holonomies/anomaly_free_matter.py:anomaly_polynomials",
+    "src/compact_holonomies/anomaly_free_matter.py:yukawa_residuals",
+    "src/compact_holonomies/anomaly_free_matter.py:minimal_hypercharge_solution",
+    "src/compact_holonomies/anomaly_free_matter.py:right_neutrino_family",
+    "src/compact_holonomies/anomaly_free_matter.py:electric_charges",
+    "src/compact_holonomies/anomaly_free_matter.py:symbolic_hypercharge_certificate",
+    "src/compact_holonomies/anomaly_free_matter.py:as_dict",
+    "src/compact_holonomies/anomaly_free_spherical.py:f1",
+    "src/compact_holonomies/anomaly_free_spherical.py:f2",
+    "src/compact_holonomies/anomaly_free_spherical.py:beta",
+    "src/compact_holonomies/anomaly_free_spherical.py:signature_change_threshold",
+    "src/compact_holonomies/anomaly_free_spherical.py:canonical_holonomy_chart",
+    "src/compact_holonomies/anomaly_free_spherical.py:symbolic_certificate",
+    "src/compact_holonomies/anomaly_free_spherical.py:continuum_closure_trial",
+    "src/compact_holonomies/anomaly_free_spherical.py:closure_convergence",
+    "src/compact_holonomies/anomaly_free_spherical.py:as_dict",
+    "src/compact_holonomies/anomaly_free_spherical.py:smooth_field",
+    "src/compact_holonomies/anomaly_free_spherical.py:split",
+    "src/compact_holonomies/anomaly_free_spherical.py:hamiltonian",
+    "src/compact_holonomies/anomaly_free_spherical.py:diffeomorphism",
+    "src/compact_holonomies/chiral_overlap.py:gamma5_matrix",
+    "src/compact_holonomies/chiral_overlap.py:uniform_u1_flux_links",
+    "src/compact_holonomies/chiral_overlap.py:plaquette_phases",
+    "src/compact_holonomies/chiral_overlap.py:geometric_topological_charge",
+    "src/compact_holonomies/chiral_overlap.py:wilson_dirac_operator",
+    "src/compact_holonomies/chiral_overlap.py:overlap_dirac_operator",
+    "src/compact_holonomies/chiral_overlap.py:overlap_index",
+    "src/compact_holonomies/chiral_overlap.py:chiral_certificate",
+    "src/compact_holonomies/chiral_overlap.py:chiral_flux_suite",
+    "src/compact_holonomies/chiral_overlap.py:as_dict",
+    "src/compact_holonomies/covariant_low_energy.py:cubic_curvature_quadratic_order_certificate",
+    "src/compact_holonomies/covariant_low_energy.py:low_energy_predictions",
+    "src/compact_holonomies/covariant_low_energy.py:gw170817_consistency_check",
+    "src/compact_holonomies/effective_foam_eft.py:planck_suppression",
+    "src/compact_holonomies/effective_foam_eft.py:foam_corrected_barrier",
+    "src/compact_holonomies/effective_foam_eft.py:barrier_action",
+    "src/compact_holonomies/effective_foam_eft.py:tunneling_amplitude",
+    "src/compact_holonomies/effective_foam_eft.py:tunneling_probability",
+    "src/compact_holonomies/effective_foam_eft.py:phase_decoherence_factor",
+    "src/compact_holonomies/effective_foam_eft.py:validate",
+    "src/compact_holonomies/effective_foam_eft.py:apply",
+    "src/compact_holonomies/effective_foam_eft.py:beta",
+    "src/compact_holonomies/effective_foam_eft.py:remainder_bound",
+    "src/compact_holonomies/effective_foam_eft.py:effective",
+    "src/compact_holonomies/effective_foam_eft.py:integrand",
+    "src/compact_holonomies/flavor_no_go.py:constant_higgs_flavor_certificate",
+    "src/compact_holonomies/flux_sector_selection.py:uniform_flux_action",
+    "src/compact_holonomies/flux_sector_selection.py:flux_selection_no_go_certificate",
+    "src/compact_holonomies/free_overlap_4d.py:euclidean_gamma_certificate",
+    "src/compact_holonomies/free_overlap_4d.py:free_overlap_block",
+    "src/compact_holonomies/free_overlap_4d.py:ginsparg_wilson_block_error",
+    "src/compact_holonomies/free_overlap_4d.py:brillouin_corner_spectrum",
+    "src/compact_holonomies/free_overlap_4d.py:continuum_convergence",
+    "src/compact_holonomies/free_overlap_4d.py:free_overlap_4d_certificate",
+    "src/compact_holonomies/gauge_sector.py:su2_generators",
+    "src/compact_holonomies/gauge_sector.py:su3_generators",
+    "src/compact_holonomies/gauge_sector.py:u1_generator",
+    "src/compact_holonomies/gauge_sector.py:algebra_certificate",
+    "src/compact_holonomies/gauge_sector.py:wilson_link",
+    "src/compact_holonomies/gauge_sector.py:wilson_certificate",
+    "src/compact_holonomies/gauge_sector.py:standard_model_gauge_certificate",
+    "src/compact_holonomies/gauge_sector.py:as_dict",
+    "src/compact_holonomies/generation_selection.py:generation_selection_certificate",
+    "src/compact_holonomies/micro_spectrum.py:twisted_shift",
+    "src/compact_holonomies/micro_spectrum.py:compact_laplacian",
+    "src/compact_holonomies/micro_spectrum.py:analytic_eigenvalues",
+    "src/compact_holonomies/micro_spectrum.py:continuum_baseline_eigenvalues",
+    "src/compact_holonomies/micro_spectrum.py:quartic_baseline_eigenvalues",
+    "src/compact_holonomies/micro_spectrum.py:universal_series_ratio",
+    "src/compact_holonomies/micro_spectrum.py:challenge_from_manifest",
+    "src/compact_holonomies/micro_spectrum.py:run_blind_spectrum_test",
+    "src/compact_holonomies/micro_spectrum.py:run_blind_spectrum_suite",
+    "src/compact_holonomies/micro_spectrum.py:write_default_manifest",
+    "src/compact_holonomies/micro_spectrum.py:as_dict",
+    "src/compact_holonomies/prediction_registry.py:registry",
+    "src/compact_holonomies/prediction_registry.py:constants_coverage_report",
+    "src/compact_holonomies/prediction_registry.py:as_dict",
+    "src/compact_holonomies/quantum_graph_constraints.py:cycle_graph_operators",
+    "src/compact_holonomies/quantum_graph_constraints.py:local_gauss_projector",
+    "src/compact_holonomies/quantum_graph_constraints.py:physical_gauss_projector",
+    "src/compact_holonomies/quantum_graph_constraints.py:master_constraint",
+    "src/compact_holonomies/quantum_graph_constraints.py:gauge_invariant_hamiltonian",
+    "src/compact_holonomies/quantum_graph_constraints.py:graph_gauss_certificate",
+    "src/compact_holonomies/quantum_graph_constraints.py:master_constraint_certificate",
+    "src/compact_holonomies/quantum_graph_constraints.py:cycle_refinement_certificate",
+    "src/compact_holonomies/quantum_graph_constraints.py:quantum_graph_suite",
+    "src/compact_holonomies/quantum_graph_constraints.py:as_dict",
+    "src/compact_holonomies/quantum_graph_constraints.py:as_dict",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:clock_shift_operators",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:finite_angle_and_momentum",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:weyl_kinematics_certificate",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:holonomy_laplacian",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:analytic_holonomy_spectrum",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:quantum_constraint_certificate",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:continuum_limit_certificate",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:quantum_dynamics_suite",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:as_dict",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:as_dict",
+    "src/compact_holonomies/quantum_holonomy_dynamics.py:as_dict",
+    "src/compact_holonomies/renormalization_group.py:standard_model_one_loop_beta_coefficients",
+    "src/compact_holonomies/renormalization_group.py:inverse_alpha_running",
+    "src/compact_holonomies/renormalization_group.py:rg_certificate",
+    "src/compact_holonomies/renormalization_group.py:as_dict",
+    "src/compact_holonomies/topological_generations.py:generation_certificate",
+    "src/compact_holonomies/topological_generations.py:three_generation_suite",
+    "src/compact_holonomies/topological_generations.py:as_dict",
+    "src/compact_holonomies/unification_stress.py:fermion_trace_normalizations",
+    "src/compact_holonomies/unification_stress.py:spectral_coupling_certificate",
+    "src/compact_holonomies/unification_stress.py:minimal_unification_stress_certificate",
+    "src/compact_holonomies/unification_stress.py:as_dict"
+  ],
+  "target_leakage_symbols_found": [],
+  "registered_structural_predictions": [
+    {
+      "prediction_id": "P001",
+      "observable": "vacuum spherical HDA structure function",
+      "value": "beta(K_phi)=cos(2 delta K_phi)",
+      "free_parameters": [
+        "delta"
+      ],
+      "derivation_scope": "anomaly-free continuum vacuum spherical sector",
+      "test_class": "structural prediction",
+      "external_status": "not uniquely measured"
+    },
+    {
+      "prediction_id": "P002",
+      "observable": "first beta sign-change",
+      "value": "|delta K_phi|=pi/4",
+      "free_parameters": [
+        "delta"
+      ],
+      "derivation_scope": "same sector",
+      "test_class": "dimensionless threshold prediction",
+      "external_status": "untested"
+    },
+    {
+      "prediction_id": "P003",
+      "observable": "compact spectral coefficient ratio",
+      "value": "c6/c4^2=2/5",
+      "free_parameters": [],
+      "derivation_scope": "fixed compact shift operator",
+      "test_class": "parameter-free mathematical prediction",
+      "external_status": "verified against withheld numerical spectrum"
+    },
+    {
+      "prediction_id": "P004",
+      "observable": "linear tensor polarizations around Minkowski",
+      "value": "2",
+      "free_parameters": [],
+      "derivation_scope": "minimal covariant curvature-cubed low-energy completion",
+      "test_class": "low-energy physical prediction",
+      "external_status": "consistent with observations; not distinctive from GR"
+    },
+    {
+      "prediction_id": "P005",
+      "observable": "tree-level gravitational-wave speed around Minkowski",
+      "value": "c_gw/c=1",
+      "free_parameters": [],
+      "derivation_scope": "same low-energy completion",
+      "test_class": "low-energy physical prediction",
+      "external_status": "consistent with GW170817"
+    },
+    {
+      "prediction_id": "P006",
+      "observable": "overlap-Dirac topological index",
+      "value": "index(D_ov)=-Q",
+      "free_parameters": [],
+      "derivation_scope": "2D periodic U(1) uniform-flux lattice with fixed link convention",
+      "test_class": "parameter-free topological prediction",
+      "external_status": "verified on 20 unselected finite-lattice flux challenges"
+    },
+    {
+      "prediction_id": "P007",
+      "observable": "minimal one-generation hypercharge ratios",
+      "value": "Y_Q:Y_uc:Y_dc:Y_L:Y_ec:Y_H = 1:-4:2:-3:6:3",
+      "free_parameters": [],
+      "derivation_scope": "assumed SU(3)xSU(2) representations, one Higgs, Yukawa invariance, no nu_R, anomaly cancellation",
+      "test_class": "conditional algebraic prediction",
+      "external_status": "symbolically verified; representation pattern remains assumed"
+    },
+    {
+      "prediction_id": "P008",
+      "observable": "one-loop gauge beta coefficients",
+      "value": "(b1,b2,b3)=(41/10,-19/6,-7)",
+      "free_parameters": [],
+      "derivation_scope": "three generations, one Higgs doublet, GUT-normalized g1",
+      "test_class": "conditional renormalization-group prediction",
+      "external_status": "derived exactly from the assumed matter content"
+    },
+    {
+      "prediction_id": "P009",
+      "observable": "free 4D overlap doubler count",
+      "value": "one massless Brillouin corner; 15 doubler corners gapped by 2 rho/a",
+      "free_parameters": [
+        "rho",
+        "a"
+      ],
+      "derivation_scope": "free four-dimensional overlap fermion with 0<rho<2r",
+      "test_class": "structural lattice prediction",
+      "external_status": "verified analytically/numerically; interactions not included"
+    },
+    {
+      "prediction_id": "P010",
+      "observable": "topological family multiplicity",
+      "value": "N_chiral=|Q|; Q=3 gives three same-chirality zero modes",
+      "free_parameters": [
+        "integer flux Q"
+      ],
+      "derivation_scope": "2D compact U(1) overlap sector",
+      "test_class": "conditional topological prediction",
+      "external_status": "verified for Q=+/-3; the selection of Q=3 is not derived"
+    },
+    {
+      "prediction_id": "P011",
+      "observable": "weak mixing angle at a common trace-normalization scale",
+      "value": "sin^2(theta_W)=3/8",
+      "free_parameters": [],
+      "derivation_scope": "assumed SM representations and one common microscopic gauge-trace coefficient",
+      "test_class": "conditional exact relation",
+      "external_status": "verified algebraically; existence of a physical unification scale is not established"
+    },
+    {
+      "prediction_id": "P012",
+      "observable": "held-out strong coupling in minimal exact one-loop unification",
+      "value": "alpha_s(MZ)=0.0710658",
+      "free_parameters": [],
+      "derivation_scope": "PDG-2024 alpha1/alpha2 inputs; one-loop SM; no thresholds",
+      "test_class": "failed continuous physical prediction",
+      "external_status": "observed benchmark 0.1180+/-0.0009; minimal model falsified"
+    },
+    {
+      "prediction_id": "P013",
+      "observable": "generation-count selection by current structural constraints",
+      "value": "N_g in {1,2,3,4,5}",
+      "free_parameters": [],
+      "derivation_scope": "generation-wise anomaly cancellation plus Witten parity and one-loop SU2/SU3 asymptotic freedom",
+      "test_class": "no-go result",
+      "external_status": "three generations are allowed but not uniquely selected"
+    },
+    {
+      "prediction_id": "P014",
+      "observable": "constant-Higgs flavor spectrum in the Q=3 symmetric toy sector",
+      "value": "three degenerate singular values",
+      "free_parameters": [],
+      "derivation_scope": "same-bundle topological zero modes and constant scalar profile",
+      "test_class": "no-go result",
+      "external_status": "verified; hierarchy requires additional derived symmetry breaking"
+    },
+    {
+      "prediction_id": "P015",
+      "observable": "finite holonomy-flux Weyl algebra",
+      "value": "U V = exp(2 pi i/N) V U",
+      "free_parameters": [
+        "finite dimension N"
+      ],
+      "derivation_scope": "periodic finite compact degree of freedom",
+      "test_class": "parameter-free mathematical prediction at fixed N",
+      "external_status": "verified; exact canonical CCR is forbidden by the finite trace obstruction"
+    },
+    {
+      "prediction_id": "P016",
+      "observable": "positive-frequency relational quantum evolution",
+      "value": "i d_phi Psi=sqrt(Theta) Psi; norm conserved",
+      "free_parameters": [
+        "lattice spacing",
+        "mass regulator"
+      ],
+      "derivation_scope": "positive compact holonomy Laplacian on one finite degree of freedom",
+      "test_class": "structural quantum-dynamics prediction",
+      "external_status": "verified internally; not the full 3+1 gravitational constraint"
+    },
+    {
+      "prediction_id": "P017",
+      "observable": "low-mode compact-holonomy continuum error",
+      "value": "relative error = k^2 a^2/12 + O(a^4)",
+      "free_parameters": [],
+      "derivation_scope": "fixed periodic compact-shift Laplacian at fixed circumference",
+      "test_class": "parameter-free mathematical prediction",
+      "external_status": "verified across six unselected resolutions with fitted order approximately 2"
+    },
+    {
+      "prediction_id": "P018",
+      "observable": "minimal uniform-flux vacuum selection",
+      "value": "argmin_Q S_Q = 0; S_3/S_1=9",
+      "free_parameters": [],
+      "derivation_scope": "positive uniform 2D U(1) Maxwell action S_Q proportional to Q^2",
+      "test_class": "no-go result",
+      "external_status": "verified; minimal dynamics cannot select the Q=3 family sector"
+    },
+    {
+      "prediction_id": "P019",
+      "observable": "local finite-graph Gauss reduction",
+      "value": "dim H_phys=N on one connected Z_N cycle",
+      "free_parameters": [
+        "local dimension N"
+      ],
+      "derivation_scope": "finite oriented cycle with one local Gauss transformation per vertex",
+      "test_class": "structural constrained-quantum prediction",
+      "external_status": "verified for 3, 4 and 5 edge subdivisions"
+    },
+    {
+      "prediction_id": "P020",
+      "observable": "master-constraint preservation",
+      "value": "[H,M]=0 and exp(-iHt) H_phys subset H_phys",
+      "free_parameters": [
+        "electric coupling",
+        "magnetic coupling"
+      ],
+      "derivation_scope": "registered finite Z_N cycle Hamiltonian",
+      "test_class": "structural quantum-dynamics prediction",
+      "external_status": "verified; not a gravitational Hamiltonian constraint"
+    },
+    {
+      "prediction_id": "P021",
+      "observable": "single-cycle gauge-reduced refinement rank",
+      "value": "dim H_phys=N independent of E for E=3,4,5",
+      "free_parameters": [
+        "local dimension N"
+      ],
+      "derivation_scope": "subdivision of the same connected cycle topology",
+      "test_class": "parameter-free topological refinement prediction",
+      "external_status": "verified on held-out edge counts; no interacting continuum claim"
+    }
+  ],
+  "n_registered_structural_predictions": 21,
+  "n_continuous_physical_predictions_tested": 1,
+  "n_continuous_physical_predictions_passed": 0,
+  "successful_physical_constant_coverage_fraction": 0.0,
+  "failed_continuous_tests": [
+    {
+      "prediction_id": "P012",
+      "observable": "held-out strong coupling in minimal exact one-loop unification",
+      "value": "alpha_s(MZ)=0.0710658",
+      "free_parameters": [],
+      "derivation_scope": "PDG-2024 alpha1/alpha2 inputs; one-loop SM; no thresholds",
+      "test_class": "failed continuous physical prediction",
+      "external_status": "observed benchmark 0.1180+/-0.0009; minimal model falsified"
+    }
+  ],
+  "out_of_sample_mathematical_prediction_artifact": "A20",
+  "out_of_sample_physical_constant_predictions_passed": 0,
+  "status": "ONE_CONTINUOUS_DEATH_TEST_FAILED",
+  "conclusion": "The repository has structural predictions and now exposes one continuous gauge-coupling prediction to a held-out minimal-unification death test. That prediction fails. No measured continuous parameter has yet been successfully predicted, so successful coverage remains 0/445."
+}

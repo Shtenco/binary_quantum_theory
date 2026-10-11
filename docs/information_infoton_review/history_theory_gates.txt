@@ -1,0 +1,58 @@
+54c5d907338679cdafe1b9c612ae02c1ee684186 2026-10-10T13:37:13Z Align BQG status with audited frontier and preserve two-hit evidence
+66d42551576dbb6824c8c61321c7c553110ecb6e 2026-10-10T00:36:39+05:00 Close serial multiplicity-master RG scan as finite PASS
+28fb439a2a49f75b6bf82e156049950df72186f0 2026-10-10T00:32:54+05:00 Sync habitat and microscopic refinement results into machine ledger
+a2df39bb9ba366f37d17bde3ff5a2058bac045d8 2026-10-10T00:11:45+05:00 Record scale-free refinement and canonical inter-scale mapping gates
+cde606691e09dd46406426f76e47dda5e5e1b89f 2026-10-09T23:28:18+05:00 Close j2 constraint-master multiplicity gate as finite PASS
+3ebc6029c8188cefab0167a217b3d59f68b42ee8 2026-10-09T23:20:06+05:00 Record multiplicity selection theorem and j2 master frontier
+4e9939d1326545149a879d46db6052b505e7af44 2026-10-09T23:14:05+05:00 Close j2 multiplicity-volume gate as finite PASS
+c21bd4e791329ca96747d8ae3c896084ca6e27aa 2026-10-09T23:12:42+05:00 Record S4 multiplicity theorem and j2 selection frontier
+6dfc9a20f689827ee3e9a11ecca4ed0762e620e5 2026-10-09T22:59:38+05:00 Sync refinement theorems into machine gate ledger
+f753acb60b0bf2d5b3cdf43be11279c2973f53d2 2026-08-18T15:47:44+03:00 Publish canonical closed theory package and verification suite
+89b87b9eca49587851cdc1f126cb0e09c8c11e24 2026-08-18T14:48:00+03:00 Correct L1 metric certificate in machine ledger
+cf72ab968add1d21ce047979fe08e6bb78b57dc1 2026-08-18T14:29:52+03:00 Adopt v2 closure-role truth ledger
+e1c1f1b26a0a77989f5c240bf070b74000c3f358 2026-08-18T13:47:48+03:00 Make post-HDA physical projector the current frontier
+af16606ecb1358a246574ba3a1406e15f9b5c8fa 2026-08-18T02:11:50+03:00 Bridge q=2 graph change to Peter-Weyl link representations
+620137d0a31f85946a9261ada72931c72aa44bbc 2026-08-18T02:10:17+03:00 Register q=2 graph-link representation and Peter-Weyl growth results
+7c5144cc0ab8a8f483e0d6625086439c82050e38 2026-08-18T02:04:53+03:00 Advance q=2 quantum geometry and graph-changing HDA frontier
+bbee72c91cae5ec61650b793f35f1e84f91c214a 2026-08-18T01:59:45+03:00 Register micro geometry, three-node HDA and fixed-input joint-limit results
+d36a91cc4062a23bdee3ecc8e037d43fb6fde924 2026-08-18T00:37:29+03:00 Refocus theory on binary quantum geometry to continuum GR
+aa5ed323e8597561304494aab92308d8734aabe7 2026-08-18T00:02:59+03:00 Point proof ledger to fixed-cutoff composition bound
+0b9159857cacb19fbe868f65c8d17c30d39c9426 2026-08-17T23:43:21+03:00 Reduce proof ledger to the GR-QM continuum core
+cac33c8a26a183b82f352447907c0fd51e303349 2026-08-15T18:31:57+05:00 Record Hermitian projection uniqueness in v1.2 ledger
+fbf05d7cb3ba7b01acd93345d72f70f8dfe3ceaf 2026-08-15T18:25:19+05:00 Advance machine theory ledger to BCQG v1.2
+76158585ae5bc7b9a02d0f9cdbb80c9857deeae3 2026-08-15T17:07:03+05:00 Advance machine ledger to BCQG v1.1 conditional full-HDA closure
+efda452ef1c099a99771b3d3a0ecca751459cb4e 2026-08-15T07:22:49+05:00 Atomically synchronize signed Lorentzian canonical ledger
+e3ee59b81fd0401ab747dceee00757a3f099edd2 2026-08-15T06:33:10+05:00 Promote physical sine HDA and operator-first route gates
+c8c38586f99150fec045e75ef03cdd46fc3df733 2026-08-15T06:14:24+05:00 Separate historical plus HDA from preregistered physical sine HDA
+f1f28db77cac5b0c1de3688eaf44484309a6764a 2026-08-15T06:01:29+05:00 Add global Lorentzian orientation-field gate
+f3053351cd443a38dd8e05c6162a2e02cf97e8d0 2026-08-15T05:57:45+05:00 Add Lorentzian canonical phase gate to machine ledger
+0845ecc7f73332a0f186af955e47d8f20517de07 2026-08-15T05:50:52+05:00 Advance machine ledger to Lorentzian ordering frontier
+718cb6a6e55dac5a8d4e8d2e616c3a3d0348137e 2026-08-15T05:43:42+05:00 Correct machine ledger and add joint cutoff gate
+cdda8ec82535063df8345fc566557676ac078496 2026-08-14T19:55:25+05:00 Record logical anisotropy, S4, route and Goldstone gates
+20e01a4aad61db8ba52ffa751dcf582a80fe7db6 2026-08-14T19:27:31+05:00 Add Bell-gluing Heisenberg parent gate
+5ebf12e6e762cfcc39a963a9c6a7fb3937724d2d 2026-08-14T19:16:49+05:00 Add mirror Wilson matter carrier gate
+70e7f71eb14d9722da85785b4c25e3f5c4499c12 2026-08-14T19:14:17+05:00 Add dimensionless mirror master criterion gate
+6029376175282d72ac42ed5a7c6343dd91aaa745 2026-08-14T19:12:05+05:00 Correct mirror range to symmetry-resolved spectral gate
+79232dab103c0e3598960c1453ab0c81f7aee8e4 2026-08-14T19:01:46+05:00 Add mirror matter and range gates
+b7716959ebb3eb8133cef36293986e49cb0d7c90 2026-08-14T16:05:24+05:00 Track Hodge-weighted mirror stiffness
+0c792a9d89360bb7d20f38076906fef63ae5b3b9 2026-08-14T16:01:34+05:00 Track recursive PL mirror-order persistence
+477f877cdccad77668b7e57b414b5546880be576 2026-08-14T15:57:34+05:00 Track mirror-force normalization gate
+c088154983358da2760f8d0786a4cc20788373e4 2026-08-14T15:50:34+05:00 Add microscopic 16-cell mirror-order gate
+95307e3c6649b8588ce6c23edb55ffab4c5acb09 2026-08-14T15:44:03+05:00 Add healthy mirror-force construction gate to proof ledger
+6a5ab2c4ebdc14bcd7eec0788907bc5df382bf33 2026-08-14T14:32:03+05:00 Register mirror chirality and antigravity falsifier gates
+b6f2f8be1e23a4b1ad88be4dd04140df5cddb1b3 2026-08-14T02:35:20+05:00 Add graviton helicity qubit and vacuum-foam resonance bridge
+042baa6e87b2a0340511cf083c974042c89b848b 2026-08-14T02:34:33+05:00 Add graviton-helicity qubit and vacuum-foam resonance bridge
+2069b8d4b8c8e1462843fa8b40164ef79a140878 2026-08-14T01:17:39+05:00 Finalize fixed-cutoff core architecture and canonical CI
+d6ca625d64002511a5754e98a390300774d81d5b 2026-08-13T15:34:43+05:00 Synchronize ledger with global manifold and route-normal HDA results
+cd9703e282874fe2043af15e5401d81f08d2ea42 2026-08-09T23:41:00+05:00 Synchronize gate ledger with graph-changing HDA and path-register frontier
+8c88446835c18f16f7cdcc0125dff1bff3a11fbf 2026-08-09T22:57:14+05:00 Record safe Peter-Weyl HDA result and Lorentzian frontier
+616d4e7f240b8cc184041ac7497852f03ae4c683 2026-08-09T22:23:27+05:00 Связать восемь инвариантов графом доказательств
+7f97251e36c3eef759174a7a7397924d14abb21b 2026-08-09T22:18:02+05:00 Restore current quantum-gravity gate ledger after PR17 merge
+6365644e25d7e80244f02c94f04bd2013190a2b1 2026-08-09T22:10:03+05:00 Закрыть четыре инварианта геометрической ячейки
+2f1644669c519cac8fe05318a51a22bdb5b35962 2026-08-09T21:30:33+05:00 Проверить совместную frame connection инвариантность
+637aaaa0ebb767f64d3adef5fc560ca81ea91f70 2026-08-09T02:30:01+05:00 Проверить фермионные нули синусового оператора
+1e98a283f36ee81fe8ce93b4c24441480870f21e 2026-08-09T02:19:22+05:00 Добавить топ двадцать мысленных проверок
+125ad090d0f5fec1d4fed881f76b1fcbe905809d 2026-08-09T02:03:30+05:00 Свести статус и оставшиеся инварианты теории
+75c4b579acaea7be96adfc4768bc270e293ab59b 2026-08-09T01:57:14+05:00 Вывести слабый предел эквивалентности из синусов
+6dbe906c6e01ae45f423a090efad86af29c0f8e3 2026-08-09T01:36:29+05:00 Связать Белла Гейзенберга и эквивалентность
+d44f992a9d80eed720b3163bda3ef919c7cb6444 2026-08-09T01:29:02+05:00 Зафиксировать путь к доказанной теории

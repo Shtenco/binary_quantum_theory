@@ -1,0 +1,128 @@
+[
+  {
+    "version": "v1_4",
+    "script": "verify_holonomy_document.py",
+    "exit": 0,
+    "tail": "mPASS\u001b[0m] Порядок сходимости к тепловому ядру ~ O(eps^2)\n  [\u001b[92mPASS\u001b[0m] Точное операторное тождество (U-U†)/(2iδ)=sin(δK)/δ\n  [\u001b[92mPASS\u001b[0m] Оценка ||sinX - X|| <= ||X||^3/6 не нарушается\n  [\u001b[92mPASS\u001b[0m] Суммарная ошибка действия масштабируется как O(a^4)\n  [\u001b[92mPASS\u001b[0m] Формула union bound корректна ПРИ явной подстановке sigma^2=2*t_a=2*c*a^4\n  [\u001b[92mPASS\u001b[0m] sin(i*theta) = i*sinh(theta)\n  [\u001b[92mPASS\u001b[0m] sin(delta*K)/delta -> K при delta -> 0 (монотонное убывание ошибки)\n  [\u001b[92mPASS\u001b[0m] cos(2*delta*K) = -1 при delta*K = pi/2\n  [\u001b[92mPASS\u001b[0m] 2*pi*E*R (E=M,R=2GM)  ==  A/(4G)  символьно\n  [\u001b[92mPASS\u001b[0m] Численное интегрирование dtau/dr дает 4M/3 (M=1)\n\n10/10 проверок пройдено.\n"
+  },
+  {
+    "version": "v1_5_eft",
+    "script": "verify_effective_foam_eft.py",
+    "exit": 0,
+    "tail": "[PASS] holonomy_remainder_bound: max excess=0.000e+00\n[PASS] phase_modulus_invariance: probability spread=8.674e-19\n[PASS] amplitude_probability_consistency: P=1.17087962e-03\n[PASS] rectangular_barrier: num=10.9544511501, exact=10.9544511501\n[PASS] nuclear_scale_planck_suppression: (lP/L)^2=2.612e-40\n[PASS] controlled_decoupling: relative shift=0.000e+00\n[PASS] random_phase_is_decohering: coherence factor=0.223130\n\n7/7 checks passed\nresults: /workspace/work/compact_holonomies_review/reruns/v1_5_eft/artifacts/A16_effective_foam_eft/effective_foam_eft_results.json\n"
+  },
+  {
+    "version": "v2_1_verified_chiral",
+    "script": "verify_anomaly_free_matter.py",
+    "exit": 0,
+    "tail": "A26_one_loop_rg\": {\n    \"coefficients\": {\n      \"b1\": \"41/10\",\n      \"b2\": \"-19/6\",\n      \"b3\": \"-7\"\n    },\n    \"convention\": \"mu dg_i/dmu = b_i g_i^3/(16*pi^2), g1=sqrt(5/3) gY\",\n    \"exact_match\": true,\n    \"expected_exact\": {\n      \"b1\": \"41/10\",\n      \"b2\": \"-19/6\",\n      \"b3\": \"-7\"\n    },\n    \"pass\": true,\n    \"qualitative_flow\": {\n      \"SU2\": \"asymptotically free at one loop\",\n      \"SU3\": \"asymptotically free at one loop\",\n      \"U1\": \"not asymptotically free\"\n    },\n    \"scope\": \"The coefficients follow from the assumed Standard-Model representation content and the anomaly-derived hypercharges. Absolute gauge couplings and threshold corrections remain inputs.\"\n  },\n  \"pass\": true\n}\n"
+  },
+  {
+    "version": "v2_1_verified_chiral",
+    "script": "verify_anomaly_free_spherical.py",
+    "exit": 0,
+    "tail": "\": 2,\n      \"delta\": 0.3,\n      \"bracket\": 0.007910946546983546,\n      \"expected_closed_bracket\": 0.00791094654698381,\n      \"absolute_residual\": 2.636779683484747e-16,\n      \"relative_residual\": 3.333077360369811e-14\n    },\n    {\n      \"grid_size\": 32,\n      \"seed\": 3,\n      \"delta\": 0.3,\n      \"bracket\": 0.03481069200023639,\n      \"expected_closed_bracket\": 0.034810692000236385,\n      \"absolute_residual\": 6.938893903907228e-18,\n      \"relative_residual\": 1.9933225986602362e-16\n    }\n  ],\n  \"max_relative_residual_on_finest_grid\": 3.333077360369811e-14,\n  \"signature_change_threshold_delta_times_K\": 0.7853981633974483,\n  \"example_threshold_for_delta_0.3\": 2.6179938779914944,\n  \"pass\": true\n}\n"
+  },
+  {
+    "version": "v2_1_verified_chiral",
+    "script": "verify_chiral_overlap.py",
+    "exit": 0,
+    "tail": "{\n  \"trial_count\": 20,\n  \"max_ginsparg_wilson_error\": 3.596975095907802e-14,\n  \"max_index_theorem_error\": 7.549516567451064e-15,\n  \"minimum_kernel_gap\": 0.5926375438430238,\n  \"pass\": true,\n  \"scope\": \"Two-dimensional U(1) overlap-fermion test bed. It establishes exact finite-lattice chirality and topology, not the full four-dimensional Standard Model fermion sector.\"\n}\n"
+  },
+  {
+    "version": "v2_1_verified_chiral",
+    "script": "verify_covariant_low_energy.py",
+    "exit": 0,
+    "tail": ": true,\n    \"leading_correction_is_cubic\": true\n  },\n  \"predictions\": {\n    \"background\": \"Minkowski\",\n    \"tensor_polarizations\": 2,\n    \"tree_level_c_gw_over_c\": 1.0,\n    \"linear_dispersion\": \"omega^2=k^2\",\n    \"scope\": \"Applies to the explicitly chosen diffeomorphism-invariant low-energy completion with corrections beginning at curvature-cubed order.\"\n  },\n  \"external_check\": {\n    \"observable\": \"(c_gw-c)/c\",\n    \"prediction\": 0.0,\n    \"observational_interval\": [\n      -3e-15,\n      7e-16\n    ],\n    \"consistent\": true,\n    \"data_source\": \"GW170817/GRB170817A, LIGO-Virgo-Fermi-INTEGRAL (2017)\",\n    \"classification\": \"external consistency check, not a blind discovery\"\n  },\n  \"pass\": true\n}\n"
+  },
+  {
+    "version": "v2_1_verified_chiral",
+    "script": "verify_free_overlap_4d.py",
+    "exit": 0,
+    "tail": "sical_zero_corner_error\": 0.0,\n  \"minimum_doubler_corner_gap\": 2.0,\n  \"continuum_convergence\": {\n    \"epsilons\": [\n      0.2,\n      0.1,\n      0.05,\n      0.025\n    ],\n    \"operator_norm_errors\": [\n      0.020086908994434893,\n      0.005005516319592053,\n      0.0012503460884668892,\n      0.0003125216511223194\n    ],\n    \"observed_orders\": [\n      2.0046647809275355,\n      2.001191411205759,\n      2.0002994331741775\n    ],\n    \"minimum_observed_order\": 2.0002994331741775,\n    \"pass\": true\n  },\n  \"pass\": true,\n  \"scope\": \"Free four-dimensional overlap fermion. It proves exact lattice chirality and removal of free Wilson doublers for 0<rho<2r, not a complete interacting chiral gauge theory.\"\n}\n"
+  },
+  {
+    "version": "v2_1_verified_chiral",
+    "script": "verify_gauge_sector.py",
+    "exit": 0,
+    "tail": "x_antihermiticity_error\": 0.0\n    }\n  },\n  \"wilson_link_certificates\": {\n    \"U(1)\": {\n      \"unitarity_error\": 1.1102230246251565e-16,\n      \"determinant_modulus_error\": 0.0,\n      \"pass\": true\n    },\n    \"SU(2)\": {\n      \"unitarity_error\": 2.220446049250313e-16,\n      \"determinant_modulus_error\": 0.0,\n      \"pass\": true\n    },\n    \"SU(3)\": {\n      \"unitarity_error\": 2.220446049250313e-16,\n      \"determinant_modulus_error\": 2.220446049250313e-16,\n      \"pass\": true\n    }\n  },\n  \"pass\": true,\n  \"derivation_status\": \"Constructed consistently, not uniquely derived. Gauge couplings, chiral representations, Yukawa matrices and symmetry-breaking parameters remain free.\",\n  \"artifact_id\": \"A22\"\n}\n"
+  },
+  {
+    "version": "v2_2_verified_topology",
+    "script": "verify_flavor_no_go.py",
+    "exit": 0,
+    "tail": "615628914e-17\n    ],\n    [\n      5.377642775528102e-17,\n      -2.7755575615628914e-17,\n      0.9999999999999998\n    ]\n  ],\n  \"flavor_singular_values\": [\n    1.0000000000000002,\n    1.0,\n    0.9999999999999997\n  ],\n  \"identity_error\": 2.220446049250313e-16,\n  \"degeneracy_spread\": 5.551115123125783e-16,\n  \"pass\": true,\n  \"verdict\": \"Three topological zero modes plus a constant symmetric Higgs profile produce three degenerate couplings, not the observed hierarchy. Nonuniform profiles, Wilson lines, different bundles or other symmetry breaking are necessary and would introduce new inputs.\",\n  \"scope\": \"same-bundle 2D overlap toy sector; this is a controlled no-go, not a complete flavor model\"\n}\n"
+  },
+  {
+    "version": "v2_2_verified_topology",
+    "script": "verify_generation_selection.py",
+    "exit": 0,
+    "tail": "{\n  \"allowed_positive_generation_counts\": [\n    1,\n    2,\n    3,\n    4,\n    5\n  ],\n  \"three_is_allowed\": true,\n  \"three_is_unique\": false,\n  \"pass\": true,\n  \"exact_bounds\": {\n    \"SU2_asymptotic_freedom\": \"N_g < 43/8, hence N_g<=5 for one Higgs doublet\",\n    \"SU3_asymptotic_freedom\": \"N_g < 33/4, hence N_g<=8\"\n  },\n  \"verdict\": \"Anomaly cancellation, the Witten parity condition, and one-loop SU(2)/SU(3) asymptotic freedom do not select N_g=3. Together they allow N_g=1,...,5. The topological statement N_g=|Q| therefore still needs a dynamical principle selecting |Q|=3.\"\n}\n"
+  },
+  {
+    "version": "v2_2_verified_topology",
+    "script": "verify_topological_generations.py",
+    "exit": 0,
+    "tail": "{\n  \"trial_count\": 6,\n  \"max_zero_singular_value\": 4.216544179765782e-14,\n  \"minimum_nonzero_singular_value\": 0.8626660826084996,\n  \"max_chirality_integrality_error\": 1.1102230246251565e-15,\n  \"pass\": true,\n  \"conditional_result\": \"Q=+/-3 gives exactly three same-chirality overlap zero modes\",\n  \"open_problem\": \"the dynamics selecting |Q|=3 rather than another integer flux is not derived\",\n  \"scope\": \"2D compact U(1) overlap test bed; not yet a 4D Standard-Model compactification\"\n}\n"
+  },
+  {
+    "version": "v2_2_verified_topology",
+    "script": "verify_unification_stress.py",
+    "exit": 0,
+    "tail": "\": 9.7759120829906e+16\n    },\n    \"pairwise_scale_spread_factor\": 9641.358550633846,\n    \"minimal_exact_one_loop_unification_survives\": false,\n    \"test_pass\": true,\n    \"verdict\": \"The conditional 3/8 high-scale trace relation is exact, but the minimal no-threshold one-loop Standard Model does not unify: fitting alpha1 and alpha2 predicts alpha_s far below the held-out measured value. New thresholds or different microscopic content would be required and must be preregistered before refitting.\",\n    \"scope\": \"The quoted pull propagates experimental errors only. It is a death test of the exactly specified minimal model, not a precision exclusion of every possible threshold completion.\"\n  }\n}\n"
+  },
+  {
+    "version": "v2_3_verified_quantum",
+    "script": "verify_adm_nonlinear_hda.py",
+    "exit": 0,
+    "tail": "nomaly freedom.\",\n  \"standard_dewitt_lambda\": 0.5,\n  \"worst_wrong_lambda_relative_residual\": 1.360360001726798,\n  \"wrong_lambda_death_tests\": [\n    {\n      \"absolute_residual\": 0.13269482545736452,\n      \"dewitt_lambda\": 0.4,\n      \"diffeomorphism_constraint\": 0.09754390403196647,\n      \"grid_size\": 3,\n      \"poisson_bracket\": -0.03515092142539806,\n      \"relative_residual\": 1.360360001726798,\n      \"seed\": 2\n    },\n    {\n      \"absolute_residual\": 0.1369681123799327,\n      \"dewitt_lambda\": 0.6,\n      \"diffeomorphism_constraint\": 0.09754390403196647,\n      \"grid_size\": 3,\n      \"poisson_bracket\": 0.23451201641189917,\n      \"relative_residual\": 1.4041688585177643,\n      \"seed\": 2\n    }\n  ]\n}\n"
+  },
+  {
+    "version": "v2_3_verified_quantum",
+    "script": "verify_compact_weyl_quantization.py",
+    "exit": 0,
+    "tail": "357601002e-15,\n  \"dimension\": 17,\n  \"finite_CCR_no_go\": {\n    \"conclusion\": \"An exact [Q,P]=i hbar I representation requires an infinite-dimensional Hilbert space. Finite compact models must use the exponentiated Weyl algebra instead.\",\n    \"dimension\": 17,\n    \"exact_finite_dimensional_CCR_possible\": false,\n    \"trace_mismatch_magnitude\": 17.0,\n    \"trace_of_any_finite_commutator\": [\n      0.0,\n      0.0\n    ],\n    \"trace_of_i_hbar_identity\": [\n      0.0,\n      17.0\n    ]\n  },\n  \"pass\": true,\n  \"periodicity_error\": 1.3565655070099056e-14,\n  \"root_of_unity\": [\n    0.9324722294043558,\n    0.3612416661871529\n  ],\n  \"shift_unitarity_error\": 0.0,\n  \"weyl_relation_error\": 6.324679038885917e-16\n}\n"
+  },
+  {
+    "version": "v2_3_verified_quantum",
+    "script": "verify_newtonian_coarse_graining.py",
+    "exit": 0,
+    "tail": "5575,\n    0.001931869358897078,\n    0.0014394223396218004,\n    0.0011144643344672247,\n    0.0008883611492493367,\n    0.000724523350197499,\n    0.0006019121239264026,\n    0.0005077034116235763,\n    0.00043370797283089936,\n    0.0003744928407018993\n  ],\n  \"lattice_size\": 96,\n  \"maximum_relative_error\": 0.03939118935801487,\n  \"mean_relative_error\": 0.012639742373740387,\n  \"pass\": true,\n  \"radius_midpoints\": [\n    5.5,\n    6.5,\n    7.5,\n    8.5,\n    9.5,\n    10.5,\n    11.5,\n    12.5,\n    13.5,\n    14.5\n  ],\n  \"scope\": \"Emergence of the three-dimensional massless Green kernel from a fixed lattice Laplacian. The normalization G and nonlinear Einstein dynamics are not derived.\",\n  \"spacing\": 1.0\n}\n"
+  },
+  {
+    "version": "v2_3_verified_quantum",
+    "script": "verify_quantum_linearized_3d.py",
+    "exit": 0,
+    "tail": ",\n  \"microscopic_cutoff_scale_mu\": 5.0,\n  \"pass\": true,\n  \"physical_configuration_degrees_of_freedom\": 2,\n  \"physical_phase_space_dimension_per_nonzero_mode\": 4,\n  \"projector_eigenvalues\": [\n    -1.335104670399533e-16,\n    -3.6317416316166714e-17,\n    7.80611322921025e-19,\n    1.0645930876932941e-16,\n    1.0,\n    1.0000000000000002\n  ],\n  \"projector_idempotence_error\": 2.1432085566653465e-16,\n  \"projector_symmetry_error\": 8.151354677681473e-17,\n  \"propagator_residue_rank\": 2,\n  \"scope\": \"A complete quantum Hilbert-space/constraint/propagator construction for linearized 3+1 gravity only. The nonlinear Hamiltonian-constraint commutator with structure functions remains open.\",\n  \"tt_rank\": 2\n}\n"
+  },
+  {
+    "version": "v2_3_verified_quantum",
+    "script": "verify_quantum_microtheory_preregistration.py",
+    "exit": 0,
+    "tail": "{\n  \"manifest\": \"preregistration/QUANTUM_LINEARIZED_MICROTHEORY_v2.3.json\",\n  \"pass\": true,\n  \"sha256\": \"5a7ad3af8b1d4e6511dbeca8c642831e85ef595e13d84c7510a171f7de0a8733\"\n}\n"
+  },
+  {
+    "version": "v2_3_verified_quantum",
+    "script": "verify_topological_quantum_geometry.py",
+    "exit": 0,
+    "tail": "re_rank\": 52,\n      \"edge_qubits\": 81,\n      \"gauss_rank\": 26,\n      \"gravity_continuum_pass\": false,\n      \"ground_state_degeneracy\": 8,\n      \"lattice_length\": 3,\n      \"local_graviton_polarizations\": 0,\n      \"logical_qubits\": 3,\n      \"pass_exact_code\": true,\n      \"plaquettes\": 81,\n      \"vertices\": 27\n    },\n    {\n      \"boundary_of_boundary_weight\": 0,\n      \"curvature_rank\": 126,\n      \"edge_qubits\": 192,\n      \"gauss_rank\": 63,\n      \"gravity_continuum_pass\": false,\n      \"ground_state_degeneracy\": 8,\n      \"lattice_length\": 4,\n      \"local_graviton_polarizations\": 0,\n      \"logical_qubits\": 3,\n      \"pass_exact_code\": true,\n      \"plaquettes\": 192,\n      \"vertices\": 64\n    }\n  ]\n}\n"
+  },
+  {
+    "version": "v2_4_quantum_graph_verified",
+    "script": "verify_flux_sector_selection.py",
+    "exit": 0,
+    "tail": "3394378\n  ],\n  \"area\": 1.0,\n  \"charges\": [\n    -8,\n    -7,\n    -6,\n    -5,\n    -4,\n    -3,\n    -2,\n    -1,\n    0,\n    1,\n    2,\n    3,\n    4,\n    5,\n    6,\n    7,\n    8\n  ],\n  \"gauge_coupling\": 1.0,\n  \"maximum_charge\": 8,\n  \"minimizing_charges\": [\n    0\n  ],\n  \"pass\": true,\n  \"q3_action_gap_above_vacuum\": 177.65287921960845,\n  \"q3_to_q1_action_ratio\": 9.0,\n  \"scope\": \"uniform compact 2D U(1) flux sector with positive Maxwell action\",\n  \"verdict\": \"The minimal positive uniform-flux action selects Q=0 uniquely and penalizes Q=3 by nine times the Q=1 action. Therefore the current toy dynamics cannot explain three generations; a separately derived topological-selection mechanism is required.\"\n}\n"
+  },
+  {
+    "version": "v2_4_quantum_graph_verified",
+    "script": "verify_quantum_graph_constraints.py",
+    "exit": 0,
+    "tail": "ence_error\": 9.734998599816793e-16,\n        \"verdict\": \"The finite cycle graph has exact local Gauss transformations and a nonempty joint physical subspace. Its dimension is N, the one independent loop-holonomy degree of freedom after gauge reduction.\"\n      }\n    ],\n    \"verdict\": \"Subdividing the same single cycle from three to five edges leaves the gauge-reduced physical dimension equal to N. This is an exact topological refinement check for the constrained graph kinematics, not a continuum test of gravitational dynamics.\"\n  },\n  \"pass\": true,\n  \"scope\": \"finite Z_N cycle gauge graph with local constraints; multi-vertex quantum architecture, not an SU(2) 3+1 gravitational spin network\"\n}\n"
+  },
+  {
+    "version": "v2_4_quantum_graph_verified",
+    "script": "verify_quantum_holonomy_dynamics.py",
+    "exit": 0,
+    "tail": "er\": 2,\n    \"passed\": true,\n    \"relative_errors\": [\n      0.012785169233341942,\n      0.005698543736445849,\n      0.003208635955039063,\n      0.0014270788520557298,\n      0.0008029324607687904,\n      0.0003569225706685497\n    ],\n    \"verdict\": \"The low compact-holonomy spectrum converges to the continuum circle Laplacian with the preregistered O(a^2) error and the correct leading coefficient. This controls one spectral limit, not the continuum limit of interacting 3+1 geometry.\"\n  },\n  \"pass\": true,\n  \"scope\": \"finite one-degree-of-freedom compact quantum laboratory; explicit Hilbert space and unitary relational dynamics, but no full 3+1 Hamiltonian/diffeomorphism/Gauss operator algebra\"\n}\n"
+  }
+]

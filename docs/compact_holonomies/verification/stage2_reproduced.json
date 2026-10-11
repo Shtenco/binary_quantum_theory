@@ -1,0 +1,83 @@
+{
+  "A47": {
+    "nsides": [
+      200,
+      400,
+      800,
+      1600,
+      3200
+    ],
+    "norms": [
+      9.424202375162482,
+      9.424633343580636,
+      9.42474171600402,
+      9.42476888824637,
+      9.424775691220722
+    ],
+    "bound": 9.42477796076938,
+    "max_violation": -2.269548657451992e-06,
+    "gaps": [
+      0.0005755856068976328,
+      0.00014461718874336782,
+      3.624476535968313e-05,
+      9.07252301018957e-06,
+      2.269548657451992e-06
+    ],
+    "convergence_rate_exponent": -1.9967553990343294,
+    "pass_no_violation": true,
+    "pass_converges": true
+  },
+  "A48": {
+    "nside": 2400,
+    "p0": 849.0,
+    "sig_rel_target": 0.026000000000000002,
+    "sig_rel_measured": 0.07269116404657197,
+    "boundary_leak": 1.5797654698351576e-31,
+    "bounce_phi": 0.0,
+    "P1_minV": 274.67506882362204,
+    "P2_rho_max": 4.721922422116652,
+    "P2_rho_c": 4.71238898038469,
+    "P2_ratio": 1.0020230591684272,
+    "P2_bound_respected": false,
+    "P2_rho_op_max": 4.697592117524151,
+    "P2_op_ratio": 0.9968600081779898,
+    "P2_op_bound_respected": true,
+    "P3_asymmetry": 6.243617940501275e-16,
+    "P1_pass": true,
+    "P2_strict_clause_applicable": false,
+    "P2_pass": false,
+    "P3_pass": true,
+    "manifest_sha256": "9d51c61b98715c4a529cbab244aea40eb151f0ec6e33f02d4c7c5bf9daa1760e",
+    "held_out_p0": 849,
+    "held_out_sig_rel": 0.026000000000000002,
+    "verdict_frozen_P1P2P3": "MODEL FAIL",
+    "operator_bound_verdict": "PASS"
+  },
+  "A46_calibration": {
+    "nside": 1500,
+    "p0": 300,
+    "sig_rel_target": 0.02,
+    "sig_rel_measured": 0.12292615815950358,
+    "boundary_leak": 2.76593706649092e-16,
+    "bounce_phi": 0.0,
+    "P1_minV": 97.15750959063206,
+    "P2_rho_max": 4.741000713574964,
+    "P2_rho_c": 4.71238898038469,
+    "P2_ratio": 1.0060715983568782,
+    "P2_bound_respected": false,
+    "P2_rho_op_max": 4.671966300441219,
+    "P2_op_ratio": 0.9914220408986333,
+    "P2_op_bound_respected": true,
+    "P3_asymmetry": 5.884567921725169e-16,
+    "P1_pass": true,
+    "P2_strict_clause_applicable": false,
+    "P2_pass": false,
+    "P3_pass": true
+  },
+  "A47_exact_formula_check": {
+    "n": 200,
+    "formula": "(3*pi*G/4)*(2+2*cos(pi/(n+1)))",
+    "exact": 9.424202375162482,
+    "error": 0.0
+  }
+}

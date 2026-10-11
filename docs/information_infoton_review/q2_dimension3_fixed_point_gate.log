@@ -1,0 +1,82 @@
+{
+  "status": "exact q=2 causal-volume dimension-three fixed-point closure",
+  "passed": true,
+  "q": 2,
+  "routes_B": 4,
+  "active_edge_growth_per_generation": 8,
+  "causal_length_growth_per_generation": 2,
+  "exact_fixed_point_dimension": 3.0,
+  "exact_vertex_count_formula": "N_g = 2 + B*((2B)^g-1)/(2B-1); for q=2: N_g=(4*8^g+10)/7",
+  "exact_step_formula_q2": "d_g = 3 + log2(1 - 35/(16*8^(g-1)+40))",
+  "rows": [
+    {
+      "generation": 2,
+      "vertices": 38,
+      "causal_length_scale": 4,
+      "step_dimension": 2.662965012722429,
+      "defect_to_three": 0.33703498727757086
+    },
+    {
+      "generation": 3,
+      "vertices": 294,
+      "causal_length_scale": 8,
+      "step_dimension": 2.9517448313927788,
+      "defect_to_three": 0.04825516860722123
+    },
+    {
+      "generation": 4,
+      "vertices": 2342,
+      "causal_length_scale": 16,
+      "step_dimension": 2.993853015664851,
+      "defect_to_three": 0.006146984335149153
+    },
+    {
+      "generation": 5,
+      "vertices": 18726,
+      "causal_length_scale": 32,
+      "step_dimension": 2.9992297821391514,
+      "defect_to_three": 0.0007702178608486321
+    },
+    {
+      "generation": 6,
+      "vertices": 149798,
+      "causal_length_scale": 64,
+      "step_dimension": 2.999903693848493,
+      "defect_to_three": 9.630615150690858e-05
+    },
+    {
+      "generation": 7,
+      "vertices": 1198374,
+      "causal_length_scale": 128,
+      "step_dimension": 2.9999879612790203,
+      "defect_to_three": 1.2038720979656858e-05
+    },
+    {
+      "generation": 8,
+      "vertices": 9586982,
+      "causal_length_scale": 256,
+      "step_dimension": 2.999998495152814,
+      "defect_to_three": 1.5048471859735457e-06
+    },
+    {
+      "generation": 9,
+      "vertices": 76695846,
+      "causal_length_scale": 512,
+      "step_dimension": 2.9999998118939915,
+      "defect_to_three": 1.881060085473507e-07
+    },
+    {
+      "generation": 10,
+      "vertices": 613566758,
+      "causal_length_scale": 1024,
+      "step_dimension": 2.9999999764867473,
+      "defect_to_three": 2.3513252678242225e-08
+    }
+  ],
+  "checks": {
+    "monotone_increase_to_three": true,
+    "all_finite_steps_below_three": true,
+    "closed_form_residual": 4.440892098500626e-16
+  },
+  "scope": "Exact causal-volume scaling for the frozen q=2 route rewrite. Topological dimension is independently fixed by the S2-link/S3 PL-manifold gate; spectral dimension and z are independent numerical cross-checks."
+}

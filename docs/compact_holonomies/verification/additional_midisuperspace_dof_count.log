@@ -1,0 +1,22 @@
+{
+  "artifact_id": "A14",
+  "roadmap_item": 5,
+  "status": "GROUNDWORK ONLY -- not a completed test",
+  "extended_phase_space": {
+    "pairs_per_site": 2,
+    "raw_dof_per_site": 4
+  },
+  "constraints_assumed_per_site": 4,
+  "naive_dof_count": {
+    "formula": "raw_dof_per_site - 2*constraints_per_site + 2*2 (see script comment for the +2*2 justification)",
+    "result": 0,
+    "interpretation": "This naive bookkeeping is consistent with landing on 2 physical dof/site if (and only if) the spherical (K,E) sector is fully constrained away (as Birkhoff's theorem requires) and the transverse (L,F) sector survives as the sole propagating content -- exactly the qualitative split real GR has. This is a CONSISTENCY check on the counting convention, not a derivation: the specific constraint forms that would actually produce this split have not been built or verified here."
+  },
+  "explicitly_not_done": [
+    "No Hamiltonian has been constructed for the (L_i,F_i) transverse sector.",
+    "No holonomy/sine-deformation has been applied to the transverse sector.",
+    "No check that the transverse sector's constraints actually close (this would need its own A10/A11/A13-style anomaly sweep, separately).",
+    "No numerical diagonalization or degeneracy count has been attempted (the actual test A6/A9 did for the 1-pair model) -- doing so here requires first defining a genuine transverse Hamiltonian, which is the real next step, not done in this session."
+  ],
+  "honest_conclusion": "Item 5 is now well-posed in principle (the phase space is rich enough that '2' is a reachable answer, unlike the old 1-pair model which was capped at 0 by Birkhoff's theorem). It is NOT solved, tested, or even attempted beyond this consistency-level bookkeeping. Treat this as the starting scaffold for a follow-up session's worth of work, not a result."
+}

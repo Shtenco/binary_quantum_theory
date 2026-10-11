@@ -25,6 +25,14 @@ EXCLUDED_FILES = {
 }
 EXCLUDED_PREFIXES = {
     ("docs", "archive"),
+    ("docs", "information_infoton_review"),
+}
+
+# README and status may describe the explicitly open information-mode proposal.
+# This is permission to discuss it, not to import retired physics modules.
+DISCUSSION_TERMS = {
+    Path("README.md"): {"info" + "ton"},
+    Path("THEORY_STATUS.md"): {"info" + "ton"},
 }
 
 # Construct retired vocabulary without embedding the retired tokens literally in
@@ -85,7 +93,8 @@ def candidate_files():
 
 def scan_text(path: Path):
     text = path.read_text(encoding="utf-8", errors="replace").lower()
-    return sorted(term for term in RETIRED_TERMS if term in text)
+    allowed = DISCUSSION_TERMS.get(path.relative_to(ROOT), set())
+    return sorted(term for term in RETIRED_TERMS - allowed if term in text)
 
 
 def local_imports(path: Path):

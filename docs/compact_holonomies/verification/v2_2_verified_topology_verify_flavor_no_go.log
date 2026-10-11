@@ -1,0 +1,37 @@
+{
+  "lattice_size": 6,
+  "topological_charge": 3,
+  "family_dimension": 3,
+  "zero_mode_singular_values": [
+    1.0000643364120464e-15,
+    1.682602556803382e-15,
+    1.7307504147066142e-15
+  ],
+  "constant_profile_yukawa_matrix_real": [
+    [
+      1.0,
+      -7.28583859910259e-17,
+      5.377642775528102e-17
+    ],
+    [
+      -7.28583859910259e-17,
+      1.0,
+      -2.7755575615628914e-17
+    ],
+    [
+      5.377642775528102e-17,
+      -2.7755575615628914e-17,
+      0.9999999999999998
+    ]
+  ],
+  "flavor_singular_values": [
+    1.0000000000000002,
+    1.0,
+    0.9999999999999997
+  ],
+  "identity_error": 2.220446049250313e-16,
+  "degeneracy_spread": 5.551115123125783e-16,
+  "pass": true,
+  "verdict": "Three topological zero modes plus a constant symmetric Higgs profile produce three degenerate couplings, not the observed hierarchy. Nonuniform profiles, Wilson lines, different bundles or other symmetry breaking are necessary and would introduce new inputs.",
+  "scope": "same-bundle 2D overlap toy sector; this is a controlled no-go, not a complete flavor model"
+}

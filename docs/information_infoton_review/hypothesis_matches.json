@@ -1,0 +1,3162 @@
+[
+  {
+    "git_blob": "bafc9c29f6a3f436b179d9a6346a2da5bcd27716",
+    "path": "BQG_2T_ALGEBRA_GATE.md",
+    "matches": [
+      {
+        "line": 5,
+        "text": "This document defines a strict test for whether the Binary Quantum Gravity (BQG) construction can contain a genuine two-time / 2T sector in the sense of Bars-style gauge-reduced two-time physics."
+      },
+      {
+        "line": 11,
+        "text": "Can the BQG microscopic binary/history structure admit a parent constrained system with two time-like directions such that ordinary 3+1 physics appears after gauge reduction?"
+      },
+      {
+        "line": 33,
+        "text": "1. **two coordinates** — a literal signature `(d,2)`;"
+      },
+      {
+        "line": 35,
+        "text": "3. **two-time gauge symmetry** — an enlarged constrained phase space whose redundant variables are removed by gauge constraints;"
+      },
+      {
+        "line": 37,
+        "text": "5. **a genuine Bars 2T system** — a phase-space system with an `Sp(2,R)`-type constraint algebra."
+      },
+      {
+        "line": 43,
+        "text": "In Bars' 2T framework, the parent theory has an `SO(d,2)` structure and an `Sp(2,R)` gauge symmetry in phase space. Different gauge choices can produce different one-time systems. See Bars, *Two-Time Physics* (1998), and subsequent work on 2T field theory."
+      },
+      {
+        "line": 53,
+        "text": "whose Poisson/commutator algebra closes into `sp(2,R)` up to convention-dependent normalizations."
+      },
+      {
+        "line": 129,
+        "text": "A BQG `sp(2,R)` candidate passes only if:"
+      },
+      {
+        "line": 141,
+        "text": "If an `sp(2,R)` subalgebra is found, construct an explicit local canonical dictionary"
+      },
+      {
+        "line": 255,
+        "text": "- the parent kinetic form does not contain two timelike directions;"
+      },
+      {
+        "line": 307,
+        "text": "| Exact `sp(2,R)` + two-time signature + ghost-free reduction | strong evidence for a genuine BQG 2T embedding |"
+      },
+      {
+        "line": 308,
+        "text": "| `sp(2,R)` algebra but no second timelike kinetic direction | hidden phase-space duality / 2T-like algebra, not literal two-time spacetime |"
+      },
+      {
+        "line": 317,
+        "text": "> **BQG currently has a relational-history sector that is structurally compatible with testing a 2T embedding, but it has not yet demonstrated an `Sp(2,R)` gauge algebra, a `(d,2)` parent metric, or a ghost-free 2T→1T reduction.**"
+      },
+      {
+        "line": 325,
+        "text": "- I. Bars, *Two-Time Physics*, arXiv:hep-th/9809034."
+      },
+      {
+        "line": 326,
+        "text": "- I. Bars, *Hidden Symmetries, AdS_D × S^n, and the lifting of one-time-physics to two-time-physics*, arXiv:hep-th/9810025."
+      }
+    ]
+  },
+  {
+    "git_blob": "8008f4c3f1a76e1fb655130702541b0b81d602db",
+    "path": "BQG_2T_CLOSURE_SCAN.md",
+    "matches": [
+      {
+        "line": 3,
+        "text": "Status: **falsification-first research specification; no `Sp(2,R)` closure is claimed.**"
+      },
+      {
+        "line": 7,
+        "text": "Test whether the existing Binary Quantum Gravity operator architecture contains a genuine Bars-type two-time parent rather than merely a finite relational-history construction."
+      },
+      {
+        "line": 15,
+        "text": "whose classical or quantum algebra closes as `sp(2,R)` (possibly only after a controlled continuum limit), together with a canonical two-time sector and an explicit gauge reduction to the existing one-time BQG dynamics."
+      },
+      {
+        "line": 23,
+        "text": "with local `Sp(2,R)` gauge symmetry. The present document tests for this structure; it does not assume it."
+      },
+      {
+        "line": 38,
+        "text": "is retained as an exact control. It is **not** identified with `Sp(2,R)` because finite `Z_8` history is discrete and compact while `Sp(2,R)` is a continuous noncompact Lie group."
+      },
+      {
+        "line": 57,
+        "text": "| `C_1,C_2,C_3` | possible 2T constraints | independent operators with closed `sp(2,R)` brackets |"
+      },
+      {
+        "line": 79,
+        "text": "## 5. `sp(2,R)` fingerprint"
+      },
+      {
+        "line": 97,
+        "text": "- nondegenerate Killing form with the `sl(2,R)`/`sp(2,R)` signature;"
+      },
+      {
+        "line": 104,
+        "text": "## 6. Canonical two-time test"
+      },
+      {
+        "line": 118,
+        "text": "and two timelike directions in the parent quadratic form."
+      },
+      {
+        "line": 203,
+        "text": "4. no canonical two-time symplectic sector can be derived;"
+      },
+      {
+        "line": 204,
+        "text": "5. parent signature is not `(d,2)`;"
+      },
+      {
+        "line": 217,
+        "text": "**Level 2:** stable `sp(2,R)` closure under refinement."
+      },
+      {
+        "line": 244,
+        "text": "The repository already contains a strong 3+1/HDA research programme and an exact finite relational-history control, but the present evidence does **not** establish a second timelike dimension or an `Sp(2,R)` gauge symmetry."
+      }
+    ]
+  },
+  {
+    "git_blob": "2af063ee76364a1712dcf16c8a0569e373a1592f",
+    "path": "BQG_2T_CONSTRAINT_INVENTORY.md",
+    "matches": [
+      {
+        "line": 5,
+        "text": "This document freezes what the repository actually has before any attempt to identify a Bars-type `Sp(2,R)` sector."
+      },
+      {
+        "line": 9,
+        "text": "A genuine Bars-style two-time embedding requires, at minimum, three first-class constraints which can be represented in a canonical phase space by the quadratic prototype"
+      },
+      {
+        "line": 15,
+        "text": "with an `Sp(2,R)` Poisson/commutator algebra, together with a parent Lorentzian structure of signature `(d,2)` and an explicit gauge reduction to a one-time shadow. Bars' formulation identifies `Sp(2)` duality and `SO(d,2)` symmetry as the characteristic structures of the two-time construction. cit"
+      },
+      {
+        "line": 21,
+        "text": "B. canonical two-time sector"
+      },
+      {
+        "line": 22,
+        "text": "C. parent metric signature (d,2)"
+      },
+      {
+        "line": 38,
+        "text": "and derives the HDA bracket defect proportional to `4(c-1/2)`. The declared GR value is therefore `c=1/2`. This is a continuum identity/control, not yet a microscopic `Sp(2,R)` triple. "
+      },
+      {
+        "line": 63,
+        "text": "This proves a finite relational-history projector construction, but `Z8` is a finite cyclic group and is not itself `Sp(2,R)`."
+      },
+      {
+        "line": 75,
+        "text": "Nor does it treat `J`, `C8`, a Feshbach spectral variable, or an arbitrary 3-dimensional matrix subspace as an `Sp(2,R)` realization."
+      },
+      {
+        "line": 80,
+        "text": "C8 history generator != continuous Sp(2,R) gauge generator"
+      },
+      {
+        "line": 82,
+        "text": "HDA != Sp(2,R)"
+      },
+      {
+        "line": 119,
+        "text": "A positive `Sp(2,R)` identification requires:"
+      },
+      {
+        "line": 129,
+        "text": "The Killing-form signature is a discriminator: compact `su(2)`-type closure is not `sl(2,R) ~= sp(2,R)`."
+      },
+      {
+        "line": 139,
+        "text": "with the required symplectic rank and two timelike directions. The map must be derived from BQG observables, not introduced by hand."
+      },
+      {
+        "line": 143,
+        "text": "The parent metric must have exactly two timelike directions:"
+      },
+      {
+        "line": 146,
+        "text": "\\operatorname{signature}(G_{parent})=(d,2)."
+      },
+      {
+        "line": 178,
+        "text": "Sp(2,R) algebra                      OPEN"
+      },
+      {
+        "line": 179,
+        "text": "Canonical two-time sector            OPEN"
+      }
+    ]
+  },
+  {
+    "git_blob": "03ddf1ad83595a11b49e5f4b3f4bae20409b4de4",
+    "path": "BQG_2T_OPERATOR_DICTIONARY.md",
+    "matches": [
+      {
+        "line": 24,
+        "text": "A genuine Bars-type two-time embedding requires three first-class phase-space generators which, after normalization, close as `sp(2,R)`:"
+      },
+      {
+        "line": 30,
+        "text": "Their Poisson/commutator algebra is the defining gauge structure behind the standard 2T construction. The associated parent space has signature `(d,2)`, while gauge fixing can produce different one-time shadows. This is the target algebra, not an assumption about BQG."
+      },
+      {
+        "line": 41,
+        "text": "| `Sp(2,R)` | closed 3-generator subalgebra | brackets/commutators close with no extra generators |"
+      },
+      {
+        "line": 55,
+        "text": "is not `Sp(2,R)`, which is a continuous non-Abelian Lie group."
+      },
+      {
+        "line": 63,
+        "text": "> \"Does the refinement/continuum limit of the relational history generator produce a continuous canonical generator, and can three such generators close into `sp(2,R)`?\""
+      },
+      {
+        "line": 95,
+        "text": "with non-degenerate structure constants that can be mapped to `sp(2,R)` by a linear change of basis."
+      },
+      {
+        "line": 101,
+        "text": "Even if an `sp(2,R)` algebra is found, a second time has not yet been demonstrated. We must reconstruct the parent kinetic quadratic form and verify two negative directions before gauge reduction:"
+      },
+      {
+        "line": 104,
+        "text": "\\operatorname{signature}(G_{parent})=(d,2)."
+      },
+      {
+        "line": 156,
+        "text": "- parent kinetic form has fewer than two timelike directions;"
+      },
+      {
+        "line": 182,
+        "text": "That would turn the present \"two-time\" idea from an interpretation into a falsifiable structural embedding."
+      },
+      {
+        "line": 191,
+        "text": "4. search all rank-3 subspaces for an `sp(2,R)` isomorphism;"
+      },
+      {
+        "line": 202,
+        "text": "> **BQG contains an exact finite relational-history control and a conditional 3+1/HDA chain, but a genuine Bars-type two-time parent, an `Sp(2,R)` constraint algebra, and a `(d,2)` Lorentzian metric have not yet been derived.**"
+      }
+    ]
+  },
+  {
+    "git_blob": "344527f956b5688a3c466b63db02831ccd690abf",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1427,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1437,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1441,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "714f55d99362cfbfebd5f355302ec0b828e14b1f",
+    "path": "README_2T_FRONTIER.md",
+    "matches": [
+      {
+        "line": 6,
+        "text": "Это расширение канонического README посвящено вопросу, который появился после сопоставления BQG с Two-Time Physics (2T): может ли существующая relational-history структура BQG быть не просто внутренним clock, а тенью более глубокой двухвременной constrained theory?"
+      },
+      {
+        "line": 55,
+        "text": "D. Sp(2,R)-тип gauge symmetry"
+      },
+      {
+        "line": 56,
+        "text": "E. настоящий metric signature (d,2)"
+      },
+      {
+        "line": 61,
+        "text": "## 3. Почему здесь появляется Sp(2,R)"
+      },
+      {
+        "line": 63,
+        "text": "В Bars 2T Physics parent system живёт в `d+2` измерениях и обладает `Sp(2,R)` gauge symmetry в фазовом пространстве. Канонический constraint fingerprint имеет вид"
+      },
+      {
+        "line": 71,
+        "text": "с замыканием в `sp(2,R)`."
+      },
+      {
+        "line": 91,
+        "text": "possible Sp(2,R)"
+      },
+      {
+        "line": 120,
+        "text": "с точными коэффициентами, которые после выбора нормировки совпадают с `sp(2,R)`."
+      },
+      {
+        "line": 146,
+        "text": "Если найден `sp(2,R)`-подобный algebraic sector, но нет второй timelike metric direction, корректная формулировка будет:"
+      },
+      {
+        "line": 229,
+        "text": "Sp(2,R) BQG embedding                       : UNTESTED"
+      },
+      {
+        "line": 233,
+        "text": "experimental two-time signature              : NO CLAIM"
+      }
+    ]
+  },
+  {
+    "git_blob": "00753764c3ec7c672a8499656da95b91eba11e0a",
+    "path": "REPOSITORY_AUDIT_2026-08-29.md",
+    "matches": [
+      {
+        "line": 213,
+        "text": "- old infoton/foam/force side sectors;"
+      }
+    ]
+  },
+  {
+    "git_blob": "a82607004011d971c80af9a0e775665f845c85fd",
+    "path": "docs/archive/README_LESSON_2026-08-14.md",
+    "matches": [
+      {
+        "line": 341,
+        "text": "Если — и это дополнительная физическая гипотеза — измеренный закон"
+      },
+      {
+        "line": 515,
+        "text": "## Урок 12. Что такое «инфотон» в этой кандидатной теории"
+      },
+      {
+        "line": 517,
+        "text": "Слово `infoton` здесь используется только как **внутреннее название проекта** для возможного бозонного collective mode информационного/route-сектора."
+      },
+      {
+        "line": 533,
+        "text": "> если route/information sector не содержит ненулевого TT spin-2 компонента, прямой graviton-infoton helicity mixing запрещён representation mismatch."
+      },
+      {
+        "line": 800,
+        "text": "Но это **не доказательство существования физического инфотона** и не измерение `xi`."
+      },
+      {
+        "line": 860,
+        "text": "Эти два положения резонанса различны. Если когда-нибудь будет построен физический infoton sector и вычислен coupling, это даст очень конкретный спектральный falsifier."
+      },
+      {
+        "line": 964,
+        "text": "- существование физического TT infoton mode;"
+      },
+      {
+        "line": 1001,
+        "text": "- `GRAVITON_INFOTON_FOAM_BRIDGE.md` — spin-2/helicity, foam и GW-resonance bridge;"
+      },
+      {
+        "line": 1010,
+        "text": "- `scripts/graviton_infoton_foam_gate.py` — exact j=2 projector + Floquet resonance checks."
+      },
+      {
+        "line": 1021,
+        "text": "python scripts/graviton_infoton_foam_gate.py"
+      }
+    ]
+  },
+  {
+    "git_blob": "3f9a9c50baa7cd772ac5f6f0252f878b3c53ee23",
+    "path": "research/audit_2026_10_10/CONDITIONAL_PROOF.md",
+    "matches": [
+      {
+        "line": 39,
+        "text": "Предположить результат I и III, а дополнительно: в четырёх измерениях существует regular Lorentzian nondegenerate metric phase; pure gravitational leading action является локальным diffeomorphism-invariant функционалом только g; through two derivatives применима derivative expansion; нет дополнитель"
+      }
+    ]
+  },
+  {
+    "git_blob": "9428ca5cc06ede67e822a2b4a47982d62b00cda7",
+    "path": "scripts/bqg_2t_closure_scan.py",
+    "matches": [
+      {
+        "line": 2,
+        "text": "\"\"\"Falsification-first BQG -> Sp(2,R) closure scanner."
+      },
+      {
+        "line": 6,
+        "text": "three-dimensional subspace closes as sl(2,R) ~= sp(2,R)."
+      }
+    ]
+  },
+  {
+    "git_blob": "16cb618d92a4e1be45e1981c8aae75d758913511",
+    "path": "tools/bqg_2t_closure_scan.py",
+    "matches": [
+      {
+        "line": 2,
+        "text": "\"\"\"Generic falsification-first scanner for a candidate BQG -> Sp(2,R) closure."
+      },
+      {
+        "line": 104,
+        "text": "    print(\"NOTE: closure is necessary, not sufficient, for Sp(2,R). Canonical two-time and (d,2) signature gates remain separate.\")"
+      }
+    ]
+  },
+  {
+    "git_blob": "8c935f68cf8fc94a0a3e3ed5c8a83f676c6deb1c",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "12c0efa8cf4e6b30c1d44078288f1dc697d43a38",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "b3d9ccb588194869242bc426c3e5c844d2a16e9c",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "27052c04d0db128aeb0ea0fb10e8833ebaa65019",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "32a1b6f10cdb4b3821df69566517fdcc87e5ee65",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "8172e6566bbffdaf9778b764f025b4e2b0bc3594",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "d875df45e3a0df7bb220df561f079fa28fba54cd",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "b84cef3e8fa11f801e48e7e72916fe456db118cf",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "9c142e44ea5d6cca9ff539c1d5940a3e9d6ec766",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "b74339fc33bb9726b460f6f558c781b199604e3a",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1425,
+        "text": "Potential two-time embedding требует реальной structure"
+      },
+      {
+        "line": 1435,
+        "text": "с $Sp(2,\\mathbb R)$ closure."
+      },
+      {
+        "line": 1439,
+        "text": "- exact $Sp(2,\\mathbb R)$ closure;"
+      }
+    ]
+  },
+  {
+    "git_blob": "bc05ea59b698f6b379b239b457c62db964bae560",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 462,
+        "text": "- 2T / extra-dimensional гипотезы выведены из BQG;"
+      }
+    ]
+  },
+  {
+    "git_blob": "e6a41ef30587db513c57a7aa268bb35eba5cbc25",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1964,
+        "text": "может ли relational-history sector быть shadow более глубокой two-time theory?"
+      },
+      {
+        "line": 1985,
+        "text": "Sp(2,\\mathbb R)"
+      },
+      {
+        "line": 1999,
+        "text": "Sp(2,\\mathbb R)\\ \\text{closure},"
+      },
+      {
+        "line": 2014,
+        "text": "> BQG уже является two-time theory."
+      },
+      {
+        "line": 2628,
+        "text": "Two-Time Physics hypothesis с $Sp(2,\\mathbb R)$-type gauge structure."
+      },
+      {
+        "line": 2728,
+        "text": "Не считать 2T analogy $Sp(2,\\mathbb R)$ theorem."
+      },
+      {
+        "line": 6464,
+        "text": "пока нет $Sp(2,\\mathbb R)$ closure."
+      }
+    ]
+  },
+  {
+    "git_blob": "9e15126eafe3df4c4b0e267cbf804f35ca318a77",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1964,
+        "text": "может ли relational-history sector быть shadow более глубокой two-time theory?"
+      },
+      {
+        "line": 1985,
+        "text": "Sp(2,\\mathbb R)"
+      },
+      {
+        "line": 1999,
+        "text": "Sp(2,\\mathbb R)\\ \\text{closure},"
+      },
+      {
+        "line": 2014,
+        "text": "> BQG уже является two-time theory."
+      },
+      {
+        "line": 2628,
+        "text": "Two-Time Physics hypothesis с \\(Sp(2,\\mathbb R)\\)-type gauge structure."
+      },
+      {
+        "line": 2728,
+        "text": "Не считать 2T analogy \\(Sp(2,\\mathbb R)\\) theorem."
+      },
+      {
+        "line": 6464,
+        "text": "пока нет \\(Sp(2,\\mathbb R)\\) closure."
+      }
+    ]
+  },
+  {
+    "git_blob": "da9cffdfb6a5ccaffde76be4625f43d0dd9c1985",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1964,
+        "text": "может ли relational-history sector быть shadow более глубокой two-time theory?"
+      },
+      {
+        "line": 1985,
+        "text": "Sp(2,\\mathbb R)"
+      },
+      {
+        "line": 1999,
+        "text": "Sp(2,\\mathbb R)\\ \\text{closure},"
+      },
+      {
+        "line": 2014,
+        "text": "> BQG уже является two-time theory."
+      },
+      {
+        "line": 2628,
+        "text": "Two-Time Physics hypothesis с \\(Sp(2,\\mathbb R)\\)-type gauge structure."
+      },
+      {
+        "line": 2728,
+        "text": "Не считать 2T analogy \\(Sp(2,\\mathbb R)\\) theorem."
+      },
+      {
+        "line": 6464,
+        "text": "пока нет \\(Sp(2,\\mathbb R)\\) closure."
+      }
+    ]
+  },
+  {
+    "git_blob": "79e8e8a05357e09dc1eccc8f99a0bac75f0d2ae6",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1964,
+        "text": "может ли relational-history sector быть shadow более глубокой two-time theory?"
+      },
+      {
+        "line": 1985,
+        "text": "Sp(2,\\mathbb R)"
+      },
+      {
+        "line": 1999,
+        "text": "Sp(2,\\mathbb R)\\ \\text{closure},"
+      },
+      {
+        "line": 2014,
+        "text": "> BQG уже является two-time theory."
+      },
+      {
+        "line": 2628,
+        "text": "Two-Time Physics hypothesis с \\(Sp(2,\\mathbb R)\\)-type gauge structure."
+      },
+      {
+        "line": 2728,
+        "text": "Не считать 2T analogy \\(Sp(2,\\mathbb R)\\) theorem."
+      }
+    ]
+  },
+  {
+    "git_blob": "05a2071409f00eef0540ecd29f1faae92b9c40ee",
+    "path": "scripts/bqg_2t_closure_scan.py",
+    "matches": [
+      {
+        "line": 2,
+        "text": "\"\"\"Falsification-first BQG -> Sp(2,R) closure scanner."
+      },
+      {
+        "line": 6,
+        "text": "three-dimensional subspace closes as sl(2,R) ~= sp(2,R)."
+      }
+    ]
+  },
+  {
+    "git_blob": "fd48a0837feb6507088fb4b6f1c92ab55cc5e85b",
+    "path": ".github/workflows/core-regression.yml",
+    "matches": [
+      {
+        "line": 53,
+        "text": "        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json"
+      }
+    ]
+  },
+  {
+    "git_blob": "8d80059e9c59b79418ccc9229d152c378d475dc0",
+    "path": "BCQG_CANDIDATE_THEORY_V1_2.md",
+    "matches": [
+      {
+        "line": 433,
+        "text": "Mirror-force, infoton, foam-spectrum and GW-resonance constructions are extensions and are not evidence for the gravity core."
+      }
+    ]
+  },
+  {
+    "git_blob": "fac35c7a80b12aa3bf9809d2a460205a67f17c2c",
+    "path": "BCQG_CORE_CANDIDATE_V1.md",
+    "matches": [
+      {
+        "line": 7,
+        "text": "Mirror force, `infoton`, foam-spectrum and GW-resonance branches are separate extensions and are not used as evidence for the gravity core."
+      },
+      {
+        "line": 285,
+        "text": "Mirror force, `infoton`, foam-spectrum and GW-resonance hypotheses remain separate extensions."
+      }
+    ]
+  },
+  {
+    "git_blob": "bbf50031f13ecc60513731608ef896dd591e1f92",
+    "path": "GRAVITON_INFOTON_FOAM_BRIDGE.md",
+    "matches": [
+      {
+        "line": 1,
+        "text": "# Graviton helicity qubit, candidate infoton and vacuum-foam bridge"
+      },
+      {
+        "line": 5,
+        "text": "This note sharpens the statement “graviton spin and infoton spin are bits”. The exact statement is subtler and stronger:"
+      },
+      {
+        "line": 63,
+        "text": "## 3. Project definition of a CIMFIG “infoton”"
+      },
+      {
+        "line": 65,
+        "text": "The word `infoton` is used here only as a project-local name for a **candidate route/information-sector bosonic collective mode**. No Landauer-mass formula or external particle claim is imported."
+      },
+      {
+        "line": 74,
+        "text": "> direct graviton-infoton mode mixing requires a nonzero TT spin-2 component in the information-sector operator. If the microscopic route sector is purely scalar, the proposed linear resonance is forbidden by representation mismatch."
+      },
+      {
+        "line": 190,
+        "text": "Thus the resonance mechanism itself is verified. What is **not** verified is that nature supplies a CIMFIG infoton or a large enough coupling `xi`."
+      },
+      {
+        "line": 222,
+        "text": "These papers motivate mechanisms only. They do not validate the specific CIMFIG infoton hypothesis."
+      },
+      {
+        "line": 226,
+        "text": "**Candidate-theory extension.** The spin-2 qubit decomposition is exact finite mathematics. The foam interpretation and graviton-infoton resonance are conditional physical hypotheses with explicit falsifiers and a missing microscopic coupling derivation."
+      }
+    ]
+  },
+  {
+    "git_blob": "728b42aa534a91577ace00934402f9b9cdc44fc5",
+    "path": "OPEN_PROBLEMS.md",
+    "matches": [
+      {
+        "line": 7,
+        "text": "`GRAVITON_INFOTON_FOAM_BRIDGE.md` adds one exact finite bridge and one conditional physical extension."
+      }
+    ]
+  },
+  {
+    "git_blob": "1ee0c963747753138e127ee83cecdb24bff17e19",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 344,
+        "text": "Если — и это дополнительная физическая гипотеза — измеренный закон"
+      },
+      {
+        "line": 516,
+        "text": "## Урок 12. Что такое «инфотон» в этой кандидатной теории"
+      },
+      {
+        "line": 518,
+        "text": "Слово `infoton` здесь используется только как **внутреннее название проекта** для возможного бозонного collective mode информационного/route-сектора."
+      },
+      {
+        "line": 534,
+        "text": "> если route/information sector не содержит ненулевого TT spin-2 компонента, прямой graviton-infoton helicity mixing запрещён representation mismatch."
+      },
+      {
+        "line": 801,
+        "text": "Но это **не доказательство существования физического инфотона** и не измерение `xi`."
+      },
+      {
+        "line": 859,
+        "text": "Если когда-нибудь будет построен физический infoton sector и вычислен coupling, эти два разных положения резонанса дадут конкретный спектральный falsifier."
+      },
+      {
+        "line": 1999,
+        "text": "- существование физического TT infoton mode;"
+      },
+      {
+        "line": 2084,
+        "text": "- `GRAVITON_INFOTON_FOAM_BRIDGE.md` — spin-2/helicity, foam и GW-resonance bridge;"
+      },
+      {
+        "line": 2096,
+        "text": "- `scripts/graviton_infoton_foam_gate.py` — exact j=2 projector + Floquet resonance checks;"
+      },
+      {
+        "line": 2110,
+        "text": "python scripts/graviton_infoton_foam_gate.py"
+      }
+    ]
+  },
+  {
+    "git_blob": "3b950457fd1042f58489b5de72a7c2fb2e2afe27",
+    "path": "THEORY_STATUS.md",
+    "matches": [
+      {
+        "line": 268,
+        "text": "Mirror/infoton/foam/GW-resonance branches remain extensions and are not used to certify the gravity core."
+      }
+    ]
+  },
+  {
+    "git_blob": "ce725a3f9359f9b2083fc26c9193dc1c86fd5982",
+    "path": "scripts/graviton_infoton_foam_gate.py",
+    "matches": [
+      {
+        "line": 138,
+        "text": "        \"scope\": \"resonance is conditional on a nonzero TT metric coupling xi; the gate does not establish an infoton or derive xi\","
+      },
+      {
+        "line": 170,
+        "text": "        \"candidate_infoton_definition\": \"project-local route/information-sector bosonic collective mode; binary polarization does not by itself determine Lorentz spin\","
+      },
+      {
+        "line": 172,
+        "text": "        \"not_claimed\": [\"new experimentally observed particle\", \"vacuum energy extraction\", \"proof that all quantum foam is caused by gravitational waves\", \"derived infoton-graviton coupling xi\"],"
+      }
+    ]
+  },
+  {
+    "git_blob": "de43a07d87ff9d867d7af139468b862de039422b",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 32,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"Foam-spectrum and GW-resonance statements require additional identifications/couplings and are extensions, not evidence used for the BCQG v1.2 gravity core.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/graviton_infoton_foam_gate.py\"]},"
+      }
+    ]
+  },
+  {
+    "git_blob": "66e6215cabcb3bd6463634d44acababb75f3269b",
+    "path": "PHYSICALIZATION_SCALE_OBSERVABLE_PREDICTION.md",
+    "matches": [
+      {
+        "line": 315,
+        "text": "## 9. Why the mirror and infoton branches are not first"
+      }
+    ]
+  },
+  {
+    "git_blob": "b88ac3fe342a39d371647075cb563bd3e0a5411a",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "b03db96c1e7e999b87cba262d958dd977c697ab0",
+    "path": ".github/workflows/core-regression.yml",
+    "matches": [
+      {
+        "line": 53,
+        "text": "        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json"
+      }
+    ]
+  },
+  {
+    "git_blob": "75beee6992bcf139e87ee8e7737ee011e5245969",
+    "path": "OPEN_PROBLEMS.md",
+    "matches": [
+      {
+        "line": 62,
+        "text": "`GRAVITON_INFOTON_FOAM_BRIDGE.md` adds one exact finite bridge and one conditional physical extension."
+      }
+    ]
+  },
+  {
+    "git_blob": "51324a2f97c8d988620db996b34546c5401aea21",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 1048,
+        "text": "- physical infoton mode/coupling;"
+      }
+    ]
+  },
+  {
+    "git_blob": "de081f474aca797b7adff1f383ab42f592a80222",
+    "path": ".github/workflows/core-regression.yml",
+    "matches": [
+      {
+        "line": 53,
+        "text": "        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json"
+      }
+    ]
+  },
+  {
+    "git_blob": "a84c297cbe2af34c8686d7d2d1fefae1be8bc04d",
+    "path": "START_HERE.md",
+    "matches": [
+      {
+        "line": 212,
+        "text": "Mirror force, infoton, foam-spectrum and GW-resonance branches are extensions, not evidence for the gravity core."
+      }
+    ]
+  },
+  {
+    "git_blob": "1d2580465d04a9d8c5c2d311f6349f57b4b43a13",
+    "path": "THEORY_STATUS.md",
+    "matches": [
+      {
+        "line": 233,
+        "text": "Mirror/infoton/foam/GW-resonance branches remain extensions and are not used to certify the gravity core."
+      }
+    ]
+  },
+  {
+    "git_blob": "052860048c29b48dd01ee72daccd0332373bdc0e",
+    "path": "START_HERE.md",
+    "matches": [
+      {
+        "line": 171,
+        "text": "Mirror force, infoton, foam-spectrum and GW-resonance branches are extensions, not evidence for the gravity core."
+      }
+    ]
+  },
+  {
+    "git_blob": "5e9f43df6c385597aec665300564191241b9aff4",
+    "path": "START_HERE.md",
+    "matches": [
+      {
+        "line": 153,
+        "text": "Mirror force, infoton, foam-spectrum and GW-resonance branches are extensions, not evidence for the gravity core."
+      }
+    ]
+  },
+  {
+    "git_blob": "f209d734b387d9e5a6079faebb6882b45c9382ca",
+    "path": "THEORY_STATUS.md",
+    "matches": [
+      {
+        "line": 231,
+        "text": "Mirror/infoton/foam/GW-resonance branches remain extensions and are not used to certify the gravity core."
+      }
+    ]
+  },
+  {
+    "git_blob": "933d54f7a772d1e41663cdd1f77c508a2edb23cf",
+    "path": "START_HERE.md",
+    "matches": [
+      {
+        "line": 150,
+        "text": "Mirror force, infoton, foam-spectrum and GW-resonance branches are extensions, not evidence for the gravity core."
+      }
+    ]
+  },
+  {
+    "git_blob": "c652e54ebfead33f8bb3a13a38b7b4bd74ffd156",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 31,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"Foam-spectrum and GW-resonance statements require additional identifications/couplings and are extensions, not evidence used for the BCQG v1.2 gravity core.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/graviton_infoton_foam_gate.py\"]},"
+      }
+    ]
+  },
+  {
+    "git_blob": "829834a563b1a0da0c9eff3d38d7fd09b172fde0",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 27,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"The k^1.003414 foam spectrum follows only if the measured smoothing exponent is a true quantum RMS exponent, and the GW information-mode resonance requires a derived nonzero microscopic TT coupling.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"sc"
+      }
+    ]
+  },
+  {
+    "git_blob": "5b560d1a0fa64f60b80f2ab744ab452b1426e93f",
+    "path": "THEORY_STATUS.md",
+    "matches": [
+      {
+        "line": 355,
+        "text": "Mirror force, `infoton`, the conditional foam spectrum and GW-resonance ideas remain separate extensions and are not evidence for the gravity-core HDA."
+      }
+    ]
+  },
+  {
+    "git_blob": "6e26423c2e1324a437eef4f5ab0de1f49bfd365e",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 25,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"The k^1.003414 foam spectrum follows only if the measured smoothing exponent is a true quantum RMS exponent, and the GW information-mode resonance requires a derived nonzero microscopic TT coupling.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"sc"
+      }
+    ]
+  },
+  {
+    "git_blob": "4f6a1fb566dcdf377a94f9d417751dd87b703f8c",
+    "path": "BCQG_CORE_CANDIDATE_V1.md",
+    "matches": [
+      {
+        "line": 7,
+        "text": "This document defines the gravity core. Mirror force, `infoton`, foam-spectrum and GW-resonance branches are separate extensions."
+      },
+      {
+        "line": 346,
+        "text": "Mirror force, `infoton`, foam-spectrum and GW-resonance hypotheses remain separate extensions. They are not evidence for the gravity core."
+      }
+    ]
+  },
+  {
+    "git_blob": "f522c41d6080f0b69733ec72ecc420e0baa50c3a",
+    "path": "START_HERE.md",
+    "matches": [
+      {
+        "line": 224,
+        "text": "- `infoton` route boson;"
+      }
+    ]
+  },
+  {
+    "git_blob": "4b8b3b4c8ba477a27e41af707b6b6ae114b1416c",
+    "path": "THEORY_STATUS.md",
+    "matches": [
+      {
+        "line": 457,
+        "text": "Mirror force, `infoton`, the conditional `P_delta_g(k)~k^1.003414` foam spectrum and GW-driven route-mode resonance remain separate extensions and are not evidence for the gravity-core HDA."
+      }
+    ]
+  },
+  {
+    "git_blob": "7fe5b037c50739c2b1e03884f64267b15efddbad",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 25,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"The k^1.003414 foam spectrum follows only if the measured smoothing exponent is a true quantum RMS exponent, and the GW information-mode resonance requires a derived nonzero microscopic TT coupling.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"sc"
+      }
+    ]
+  },
+  {
+    "git_blob": "11a08127da068899a774b2b216b3615133614c16",
+    "path": "START_HERE.md",
+    "matches": [
+      {
+        "line": 204,
+        "text": "- `infoton` route boson;"
+      }
+    ]
+  },
+  {
+    "git_blob": "b76551f844650843998c8befabe11a9d3f575ad7",
+    "path": "BCQG_CORE_CANDIDATE_V1.md",
+    "matches": [
+      {
+        "line": 7,
+        "text": "This document defines the gravity core. Mirror-force, `infoton`, foam-spectrum and GW-resonance ideas are separate extensions and are not used as evidence for the core."
+      },
+      {
+        "line": 501,
+        "text": "- `infoton`/route bosonic mode;"
+      }
+    ]
+  },
+  {
+    "git_blob": "c6a67aec35c850189e0e53ca85d1ae0f0cfbee6e",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 21,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"The k^1.003414 foam spectrum follows only if the measured smoothing exponent is a true quantum RMS exponent, and the GW information-mode resonance requires a derived nonzero microscopic TT coupling.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"sc"
+      }
+    ]
+  },
+  {
+    "git_blob": "1b04972fd1f1a3706484e9365c225e6d2f45bb24",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 20,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"The k^1.003414 foam spectrum follows only if the measured smoothing exponent is a true quantum RMS exponent, and the GW information-mode resonance requires a derived nonzero microscopic TT coupling.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"sc"
+      }
+    ]
+  },
+  {
+    "git_blob": "90570151b5e97342567de22a63b36e51df6b9483",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 93,
+        "text": "      \"evidence\": [\"GRAVITON_INFOTON_FOAM_BRIDGE.md\", \"scripts/graviton_infoton_foam_gate.py\"]"
+      }
+    ]
+  },
+  {
+    "git_blob": "2fa93f883412c8aa017a78dc31b96a8c7ed91100",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 87,
+        "text": "      \"evidence\": [\"GRAVITON_INFOTON_FOAM_BRIDGE.md\", \"scripts/graviton_infoton_foam_gate.py\"]"
+      }
+    ]
+  },
+  {
+    "git_blob": "2784f47ae3c9c45d5c97926f5cf0f429e6963554",
+    "path": "BCQG_CORE_CANDIDATE_V1.md",
+    "matches": [
+      {
+        "line": 7,
+        "text": "This document defines the gravity core. Mirror-force, `infoton`, foam-spectrum and GW-resonance ideas are separate extensions and are not used as evidence for the core."
+      },
+      {
+        "line": 464,
+        "text": "- `infoton`/route bosonic mode;"
+      }
+    ]
+  },
+  {
+    "git_blob": "40378eee0147084dc2da5231d91ba6ae7d97550e",
+    "path": "BCQG_CORE_CANDIDATE_V1.md",
+    "matches": [
+      {
+        "line": 337,
+        "text": "- the candidate `infoton` mode;"
+      }
+    ]
+  },
+  {
+    "git_blob": "8d69f3a5272291421a8a97367b21eab3132e9d4f",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 15,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 16,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "377cb5eba52e4f8b6ace3c09ee1245750da5913a",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "62ce6e8fbc4a6c159e1dcd2c2a7e00c346e4b568",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "51b82b6dada4220ddafa670e4285e98e4d256aba",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "df42ef3ea77a7524735323c906ef075bfa1985df",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "3b0057e608d556d1ebb5cb1d7ace4d620c1f8fb5",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "beeb78add3c14fd0cbeef118d8d1ac1be51abe23",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "0845e200c9b2d5132e4e6966f08f02266a5fe146",
+    "path": ".github/workflows/core-regression.yml",
+    "matches": [
+      {
+        "line": 53,
+        "text": "        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json"
+      }
+    ]
+  },
+  {
+    "git_blob": "01f9b50d142641a762932116830174f3495b5dc3",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "a0ea96508ab557762e055431a5f959aeee3c2222",
+    "path": ".github/workflows/core-regression.yml",
+    "matches": [
+      {
+        "line": 53,
+        "text": "        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json"
+      }
+    ]
+  },
+  {
+    "git_blob": "967ab765d8b89a0353592b11e4db576ae83bd199",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "c8802035693f337311ab6fd7c5177d6d7656ea70",
+    "path": ".github/workflows/core-regression.yml",
+    "matches": [
+      {
+        "line": 53,
+        "text": "        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json"
+      }
+    ]
+  },
+  {
+    "git_blob": "24c2093220fea693d50fe06765ccb9ca62d2d26b",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "dc8cee2d178d6ad0ea6158f28785f25fc8d35e7b",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 343,
+        "text": "Если — и это дополнительная физическая гипотеза — измеренный закон"
+      },
+      {
+        "line": 515,
+        "text": "## Урок 12. Что такое «инфотон» в этой кандидатной теории"
+      },
+      {
+        "line": 517,
+        "text": "Слово `infoton` здесь используется только как **внутреннее название проекта** для возможного бозонного collective mode информационного/route-сектора."
+      },
+      {
+        "line": 533,
+        "text": "> если route/information sector не содержит ненулевого TT spin-2 компонента, прямой graviton-infoton helicity mixing запрещён representation mismatch."
+      },
+      {
+        "line": 800,
+        "text": "Но это **не доказательство существования физического инфотона** и не измерение `xi`."
+      },
+      {
+        "line": 858,
+        "text": "Если когда-нибудь будет построен физический infoton sector и вычислен coupling, эти два разных положения резонанса дадут конкретный спектральный falsifier."
+      },
+      {
+        "line": 1791,
+        "text": "- существование физического TT infoton mode;"
+      },
+      {
+        "line": 1869,
+        "text": "- `GRAVITON_INFOTON_FOAM_BRIDGE.md` — spin-2/helicity, foam и GW-resonance bridge;"
+      },
+      {
+        "line": 1880,
+        "text": "- `scripts/graviton_infoton_foam_gate.py` — exact j=2 projector + Floquet resonance checks;"
+      },
+      {
+        "line": 1893,
+        "text": "python scripts/graviton_infoton_foam_gate.py"
+      }
+    ]
+  },
+  {
+    "git_blob": "11c9b57ffa1953a083123997d3a2907003e3d18d",
+    "path": ".github/workflows/core-regression.yml",
+    "matches": [
+      {
+        "line": 53,
+        "text": "        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json"
+      }
+    ]
+  },
+  {
+    "git_blob": "53111ffe16a67add286a6439aa149d508ef3fc9d",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "450fa93a5f020a9476f825618109045c9327095a",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 342,
+        "text": "Если — и это дополнительная физическая гипотеза — измеренный закон"
+      },
+      {
+        "line": 514,
+        "text": "## Урок 12. Что такое «инфотон» в этой кандидатной теории"
+      },
+      {
+        "line": 516,
+        "text": "Слово `infoton` здесь используется только как **внутреннее название проекта** для возможного бозонного collective mode информационного/route-сектора."
+      },
+      {
+        "line": 532,
+        "text": "> если route/information sector не содержит ненулевого TT spin-2 компонента, прямой graviton-infoton helicity mixing запрещён representation mismatch."
+      },
+      {
+        "line": 799,
+        "text": "Но это **не доказательство существования физического инфотона** и не измерение `xi`."
+      },
+      {
+        "line": 857,
+        "text": "Если когда-нибудь будет построен физический infoton sector и вычислен coupling, эти два разных положения резонанса дадут конкретный спектральный falsifier."
+      },
+      {
+        "line": 1401,
+        "text": "- существование физического TT infoton mode;"
+      },
+      {
+        "line": 1456,
+        "text": "- `GRAVITON_INFOTON_FOAM_BRIDGE.md` — spin-2/helicity, foam и GW-resonance bridge;"
+      },
+      {
+        "line": 1466,
+        "text": "- `scripts/graviton_infoton_foam_gate.py` — exact j=2 projector + Floquet resonance checks;"
+      },
+      {
+        "line": 1478,
+        "text": "python scripts/graviton_infoton_foam_gate.py"
+      }
+    ]
+  },
+  {
+    "git_blob": "056d9ac0401f47c771700606d6c77394b76c5e6e",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "91c038502bddcbaf88ccc9df7e2013f37de9c598",
+    "path": ".github/workflows/core-regression.yml",
+    "matches": [
+      {
+        "line": 53,
+        "text": "        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json"
+      }
+    ]
+  },
+  {
+    "git_blob": "67b5ece49136071675a8453c9f201a272a221897",
+    "path": ".github/workflows/core-regression.yml",
+    "matches": [
+      {
+        "line": 53,
+        "text": "        run: python scripts/graviton_infoton_foam_gate.py --output verification_results/GRAVITON_INFOTON_FOAM.json"
+      }
+    ]
+  },
+  {
+    "git_blob": "269e17d3e57536ed542fec43260d799ba75a143a",
+    "path": "theory_gates.json",
+    "matches": [
+      {
+        "line": 13,
+        "text": "    {\"id\":\"GQBIT\",\"status\":\"tested_finite\",\"claim\":\"Four microscopic spin-1/2 qubits contain one j=2 irrep; the extremal m=+/-2 states form an exact two-state code inside that spin-2 sector, with zero projector leakage in the finite gate.\",\"evidence\":[\"GRAVITON_INFOTON_FOAM_BRIDGE.md\",\"scripts/gravi"
+      },
+      {
+        "line": 14,
+        "text": "    {\"id\":\"FOAMGW\",\"status\":\"conditional\",\"claim\":\"If the frozen delta-g coarse-graining exponent is a quantum RMS exponent, it implies low-k P(k)~k^1.003414; if a route/information bosonic mode has a nonzero TT quadratic metric coupling, gravitational-wave pumping produces a first parametric resona"
+      }
+    ]
+  },
+  {
+    "git_blob": "20518f8aa8b0a2ff050a5bbee7537e5d8e78dc5b",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 354,
+        "text": "- масса инфотона использует $\\chi_I=2K^2+2K+1=85$;"
+      },
+      {
+        "line": 607,
+        "text": "Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца $G(N, K, p)$ с тремя числовыми параметрами $K = 6$, $p = 4.8027 \\times 10^{-42}$, $N = 4.197668 \\times 10^{121}$. Из этих трех чисел выводятся **71 физическая "
+      },
+      {
+        "line": 625,
+        "text": "4. [Инфотон: фундаментальный квант информации](#4-инфотон-фундаментальный-квант-информации)"
+      },
+      {
+        "line": 626,
+        "text": "   - 4.1 [Теорема 1: Существование инфотона](#41-теорема-1-существование-инфотона)"
+      },
+      {
+        "line": 627,
+        "text": "   - 4.2 [Теорема 2: Масса инфотона](#42-теорема-2-масса-инфотона)"
+      },
+      {
+        "line": 630,
+        "text": "   - 4.5 [Сводная таблица инфотона](#45-сводная-таблица-инфотона)"
+      },
+      {
+        "line": 631,
+        "text": "5. [BIP39: язык инфотона (Теорема 4)](#5-bip39-язык-инфотона-теорема-4)"
+      },
+      {
+        "line": 636,
+        "text": "   - 5.5 [Спектр из инфотона](#55-спектр-из-инфотона)"
+      },
+      {
+        "line": 648,
+        "text": "   - 7.4 [Связь с полем инфотона](#74-связь-с-полем-инфотона)"
+      },
+      {
+        "line": 688,
+        "text": "Основная сущность теории — **инфотон** — квант информации, соответствующий одному нату энтропии графа, с массой $5.60~\\mu\\text{eV}$. Все частицы являются возбуждениями поля инфотона, различающимися целочисленными векторами экспонент $(a,b,c,d,e,f)$, которые определяют их массу через универсальную фо"
+      },
+      {
+        "line": 1056,
+        "text": "## 4. Инфотон: фундаментальный квант информации"
+      },
+      {
+        "line": 1058,
+        "text": "### 4.1 Теорема 1: Существование инфотона"
+      },
+      {
+        "line": 1066,
+        "text": "**Инфотон** — это частица с **минимальным нетривиальным вектором экспонент**:"
+      },
+      {
+        "line": 1084,
+        "text": "### 4.2 Теорема 2: Масса инфотона"
+      },
+      {
+        "line": 1130,
+        "text": "**Константа связи инфотона (единая):**"
+      },
+      {
+        "line": 1149,
+        "text": "Отсюда масса инфотона:"
+      },
+      {
+        "line": 1165,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 1187,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 1201,
+        "text": "### 4.5 Сводная таблица инфотона"
+      },
+      {
+        "line": 1208,
+        "text": "| **BIP39** | 2048 слов = $2^{11}$ состояний инфотона |"
+      },
+      {
+        "line": 1213,
+        "text": "## 5. BIP39: язык инфотона (Теорема 4)"
+      },
+      {
+        "line": 1215,
+        "text": "Стандарт BIP39 (Bitcoin Improvement Proposal 39) для мнемонических seed-фраз — разработанный Питером Вуйлем и другими в 2013 году, задолго до этой теории — является не просто криптографическим удобством. Это **язык инфотонов**: точная реализация информационно-теоретической структуры графа в форме, д"
+      },
+      {
+        "line": 1224,
+        "text": "| 2 | **Размер словаря** | **2048** | $2^{2K-1} = 2^{11}$ | $2^{11} = 2048$ | Все возможные спиновые конфигурации инфотона |"
+      },
+      {
+        "line": 1228,
+        "text": "| 6 | **Всего бит на фразу** | **264** | $4K(2K-1)$ | $24 \\cdot 11 = 264$ | Слов × бит/слово = полный цикл инфотона |"
+      },
+      {
+        "line": 1250,
+        "text": "Каждое слово BIP39 является одной из $2^{11}$ возможных спиновых конфигураций инфотона. 2048 = $2^{11}$ — это число базисных состояний в 11-мерном гильбертовом пространстве инфотона."
+      },
+      {
+        "line": 1290,
+        "text": "264 = 256 + 8 = **полный цикл инфотона**."
+      },
+      {
+        "line": 1320,
+        "text": "### 5.5 Спектр из инфотона"
+      },
+      {
+        "line": 1322,
+        "text": "Все 106 частиц конструируются из инфотона:"
+      },
+      {
+        "line": 1558,
+        "text": "### 7.4 Связь с полем инфотона"
+      },
+      {
+        "line": 1560,
+        "text": "#### 7.4.1 Инфотон как фундаментальная степень свободы"
+      },
+      {
+        "line": 1562,
+        "text": "Инфотон — это квант графовой информации с массой $M_{Inf} = 5.60$ мкэВ и вектором экспонент $(-6, -1, 0, 0, -1, 0)$. Поле инфотона $\\phi(x)$ является базисным полем графа:"
+      },
+      {
+        "line": 1570,
+        "text": "#### 7.4.2 Гравитон как коллективная мода поля инфотона"
+      },
+      {
+        "line": 1572,
+        "text": "Метрический тензор $g_{\\mu\\nu}$ возникает как конденсат билинейной комбинации полей инфотона:"
+      },
+      {
+        "line": 1580,
+        "text": "Флуктуации метрики $\\delta g_{\\mu\\nu}$ являются коллективными возбуждениями поля инфотона:"
+      },
+      {
+        "line": 1586,
+        "text": "**Квантование:** Оператор гравитона $\\hat{h}_{\\mu\\nu}(k)$ выражается через операторы инфотона:"
+      },
+      {
+        "line": 1594,
+        "text": "#### 7.4.3 Иерархия: Инфотон → Гравитон → Частицы"
+      },
+      {
+        "line": 1597,
+        "text": "Infoton (5.60 μeV)"
+      },
+      {
+        "line": 1611,
+        "text": "**Ключевое соотношение:** Отношение планковской массы к массе инфотона:"
+      },
+      {
+        "line": 1617,
+        "text": "То есть гравитон (через $G$) и инфотон связаны теми же структурными функциями $f_1, K$, что и все остальные частицы."
+      },
+      {
+        "line": 1641,
+        "text": "| Инфотон | $(-6,-1,0,0,-1,0)$ | 5.60 мкэВ | $G \\cdot M_{Inf}$ | 1 |"
+      },
+      {
+        "line": 1713,
+        "text": "| **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** |"
+      },
+      {
+        "line": 1730,
+        "text": "**Заключение:** Гравитон математически существует в графе $G(N, K=6, p)$ как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций $f_1$–$f_6$. Все гравитационные явления (от "
+      },
+      {
+        "line": 1999,
+        "text": "Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции:"
+      },
+      {
+        "line": 2009,
+        "text": "| 1 | Инфотон | $\\chi_I=85$ | $\\chi_I m_e/(K f_1^6)$ | 5.60 мкэВ | Новый |"
+      },
+      {
+        "line": 2066,
+        "text": "Энергия инфотона ($M_{Inf} = 5.60$ мкэВ = $8.97 \\times 10^{-40}$ Дж) соответствует температуре:"
+      },
+      {
+        "line": 2078,
+        "text": "| Инфотонов во вселенной | $N = 4.2 \\times 10^{121}$ | голографическая энтропия |"
+      },
+      {
+        "line": 2079,
+        "text": "| Энергия 1 инфотона | $8.97 \\times 10^{-40}$ Дж | $M_{Inf}c^2$ |"
+      },
+      {
+        "line": 2080,
+        "text": "| Бит на инфотон | $1/\\ln 2 = 1.4427$ бит | $1 \\text{ nat} = \\log_2 e$ |"
+      },
+      {
+        "line": 2082,
+        "text": "| Температура инфотона | $9.38 \\times 10^{-17}$ K | $M_{Inf}c^2 / (k_B \\ln 2)$ |"
+      },
+      {
+        "line": 2086,
+        "text": "- **1 инфотон** = 1 кубит графа (минимальная единица квантовой информации)"
+      },
+      {
+        "line": 2207,
+        "text": "Из инфотона ($M_{Inf} = 5.60$ мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент:"
+      },
+      {
+        "line": 2248,
+        "text": "1. **Квантовый симулятор инфотона** — устройство, моделирующее граф $G(N, K, p)$ с параметрами, масштабированными от вселенских до лабораторных. Практическая реализация: FPGA-матрица с $10^6$ логических элементов, эмулирующая $N = 10^6$ узлов графа Уоттса–Строгаца. Применение: симуляция ядерных реак"
+      },
+      {
+        "line": 2250,
+        "text": "2. **Детектор тёмной материи на резонансе инфотона** — масса инфотона $M_{Inf} = 5.60$ мкэВ находится в центре окна поиска ADMX и CASPEr. Прототип детектора: сверхпроводящий микроволновый резонатор с добротностью $Q > 10^6$, настроенный на частоту $\\nu = M_{Inf}c^2/h \\approx 1.36$ ГГц при температур"
+      },
+      {
+        "line": 2272,
+        "text": "Суммарный потенциальный вклад в мировую экономику оценивается в $\\sim 7 \\times 10^{10}$ долларов США к 2030 году, или приблизительно **0.07% мирового ВВП**. При полномасштабном внедрении разработок (квантовый симулятор, детектор тёмной материи, энтропийный генератор) эта цифра может возрасти до $10^"
+      },
+      {
+        "line": 2404,
+        "text": "3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил."
+      },
+      {
+        "line": 2410,
+        "text": "6. **Математическое доказательство гравитона** как безмассовой спин-2 коллективной моды поля инфотона, связанного со всеми частицами и константами через те же структурные функции."
+      },
+      {
+        "line": 2418,
+        "text": "**\"Инфотон — квант графовой информации, единая основа всей физики\"**"
+      },
+      {
+        "line": 2769,
+        "text": "Инфотон определяется как минимальная устойчивая спектральная мода:"
+      },
+      {
+        "line": 2789,
+        "text": "Если $\\lambda_\\star$ существует, то инфотон имеет конечную положительную массу."
+      },
+      {
+        "line": 3072,
+        "text": "| инфотон | `m_e/(Kf_1^6)` | $\\chi_I m_e/(Kf_1^6)$, $\\chi_I=2K^2+2K+1=85$ |"
+      },
+      {
+        "line": 3189,
+        "text": "- инфотон вычисляется через $\\chi_I=85$;"
+      },
+      {
+        "line": 3232,
+        "text": "| infoton_mass | 5.60058744215 micro-eV | 5.6 | 0.01049% | `chi_I m_e/(K f1^6), chi_I=2K^2+2K+1` |"
+      },
+      {
+        "line": 3313,
+        "text": "| infoton_mass | 0.010490038454 | 0.02 |"
+      },
+      {
+        "line": 3340,
+        "text": "| infoton_mass | 5.60058744215 | 5.6 | 0.010490038454 |"
+      },
+      {
+        "line": 3355,
+        "text": "| 262 | $unverified_full_71_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чис"
+      },
+      {
+        "line": 3356,
+        "text": "| 262 | $unverified_106_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чисел в"
+      },
+      {
+        "line": 3364,
+        "text": "| 970 | $unverified_106_claim$ | Все 106 частиц конструируются из инфотона: |"
+      },
+      {
+        "line": 3368,
+        "text": "| 1361 | $unverified_full_71_claim$ | | **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** | |"
+      },
+      {
+        "line": 3369,
+        "text": "| 1378 | $unverified_full_71_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6."
+      },
+      {
+        "line": 3370,
+        "text": "| 1378 | $unverified_106_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6. Все"
+      },
+      {
+        "line": 3397,
+        "text": "| 1647 | $unverified_106_claim$ | Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции: |"
+      },
+      {
+        "line": 3402,
+        "text": "| 1855 | $unverified_106_claim$ | Из инфотона (M_{Inf} = 5.60 мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент: |"
+      },
+      {
+        "line": 3412,
+        "text": "| 2052 | $unverified_106_claim$ | 3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил. |"
+      },
+      {
+        "line": 3487,
+        "text": "| infoton | chi_I(K=6)=85 | PASS | $simplify -> 0$ |"
+      },
+      {
+        "line": 3528,
+        "text": "| infoton | bip39_monomial_micro_eV | PASS | $M_Inf(BIP39)=5.600450 matches 5.600587 (theoretical M_Inf) with error 0.0025%$ |"
+      },
+      {
+        "line": 3533,
+        "text": "| mass | infoton_micro_eV | PASS | `5.60058744215342 matches 5.60058744215342` |"
+      },
+      {
+        "line": 3597,
+        "text": "- масса инфотона;"
+      },
+      {
+        "line": 4383,
+        "text": "Сводка всех предсказаний информационного графа: 445 констант из SciPy CODATA + фундаментальные константы теории (инфотон, спектральные инварианты, космология)."
+      },
+      {
+        "line": 4426,
+        "text": "## Масса инфотона (BIP39-моном)"
+      }
+    ]
+  },
+  {
+    "git_blob": "48c479acab89dcd9002149cd6643ecd0d08c281c",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 242,
+        "text": "- масса инфотона использует $\\chi_I=2K^2+2K+1=85$;"
+      },
+      {
+        "line": 495,
+        "text": "Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца $G(N, K, p)$ с тремя числовыми параметрами $K = 6$, $p = 4.8027 \\times 10^{-42}$, $N = 4.197668 \\times 10^{121}$. Из этих трех чисел выводятся **71 физическая "
+      },
+      {
+        "line": 513,
+        "text": "4. [Инфотон: фундаментальный квант информации](#4-инфотон-фундаментальный-квант-информации)"
+      },
+      {
+        "line": 514,
+        "text": "   - 4.1 [Теорема 1: Существование инфотона](#41-теорема-1-существование-инфотона)"
+      },
+      {
+        "line": 515,
+        "text": "   - 4.2 [Теорема 2: Масса инфотона](#42-теорема-2-масса-инфотона)"
+      },
+      {
+        "line": 518,
+        "text": "   - 4.5 [Сводная таблица инфотона](#45-сводная-таблица-инфотона)"
+      },
+      {
+        "line": 519,
+        "text": "5. [BIP39: язык инфотона (Теорема 4)](#5-bip39-язык-инфотона-теорема-4)"
+      },
+      {
+        "line": 524,
+        "text": "   - 5.5 [Спектр из инфотона](#55-спектр-из-инфотона)"
+      },
+      {
+        "line": 536,
+        "text": "   - 7.4 [Связь с полем инфотона](#74-связь-с-полем-инфотона)"
+      },
+      {
+        "line": 576,
+        "text": "Основная сущность теории — **инфотон** — квант информации, соответствующий одному нату энтропии графа, с массой $5.60~\\mu\\text{eV}$. Все частицы являются возбуждениями поля инфотона, различающимися целочисленными векторами экспонент $(a,b,c,d,e,f)$, которые определяют их массу через универсальную фо"
+      },
+      {
+        "line": 944,
+        "text": "## 4. Инфотон: фундаментальный квант информации"
+      },
+      {
+        "line": 946,
+        "text": "### 4.1 Теорема 1: Существование инфотона"
+      },
+      {
+        "line": 954,
+        "text": "**Инфотон** — это частица с **минимальным нетривиальным вектором экспонент**:"
+      },
+      {
+        "line": 972,
+        "text": "### 4.2 Теорема 2: Масса инфотона"
+      },
+      {
+        "line": 1018,
+        "text": "**Константа связи инфотона (единая):**"
+      },
+      {
+        "line": 1037,
+        "text": "Отсюда масса инфотона:"
+      },
+      {
+        "line": 1053,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 1075,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 1089,
+        "text": "### 4.5 Сводная таблица инфотона"
+      },
+      {
+        "line": 1096,
+        "text": "| **BIP39** | 2048 слов = $2^{11}$ состояний инфотона |"
+      },
+      {
+        "line": 1101,
+        "text": "## 5. BIP39: язык инфотона (Теорема 4)"
+      },
+      {
+        "line": 1103,
+        "text": "Стандарт BIP39 (Bitcoin Improvement Proposal 39) для мнемонических seed-фраз — разработанный Питером Вуйлем и другими в 2013 году, задолго до этой теории — является не просто криптографическим удобством. Это **язык инфотонов**: точная реализация информационно-теоретической структуры графа в форме, д"
+      },
+      {
+        "line": 1112,
+        "text": "| 2 | **Размер словаря** | **2048** | $2^{2K-1} = 2^{11}$ | $2^{11} = 2048$ | Все возможные спиновые конфигурации инфотона |"
+      },
+      {
+        "line": 1116,
+        "text": "| 6 | **Всего бит на фразу** | **264** | $4K(2K-1)$ | $24 \\cdot 11 = 264$ | Слов × бит/слово = полный цикл инфотона |"
+      },
+      {
+        "line": 1138,
+        "text": "Каждое слово BIP39 является одной из $2^{11}$ возможных спиновых конфигураций инфотона. 2048 = $2^{11}$ — это число базисных состояний в 11-мерном гильбертовом пространстве инфотона."
+      },
+      {
+        "line": 1178,
+        "text": "264 = 256 + 8 = **полный цикл инфотона**."
+      },
+      {
+        "line": 1208,
+        "text": "### 5.5 Спектр из инфотона"
+      },
+      {
+        "line": 1210,
+        "text": "Все 106 частиц конструируются из инфотона:"
+      },
+      {
+        "line": 1446,
+        "text": "### 7.4 Связь с полем инфотона"
+      },
+      {
+        "line": 1448,
+        "text": "#### 7.4.1 Инфотон как фундаментальная степень свободы"
+      },
+      {
+        "line": 1450,
+        "text": "Инфотон — это квант графовой информации с массой $M_{Inf} = 5.60$ мкэВ и вектором экспонент $(-6, -1, 0, 0, -1, 0)$. Поле инфотона $\\phi(x)$ является базисным полем графа:"
+      },
+      {
+        "line": 1458,
+        "text": "#### 7.4.2 Гравитон как коллективная мода поля инфотона"
+      },
+      {
+        "line": 1460,
+        "text": "Метрический тензор $g_{\\mu\\nu}$ возникает как конденсат билинейной комбинации полей инфотона:"
+      },
+      {
+        "line": 1468,
+        "text": "Флуктуации метрики $\\delta g_{\\mu\\nu}$ являются коллективными возбуждениями поля инфотона:"
+      },
+      {
+        "line": 1474,
+        "text": "**Квантование:** Оператор гравитона $\\hat{h}_{\\mu\\nu}(k)$ выражается через операторы инфотона:"
+      },
+      {
+        "line": 1482,
+        "text": "#### 7.4.3 Иерархия: Инфотон → Гравитон → Частицы"
+      },
+      {
+        "line": 1485,
+        "text": "Infoton (5.60 μeV)"
+      },
+      {
+        "line": 1499,
+        "text": "**Ключевое соотношение:** Отношение планковской массы к массе инфотона:"
+      },
+      {
+        "line": 1505,
+        "text": "То есть гравитон (через $G$) и инфотон связаны теми же структурными функциями $f_1, K$, что и все остальные частицы."
+      },
+      {
+        "line": 1529,
+        "text": "| Инфотон | $(-6,-1,0,0,-1,0)$ | 5.60 мкэВ | $G \\cdot M_{Inf}$ | 1 |"
+      },
+      {
+        "line": 1601,
+        "text": "| **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** |"
+      },
+      {
+        "line": 1618,
+        "text": "**Заключение:** Гравитон математически существует в графе $G(N, K=6, p)$ как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций $f_1$–$f_6$. Все гравитационные явления (от "
+      },
+      {
+        "line": 1887,
+        "text": "Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции:"
+      },
+      {
+        "line": 1897,
+        "text": "| 1 | Инфотон | $\\chi_I=85$ | $\\chi_I m_e/(K f_1^6)$ | 5.60 мкэВ | Новый |"
+      },
+      {
+        "line": 1954,
+        "text": "Энергия инфотона ($M_{Inf} = 5.60$ мкэВ = $8.97 \\times 10^{-40}$ Дж) соответствует температуре:"
+      },
+      {
+        "line": 1966,
+        "text": "| Инфотонов во вселенной | $N = 4.2 \\times 10^{121}$ | голографическая энтропия |"
+      },
+      {
+        "line": 1967,
+        "text": "| Энергия 1 инфотона | $8.97 \\times 10^{-40}$ Дж | $M_{Inf}c^2$ |"
+      },
+      {
+        "line": 1968,
+        "text": "| Бит на инфотон | $1/\\ln 2 = 1.4427$ бит | $1 \\text{ nat} = \\log_2 e$ |"
+      },
+      {
+        "line": 1970,
+        "text": "| Температура инфотона | $9.38 \\times 10^{-17}$ K | $M_{Inf}c^2 / (k_B \\ln 2)$ |"
+      },
+      {
+        "line": 1974,
+        "text": "- **1 инфотон** = 1 кубит графа (минимальная единица квантовой информации)"
+      },
+      {
+        "line": 2095,
+        "text": "Из инфотона ($M_{Inf} = 5.60$ мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент:"
+      },
+      {
+        "line": 2136,
+        "text": "1. **Квантовый симулятор инфотона** — устройство, моделирующее граф $G(N, K, p)$ с параметрами, масштабированными от вселенских до лабораторных. Практическая реализация: FPGA-матрица с $10^6$ логических элементов, эмулирующая $N = 10^6$ узлов графа Уоттса–Строгаца. Применение: симуляция ядерных реак"
+      },
+      {
+        "line": 2138,
+        "text": "2. **Детектор тёмной материи на резонансе инфотона** — масса инфотона $M_{Inf} = 5.60$ мкэВ находится в центре окна поиска ADMX и CASPEr. Прототип детектора: сверхпроводящий микроволновый резонатор с добротностью $Q > 10^6$, настроенный на частоту $\\nu = M_{Inf}c^2/h \\approx 1.36$ ГГц при температур"
+      },
+      {
+        "line": 2160,
+        "text": "Суммарный потенциальный вклад в мировую экономику оценивается в $\\sim 7 \\times 10^{10}$ долларов США к 2030 году, или приблизительно **0.07% мирового ВВП**. При полномасштабном внедрении разработок (квантовый симулятор, детектор тёмной материи, энтропийный генератор) эта цифра может возрасти до $10^"
+      },
+      {
+        "line": 2292,
+        "text": "3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил."
+      },
+      {
+        "line": 2298,
+        "text": "6. **Математическое доказательство гравитона** как безмассовой спин-2 коллективной моды поля инфотона, связанного со всеми частицами и константами через те же структурные функции."
+      },
+      {
+        "line": 2306,
+        "text": "**\"Инфотон — квант графовой информации, единая основа всей физики\"**"
+      },
+      {
+        "line": 2657,
+        "text": "Инфотон определяется как минимальная устойчивая спектральная мода:"
+      },
+      {
+        "line": 2677,
+        "text": "Если $\\lambda_\\star$ существует, то инфотон имеет конечную положительную массу."
+      },
+      {
+        "line": 2960,
+        "text": "| инфотон | `m_e/(Kf_1^6)` | $\\chi_I m_e/(Kf_1^6)$, $\\chi_I=2K^2+2K+1=85$ |"
+      },
+      {
+        "line": 3077,
+        "text": "- инфотон вычисляется через $\\chi_I=85$;"
+      },
+      {
+        "line": 3120,
+        "text": "| infoton_mass | 5.60058744215 micro-eV | 5.6 | 0.01049% | `chi_I m_e/(K f1^6), chi_I=2K^2+2K+1` |"
+      },
+      {
+        "line": 3201,
+        "text": "| infoton_mass | 0.010490038454 | 0.02 |"
+      },
+      {
+        "line": 3228,
+        "text": "| infoton_mass | 5.60058744215 | 5.6 | 0.010490038454 |"
+      },
+      {
+        "line": 3243,
+        "text": "| 262 | $unverified_full_71_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чис"
+      },
+      {
+        "line": 3244,
+        "text": "| 262 | $unverified_106_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чисел в"
+      },
+      {
+        "line": 3252,
+        "text": "| 970 | $unverified_106_claim$ | Все 106 частиц конструируются из инфотона: |"
+      },
+      {
+        "line": 3256,
+        "text": "| 1361 | $unverified_full_71_claim$ | | **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** | |"
+      },
+      {
+        "line": 3257,
+        "text": "| 1378 | $unverified_full_71_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6."
+      },
+      {
+        "line": 3258,
+        "text": "| 1378 | $unverified_106_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6. Все"
+      },
+      {
+        "line": 3285,
+        "text": "| 1647 | $unverified_106_claim$ | Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции: |"
+      },
+      {
+        "line": 3290,
+        "text": "| 1855 | $unverified_106_claim$ | Из инфотона (M_{Inf} = 5.60 мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент: |"
+      },
+      {
+        "line": 3300,
+        "text": "| 2052 | $unverified_106_claim$ | 3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил. |"
+      },
+      {
+        "line": 3375,
+        "text": "| infoton | chi_I(K=6)=85 | PASS | $simplify -> 0$ |"
+      },
+      {
+        "line": 3416,
+        "text": "| infoton | bip39_monomial_micro_eV | PASS | $M_Inf(BIP39)=5.600450 matches 5.600587 (theoretical M_Inf) with error 0.0025%$ |"
+      },
+      {
+        "line": 3421,
+        "text": "| mass | infoton_micro_eV | PASS | `5.60058744215342 matches 5.60058744215342` |"
+      },
+      {
+        "line": 3485,
+        "text": "- масса инфотона;"
+      },
+      {
+        "line": 4271,
+        "text": "Сводка всех предсказаний информационного графа: 445 констант из SciPy CODATA + фундаментальные константы теории (инфотон, спектральные инварианты, космология)."
+      },
+      {
+        "line": 4314,
+        "text": "## Масса инфотона (BIP39-моном)"
+      }
+    ]
+  },
+  {
+    "git_blob": "9cecbbf5d216001647149972b0cf4d98c08ff7f1",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 220,
+        "text": "- масса инфотона использует $\\chi_I=2K^2+2K+1=85$;"
+      },
+      {
+        "line": 473,
+        "text": "Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца $G(N, K, p)$ с тремя числовыми параметрами $K = 6$, $p = 4.8027 \\times 10^{-42}$, $N = 4.197668 \\times 10^{121}$. Из этих трех чисел выводятся **71 физическая "
+      },
+      {
+        "line": 491,
+        "text": "4. [Инфотон: фундаментальный квант информации](#4-инфотон-фундаментальный-квант-информации)"
+      },
+      {
+        "line": 492,
+        "text": "   - 4.1 [Теорема 1: Существование инфотона](#41-теорема-1-существование-инфотона)"
+      },
+      {
+        "line": 493,
+        "text": "   - 4.2 [Теорема 2: Масса инфотона](#42-теорема-2-масса-инфотона)"
+      },
+      {
+        "line": 496,
+        "text": "   - 4.5 [Сводная таблица инфотона](#45-сводная-таблица-инфотона)"
+      },
+      {
+        "line": 497,
+        "text": "5. [BIP39: язык инфотона (Теорема 4)](#5-bip39-язык-инфотона-теорема-4)"
+      },
+      {
+        "line": 502,
+        "text": "   - 5.5 [Спектр из инфотона](#55-спектр-из-инфотона)"
+      },
+      {
+        "line": 514,
+        "text": "   - 7.4 [Связь с полем инфотона](#74-связь-с-полем-инфотона)"
+      },
+      {
+        "line": 554,
+        "text": "Основная сущность теории — **инфотон** — квант информации, соответствующий одному нату энтропии графа, с массой $5.60~\\mu\\text{eV}$. Все частицы являются возбуждениями поля инфотона, различающимися целочисленными векторами экспонент $(a,b,c,d,e,f)$, которые определяют их массу через универсальную фо"
+      },
+      {
+        "line": 922,
+        "text": "## 4. Инфотон: фундаментальный квант информации"
+      },
+      {
+        "line": 924,
+        "text": "### 4.1 Теорема 1: Существование инфотона"
+      },
+      {
+        "line": 932,
+        "text": "**Инфотон** — это частица с **минимальным нетривиальным вектором экспонент**:"
+      },
+      {
+        "line": 950,
+        "text": "### 4.2 Теорема 2: Масса инфотона"
+      },
+      {
+        "line": 996,
+        "text": "**Константа связи инфотона (единая):**"
+      },
+      {
+        "line": 1015,
+        "text": "Отсюда масса инфотона:"
+      },
+      {
+        "line": 1031,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 1053,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 1067,
+        "text": "### 4.5 Сводная таблица инфотона"
+      },
+      {
+        "line": 1074,
+        "text": "| **BIP39** | 2048 слов = $2^{11}$ состояний инфотона |"
+      },
+      {
+        "line": 1079,
+        "text": "## 5. BIP39: язык инфотона (Теорема 4)"
+      },
+      {
+        "line": 1081,
+        "text": "Стандарт BIP39 (Bitcoin Improvement Proposal 39) для мнемонических seed-фраз — разработанный Питером Вуйлем и другими в 2013 году, задолго до этой теории — является не просто криптографическим удобством. Это **язык инфотонов**: точная реализация информационно-теоретической структуры графа в форме, д"
+      },
+      {
+        "line": 1090,
+        "text": "| 2 | **Размер словаря** | **2048** | $2^{2K-1} = 2^{11}$ | $2^{11} = 2048$ | Все возможные спиновые конфигурации инфотона |"
+      },
+      {
+        "line": 1094,
+        "text": "| 6 | **Всего бит на фразу** | **264** | $4K(2K-1)$ | $24 \\cdot 11 = 264$ | Слов × бит/слово = полный цикл инфотона |"
+      },
+      {
+        "line": 1116,
+        "text": "Каждое слово BIP39 является одной из $2^{11}$ возможных спиновых конфигураций инфотона. 2048 = $2^{11}$ — это число базисных состояний в 11-мерном гильбертовом пространстве инфотона."
+      },
+      {
+        "line": 1156,
+        "text": "264 = 256 + 8 = **полный цикл инфотона**."
+      },
+      {
+        "line": 1186,
+        "text": "### 5.5 Спектр из инфотона"
+      },
+      {
+        "line": 1188,
+        "text": "Все 106 частиц конструируются из инфотона:"
+      },
+      {
+        "line": 1424,
+        "text": "### 7.4 Связь с полем инфотона"
+      },
+      {
+        "line": 1426,
+        "text": "#### 7.4.1 Инфотон как фундаментальная степень свободы"
+      },
+      {
+        "line": 1428,
+        "text": "Инфотон — это квант графовой информации с массой $M_{Inf} = 5.60$ мкэВ и вектором экспонент $(-6, -1, 0, 0, -1, 0)$. Поле инфотона $\\phi(x)$ является базисным полем графа:"
+      },
+      {
+        "line": 1436,
+        "text": "#### 7.4.2 Гравитон как коллективная мода поля инфотона"
+      },
+      {
+        "line": 1438,
+        "text": "Метрический тензор $g_{\\mu\\nu}$ возникает как конденсат билинейной комбинации полей инфотона:"
+      },
+      {
+        "line": 1446,
+        "text": "Флуктуации метрики $\\delta g_{\\mu\\nu}$ являются коллективными возбуждениями поля инфотона:"
+      },
+      {
+        "line": 1452,
+        "text": "**Квантование:** Оператор гравитона $\\hat{h}_{\\mu\\nu}(k)$ выражается через операторы инфотона:"
+      },
+      {
+        "line": 1460,
+        "text": "#### 7.4.3 Иерархия: Инфотон → Гравитон → Частицы"
+      },
+      {
+        "line": 1463,
+        "text": "Infoton (5.60 μeV)"
+      },
+      {
+        "line": 1477,
+        "text": "**Ключевое соотношение:** Отношение планковской массы к массе инфотона:"
+      },
+      {
+        "line": 1483,
+        "text": "То есть гравитон (через $G$) и инфотон связаны теми же структурными функциями $f_1, K$, что и все остальные частицы."
+      },
+      {
+        "line": 1507,
+        "text": "| Инфотон | $(-6,-1,0,0,-1,0)$ | 5.60 мкэВ | $G \\cdot M_{Inf}$ | 1 |"
+      },
+      {
+        "line": 1579,
+        "text": "| **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** |"
+      },
+      {
+        "line": 1596,
+        "text": "**Заключение:** Гравитон математически существует в графе $G(N, K=6, p)$ как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций $f_1$–$f_6$. Все гравитационные явления (от "
+      },
+      {
+        "line": 1865,
+        "text": "Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции:"
+      },
+      {
+        "line": 1875,
+        "text": "| 1 | Инфотон | $\\chi_I=85$ | $\\chi_I m_e/(K f_1^6)$ | 5.60 мкэВ | Новый |"
+      },
+      {
+        "line": 1932,
+        "text": "Энергия инфотона ($M_{Inf} = 5.60$ мкэВ = $8.97 \\times 10^{-40}$ Дж) соответствует температуре:"
+      },
+      {
+        "line": 1944,
+        "text": "| Инфотонов во вселенной | $N = 4.2 \\times 10^{121}$ | голографическая энтропия |"
+      },
+      {
+        "line": 1945,
+        "text": "| Энергия 1 инфотона | $8.97 \\times 10^{-40}$ Дж | $M_{Inf}c^2$ |"
+      },
+      {
+        "line": 1946,
+        "text": "| Бит на инфотон | $1/\\ln 2 = 1.4427$ бит | $1 \\text{ nat} = \\log_2 e$ |"
+      },
+      {
+        "line": 1948,
+        "text": "| Температура инфотона | $9.38 \\times 10^{-17}$ K | $M_{Inf}c^2 / (k_B \\ln 2)$ |"
+      },
+      {
+        "line": 1952,
+        "text": "- **1 инфотон** = 1 кубит графа (минимальная единица квантовой информации)"
+      },
+      {
+        "line": 2073,
+        "text": "Из инфотона ($M_{Inf} = 5.60$ мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент:"
+      },
+      {
+        "line": 2114,
+        "text": "1. **Квантовый симулятор инфотона** — устройство, моделирующее граф $G(N, K, p)$ с параметрами, масштабированными от вселенских до лабораторных. Практическая реализация: FPGA-матрица с $10^6$ логических элементов, эмулирующая $N = 10^6$ узлов графа Уоттса–Строгаца. Применение: симуляция ядерных реак"
+      },
+      {
+        "line": 2116,
+        "text": "2. **Детектор тёмной материи на резонансе инфотона** — масса инфотона $M_{Inf} = 5.60$ мкэВ находится в центре окна поиска ADMX и CASPEr. Прототип детектора: сверхпроводящий микроволновый резонатор с добротностью $Q > 10^6$, настроенный на частоту $\\nu = M_{Inf}c^2/h \\approx 1.36$ ГГц при температур"
+      },
+      {
+        "line": 2138,
+        "text": "Суммарный потенциальный вклад в мировую экономику оценивается в $\\sim 7 \\times 10^{10}$ долларов США к 2030 году, или приблизительно **0.07% мирового ВВП**. При полномасштабном внедрении разработок (квантовый симулятор, детектор тёмной материи, энтропийный генератор) эта цифра может возрасти до $10^"
+      },
+      {
+        "line": 2270,
+        "text": "3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил."
+      },
+      {
+        "line": 2276,
+        "text": "6. **Математическое доказательство гравитона** как безмассовой спин-2 коллективной моды поля инфотона, связанного со всеми частицами и константами через те же структурные функции."
+      },
+      {
+        "line": 2284,
+        "text": "**\"Инфотон — квант графовой информации, единая основа всей физики\"**"
+      },
+      {
+        "line": 2635,
+        "text": "Инфотон определяется как минимальная устойчивая спектральная мода:"
+      },
+      {
+        "line": 2655,
+        "text": "Если $\\lambda_\\star$ существует, то инфотон имеет конечную положительную массу."
+      },
+      {
+        "line": 2938,
+        "text": "| инфотон | `m_e/(Kf_1^6)` | $\\chi_I m_e/(Kf_1^6)$, $\\chi_I=2K^2+2K+1=85$ |"
+      },
+      {
+        "line": 3055,
+        "text": "- инфотон вычисляется через $\\chi_I=85$;"
+      },
+      {
+        "line": 3098,
+        "text": "| infoton_mass | 5.60058744215 micro-eV | 5.6 | 0.01049% | `chi_I m_e/(K f1^6), chi_I=2K^2+2K+1` |"
+      },
+      {
+        "line": 3179,
+        "text": "| infoton_mass | 0.010490038454 | 0.02 |"
+      },
+      {
+        "line": 3206,
+        "text": "| infoton_mass | 5.60058744215 | 5.6 | 0.010490038454 |"
+      },
+      {
+        "line": 3221,
+        "text": "| 262 | $unverified_full_71_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чис"
+      },
+      {
+        "line": 3222,
+        "text": "| 262 | $unverified_106_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чисел в"
+      },
+      {
+        "line": 3230,
+        "text": "| 970 | $unverified_106_claim$ | Все 106 частиц конструируются из инфотона: |"
+      },
+      {
+        "line": 3234,
+        "text": "| 1361 | $unverified_full_71_claim$ | | **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** | |"
+      },
+      {
+        "line": 3235,
+        "text": "| 1378 | $unverified_full_71_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6."
+      },
+      {
+        "line": 3236,
+        "text": "| 1378 | $unverified_106_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6. Все"
+      },
+      {
+        "line": 3263,
+        "text": "| 1647 | $unverified_106_claim$ | Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции: |"
+      },
+      {
+        "line": 3268,
+        "text": "| 1855 | $unverified_106_claim$ | Из инфотона (M_{Inf} = 5.60 мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент: |"
+      },
+      {
+        "line": 3278,
+        "text": "| 2052 | $unverified_106_claim$ | 3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил. |"
+      },
+      {
+        "line": 3353,
+        "text": "| infoton | chi_I(K=6)=85 | PASS | $simplify -> 0$ |"
+      },
+      {
+        "line": 3394,
+        "text": "| infoton | bip39_monomial_micro_eV | PASS | $M_Inf(BIP39)=5.600450 matches 5.600587 (theoretical M_Inf) with error 0.0025%$ |"
+      },
+      {
+        "line": 3399,
+        "text": "| mass | infoton_micro_eV | PASS | `5.60058744215342 matches 5.60058744215342` |"
+      },
+      {
+        "line": 3463,
+        "text": "- масса инфотона;"
+      },
+      {
+        "line": 4249,
+        "text": "Сводка всех предсказаний информационного графа: 445 констант из SciPy CODATA + фундаментальные константы теории (инфотон, спектральные инварианты, космология)."
+      },
+      {
+        "line": 4292,
+        "text": "## Масса инфотона (BIP39-моном)"
+      }
+    ]
+  },
+  {
+    "git_blob": "e9a7e53394732931be9de1cebb64bd14e8704fb4",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 214,
+        "text": "- масса инфотона использует $\\chi_I=2K^2+2K+1=85$;"
+      },
+      {
+        "line": 467,
+        "text": "Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца $G(N, K, p)$ с тремя числовыми параметрами $K = 6$, $p = 4.8027 \\times 10^{-42}$, $N = 4.197668 \\times 10^{121}$. Из этих трех чисел выводятся **71 физическая "
+      },
+      {
+        "line": 485,
+        "text": "4. [Инфотон: фундаментальный квант информации](#4-инфотон-фундаментальный-квант-информации)"
+      },
+      {
+        "line": 486,
+        "text": "   - 4.1 [Теорема 1: Существование инфотона](#41-теорема-1-существование-инфотона)"
+      },
+      {
+        "line": 487,
+        "text": "   - 4.2 [Теорема 2: Масса инфотона](#42-теорема-2-масса-инфотона)"
+      },
+      {
+        "line": 490,
+        "text": "   - 4.5 [Сводная таблица инфотона](#45-сводная-таблица-инфотона)"
+      },
+      {
+        "line": 491,
+        "text": "5. [BIP39: язык инфотона (Теорема 4)](#5-bip39-язык-инфотона-теорема-4)"
+      },
+      {
+        "line": 496,
+        "text": "   - 5.5 [Спектр из инфотона](#55-спектр-из-инфотона)"
+      },
+      {
+        "line": 508,
+        "text": "   - 7.4 [Связь с полем инфотона](#74-связь-с-полем-инфотона)"
+      },
+      {
+        "line": 548,
+        "text": "Основная сущность теории — **инфотон** — квант информации, соответствующий одному нату энтропии графа, с массой $5.60~\\mu\\text{eV}$. Все частицы являются возбуждениями поля инфотона, различающимися целочисленными векторами экспонент $(a,b,c,d,e,f)$, которые определяют их массу через универсальную фо"
+      },
+      {
+        "line": 916,
+        "text": "## 4. Инфотон: фундаментальный квант информации"
+      },
+      {
+        "line": 918,
+        "text": "### 4.1 Теорема 1: Существование инфотона"
+      },
+      {
+        "line": 926,
+        "text": "**Инфотон** — это частица с **минимальным нетривиальным вектором экспонент**:"
+      },
+      {
+        "line": 944,
+        "text": "### 4.2 Теорема 2: Масса инфотона"
+      },
+      {
+        "line": 990,
+        "text": "**Константа связи инфотона (единая):**"
+      },
+      {
+        "line": 1009,
+        "text": "Отсюда масса инфотона:"
+      },
+      {
+        "line": 1025,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 1047,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 1061,
+        "text": "### 4.5 Сводная таблица инфотона"
+      },
+      {
+        "line": 1068,
+        "text": "| **BIP39** | 2048 слов = $2^{11}$ состояний инфотона |"
+      },
+      {
+        "line": 1073,
+        "text": "## 5. BIP39: язык инфотона (Теорема 4)"
+      },
+      {
+        "line": 1075,
+        "text": "Стандарт BIP39 (Bitcoin Improvement Proposal 39) для мнемонических seed-фраз — разработанный Питером Вуйлем и другими в 2013 году, задолго до этой теории — является не просто криптографическим удобством. Это **язык инфотонов**: точная реализация информационно-теоретической структуры графа в форме, д"
+      },
+      {
+        "line": 1084,
+        "text": "| 2 | **Размер словаря** | **2048** | $2^{2K-1} = 2^{11}$ | $2^{11} = 2048$ | Все возможные спиновые конфигурации инфотона |"
+      },
+      {
+        "line": 1088,
+        "text": "| 6 | **Всего бит на фразу** | **264** | $4K(2K-1)$ | $24 \\cdot 11 = 264$ | Слов × бит/слово = полный цикл инфотона |"
+      },
+      {
+        "line": 1110,
+        "text": "Каждое слово BIP39 является одной из $2^{11}$ возможных спиновых конфигураций инфотона. 2048 = $2^{11}$ — это число базисных состояний в 11-мерном гильбертовом пространстве инфотона."
+      },
+      {
+        "line": 1150,
+        "text": "264 = 256 + 8 = **полный цикл инфотона**."
+      },
+      {
+        "line": 1180,
+        "text": "### 5.5 Спектр из инфотона"
+      },
+      {
+        "line": 1182,
+        "text": "Все 106 частиц конструируются из инфотона:"
+      },
+      {
+        "line": 1418,
+        "text": "### 7.4 Связь с полем инфотона"
+      },
+      {
+        "line": 1420,
+        "text": "#### 7.4.1 Инфотон как фундаментальная степень свободы"
+      },
+      {
+        "line": 1422,
+        "text": "Инфотон — это квант графовой информации с массой $M_{Inf} = 5.60$ мкэВ и вектором экспонент $(-6, -1, 0, 0, -1, 0)$. Поле инфотона $\\phi(x)$ является базисным полем графа:"
+      },
+      {
+        "line": 1430,
+        "text": "#### 7.4.2 Гравитон как коллективная мода поля инфотона"
+      },
+      {
+        "line": 1432,
+        "text": "Метрический тензор $g_{\\mu\\nu}$ возникает как конденсат билинейной комбинации полей инфотона:"
+      },
+      {
+        "line": 1440,
+        "text": "Флуктуации метрики $\\delta g_{\\mu\\nu}$ являются коллективными возбуждениями поля инфотона:"
+      },
+      {
+        "line": 1446,
+        "text": "**Квантование:** Оператор гравитона $\\hat{h}_{\\mu\\nu}(k)$ выражается через операторы инфотона:"
+      },
+      {
+        "line": 1454,
+        "text": "#### 7.4.3 Иерархия: Инфотон → Гравитон → Частицы"
+      },
+      {
+        "line": 1457,
+        "text": "Infoton (5.60 μeV)"
+      },
+      {
+        "line": 1471,
+        "text": "**Ключевое соотношение:** Отношение планковской массы к массе инфотона:"
+      },
+      {
+        "line": 1477,
+        "text": "То есть гравитон (через $G$) и инфотон связаны теми же структурными функциями $f_1, K$, что и все остальные частицы."
+      },
+      {
+        "line": 1501,
+        "text": "| Инфотон | $(-6,-1,0,0,-1,0)$ | 5.60 мкэВ | $G \\cdot M_{Inf}$ | 1 |"
+      },
+      {
+        "line": 1573,
+        "text": "| **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** |"
+      },
+      {
+        "line": 1590,
+        "text": "**Заключение:** Гравитон математически существует в графе $G(N, K=6, p)$ как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций $f_1$–$f_6$. Все гравитационные явления (от "
+      },
+      {
+        "line": 1859,
+        "text": "Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции:"
+      },
+      {
+        "line": 1869,
+        "text": "| 1 | Инфотон | $\\chi_I=85$ | $\\chi_I m_e/(K f_1^6)$ | 5.60 мкэВ | Новый |"
+      },
+      {
+        "line": 1926,
+        "text": "Энергия инфотона ($M_{Inf} = 5.60$ мкэВ = $8.97 \\times 10^{-40}$ Дж) соответствует температуре:"
+      },
+      {
+        "line": 1938,
+        "text": "| Инфотонов во вселенной | $N = 4.2 \\times 10^{121}$ | голографическая энтропия |"
+      },
+      {
+        "line": 1939,
+        "text": "| Энергия 1 инфотона | $8.97 \\times 10^{-40}$ Дж | $M_{Inf}c^2$ |"
+      },
+      {
+        "line": 1940,
+        "text": "| Бит на инфотон | $1/\\ln 2 = 1.4427$ бит | $1 \\text{ nat} = \\log_2 e$ |"
+      },
+      {
+        "line": 1942,
+        "text": "| Температура инфотона | $9.38 \\times 10^{-17}$ K | $M_{Inf}c^2 / (k_B \\ln 2)$ |"
+      },
+      {
+        "line": 1946,
+        "text": "- **1 инфотон** = 1 кубит графа (минимальная единица квантовой информации)"
+      },
+      {
+        "line": 2067,
+        "text": "Из инфотона ($M_{Inf} = 5.60$ мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент:"
+      },
+      {
+        "line": 2108,
+        "text": "1. **Квантовый симулятор инфотона** — устройство, моделирующее граф $G(N, K, p)$ с параметрами, масштабированными от вселенских до лабораторных. Практическая реализация: FPGA-матрица с $10^6$ логических элементов, эмулирующая $N = 10^6$ узлов графа Уоттса–Строгаца. Применение: симуляция ядерных реак"
+      },
+      {
+        "line": 2110,
+        "text": "2. **Детектор тёмной материи на резонансе инфотона** — масса инфотона $M_{Inf} = 5.60$ мкэВ находится в центре окна поиска ADMX и CASPEr. Прототип детектора: сверхпроводящий микроволновый резонатор с добротностью $Q > 10^6$, настроенный на частоту $\\nu = M_{Inf}c^2/h \\approx 1.36$ ГГц при температур"
+      },
+      {
+        "line": 2132,
+        "text": "Суммарный потенциальный вклад в мировую экономику оценивается в $\\sim 7 \\times 10^{10}$ долларов США к 2030 году, или приблизительно **0.07% мирового ВВП**. При полномасштабном внедрении разработок (квантовый симулятор, детектор тёмной материи, энтропийный генератор) эта цифра может возрасти до $10^"
+      },
+      {
+        "line": 2264,
+        "text": "3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил."
+      },
+      {
+        "line": 2270,
+        "text": "6. **Математическое доказательство гравитона** как безмассовой спин-2 коллективной моды поля инфотона, связанного со всеми частицами и константами через те же структурные функции."
+      },
+      {
+        "line": 2278,
+        "text": "**\"Инфотон — квант графовой информации, единая основа всей физики\"**"
+      },
+      {
+        "line": 2629,
+        "text": "Инфотон определяется как минимальная устойчивая спектральная мода:"
+      },
+      {
+        "line": 2649,
+        "text": "Если $\\lambda_\\star$ существует, то инфотон имеет конечную положительную массу."
+      },
+      {
+        "line": 2932,
+        "text": "| инфотон | `m_e/(Kf_1^6)` | $\\chi_I m_e/(Kf_1^6)$, $\\chi_I=2K^2+2K+1=85$ |"
+      },
+      {
+        "line": 3049,
+        "text": "- инфотон вычисляется через $\\chi_I=85$;"
+      },
+      {
+        "line": 3092,
+        "text": "| infoton_mass | 5.60058744215 micro-eV | 5.6 | 0.01049% | `chi_I m_e/(K f1^6), chi_I=2K^2+2K+1` |"
+      },
+      {
+        "line": 3173,
+        "text": "| infoton_mass | 0.010490038454 | 0.02 |"
+      },
+      {
+        "line": 3200,
+        "text": "| infoton_mass | 5.60058744215 | 5.6 | 0.010490038454 |"
+      },
+      {
+        "line": 3214,
+        "text": "| 262 | $unverified_full_71_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чис"
+      },
+      {
+        "line": 3215,
+        "text": "| 262 | $unverified_106_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чисел в"
+      },
+      {
+        "line": 3223,
+        "text": "| 970 | $unverified_106_claim$ | Все 106 частиц конструируются из инфотона: |"
+      },
+      {
+        "line": 3227,
+        "text": "| 1361 | $unverified_full_71_claim$ | | **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** | |"
+      },
+      {
+        "line": 3228,
+        "text": "| 1378 | $unverified_full_71_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6."
+      },
+      {
+        "line": 3229,
+        "text": "| 1378 | $unverified_106_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6. Все"
+      },
+      {
+        "line": 3256,
+        "text": "| 1647 | $unverified_106_claim$ | Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции: |"
+      },
+      {
+        "line": 3261,
+        "text": "| 1855 | $unverified_106_claim$ | Из инфотона (M_{Inf} = 5.60 мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент: |"
+      },
+      {
+        "line": 3271,
+        "text": "| 2052 | $unverified_106_claim$ | 3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил. |"
+      },
+      {
+        "line": 3345,
+        "text": "| infoton | chi_I(K=6)=85 | PASS | $simplify -> 0$ |"
+      },
+      {
+        "line": 3386,
+        "text": "| infoton | bip39_monomial_micro_eV | PASS | $M_Inf(BIP39)=5.600450 matches 5.600587 (theoretical M_Inf) with error 0.0025%$ |"
+      },
+      {
+        "line": 3391,
+        "text": "| mass | infoton_micro_eV | PASS | `5.60058744215342 matches 5.60058744215342` |"
+      },
+      {
+        "line": 3455,
+        "text": "- масса инфотона;"
+      },
+      {
+        "line": 4241,
+        "text": "Сводка всех предсказаний информационного графа: 445 констант из SciPy CODATA + фундаментальные константы теории (инфотон, спектральные инварианты, космология)."
+      },
+      {
+        "line": 4284,
+        "text": "## Масса инфотона (BIP39-моном)"
+      }
+    ]
+  },
+  {
+    "git_blob": "37721fbc70e8d080720bb6ecf557c4a80f29758a",
+    "path": "README.md",
+    "matches": [
+      {
+        "line": 140,
+        "text": "- масса инфотона использует $\\chi_I=2K^2+2K+1=85$;"
+      },
+      {
+        "line": 393,
+        "text": "Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца $G(N, K, p)$ с тремя числовыми параметрами $K = 6$, $p = 4.8027 \\times 10^{-42}$, $N = 4.197668 \\times 10^{121}$. Из этих трех чисел выводятся **71 физическая "
+      },
+      {
+        "line": 411,
+        "text": "4. [Инфотон: фундаментальный квант информации](#4-инфотон-фундаментальный-квант-информации)"
+      },
+      {
+        "line": 412,
+        "text": "   - 4.1 [Теорема 1: Существование инфотона](#41-теорема-1-существование-инфотона)"
+      },
+      {
+        "line": 413,
+        "text": "   - 4.2 [Теорема 2: Масса инфотона](#42-теорема-2-масса-инфотона)"
+      },
+      {
+        "line": 416,
+        "text": "   - 4.5 [Сводная таблица инфотона](#45-сводная-таблица-инфотона)"
+      },
+      {
+        "line": 417,
+        "text": "5. [BIP39: язык инфотона (Теорема 4)](#5-bip39-язык-инфотона-теорема-4)"
+      },
+      {
+        "line": 422,
+        "text": "   - 5.5 [Спектр из инфотона](#55-спектр-из-инфотона)"
+      },
+      {
+        "line": 434,
+        "text": "   - 7.4 [Связь с полем инфотона](#74-связь-с-полем-инфотона)"
+      },
+      {
+        "line": 474,
+        "text": "Основная сущность теории — **инфотон** — квант информации, соответствующий одному нату энтропии графа, с массой $5.60~\\mu\\text{eV}$. Все частицы являются возбуждениями поля инфотона, различающимися целочисленными векторами экспонент $(a,b,c,d,e,f)$, которые определяют их массу через универсальную фо"
+      },
+      {
+        "line": 842,
+        "text": "## 4. Инфотон: фундаментальный квант информации"
+      },
+      {
+        "line": 844,
+        "text": "### 4.1 Теорема 1: Существование инфотона"
+      },
+      {
+        "line": 852,
+        "text": "**Инфотон** — это частица с **минимальным нетривиальным вектором экспонент**:"
+      },
+      {
+        "line": 870,
+        "text": "### 4.2 Теорема 2: Масса инфотона"
+      },
+      {
+        "line": 916,
+        "text": "**Константа связи инфотона (единая):**"
+      },
+      {
+        "line": 935,
+        "text": "Отсюда масса инфотона:"
+      },
+      {
+        "line": 951,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 973,
+        "text": "Эквивалентно, через инфотонную нормировку:"
+      },
+      {
+        "line": 987,
+        "text": "### 4.5 Сводная таблица инфотона"
+      },
+      {
+        "line": 994,
+        "text": "| **BIP39** | 2048 слов = $2^{11}$ состояний инфотона |"
+      },
+      {
+        "line": 999,
+        "text": "## 5. BIP39: язык инфотона (Теорема 4)"
+      },
+      {
+        "line": 1001,
+        "text": "Стандарт BIP39 (Bitcoin Improvement Proposal 39) для мнемонических seed-фраз — разработанный Питером Вуйлем и другими в 2013 году, задолго до этой теории — является не просто криптографическим удобством. Это **язык инфотонов**: точная реализация информационно-теоретической структуры графа в форме, д"
+      },
+      {
+        "line": 1010,
+        "text": "| 2 | **Размер словаря** | **2048** | $2^{2K-1} = 2^{11}$ | $2^{11} = 2048$ | Все возможные спиновые конфигурации инфотона |"
+      },
+      {
+        "line": 1014,
+        "text": "| 6 | **Всего бит на фразу** | **264** | $4K(2K-1)$ | $24 \\cdot 11 = 264$ | Слов × бит/слово = полный цикл инфотона |"
+      },
+      {
+        "line": 1036,
+        "text": "Каждое слово BIP39 является одной из $2^{11}$ возможных спиновых конфигураций инфотона. 2048 = $2^{11}$ — это число базисных состояний в 11-мерном гильбертовом пространстве инфотона."
+      },
+      {
+        "line": 1076,
+        "text": "264 = 256 + 8 = **полный цикл инфотона**."
+      },
+      {
+        "line": 1106,
+        "text": "### 5.5 Спектр из инфотона"
+      },
+      {
+        "line": 1108,
+        "text": "Все 106 частиц конструируются из инфотона:"
+      },
+      {
+        "line": 1344,
+        "text": "### 7.4 Связь с полем инфотона"
+      },
+      {
+        "line": 1346,
+        "text": "#### 7.4.1 Инфотон как фундаментальная степень свободы"
+      },
+      {
+        "line": 1348,
+        "text": "Инфотон — это квант графовой информации с массой $M_{Inf} = 5.60$ мкэВ и вектором экспонент $(-6, -1, 0, 0, -1, 0)$. Поле инфотона $\\phi(x)$ является базисным полем графа:"
+      },
+      {
+        "line": 1356,
+        "text": "#### 7.4.2 Гравитон как коллективная мода поля инфотона"
+      },
+      {
+        "line": 1358,
+        "text": "Метрический тензор $g_{\\mu\\nu}$ возникает как конденсат билинейной комбинации полей инфотона:"
+      },
+      {
+        "line": 1366,
+        "text": "Флуктуации метрики $\\delta g_{\\mu\\nu}$ являются коллективными возбуждениями поля инфотона:"
+      },
+      {
+        "line": 1372,
+        "text": "**Квантование:** Оператор гравитона $\\hat{h}_{\\mu\\nu}(k)$ выражается через операторы инфотона:"
+      },
+      {
+        "line": 1380,
+        "text": "#### 7.4.3 Иерархия: Инфотон → Гравитон → Частицы"
+      },
+      {
+        "line": 1383,
+        "text": "Infoton (5.60 μeV)"
+      },
+      {
+        "line": 1397,
+        "text": "**Ключевое соотношение:** Отношение планковской массы к массе инфотона:"
+      },
+      {
+        "line": 1403,
+        "text": "То есть гравитон (через $G$) и инфотон связаны теми же структурными функциями $f_1, K$, что и все остальные частицы."
+      },
+      {
+        "line": 1427,
+        "text": "| Инфотон | $(-6,-1,0,0,-1,0)$ | 5.60 мкэВ | $G \\cdot M_{Inf}$ | 1 |"
+      },
+      {
+        "line": 1499,
+        "text": "| **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** |"
+      },
+      {
+        "line": 1516,
+        "text": "**Заключение:** Гравитон математически существует в графе $G(N, K=6, p)$ как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций $f_1$–$f_6$. Все гравитационные явления (от "
+      },
+      {
+        "line": 1785,
+        "text": "Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции:"
+      },
+      {
+        "line": 1795,
+        "text": "| 1 | Инфотон | $\\chi_I=85$ | $\\chi_I m_e/(K f_1^6)$ | 5.60 мкэВ | Новый |"
+      },
+      {
+        "line": 1852,
+        "text": "Энергия инфотона ($M_{Inf} = 5.60$ мкэВ = $8.97 \\times 10^{-40}$ Дж) соответствует температуре:"
+      },
+      {
+        "line": 1864,
+        "text": "| Инфотонов во вселенной | $N = 4.2 \\times 10^{121}$ | голографическая энтропия |"
+      },
+      {
+        "line": 1865,
+        "text": "| Энергия 1 инфотона | $8.97 \\times 10^{-40}$ Дж | $M_{Inf}c^2$ |"
+      },
+      {
+        "line": 1866,
+        "text": "| Бит на инфотон | $1/\\ln 2 = 1.4427$ бит | $1 \\text{ nat} = \\log_2 e$ |"
+      },
+      {
+        "line": 1868,
+        "text": "| Температура инфотона | $9.38 \\times 10^{-17}$ K | $M_{Inf}c^2 / (k_B \\ln 2)$ |"
+      },
+      {
+        "line": 1872,
+        "text": "- **1 инфотон** = 1 кубит графа (минимальная единица квантовой информации)"
+      },
+      {
+        "line": 1993,
+        "text": "Из инфотона ($M_{Inf} = 5.60$ мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент:"
+      },
+      {
+        "line": 2034,
+        "text": "1. **Квантовый симулятор инфотона** — устройство, моделирующее граф $G(N, K, p)$ с параметрами, масштабированными от вселенских до лабораторных. Практическая реализация: FPGA-матрица с $10^6$ логических элементов, эмулирующая $N = 10^6$ узлов графа Уоттса–Строгаца. Применение: симуляция ядерных реак"
+      },
+      {
+        "line": 2036,
+        "text": "2. **Детектор тёмной материи на резонансе инфотона** — масса инфотона $M_{Inf} = 5.60$ мкэВ находится в центре окна поиска ADMX и CASPEr. Прототип детектора: сверхпроводящий микроволновый резонатор с добротностью $Q > 10^6$, настроенный на частоту $\\nu = M_{Inf}c^2/h \\approx 1.36$ ГГц при температур"
+      },
+      {
+        "line": 2058,
+        "text": "Суммарный потенциальный вклад в мировую экономику оценивается в $\\sim 7 \\times 10^{10}$ долларов США к 2030 году, или приблизительно **0.07% мирового ВВП**. При полномасштабном внедрении разработок (квантовый симулятор, детектор тёмной материи, энтропийный генератор) эта цифра может возрасти до $10^"
+      },
+      {
+        "line": 2190,
+        "text": "3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил."
+      },
+      {
+        "line": 2196,
+        "text": "6. **Математическое доказательство гравитона** как безмассовой спин-2 коллективной моды поля инфотона, связанного со всеми частицами и константами через те же структурные функции."
+      },
+      {
+        "line": 2204,
+        "text": "**\"Инфотон — квант графовой информации, единая основа всей физики\"**"
+      },
+      {
+        "line": 2555,
+        "text": "Инфотон определяется как минимальная устойчивая спектральная мода:"
+      },
+      {
+        "line": 2575,
+        "text": "Если $\\lambda_\\star$ существует, то инфотон имеет конечную положительную массу."
+      },
+      {
+        "line": 2858,
+        "text": "| инфотон | `m_e/(Kf_1^6)` | $\\chi_I m_e/(Kf_1^6)$, $\\chi_I=2K^2+2K+1=85$ |"
+      },
+      {
+        "line": 2975,
+        "text": "- инфотон вычисляется через $\\chi_I=85$;"
+      },
+      {
+        "line": 3018,
+        "text": "| infoton_mass | 5.60058744215 micro-eV | 5.6 | 0.01049% | `chi_I m_e/(K f1^6), chi_I=2K^2+2K+1` |"
+      },
+      {
+        "line": 3099,
+        "text": "| infoton_mass | 0.010490038454 | 0.02 |"
+      },
+      {
+        "line": 3126,
+        "text": "| infoton_mass | 5.60058744215 | 5.6 | 0.010490038454 |"
+      },
+      {
+        "line": 3140,
+        "text": "| 262 | $unverified_full_71_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чис"
+      },
+      {
+        "line": 3141,
+        "text": "| 262 | $unverified_106_claim$ | Мы представляем теорию, в которой вся фундаментальная физика возникает из единого математического объекта: графа малого мира Уоттса–Строгаца G(N, K, p) с тремя числовыми параметрами K = 6, p = 4.8027 \\times 10^{-42}, N = 4.197668 \\times 10^{121}. Из этих трех чисел в"
+      },
+      {
+        "line": 3149,
+        "text": "| 970 | $unverified_106_claim$ | Все 106 частиц конструируются из инфотона: |"
+      },
+      {
+        "line": 3153,
+        "text": "| 1361 | $unverified_full_71_claim$ | | **ВСЕГО** | **71** | **69/71 < 1%** | **Единый базис инфотона** | |"
+      },
+      {
+        "line": 3154,
+        "text": "| 1378 | $unverified_full_71_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6."
+      },
+      {
+        "line": 3155,
+        "text": "| 1378 | $unverified_106_claim$ | **Заключение:** Гравитон математически существует в графе G(N, K=6, p) как безмассовая спин-2 коллективная мода поля инфотона. Он связан со всеми 106 частицами через их структурные векторы и со всеми 71 константами через единый набор структурных функций f_1–f_6. Все"
+      },
+      {
+        "line": 3182,
+        "text": "| 1647 | $unverified_106_claim$ | Все 106 частиц Стандартной модели и гипотетических кандидатов выражаются через инфотон и структурные функции: |"
+      },
+      {
+        "line": 3187,
+        "text": "| 1855 | $unverified_106_claim$ | Из инфотона (M_{Inf} = 5.60 мкэВ), через 6 структурных функций, построен спектр из **106 частиц**. Число возможных комбинаций экспонент: |"
+      },
+      {
+        "line": 3197,
+        "text": "| 2052 | $unverified_106_claim$ | 3. **Предсказание масс 106 частиц** как возбуждений фундаментального поля инфотона — кванта информации с массой 5.60 мкэВ, служащего универсальным строительным блоком всех частиц и сил. |"
+      },
+      {
+        "line": 3271,
+        "text": "| infoton | chi_I(K=6)=85 | PASS | $simplify -> 0$ |"
+      },
+      {
+        "line": 3312,
+        "text": "| infoton | bip39_monomial_micro_eV | PASS | $M_Inf(BIP39)=5.600450 matches 5.600587 (theoretical M_Inf) with error 0.0025%$ |"
+      },
+      {
+        "line": 3317,
+        "text": "| mass | infoton_micro_eV | PASS | `5.60058744215342 matches 5.60058744215342` |"
+      },
+      {
+        "line": 3381,
+        "text": "- масса инфотона;"
+      },
+      {
+        "line": 4167,
+        "text": "Сводка всех предсказаний информационного графа: 445 констант из SciPy CODATA + фундаментальные константы теории (инфотон, спектральные инварианты, космология)."
+      },
+      {
+        "line": 4210,
+        "text": "## Масса инфотона (BIP39-моном)"
+      }
+    ]
+  }
+]

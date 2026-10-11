@@ -1,0 +1,78 @@
+{
+  "status": "graviton helicity qubit + conditional foam/resonance bridge",
+  "passed_finite_gates": true,
+  "graviton_qubit": {
+    "passed": true,
+    "decomposition": "(1/2)^4 = 2xj0 + 3xj1 + 1xj2",
+    "J2_eigenvalue_multiplicities": {
+      "0.0": 2,
+      "2.0": 9,
+      "6.0": 5
+    },
+    "j2_irrep_dimension": 5,
+    "helicity_code_dimension": 2,
+    "helicity_basis": [
+      "m=+2",
+      "m=-2"
+    ],
+    "plus2_J2": 6.0,
+    "minus2_J2": 6.0,
+    "plus2_Jz": 2.0,
+    "minus2_Jz": -2.0,
+    "j2_projector_leakage": {
+      "plus2": 0.0,
+      "minus2": 0.0
+    },
+    "linear_polarization_overlap_abs": 0.0,
+    "interpretation": "four spin-1/2 qubits are the minimum microscopic set that can carry a j=2 collective sector; physical massless +/-2 helicities form a logical polarization qubit"
+  },
+  "foam_IR_inference": {
+    "conditional": true,
+    "input_rms_exponent_p": 2.001707,
+    "inferred_low_k_power_n": 1.0034140000000003,
+    "relation": "RMS(delta_g_R) ~ R^{-(3+n)/2}; n=2p-3",
+    "white_noise_reference_n": 0.0,
+    "white_noise_rms_exponent": 1.5,
+    "hyperuniform_if_interpreted_as_variance": true,
+    "interpretation": "if the frozen delta-g exponent is a quantum RMS exponent, then P_delta_g(k) ~ k^1.003414 at low k"
+  },
+  "GW_information_mode_resonance": {
+    "passed": true,
+    "model_equation": "qddot + omega_I^2 [1 + xi*h*cos(Omega_GW*t)] q = 0",
+    "vacuum_channel": "parametric squeezing / pair excitation",
+    "resonance_condition": "Omega_GW ~= 2 omega_I",
+    "test_omega_I": 1.0,
+    "test_modulation_xi_h": 0.02,
+    "floquet_mu_numeric": 0.004999941407470455,
+    "floquet_mu_leading": 0.005,
+    "relative_error_to_small_modulation_formula": 1.1718505909044663e-05,
+    "leading_band_halfwidth_in_Omega": 0.01,
+    "off_resonance_growth": {
+      "Omega=1.8omega": 0.0,
+      "Omega=2.2omega": 0.0
+    },
+    "near_band_edge_growth": {
+      "Omega=1.99omega": 0.0002491204689264969,
+      "Omega=2.01omega": 0.0
+    },
+    "physical_formula": "mu ~= |xi*h| omega_I / 4",
+    "scope": "resonance is conditional on a nonzero TT metric coupling xi; the gate does not establish an infoton or derive xi"
+  },
+  "illustrative_scale": {
+    "illustrative_not_model_prediction": true,
+    "assumed_strain_h": 1e-21,
+    "assumed_GW_frequency_Hz": 100.0,
+    "parametric_resonant_mode_frequency_Hz": 50.0,
+    "assumed_dimensionless_coupling_xi": 1.0,
+    "growth_rate_per_second": 7.853981633974482e-20,
+    "e_fold_time_years": 403465265018.6208
+  },
+  "candidate_infoton_definition": "project-local route/information-sector bosonic collective mode; binary polarization does not by itself determine Lorentz spin",
+  "mode_hilbert_space": "Fock occupation x C^2 polarization/helicity",
+  "not_claimed": [
+    "new experimentally observed particle",
+    "vacuum energy extraction",
+    "proof that all quantum foam is caused by gravitational waves",
+    "derived infoton-graviton coupling xi"
+  ]
+}

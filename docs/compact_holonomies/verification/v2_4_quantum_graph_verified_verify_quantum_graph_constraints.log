@@ -1,0 +1,100 @@
+{
+  "A37_local_gauss_graph": {
+    "edge_count": 4,
+    "expected_physical_dimension": 3,
+    "hilbert_dimension": 81,
+    "local_dimension": 3,
+    "maximum_gauss_commutator_error": 0.0,
+    "maximum_gauss_period_error": 0.0,
+    "maximum_gauss_unitarity_error": 0.0,
+    "maximum_projected_constraint_error": 0.0,
+    "maximum_wilson_gauge_commutator_error": 3.8235448712091026e-15,
+    "passed": true,
+    "physical_dimension": 3,
+    "projector_hermiticity_error": 0.0,
+    "projector_idempotence_error": 9.734998599816793e-16,
+    "verdict": "The finite cycle graph has exact local Gauss transformations and a nonempty joint physical subspace. Its dimension is N, the one independent loop-holonomy degree of freedom after gauge reduction."
+  },
+  "A38_master_constraint_dynamics": {
+    "edge_count": 4,
+    "hamiltonian_hermiticity_error": 0.0,
+    "hamiltonian_master_commutator_error": 2.4868995751603507e-14,
+    "hamiltonian_projector_commutator_error": 2.5631488888267375e-15,
+    "local_dimension": 3,
+    "master_kernel_dimension": 3,
+    "master_projector_residual": 0.0,
+    "maximum_norm_error": 6.661338147750939e-16,
+    "maximum_physical_leakage": 5.9765193148812185e-15,
+    "minimum_master_eigenvalue": -1.8265316901890977e-15,
+    "passed": true,
+    "physical_projector_dimension": 3,
+    "verdict": "The positive master constraint has the same kernel as the joint Gauss projector, and the registered Hamiltonian commutes with both. Unitary evolution therefore preserves the physical subspace."
+  },
+  "A39_cycle_refinement": {
+    "edge_counts": [
+      3,
+      4,
+      5
+    ],
+    "local_dimension": 3,
+    "pass": true,
+    "physical_dimensions": [
+      3,
+      3,
+      3
+    ],
+    "trials": [
+      {
+        "edge_count": 3,
+        "expected_physical_dimension": 3,
+        "hilbert_dimension": 27,
+        "local_dimension": 3,
+        "maximum_gauss_commutator_error": 0.0,
+        "maximum_gauss_period_error": 0.0,
+        "maximum_gauss_unitarity_error": 0.0,
+        "maximum_projected_constraint_error": 0.0,
+        "maximum_wilson_gauge_commutator_error": 2.2178754334407077e-15,
+        "passed": true,
+        "physical_dimension": 3,
+        "projector_hermiticity_error": 0.0,
+        "projector_idempotence_error": 0.0,
+        "verdict": "The finite cycle graph has exact local Gauss transformations and a nonempty joint physical subspace. Its dimension is N, the one independent loop-holonomy degree of freedom after gauge reduction."
+      },
+      {
+        "edge_count": 4,
+        "expected_physical_dimension": 3,
+        "hilbert_dimension": 81,
+        "local_dimension": 3,
+        "maximum_gauss_commutator_error": 0.0,
+        "maximum_gauss_period_error": 0.0,
+        "maximum_gauss_unitarity_error": 0.0,
+        "maximum_projected_constraint_error": 0.0,
+        "maximum_wilson_gauge_commutator_error": 3.8235448712091026e-15,
+        "passed": true,
+        "physical_dimension": 3,
+        "projector_hermiticity_error": 0.0,
+        "projector_idempotence_error": 9.734998599816793e-16,
+        "verdict": "The finite cycle graph has exact local Gauss transformations and a nonempty joint physical subspace. Its dimension is N, the one independent loop-holonomy degree of freedom after gauge reduction."
+      },
+      {
+        "edge_count": 5,
+        "expected_physical_dimension": 3,
+        "hilbert_dimension": 243,
+        "local_dimension": 3,
+        "maximum_gauss_commutator_error": 0.0,
+        "maximum_gauss_period_error": 0.0,
+        "maximum_gauss_unitarity_error": 0.0,
+        "maximum_projected_constraint_error": 0.0,
+        "maximum_wilson_gauge_commutator_error": 6.799413319924227e-15,
+        "passed": true,
+        "physical_dimension": 3,
+        "projector_hermiticity_error": 0.0,
+        "projector_idempotence_error": 9.734998599816793e-16,
+        "verdict": "The finite cycle graph has exact local Gauss transformations and a nonempty joint physical subspace. Its dimension is N, the one independent loop-holonomy degree of freedom after gauge reduction."
+      }
+    ],
+    "verdict": "Subdividing the same single cycle from three to five edges leaves the gauge-reduced physical dimension equal to N. This is an exact topological refinement check for the constrained graph kinematics, not a continuum test of gravitational dynamics."
+  },
+  "pass": true,
+  "scope": "finite Z_N cycle gauge graph with local constraints; multi-vertex quantum architecture, not an SU(2) 3+1 gravitational spin network"
+}

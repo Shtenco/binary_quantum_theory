@@ -25,6 +25,10 @@ REQUIRED_PHYSICAL = {
     "PHYSICAL_TT_KERNEL",
     "IR_SIX_VECTOR",
     "COMMON_SCALE_CALIBRATION",
+    "DYNAMICAL_MAXWELL_KERNEL",
+    "PHYSICAL_BACKGROUND_COSMOLOGY",
+    "PHYSICAL_SCALAR_COSMOLOGY",
+    "LENSING_DYNAMICS_CLOSURE",
 }
 
 
@@ -85,7 +89,7 @@ def run():
 
     return {
         "status": (
-            "structurally closed binary quantum geometry -> continuum-GR candidate; "
+            "binary quantum geometry -> continuum-GR candidate; "
             "theory-specific physicalization remains fail-closed and separately tracked"
         ),
         "schema_version": ledger.get("schema_version"),

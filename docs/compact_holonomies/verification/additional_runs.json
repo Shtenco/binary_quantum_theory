@@ -1,0 +1,77 @@
+[
+  {
+    "script": "artifacts/A10_hda_anomaly_test/hda_closure_toy_test.py",
+    "exit": 0,
+    "tail": "2*delta)/(2*E2*K1*delta**3 - 2*E2*K2*delta**3) - E3*sin(K2*delta)*cos(K2*delta)**3/(2*E2*K1*delta**3 - 2*E2*K2*delta**3) + 2*E3*sin(K2*delta)*cos(K2*delta)/(2*E2*K1*delta**3 - 2*E2*K2*delta**3) + b*(-E3*K2/(E2*K1 - E2*K2) + E3*K3/(E2*K1 - E2*K2))}]\n\n"
+  },
+  {
+    "script": "artifacts/A11_hda_second_attempt/hda_closure_curvature_ansatz.py",
+    "exit": 0,
+    "tail": "['E2', 'K1', 'K2']\n\n--- {H_2, H_3} ---\nbracket: -2*E3*sin(delta*(K1 - K2))**2*sin(delta*(K2 - K3))*cos(delta*(K2 - K3))/delta**3\nvars in bracket: ['E3', 'K1', 'K2', 'K3', 'delta']\nvars in D_i: ['E2', 'K1', 'K2']  vars in D_{i+1}: ['E3', 'K2', 'K3']\n\n"
+  },
+  {
+    "script": "artifacts/A13_hda_systematic_sweep/hda_ansatz_sweep.py",
+    "exit": 0,
+    "tail": " ['delta']\n  -> ANOMALY (fails necessary test)\n\nSUMMARY: All 4 pre-declared, structurally distinct H-ansatze fail even the necessary variable-containment test for closure onto D_i (proven anomaly for each) -- unless stated otherwise per-entry above.\n"
+  },
+  {
+    "script": "artifacts/A14_midisuperspace_groundwork/midisuperspace_dof_count.py",
+    "exit": 0,
+    "tail": "e the old 1-pair model which was capped at 0 by Birkhoff's theorem). It is NOT solved, tested, or even attempted beyond this consistency-level bookkeeping. Treat this as the starting scaffold for a follow-up session's worth of work, not a result.\"\n}\n"
+  },
+  {
+    "script": "artifacts/A15_tt_polarization_count/tt_count_rigorous.py",
+    "exit": 0,
+    "tail": "al transverse sector on the lattice (A14 flagged this as unresolved) and re-running an analogous rank computation on the DEFORMED discrete constraints. That work is not done here and is left explicitly open, not asserted or assumed to go through.\"\n}\n"
+  },
+  {
+    "script": "artifacts/A1_spherical_holonomy/verify_sine_spherical.py",
+    "exit": 0,
+    "tail": "ue| = 1.322e-10\n[PASS] \u0421\u043b\u0435\u043f\u0430\u044f \u043f\u0440\u043e\u0432\u0435\u0440\u043a\u0430 beta=f2' \u043d\u0430 20000 \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u044b\u0445 \u0442\u043e\u0447\u043a\u0430\u0445 (\u043a\u043e\u043d\u0435\u0447\u043d\u044b\u0435 \u0440\u0430\u0437\u043d\u043e\u0441\u0442\u0438)\n       max|beta_predicted - beta_true| = 1.617e-10\n[PASS] beta = cos(2*delta*K) = -1 \u043f\u0440\u0438 delta*K = pi/2\n       cos(pi) = -1.000000000000\n\n7/7 checks passed\n"
+  },
+  {
+    "script": "artifacts/A2_qec_counterexample/constraint_code_counterexample.py",
+    "exit": 0,
+    "tail": "\u043d\u0438\u044f, \u043d\u0438 HDA-\u0430\u043b\u0433\u0435\u0431\u0440\u044b \u043e\u0433\u0440\u0430\u043d\u0438\u0447\u0435\u043d\u0438\u0439 \u0432 \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u0438\u0438 \u043d\u0435\u0442\n       \u041f\u043e \u043f\u043e\u0441\u0442\u0440\u043e\u0435\u043d\u0438\u044e: X_stab/Z_stab -- \u0441\u0442\u0430\u0442\u0438\u0447\u0435\u0441\u043a\u0438\u0435 \u0431\u0438\u043d\u0430\u0440\u043d\u044b\u0435 \u043c\u0430\u0442\u0440\u0438\u0446\u044b; \u043b\u043e\u043a\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u044c+QEC \u043d\u0435 \u0442\u0440\u0435\u0431\u0443\u044e\u0442 \u0438 \u043d\u0435 \u043f\u043e\u0440\u043e\u0436\u0434\u0430\u044e\u0442 \u0434\u0438\u043d\u0430\u043c\u0438\u043a\u0443 => QEC+\u043b\u043e\u043a\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u044c \u043d\u0435\u0434\u043e\u0441\u0442\u0430\u0442\u043e\u0447\u043d\u044b \u0434\u043b\u044f \u0432\u044b\u0432\u043e\u0434\u0430 Einstein dynamics.\n\n5/5 checks passed\n"
+  },
+  {
+    "script": "artifacts/A3_uv_kernel_nonuniqueness/test_nonlocal_kernel_underdetermination.py",
+    "exit": 0,
+    "tail": "um limit q^2), \u043d\u043e \u043a\u0430\u0447\u0435\u0441\u0442\u0432\u0435\u043d\u043d\u043e \u0440\u0430\u0437\u043d\u043e\u0435 \u0423\u0424-\u043f\u043e\u0432\u0435\u0434\u0435\u043d\u0438\u0435. \u0417\u043d\u0430\u0447\u0438\u0442 continuum/\u0418\u041a-\u043f\u0440\u0435\u0434\u0435\u043b \u0441\u0430\u043c \u043f\u043e \u0441\u0435\u0431\u0435 \u043d\u0435 \u043e\u043f\u0440\u0435\u0434\u0435\u043b\u044f\u0435\u0442 \u0435\u0434\u0438\u043d\u0441\u0442\u0432\u0435\u043d\u043d\u044b\u0439 \u043c\u0438\u043a\u0440\u043e\u0441\u043a\u043e\u043f\u0438\u0447\u0435\u0441\u043a\u0438\u0439 \u0433\u0430\u043c\u0438\u043b\u044c\u0442\u043e\u043d\u0438\u0430\u043d -- \u043d\u0443\u0436\u0435\u043d \u043d\u0435\u0437\u0430\u0432\u0438\u0441\u0438\u043c\u044b\u0439 \u043a\u0440\u0438\u0442\u0435\u0440\u0438\u0439 \u043e\u0442\u0431\u043e\u0440\u0430 (\u043a\u043b\u0430\u0441\u0441 \u0443\u043d\u0438\u0432\u0435\u0440\u0441\u0430\u043b\u044c\u043d\u043e\u0441\u0442\u0438), \u043a\u0430\u043a \u0438 \u0443\u0442\u0432\u0435\u0440\u0436\u0434\u0430\u0435\u0442\u0441\u044f \u0432 \u043e\u0441\u043d\u043e\u0432\u043d\u043e\u043c \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0435.\n"
+  },
+  {
+    "script": "artifacts/A4_binary_walk_heat_kernel/verify_binary_walk_heat_kernel.py",
+    "exit": 0,
+    "tail": "\u0438\u0437\u0430\u0446\u0438\u044f\u043c\n[PASS] \u0418\u0437\u043c\u0435\u0440\u0435\u043d\u043d\u044b\u0439 \u043f\u043e\u0440\u044f\u0434\u043e\u043a (I) \u0441\u043e\u0433\u043b\u0430\u0441\u0443\u0435\u0442\u0441\u044f \u0441 \u0437\u0430\u044f\u0432\u043b\u0435\u043d\u043d\u044b\u043c \u0432 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0435 (\u22482.0035)\n       |2.0039 - 2.0035| = 0.0004\n[PASS] \u0418\u0437\u043c\u0435\u0440\u0435\u043d\u043d\u044b\u0439 \u043f\u043e\u0440\u044f\u0434\u043e\u043a (II) \u0441\u043e\u0433\u043b\u0430\u0441\u0443\u0435\u0442\u0441\u044f \u0441 \u0437\u0430\u044f\u0432\u043b\u0435\u043d\u043d\u044b\u043c \u0432 \u0434\u043e\u043a\u0443\u043c\u0435\u043d\u0442\u0435 (\u22483.9999)\n       |4.0435 - 3.9999| = 0.0436\n\n4/4 checks passed\n"
+  },
+  {
+    "script": "artifacts/A5_binary_sine_foam/final_binary_sine_foam_check.py",
+    "exit": 0,
+    "tail": "03', '2.36e-05', '2.36e-07', '2.36e-09', '2.36e-11']\n[PASS] \u041c\u0430\u043b\u043e\u043a\u0440\u0438\u0432\u0438\u0437\u043d\u044b\u0439 \u043f\u0440\u0435\u0434\u0435\u043b sin(delta*K)/delta -> K (2 \u0431\u0438\u0442\u0430, \u0441\u043e\u0441\u0442\u0430\u0432\u043d\u043e\u0439 \u043e\u043f\u0435\u0440\u0430\u0442\u043e\u0440)\n       \u043e\u0448\u0438\u0431\u043a\u0438 \u043f\u0440\u0438 delta=1e-1..1e-5: ['1.88e-02', '1.89e-04', '1.89e-06', '1.89e-08', '1.89e-10']\n\n4/4 checks passed\n"
+  },
+  {
+    "script": "artifacts/A7_su2_gauss_law/verify_su2_gauss_closure.py",
+    "exit": 0,
+    "tail": "is the genuinely open, unsolved problem in canonical quantum gravity -- closing THAT algebra without anomaly on a physical Hilbert space is not established here or anywhere in this repository, and remains open in the wider LQG literature as well.\"\n}\n"
+  },
+  {
+    "script": "artifacts/A8_su2_transfer_positivity/test_sine_action_reflection_positivity.py",
+    "exit": 0,
+    "tail": " \"negative\": false\n        },\n        {\n          \"j\": 7,\n          \"c_j\": 7.171625490513811e-09,\n          \"quad_err\": 1.1918092381046907e-16,\n          \"negative\": false\n        },\n        {\n          \"j\": 10,\n          \"c_j\": 1.571\n\nOVERALL: PASS\n"
+  },
+  {
+    "script": "scripts/run_blind_micro_spectrum.py",
+    "exit": 0,
+    "tail": "matical prediction for a fixed compact micro-operator. The formula is frozen before the hashed challenges and has no fitted observable-specific coefficients. This does not by itself predict particle masses or CODATA/PDG constants.\",\n  \"pass\": true\n}\n"
+  },
+  {
+    "script": "scripts/audit_predictive_power.py",
+    "exit": 0,
+    "tail": " predictions and now exposes one continuous gauge-coupling prediction to a held-out minimal-unification death test. That prediction fails. No measured continuous parameter has yet been successfully predicted, so successful coverage remains 0/445.\"\n}\n"
+  },
+  {
+    "script": "scripts/audit_prediction_registry.py",
+    "exit": 0,
+    "tail": "titative continuous coupling prediction to a held-out death test, and it fails. No measured continuous Standard-Model, CODATA or PDG parameter has yet been successfully derived. Successful coverage therefore remains 0/445.\",\n  \"artifact_id\": \"A21\"\n}\n"
+  }
+]

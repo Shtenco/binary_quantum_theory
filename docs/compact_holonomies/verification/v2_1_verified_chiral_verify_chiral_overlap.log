@@ -1,0 +1,8 @@
+{
+  "trial_count": 20,
+  "max_ginsparg_wilson_error": 3.596975095907802e-14,
+  "max_index_theorem_error": 7.549516567451064e-15,
+  "minimum_kernel_gap": 0.5926375438430238,
+  "pass": true,
+  "scope": "Two-dimensional U(1) overlap-fermion test bed. It establishes exact finite-lattice chirality and topology, not the full four-dimensional Standard Model fermion sector."
+}

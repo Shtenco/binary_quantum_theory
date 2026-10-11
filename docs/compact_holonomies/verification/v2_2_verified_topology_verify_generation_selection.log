@@ -1,0 +1,17 @@
+{
+  "allowed_positive_generation_counts": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "three_is_allowed": true,
+  "three_is_unique": false,
+  "pass": true,
+  "exact_bounds": {
+    "SU2_asymptotic_freedom": "N_g < 43/8, hence N_g<=5 for one Higgs doublet",
+    "SU3_asymptotic_freedom": "N_g < 33/4, hence N_g<=8"
+  },
+  "verdict": "Anomaly cancellation, the Witten parity condition, and one-loop SU(2)/SU(3) asymptotic freedom do not select N_g=3. Together they allow N_g=1,...,5. The topological statement N_g=|Q| therefore still needs a dynamical principle selecting |Q|=3."
+}

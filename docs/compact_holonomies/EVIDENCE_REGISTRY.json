@@ -1,0 +1,84 @@
+{
+  "date": "2026-10-12",
+  "role": "scoped supporting models; not a replacement for BQG dynamics",
+  "full_BQG_proved": false,
+  "physicalization_complete": false,
+  "all_constraints_transferred": false,
+  "physical_history_derived_from_BQG": false,
+  "interacting_TT_derived_from_BQG": false,
+  "archives": [
+    {
+      "archive": "compact_holonomies_repo_v2_2_verified_topology.zip",
+      "sha256": "902c4a7525e2e0f21bc5357c8b3d9a7529bbef932cef97fd0525906472852496",
+      "bytes": 334134
+    },
+    {
+      "archive": "compact_holonomies_repo_v1_4.zip",
+      "sha256": "b26004a1e66da09892382f09328c3cadf960fa959c8c9334190c2b10a0610b5e",
+      "bytes": 137250
+    },
+    {
+      "archive": "compact_holonomies_repo_v2_1_verified_chiral.zip",
+      "sha256": "73b4d1680359c6caba142f18f330ba4fffa711fd06fd21070f084d86713a4ade",
+      "bytes": 287859
+    },
+    {
+      "archive": "compact_holonomies_repo_v2_4_quantum_graph_verified.zip",
+      "sha256": "f418c870229e48eabe7af4c0f7d038d2d221237ced7c7d4b84730b15c3ad3464",
+      "bytes": 433398
+    },
+    {
+      "archive": "compact_holonomies_repo_v2_3_verified_quantum.zip",
+      "sha256": "33909a7692737223b7e981de63f36475c4d52c4df44c81153814c8050fa051c7",
+      "bytes": 495499
+    },
+    {
+      "archive": "compact_holonomies_repo_v1_5_eft.zip",
+      "sha256": "65c46644221d18d3fa18205a42a78af0ba875552002dcb4fda8e8c5e810b25f4",
+      "bytes": 150093
+    },
+    {
+      "archive": "compact_holonomies_stage2_A45_A48.zip",
+      "sha256": "c55e92d65f38615b4ad436bf27368b5f1a3ac5b65c6be4194bd177309002b599",
+      "bytes": 13807
+    }
+  ],
+  "namespaces": {
+    "CH-COMMON": "A1-A32 shared lineage",
+    "CH-LIN23": "v2.3_quantum_linearized A33-A39",
+    "CH-GRAPH24": "v2.4_quantum_graph A33-A39",
+    "CH-STAGE2": "A45-A48; A40-A44 dependency package absent"
+  },
+  "verification": {
+    "archive_file_entries": 743,
+    "unique_content_hashes": 304,
+    "unique_python_AST_pass": 109,
+    "unique_json_parse_pass": 75,
+    "verification_scripts_pass": 21,
+    "pytest_run": false,
+    "pytest_limitation": "pytest unavailable; installation blocked by network restrictions",
+    "A45_reproduced": false,
+    "A45_limitation": "a43_a44_constrained_graph.py not supplied",
+    "A48_verdict": "MODEL FAIL",
+    "large_A6_A9_rerun": false,
+    "additional_scripts_exit_zero": 15,
+    "additional_scripts_count": 15,
+    "A47_exact_operator_bound": true,
+    "interpretation_errors": [
+      "A13 variable-containment rejects permitted delta parameter",
+      "A11/A13 curvature bracket admits regular D factorization; full HDA unproved",
+      "A14 zero arithmetic conflicts with two-mode prose",
+      "Green function requires a^-3 source normalization for continuum comparison",
+      "A39 rank invariant is not dynamic refinement compatibility"
+    ]
+  },
+  "required_bridges": [
+    "shared SU(2)/Lorentzian geometry and operator domains",
+    "one full H_E/H_L/D/G constraint family and anomaly control",
+    "normalized refinement maps controlling all constraints",
+    "nonzero refinement-independent physical limit",
+    "physical history with relational observables",
+    "interacting TT response and Ward identities",
+    "microscopic matter representation and coupling selection"
+  ]
+}

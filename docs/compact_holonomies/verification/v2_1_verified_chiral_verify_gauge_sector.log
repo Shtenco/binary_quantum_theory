@@ -1,0 +1,47 @@
+{
+  "group": "U(1) x SU(2) x SU(3)",
+  "total_generator_count": 12,
+  "algebra_certificates": {
+    "U(1)": {
+      "name": "U(1)",
+      "dimension": 1,
+      "max_normalization_error": 0.0,
+      "max_closure_residual": 0.0,
+      "max_antihermiticity_error": 0.0
+    },
+    "SU(2)": {
+      "name": "SU(2)",
+      "dimension": 3,
+      "max_normalization_error": 0.0,
+      "max_closure_residual": 0.0,
+      "max_antihermiticity_error": 0.0
+    },
+    "SU(3)": {
+      "name": "SU(3)",
+      "dimension": 8,
+      "max_normalization_error": 1.1102230246251565e-16,
+      "max_closure_residual": 0.0,
+      "max_antihermiticity_error": 0.0
+    }
+  },
+  "wilson_link_certificates": {
+    "U(1)": {
+      "unitarity_error": 1.1102230246251565e-16,
+      "determinant_modulus_error": 0.0,
+      "pass": true
+    },
+    "SU(2)": {
+      "unitarity_error": 2.220446049250313e-16,
+      "determinant_modulus_error": 0.0,
+      "pass": true
+    },
+    "SU(3)": {
+      "unitarity_error": 2.220446049250313e-16,
+      "determinant_modulus_error": 2.220446049250313e-16,
+      "pass": true
+    }
+  },
+  "pass": true,
+  "derivation_status": "Constructed consistently, not uniquely derived. Gauge couplings, chiral representations, Yukawa matrices and symmetry-breaking parameters remain free.",
+  "artifact_id": "A22"
+}

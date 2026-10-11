@@ -1,0 +1,8 @@
+--- {H_1, H_2} ---
+bracket: E2*(cos(K0*delta)**2 + cos(K1*delta)**2 - 2)*sin(K1*delta)*cos(K1*delta)/(2*delta**3)
+exact symbolic solve for a,b (const w.r.t. K,E): [{a: -E2*sin(K1*delta)*cos(K0*delta)**2*cos(K1*delta)/(2*E1*K0*delta**3 - 2*E1*K1*delta**3) - E2*sin(K1*delta)*cos(K1*delta)**3/(2*E1*K0*delta**3 - 2*E1*K1*delta**3) + 2*E2*sin(K1*delta)*cos(K1*delta)/(2*E1*K0*delta**3 - 2*E1*K1*delta**3) + b*(-E2*K1/(E1*K0 - E1*K1) + E2*K2/(E1*K0 - E1*K1))}]
+
+--- {H_2, H_3} ---
+bracket: E3*(cos(K1*delta)**2 + cos(K2*delta)**2 - 2)*sin(K2*delta)*cos(K2*delta)/(2*delta**3)
+exact symbolic solve for a,b (const w.r.t. K,E): [{a: -E3*sin(K2*delta)*cos(K1*delta)**2*cos(K2*delta)/(2*E2*K1*delta**3 - 2*E2*K2*delta**3) - E3*sin(K2*delta)*cos(K2*delta)**3/(2*E2*K1*delta**3 - 2*E2*K2*delta**3) + 2*E3*sin(K2*delta)*cos(K2*delta)/(2*E2*K1*delta**3 - 2*E2*K2*delta**3) + b*(-E3*K2/(E2*K1 - E2*K2) + E3*K3/(E2*K1 - E2*K2))}]
+

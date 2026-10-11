@@ -1,0 +1,21 @@
+=== H1_symmetrized_link_average ===
+  {H_2,H_3} = E3*(cos(K1*delta)**2 + cos(K2*delta)**2 - 2)*sin(K2*delta)*cos(K2*delta)/(2*delta**3)
+  extra symbols not in any candidate D: ['delta']
+  -> ANOMALY (fails necessary test)
+
+=== H2_curvature_difference ===
+  {H_2,H_3} = -2*E3*sin(delta*(K1 - K2))**2*sin(delta*(K2 - K3))*cos(delta*(K2 - K3))/delta**3
+  extra symbols not in any candidate D: ['delta']
+  -> ANOMALY (fails necessary test)
+
+=== H3_product_of_links ===
+  {H_2,H_3} = -2*E3*sin(K1*delta)**2*sin(K2*delta)**3*sin(K3*delta)**2*cos(K2*delta)/delta**3
+  extra symbols not in any candidate D: ['delta']
+  -> ANOMALY (fails necessary test)
+
+=== H4_forward_link_E_averaged ===
+  {H_2,H_3} = (-E3 - E4)*sin(K2*delta)**2*sin(K3*delta)*cos(K3*delta)/(2*delta**3)
+  extra symbols not in any candidate D: ['delta']
+  -> ANOMALY (fails necessary test)
+
+SUMMARY: All 4 pre-declared, structurally distinct H-ansatze fail even the necessary variable-containment test for closure onto D_i (proven anomaly for each) -- unless stated otherwise per-entry above.
