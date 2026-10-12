@@ -1,11 +1,203 @@
 {
-  "scope": "direct HE part of second CK stage only",
+  "scope": "direct HE part of second CK stage only; inverse-holonomy excluded",
   "required_direct_HE": 352,
-  "available_direct_HE": 3,
-  "new_HE": 1,
+  "available_direct_HE": 21,
+  "new_HE_this_pass": 18,
   "complete_direct_HE": false,
   "second_CK_actions_completed": 0,
   "direct_reverse_HL_complete": false,
   "full_error_certified": false,
-  "physicalization_complete": false
+  "physicalization_complete": false,
+  "charge_checks_passed": 21,
+  "rows": [
+    {
+      "file": "4f166ea087c7adf0d1e3a4577803ac09d7187ae7acc33ac062bd5c046f08af9c.pkl",
+      "sha256": "6e9097b9d7938879194349cab813d5873220c1b5895104801b6b595077b09959",
+      "support": 44,
+      "norm_squared": 4.415254198196793,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 4.996003610813205e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "8dc70e27955e87305852b5179150808ec7a8dd0e1249ad7a6960ca4ddbb3114e.pkl",
+      "sha256": "dafee867b312f0eef60344d46ee1c058252d05f2bd05b0dd7d5d37fa172e88d1",
+      "support": 101,
+      "norm_squared": 3.2466257737948174,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 5.455074689465002e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "b4afb4e3009005ac55f556b7f0a7e8f1af6807fbd129dbe9af00aca9f1f0b62d.pkl",
+      "sha256": "0498db91ae57774e62781747f9a8036f1baa11b5754fa28d1c497ec9cbeb0b91",
+      "support": 93,
+      "norm_squared": 2.6911610490287816,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 5.656960033204284e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "d89d9be44017c281154fcee23e6f2c4dc6af5a0a118f8b5140e655f9dc1d5a6c.pkl",
+      "sha256": "4441135a2fbc9c5630fe7efc3506d384dcf93433bd7bffa808ab0d1d9dea15ff",
+      "support": 88,
+      "norm_squared": 2.4535440558350428,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 5.791378936100081e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "39109cc1c812f657a75d45b2aafc20ffc1b680db03419dd3f5a2bc37a1c41712.pkl",
+      "sha256": "1034bd4045e22651837df07bef283d9423c1f0be5179abec4e8aa470842a8ef7",
+      "support": 93,
+      "norm_squared": 3.475468223967608,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 5.440140023818366e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "b7d628549e0f89861df7c6af9552dd41f8096a599ed852226bc9023c4272cfbf.pkl",
+      "sha256": "32ef1fdd717bf2ec68a8ae92f34c1d1fd26dbf29d7e89dccc3603dabdb871c3f",
+      "support": 61,
+      "norm_squared": 4.123894779656628,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.099122902309744e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "dbb66f975686e6e909b4f2d7959775aebd7399ea43faed2de6118e3d3cddb8ad.pkl",
+      "sha256": "7f8718cc7525c9d3a4fadcab4a08e8e026a0c752798ced6fbb935370a06a9ce8",
+      "support": 61,
+      "norm_squared": 3.430007338491201,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 4.989391058744258e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "7f83a45763a89f3d3b9ae738cccfea69c869e57fe3b265a2da66bd4e2eb0a714.pkl",
+      "sha256": "1661d23bc3bfbbbb6ac03ecc08157bb727141f406660e787d7261f16d08ed5b3",
+      "support": 132,
+      "norm_squared": 3.497877093456737,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.941035460972674e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "ccbcd84e73fa0069799f0a7a7e4fdb1109cfa4e643c5b453ce247fab7e02245e.pkl",
+      "sha256": "7c5458f91a61876d848606dab37daabfce4eb7f14214f107f70eac3c7c8dc457",
+      "support": 132,
+      "norm_squared": 2.91520932158128,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.672387845398941e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "f13ea6eeddeee11b89d3008d0f4a3587cedb5549b1d9172c66bd79c26c4fcd36.pkl",
+      "sha256": "0705392751c55fd560ee1a5fcc05bd40a587a0e7a1d10887c07f6743fa202b98",
+      "support": 132,
+      "norm_squared": 2.940109370628608,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.649755646517925e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "9e4a6e51c2eab04041825196c437726e38455007c942c74cce2bbc136c8b68bd.pkl",
+      "sha256": "e349a346daca41f37d50be9cd25f2be7aa4ed50fbc4f5d61db09653b0790367f",
+      "support": 132,
+      "norm_squared": 2.513603316959641,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 5.820965738341013e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "e0c60a28bfc615e3c8c412d4f2fed20e06d90a27dbf61071302c92be9978bca0.pkl",
+      "sha256": "a791e4f2242c3a62e6ac25eaeac7f33bdcd53a2f9f47a3ca71ad06334bc9f81b",
+      "support": 70,
+      "norm_squared": 3.9345141024411343,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 5.71481035663106e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "329d864c9c771fbe4b60d6a7bbce4a9484367a36911fb1b0da2ce8419d72f22b.pkl",
+      "sha256": "0ae5caa6f24bac46e0171418b69384387eb03b235486201c309e59f4c9de34f2",
+      "support": 80,
+      "norm_squared": 4.1863960113310315,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 5.71481035663106e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "c2ee385044a1ee3faafec4086d65972776ebd0e2a79d25c1999732ed0ed180e8.pkl",
+      "sha256": "ec0378cfbbc0a18156532a7410deeb1a14a079669f4c03bc80719653348cf877",
+      "support": 70,
+      "norm_squared": 3.388532286056865,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 5.049604421699368e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "0693b53f0df3e703a54b312114d61facb5ce3238858c30725ceca6b3eefedb7d.pkl",
+      "sha256": "6f9b9747332b7586f63827cf41a56f0745cf4d294421dce4c5e145b3744f564f",
+      "support": 80,
+      "norm_squared": 3.3051652160032825,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 5.049604421699368e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "a475ad2903d1aba79635bbe7e2eedc34b14b7bfa32bafb5bb0ecf38173200c8a.pkl",
+      "sha256": "789e0814084576dd45b318b22b2f6e586619e240ee4eab55c5c4487580200439",
+      "support": 148,
+      "norm_squared": 3.0350186946909203,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.941035460972674e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "69fd42f2a3605646c7a683173857ff9166687795ae8870e9372134119fb25a29.pkl",
+      "sha256": "2da8eea47ba3d62a97f365078fc80468583c6c5d8b8a9766b797c25d6e3cbe29",
+      "support": 169,
+      "norm_squared": 3.388346771365396,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.941035460972674e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "b91bd4e91df73b1e14126e575ad972341d1757b657ff2e299cf15e3905f851eb.pkl",
+      "sha256": "74688f785548e4265d89e0915d326dd17458a5122473c18298abaea2941115ad",
+      "support": 148,
+      "norm_squared": 2.9579248010773087,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.672387845398941e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "6f803bbff5f1919f036eaed0853502b5a1c0b43fd02e9130ef43bbd8d08c7eb2.pkl",
+      "sha256": "0f878aac8a2d2153b018f4d1ad878df3e914ac892105b8a69eac2849310836bc",
+      "support": 169,
+      "norm_squared": 2.826841364137138,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.672387845398941e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "2e028e0d3c463253dc59190b352b4704c2c42438d6c7adf431c7e8add5a6dba6.pkl",
+      "sha256": "23713c502b61b3c1176b57f5a3a7dde069813bb9bade4864072046997711815c",
+      "support": 148,
+      "norm_squared": 2.8044822018030304,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.532094795930895e-16,
+      "max_branch_basis_leakage": 1.0
+    },
+    {
+      "file": "2ad087d2fdc5fccce8e6dd04541d29c10503329df8ccc9d4c1d7cf7d716ab358.pkl",
+      "sha256": "5c8f0bae29d6b1b0790130ae1de93e83c520bae8337b074f52f66db585eb3712",
+      "support": 169,
+      "norm_squared": 2.8254939291403582,
+      "wrong_JM_squared": 0.0,
+      "max_volume_leakage": 6.532094795930895e-16,
+      "max_branch_basis_leakage": 1.0
+    }
+  ]
 }

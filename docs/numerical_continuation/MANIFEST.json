@@ -4,5 +4,6 @@
   "coefficients": 210644,
   "floats_lossless_hex": true,
   "physicalization_complete": false,
-  "additional_second_stage_sha256": "c8d5c9c6bac0b53bd1a7572e5a1e6590da36707a914d5b5cc5a6e5380c8ccad3"
+  "additional_second_stage_sha256": "a93dcca3b6443c97084c60653be3ee02c49cc596056ebc962f906cbd638077ba",
+  "additional_second_stage_checkpoints": 19
 }
