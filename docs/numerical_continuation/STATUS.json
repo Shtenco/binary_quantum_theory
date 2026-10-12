@@ -35,8 +35,11 @@
   "weak_conjugacy_difference": 1.9429155614935588e-16,
   "reverse_adjoint_middle_inputs_prepared": 96,
   "reverse_adjoint_middle_actions_evaluated": 0,
-  "second_stage_direct_HE_completed": 21,
+  "second_stage_direct_HE_completed": 50,
   "second_stage_canonical_direct_HE_required": 352,
   "second_stage_full_CK_actions_completed": 0,
-  "source_data_export": "saved_vectors.zip"
+  "source_data_export": "saved_vectors.zip",
+  "second_stage_inverse_HE_required": 4016,
+  "second_stage_inverse_HE_available": 122,
+  "second_stage_inverse_inventory_complete": true
 }

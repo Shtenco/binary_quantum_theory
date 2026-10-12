@@ -1,0 +1,2894 @@
+{
+  "middle_inputs_required": 96,
+  "middle_inputs_inventoried": 96,
+  "inverse_branches_inventoried": 192,
+  "inverse_branches_required": 192,
+  "canonical_inverse_HE_required_so_far": 4016,
+  "inventory_complete": true,
+  "scope": "thresholded inverse inputs after grouped middle sums; not amplitudes or full CK",
+  "full_error_certified": false,
+  "physicalization_complete": false,
+  "seconds": 180.08511625698884,
+  "rows": [
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "47b4552cfacc21550e62c408bd00bd26b18a297e85131ac72cc5e3dfec8f78b0"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "d47b01fcd11f2987044f15e77ae660e4e8523b1bc34f1bd64e9aca33aca31133"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "034c7709532e6db324e0c5ef0e987dcc2f05f0bd6d046b4c22024d242b2a7bba"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "c6c91f4a63b1326514b6caaaa8541efaa9e9b29e90cb728ab24b587d6110ce80"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "914e7a35738bc9130599a447da952972c5306c95395dbd441ad2d7043b0a72ff"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "988fa5598702e04ec7f97cb90540d543098ba10886ae57d463de386ff770deb5"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "d2aec8dccc7ea9af0e6be8b706f6287548b8fb2afe083c35a5024326e267a6b4"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "38938bd32615d5bc0de6124f0e769c02fe9be852ee8180f1d4b1fdf683d51adb"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "3f0f1c33c71799c57a70534ae6132506a9ad03330edf8c4b6beee8ca5dd547a0"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "da8506d76091c4d595b9f47878dfd364713ef3c19e62f9e1543549d6f386a3a0"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "530ac77d9eba69005688b133a8a5c97d4ca03246b296c49c6ba2af048bfc9d13"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "78998ab7a6554baa5da23c63d4a43154e6e5ddcffbaec4259bf74c7661010009"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "cab1e133ef6b9568ad222530bb1356945ddcc450bc32122664df323e22a5cd73"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "bec8bb531aff9a76dff7cb28499887404247beaf20bcdc511020cc3000d0dcec"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "523df9ed95e6da938311976b7091d5a16c28d79d8b7e0b3632a12dd05d778208"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 975,
+      "volume_inverse_support": 994,
+      "required_HE": 994,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "7709759bb8f71ec8590e2697c3cdf477748e69a052d010c1c6ea57feaec0e73f"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "4458531427b5acb1639cccaef944f6b951eb11d735dd5d92ff8324305b3f346f"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "758ce41dbb42426f2b7c7b06789a5043f2c9c07231245a8660e6952f614569b5"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "fcb98f5f23a003e607079edc100d0cf4c6273c42a32846209b19294d33ccb132"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "d0bc3bb34559464c2552f65810c4a1c186c5e458648ca0b07ad062476402c5e2"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "bdc20a88f4811e843220e91e4da263be5159447a3dae5865c8f6072cd194720d"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "2b6c8c430cb7d98a878a7dfaf96686b820ead51bae57fc6867322f4d997aae85"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "bcaa9f540132d1776e072a1a27082da5b289c791157b4fb0a6450288b9a915c0"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "e677a42b0297a222b3c94ad7a2739e615cc9b9ee373de72185ba66d8a4bfed1d"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "0a55b1652d598cb2ac519a655fa1b54ca822db1fe7d7ec33610e40efbfd8a5fe"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "da8b9197de495c7541842978111df412471241c9c860759c9414f52a414247b6"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "dc4c43a9865bbd55161a0120df2801187438a53b560b692e2fe0b25bd538f00f"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "75fad1393b12f7dee1e8b539e85459ab6a0281ed4a927e50abe6469a189fd50c"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "78937e1125ed2d3277b5c0e1f3d2113300edcc94eb33ac73d0a6fb48ab0ff6ab"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "957b56605d287cf79ae6c0f2db00a28ba2bf92a9fe496908828d8d2ced02a680"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "7f2a1fc58f11c89758307a534c88104d0dcfb1b7f88f69dfe236a1a2b27ce418"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "3b42352b5f0962a098c64c1bd2fe52f3e7c9158b679714c339b10e0f297b8672"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "aee3fe792b69e89843b86023ab68be11c0ab739d86fb81ab4c56462cc3cc5b8c"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "8b6dd5837964b13da46a50c4ea8d8f435b5a3e7d17b5552984f26acc0a5fe370"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "057a1bd138c5e15ccfc5a2ad2c14f2f11674abcf6c5e0275d3fe28f497afaaa4"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "cd54e26ed836ef1f63c8e1a308b886e898ed0abbecd7c078b7d1a98f75328108"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "e6eb4096a6b5d88370624e2d573e811dc33a6958a97e1598ea8d75b44b09dead"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "9e62910a3ef44399c5ac1ef15c149870a2c1e62fcb113523ea21121990cffbb3"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "00ca5f64642db2a9719cfabf6c71904256e481039ca90a6fbded3b7fef70654d"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "1f045164d0f0285bab052adeaf075d03aeb3d52e6b9ae3e01532468a814b56a1"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "36d9e36b362c4f1daef8040b32903bdeb0ce3861b45a0e143b75cd24081fc17a"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "ee21ebff50a03477ebafb4533b4ff5db08fd340e82f1b97ef4a5d832ced12d06"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "ea488e4cc77d2a20768af9e905bae03d7499b56e6c69cc45296be0852d766564"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.601545835291839e-16,
+      "sha256": "12dc0de2edabcd785cc3b8a85e32a8bff3e70cb04d508dfc5d28093347200324"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "3a76b394162b6af8ca897fde6210f895baa9ac0826f73238055bad372aad1933"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "7d26bc352fc89b76126cfa09cdf66a8c73d66982d96e71c934316128503906bf"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "8582fe396f62db42cc1d0a427778d016483dfb48de7ed7982aa213df7579616f"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1101,
+      "volume_inverse_support": 1105,
+      "required_HE": 1105,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "4af87ec0cec3a1e6c543b4b916210040a032124b101a71403750a0a12f46d8e3"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "1667b688060436136b46461f5e72af3a13f790cc6d70317ddedba5552d083287"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "15f918ec042e1a4844c756d5a26d8bc688bf9f98920da4cb0a640fb09b259f18"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "be16629139f5f36bcc0e7230889935ea13b8bce294edcfaaf813645f25ce45b2"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "2cc2cd0bfc800c2765d2bd069d5ee81aabc2446b3ce542ee7f7408e1a2a55480"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "029bb0fbdf7d9f009f93217f2f115d2ccaf2dba0a17040fa4f50217ad3e77d30"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "4a014591402925014fc350072aaf1599b3f528a1eba3921558c6b2746112d824"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "85f5bee279c2914d5b90308a6f4443625e92a646f8c197c6354c0a654bf71fb9"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "f82841d49c040696ba4ae7fb3b8803d3ad03bed4f6f66f44a57d72f3d1c2c6f1"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "448623e9596dd9ba2d799f019706798a63a561da78ec0b61b6678cb9ec45f9ca"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "635a780476ec0d96c1b6987aa10ac999180d50ee2971e7fda49f9f3b3a7d1d0d"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "cf6cc9429d7cfad4780e00f54843aed1cb0aac8f7cb2e796141ee2ec9b11fee9"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "6135254e54b0fc1ec77f07488a9beb2ce940a0a44bdcbd80486b443f7ef5604f"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "4d3fe1d7d86dc558f262b7dabb319fe0dd68cb93166e98404d9ff3bc2c244798"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "dfcbcbf3337a4726af9b8690ed2f64ccec0b9dcd939d5ea5fbb386595936e1a5"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "60a61e37ef34989d04ff4aad4f567fcd521647183906769375ded8a88f902c89"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 902,
+      "volume_inverse_support": 921,
+      "required_HE": 921,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "e314e111b4d887acc3f8d009dd8ccf482968ea49458f6b6794a7ad5d650b6d84"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "eb0d55e238b46b917b9fa7eb00dc2958cf23c5c704b5945d5bf01cc0733747dd"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "b9be68ec33976fab6be461c2fcc05006ee325ade691f6d3e770033473e9fbceb"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "e8832577479ff880194997aad5c5c92cc3ba4ede401c674e4d4c923205593ca1"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "723d7e68acdd2d007728af26a31b1ca5d58722de24ff29425111cc8a7f8ecf6e"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "08d47d046bb2b844dbd58edb302d01ff6037e68b860872528c26273728a878de"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "a9b82bb45071c20a0b98ac3b774271624357b8974464e54d2913ce70dfa3899a"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "77f1a42962183f33495b2fbd809d3bebf5b7205e4c2e253cf51bcb351944a776"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "c5b22ff1bb950080d85b9f40ec02e0f62d6bdb4b7fd3183bb74da06043fd6b46"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "1ac779f2ed40a9422d578ee6dd3e9dca1f893a29f5e4bf8cd56c1b3635beb1e1"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "5b85e5fe75adada9e54181b08c9e153ec4bfd60d7b8676410bbd4bacd448e215"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "1cd328ac83f74574ddb35381029af98b83cb79b30483fe1b6549358c8ee71cc2"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "66b454a574d105fc776ee59f74fa65885fb75be4a71c16eaab3a0e893e65fa67"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "67c6eadbda09333cf6d4db513b6be9c6bc71a267473d98b711483e1b26ce5edd"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "7acca0f001f49e6de413b798e7972a9bd599b1da39c8347a89ef2c1536bd1c8e"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "bbc5e48c81548b07968e11e91231e252ce91c51d4fca670d88f928b702b89bb7"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "4abe57c925a67a408aa93cf878a12171fe551639e802d5bb9f03a89d7faffeca"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "333885230ad4399ef5218cf38e14f472c04fe34a71e01933fdaf15d06719eae8"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "e8587c1a88a998e3e510cd12bf500c7f64b052448f9e984ad87a281b70c31ffc"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "503412ffc03b6cae4b7d9b8ffa30c914b4a12da18507ed5e2da52c0ac0670275"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "2af0e33b561e9652896569d2ddc27b1914d3602251d4a5e9b47d35074c3d92b0"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "9e7ab6ba7c56ed6181dd5493f680cac582237d5fb130f1c51d1b8e5ce367c4fc"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "aaf3cb7d3cb4419cc07b34be60f560d0f61cd210ebfa2bca2897d4547dd957b2"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "7e2776320e452b2f966892c199727fed40e4d3978334e75b2f08968822aa1e85"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "8716308e7c7d72834d3cf369579d80d4dd1344c0094cf644eb08ba123e5bd30d"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "6bf5ef066baeeb83da507ca9a99ab01bef53fd8ddd93903c1175378213db9d7f"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "a3d5360f0875b9f2d751a7626feafec69e2dff92deccafe7983f1012f322ec63"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "7fac772b5f41fa787de8ddf69308ffd4d4c7b356bb281a2e0b3d0185619b246a"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "2a8e3650eb44355f54b1896d22280597a29122e7e90d8f6e900597a67337a481"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "8c48dcfffdae1f15667a526563adb2b054b27ed89da246aacc4d6a0bb55b40e4"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "7c71d296d03b7d33a134708e4a06e1c5f5170272527d7f5cedd0b3a5424be016"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "aa1fc70a4ebdda0c13335b130cf470432dfc23ee6a2c875bb6a250bbd2606bbe"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1028,
+      "volume_inverse_support": 1032,
+      "required_HE": 1032,
+      "outer_basis_leakage": 4.560706458366088e-16,
+      "sha256": "2f9ada88cb4b840957087caa4c0ecb700c0c83db3a13107e89e17225d8127264"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "b490c3139adab75a775177d5ae38a273581884d852c83bf437fd57bbf915c4fa"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "871b9fe25e6fad6448a71492007375da3e83e125661ee474ff79a9c47d754b3e"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "1338cb00714b6a7d4495ba8194eadfe934f259cb8cb2085c13d6d9c925d05171"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "c0c1a2ab11a68a698122f9d48d1c48dfa7ad9bc576498230dc1b3b426c5a956c"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "ac9b3b599f29e4b2cfecab09f900a4748789ad9b7f3d77d28fb46f3b2924bb3b"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "6432decd61811c42a38753ff57ab3ba942d3afa412037ee9a71b8715e1d37182"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "cdec5f547a77e630cb9719d4ee22acf102f907c7c60d1d763de0f527943b56f4"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "078231af4534ef66f7b685c5fa465c0a94b39ed99edaad4bd942ff15cdb8e2ba"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "f09e20dd62975f8f325a03b75cc8623ac1878d7a308eaaa3dc776c9e35405252"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "40b54849b8755dfe03b435ffdaa3226985c2eff0f5e8b499d157e56d78046a56"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "1b7a62da4e9974a6e2a7f94811e02c861f573f89292ab4c17aaaacf5c495037d"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "4e45c7ef7ff36c9b760ea54f150169215579ae4ed7ba26b5ebdc4838967faf68"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "39683cd2351ccb1bca18aa046bb9a5269a3568afd7ccbccbdaebf980fa63b1db"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "ad0f9b2215876484209b58226f4c93c3a6fb69af36746dc9d5f356f3dff5a446"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "34958cb2db51a365988bf18c8e3735f5522f8ddb3b1b4fcbe33c79edb70f93f5"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "88863416da1f2c54075f3bd6873268f73005788ee657e3502d22951d1bc64abb"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "d347021eed610515ad6dc761cec607d2ceb879a6b30068b5e0f376fe0f0da962"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "52b513fb349de159573e78e9cdc6dc2326a8da2dac4df8a30188139afbc861be"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "6454598ee491d520195ee586e1585db893c6e0d78f9f141eda0e9d63196f78b3"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "1a3729a712e68ee03ef29ef86f3873967241af7f2cc614cc93992e68f78857a9"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "8d48e6f224ea4ed8043d61cbed14cf71cfa1d5cb6dedd6b1d05f7f2ae91cd695"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "efd134e44188a7dac8052f0aebea8c5b8e04141d30aa4749659dbcbac97ceb87"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "c970d6ae5654ce13ac3c217dbde2190c169a50e2827b65a1a555d62149f51b6a"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "b944326d194fa00199c4a46383577599961d8472ff40ecbcea9dc4a880f4d04f"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "a5d1f52a0461088ebecc62e166e5d51557aee625121c9155435521cf54f988fa"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "f5e33741fbbaec227f1b4e46033d166a07f0e0ae334d652707037fc74cf4cc5f"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "51b34923e63b70153abc7db7779a3c30fd65b572fd2a16eb9516aa892d5c61a5"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "1b87903f0aa3ad2dc6ca4c981d44107ec66314281603e81c5e6477ddfd776db6"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "7fbd4ca90bb09e9b42518cd089843d11defb74ffebe04dffa95b90321b99c6b1"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "03428378e247d21a90e035799db406b9144eccab5dbf4bd53db20fdf005c787a"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "fc9985ada168939d0a2cddcb439b50adac956f63dff06f80fb95cbd4148f7adb"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 1010,
+      "volume_inverse_support": 1012,
+      "required_HE": 1012,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "06f5f068c738780293ea2d8ae1ad5e30b522768eec3338618b0006506f5b1dce"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "6babed92175fc08dd9d5491d8d1a38ead40c45114a2b1b810a4c735a06f87e63"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "cf1a7230c80da2ed120ec72fa674fa6008b811e019b75143e11796988351f2fc"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "26db737505215d1238fd1dc3066ec1fbbe55022e2587e86151bfa4d93cfeda48"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "c4a46c08320d8f51c98ca83bbc5e6929d4e906d09980ffcba18c6e6a89116cfe"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "7621215724a5f012f03eb466e43c0cf75b94775b07c62b8f2a4305ab87c429d9"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "ee1c98297b4efda75596bb1b21d9ad14aec6a0fdc72f1c53444a62a2717b6a9a"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "49538b66df8cf80b4229792540dc7781f19179b09e3fbb657a78d7ba883e73f2"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "a0c62d8408f8b711c5bea43229635352f2345dbb3a1da2d75a5dc22c26d70c53"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "ded29c95a98dbfcd4435e79e58ad274a40faf7d415a4c0370b6a3210c58260d4"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "39219e65563445bed0036ae435e67aa5adfb1bc8b983315839aa28146df1cdb3"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "3c50f5e9c451d167da0f429fc3e4c56902aa1a1e3131f9794570cc625cd86b69"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "008d013c860f65d5f2bc430ab00ff20a248f019c35753667dc690e75b55e0de6"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "91537998d596f174a74b9df0456b6ca176ca599c3ec202aef0b9b33d234e10d5"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "4c2860e1704e0b410532607fba41b669c75b95f1566f4778b3b082b2a4c31828"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "4017ee021994778975a67b61bcd2132c1efa51575d1bd2aa2058355a2af9cc1f"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 887,
+      "volume_inverse_support": 895,
+      "required_HE": 895,
+      "outer_basis_leakage": 4.726604209672302e-16,
+      "sha256": "428a05e49ba8962571044a6f40b055187f84dbc7fb14c0984f516d8f62a1367e"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "895d8197f404ea37230d54910739fce686e455dbab25087831b3a7775b2aabcf"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "f897aeef589660e7d218359db0443397592488441fb72189b7c2e83cebf0cf87"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "b3f3c33d9acc32f13d03e10fb9af45f3e76d62a9b965ae2b56278bf0f92b8c72"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "6ed34ab178a7cbc80ac318de70cdcdce1537f9fc94b15dd08a5f377e889858d6"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "20b92f3a133c9bafd8c98fd6aac3adcb2512c6d374554ccef3fb83a346d56e7d"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "8db93ec06a5dfd8182f5f219ab0151cb5e3f11c21ca728f598c5cf16699d73e5"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "c9fd413e4a29f126f80dd3d1583c9ba985fc0d31a3473f1765d34610bade4b44"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "e2920bb4f1a7aab2f0c5345dcd7fce816953e661d9070a117b7c60b766257488"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "991378fd223e08d8bc5564ae5c53737e245fc37544aae5a68f9162c2e8a1f059"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "ce96dd6edfc5f901d65d8bb4168b0b60bf65b0e26eed6da11498f49292879d37"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "b6d26259d1a622c52b2580ecccc590650424e414a7db9a80f3898f5a142b2c04"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "7ca44bc3c54ba04eabf6c705e03ecd4f789df9fc93281b4d7ecd5b989e33134c"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "2e513b3ab3be9be88bb76742c39f0599f45a5ce186bd2442dc33b3b80af78c94"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "d9a684660d74be5a5e9e868461f284a6d76c22df3a6863f6b7f9be9499709e19"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "d918375a9760ddc681211893c6d445c2538d95c2dd454b57a1030c75f4fcdca5"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "b7510da6b6019faa49f4e2780103ec716fe4c95d30801b1e762ebd5239ac0af8"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "fde388f39853bdf3f3fcc7b98efa3b947b4ee4c5fe4ccab32a68fae38a23b521"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "98fdf142e87308da7c11a889a34bb2e979bcc1b39d6410dac08db16c160efce9"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "922b7c6b14e5e83d67971aaa60bf158ad640d22249ec2738397a6ab09ba80dce"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "63612df7928ee8ab83be1855035539e973089fe2f8d501fd63b82fc06d5becb0"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "9fd8a38d84e723019ae7de5d2613911eebaef3fbf1f3987dffa76152a8c84d95"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "1c77971a94eca3b4d3e1c4bb5c7846b277bb2c4f72e872d0350953a919ea7cdb"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "f87b5712b19ded659a11c355bb17c5e8cebb542b7fe7a81f329b8540ae3347f7"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "f7ec9c2def1567ae81d221bc689e642e3a3cb1f284eddc095e3f495c87334f82"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "5637ca16c935149606dbc128957cf688bebf3023495878f039b4bd4dea0ff1f9"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "c5e379aa7702d88b532850359ab8bc5c0a2b0112469684e19197d3248e3af3b5"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "3bc745aa6f1ebf254fd4a288730096b63dc138bb89d9d929f15c7786c3caced7"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "0b793c4175e9c39d6130774ba69f91ae28cf5ee540306d64360d61db469869b0"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "5e521034d2771258f32c4befa4592238c12a3f57bd58fc80bd4c0aa2b7878365"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "473f5d0e992babd126309d762cf9b4a1479c66c86fce7c0cdf4924be4566285f"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "19acbf34b477b566395bd58c268489b65f85546f8f3d9f41d96641afbea373d5"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 865,
+      "volume_inverse_support": 867,
+      "required_HE": 867,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "73fab9d7f1f857f82b967c66d7aa18c6668acf7eeb20d3edb3302e92d82c4161"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "a7c263fbacfe07fb59ceda72a682aa8950931ec4809cf6ed2a58ca36e2aab3f3"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "14664a61a3a5244da5383e64ebe7dd80f8b8bea672fdea0b655ff5b86334abf4"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "20b2f0afe59d6d95441fda4a6b7308ee8681da3c7b5b3e4cbdbd438c407d33e5"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "7fe3cf1b323046de61480e95dfb98fb72d83d828329865b008fa9a1ede5d7734"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "80fb3acd6f080ff84dabdf7d57593be3cc2ad1b6adb89a7b1e6f247bb4df47f2"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "cbb20bd26745f83ed6a3868b77a2807d8ad1e28d0401db326ba9bef5f2364716"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "86006b30d1d0a340c93b878cab464e0f487743e77b1a363c90dedba77474a7b5"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "5a74cf36ae2f30e810ab6e5028f4c9ab808bdfcbd2c758c782531235c478c248"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        0,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "a8af1d0af3c71d15af711151382ec51502beacdc719eea52ba6e9695410828a4"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        0,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "2b78bdfe65e443574fc56ba012f0862e5cb2f5f146a59cc0372b531feaa28b63"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        0,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "1c74102467cc2a0e759214b15abdb62ad6d6849b9ba15d201460eba3d7ce966e"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        0,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 5.787933631130369e-16,
+      "sha256": "b782daad9ac0339b2aac1c796e8561da3c20f6b71a52d7814a48ec619eccc7da"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        1,
+        0
+      ],
+      "u": 0,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "0481d4a0bfe66054a696557e136a71d2c01d60b3cdbae729de6717e37f873be8"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        1,
+        0
+      ],
+      "u": 1,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "dc502d4f25a123226e67de27956aa55b76b8711c9592d482ae4925f7f362a625"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        1,
+        1
+      ],
+      "u": 0,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "5e5096d5c0c206dcf20fbfce29b9fab5fe9afedbf7906e4b326cfb01facf82a7"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        1,
+        1
+      ],
+      "u": 1,
+      "inverse_support": 755,
+      "volume_inverse_support": 763,
+      "required_HE": 763,
+      "outer_basis_leakage": 4.440892098500625e-16,
+      "sha256": "00612194f48f17cb1c94cdb1d33d6c3562ed6a1d3b69dbdba1104471251847cb"
+    }
+  ]
+}

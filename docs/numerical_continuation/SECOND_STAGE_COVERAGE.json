@@ -1,0 +1,1161 @@
+{
+  "inverse_unique_required": 4016,
+  "inverse_matching_historical": 122,
+  "groups_inventoried": 96,
+  "ready_groups": 0,
+  "scope": "coverage only; no full CK action evaluated",
+  "rows": [
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 995,
+      "missing_HE": 949,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 995,
+      "missing_HE": 949,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 995,
+      "missing_HE": 949,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 995,
+      "missing_HE": 949,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1093,
+      "missing_HE": 1032,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1093,
+      "missing_HE": 1032,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1093,
+      "missing_HE": 1032,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1093,
+      "missing_HE": 1032,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1119,
+      "missing_HE": 1071,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1119,
+      "missing_HE": 1071,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1119,
+      "missing_HE": 1071,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1119,
+      "missing_HE": 1071,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1119,
+      "missing_HE": 1071,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1119,
+      "missing_HE": 1071,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1119,
+      "missing_HE": 1071,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1119,
+      "missing_HE": 1071,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1127,
+      "missing_HE": 1075,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1127,
+      "missing_HE": 1075,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1127,
+      "missing_HE": 1075,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1127,
+      "missing_HE": 1075,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1142,
+      "missing_HE": 1089,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1142,
+      "missing_HE": 1089,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1142,
+      "missing_HE": 1089,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1142,
+      "missing_HE": 1089,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1219,
+      "missing_HE": 1156,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1219,
+      "missing_HE": 1156,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1219,
+      "missing_HE": 1156,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1219,
+      "missing_HE": 1156,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1219,
+      "missing_HE": 1156,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1219,
+      "missing_HE": 1156,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1219,
+      "missing_HE": 1156,
+      "ready": false
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1219,
+      "missing_HE": 1156,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1225,
+      "missing_HE": 1158,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1225,
+      "missing_HE": 1158,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1225,
+      "missing_HE": 1158,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1225,
+      "missing_HE": 1158,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1215,
+      "missing_HE": 1162,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1215,
+      "missing_HE": 1162,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1215,
+      "missing_HE": 1162,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1215,
+      "missing_HE": 1162,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1237,
+      "missing_HE": 1169,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1237,
+      "missing_HE": 1169,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1237,
+      "missing_HE": 1169,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1237,
+      "missing_HE": 1169,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1264,
+      "missing_HE": 1210,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1264,
+      "missing_HE": 1210,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1264,
+      "missing_HE": 1210,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1264,
+      "missing_HE": 1210,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1264,
+      "missing_HE": 1210,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1264,
+      "missing_HE": 1210,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1264,
+      "missing_HE": 1210,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1264,
+      "missing_HE": 1210,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1284,
+      "missing_HE": 1230,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1284,
+      "missing_HE": 1230,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1284,
+      "missing_HE": 1230,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1284,
+      "missing_HE": 1230,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1284,
+      "missing_HE": 1230,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1284,
+      "missing_HE": 1230,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1284,
+      "missing_HE": 1230,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1284,
+      "missing_HE": 1230,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1310,
+      "missing_HE": 1242,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1310,
+      "missing_HE": 1242,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1310,
+      "missing_HE": 1242,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1310,
+      "missing_HE": 1242,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1364,
+      "missing_HE": 1295,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1364,
+      "missing_HE": 1295,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1364,
+      "missing_HE": 1295,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1364,
+      "missing_HE": 1295,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1364,
+      "missing_HE": 1295,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1364,
+      "missing_HE": 1295,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1364,
+      "missing_HE": 1295,
+      "ready": false
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1364,
+      "missing_HE": 1295,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1357,
+      "missing_HE": 1303,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1357,
+      "missing_HE": 1303,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1357,
+      "missing_HE": 1303,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1357,
+      "missing_HE": 1303,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        0,
+        1
+      ],
+      "required_HE": 1357,
+      "missing_HE": 1303,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        1,
+        0
+      ],
+      "required_HE": 1357,
+      "missing_HE": 1303,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        0,
+        1
+      ],
+      "required_HE": 1357,
+      "missing_HE": 1303,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        1,
+        0
+      ],
+      "required_HE": 1357,
+      "missing_HE": 1303,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1384,
+      "missing_HE": 1315,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1384,
+      "missing_HE": 1315,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1384,
+      "missing_HE": 1315,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1384,
+      "missing_HE": 1315,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1384,
+      "missing_HE": 1315,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1384,
+      "missing_HE": 1315,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1384,
+      "missing_HE": 1315,
+      "ready": false
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1384,
+      "missing_HE": 1315,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1457,
+      "missing_HE": 1388,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1457,
+      "missing_HE": 1388,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1457,
+      "missing_HE": 1388,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1457,
+      "missing_HE": 1388,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        0,
+        0
+      ],
+      "required_HE": 1457,
+      "missing_HE": 1388,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        1,
+        1
+      ],
+      "required_HE": 1457,
+      "missing_HE": 1388,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "required_HE": 1457,
+      "missing_HE": 1388,
+      "ready": false
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        1,
+        1
+      ],
+      "required_HE": 1457,
+      "missing_HE": 1388,
+      "ready": false
+    }
+  ]
+}
