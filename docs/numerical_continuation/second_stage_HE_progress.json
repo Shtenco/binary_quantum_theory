@@ -1,0 +1,30 @@
+{
+  "required_unique_HE": 352,
+  "completed_unique_HE": 2,
+  "new_jobs": 2,
+  "complete_CK": false,
+  "reverse_HL_complete": false,
+  "seconds": 31.586286239005858,
+  "rows": [
+    {
+      "file": "4f166ea087c7adf0d1e3a4577803ac09d7187ae7acc33ac062bd5c046f08af9c.pkl",
+      "support": 44,
+      "norm_squared": 4.415254198196793,
+      "max_volume_leakage": 4.996003610813205e-16,
+      "max_branch_basis_leakage": 1.0,
+      "seconds": 31.20049979801115,
+      "sha256": "6e9097b9d7938879194349cab813d5873220c1b5895104801b6b595077b09959"
+    },
+    {
+      "file": "8dc70e27955e87305852b5179150808ec7a8dd0e1249ad7a6960ca4ddbb3114e.pkl",
+      "support": 101,
+      "norm_squared": 3.2466257737948174,
+      "max_volume_leakage": 5.455074689465002e-16,
+      "max_branch_basis_leakage": 1.0,
+      "seconds": 30.84697242999391,
+      "sha256": "dafee867b312f0eef60344d46ee1c058252d05f2bd05b0dd7d5d37fa172e88d1"
+    }
+  ],
+  "complete_direct_HE_union": false,
+  "scope": "direct K part of second CK stage; inverse-holonomy requirements excluded"
+}

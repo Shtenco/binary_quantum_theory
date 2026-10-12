@@ -1,0 +1,289 @@
+{
+  "completed_all_edge_CK_components": 16,
+  "all_edge_CK_components_required": 16,
+  "reverse_HL_complete": false,
+  "seconds": 6.336768086999655,
+  "rows": [
+    {
+      "edge": 1,
+      "i": 0,
+      "j": 0,
+      "support": 330,
+      "norm_squared": 1.0356112690868589,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.6910028968576024e-16,
+        "internal_volume_sector_leakage": 6.578352440753498e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "d6295254bf2fd90f73b42b7b29573e3e9738ffb91dcfe670c40994fb903e71c6"
+    },
+    {
+      "edge": 1,
+      "i": 0,
+      "j": 1,
+      "support": 232,
+      "norm_squared": 1.6038694652832055,
+      "J2_sectors": [
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.6910028968576024e-16,
+        "internal_volume_sector_leakage": 6.578352440753498e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "16a7522ef265e0d91c8a486add75a7f4df6d5a45e445892a1dc2d76610491e3f"
+    },
+    {
+      "edge": 1,
+      "i": 1,
+      "j": 0,
+      "support": 232,
+      "norm_squared": 1.6038694652832055,
+      "J2_sectors": [
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.6910028968576024e-16,
+        "internal_volume_sector_leakage": 6.578352440753498e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "14ce894f8fec62e1fec251c3089d99e6d43b4e3e4ab6e34afeb5d94a65ccd817"
+    },
+    {
+      "edge": 1,
+      "i": 1,
+      "j": 1,
+      "support": 330,
+      "norm_squared": 1.0356112690868589,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.6910028968576024e-16,
+        "internal_volume_sector_leakage": 6.578352440753498e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "0f2c54975642ef54a838d87bc385b6bd0e22d9c5b96ab523cb5119f9abed6524"
+    },
+    {
+      "edge": 2,
+      "i": 0,
+      "j": 0,
+      "support": 330,
+      "norm_squared": 1.035611269086858,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.0770370905276124e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "7b6df88141e49281f90684d3b74541429f473a3874fdeeae96202146e3020782"
+    },
+    {
+      "edge": 2,
+      "i": 0,
+      "j": 1,
+      "support": 232,
+      "norm_squared": 1.603869465283205,
+      "J2_sectors": [
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.0770370905276124e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "ff90ceaed9e680fb293fc4895b89852181e942ab4692a7b05faee0ecea8ab35b"
+    },
+    {
+      "edge": 2,
+      "i": 1,
+      "j": 0,
+      "support": 232,
+      "norm_squared": 1.603869465283205,
+      "J2_sectors": [
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.0770370905276124e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "bcb6b6d366b3064cad5f0f4663610fdec32360fc6ea3514a06ee3b72ea3ee12c"
+    },
+    {
+      "edge": 2,
+      "i": 1,
+      "j": 1,
+      "support": 330,
+      "norm_squared": 1.035611269086858,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.0770370905276124e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "67f7390d6064e90fcf93211d795a908f5e898df55e267f267e1ee6045499ac83"
+    },
+    {
+      "edge": 3,
+      "i": 0,
+      "j": 0,
+      "support": 316,
+      "norm_squared": 1.0372355816855867,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.0770370905276124e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "ca386bfe7b9bc2c6d185d7ac5c2341184de7e7d691bb5a3acc239409ae6ea6b8"
+    },
+    {
+      "edge": 3,
+      "i": 0,
+      "j": 1,
+      "support": 221,
+      "norm_squared": 1.6015462674417122,
+      "J2_sectors": [
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.0770370905276124e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "1af03d0b59ed280d6f046d27bc278314d08852d07c44204865a871e88a23de5b"
+    },
+    {
+      "edge": 3,
+      "i": 1,
+      "j": 0,
+      "support": 221,
+      "norm_squared": 1.6015462674417122,
+      "J2_sectors": [
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.0770370905276124e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "831a33bd2ac6d7643b8b6b0a8c4c35642b75e3bbb9af30e71af4559e8010c14d"
+    },
+    {
+      "edge": 3,
+      "i": 1,
+      "j": 1,
+      "support": 316,
+      "norm_squared": 1.0372355816855865,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.0770370905276124e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "5e061268382b41b7f57fb0cc70c07741c5b00248edaad2c45ace8732e437044a"
+    },
+    {
+      "edge": 4,
+      "i": 0,
+      "j": 0,
+      "support": 316,
+      "norm_squared": 1.0113143833215679,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.288783399261119e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "7c821e67b9eb0ae057a10ac02f3a3dfa97be5fdba55dd7f698c48f061eb7a4f6"
+    },
+    {
+      "edge": 4,
+      "i": 0,
+      "j": 1,
+      "support": 221,
+      "norm_squared": 1.5513226419851722,
+      "J2_sectors": [
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.288783399261119e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "9a314fde41070aa9164f249c53f2c6e57e59bfda4908f0fab607f34d8db0c3e5"
+    },
+    {
+      "edge": 4,
+      "i": 1,
+      "j": 0,
+      "support": 221,
+      "norm_squared": 1.5513226419851724,
+      "J2_sectors": [
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.288783399261119e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "3f10e9f73777636fcd61258ad42fd6b3daaceca8533e5bcd2e85b1017665c187"
+    },
+    {
+      "edge": 4,
+      "i": 1,
+      "j": 1,
+      "support": 316,
+      "norm_squared": 1.0113143833215676,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "forbidden_J_gt1_norm_squared": 0.0,
+      "diagnostics": {
+        "outer_complete_basis_leakage": 2.288783399261119e-16,
+        "internal_volume_sector_leakage": 6.532094795930895e-16,
+        "complete_charge_basis_leakage": 1.0
+      },
+      "sha256": "1e9d95102c960427f0a3614afa6350f70b4a2354bc1d3f517e5efeefff75f39e"
+    }
+  ],
+  "full_error_certified": false
+}

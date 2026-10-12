@@ -1,0 +1,24 @@
+{
+  "scope": "full 24-word selected weak matrix element using CK_ij\u2020=-CK_ji and CV_ij\u2020=CV_ji; not direct sequential reverse HL execution",
+  "weak_R_reverse": [
+    -0.017539269980274913,
+    -6.602395323762129e-17
+  ],
+  "complete_weak_R": true,
+  "complete_weak_Rdagger": true,
+  "direct_reverse_HL_column_complete": false,
+  "global_error_certified": false,
+  "weak_Rdagger_reverse": [
+    0.15173180868491035,
+    4.256671867591617e-19
+  ],
+  "weak_HL_reverse": [
+    -3.3224810212190226e-17,
+    0.08463553933259263
+  ],
+  "expected_conjugate": [
+    -3.223391115149465e-17,
+    0.08463553933259282
+  ],
+  "weak_conjugacy_difference": 1.9429155614935588e-16
+}

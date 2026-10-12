@@ -1,0 +1,6 @@
+{
+  "full_sum_wrong_Gauss_JM_norm_squared": 1.411658020860108e-30,
+  "fraction": 4.474836043810888e-31,
+  "retained_support_before_final_threshold": 29525,
+  "scope": "one all-Gauss source, complete summed frozen HE candidate; numerical symmetry check only"
+}

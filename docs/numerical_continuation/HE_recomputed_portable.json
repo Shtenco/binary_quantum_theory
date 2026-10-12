@@ -1,0 +1,9 @@
+{
+  "scope": "one enumerated projected HE image of the pinned finite candidate",
+  "support": 93,
+  "norm_squared": 3.154658644560982,
+  "max_volume_leakage": 5.520145855830239e-16,
+  "max_branch_basis_leakage": 1.0,
+  "full_error_certified": false,
+  "physicalization_complete": false
+}

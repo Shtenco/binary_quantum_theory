@@ -1,0 +1,139 @@
+[
+  {
+    "spins_doubled": [
+      1,
+      2,
+      2,
+      2
+    ],
+    "basis_labels": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ]
+    ],
+    "dimension": 4,
+    "Q_block": [
+      [
+        "0",
+        "-5*sqrt(2)*I/24",
+        "-5*I/6",
+        "0"
+      ],
+      [
+        "5*sqrt(2)*I/24",
+        "0",
+        "0",
+        "-7*sqrt(10)*I/24"
+      ],
+      [
+        "5*I/6",
+        "0",
+        "0",
+        "-sqrt(5)*I/24"
+      ],
+      [
+        "0",
+        "7*sqrt(10)*I/24",
+        "sqrt(5)*I/24",
+        "0"
+      ]
+    ],
+    "Q_squared_nonzero_eigenvalues": [
+      "15/32",
+      "75/64"
+    ],
+    "polynomial_verified_exactly": true,
+    "charge_subspace_invariance_verified_exactly": true,
+    "engine_volume_difference_norm": 9.68397686090147e-16,
+    "scope": "chosen experimental regular-volume prescription; first-edge inverse-source block only"
+  },
+  {
+    "spins_doubled": [
+      3,
+      2,
+      2,
+      2
+    ],
+    "basis_labels": [
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        5,
+        4
+      ]
+    ],
+    "dimension": 5,
+    "Q_block": [
+      [
+        "0",
+        "7*sqrt(2)*I/24",
+        "-5*sqrt(10)*I/12",
+        "0",
+        "0"
+      ],
+      [
+        "-7*sqrt(2)*I/24",
+        "0",
+        "0",
+        "-35*I/24",
+        "0"
+      ],
+      [
+        "5*sqrt(10)*I/12",
+        "0",
+        "0",
+        "7*sqrt(5)*I/120",
+        "-27*sqrt(5)*I/40"
+      ],
+      [
+        "0",
+        "35*I/24",
+        "-7*sqrt(5)*I/120",
+        "0",
+        "0"
+      ],
+      [
+        "0",
+        "0",
+        "27*sqrt(5)*I/40",
+        "0",
+        "0"
+      ]
+    ],
+    "Q_squared_nonzero_eigenvalues": [
+      "405/128 - 27*sqrt(29)/128",
+      "27*sqrt(29)/128 + 405/128"
+    ],
+    "polynomial_verified_exactly": true,
+    "charge_subspace_invariance_verified_exactly": true,
+    "engine_volume_difference_norm": 3.134096593100341e-15,
+    "scope": "chosen experimental regular-volume prescription; first-edge inverse-source block only"
+  }
+]

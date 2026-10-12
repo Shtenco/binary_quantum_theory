@@ -1,0 +1,1593 @@
+{
+  "middle_inputs_prepared": 96,
+  "middle_actions_evaluated": 0,
+  "distinct_source_keys_including_tails": 856,
+  "full_reverse_HL_column_complete": false,
+  "full_error_certified": false,
+  "rows": [
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 316,
+      "support_above_1e-11": 294,
+      "norm_squared": 1.9529067281037138,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "5956fcff7d892b4e2ca9bd5d04db30f42afe3d1a952cfcfbcfcff4b871cb8ec8"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 221,
+      "support_above_1e-11": 209,
+      "norm_squared": 3.8412276218833936,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "0083d1ad07b6e13ab584f55d38333d792b9a054ab81632a6509c59c64dbc2aa2"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 221,
+      "support_above_1e-11": 209,
+      "norm_squared": 3.8412276218833927,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "7517e0042d5df71f8fd224640507010ce3696a2114081757883bc94d0f1992cb"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 316,
+      "support_above_1e-11": 294,
+      "norm_squared": 1.9529067281037138,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "076fa626c3adebf4bc56c56bc804717daccc5674c9ff3e8250a392ac97428797"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 316,
+      "support_above_1e-11": 294,
+      "norm_squared": 1.9529067281037138,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "2ff7058e0e88d3ea77ef8ed689bd65a1e0c3731c4942ce944194b56d8e824273"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 221,
+      "support_above_1e-11": 209,
+      "norm_squared": 3.8412276218833936,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "33e10d84b7342a11b45559e9710bb5c9061b3d431ed9ccc9c641f51f881b07cd"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 221,
+      "support_above_1e-11": 209,
+      "norm_squared": 3.8412276218833927,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "a74162a1047c3da6e91d664c0f74604f75af26a32d64ff0a38442d5652386c9e"
+    },
+    {
+      "tag": [
+        1,
+        2,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 316,
+      "support_above_1e-11": 294,
+      "norm_squared": 1.9529067281037138,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "9ff0015f2d6abd1df3c0196db1d3800f7db2e8e03f1d38d2912dca4e319b7a03"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.9423875795858814,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "8e3d9a75a2415b91396abc739d6fa8b052a7dae3ca65dcde63567ba0245ca3d9"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.7921426582316164,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "0ef81119b2788311daff88f2db2cea33f8684fbae248930fab2af3743cfe3b07"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.792142658231617,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "b423371a662bcac68ade213c2371e5f12134b3b77fb143c19aa8f8f031c20312"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.9423875795858814,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "1984044a668938a161e1d84976d8af1c0103e03637c251fc89289f51ee51678a"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.9423875795858814,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "6cd8129a59dc0a540dd61b35829698de0416ba71069b96ba6aa7f18bc44075df"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.7921426582316164,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "b132bc0e42ae1d9c718b09a6856ad7243233a5d0696f3671a636196f33485a9b"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.792142658231617,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "af3c2e188513e7f106536fbca4f34be29736c87e04bdea5987162ea3f55d1993"
+    },
+    {
+      "tag": [
+        1,
+        3,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.9423875795858814,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "434f99baac7630b3dcf9295f221b196bc6bb00d5b7b10e43123918d34f9f62c2"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 2.034304263519448,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "6209cb53e0dcd549c397f2325c6f79b2cdabefb109c76bce247021b90409bccd"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.9672307471220454,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "e46327983f378811211530d1aaf96e85bbf73cada0382cdbf5d981ad49e3c8c0"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.9672307471220454,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "c2dd40a0b7cc896a837245ac9c319d146b3d1244f9eaedcefffdb8538b4b1e61"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 2.034304263519448,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "38ab70ecc51d88aa6cf21e561a482afff89555d1f67e68e9a116212f6ab65ca8"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 2.034304263519448,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "5ae5e5899e1f82249d50e515dbf0cfbfc493f799cc428af0b109322b348b5dcb"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.9672307471220454,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "0cd2f739285a5f18758b56ef52b06dad0330ffda1d03504f681a01431f694792"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.9672307471220454,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "b62abba90be7a82d8969bd441f42c305d0946e473481ec74c31c2ba03f6c0f8b"
+    },
+    {
+      "tag": [
+        1,
+        4,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 2.034304263519448,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "655f08c7ce9041e316e965f817e6b79ed059d9d8dc0f1916075af1da1b0525b2"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 316,
+      "support_above_1e-11": 294,
+      "norm_squared": 1.9529067281037138,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "cc7a7ea70dd5bb1059b6f1b74ce4800aeb380c3cd1fc23eed07254e15a7696c7"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 221,
+      "support_above_1e-11": 209,
+      "norm_squared": 3.8412276218833936,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "0a18b4a13d88e97cb24644fd00b3fd3250aa014c0d1c4ec20c0114f9cd038026"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 221,
+      "support_above_1e-11": 209,
+      "norm_squared": 3.8412276218833927,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "ffa81b805a8adec8de8cdd427861672187a6ed0f47e6cb47f357797282ed19d9"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 316,
+      "support_above_1e-11": 294,
+      "norm_squared": 1.9529067281037138,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "242308d63d33df575ec6eaa51654ca04f6ad4fbbbcdc226728f2490e46680822"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 316,
+      "support_above_1e-11": 294,
+      "norm_squared": 1.9529067281037138,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "9713762905d4a5050d16ecfaf78f567e2db430b3c9ed07a326ea3aa5ba398eca"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 221,
+      "support_above_1e-11": 209,
+      "norm_squared": 3.8412276218833936,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "537a4f79ac53964d7880405d04b24f9c6fbfda140be18edf70c22f4272f6dc4a"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 221,
+      "support_above_1e-11": 209,
+      "norm_squared": 3.8412276218833927,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "f184b7d398d7ba7be89591488ec29f325c16bef0f47a8055a7c37031b6ce7b33"
+    },
+    {
+      "tag": [
+        2,
+        1,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 316,
+      "support_above_1e-11": 294,
+      "norm_squared": 1.9529067281037138,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "bc9207d14c710b51dc173bf125b7c06de672285d23054289b14c70dd9115fd87"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 1.9806932945992322,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "9ecf53da618ae085b6c597db5042db272f17460f34590fb56a3826aff0d7448c"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8684528616226572,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "491ebddda2c5cedf62d6445d12321345d7e79e3205fe3e8cab12b045162ebcd1"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8684528616226572,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "0b16cca48e52f526b4b1362d1b935daa78e49f11eea555fa10d524a17a2fb0f9"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 1.9806932945992322,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "6718f09a8a8151f0539b4ae44fb1669ed8f2a8441a2fda306e101f59b7863f42"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 1.9806932945992322,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "efaebe8dc01364a175d350e984da3b96360a4c8530f5b89fe6b2b4c4b6597ce0"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8684528616226572,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "379891a1ecfc2acc7dafa02307d26daad101de710db44990b53d2272c73aab51"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8684528616226572,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "b40abc1e6663e747d8d7b00ce75316e30ca57469b3eef8d5eb45f4792d962785"
+    },
+    {
+      "tag": [
+        2,
+        3,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 1.9806932945992322,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "4ce6455deff544b8b1dd2c2da1fb9bb9bd82eafd1614192f36da8f696e186c83"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.995998548506098,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "f8bcf4f56601d7891c4e948e63c3f1b35c0dbd171f2398462c97393514a65894"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8909205437310055,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "a017aab109b5a580645eb57b5e54bb46aaf90dd67566798c0a6f39f3a4aafea2"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8909205437310046,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "5543aabb2c65b183bd93d075e287f6573de2aa5bf76dff0a8c5279f37dfe7173"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.995998548506098,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "284f79d58bfc64f8c9ba8c569f8e39ba01dfb4857a7bd49eed59d9e20b6f78fa"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.995998548506098,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "e8ad891758cbf4dad3093dc676ba7ff43fde9dc1569a3aded40d7c139d2d5339"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8909205437310055,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "680e4d73441bdca85c88e226e1c1a8669de7a8aad666027bb26179643b143d69"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8909205437310046,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "969f5069f34ff3ea5295e27193ac4cd11504ef5766b0326d5c6a05fb790a1ac8"
+    },
+    {
+      "tag": [
+        2,
+        4,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.995998548506098,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "3b38a4087af1b519d94b21cb29e0ab57d4f6fc09681f0515cdd99147e450092d"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.9423875795858814,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "dcaa8b9d39c6ffcc5158745f7c42ff4ebd03dedee9972e8a209819f52c6426a4"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.7921426582316164,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "09a0ca84912116fdc3bfb0a0da886a4b896e5f94386923d605a4f2146ca09922"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.792142658231617,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "7d24edecdf8237d13fd2b8d5f77eafdb065c332e2f9c776d35906fca5eedf2f4"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.9423875795858814,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "3ac9c12daa621d36530b6e7afeb7971875978ae3d8ac717a74b277c5ad254fcf"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.9423875795858814,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "8ce3cd7a5679e484663db03bddb962325322fde30848969814cc1433b0159acb"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.7921426582316164,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "107bd1943deb2f6bcf9cb0b3de2158b0a48aa53a3f00a9056fa477ae362cd23c"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.792142658231617,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "3e18df7b3ecb183cc41d6fa8dfaa964501b8314cf59b1f902d00c6c2767b28b1"
+    },
+    {
+      "tag": [
+        3,
+        1,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.9423875795858814,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "61800dd24e9a538165253da85ee0fe9b5181c96c1289912e7a32586d939dfec6"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 1.9806932945992322,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "e7b8c309c69f18098ff15c689cd2c273795852e67da72066c5e77e8148b72d90"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8684528616226572,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "4b5e5508d80376e14f0b4bb19c085599f7f96d0ff14778b34dc0aa9a347149ec"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8684528616226572,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "f634f5278d36e8386406809013845ef3d9b80539fd45a334fc18865acfe3bd64"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 1.9806932945992322,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "278a3ab3aa8f75add2f14fd8bfee9de8558e920f25ac09f23a868a7e20096580"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 1.9806932945992322,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "065efe8f770fb36f04fb490292f09e4a54221d34a7fef2c0ba6b5905709a4cfc"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8684528616226572,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "c2b28c499b9e795b87962bcfb4b205d43b17fd0a375b1f241cc0f93b05d85dd4"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8684528616226572,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "5396ca803769ec99239e5eee0b88550a6bdcc399b7cf7185f2b62127a8327257"
+    },
+    {
+      "tag": [
+        3,
+        2,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 1.9806932945992322,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "d1d06675065daf548cf37207de35715c7402c3b79f9aa135f7544dfa327aba77"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 330,
+      "support_above_1e-11": 299,
+      "norm_squared": 1.9241450792062202,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "c4e937ffd977b48a59802bab45f1ec751b780012adee20e5542dcbba0a292d5e"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 232,
+      "support_above_1e-11": 214,
+      "norm_squared": 3.781133036972976,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "3cdd581cb594c931b4fd2c1006f443e217aa3ab66fe3f3c5809c096047710cf4"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 232,
+      "support_above_1e-11": 214,
+      "norm_squared": 3.7811330369729768,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "ace4fa84ffb44ff9d147370dec87976e5a7bb2fca824386307220977a6e674d1"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 330,
+      "support_above_1e-11": 299,
+      "norm_squared": 1.9241450792062205,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "543ef8b6ee00f3cb6a1f728138ad24ecd15ce43f45beb4e6bfb63ea1a09b7f62"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 330,
+      "support_above_1e-11": 299,
+      "norm_squared": 1.9241450792062202,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "7a2dc569ce45afd8c2ea69034eaf22ed2c7996b4d6edc5b4c814aff4f849b3d6"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 232,
+      "support_above_1e-11": 214,
+      "norm_squared": 3.781133036972976,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "a9947ba69bca38c86fe97378d354954ca3ebfa85378dd4f2ebae5e90f6c3ba04"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 232,
+      "support_above_1e-11": 214,
+      "norm_squared": 3.7811330369729768,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "16533e8be12ca92ec453bcda25bed1b6c29c1463176cec5d7e1f1a5aeba9a424"
+    },
+    {
+      "tag": [
+        3,
+        4,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 330,
+      "support_above_1e-11": 299,
+      "norm_squared": 1.9241450792062205,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "057916059b898195a1832dc1cb82747b4edaed86d688dfea6fa0947cea589377"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 2.034304263519448,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "29f82507e02dbff70ead71564642be60b5a206f755438a8c13c9348b6721b9ae"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.9672307471220454,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "2b4837167b64bfde634c4b549d565ae090ab448edf013b599d20a0930ef315a1"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.9672307471220454,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "4a7296a06f7d0018f823f56db8e515abdf39af018857fc7a8681a95ac6b3178a"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 2.034304263519448,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "fa076886bcf80a74b7f5545719f3849504d28b50df9bb1ed61cb47d8f05ab4ed"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 2.034304263519448,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "37e59a247360d0fdf27dca1b1511986c4ff1a16b52b71cf3643db2719298842e"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.9672307471220454,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "801ee55e70eb0f6cda22840bd492914c0bd548e958809b6bd6cddb00c634b591"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.9672307471220454,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "b35bfc23263602d1171a35b9cefa86eff7ec9479f765e9c5c1a13f0efecb138c"
+    },
+    {
+      "tag": [
+        4,
+        1,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 329,
+      "norm_squared": 2.034304263519448,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "429bed00e2e186dc9580e0ee88df3d071968c27caf846cdd1e373802b5af38ae"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.995998548506098,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "5cdd1fa5508cde106000ce4b912b82c10d4f0145afc2fc8491591a29e0b381d3"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8909205437310055,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "2587ad6c5cc437858b0978d537af764062810cefb2fd88b69c1d285426858116"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8909205437310046,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "e64efa10840e3b78d2e3499bd594f86d2a8bd150909210816670fa9ac17e6c80"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.995998548506098,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "716a6b7deb1de4b4c7f7fd023d85f2a9cd14d5f1e0ab017ae5a11cdf92248789"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.995998548506098,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "3988bba07c1295a7d5c6e6c2971f199ea7401c8541d5c0be1089a2bd7f20825d"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8909205437310055,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "695488c54c6d676216cfdfd427ae10df7a9d8d1cff98c8a2818bf37855db2db9"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 252,
+      "support_above_1e-11": 252,
+      "norm_squared": 3.8909205437310046,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "4755c7aaef359b0e2f317fb08d1115e5bdf22e28f66843aeaed8ca00483aa3af"
+    },
+    {
+      "tag": [
+        4,
+        2,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 352,
+      "support_above_1e-11": 331,
+      "norm_squared": 1.995998548506098,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "bbd8948546e256d114a9675d90cd86a1742ee016cbc14ab597c834db054d7ddd"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 330,
+      "support_above_1e-11": 299,
+      "norm_squared": 1.9241450792062202,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "55fdb4cb3b52566cb017e86773316d8466ed0fe4b5e5e9eee68cf73434baa48c"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 232,
+      "support_above_1e-11": 214,
+      "norm_squared": 3.781133036972976,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "0cf3768a7579584e3b751c9d918980b98f069aae61272cfb510d94bd78038beb"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 232,
+      "support_above_1e-11": 214,
+      "norm_squared": 3.7811330369729768,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "d65e09b4c44826fd4554e0d28de299ec74441057c1c4a7f36b9aa7a345f08994"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        0,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 330,
+      "support_above_1e-11": 299,
+      "norm_squared": 1.9241450792062205,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "32fa4ef099391c0f3b64704941970473ea16e1cc4ad6219378c1f04f92a539a0"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        0,
+        0
+      ],
+      "support_including_cancellation_tails": 330,
+      "support_above_1e-11": 299,
+      "norm_squared": 1.9241450792062202,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "b2019af0cb8d6f52a7c5442612e836c908fe1429beea3f6e1019de273769f254"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        0,
+        1
+      ],
+      "support_including_cancellation_tails": 232,
+      "support_above_1e-11": 214,
+      "norm_squared": 3.781133036972976,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "73bbedbc5684f107f2079549aa9d6461d5617c18858d1a6d474bdcff59a3b565"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        1,
+        0
+      ],
+      "support_including_cancellation_tails": 232,
+      "support_above_1e-11": 214,
+      "norm_squared": 3.7811330369729768,
+      "J2_sectors": [
+        2
+      ],
+      "sha256": "518727c16ebcf52c96b6238bd5d12a6e845a645a9ca598c4bf95f43437425738"
+    },
+    {
+      "tag": [
+        4,
+        3,
+        1,
+        1,
+        1
+      ],
+      "support_including_cancellation_tails": 330,
+      "support_above_1e-11": 299,
+      "norm_squared": 1.9241450792062205,
+      "J2_sectors": [
+        0,
+        2
+      ],
+      "sha256": "a3e385585506f8bc36b760bfc896cb672178619d3196f73823409166dee14168"
+    }
+  ]
+}

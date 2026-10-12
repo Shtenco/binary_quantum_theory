@@ -1,0 +1,56 @@
+{
+  "bra": [
+    [
+      2,
+      2,
+      2,
+      2,
+      1,
+      1,
+      2,
+      2,
+      1,
+      1
+    ],
+    [
+      0,
+      1,
+      1,
+      1,
+      0
+    ]
+  ],
+  "covariant_key": [
+    [
+      2,
+      2,
+      2,
+      2,
+      1,
+      1,
+      2,
+      2,
+      1,
+      1
+    ],
+    [
+      -1,
+      1,
+      1,
+      1,
+      0
+    ],
+    0,
+    0,
+    0,
+    0
+  ],
+  "forward_HL_element": [
+    -3.223391115149465e-17,
+    -0.08463553933259282
+  ],
+  "cutoff_doubled_spin": 7,
+  "scope": "selected next column on same wall; not full reverse HL element",
+  "cache_reuse": false,
+  "engine_sources": "HEAD 54c5d907 script bytes; old column fingerprint reproduced before adapter path relocation"
+}

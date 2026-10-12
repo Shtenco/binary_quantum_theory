@@ -1,0 +1,21 @@
+{
+  "source_script_commit": "54c5d907338679cdafe1b9c612ae02c1ee684186",
+  "required_backend_sha256": {
+    "scripts/peter_weyl_covariant_K_sine_composition_gate.py": "df1d183fdbdb9ea30d468a4472f37a7deaecacfcc8f7829ccbef508d93b161c3",
+    "scripts/peter_weyl_euclidean_sine_ordering_gate.py": "a4f317e14047bb32fc6d11f788bca00a8fe85693cf8c75d856c35be1527657d2",
+    "scripts/peter_weyl_zeroaware_volume_migration_experiment.py": "8b6e2b770f513fc255bfdff7c6be93ecbd434ac6f7a2b0c262cfd1d210b4dfed",
+    "scripts/peter_weyl_covariant_K_projection_audit_gate.py": "21e54eba90d5cc8509b96ba361f0210226b372029f2562353fd0c431dea9757a",
+    "scripts/peter_weyl_q_block_gauge_audit.py": "80947168ff721282d410769d7a5091cdecfc6e86019cfdc142170d742d22d97a",
+    "scripts/peter_weyl_volume_cross_rep_audit.py": "54dc5fc6ab04a64c59bb48c03f79ba8a454489a9aeeaa952ecef236db56e6098",
+    "scripts/peter_weyl_covariant_K_leg_gate.py": "a7b0ac5d4e8f00668de9519fade56b1e79de00ea81291cd4e94a986ed78ae826",
+    "scripts/peter_weyl_lorentzian_K_block_gate.py": "0bb6a98b6907531bc1a3368f2c5bb9a87a10cfd518f89512917af44e10ad4c1e",
+    "scripts/k5_peter_weyl_safe_hda_column.py": "596c4179cb2c8af20b41c18b3ab87b711c3850c5c5e05b1bc91a1f87c9f11cc4",
+    "scripts/peter_weyl_covariant_volume_leg_gate.py": "ec4ee1224cce1125bbc46b10be8d883ab800da2160d3ea80023243b456ff5656",
+    "scripts/charged_intertwiner_recoupling_gate.py": "6fd89687335fba75873420279556019eb4ecf2cc2a5f2ba6012d42fa3af7b1f6",
+    "scripts/peter_weyl_covariant_K_composition_gate.py": "1aa8b078bb58a63c35821324229f7942de6b6c6dbf68466d5002d1385601bc94",
+    "scripts/peter_weyl_covariant_composition_gate.py": "9afb0dfed00f0eb498699ddc4af35c491691b2b01d76cdc24592f628e4b67f10",
+    "scripts/peter_weyl_covariant_K_composition_cached_gate.py": "83eab251c9d8bea8fca06ec14318406c3bdf91936886a84b6a5beee7e31b9a25"
+  },
+  "scope": "static local Python import closure for candidate replay; external packages require requirements.txt",
+  "volume_candidate_sha256": "d99a5182f8832f513ad887e9e987c95f7d3ed4af98c5dccb7df842578a69cb39"
+}

@@ -1,0 +1,278 @@
+{
+  "status": "exact K5 finite quantum-geometry bridge",
+  "passed": true,
+  "hilbert": {
+    "raw_vector5_dimension": 9765625,
+    "Gauss_dimension": 140,
+    "fully_active_dimension": 32,
+    "basis_max_sparse_support": 7776,
+    "occupancy_pattern_state_counts": {
+      "(0, 0, 0, 0, 0)": 1,
+      "(0, 0, 2, 2, 2)": 10,
+      "(0, 2, 2, 2, 2)": 15,
+      "(2, 2, 2, 4, 4)": 40,
+      "(2, 2, 2, 2, 4)": 30,
+      "(2, 2, 2, 2, 2)": 12,
+      "(4, 4, 4, 4, 4)": 32
+    }
+  },
+  "wilson": {
+    "triangles": [
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        1,
+        3
+      ],
+      [
+        0,
+        1,
+        4
+      ],
+      [
+        0,
+        2,
+        3
+      ],
+      [
+        0,
+        2,
+        4
+      ],
+      [
+        0,
+        3,
+        4
+      ],
+      [
+        1,
+        2,
+        3
+      ],
+      [
+        1,
+        2,
+        4
+      ],
+      [
+        1,
+        3,
+        4
+      ],
+      [
+        2,
+        3,
+        4
+      ]
+    ],
+    "max_hermiticity_error": 5.193915305779243e-13,
+    "W4_full_geometry_fraction": 0.012524168567815637,
+    "W4_to_4simplex_fidelity": 0.9890109890109892,
+    "exact_fidelity_target": "90/91",
+    "orthogonal_defect": 0.010989010989010839,
+    "support_fidelity": 0.9966777408637881,
+    "exact_support_target": "300/301"
+  },
+  "pure_Wilson_Krylov": [
+    {
+      "power": 4,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010952
+    },
+    {
+      "power": 6,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010952
+    },
+    {
+      "power": 8,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010948
+    },
+    {
+      "power": 10,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010945
+    },
+    {
+      "power": 12,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010948
+    },
+    {
+      "power": 14,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010945
+    },
+    {
+      "power": 16,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010945
+    },
+    {
+      "power": 18,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010945
+    },
+    {
+      "power": 20,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010945
+    },
+    {
+      "power": 22,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010948
+    },
+    {
+      "power": 24,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010945
+    },
+    {
+      "power": 26,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010945
+    },
+    {
+      "power": 28,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010945
+    },
+    {
+      "power": 30,
+      "full_sector_span_rank": 1,
+      "target_defect": 0.010989010989010945
+    }
+  ],
+  "scalar_volume_cyclic": {
+    "dimension": 7,
+    "final_target_defect": 0.010989010989010945
+  },
+  "Z_shape_cyclic": {
+    "dimension": 31,
+    "depth_scan": [
+      {
+        "depth": 0,
+        "dimension": 1,
+        "target_defect": 1.0000000000000004
+      },
+      {
+        "depth": 1,
+        "dimension": 2,
+        "target_defect": 1.0000000000000004
+      },
+      {
+        "depth": 2,
+        "dimension": 3,
+        "target_defect": 1.0000000000000004
+      },
+      {
+        "depth": 3,
+        "dimension": 5,
+        "target_defect": 1.0000000000000004
+      },
+      {
+        "depth": 4,
+        "dimension": 9,
+        "target_defect": 0.010989010989010945
+      },
+      {
+        "depth": 5,
+        "dimension": 14,
+        "target_defect": 0.010989010989010952
+      },
+      {
+        "depth": 6,
+        "dimension": 21,
+        "target_defect": 0.005591503864746048
+      },
+      {
+        "depth": 7,
+        "dimension": 31,
+        "target_defect": 3.3366618367758954e-28
+      },
+      {
+        "depth": 8,
+        "dimension": 31,
+        "target_defect": 3.3366618367758954e-28
+      }
+    ]
+  },
+  "X_shape_cyclic": {
+    "dimension": 84,
+    "final_target_defect": 2.8127695952086194e-27
+  },
+  "Y_shape_cyclic": {
+    "dimension": 39,
+    "final_target_defect": 2.51317889811466e-27
+  },
+  "shortest_word_certificate": {
+    "depth_scan": [
+      {
+        "depth": 0,
+        "rank": 0,
+        "defect": 1.0
+      },
+      {
+        "depth": 1,
+        "rank": 0,
+        "defect": 1.0
+      },
+      {
+        "depth": 2,
+        "rank": 0,
+        "defect": 1.0
+      },
+      {
+        "depth": 3,
+        "rank": 0,
+        "defect": 1.0
+      },
+      {
+        "depth": 4,
+        "rank": 1,
+        "defect": 0.010989010989010839
+      },
+      {
+        "depth": 5,
+        "rank": 3,
+        "defect": 0.010989010989010839
+      },
+      {
+        "depth": 6,
+        "rank": 6,
+        "defect": 0.00027759214517020236
+      },
+      {
+        "depth": 7,
+        "rank": 25,
+        "defect": 0.0
+      }
+    ],
+    "depth7_max1_shape": {
+      "defect": 0.009766756102222218,
+      "rank": 8
+    },
+    "depth7_max2_shape": {
+      "defect": 0.0,
+      "rank": 11
+    },
+    "minimal_number_projected_word_states": 7,
+    "one_exact_witness": [
+      "WWWW",
+      "WWWWZ",
+      "WWWZW",
+      "WWWWZZ",
+      "WWWZWZ",
+      "WWWZZW",
+      "WWWWZWW"
+    ]
+  },
+  "interpretation": "Pure Wilson curvature reaches 90/91 of the independent 4-simplex vertex and never removes the missing 1/91 in the tested Krylov sector. Scalar volume does not help. A single exact tensorial tetrahedral shape observable closes the missing channel; the first exact projected completion occurs at word depth 7 and needs at least two shape insertions there, consistent with the need for tensorial flux geometry beyond Yang-Mills loop dynamics.",
+  "scope_note": "This is an exact finite SU(2) K5 algebra test. It is not yet the real Lorentzian EEF Hamiltonian, HDA closure, a continuum phase, matter, or experiment."
+}

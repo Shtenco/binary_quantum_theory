@@ -1,0 +1,17 @@
+{
+  "complete_all_words": true,
+  "words_processed": 24,
+  "branches_processed": 98304,
+  "all_node_charge_support": 29525,
+  "full_expanded_norm_squared": 3.154658644560982,
+  "outside_requested_spectator_Gauss_norm_squared": 1.711047951707109e-31,
+  "outside_norm_fraction": 5.423876699487488e-32,
+  "local_coefficient_tail_triangle_bound": 6.957824866768287e-13,
+  "local_coefficient_threshold": 1e-14,
+  "seconds": 63.62595076599973,
+  "full_operator_error_certified": false,
+  "scope": "all-node expansion of frozen thresholded primitive branches; not unpruned exact HL",
+  "difference_from_saved_projected_image_norm_squared": 6.576478844304798e-30,
+  "largest_outside_coefficient": 7.502679033599691e-17,
+  "retained_requested_norm_squared": 3.154658644560982
+}

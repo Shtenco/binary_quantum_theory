@@ -216,20 +216,34 @@ def target_and_sectors(meta):
 
 
 def stable_span(vectors,target,tol=1e-9):
-    Q=[]
-    for x in vectors:
-        x=x.astype(complex).copy()
-        for _ in range(2):
-            for q in Q: x-=q*np.vdot(q,x)
-        n=np.linalg.norm(x)
-        if n>tol: Q.append(x/n)
-    err=max(0.0,float(1-sum(abs(np.vdot(q,target))**2 for q in Q)))
-    return Q,err
+    """Numerical span with column-normalized relative singular-value cutoff.
+
+    This estimates rank in floating point; it is not an exact rank certificate.
+    Scaling any nonzero input column cannot turn roundoff into a new channel.
+    """
+    columns=[]
+    for vector in vectors:
+        x=np.asarray(vector,dtype=complex)
+        scale=float(np.max(np.abs(x))) if x.size else 0.0
+        if scale==0.0:
+            continue
+        if not np.isfinite(scale):
+            raise ValueError("span column contains non-finite values")
+        x=x/scale
+        columns.append(x/np.linalg.norm(x))
+    if not columns:
+        return [],float(np.linalg.norm(target)**2)
+    U,singular_values,_=np.linalg.svd(np.column_stack(columns),full_matrices=False)
+    rank=int(np.count_nonzero(singular_values>tol*singular_values[0]))
+    Q=U[:,:rank]
+    residual=target-Q@(Q.conj().T@target)
+    return [Q[:,i] for i in range(rank)],float(np.linalg.norm(residual)**2)
 
 
 def cyclic_depth(ops,start,target,maxdepth=10,tol=1e-9):
     Q=[start/np.linalg.norm(start)]; frontier=Q.copy(); rows=[]
-    rows.append({"depth":0,"dimension":1,"target_defect":1.0})
+    initial_residual=target-Q[0]*np.vdot(Q[0],target)
+    rows.append({"depth":0,"dimension":1,"target_defect":float(np.linalg.norm(initial_residual)**2)})
     for depth in range(1,maxdepth+1):
         new=[]
         for q in frontier:
@@ -240,7 +254,8 @@ def cyclic_depth(ops,start,target,maxdepth=10,tol=1e-9):
                 n=np.linalg.norm(x)
                 if n>tol: new.append(x/n)
         Q.extend(new); frontier=new
-        err=max(0.0,float(1-sum(abs(np.vdot(q,target))**2 for q in Q)))
+        residual=target-sum((q*np.vdot(q,target) for q in Q),np.zeros_like(target,dtype=complex))
+        err=float(np.linalg.norm(residual)**2)
         rows.append({"depth":depth,"dimension":len(Q),"target_defect":err})
         if not new: break
     return Q,rows

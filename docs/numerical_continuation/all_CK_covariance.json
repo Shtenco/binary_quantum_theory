@@ -1,0 +1,33 @@
+{
+  "scope": "one-source internal SU2 tensor checks, not spacetime Ward",
+  "checks": [
+    {
+      "edge": 1,
+      "scalar_difference_squared": 5.603553358505425e-32,
+      "vector_sum_squared": 7.034205215094601e-33,
+      "01_CG_difference_squared": 1.0285552647555175e-31,
+      "10_CG_difference_squared": 1.057408478893061e-31
+    },
+    {
+      "edge": 2,
+      "scalar_difference_squared": 8.335853619647137e-33,
+      "vector_sum_squared": 6.379642940782719e-33,
+      "01_CG_difference_squared": 1.1424288996153662e-31,
+      "10_CG_difference_squared": 1.0254681521040292e-31
+    },
+    {
+      "edge": 3,
+      "scalar_difference_squared": 6.70765288443617e-33,
+      "vector_sum_squared": 1.1923274299260627e-32,
+      "01_CG_difference_squared": 1.266817478380114e-31,
+      "10_CG_difference_squared": 1.1088126999177258e-31
+    },
+    {
+      "edge": 4,
+      "scalar_difference_squared": 8.489138082994363e-33,
+      "vector_sum_squared": 1.1697767462998879e-32,
+      "01_CG_difference_squared": 1.279444139111548e-31,
+      "10_CG_difference_squared": 1.29447165889246e-31
+    }
+  ]
+}

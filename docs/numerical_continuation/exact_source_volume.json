@@ -1,0 +1,46 @@
+{
+  "scope": "exact local Gauss j=1 volume block for chosen experimental prescription only",
+  "basis_K12_K34": [
+    0,
+    2,
+    4
+  ],
+  "Q_block": [
+    [
+      "0",
+      "-2*sqrt(3)*I/3",
+      "0"
+    ],
+    [
+      "2*sqrt(3)*I/3",
+      "0",
+      "-sqrt(15)*I/3"
+    ],
+    [
+      "0",
+      "sqrt(15)*I/3",
+      "0"
+    ]
+  ],
+  "Q_squared_nonzero_eigenvalue": "3",
+  "V_block": [
+    [
+      "4*3**(1/4)/9",
+      "0",
+      "-2*3**(1/4)*sqrt(5)/9"
+    ],
+    [
+      "0",
+      "3**(1/4)",
+      "0"
+    ],
+    [
+      "-2*3**(1/4)*sqrt(5)/9",
+      "0",
+      "5*3**(1/4)/9"
+    ]
+  ],
+  "exact_Gauss_invariance_verified": true,
+  "engine_difference_norm": 6.903383563175804e-16,
+  "global_HL_error_certified": false
+}

@@ -45,5 +45,14 @@
     "extra-coordinate transition operators",
     "2T parent and positive physical reduction",
     "K5 criterion discrepancy"
-  ]
+  ],
+  "core_reruns_are_historical_before_K5_fix": true,
+  "current_K5_finite_control": {
+    "passed": true,
+    "rank": 1,
+    "residual_squared": 0.010989010989010945,
+    "exact_rank_certified": false,
+    "script_sha256": "0cfb0af5438cd9dc29dfbca02f8064df98bf5559ebf8990c8f8cf19d68045756",
+    "evidence": "docs/numerical_continuation/K5_corrected.json"
+  }
 }

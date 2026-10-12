@@ -1,0 +1,11 @@
+{
+  "scope": "direct HE part of second CK stage only",
+  "required_direct_HE": 352,
+  "available_direct_HE": 3,
+  "new_HE": 1,
+  "complete_direct_HE": false,
+  "second_CK_actions_completed": 0,
+  "direct_reverse_HL_complete": false,
+  "full_error_certified": false,
+  "physicalization_complete": false
+}

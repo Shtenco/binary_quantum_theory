@@ -1,0 +1,8 @@
+{
+  "covariant_source_keys": 856,
+  "canonical_direct_HE_seeds": 352,
+  "canonical_HE_union_after_volume": 352,
+  "scope": "direct K part of second CK only; inverse-holonomy requirements not yet included",
+  "middle_actions_completed": 0,
+  "reverse_HL_complete": false
+}

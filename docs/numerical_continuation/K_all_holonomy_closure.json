@@ -1,0 +1,119 @@
+{
+  "scope": "hh-inverse identity on computed K(phi), all four edges, same wall; not global unitarity",
+  "rows": [
+    {
+      "edge": 1,
+      "i": 0,
+      "j": 0,
+      "difference_norm": 1.3338647410752319e-15,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 1,
+      "i": 0,
+      "j": 1,
+      "difference_norm": 0.0,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 1,
+      "i": 1,
+      "j": 0,
+      "difference_norm": 0.0,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 1,
+      "i": 1,
+      "j": 1,
+      "difference_norm": 1.3332114546226838e-15,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 2,
+      "i": 0,
+      "j": 0,
+      "difference_norm": 1.462395554730729e-15,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 2,
+      "i": 0,
+      "j": 1,
+      "difference_norm": 0.0,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 2,
+      "i": 1,
+      "j": 0,
+      "difference_norm": 0.0,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 2,
+      "i": 1,
+      "j": 1,
+      "difference_norm": 1.4055767571862697e-15,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 3,
+      "i": 0,
+      "j": 0,
+      "difference_norm": 1.4314029136167003e-15,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 3,
+      "i": 0,
+      "j": 1,
+      "difference_norm": 0.0,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 3,
+      "i": 1,
+      "j": 0,
+      "difference_norm": 0.0,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 3,
+      "i": 1,
+      "j": 1,
+      "difference_norm": 1.4268093339923264e-15,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 4,
+      "i": 0,
+      "j": 0,
+      "difference_norm": 1.6149307203519937e-15,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 4,
+      "i": 0,
+      "j": 1,
+      "difference_norm": 0.0,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 4,
+      "i": 1,
+      "j": 0,
+      "difference_norm": 0.0,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    },
+    {
+      "edge": 4,
+      "i": 1,
+      "j": 1,
+      "difference_norm": 1.4918582181291368e-15,
+      "inverse_basis_leakage": 4.440892098500625e-16
+    }
+  ],
+  "seconds": 15.486468529998092,
+  "full_error_certified": false
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "addition of fixed computed complex coefficients only; multiplication, basis, eigensolver, branch generation and pruning errors excluded",
+  "assumptions": "IEEE binary64 round-to-nearest additions; no overflow or subnormal intermediate values",
+  "accumulation_norm_error_upper_bound": "9.3745647352585793325030127108755679082364039515111000040543323353248380990594798E-12",
+  "outside_sector_accumulation_error_upper_bound": "7.5279446410709496341191021838481241148951356005489959076170331662108769151302255E-12",
+  "max_terms_per_coefficient": 1024,
+  "total_coefficient_additions": 12423056,
+  "full_operator_error_certified": false
+}
