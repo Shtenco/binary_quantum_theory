@@ -17,8 +17,8 @@ class V18SchurRegression(unittest.TestCase):
         init=[((1,)*10,tuple((2 if i & (1<<j) else 0) for j in range(5))) for i in range(32)]
         extra=[
             ((0,1,1,1,1,1,1,1,1,1),(0,0,0,0,0)),
-            ((1,0,1,1,1,1,1,1,1,1),(0,0,0,0,0)),
             ((0,0,1,1,1,1,1,1,1,1),(0,0,0,0,0)),
+            ((1,0,1,1,1,1,1,1,1,1),(0,0,0,0,0)),
             ((1,1,1,1,1,1,1,1,1,2),(0,0,0,0,0)),
         ]
         # extras positions 32:odd, 33:even, 34:odd, 35:odd
