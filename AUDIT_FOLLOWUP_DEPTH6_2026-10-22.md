@@ -71,3 +71,23 @@ Regression tests were added for missing digest, gate-digest mismatch, and tamper
 Latest canonical-recovery unit workflow: **PASS**, run [39708336418](https://github.com/Shtenco/binary_quantum_theory/actions/runs/39708336418), commit `a9d5fb911917fbf1b545ccbc5f4f9bc64406a96f`. The job ran the full canonical recovery unit suite and completed successfully.
 
 The separate frozen-m numerical workflow on commit `05020073` was still in progress at the last poll; it is not reported as passed. These changes are confined to the recovery branch and have not been merged into `main`. They improve provenance validation only; they do not add any new numerical rank evidence and do not close the [3,2] sector.
+
+## Branch comparison pass
+
+All 138 non-main branch refs returned by GitHub were compared against the current `main` HEAD, in addition to recording all 139 branch names and HEAD SHAs in the consolidated report. The main report's original sentence saying only ten priority branches had been compared is now stale; the per-branch diff table itself has not yet been expanded to include every result, so this follow-up records the high-signal findings rather than pretending the ten-row sample is the complete table.
+
+High-signal divergent branches requiring content-level triage (do not merge wholesale):
+- `research/bcqg-core-candidate-v1`: 411 commits ahead / 274 behind; 300 changed files returned by compare API.
+- `research/q2-history-gravity-orientation-current`: 422 ahead / 274 behind; 300 changed files returned.
+- `research/physicalization-l1-depth2-metric`: 279 ahead / 274 behind; 218 changed files returned.
+- `research/physical-scalar-kernel-dynamics`: 127 ahead / 233 behind; 102 changed files returned.
+- `research/physical-pole-universality`: 118 ahead / 274 behind; 97 changed files returned.
+- `recovery/bqg-physical-spectral-history-2026-09-06`: 132 ahead / 233 behind; 103 changed files returned.
+- `research/physicalization-scale-observable-prediction`: 91 ahead / 274 behind; 70 changed files returned.
+- `research/depth6-s4sign-proof`: 69 ahead / 221 behind; 53 changed files returned.
+- `research/q2-oriented-flux-history-observable`: 52 ahead / 250 behind; 46 changed files returned.
+- `research/q2-orientation-intrinsic-metric-nogo`: 49 ahead / 250 behind; 43 changed files returned.
+
+Several aliases (for example `research/bqg-2t-algebra`, `research/bqg-2t-gate`, and their numbered variants) point to the same HEAD SHA and are all behind `main`; these are duplicate refs rather than independent lines of work. Multiple `codex-*`, NEXUS, and Sinergy refs are also stale or divergent and should not be merged into BQG based on their branch names alone.
+
+Important: compare API `files` arrays can be truncated/capped for large divergences. Ahead/behind and commit counts are useful for prioritization, but content-level review of the large branches must inspect unique files and commits, not rely only on the returned file list.
