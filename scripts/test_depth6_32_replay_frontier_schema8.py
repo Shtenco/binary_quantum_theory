@@ -27,7 +27,7 @@ def add_schema8(root: Path, r: dict) -> None:
     for rec in ledger['records']:
         rec['source_shard']=expected_shards[int(rec['orbit_id'])]
     ledger['identity_sha256']=A._records_sha(ledger['records'])
-    gate['identity_sha256']=ledger['identity_sha256']
+    gate['identity_sha256']=A._normalized_identity_sha(ledger['records'])
     (root/'BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json').write_text(json.dumps(ledger))
     (root/'BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json').write_text(json.dumps(gate))
     r['rematerialized_assignment_ledger']['identity_sha256']=ledger['identity_sha256']
