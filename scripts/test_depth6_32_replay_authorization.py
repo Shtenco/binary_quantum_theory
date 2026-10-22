@@ -16,15 +16,16 @@ def complete_fixture():
             'm':m,
             'coord_dim':4*m,
             'proxy':4*m*m,
-            'source_shard':i%112,
+            'source_shard':0,
             'identity_source':'DETERMINISTIC_REMATERIALIZATION_FROM_FROZEN_STAGE_A_ENGINE',
             'frozen_engine_commit':A.FROZEN_ENGINE_COMMIT,
             'frozen_bundle_blob_sha':A.FROZEN_ENGINE_BLOB_SHA,
             'source_stage_a_run_id':A.SOURCE_STAGE_A_RUN_ID,
         })
-    identity_sha=hashlib.sha256(
-        json.dumps(records,sort_keys=True,separators=(',',':')).encode()
-    ).hexdigest()
+    expected_shards=A._expected_shard_map(records)
+    for record in records:
+        record['source_shard']=expected_shards[record['orbit_id']]
+    identity_sha=A._records_sha(records)
     ledger={
         'schema_version':1,
         'kind':'BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER',
@@ -80,11 +81,9 @@ class ReplayAuthorizationTests(unittest.TestCase):
         for r in ledger['records']:
             if r['source_shard']==111:
                 r['source_shard']=110
-        ledger['identity_sha256']=hashlib.sha256(
-            json.dumps(ledger['records'],sort_keys=True,separators=(',',':')).encode()
-        ).hexdigest()
+        ledger['identity_sha256']=A._records_sha(ledger['records'])
         gate['identity_sha256']=ledger['identity_sha256']
-        with self.assertRaisesRegex(RuntimeError,'112-shard'):
+        with self.assertRaisesRegex(RuntimeError,'source_shard does not match frozen deterministic assignment'):
             A.authorize_replay(ledger,gate)
 
     def test_missing_identity_digest_fails_closed(self):
