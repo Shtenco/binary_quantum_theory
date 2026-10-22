@@ -68,11 +68,13 @@ def authorize_replay(ledger: dict, gate: dict) -> dict:
 
     _require(columns == TARGET_COLUMNS, f'column sum mismatch {columns}!={TARGET_COLUMNS}')
     _require(shards == set(range(NSHARDS)), f'112-shard coverage mismatch: got {len(shards)} shards')
-    if ledger.get('identity_sha256') is not None:
-        _require(ledger['identity_sha256'] == _records_sha(records), 'rematerialized identity SHA mismatch')
+    identity_sha = ledger.get('identity_sha256')
+    _require(isinstance(identity_sha, str) and len(identity_sha) == 64, 'rematerialized identity SHA-256 is required')
+    _require(identity_sha == _records_sha(records), 'rematerialized identity SHA mismatch')
 
     _require(gate.get('kind') == 'BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE', 'wrong identity gate kind')
     _require(gate.get('status') == 'PASS_IDENTITY_REMATERIALIZATION_ONLY', 'identity gate did not pass')
+    _require(gate.get('identity_sha256') == identity_sha, 'identity gate digest does not match rematerialized ledger')
     _require(int(gate.get('blocks', -1)) == TARGET_BLOCKS and int(gate.get('columns', -1)) == TARGET_COLUMNS, 'identity gate target mismatch')
     _require(int(gate.get('persisted_identity_matches', -1)) == 15, 'persisted identity cross-check mismatch')
     _require(int(gate.get('historical_batch_matches', -1)) == 102, 'historical batch cross-check mismatch')
