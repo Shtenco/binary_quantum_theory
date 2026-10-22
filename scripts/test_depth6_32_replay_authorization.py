@@ -26,6 +26,7 @@ def complete_fixture():
     for record in records:
         record['source_shard']=expected_shards[record['orbit_id']]
     identity_sha=A._records_sha(records)
+    normalized_identity_sha=A._normalized_identity_sha(records)
     ledger={
         'schema_version':1,
         'kind':'BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER',
@@ -47,7 +48,7 @@ def complete_fixture():
         'status':'PASS_IDENTITY_REMATERIALIZATION_ONLY',
         'blocks':2755,
         'columns':130903,
-        'identity_sha256':identity_sha,
+        'identity_sha256':normalized_identity_sha,
         'persisted_identity_matches':15,
         'historical_batch_matches':102,
         'rank_certified':False,
@@ -82,7 +83,7 @@ class ReplayAuthorizationTests(unittest.TestCase):
             if r['source_shard']==111:
                 r['source_shard']=110
         ledger['identity_sha256']=A._records_sha(ledger['records'])
-        gate['identity_sha256']=ledger['identity_sha256']
+        gate['identity_sha256']=A._normalized_identity_sha(ledger['records'])
         with self.assertRaisesRegex(RuntimeError,'source_shard does not match frozen deterministic assignment'):
             A.authorize_replay(ledger,gate)
 
