@@ -52,3 +52,8 @@ GitHub compare API confirms `audit/physicalization-truth-v3` is 234 commits behi
 ## Reproduction boundary
 
 No claim is made that the full repository test suite or the 112-shard calculation was executed in this chat environment. The findings above come from source inspection, recorded GitHub Actions metadata, and the recovery ledgers. The depth-6 numerical theorem remains open.
+## Additional cross-check: gate digest is present but not bound during replay authorization
+
+The rematerialization gate records SHA-256 `cc8c890d8b0c007195eda8e3ce8e9d109c6b1bab0c7db07b283a0dd10556c4dd`. The identity rematerialization function computes a digest of normalized records and compares persisted records and historical shard totals. However, `depth6_32_replay_authorization.py` checks the ledger digest only against the ledger's own records when that field is present; it does not compare `ledger.identity_sha256` to `gate.identity_sha256`. It also treats the ledger digest as optional. Therefore the authorization stage is not cryptographically bound to the identity digest accepted by the preceding rematerialization gate.
+
+Recommended regression tests must specifically alter the ledger records and recompute the ledger's self-digest while leaving the accepted gate unchanged; authorization must reject the mismatch. Also reject a missing digest. This narrows the finding: the upstream rematerialization gate does compute a digest, but the downstream authorization does not enforce the cross-stage digest equality.
