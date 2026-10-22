@@ -43,8 +43,13 @@ def _normalized_identity(records: list[dict]) -> list[dict]:
 
 
 def _records_sha(records: list[dict]) -> str:
-    # Match the frozen identity rematerialization gate: hash normalized identity
-    # records, not operational metadata such as source_shard or engine tags.
+    # Ledger checksum covers the exact persisted records, including provenance.
+    raw = json.dumps(records, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')
+    return hashlib.sha256(raw).hexdigest()
+
+
+def _normalized_identity_sha(records: list[dict]) -> str:
+    # The upstream rematerialization gate hashes only normalized identity fields.
     raw = json.dumps(_normalized_identity(records), sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')
     return hashlib.sha256(raw).hexdigest()
 
@@ -106,7 +111,7 @@ def authorize_replay(ledger: dict, gate: dict) -> dict:
 
     _require(gate.get('kind') == 'BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE', 'wrong identity gate kind')
     _require(gate.get('status') == 'PASS_IDENTITY_REMATERIALIZATION_ONLY', 'identity gate did not pass')
-    _require(gate.get('identity_sha256') == identity_sha, 'identity gate digest does not match rematerialized ledger')
+    _require(gate.get('identity_sha256') == _normalized_identity_sha(records), 'identity gate digest does not match normalized frozen assignment')
     _require(int(gate.get('blocks', -1)) == TARGET_BLOCKS and int(gate.get('columns', -1)) == TARGET_COLUMNS, 'identity gate target mismatch')
     _require(int(gate.get('persisted_identity_matches', -1)) == 15, 'persisted identity cross-check mismatch')
     _require(int(gate.get('historical_batch_matches', -1)) == 102, 'historical batch cross-check mismatch')
