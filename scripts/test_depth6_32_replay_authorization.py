@@ -84,7 +84,7 @@ class ReplayAuthorizationTests(unittest.TestCase):
                 r['source_shard']=110
         ledger['identity_sha256']=A._records_sha(ledger['records'])
         gate['identity_sha256']=A._normalized_identity_sha(ledger['records'])
-        with self.assertRaisesRegex(RuntimeError,'source_shard does not match frozen deterministic assignment'):
+        with self.assertRaisesRegex(RuntimeError,'112-shard coverage mismatch'):
             A.authorize_replay(ledger,gate)
 
     def test_missing_identity_digest_fails_closed(self):
