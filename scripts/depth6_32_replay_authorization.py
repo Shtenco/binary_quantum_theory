@@ -27,9 +27,37 @@ def _require(cond: bool, msg: str) -> None:
         raise RuntimeError(msg)
 
 
+def _normalized_identity(records: list[dict]) -> list[dict]:
+    normalized = []
+    for record in records:
+        m = int(record['m'])
+        coord_dim = int(record['coord_dim'])
+        normalized.append({
+            'orbit_id': int(record['orbit_id']),
+            'rep': [int(x) for x in record['rep']],
+            'm': m,
+            'coord_dim': coord_dim,
+            'proxy': int(record.get('proxy', coord_dim * m)),
+        })
+    return sorted(normalized, key=lambda record: record['orbit_id'])
+
+
 def _records_sha(records: list[dict]) -> str:
-    raw = json.dumps(records, sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')
+    # Match the frozen identity rematerialization gate: hash normalized identity
+    # records, not operational metadata such as source_shard or engine tags.
+    raw = json.dumps(_normalized_identity(records), sort_keys=True, separators=(',', ':'), ensure_ascii=True).encode('utf-8')
     return hashlib.sha256(raw).hexdigest()
+
+
+def _expected_shard_map(records: list[dict]) -> dict[int, int]:
+    normalized = _normalized_identity(records)
+    bins = [[] for _ in range(NSHARDS)]
+    loads = [0] * NSHARDS
+    for record in sorted(normalized, key=lambda x: (x['proxy'], x['m'], x['orbit_id']), reverse=True):
+        shard = min(range(NSHARDS), key=lambda index: (loads[index], index))
+        bins[shard].append(record)
+        loads[shard] += record['proxy']
+    return {record['orbit_id']: shard for shard, batch in enumerate(bins) for record in batch}
 
 
 def authorize_replay(ledger: dict, gate: dict) -> dict:
@@ -68,6 +96,10 @@ def authorize_replay(ledger: dict, gate: dict) -> dict:
 
     _require(columns == TARGET_COLUMNS, f'column sum mismatch {columns}!={TARGET_COLUMNS}')
     _require(shards == set(range(NSHARDS)), f'112-shard coverage mismatch: got {len(shards)} shards')
+    expected_shards = _expected_shard_map(records)
+    for rec in records:
+        oid = int(rec['orbit_id'])
+        _require(int(rec['source_shard']) == expected_shards[oid], f'orbit {oid}: source_shard does not match frozen deterministic assignment')
     identity_sha = ledger.get('identity_sha256')
     _require(isinstance(identity_sha, str) and len(identity_sha) == 64, 'rematerialized identity SHA-256 is required')
     _require(identity_sha == _records_sha(records), 'rematerialized identity SHA mismatch')
