@@ -286,3 +286,7 @@ These commands were read from repository audit documentation; they have not all 
 ## Final verdict
 
 Structural and finite numerical sub-results exist, and several regression controls pass. However, the full finite depth-6 numerical theorem is still explicitly not proved, the physical projector/history/TT continuum chain remains open, and the latest `core-regression` CI is failing. Do not label BQG as physically completed or as a verified derivation of GR.
+
+## CI root cause: strict structural status is intentionally fail-closed
+
+The failing workflow step runs `python bcqg_bit_to_gravity_final.py --strict`. The aggregator returns exit code 2 when the declared structural candidate is not closed. The registered core ledger includes `PURE_ANCILLA_NODE_REFINEMENT` with status `no_go`; `no_go` is intentionally not accepted as structural closure. Therefore this is not a syntax/import failure: the strict gate is reporting that the registered core package does not meet its own closure criterion. Do not "fix" this by relabeling the no-go as passed. The scientific decision is to either (a) retain the no-go and mark the structural package not closed, or (b) revise the candidate/claim with a mathematically justified alternative and new evidence.
