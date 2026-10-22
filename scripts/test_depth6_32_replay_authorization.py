@@ -87,6 +87,18 @@ class ReplayAuthorizationTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError,'112-shard'):
             A.authorize_replay(ledger,gate)
 
+    def test_missing_identity_digest_fails_closed(self):
+        ledger,gate=complete_fixture()
+        del ledger['identity_sha256']
+        with self.assertRaisesRegex(RuntimeError,'SHA-256 is required'):
+            A.authorize_replay(ledger,gate)
+
+    def test_gate_digest_mismatch_fails_closed_even_when_ledger_self_hash_is_valid(self):
+        ledger,gate=complete_fixture()
+        gate['identity_sha256']='0'*64
+        with self.assertRaisesRegex(RuntimeError,'gate digest does not match'):
+            A.authorize_replay(ledger,gate)
+
     def test_identity_gate_must_not_claim_rank(self):
         ledger,gate=complete_fixture()
         gate['rank_certified']=True
