@@ -57,3 +57,17 @@ No claim is made that the full repository test suite or the 112-shard calculatio
 The rematerialization gate records SHA-256 `cc8c890d8b0c007195eda8e3ce8e9d109c6b1bab0c7db07b283a0dd10556c4dd`. The identity rematerialization function computes a digest of normalized records and compares persisted records and historical shard totals. However, `depth6_32_replay_authorization.py` checks the ledger digest only against the ledger's own records when that field is present; it does not compare `ledger.identity_sha256` to `gate.identity_sha256`. It also treats the ledger digest as optional. Therefore the authorization stage is not cryptographically bound to the identity digest accepted by the preceding rematerialization gate.
 
 Recommended regression tests must specifically alter the ledger records and recompute the ledger's self-digest while leaving the accepted gate unchanged; authorization must reject the mismatch. Also reject a missing digest. This narrows the finding: the upstream rematerialization gate does compute a digest, but the downstream authorization does not enforce the cross-stage digest equality.
+
+## Repair implemented and regression result
+
+On `bqg/depth6-32-canonical-recovery`, the replay authorization now:
+- requires the exact ledger checksum instead of accepting a missing digest;
+- separately recomputes the normalized assignment digest used by the upstream rematerialization gate (these hashes cover different record representations and must not be conflated);
+- checks that the gate's normalized digest matches the ledger's normalized frozen assignment;
+- verifies each record's `source_shard` against the deterministic frozen cost-balancing algorithm, not merely that all 112 shard IDs appear.
+
+Regression tests were added for missing digest, gate-digest mismatch, and tampered shard assignment. The first implementation exposed two downstream schema-8 fixtures that were using inconsistent digest conventions; those fixtures were corrected to preserve the raw ledger checksum separately from the normalized gate digest.
+
+Latest canonical-recovery unit workflow: **PASS**, run [39708336418](https://github.com/Shtenco/binary_quantum_theory/actions/runs/39708336418), commit `a9d5fb911917fbf1b545ccbc5f4f9bc64406a96f`. The job ran the full canonical recovery unit suite and completed successfully.
+
+The separate frozen-m numerical workflow on commit `05020073` was still in progress at the last poll; it is not reported as passed. These changes are confined to the recovery branch and have not been merged into `main`. They improve provenance validation only; they do not add any new numerical rank evidence and do not close the [3,2] sector.
