@@ -23,9 +23,13 @@ def add_schema8(root: Path, r: dict) -> None:
         rec['frozen_engine_commit']=A.FROZEN_ENGINE_COMMIT
         rec['frozen_bundle_blob_sha']=A.FROZEN_ENGINE_BLOB_SHA
         rec['source_stage_a_run_id']=A.SOURCE_STAGE_A_RUN_ID
-    import hashlib
-    ledger['identity_sha256']=hashlib.sha256(json.dumps(ledger['records'],sort_keys=True,separators=(',',':')).encode()).hexdigest()
+    expected_shards=A._expected_shard_map(ledger['records'])
+    for rec in ledger['records']:
+        rec['source_shard']=expected_shards[int(rec['orbit_id'])]
+    ledger['identity_sha256']=A._records_sha(ledger['records'])
+    gate['identity_sha256']=ledger['identity_sha256']
     (root/'BQG_DEPTH6_32_REMATERIALIZED_ASSIGNMENT_LEDGER_2026-10-02.json').write_text(json.dumps(ledger))
+    (root/'BQG_DEPTH6_32_IDENTITY_REMATERIALIZATION_GATE_2026-10-02.json').write_text(json.dumps(gate))
     r['rematerialized_assignment_ledger']['identity_sha256']=ledger['identity_sha256']
     auth=A.authorize_replay(ledger,gate)
     auth_path=root/'BQG_DEPTH6_32_REPLAY_AUTHORIZATION_2026-10-03.json'
