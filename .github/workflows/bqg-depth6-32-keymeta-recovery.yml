@@ -6,7 +6,7 @@ on:
       source_run_id:
         description: 'Original authorized KEYMETA replay run containing durable shard artifacts'
         required: true
-        default: '37058367350'
+        default: '39708640090'
       target_proxy:
         description: 'Maximum frozen proxy per recovery chunk; oversize records become singleton chunks'
         required: true
@@ -20,7 +20,7 @@ permissions:
   actions: read
 
 env:
-  SOURCE_RUN_ID: ${{ inputs.source_run_id || '37058367350' }}
+  SOURCE_RUN_ID: ${{ inputs.source_run_id || '39708640090' }}
   TARGET_PROXY: ${{ inputs.target_proxy || '250000' }}
 
 jobs:
@@ -129,10 +129,10 @@ jobs:
     if: ${{ needs.prepare.outputs.missing_blocks != '0' }}
     strategy:
       fail-fast: false
-      max-parallel: 20
+      max-parallel: 4
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 360
     steps:
       - uses: actions/checkout@v4
         with:
